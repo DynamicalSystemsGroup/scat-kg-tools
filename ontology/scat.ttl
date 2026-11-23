@@ -6,7 +6,7 @@
 #     concern, affordance) carry no field for it.
 #   * A page type lists its fields with scat:requiredField, scat:optionalField and
 #     scat:discouragedField. Each field is a scat:Field with a frontmatter key.
-#   * A field with scat:targetType is a link field: a list of wikilinks, and every
+#   * A field with scat:targetType is a link field: a list of wikilinks (exactly one wikilink if scat:single is true), and every
 #     target must be a page of that type (a wrong endpoint is an error at every status).
 #   * scat:requiredField means required once the page's status is scat:done. A field's
 #     scat:requiredFrom says from which status it is required; type, status and title are
@@ -44,7 +44,7 @@
     owl:versionInfo "0.1.0" ;
     scat:unlistedLinkLevel "error" ;
     scat:wrongTargetLevel "error" ;
-    rdfs:comment "TBox for scat-kg v0.1: four SKOS-based classes, three relations, a conflict relation, five record and page types, and the fields and link rules of each. The IRI base is unregistered until release." .
+    rdfs:comment "TBox for scat-kg v0.1: four SKOS-based classes, a conflict relation, twelve page types (the four classes, the three relations, four record types and the class page), and the fields and link rules of each. The IRI base is unregistered until release." .
 
 ##############################################################################
 # The four SCAT classes (MISSION G1). Instances are skos:Concepts.
@@ -247,7 +247,7 @@ scat:ClassPage a owl:Class ;
 
 scat:Field a owl:Class ;
     rdfs:label "Field" ;
-    skos:definition "A frontmatter key that a page type may carry. A field with scat:targetType is a link field, whose value is a list of wikilinks; one with scat:valueSet takes a value from that set; any other takes text." ;
+    skos:definition "A frontmatter key that a page type may carry. A field with scat:targetType is a link field, whose value is a list of wikilinks unless scat:single is true, when it is exactly one wikilink; one with scat:valueSet takes a value from that set; any other takes text." ;
     scat:authored "Needed so required and optional fields, targets and value sets are stated once and a tool can generate models from them (R-13)." ;
     scat:verification "authored" .
 
@@ -289,31 +289,31 @@ scat:field-indexes a scat:Field ;
 
 scat:field-group a scat:Field ;
     rdfs:label "group" ;
-    skos:definition "On a Heldby page: the one stakeholder group that holds the concern. A single link." ;
+    skos:definition "On a Heldby page: the one stakeholder group that holds the concern." ;
     scat:authored "Endpoint field of Heldby, keyed by the endpoint's class name in the singular; the plural keys groups, concerns and so on stay on coded records." ;
     scat:verification "authored" ;
-    scat:key "group" ; scat:mapsTo scat:involves ; scat:targetType scat:StakeholderGroup ; scat:requiredFrom scat:stub .
+    scat:key "group" ; scat:mapsTo scat:involves ; scat:single true ; scat:targetType scat:StakeholderGroup ; scat:requiredFrom scat:stub .
 
 scat:field-concern a scat:Field ;
     rdfs:label "concern" ;
-    skos:definition "On a Heldby or Addresses page: the one concern at that end of the relation. A single link." ;
+    skos:definition "On a Heldby or Addresses page: the one concern at that end of the relation." ;
     scat:authored "Endpoint field of Heldby and Addresses, keyed as scat:field-group." ;
     scat:verification "authored" ;
-    scat:key "concern" ; scat:mapsTo scat:involves ; scat:targetType scat:Concern ; scat:requiredFrom scat:stub .
+    scat:key "concern" ; scat:mapsTo scat:involves ; scat:single true ; scat:targetType scat:Concern ; scat:requiredFrom scat:stub .
 
 scat:field-affordance a scat:Field ;
     rdfs:label "affordance" ;
-    skos:definition "On an Addresses or Attributes page: the one affordance at that end of the relation. A single link." ;
+    skos:definition "On an Addresses or Attributes page: the one affordance at that end of the relation." ;
     scat:authored "Endpoint field of Addresses and Attributes, keyed as scat:field-group." ;
     scat:verification "authored" ;
-    scat:key "affordance" ; scat:mapsTo scat:involves ; scat:targetType scat:Affordance ; scat:requiredFrom scat:stub .
+    scat:key "affordance" ; scat:mapsTo scat:involves ; scat:single true ; scat:targetType scat:Affordance ; scat:requiredFrom scat:stub .
 
 scat:field-technology a scat:Field ;
     rdfs:label "technology" ;
-    skos:definition "On an Attributes page: the one technology the affordance is attributed to. A single link." ;
+    skos:definition "On an Attributes page: the one technology the affordance is attributed to." ;
     scat:authored "Endpoint field of Attributes, keyed as scat:field-group." ;
     scat:verification "authored" ;
-    scat:key "technology" ; scat:mapsTo scat:involves ; scat:targetType scat:Technology ; scat:requiredFrom scat:stub .
+    scat:key "technology" ; scat:mapsTo scat:involves ; scat:single true ; scat:targetType scat:Technology ; scat:requiredFrom scat:stub .
 
 scat:field-notes a scat:Field ;
     rdfs:label "notes" ;
@@ -438,6 +438,11 @@ scat:wrongTargetLevel a owl:AnnotationProperty ;
 scat:carriesStatus a owl:AnnotationProperty ;
     skos:definition "Whether pages of this type carry a status. Where it is false, the page has no status field and every required field applies at all times. Where absent, the type carries a status." ;
     scat:authored "Replaces special-casing class pages in tools (WP4-R3); MISSION G3 says class pages carry none." ;
+    scat:verification "authored" .
+
+scat:single a owl:AnnotationProperty ;
+    skos:definition "Where true on a link field, its value is exactly one wikilink and not a list. Absent means a list." ;
+    scat:authored "Puts the cardinality of the relation endpoint fields in a triple so a tool needs no other file (WP4-R3)." ;
     scat:verification "authored" .
 
 scat:key a owl:AnnotationProperty ;
