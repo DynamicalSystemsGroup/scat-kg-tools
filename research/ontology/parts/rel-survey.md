@@ -28,7 +28,7 @@ Quotes are verbatim (line breaks joined). "Unreachable" entries are listed at th
 | S18 | PAV | <https://pav-ontology.github.io/pav/> | 2.3.1 | provenance |
 | S19 | Nanopublication Guidelines | <https://nanopub.net/guidelines/working_draft/> | working draft (undated on page) | disagreement |
 | S20 | `ant-rdf` (`ONTOLOGICAL_COMMITMENTS.md`, `FUTURE_WORK.md`, `ontology/material-semiotics-core.ttl`) | <https://github.com/mzargham/ant-rdf> | commit `a2ec48edc8f44e386eaeada922c4a90349581df3`; ontology owl:versionInfo 0.1.0-draft | disagreement, status/severity |
-| S21 | `concept-definition-stage` (`src/cds/core/model/notes.py`, `src/cds/ontology/cds-core.ttl`, `docs/user-guide.md`) | <https://github.com/Open-MBEE/concept-definition-stage> | commit `99cecd1d36c7ffd4af540773b0907b59a122c65d` (2026-07-25); package 0.1.0 | Addresses, disagreement |
+| S21 | `concept-definition-stage` (`src/cds/core/model/notes.py`, `src/cds/core/verify.py`, `src/cds/ontology/cds-core.ttl`, `docs/user-guide.md`) | <https://github.com/Open-MBEE/concept-definition-stage> | commit `99cecd1d36c7ffd4af540773b0907b59a122c65d` (2026-07-25); package 0.1.0 | Addresses, disagreement |
 | S22 | SysML v2 release (by reference only) | <https://github.com/Systems-Modeling/SysML-v2-Release> | release `2026-09.1` (2026-10-30); the spec PDFs were not read | architecture record |
 
 ## Findings per element (the evidence the trade tables use)
@@ -108,7 +108,7 @@ Quotes are verbatim (line breaks joined). "Unreachable" entries are listed at th
   representation (although they are often the same)."
 
 ### Disagreement and margins of conflict
-- S3 (SKOS): S27 "skos:related is disjoint with the property skos:broaderTransitive." and "the statement that <Dog> and
+- S3 (SKOS): "skos:related is disjoint with the property skos:broaderTransitive." and "the statement that <Dog> and
   <Cat> are disjoint classes can be viewed as an integrity condition on a data model."
 - S5: "A disjoint classes axiom DisjointClasses( CE 1 ... CE n ) states that all of the class expressions CE i, 1 <= i <=
   n, are pairwise disjoint; that is, no individual can be at the same time an instance of both CE i and CE j for i != j."
