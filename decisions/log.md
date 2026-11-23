@@ -310,10 +310,48 @@ Outcome in `MISSION.md`:
 - New non-goal: adjudicating between stories or architectures.
 - G10: WP1 assesses the lightest way for the graph to hold disagreement.
 - New WP3, a facilitation research spike, running in parallel with WP1 and WP2. Its sources, located by the ACE:
-  `ant-rdf`; "KOI & The Unicorn" (blog.block.science); "Building the Loop" (EPIC 2025); and Ellie Rennie's recent
-  grant drafts shared on Drive. The later packages are renumbered WP4 to WP8.
+  `ant-rdf`; "KOI & The Unicorn" (blog.block.science); "Building the Loop" (EPIC 2025); and recent unpublished
+  grant drafts from the same collaboration. The later packages are renumbered WP4 to WP8.
 - D-5 and good enough now include the facilitation readout.
 - New default: private sources are read for principles only. The repositories are public, so readouts cite only
   published work.
 
 The authoritarian-regime illustration is kept out of the worked example, as directed.
+
+## D-019 | 2026-11-23 | Consistency pass on Amendment 1; jazz as the stylistic reference
+
+Asked by the chief engineer (chat, typed by the ACE): "can you do a cruft, drift and consistency pass for me." Then,
+during the pass: "you also seem to be not capturing my requirement that the scat package takes its stylistic
+references from jazz music. that is something we can cold read test for with the docs. even if its handled through
+visual metaphor".
+
+New: R-15. Jazz is the stylistic reference, in language and through visual metaphor, and never at the cost of
+clarity. It is checked by a cold read: the reader names jazz unprompted and finds no instruction obscured. G7 and the
+UA-A reports carry it.
+
+Consistency pass (a cold reader and the ACE). Fixed:
+- **Privacy:** an unpublished grant draft was named with its author and location in WP3 and in this log's D-018
+  outcome; both now read "unpublished grant-proposal drafts".
+- **Holding disagreement:** the facilitation stance promised it, but no goal required it. G1 now requires the TBox to
+  hold it, in the form WP1 decides, at minimum the same concern held by different groups.
+- **Link rules per record type:**
+  - G1 now states them;
+  - R-1 makes a missing required link type an error;
+  - a scenario linking a technology, or an architecture linking a stakeholder group, is a warning that points to the
+    affordance or the concern *(ACE default)*.
+- **Non-adjudication:** it was unchecked. New R-14 requires the guides to carry the stance with no ranking or
+  adjudication step. G6 now excludes politically loaded illustrations.
+- **G7 vs the journey table:** G7's "one page per stage" contradicted the table, which shares some pages between
+  stages. G7 now names the five guide pages.
+- **Traceability:** the facilitation research traced to no goal. New G11 (facilitation strategy) now carries D-4 and
+  D-5.
+- **Duplicates and leftovers:**
+  - the actor/technologist point appeared twice and J4 treated them as separate people; the duplicate is removed and
+    J4 is reworded around sessions;
+  - each UA-A tester now codes at least one scenario and one architecture.
+- **Bookkeeping:**
+  - the Open decisions counts were stale and are recounted;
+  - "log" now prefixes log ids where they sit next to deliverable ids;
+  - the header status is updated;
+  - a broken table row in R-8 is mended;
+  - the README no longer says "once it is merged".

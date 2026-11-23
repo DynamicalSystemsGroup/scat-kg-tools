@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | DRAFT. Approved only by the recorded act below. Nothing is executed before then. |
+| **Status** | Approved by the chief engineer's merge of PR #1. Each amendment is approved by the merge of its own PR; Amendment 1 is PR #2. |
 | **Chief engineer (accountable)** | `mzargham` — final design authority; approves this mission and its amendments; accepts the v0.1 delivery |
 | **Assistant to the chief engineer (ACE)** | The main Claude session — manages the team, writes and approves work-package scopes inside this mission, accepts work packages, escalates only intent gaps |
 | **Repositories** | `scat-kg-tools` (conformance tools, TBox, docs site; this document lives here) and `scat-kg-template` (the vault to clone) |
@@ -18,8 +18,8 @@ Obsidian vault in git. Coding decompiles each scenario and architecture into fou
 **c**oncerns, **a**ffordances and **t**echnologies (SCAT, named for scat singing in jazz) — and relates them through
 explicit relationships, layered as bipartite graphs: stakeholders–concerns, concerns–affordances,
 affordances–technologies. The result is a navigable, interpretable dataset. It is scaled to a human note-taker:
-just enough structure to make the data interpretable, but mostly a formal structure for arranging Obsidian notes. That dataset is the data product, and its conformance to a fixed ontology is what makes it
-analysable. The git repository is the data of record; the graph is derived from it.
+just enough structure to make the data interpretable, but mostly a formal structure for arranging Obsidian notes.
+That dataset is the data product, and its conformance to a fixed ontology is what makes it analysable. The git repository is the data of record; the graph is derived from it.
 
 The point of departure is the toolchain and the Obsidian reading/review experience described in *Formalizing
 Document Assurance* (INCOSE IS 2026) and the earlier repos `assurances-audits-accountability`, `knowledgecomplex`,
@@ -72,8 +72,7 @@ The v0.1 user is a facilitator-analyst: technically savvy, but not a software de
 - follow documentation literally, step by step. Testers on a small model stand in for this user, so the right way
   has to be the easy way.
 
-One person may be both an actor and a technologist; these are roles in elicitation, not classes in the data model. The
-people in the data are stakeholder **groups**, under the Chatham House rule, so no individual is identifiable.
+The people in the data are stakeholder **groups**, under the Chatham House rule, so no individual is identifiable.
 
 ## Goals
 
@@ -84,7 +83,10 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
   - any easy-win relations G10 adds;
   - each record's required and optional fields;
   - the other page types: class pages, raw and coded scenarios, raw and coded architectures;
-  - the linking rules: coded records link into the graph, and raw records link to or embed their coded pages.
+  - the linking rules: a coded scenario links stakeholder groups, concerns and affordances; a coded architecture
+    links concerns, affordances and technologies; raw records link to or embed their coded pages;
+  - how the graph holds disagreement and margins of potential conflict, in the form WP1 decides (at minimum, the same
+    concern held by different stakeholder groups, plus any conflict relation WP1 adopts).
 - **G2. Vault ↔ graph.** Markdown pages with YAML frontmatter parse into an ABox that is checked against the TBox.
   Every class has a class page: a description plus an index table (name, short description, link) of its instances.
 - **G3. Page lifecycle.** Every instance page and every scenario or architecture page carries a status:
@@ -104,11 +106,12 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 - **G6. Worked example: this project as its own case study.** The template's example content is the elicitation of
   scat-kg itself: its stakeholder groups, concerns (for example, anonymity versus attribution), affordances and
   technologies, drawn from the chief engineer's recorded statements and the decision log. Its stakeholder groups
-  follow the Chatham House rule like any other: no group stands for one identifiable person. It is minimal (users
-  overwrite it), but has 2–3 records in every registry, plus two scenarios and two architectures, each raw and coded.
+  follow the Chatham House rule like any other: no group stands for one identifiable person. It avoids politically loaded illustrations. It is minimal
+  (users overwrite it), but has 2–3 records in every registry, plus two scenarios and two architectures, each raw and coded.
   It doubles as the test fixture and the documentation example.
-- **G7. Documentation on GitHub Pages** (from `scat-kg-tools`), one page per journey stage (see the table under
-  User acceptance), plus a reference for the Python API and the CLI.
+- **G7. Documentation on GitHub Pages** (from `scat-kg-tools`), styled after jazz (R-15), with the pages the journey table names (see User
+  acceptance): getting started, a planning guide, a scenario facilitation guide, an architecture facilitation guide,
+  and a coding guide, plus a reference for the Python API and the CLI.
 - **G8. Toolchain decided by evidence.** Oxigraph, Open Knowledge Format (OKF), pydantic and the choice of rule
   language are tried on a small vault before the implementation is locked in. Each choice is recorded with its evidence.
 - **G9. Clear user journey.** A technically savvy user who is not a developer can go from the docs site to a new
@@ -125,6 +128,9 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
   generally, WP1 assesses the lightest way for the graph to hold disagreement and margins of potential conflict
   (see Facilitation stance). WP1 decides the form, and WP4's rule catalogue says how it is checked.
 
+- **G11. Facilitation strategy grounded in research.** The planning and facilitation guides are written from a
+  facilitation strategy that WP3 derives from prior work: the improvisational stance, eliciting scenarios and
+  architectures, and holding disagreement without adjudicating it.
 ## Non-goals
 
 - Gen-AI aided authoring; an Obsidian plugin (the CLI is designed so one can wrap it later).
@@ -148,8 +154,8 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 | D-1 | TBox in Turtle, in `scat-kg-tools` | G1, G10 |
 | D-2 | Parser, checks, status, index and stub commands, CLI, test suite with seeded-defect fixtures, in `scat-kg-tools` | G2, G3, G4 |
 | D-3 | Template repository: vault skeleton (class pages, folders for raw and coded records), Obsidian page templates for the four record types, instance configuration (stakeholder-group cardinality cap), pinned tools, the case study (G6) | G5, G6, G9 |
-| D-4 | Documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9 |
-| D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, and the facilitation research, with evidence and measurements | G7, G8, G10 |
+| D-4 | Documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9, G11 |
+| D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, and the facilitation research, with evidence and measurements | G8, G10, G11 |
 | D-6 | Reviewer's guide for the chief engineer, in the release PR. It is sized for a person and split into sittings by output: (1) the end-to-end walkthrough (UA-M below); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
 | D-7 | User-acceptance kit, in `scat-kg-tools/acceptance/`: the AI tester personas and briefs, the report template, every AI test report with its dispositions, and the chief engineer's walkthrough script | G9 |
 
@@ -157,20 +163,21 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 
 | ID | Requirement | Checked by |
 |---|---|---|
-| R-1 | Errors block; warnings do not. Errors: required fields and types, relation endpoints of the right classes, coded scenarios and architectures linking into the graph correctly, stakeholder groups within the cap, valid status. Warnings: unlinked mention of a graph entity; raw record not linking or embedding its coded pages. | Seeded-defect tests, one or more per rule |
+| R-1 | Errors block; warnings do not. Errors: required fields and types, relation endpoints of the right classes, coded scenarios and architectures missing a required link type (a scenario with no stakeholder group, concern or affordance; an architecture with no concern, affordance or technology), stakeholder groups within the cap, valid status. Warnings: unlinked mention of a graph entity; raw record not linking or embedding its coded pages; a scenario linking a technology (link its affordance instead) or an architecture linking a stakeholder group (link the concern instead) *(default)*. | Seeded-defect tests, one or more per rule |
 | R-2 | Every message names the file, the field or link, and the rule broken (by id). It gives the fix as something a literal reader can apply: the exact command to run, or the exact field and value to write. | Golden-output tests on seeded defects |
 | R-3 | How strict a check is follows the page status, but only for missing fields: a stub needs only identity, type and status, and missing required fields warn on draft and are errors on done *(default)*. Links and relation endpoints are checked at every status. | Tests per status |
 | R-4 | `index` is the only command that rewrites class pages; the stub command is the only one that creates pages; checks never write. | Tests that snapshot the vault before and after each command |
 | R-5 | Speed on a laptop with a 500-page vault: local check < 1 s, neighborhood < 2 s, full < 5 s *(default thresholds)*. | Benchmark script over a synthetic 500-page vault that it generates |
 | R-6 | From a machine with only the documented prerequisites: fresh clone of the template → one documented setup command → `check --all` passes on the worked example. | Clean-clone trial |
 | R-7 | Both repositories commit `uv.lock`; CI runs tests and checks on every push. | CI runs |
-| R-8 | The interactive session has two equal paths: the Python REPL (`import scat_kg`) and the `scat` CLI in a terminal. Every operation is available on both, with the same messages. The docs lead with the REPL and show the CLI
-  equivalent in a tab. The CLI is a thin layer over the Python API. | Tests calling both paths; docs test runs both |
+| R-8 | The interactive session has two equal paths: the Python REPL (`import scat_kg`) and the `scat` CLI in a terminal. Every operation is available on both, with the same messages. The docs lead with the REPL and show the CLI equivalent in a tab. The CLI is a thin layer over the Python API. | Tests calling both paths; docs test runs both |
 | R-9 | Every REPL snippet and command shown in the docs runs as shown, and the CLI reference matches `--help`. | Docs test that extracts and runs the snippets and commands; reference diff |
 | R-10 | The docs site has no dead ends or broken links. Every journey page says what you need before you start and where to go next. | Strict build plus link check; the ACE's browser pass over every page, at desktop and phone width |
 | R-11 | **Make the right way the easy way: one way to create each kind of page.** Raw and coded scenarios and architectures, which people write in Obsidian, come from Obsidian page templates. Every SCAT and relation page comes from `scat`: link it from a coded record, then run the stub command, which creates it with the right type. Class pages come from `index`. Users never write that structure by hand. Each journey stage's docs page leads with the one action to take next. | A test that each of the four record types has a template; tests of the stub command; the Haiku testers' reports |
 | R-12 | New repositories are private by default. The docs and the template's README recommend private repositories. Their "create your project" link opens GitHub's new-repository page from the template with private visibility pre-selected; if GitHub can't pre-select it, the docs give the `gh repo create --template … --private` command as the first path. | Probe of the link on the candidate; UA-M |
 | R-13 | The schema has one source. The TBox is authoritative; any other form the checks use (for example pydantic models) is either generated from it or held equal to it by a test. WP2 picks the mechanism. | The generator, or the equality test, in CI |
+| R-14 | The planning and facilitation guides carry the improvisational stance ("yes, and"; "from this perspective") and contain no step that ranks, votes on or adjudicates between stories or architectures. | The ACE's review of the guides; UA-M |
+| R-15 | **Jazz is the stylistic reference.** The package and its docs take their style from jazz music, in language and through visual metaphor, as a light touch that never costs clarity: names, headings, examples and images may draw on improvisation, ensembles, charts, riffs and call and response. | Cold-read test: a fresh reader of the docs site, asked open-endedly what style or reference it evokes, names jazz or improvised music unprompted; the same reader reports no place where the metaphor obscured an instruction |
 
 ## User acceptance
 
@@ -181,7 +188,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
 | J1 Find | lands on the docs site and understands what this is for and how to start | home |
 | J2 Create | on GitHub's web interface, makes a new **private** repository from `scat-kg-template`, then clones it | getting started |
 | J3 Set up | installs the prerequisites from exact commands (uv, and a one-time GitHub sign-in so a private repository can be cloned), runs one setup command, gets a working `scat_kg`, and opens the folder as an Obsidian vault | getting started |
-| J4 Plan | plans a facilitation event: who comes as actors and who as technologists, the Chatham House framing, stakeholder groups within the cap | planning guide |
+| J4 Plan | plans a facilitation event: which sessions elicit scenarios and which elicit architectures, and who takes part in each, the Chatham House framing, stakeholder groups within the cap | planning guide |
 | J5 Capture | during the event, records raw scenarios and raw architectures | the two facilitation guides |
 | J6 Code | afterwards, in an interactive session (the Python REPL, or the `scat` CLI), decompiles the raw notes into SCAT pages and relations: creates stubs, moves pages to draft and done, regenerates the indexes, and fixes each error from its message using local and neighborhood checks | coding guide, API and CLI reference |
 | J7 Finish | reaches a clean `check --all`, commits and pushes, and navigates the resulting graph in Obsidian | coding guide |
@@ -199,13 +206,15 @@ Acceptance is judged by people using the product, not only by tests. The journey
   Between them, at least one Haiku tester works in the Python REPL and at least one uses the CLI.
 - Each tester starts on a machine without uv, from the Pages preview URL, and follows only what the docs site says. J2 is simulated with
   `git clone --no-hardlinks` of the template with its remote removed; all other stages run as written. Each tester
-  codes a small elicitation in a domain of its own, different from the worked example.
+  codes a small elicitation in a domain of its own, different from the worked example: at least one scenario and one
+  architecture, each raw and coded.
 - Testers may not read `src/` or `tests/`. Every claim comes with pasted command output. Each tester reports, per
   stage: where it got stuck, what it had to guess, and where the docs left it with nowhere to go.
 - **Pass bar:** every tester, the Haiku testers included, reaches J7 with a clean `check --all`. Every guess (any
   action the docs did not literally state) counts as a finding. A finding is **blocking** if it stopped the tester
   short of J7 or if it is a docs command that doesn't work as shown. Every finding is dispositioned: either fixed and re-tested by a fresh tester, or accepted with a
   reason and listed in the reviewer's guide. The final round leaves no blocking finding unresolved.
+- Each tester's report also answers, before anything else, what style or reference the docs evoke (R-15's cold read).
 - A report that reuses names from the worked example's records, or that finds nothing, is void and is run again.
 
 **UA-M, the chief engineer's walkthrough** (the first sitting of the reviewer's guide, and the core of acceptance):
@@ -231,7 +240,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
 
 ## Definition of good enough
 
-- R-1 to R-13 met, with evidence.
+- R-1 to R-15 met, with evidence.
 - The AI user tests (UA-A) pass on the candidate.
 - The candidate is staged for the chief engineer's own walkthrough (UA-M), with the reviewer's guide ready.
 - The ontology trade study, the toolchain decision records and the facilitation readout exist. Every TBox term traces to an adopted ontology
@@ -287,8 +296,8 @@ Ontology design comes before implementation, and the design is driven by researc
    mini-vault and measured. Fixes: the toolchain; D-5 (toolchain part).
 3. **WP3 Facilitation research spike.** In parallel with WP1. A pass back through `ant-rdf` (its handling of
    controversy, dissent and multiple perspectives), the post "KOI & The Unicorn"
-   (<https://blog.block.science/koi-and-the-unicorn/>), "Building the Loop" (EPIC 2025), and Ellie Rennie's recent
-   grant proposal drafts shared with the chief engineer. Fixes: the facilitation strategy (the "yes, and" and "from this
+   (<https://blog.block.science/koi-and-the-unicorn/>), "Building the Loop" (EPIC 2025), and recent unpublished grant-proposal
+   drafts from the same collaboration (read for principles only). Fixes: the facilitation strategy (the "yes, and" and "from this
    perspective" stance, eliciting scenarios and architectures, and holding disagreement) that the planning and
    facilitation guides are written from; inputs to WP4 on representing disagreement; D-5 (facilitation part).
 4. **WP4 Ontology and page contracts.** From WP1 to WP3: the TBox in Turtle, fields per class, page types, link rules,
@@ -311,7 +320,7 @@ Ontology design comes before implementation, and the design is driven by researc
   `uv sync --locked`, `uv lock --check`, ruff check and format, and pytest.
 - Branches: `main` holds approved missions and releases only; `dev` is the integration branch; work happens on
   short-lived unit branches off `dev`.
-- Licence: Apache-2.0, copyright Dynamical Systems Group, for code, docs and ontology (the chief engineer's decision, D-005).
+- Licence: Apache-2.0, copyright Dynamical Systems Group, for code, docs and ontology (the chief engineer's decision, log D-005).
 - Adopted ontologies, standards and their definitions are used directly and cited, per engineering practice.
 - The stakeholder-group cap is set in the template's configuration file, with the worked example set to 3.
 - Private sources (such as unpublished grant drafts) are read for principles only. Since the repositories are
@@ -321,6 +330,8 @@ Ontology design comes before implementation, and the design is driven by researc
 ## Open decisions (for the chief engineer)
 
 None. Every item was resolved through the decision loop and is recorded in `decisions/log.md`:
-- 9 decided by the chief engineer: D-001, D-003, D-005 to D-008, and D-010 to D-012;
-- 1 assigned to the ACE: D-002;
-- 1 deferred by him: the target date, until velocity is known (D-011).
+- 13 decided by the chief engineer: log D-001, D-003, D-005 to D-008, D-010 to D-014, D-017 and D-018;
+- 1 assigned to the ACE: log D-002;
+- 1 deferred by him: the target date, until velocity is known (log D-011).
+
+Log D-004, D-009 and D-012 also record the ACE's consistency passes. Log D-015 and D-016 were rolled back with `dev`.
