@@ -561,3 +561,22 @@ contributor to learn.
   element beyond `MISSION.md` G1 and D1 without a written trade-off.
 
 WP1, WP2 and WP3 are accepted.
+
+## D-029 | 2026-11-23 | WP4 scope approved (ACE)
+
+The scope check came from a fresh PM, which took over from the files because the previous PM's context was large.
+Its 6 fixes are applied:
+- the four exact-fix decisions are named in WP4-G3;
+- the blast radius now says where scripts and cold-write outputs go (the scratchpad and the PR description);
+- R1 runs with `uv run --with rdflib`, with no dependency change;
+- the stakeholder-group cap and the D1 relation each have a place in the contracts;
+- the unverified marker is named;
+- the cold-write worker sees only the two contract files, and a fresh Haiku worker reruns after fixes.
+
+ACE ruling on the missing-link-type fix: no new TBox axiom. Deriving a scenario's affordances from its concerns would
+add an element beyond G1 and D1. It would also put words in the coder's mouth, which is against the facilitation stance.
+The fix names the exact field to fill and may suggest candidates, and the rule records why the choice stays with the
+author.
+
+The unit split is approved as proposed: 7 units, 24 estimated points, plus 2 if the rerun is needed.
+Approved: the WP4 scope, at the commit that records this entry.
