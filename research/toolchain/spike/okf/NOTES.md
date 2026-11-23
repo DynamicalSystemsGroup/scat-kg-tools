@@ -89,7 +89,7 @@ Cytoscape HTML page with an embedded JSON blob (nodes with type/status/trust, ed
 is no RDF, JSON-LD, GraphML or other serialisation. A graph store would need our own bundle-to-RDF mapper.
 Our two-way adapter is lossless on bodies in this vault (page names with spaces need `%20`; `[[X#h|alias]]` survives).
 Caveat: in this vault each relation page repeats its endpoints in the body, so body links happen to cover all
-typed edges. If the real vault keeps endpoints only in frontmatter (as the format spec says it may), the
+typed edges. If the real vault keeps endpoints only in frontmatter, the
 adapter would also have to rewrite frontmatter, and OKF would still not read it as typed edges.
 
 ### Round-trip through OKF's own parser
