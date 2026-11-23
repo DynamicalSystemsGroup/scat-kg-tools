@@ -1,0 +1,458 @@
+# scat.ttl : the SCAT TBox (WP4-D1, mission deliverable D-1).
+#
+# How to read this file
+#   * Page types are the classes with a scat:key (their slug): nine in all.
+#   * A page type lists its fields with scat:requiredField, scat:optionalField and
+#     scat:discouragedField. Each field is a scat:Field with a frontmatter key.
+#   * A field with scat:targetType is a link field: a list of wikilinks, and every
+#     target must be a page of that type (a wrong endpoint is an error at every status).
+#   * scat:requiredField means required once the page's status is scat:done. A field's
+#     scat:requiredFrom says from which status it is required; type, status and title are
+#     required from scat:stub, so they are present at every status. A required link field
+#     must be present and non-empty. Class pages carry no status: their required fields
+#     always apply.
+#   * scat:discouragedField is permitted but graded at warning level when present and
+#     non-empty. A link field that a page type lists in none of the three is not
+#     permitted on it. Frontmatter keys that are not link fields and not listed are ignored.
+#   * scat:discouragedBodyLink names a page type that the body of this page type should
+#     not link to (warning level). Body links are otherwise not typed by the TBox.
+#   * Terms this file does not state (page names, rule ids, messages, the stakeholder-group
+#     cap, which is vault configuration) are left to the page contracts and the rule
+#     catalogue. No term here derives a missing link type from another (log D-029).
+#
+# Provenance of wording (every term below carries one of these)
+#   scat:source        the source the wording is adopted or adapted from, as far as reached.
+#   scat:authored      the wording is ours; the value gives the reason.
+#   scat:verification  "verified"   checked against the text of the source it cites;
+#                      "unverified" adopted wording not checked against the primary source
+#                                   (the cited secondary source says where it was read);
+#                      "authored"   our wording, so there is no source text to check.
+
+@prefix scat:    <https://scat-kg.example/ns#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix schema:  <https://schema.org/> .
+
+<https://scat-kg.example/ns> a owl:Ontology ;
+    rdfs:label "SCAT ontology" ;
+    owl:versionInfo "0.1.0" ;
+    scat:unlistedLinkLevel "error" ;
+    scat:wrongTargetLevel "error" ;
+    rdfs:comment "TBox for scat-kg v0.1: four SKOS-based classes, three relations, a conflict relation, five record and page types, and the fields and link rules of each. The IRI base is a placeholder for the ACE to replace." .
+
+##############################################################################
+# The four SCAT classes (MISSION G1). Instances are skos:Concepts.
+##############################################################################
+
+scat:StakeholderGroup a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label "Stakeholder group" ;
+    skos:definition "A group of individuals or organizations that have a right, share, claim or interest in a system, or in its possession of characteristics that meet their needs and expectations. The class is a group, not a named person; how many groups a vault may hold is set in the vault's configuration, not here." ;
+    skos:closeMatch <https://sebokwiki.org/wiki/Stakeholder_(glossary)> ;
+    scat:source "SEBoK glossary, Stakeholder, entry 1 (v2.14), which credits ISO/IEC/IEEE 15288:2015. Paraphrased. The standard itself was not read. 15288 says \"individual or organization\"; \"group\" is our usage." ;
+    scat:verification "unverified" ;
+    scat:key "stakeholder-group" ;
+    scat:pageDescription "One page per stakeholder group: who the group is, in the group's own terms, and the concerns it holds." ;
+    scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description ;
+    scat:optionalField scat:field-heldby .
+
+scat:Concern a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label "Concern" ;
+    skos:definition "Any interest in a system." ;
+    skos:closeMatch <http://www.iso-architecture.org/ieee-1471/cm/> ;
+    scat:source "ISO/IEC/IEEE 42010 community site, conceptual-model page (first-edition wording: \"A Concern is any interest in the system\"). The 2022 edition of the standard was unreachable (HTTP 403), so whether it words this the same was not checked. SEBoK has no Concern entry." ;
+    scat:verification "unverified" ;
+    scat:key "concern" ;
+    scat:pageDescription "One page per concern: what the interest is, the affordances that address it, and any concerns it conflicts with." ;
+    scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description ;
+    scat:optionalField scat:field-addresses, scat:field-conflicts .
+
+scat:Affordance a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label "Affordance" ;
+    skos:definition "What a technology offers to those in an action situation, for good or ill: a possibility of action it provides, taken as a relation between the technology and its would-be users and not as a property of either alone." ;
+    skos:closeMatch <https://sebokwiki.org/wiki/Capability_(glossary)> ;
+    rdfs:seeAlso <https://www.w3.org/2019/wot/td#InteractionAffordance> ;
+    scat:source "After Gibson, The Ecological Approach to Visual Perception (1979), p. 119, as quoted by Toyoshima (2017, CEUR Vol-2205). Gibson's book is an image-only scan and was not read directly; the paraphrase and its adaptation to technology are ours. SEBoK Capability is a near match (outcome-centred); WoT td:InteractionAffordance describes a Thing for machine consumers, so it is a pointer only." ;
+    scat:verification "unverified" ;
+    scat:key "affordance" ;
+    scat:pageDescription "One page per affordance: what is offered, and the technologies it is attributed to." ;
+    scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description ;
+    scat:optionalField scat:field-attributes .
+
+scat:Technology a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label "Technology" ;
+    skos:definition "A discrete part of a system that can be implemented to fulfil specified requirements." ;
+    skos:closeMatch <https://sebokwiki.org/wiki/System_Element_(glossary)> ;
+    scat:source "SEBoK glossary, System Element (v2.14), which credits ISO/IEC/IEEE 15288:2015. Paraphrased. The standard itself was not read. SEBoK has no Technology entry, so the label \"Technology\" is ours." ;
+    scat:verification "unverified" ;
+    scat:key "technology" ;
+    scat:pageDescription "One page per technology: what the part is." ;
+    scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description .
+
+##############################################################################
+# The relations (MISSION G1). Each is an ordered pair as the mission states it,
+# written as a link field on the page of the first member.
+##############################################################################
+
+scat:heldby a owl:ObjectProperty ;
+    rdfs:label "Heldby" ;
+    rdfs:domain scat:StakeholderGroup ;
+    rdfs:range scat:Concern ;
+    skos:definition "Pairs a stakeholder group with a concern that the group holds. Many-to-many: one concern may be held by several groups, and one group may hold several concerns. Read the pair as (group, concern)." ;
+    scat:source "The idea that stakeholders hold concerns is ISO/IEC/IEEE 42010's, as shown on its community site (first-edition wording). 42010 publishes no IRI, and prov:wasAttributedTo means authorship, not holding." ;
+    scat:authored "Authored IRI and pair direction (group, concern) as MISSION G1 orders the pair; the name reads inversely, so the definition fixes the direction." ;
+    scat:verification "authored" .
+
+scat:addresses a owl:ObjectProperty ;
+    rdfs:label "Addresses" ;
+    rdfs:domain scat:Concern ;
+    rdfs:range scat:Affordance ;
+    skos:definition "Pairs a concern with an affordance that addresses it. Many-to-many. Read the pair as (concern, affordance)." ;
+    scat:authored "No usable IRI exists: cds:addresses is bound to cds:Term and lives in one repository; the pair direction (concern, affordance) follows MISSION G1." ;
+    scat:verification "authored" .
+
+scat:attributes a owl:ObjectProperty ;
+    rdfs:label "Attributes" ;
+    rdfs:domain scat:Affordance ;
+    rdfs:range scat:Technology ;
+    skos:definition "Pairs an affordance with a technology that it is attributed to, that is, that provides it. Many-to-many. Read the pair as (affordance, technology)." ;
+    scat:authored "No source found for an affordance-to-technology relation; the pair direction (affordance, technology) follows MISSION G1." ;
+    scat:verification "authored" .
+
+scat:conflictsWith a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:label "Conflicts with" ;
+    rdfs:domain scat:Concern ;
+    rdfs:range scat:Concern ;
+    skos:definition "Relates two concerns that cannot both be fully met. It shows a tension and does not resolve or rank it. Symmetric: stating it from either concern states it for both. It is deliberately not owl:disjointWith, which would turn a tension into an inconsistency." ;
+    scat:authored "Disagreement option D1, accepted in log D-028 (one property). Written as an optional typed link field on a concern page, not as a page of its own; the n-ary tension page (option D4) is deferred." ;
+    scat:verification "authored" .
+
+scat:involves a owl:ObjectProperty ;
+    rdfs:label "Involves" ;
+    skos:definition "Relates a coded record to an instance of one of the four classes that the record is about. Which class is allowed on which record is stated by the record's link fields, not by this property." ;
+    scat:authored "One property serves the four record-to-class fields (groups, concerns, affordances, technologies). Trade-off: four properties would repeat the same meaning and add three terms; the field's scat:targetType already carries the class." ;
+    scat:verification "authored" .
+
+scat:coded a owl:ObjectProperty ;
+    rdfs:label "Coded" ;
+    owl:inverseOf prov:wasDerivedFrom ;
+    skos:definition "Relates a raw record to a coded record derived from it. The inverse of prov:wasDerivedFrom." ;
+    scat:authored "The raw page's view of prov:wasDerivedFrom, so a raw page can list its coded pages; PROV-O itself defines no such inverse." ;
+    scat:verification "authored" .
+
+##############################################################################
+# Record and class page types
+##############################################################################
+
+scat:RawScenario a owl:Class ;
+    rdfs:label "Raw scenario" ;
+    skos:definition "The notes of a scenario as it was told, kept unedited: people in an action situation doing things over time, with technologies in the background. Events stay in the page body." ;
+    scat:authored "Authored class, G1; kept apart from its reading so what was said survives any interpretation (facilitation capability 10)." ;
+    scat:verification "authored" ;
+    scat:key "scenario-raw" ;
+    scat:pageDescription "A raw scenario: the told story in the page body, linked to the coded scenarios derived from it." ;
+    scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description ;
+    scat:optionalField scat:field-coded-scenario ;
+    scat:discouragedBodyLink scat:Technology .
+
+scat:CodedScenario a owl:Class ;
+    rdfs:label "Coded scenario" ;
+    skos:definition "A reading of a raw scenario that relates the stakeholder groups, the concerns and the affordances found in it." ;
+    scat:authored "Authored class, G1; the three related classes follow MISSION, Scenarios and architectures. Technologies are not part of what a scenario relates, so a technology link is warning-level." ;
+    scat:verification "authored" ;
+    scat:key "scenario-coded" ;
+    scat:pageDescription "A coded scenario: links to its raw scenario, to the groups, concerns and affordances in it." ;
+    scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description,
+        scat:field-raw-scenario, scat:field-groups, scat:field-concerns, scat:field-affordances ;
+    scat:discouragedField scat:field-technologies ;
+    scat:discouragedBodyLink scat:Technology .
+
+scat:RawArchitecture a owl:Class ;
+    rdfs:label "Raw architecture" ;
+    skos:definition "The notes of an architecture pitch as it was given, kept unedited: parts and wholes, and how they are assembled into tools that provide affordances for concerns." ;
+    scat:authored "Authored class, G1, worded after the idea of an architecture description in ISO/IEC/IEEE 42010; no 42010 text was read, none is adopted, and 42010 publishes no IRI." ;
+    scat:verification "authored" ;
+    scat:key "architecture-raw" ;
+    scat:pageDescription "A raw architecture: the pitch in the page body, linked to the coded architectures derived from it." ;
+    scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description ;
+    scat:optionalField scat:field-coded-architecture ;
+    scat:discouragedBodyLink scat:StakeholderGroup .
+
+scat:CodedArchitecture a owl:Class ;
+    rdfs:label "Coded architecture" ;
+    skos:definition "A reading of a raw architecture that relates the concerns, the affordances and the technologies found in it." ;
+    scat:authored "Authored class, G1; the three related classes follow MISSION, Scenarios and architectures. Stakeholders are abstracted away in an architecture, so a stakeholder-group link is warning-level." ;
+    scat:verification "authored" ;
+    scat:key "architecture-coded" ;
+    scat:pageDescription "A coded architecture: links to its raw architecture, to the concerns, affordances and technologies in it." ;
+    scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description,
+        scat:field-raw-architecture, scat:field-concerns, scat:field-affordances, scat:field-technologies ;
+    scat:discouragedField scat:field-groups ;
+    scat:discouragedBodyLink scat:StakeholderGroup .
+
+scat:ClassPage a owl:Class ;
+    rdfs:label "Class page" ;
+    skos:definition "The page of one of the four classes: a description of the class, plus an index table of its instances (name, short description, link) that the tools generate from the instance pages." ;
+    scat:authored "MISSION G2. Generated, so it carries no status and its required fields always apply. The indexes field says which class it indexes; trade-off: deriving that from the page name would depend on the naming rule, which is decided elsewhere." ;
+    scat:verification "authored" ;
+    scat:key "class" ;
+    scat:pageDescription "A class page: a description of one class and the generated index of its instances." ;
+    scat:carriesStatus false ;
+    scat:requiredField scat:field-type, scat:field-title, scat:field-description, scat:field-indexes .
+
+##############################################################################
+# Fields
+##############################################################################
+
+scat:Field a owl:Class ;
+    rdfs:label "Field" ;
+    skos:definition "A frontmatter key that a page type may carry. A field with scat:targetType is a link field, whose value is a list of wikilinks; one with scat:valueSet takes a value from that set; any other takes text." ;
+    scat:authored "Needed so required and optional fields, targets and value sets are stated once and a tool can generate models from them (R-13)." ;
+    scat:verification "authored" .
+
+scat:field-type a scat:Field ;
+    rdfs:label "type" ;
+    skos:definition "The page's type: the scat:key of its page type." ;
+    scat:authored "Frontmatter key chosen for tools to dispatch on." ;
+    scat:verification "authored" ;
+    scat:key "type" ; scat:mapsTo rdf:type ; scat:requiredFrom scat:stub .
+
+scat:field-status a scat:Field ;
+    rdfs:label "status" ;
+    skos:definition "The page's lifecycle status, one of stub, draft and done." ;
+    scat:authored "MISSION G3." ;
+    scat:verification "authored" ;
+    scat:key "status" ; scat:mapsTo scat:status ; scat:valueSet scat:StatusValues ; scat:requiredFrom scat:stub .
+
+scat:field-title a scat:Field ;
+    rdfs:label "title" ;
+    skos:definition "The page's name as a person reads it; the name shown in an index table." ;
+    scat:authored "Frontmatter key; not the file name, whose rule is decided elsewhere." ;
+    scat:verification "authored" ;
+    scat:key "title" ; scat:mapsTo dcterms:title ; scat:requiredFrom scat:stub .
+
+scat:field-description a scat:Field ;
+    rdfs:label "description" ;
+    skos:definition "A short description of what the page is about; the short description shown in an index table." ;
+    scat:authored "MISSION G2 (index table: name, short description, link)." ;
+    scat:verification "authored" ;
+    scat:key "description" ; scat:mapsTo dcterms:description ; scat:requiredFrom scat:done .
+
+scat:field-indexes a scat:Field ;
+    rdfs:label "indexes" ;
+    skos:definition "On a class page, the scat:key of the class whose instances it indexes: stakeholder-group, concern, affordance or technology." ;
+    scat:authored "See scat:ClassPage." ;
+    scat:verification "authored" ;
+    scat:key "indexes" ; scat:requiredFrom scat:stub ;
+    scat:valueSet ( "stakeholder-group" "concern" "affordance" "technology" ) .
+
+scat:field-heldby a scat:Field ;
+    rdfs:label "heldby" ;
+    skos:definition "On a stakeholder group page: the concerns the group holds." ;
+    scat:authored "Link field for scat:heldby." ;
+    scat:verification "authored" ;
+    scat:key "heldby" ; scat:mapsTo scat:heldby ; scat:targetType scat:Concern .
+
+scat:field-addresses a scat:Field ;
+    rdfs:label "addresses" ;
+    skos:definition "On a concern page: the affordances that address the concern." ;
+    scat:authored "Link field for scat:addresses." ;
+    scat:verification "authored" ;
+    scat:key "addresses" ; scat:mapsTo scat:addresses ; scat:targetType scat:Affordance .
+
+scat:field-attributes a scat:Field ;
+    rdfs:label "attributes" ;
+    skos:definition "On an affordance page: the technologies the affordance is attributed to." ;
+    scat:authored "Link field for scat:attributes." ;
+    scat:verification "authored" ;
+    scat:key "attributes" ; scat:mapsTo scat:attributes ; scat:targetType scat:Technology .
+
+scat:field-conflicts a scat:Field ;
+    rdfs:label "conflicts" ;
+    skos:definition "On a concern page: the concerns this one conflicts with. Stating it on either page states it for both." ;
+    scat:authored "Link field for scat:conflictsWith." ;
+    scat:verification "authored" ;
+    scat:key "conflicts" ; scat:mapsTo scat:conflictsWith ; scat:targetType scat:Concern .
+
+scat:field-groups a scat:Field ;
+    rdfs:label "groups" ;
+    skos:definition "On a coded record: the stakeholder groups in it." ;
+    scat:authored "Link field for scat:involves." ;
+    scat:verification "authored" ;
+    scat:key "groups" ; scat:mapsTo scat:involves ; scat:targetType scat:StakeholderGroup ; scat:requiredFrom scat:done .
+
+scat:field-concerns a scat:Field ;
+    rdfs:label "concerns" ;
+    skos:definition "On a coded record: the concerns in it." ;
+    scat:authored "Link field for scat:involves." ;
+    scat:verification "authored" ;
+    scat:key "concerns" ; scat:mapsTo scat:involves ; scat:targetType scat:Concern ; scat:requiredFrom scat:done .
+
+scat:field-affordances a scat:Field ;
+    rdfs:label "affordances" ;
+    skos:definition "On a coded record: the affordances in it." ;
+    scat:authored "Link field for scat:involves." ;
+    scat:verification "authored" ;
+    scat:key "affordances" ; scat:mapsTo scat:involves ; scat:targetType scat:Affordance ; scat:requiredFrom scat:done .
+
+scat:field-technologies a scat:Field ;
+    rdfs:label "technologies" ;
+    skos:definition "On a coded record: the technologies in it." ;
+    scat:authored "Link field for scat:involves." ;
+    scat:verification "authored" ;
+    scat:key "technologies" ; scat:mapsTo scat:involves ; scat:targetType scat:Technology ; scat:requiredFrom scat:done .
+
+scat:field-raw-scenario a scat:Field ;
+    rdfs:label "raw (scenario)" ;
+    skos:definition "On a coded scenario: the raw scenarios it was derived from." ;
+    scat:authored "Link field for prov:wasDerivedFrom, coded to raw (log D-028). Two fields share the key raw because the target type differs by page type." ;
+    scat:verification "authored" ;
+    scat:key "raw" ; scat:mapsTo prov:wasDerivedFrom ; scat:targetType scat:RawScenario ; scat:requiredFrom scat:done .
+
+scat:field-raw-architecture a scat:Field ;
+    rdfs:label "raw (architecture)" ;
+    skos:definition "On a coded architecture: the raw architectures it was derived from." ;
+    scat:authored "Link field for prov:wasDerivedFrom, coded to raw (log D-028)." ;
+    scat:verification "authored" ;
+    scat:key "raw" ; scat:mapsTo prov:wasDerivedFrom ; scat:targetType scat:RawArchitecture ; scat:requiredFrom scat:done .
+
+scat:field-coded-scenario a scat:Field ;
+    rdfs:label "coded (scenario)" ;
+    skos:definition "On a raw scenario: the coded scenarios derived from it." ;
+    scat:authored "Link field for scat:coded. Optional: enforcing it is a non-goal (MISSION); a missing one is a warning set in the rule catalogue." ;
+    scat:verification "authored" ;
+    scat:key "coded" ; scat:mapsTo scat:coded ; scat:targetType scat:CodedScenario .
+
+scat:field-coded-architecture a scat:Field ;
+    rdfs:label "coded (architecture)" ;
+    skos:definition "On a raw architecture: the coded architectures derived from it." ;
+    scat:authored "Link field for scat:coded; optional as for scenarios." ;
+    scat:verification "authored" ;
+    scat:key "coded" ; scat:mapsTo scat:coded ; scat:targetType scat:CodedArchitecture .
+
+##############################################################################
+# Status
+##############################################################################
+
+scat:status a owl:ObjectProperty ;
+    rdfs:label "Status" ;
+    skos:definition "Relates a page to its lifecycle status value: stub, draft or done." ;
+    skos:closeMatch schema:creativeWorkStatus ;
+    scat:authored "Authored in place of adopting schema:creativeWorkStatus, which schema.org keeps in its pending area and may change; the tools read the key and gain nothing from the adopted IRI (stack C, log D-028), while the instability is a risk. The closeMatch keeps the link for any export. Source for the pending status: schema.org v30.1 as read in the ontology trade study." ;
+    scat:verification "authored" .
+
+scat:StatusValues a skos:OrderedCollection ;
+    rdfs:label "Status values" ;
+    skos:definition "The status values in lifecycle order: stub, then draft, then done." ;
+    scat:authored "MISSION G3; the order is carried by skos:memberList so no ordering property is needed." ;
+    scat:verification "authored" ;
+    skos:memberList ( scat:stub scat:draft scat:done ) .
+
+scat:stub a skos:Concept ;
+    skos:prefLabel "stub" ; skos:notation "stub" ;
+    skos:definition "The page exists because something links to it, or has just been started; its content is unfinished. A stub is never an error for being unfinished." ;
+    scat:authored "MISSION G3 and R-3." ;
+    scat:verification "authored" .
+
+scat:draft a skos:Concept ;
+    skos:prefLabel "draft" ; skos:notation "draft" ;
+    skos:definition "The page is being written; its contract is not yet met." ;
+    scat:authored "MISSION G3." ;
+    scat:verification "authored" .
+
+scat:done a skos:Concept ;
+    skos:prefLabel "done" ; skos:notation "done" ;
+    skos:definition "The author judges the page complete; the full contract applies, including every required field." ;
+    scat:authored "MISSION G3 and R-3." ;
+    scat:verification "authored" .
+
+##############################################################################
+# Vocabulary used above to state page types and fields
+##############################################################################
+
+scat:unlistedLinkLevel a owl:AnnotationProperty ;
+    skos:definition "Stated on the ontology: the severity when a page carries a link field that its page type lists in none of required, optional or discouraged fields." ;
+    scat:authored "Puts the link rule in a triple so a tool needs no other file (WP4-R3)." ;
+    scat:verification "authored" .
+
+scat:wrongTargetLevel a owl:AnnotationProperty ;
+    skos:definition "Stated on the ontology: the severity when a link field's target is not a page of the field's scat:targetType; it applies at every status." ;
+    scat:authored "Puts the endpoint rule in a triple so a tool needs no other file (WP4-R3)." ;
+    scat:verification "authored" .
+
+scat:carriesStatus a owl:AnnotationProperty ;
+    skos:definition "Whether pages of this type carry a status. Where it is false, the page has no status field and every required field applies at all times. Where absent, the type carries a status." ;
+    scat:authored "Replaces special-casing class pages in tools (WP4-R3); MISSION G3 says class pages carry none." ;
+    scat:verification "authored" .
+
+scat:key a owl:AnnotationProperty ;
+    skos:definition "The text a tool matches on: the slug of a page type (the value of a page's type field), or the frontmatter key of a field." ;
+    scat:authored "Needed so tools need no other file for names (R-13)." ;
+    scat:verification "authored" .
+
+scat:pageDescription a owl:AnnotationProperty ;
+    skos:definition "A one-sentence description of what a page of this type is." ;
+    scat:authored "Distinct from skos:definition, which defines the class itself and may be adopted wording." ;
+    scat:verification "authored" .
+
+scat:requiredField a owl:AnnotationProperty ;
+    skos:definition "A field a page of this type must carry once its status is done (see scat:requiredFrom for the exceptions)." ;
+    scat:authored "R-3: the full contract applies at done." ;
+    scat:verification "authored" .
+
+scat:optionalField a owl:AnnotationProperty ;
+    skos:definition "A field a page of this type may carry." ;
+    scat:authored "MISSION G1." ;
+    scat:verification "authored" .
+
+scat:discouragedField a owl:AnnotationProperty ;
+    skos:definition "A field a page of this type may carry but that is graded at warning level when present and non-empty." ;
+    scat:authored "Encodes MISSION's design guidance (advice, not requirement): a scenario that links a technology, or an architecture that links a stakeholder group, is a warning." ;
+    scat:verification "authored" .
+
+scat:discouragedBodyLink a owl:AnnotationProperty ;
+    skos:definition "A class that the body of a page of this type should not link to; a link is graded at warning level." ;
+    scat:authored "The body-text counterpart of scat:discouragedField, from the same design guidance. Body links are otherwise untyped." ;
+    scat:verification "authored" .
+
+scat:mapsTo a owl:AnnotationProperty ;
+    skos:definition "The RDF property a field becomes when a page is read into the graph." ;
+    scat:authored "Lets the vault be read as an ABox (MISSION G2) without a second table." ;
+    scat:verification "authored" .
+
+scat:targetType a owl:AnnotationProperty ;
+    skos:definition "The page type every target of a link field must have. Its presence makes a field a link field." ;
+    scat:authored "Gives each link field its endpoint rule." ;
+    scat:verification "authored" .
+
+scat:requiredFrom a owl:AnnotationProperty ;
+    skos:definition "The status from which a field is required when its page type lists it as required. A field without it is required from done." ;
+    scat:authored "Needed because type, status and title are required at every status while the rest are required at done (R-3)." ;
+    scat:verification "authored" .
+
+scat:valueSet a owl:AnnotationProperty ;
+    skos:definition "The ordered list of values a field may take: a skos:OrderedCollection of concepts (status) or an RDF list of literals (indexes)." ;
+    scat:authored "Used for status and indexes." ;
+    scat:verification "authored" .
+
+scat:source a owl:AnnotationProperty ;
+    skos:definition "The published source a term's wording is adopted or adapted from, with what was and was not reached." ;
+    scat:authored "Provenance of adopted wording (WP4-R2)." ;
+    scat:verification "authored" .
+
+scat:authored a owl:AnnotationProperty ;
+    skos:definition "The reason a term is authored here and not adopted, or how its authored wording was settled." ;
+    scat:authored "Provenance of authored wording (WP4-R2)." ;
+    scat:verification "authored" .
+
+scat:verification a owl:AnnotationProperty ;
+    skos:definition "Whether a term's wording was checked: \"verified\" (against the text of the source it cites), \"unverified\" (adopted wording not checked against the primary source) or \"authored\" (our wording, nothing to check)." ;
+    scat:authored "The marker WP4-R2 asks for." ;
+    scat:verification "authored" .
