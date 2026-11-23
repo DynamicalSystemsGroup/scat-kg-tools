@@ -415,3 +415,13 @@ read. `MISSION.md` was rewritten in full. Its IDs are kept, because the log refe
 restart clean. Concerns: staying faithful to intent, and avoiding drift. Affordances: a gated mission, halting before
 anything merges, reverting without losing history, and tags that keep findings available without seeding the
 restart. The stakeholder group is named by role, such as "project leads", under the Chatham House rule.
+
+## D-021 | 2026-11-23 | Platforms
+
+Decided by the chief engineer (chat, typed by the ACE), on the ACE's macOS default: "i am willing to accept this. but
+will need to be clear that does not mean we should do anything we know introduces risks being able to support it on
+linux and windows."
+Outcome: macOS is the supported user platform for v0.1, and CI runs on Linux. The platform rule moves from the Agent's
+defaults to the chief engineer's constraints in Governance: nothing may be built in a way known to put later Linux or
+Windows support at risk. That means no platform-specific paths, shells, line endings or tools in the package, and
+anything unavoidably platform-specific is isolated and recorded.

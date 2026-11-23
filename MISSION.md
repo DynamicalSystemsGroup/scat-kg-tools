@@ -73,7 +73,7 @@ of a design.
 
 ## Users and how they work
 
-The v0.1 user is a facilitator-analyst: technically savvy, but not a software developer, working on macOS *(default)*.
+The v0.1 user is a facilitator-analyst: technically savvy, but not a software developer, working on macOS for v0.1 (see Governance).
 They:
 - navigate GitHub's web interface, including creating a repository from a template;
 - read, write and follow links in an Obsidian vault;
@@ -303,6 +303,9 @@ The chief engineer has accepted by merging the release PRs.
   - private sources are read for principles only, and since the repositories are public, readouts cite only published
     work;
   - no AI attribution on commits, PRs or documents.
+  - **Platforms:** macOS is the supported user platform for v0.1, and CI runs on Linux. Nothing may be built in a
+    way known to put later Linux or Windows support at risk: no platform-specific paths, shells, line endings or
+    tools in the package, and anything unavoidably platform-specific is isolated and recorded (log D-021).
 - **Until the release,** nothing is merged to `main`, tagged or published, with two exceptions:
   - this mission's approval and amendments;
   - the **candidate stage** that UA-M needs:
@@ -355,7 +358,6 @@ recording why.
 
 - Names: `scat-kg-tools`, `scat-kg-template`, the CLI `scat`, the Python package `scat_kg`.
 - Python 3.12 or later. The template installs the tools through uv, as a git dependency pinned to a commit.
-- macOS is the supported user platform for v0.1; CI runs on ubuntu-latest.
 - Facilitation and coding guides are written once, on the Pages site, and the template links to them.
 - Documentation built with MkDocs Material.
 - `.python-version` and `uv.lock` are committed. CI runs `uv sync --locked`, `uv lock --check`, ruff (check and
