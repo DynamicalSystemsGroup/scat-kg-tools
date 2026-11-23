@@ -602,3 +602,21 @@ The PM flagged four points from WP4-U1 (the TBox). ACE rulings:
 3. **The required `indexes` field on class pages:** accepted, as within scope.
 4. **The affordance definition:** an authored paraphrase, citing Gibson through Toyoshima 2017 and marked unverified,
    is accepted.
+
+## D-031 | 2026-11-23 | Relation pages: author-named pairs only
+
+The PM escalated a question from WP4-U2: which links in a coded record entail which relation pages? A coded scenario
+lists groups, concerns and affordances, but not which group holds which concern.
+
+ACE ruling: option (a). The stub operation creates a relation page only for a pair the author names, and stubs a
+missing endpoint page. Rejected:
+- (b), the cross product, which states facts the coder didn't state and collapses distinctions the facilitation
+  stance protects;
+- (c), pairing only when a record has exactly one of each, which is a special case that still guesses.
+
+Naming the pair is the coding act, so it stays with the coder, consistent with D-029. It also matches the chief
+engineer's brief: coding means "populating their individual pages and ensuring our page linking rules are followed".
+
+R-11 holds, because users name the pair and `scat` writes the page. This corrects D-030's wording: the page contracts
+define how an author names a pair, not which links entail relation pages. The rule SCAT-REL-MISSING is dropped, and no
+rule may guess missing pairs.
