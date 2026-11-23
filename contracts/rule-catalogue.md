@@ -20,7 +20,7 @@ vault (contract section 2). `<type-key>` is the value of a page's `type` field (
 true (a relation page's endpoint fields `group`, `concern`, `affordance`, `technology`). An *item line* is
 `- "[[<target>]]"` in a list field and `<field>: "[[<target>]]"` in a single field. A *relation page* is a page of
 type `heldby`, `addresses` or `attributes`. A *body link* is a wikilink in the page after the frontmatter, read as the contract's section 3 says: `|alias`, `#heading` and `^block` are stripped and what remains is the page name, so `[[page^block]]` is a link to the page `page`
-and must exist; an embed counts; text in code spans and fenced code blocks is never a link; and a target with a file extension or a `/`, and a same-page `[[#Heading]]`, are not page links and are not checked. A link's *target* is
+and must exist; an embed counts; text in code spans and fenced code blocks is never a link; and a target containing a dot or a `/`, and a same-page `[[#Heading]]`, are not page links and are not checked (a Markdown-style `[text](target)` is not a wikilink). A link's *target* is
 the name inside the brackets. A page's *status* is `stub`, `draft` or `done`. A page type with
 `scat:carriesStatus false` (the class page) is treated as `done` by every status rule below.
 
@@ -428,7 +428,7 @@ error [SCAT-LINK-DANGLING-BODY] <file>:<line> link [[<target>]]: does not reach 
 ```
 Types the page type discourages for body links are left out of the stubs, and the message adds "(<key> left out: a <page-type> page should not link to it)". A name that is not legal, or a file with no `type`, takes the variant wording of SCAT-LINK-DANGLING: no stub of the illegal name; the derived name replaces it in the link, and the stub runs on the derived name.
 - **Fix kind:** options. The type is not written down at a body link, so the stub options are alternatives, not a guess (decision 3). The contract's other route, naming the page in the right link field of the same page, is also true and is stated in the message as a last note.
-- **Test:** a body link in a coded scenario to a name that a frontmatter field elsewhere also names (one inferred type); to a name nothing else names (four options, minus `technology` on a scenario); a near match; a non-legal name; a body link inside a code fence, `[[photo.png]]`, `[[#Heading]]` (no message); `[[ghost^abc123]]` with no page `ghost` (a message naming target `ghost`).
+- **Test:** a body link in a coded scenario to a name that a frontmatter field elsewhere also names (one inferred type); to a name nothing else names (four options, minus `technology` on a scenario); a near match; a non-legal name; a body link inside a code fence, `[[photo.png]]`, `[[v1.2-notes]]`, `[[#Heading]]` (no message); `[[ghost^abc123]]` with no page `ghost` (a message naming target `ghost`).
 
 ### SCAT-LINK-DISCOURAGED
 - **Severity:** warning. **Fires:** every status.
@@ -554,15 +554,15 @@ warning [SCAT-RAW-UNCODED] <file> field `coded`: status is done but no coded pag
 
 ### SCAT-INDEX-STALE
 - **Severity:** warning. **Fires:** every status. Class pages and the vault.
-- **Trigger:** a class page is missing for one of the seven classes, or has a missing, duplicated or misordered marker line, or the text between the markers differs from what `index` would write from the instance pages (contract section 8: rows, columns, order). The check compares and never writes.
+- **Trigger:** a class page is missing for one of the seven classes, or has no well-formed start-then-end marker pair (the first such pair is the region; extra marker lines after it are not stale), or the text between the markers differs from what `index` would write from the instance pages (contract section 8: rows, columns, order). The check compares and never writes.
 - **Message:**
 ```
-warning [SCAT-INDEX-STALE] <file> index table: <the page is missing | the markers are missing or damaged | the table differs from the <type-key> pages>
+warning [SCAT-INDEX-STALE] <file> index table: <the page is missing | no well-formed marker pair | the table differs from the <type-key> pages>
   Fix: run `scat index` (REPL: `scat_kg.index()`)
 ```
 For a missing page `<file>` is the path the index operation would create (`class/<name>.md`).
 - **Fix kind:** exact.
-- **Test:** add an instance page without running `index` (one message on its class page); delete a class page (one message); delete or duplicate a marker (one message each); run `index` and re-check (none).
+- **Test:** add an instance page without running `index` (one message on its class page); delete a class page (one message); delete a marker (one message); add a stray extra marker line after a good pair (none); run `index` and re-check (none).
 
 ## 4. Coverage
 
