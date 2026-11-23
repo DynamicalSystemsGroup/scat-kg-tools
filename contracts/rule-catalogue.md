@@ -20,7 +20,7 @@ vault (contract section 2). `<type-key>` is the value of a page's `type` field (
 true (a relation page's endpoint fields `group`, `concern`, `affordance`, `technology`). An *item line* is
 `- "[[<target>]]"` in a list field and `<field>: "[[<target>]]"` in a single field. A *relation page* is a page of
 type `heldby`, `addresses` or `attributes`. A *body link* is a wikilink in the page after the frontmatter, read as the contract's section 3 says: `|alias`, `#heading` and `^block` are stripped and what remains is the page name, so `[[page^block]]` is a link to the page `page`
-and must exist; an embed counts; text in code spans and fenced code blocks is never a link; and a target containing a dot or a `/`, and a link whose name is empty after the stripping (`[[#Heading]]`, `[[^id]]`), are not page links and are not checked; the dot, `/` and empty-name tests apply after stripping `|`, `#` and `^` (a Markdown-style `[text](target)` is not a wikilink). A link's *target* is
+and must exist; an embed counts; text in matched code spans and fenced code blocks is never a link; and a target containing a dot or a `/`, and a link whose name is empty after the stripping (`[[#Heading]]`, `[[^id]]`), are not page links and are not checked; the dot, `/` and empty-name tests apply after stripping `|`, `#` and `^` (a Markdown-style `[text](target)` is not a wikilink). A link's *target* is
 the name inside the brackets. A page's *status* is `stub`, `draft` or `done`. A page type with
 `scat:carriesStatus false` (the class page) is treated as `done` by every status rule below.
 
@@ -28,7 +28,7 @@ the name inside the brackets. A page's *status* is `stub`, `draft` or `done`. A 
 `0-9` and single hyphens, starting and ending with a letter or digit, at most 64 characters, not a reserved
 name, `con`, `prn`, `aux`, `nul`, `com0` to `com9`, `lpt0` to `lpt9` and the seven class page names). The *stem* of a text is steps 1 to 3 of the contract's name-from-title rule applied to it (empty when step 3 leaves
 nothing), and its *free derived name* is the name step 4 gives (a numeric suffix until the name is free, a reserved name
-counting as taken); a derived name is always legal. Where a rule says "derived name" without "free", it means the stem,
+counting as taken, as is the name of any existing `.md` file, a page or not); a derived name is always legal. Where a rule says "derived name" without "free", it means the stem,
 or the free derived name when the stem is reserved.
 
 **Scopes.** A check runs at page, neighborhood or vault scope (G4). A rule reports on one file, and a page-scope
