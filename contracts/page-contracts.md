@@ -12,7 +12,7 @@ that is the rule catalogue (`contracts/rule-catalogue.md`), and "the catalogue" 
 frontmatter has a `type` key. Other Markdown files (a README, say) are not pages and are ignored.
 
 **Layout.** The tools put each page they create in the folder named for its type, at the vault root:
-`stakeholder-group/`, `concern/`, `affordance/`, `technology/`, `scenario-raw/`, `scenario-coded/`,
+`stakeholder-group/`, `concern/`, `affordance/`, `technology/`, `heldby/`, `addresses/`, `attributes/`, `scenario-raw/`, `scenario-coded/`,
 `architecture-raw/`, `architecture-coded/`, and `class/`. A page by hand may go in any folder: the folder is never
 checked, and the `type` key alone says what the page is.
 
@@ -24,8 +24,8 @@ type: concern
 status: draft
 title: "Safe handling of tools"
 description: "Borrowers want to be sure a tool is safe to use."
-addresses:
-  - "[[safety-briefing]]"
+conflicts:
+  - "[[quick-checkout]]"
 ---
 
 Free text in Markdown. Nothing in it is required.
@@ -35,14 +35,14 @@ Free text in Markdown. Nothing in it is required.
 - The frontmatter is a YAML block between two lines of exactly `---`, at the very top of the file.
 - Keys are written exactly as in the field tables below. The order does not matter; the tables' order is the one the
   tools write.
-- `title` and `description` are always written in double quotes, on one line (a `"` inside is written `\"`). `type` and
+- `title`, `description` and `notes` are always written in double quotes, on one line (a `"` inside is written `\"`). `type` and
   `status` are written bare.
 - Keys that the TBox does not list for the page type, and that hold no wikilink, are ignored (you may add your
   own note keys). A key that is a link field of some other page type is not ignored: see 3.
 
 **Status.** Every page except a class page has `status`: `stub`, `draft` or `done`, in that order.
-- `stub`: the page exists because something links to it, or has just been started. Only `type`, `status` and `title`
-  are required.
+- `stub`: the page exists because something links to it, or has just been started. Only the fields the tables mark "stub" are
+  required: `type`, `status` and `title`, and on a relation page its two endpoint links.
 - `draft`: being written. The required fields are the same as for `stub`; the fields that `done` requires are the
   author's to-do list, and how a tool grades their absence on a draft is the catalogue's call.
 - `done`: the author judges the page complete. Every required field in the page type's table must be present, and
@@ -65,7 +65,8 @@ the name is unique across the whole vault, whatever the type or folder.
 - starts and ends with a letter or digit, and never has two hyphens in a row;
 - at most 64 characters;
 - not one of the reserved names: `con`, `prn`, `aux`, `nul`, `com1` to `com9`, `lpt1` to `lpt9` (Windows device names),
-  and `stakeholder-groups`, `concerns`, `affordances`, `technologies` (the class pages, see 8).
+  and the seven class page names `stakeholder-groups`, `concerns`, `affordances`, `technologies`, `heldby-pairs`,
+  `addresses-pairs`, `attributes-pairs` (see 8).
 
 This one rule covers the platforms. Lower case only means two names can never differ by case, so a case-insensitive
 file system (macOS, Windows) and a case-sensitive one (Linux) see the same set of names. ASCII only means no accent can
@@ -92,22 +93,28 @@ briefing]]`), is a bad link: the fix is to write the exact slug name. The stub o
 ## 3. How links are written
 
 **In frontmatter**, a link is the quoted wikilink `"[[page-name]]"`: the name only, with no `.md`, no folder, no
-`#heading` and no `|alias`. A link field is always a YAML list, even for one item, and an empty list `[]` or an absent
-key both mean no links:
+`#heading` and no `|alias`. A link field is either a list or a single link, as the field tables say.
+
+A **list field** is always a YAML list, even for one item, and an empty list `[]` or an absent key both mean no
+links:
 
 ```
-heldby:
+concerns:
   - "[[safe-handling-of-tools]]"
   - "[[opening-hours]]"
 ```
 
+A **single-link field** (`group`, `concern`, `affordance`, `technology`) holds exactly one link, written as a plain
+quoted scalar and not as a list: `concern: "[[safe-handling-of-tools]]"`. A list there, even of one, is wrong.
+
 The quotes are required: without them YAML reads `[[x]]` as a nested list. The flow form `["[[a]]", "[[b]]"]` is the
 same list; the tools write the block form above.
 
-**Typed edges.** A frontmatter link field is a typed edge: the key says what the link means (the three relations, the
-conflict relation, the coded-to-raw derivation and the record-to-class links), and the TBox says which page type its
-target must be. Only these ten keys are link fields: `heldby`, `addresses`, `attributes`, `conflicts`, `groups`,
-`concerns`, `affordances`, `technologies`, `raw` and `coded`. `raw` and `coded` each have a different target on
+**Typed edges.** A frontmatter link field is a typed edge: the key says what the link means (an end of a relation, the
+conflict relation, the coded-to-raw derivation, or a record-to-class link), and the TBox says which page type its
+target must be. Only these eleven keys are link fields: `group`, `concern`, `affordance`, `technology` (single
+links, on relation pages), `conflicts`, `groups`, `concerns`, `affordances`, `technologies` (lists), and `raw` and
+`coded` (lists). `raw` and `coded` each have a different target on
 scenario and architecture pages; section 7 gives the target of each.
 
 **In the body**, a link is `[[page-name]]`, optionally `[[page-name|text to show]]` or `[[page-name#Heading]]`; the
@@ -122,18 +129,28 @@ ignored.
 
 ## 4. The three relations and the conflict relation
 
-The three relations are not page types and have no pages. Each is a link field on the page of the first member of the
-pair, so you write a relation by editing one page:
+**The three relations are page types, with an instance page for each pair.** A relation page states one fact and is
+the one place that fact is written: there is no field for it on the group, concern or affordance page.
 
-| Relation | Written on | Key | Reads as |
+| Relation | `type` | The page states | Endpoint fields (each exactly one link) |
 |---|---|---|---|
-| Heldby | `stakeholder-group` page | `heldby` | (group, concern): the concerns this group holds |
-| Addresses | `concern` page | `addresses` | (concern, affordance): the affordances that address this concern |
-| Attributes | `affordance` page | `attributes` | (affordance, technology): the technologies this affordance is attributed to |
+| Heldby | `heldby` | this group holds this concern | `group` (a `stakeholder-group`), `concern` (a `concern`) |
+| Addresses | `addresses` | this affordance addresses this concern | `concern` (a `concern`), `affordance` (an `affordance`) |
+| Attributes | `attributes` | this affordance is attributed to this technology | `affordance` (an `affordance`), `technology` (a `technology`) |
 
-Each is many-to-many: one concern may be listed by several groups, one group may list several concerns. To see which
-groups hold a concern, use Obsidian's backlinks on the concern page; the concern page does not repeat them. Writing a
-relation on the wrong page is the unlisted-link-field case (1): `heldby` on a concern page is not permitted.
+- **One page per pair.** The relation is many-to-many by many pages. A concern held by three groups has three `heldby`
+  pages, one per group, so each group's account stays its own. The endpoints are required at every status, even on a
+  stub: a relation page without both says nothing.
+- **Where an account lives.** The optional `notes` field on a relation page holds a one-line account of that pair
+  (for a `heldby` page, how that group holds that concern), in double quotes like `title`. A longer account goes in the
+  page body, which is free text.
+- **Users never write a relation page's structure.** The stub operation creates it with `type`, `status`, `title` and
+  both endpoint links filled, from the pair the author names (5). The author then writes only `description`, `notes`
+  and the body.
+- To see which groups hold a concern, use the index of `heldby` pages (`heldby-pairs`) or Obsidian's backlinks on the
+  concern page. The concern page does not repeat them.
+- A relation key written on the wrong page type (`group` on a concern page, say) is an unlisted link field (1), and is
+  not permitted.
 
 **The conflict relation (D1) is the optional link field `conflicts` on concern pages**, a list of concern wikilinks.
 There is no conflict page. It shows a tension between two concerns and never ranks or resolves it.
@@ -141,8 +158,8 @@ There is no conflict page. It shows a tension between two concerns and never ran
   one-sided declaration is complete, and the tools read the pair `{a, b}` as the union of what `a` and `b` each list.
 - The tools never add the other side for you. Writing it on both is allowed and means the same thing.
 - A concern does not list itself.
-- Groups that share a concern and differ on others need nothing more: two group pages list the same concern in
-  `heldby`, and other concerns of theirs are linked by `conflicts`.
+- Groups that share a concern and differ on others need nothing more: two `heldby` pages name the same concern, one
+  for each group, and the concerns they differ on are linked by `conflicts`.
 
 ## 5. What a link entails: the stub operation
 
@@ -164,10 +181,10 @@ and an empty body. For example, `affordances: ["[[safety-briefing]]"]` on a code
 
 | Link field | Page it entails (`type`) |
 |---|---|
-| `heldby`, `conflicts`, `concerns` | `concern` |
-| `addresses`, `affordances` | `affordance` |
-| `attributes`, `technologies` | `technology` |
-| `groups` | `stakeholder-group` |
+| `concern`, `conflicts`, `concerns` | `concern` |
+| `affordance`, `affordances` | `affordance` |
+| `technology`, `technologies` | `technology` |
+| `group`, `groups` | `stakeholder-group` |
 | `raw` on a `scenario-coded` page | `scenario-raw` |
 | `raw` on an `architecture-coded` page | `architecture-raw` |
 | `coded` on a `scenario-raw` page | `scenario-coded` |
@@ -176,6 +193,34 @@ and an empty body. For example, `affordances: ["[[safety-briefing]]"]` on a code
 For the two pairs raw and coded only, the new stub also gets the opposite link back to the page that entailed it
 (`raw: ["[[the-raw-page]]"]` on a new coded stub; `coded: ["[[the-coded-page]]"]` on a new raw stub), because that link
 is certain and the coded page requires it at `done`. Nothing else is pre-filled.
+
+**A coded record entails no relation page by itself.** A coded scenario lists groups, concerns and affordances, but it
+does not say which group holds which concern, or which affordance addresses which concern. Pairing every group with
+every concern would state facts the coder never stated, so no list of links in a coded record entails a `heldby`,
+`addresses` or `attributes` page, whatever it lists. A relation page is created only for a pair the author names, and
+then it is entailed, not hand-written:
+- the operation is given the relation (`heldby`, `addresses` or `attributes`) and the two endpoint names, in the order
+  of the table in 4 (group then concern; concern then affordance; affordance then technology);
+- it creates the page below, and also stubs either endpoint that does not exist, by the table above;
+- if a page of that relation with exactly those two endpoints already exists, under any name, it creates nothing and
+  reports that page: one page per pair;
+- the page is:
+
+```
+---
+type: heldby
+status: stub
+title: "Volunteer staff holds Safe handling of tools"
+group: "[[volunteer-staff]]"
+concern: "[[safe-handling-of-tools]]"
+---
+```
+
+The title is, by relation, "`<group title>` holds `<concern title>`", "`<affordance title>` addresses `<concern
+title>`" or "`<affordance title>` attributed to `<technology title>`", using each endpoint's `title`. The page name is
+made from that title by the rule in 2 (here `volunteer-staff-holds-safe-handling-of-tools`), so it is a slug and unique
+like any other. The body is empty. A tool may print the pairs a coded record's links would allow, to choose from, but
+creates none of them.
 
 **A link in the body entails a page, but not its type.** The body does not say what the page is, and guessing would put
 words in the coder's mouth. So the stub operation creates a page for a body link only when it is given the type slug
@@ -187,7 +232,7 @@ the same page, which entails the stub with that type and makes the body link res
 - A link whose target exists but has the wrong type entails nothing: it is a wrong-endpoint problem, and the author
   decides whether the link or the page's `type` is wrong.
 - A link that is not an exact slug name (2) entails nothing: it is corrected in the link.
-- The four class pages are entailed by the TBox itself. If one is missing, the stub operation (and the index operation)
+- The seven class pages are entailed by the TBox itself. If one is missing, the stub operation (and the index operation)
   creates it as in 8. They are not created from links.
 
 ## 6. Page types: summary
@@ -198,11 +243,14 @@ the same page, which entails the stub with that type and makes the body link res
 | `concern` | one concern | `concern/` |
 | `affordance` | one affordance | `affordance/` |
 | `technology` | one technology | `technology/` |
+| `heldby` | one group holds one concern | `heldby/` |
+| `addresses` | one affordance addresses one concern | `addresses/` |
+| `attributes` | one affordance is attributed to one technology | `attributes/` |
 | `scenario-raw` | a scenario as told | `scenario-raw/` |
 | `scenario-coded` | a reading of a raw scenario | `scenario-coded/` |
 | `architecture-raw` | an architecture pitch as given | `architecture-raw/` |
 | `architecture-coded` | a reading of a raw architecture | `architecture-coded/` |
-| `class` | the page of one of the four classes | `class/` |
+| `class` | the page of one of the seven classes | `class/` |
 
 Every page type has the keys `type`, `status`, `title` and `description` (a class page has no `status`). The rest are in
 the tables. The value of `type` is the slug in the first column.
@@ -211,8 +259,8 @@ the tables. The value of `type` is the slug in the first column.
 
 ### `stakeholder-group`
 
-One page per stakeholder group: who the group is, in the group's own terms, and the concerns it holds. A group, never
-a named person. The number of these pages is capped for the vault (section 10).
+One page per stakeholder group: who the group is, in the group's own terms. The concerns it holds are stated on
+`heldby` pages. A group, never a named person. The number of these pages is capped for the vault (section 10).
 
 | Key | Value | Target type | Required from |
 |---|---|---|---|
@@ -220,7 +268,6 @@ a named person. The number of these pages is capped for the vault (section 10).
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
 | `description` | text, one sentence | | done |
-| `heldby` | list of wikilinks | `concern` | optional |
 
 ```
 ---
@@ -228,14 +275,13 @@ type: stakeholder-group
 status: done
 title: "Volunteer staff"
 description: "The people who run the lending desk on open days."
-heldby:
-  - "[[safe-handling-of-tools]]"
 ---
 ```
 
 ### `concern`
 
-One page per concern: what the interest is, the affordances that address it, and any concerns it conflicts with.
+One page per concern: what the interest is, and any concerns it conflicts with. Who holds it and what addresses it
+are stated on `heldby` and `addresses` pages.
 
 | Key | Value | Target type | Required from |
 |---|---|---|---|
@@ -243,7 +289,6 @@ One page per concern: what the interest is, the affordances that address it, and
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
 | `description` | text, one sentence | | done |
-| `addresses` | list of wikilinks | `affordance` | optional |
 | `conflicts` | list of wikilinks | `concern` | optional |
 
 ```
@@ -252,8 +297,6 @@ type: concern
 status: done
 title: "Safe handling of tools"
 description: "Borrowers want to be sure a tool is safe to use."
-addresses:
-  - "[[safety-briefing]]"
 conflicts:
   - "[[quick-checkout]]"
 ---
@@ -261,7 +304,7 @@ conflicts:
 
 ### `affordance`
 
-One page per affordance: what is offered, and the technologies it is attributed to.
+One page per affordance: what is offered. The technologies it is attributed to are stated on `attributes` pages.
 
 | Key | Value | Target type | Required from |
 |---|---|---|---|
@@ -269,15 +312,12 @@ One page per affordance: what is offered, and the technologies it is attributed 
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
 | `description` | text, one sentence | | done |
-| `attributes` | list of wikilinks | `technology` | optional |
 
 ```
 ---
 type: affordance
 status: draft
 title: "Safety briefing"
-attributes:
-  - "[[booking-app]]"
 ---
 ```
 
@@ -297,6 +337,81 @@ One page per technology: what the part is. It has no link field.
 type: technology
 status: stub
 title: "Booking app"
+---
+```
+
+### `heldby`
+
+One page per (group, concern) pair: this group holds this concern, with notes on that pair. A concern held by several
+groups has several of these, one per group.
+
+| Key | Value | Target type | Required from |
+|---|---|---|---|
+| `type` | `heldby` | | stub |
+| `status` | `stub`, `draft` or `done` | | stub |
+| `title` | text | | stub |
+| `description` | text, one sentence | | done |
+| `group` | one wikilink | `stakeholder-group` | stub |
+| `concern` | one wikilink | `concern` | stub |
+| `notes` | text | | optional |
+
+```
+---
+type: heldby
+status: done
+title: "Volunteer staff holds Safe handling of tools"
+description: "The volunteer staff hold this concern."
+group: "[[volunteer-staff]]"
+concern: "[[safe-handling-of-tools]]"
+notes: "They see it as the thing that stops a borrower being hurt."
+---
+```
+
+### `addresses`
+
+One page per (concern, affordance) pair: this affordance addresses this concern, with notes on that pair.
+
+| Key | Value | Target type | Required from |
+|---|---|---|---|
+| `type` | `addresses` | | stub |
+| `status` | `stub`, `draft` or `done` | | stub |
+| `title` | text | | stub |
+| `description` | text, one sentence | | done |
+| `concern` | one wikilink | `concern` | stub |
+| `affordance` | one wikilink | `affordance` | stub |
+| `notes` | text | | optional |
+
+```
+---
+type: addresses
+status: draft
+title: "Safety briefing addresses Safe handling of tools"
+concern: "[[safe-handling-of-tools]]"
+affordance: "[[safety-briefing]]"
+---
+```
+
+### `attributes`
+
+One page per (affordance, technology) pair: this affordance is attributed to this technology, with notes on that pair.
+
+| Key | Value | Target type | Required from |
+|---|---|---|---|
+| `type` | `attributes` | | stub |
+| `status` | `stub`, `draft` or `done` | | stub |
+| `title` | text | | stub |
+| `description` | text, one sentence | | done |
+| `affordance` | one wikilink | `affordance` | stub |
+| `technology` | one wikilink | `technology` | stub |
+| `notes` | text | | optional |
+
+```
+---
+type: attributes
+status: stub
+title: "Safety briefing attributed to Booking app"
+affordance: "[[safety-briefing]]"
+technology: "[[booking-app]]"
 ---
 ```
 
@@ -419,7 +534,8 @@ technologies:
 
 ### `class`
 
-The page of one of the four classes: a description of the class, and the index table of its instances (8). It carries
+The page of one of the seven classes (the four classes and the three relations): a description of the class, and the
+index table of its instances (8). It carries
 no status, so every field here is required at all times.
 
 | Key | Value | Target type | Required from |
@@ -427,7 +543,7 @@ no status, so every field here is required at all times.
 | `type` | `class` | | always |
 | `title` | text | | always |
 | `description` | text, one sentence | | always |
-| `indexes` | `stakeholder-group`, `concern`, `affordance` or `technology` | | always |
+| `indexes` | `stakeholder-group`, `concern`, `affordance`, `technology`, `heldby`, `addresses` or `attributes` | | always |
 
 ```
 ---
@@ -440,7 +556,7 @@ indexes: concern
 
 ## 8. Class pages and their index tables
 
-There are four class pages, one per class, with these names (they are reserved, see 2) and `indexes` values:
+There are seven class pages, one per class, with these names (they are reserved, see 2) and `indexes` values:
 
 | Page name | `indexes` | Default title |
 |---|---|---|
@@ -448,6 +564,9 @@ There are four class pages, one per class, with these names (they are reserved, 
 | `concerns` | `concern` | "Concerns" |
 | `affordances` | `affordance` | "Affordances" |
 | `technologies` | `technology` | "Technologies" |
+| `heldby-pairs` | `heldby` | "Heldby" |
+| `addresses-pairs` | `addresses` | "Addresses" |
+| `attributes-pairs` | `attributes` | "Attributes" |
 
 A class page is the frontmatter above, then your description of the class in the body, then the generated region:
 
@@ -508,7 +627,7 @@ state (names, folders, the markers, the sort order, the cap file, what a link en
 
 ## 12. Needs from the TBox
 
-Nothing blocks this contract. Three points for the PM:
+Nothing blocks this contract. Four points for the PM:
 - The TBox does not say a concern may not list itself in `conflicts`; section 4 says so. The catalogue may want a rule,
   or the TBox a note.
 - The TBox gives no rule for which page a body link entails. Section 5 decides (no type without an explicit one) and
@@ -516,3 +635,5 @@ Nothing blocks this contract. Three points for the PM:
 - `scat:requiredFrom` on `description` is `done`, but a class page has no status. This contract reads that, with
   `carriesStatus false`, as "always required" (section 7, `class`). The TBox is consistent with that reading, but says
   it only in a comment.
+- The TBox does not say whether two relation pages may state the same pair. This contract says one page per pair (5),
+  which the stub operation honours; a hand-written duplicate is for the catalogue to grade.
