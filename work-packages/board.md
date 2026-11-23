@@ -24,21 +24,21 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 
 | Unit | Actor (worker identity, model) | Est. pts | Realized pts | Branch | State | Waiting on | Done at | Basis for realized |
 |---|---|---|---|---|---|---|---|---|
-| WP1-U1 | ontology research engineer, sonnet | 3 | | `wp1/u1` | in review | reviewer | | |
-| WP1-U2 | ontology research engineer, sonnet | 3 | | `wp1/u2` | in review | reviewer | | |
-| WP1-U3 | ontology designer, sonnet | 5 | | `wp1/u3` | in review | reviewer | | |
-| WP1-U4 | ontology designer, sonnet | 3 | | `wp1/u4` | queued | WP1-U1, U2, U3 merged | | |
-| WP1-U5 | link-check reviewer, haiku | 1 | | `wp1/u5` | queued | WP1-U4 merged | | |
-| WP2-U1 | Python developer, sonnet | 5 | | `wp2/u1` | in review | reviewer | | |
-| WP2-U2 | Python developer, sonnet | 3 | | `wp2/u2` | queued | WP2-U1 merged | | |
-| WP2-U3 | Python developer, sonnet | 3 | | `wp2/u3` | queued | WP2-U1 merged | | |
-| WP2-U4 | Python developer, sonnet | 3 | | `wp2/u4` | queued | WP2-U1 merged | | |
-| WP2-U5 | test engineer, sonnet | 2 | | `wp2/u5` | queued | WP2-U1 merged | | |
-| WP2-U6 | test engineer and writer, sonnet | 3 | | `wp2/u6` | queued | WP2-U2 to U5 merged | | |
-| WP3-U1 | research engineer, sonnet | 3 | | `wp3/u1` | in review | reviewer | | |
-| WP3-U2 | research engineer, sonnet | 3 | | `wp3/u2` | in review | reviewer | | |
-| WP3-U3 | research engineer, sonnet | 2 | | `wp3/u3` | in review | reviewer | | |
-| WP3-U4 | technical writer, sonnet | 5 | | `wp3/u4` | queued | WP3-U1, U2, U3 merged | | |
+| WP1-U1 | ontology research engineer, sonnet | 3 |  | `wp1/u1` | in review | reviewer |  |  |
+| WP1-U2 | ontology research engineer, sonnet | 3 | 3 | `wp1/u2` | done |  | 2026-11-23T15:26:15-05:00 | about 10 min worker, 60 tool calls, review passed first time with 4 minor nits; matches estimate |
+| WP1-U3 | ontology designer, sonnet | 5 |  | `wp1/u3` | in review | reviewer |  |  |
+| WP1-U4 | ontology designer, sonnet | 3 |  | `wp1/u4` | queued | WP1-U1, U3 merged |  |  |
+| WP1-U5 | link-check reviewer, haiku | 1 |  | `wp1/u5` | queued | WP1-U4 merged |  |  |
+| WP2-U1 | Python developer, sonnet | 5 | 3 | `wp2/u1` | done |  | 2026-11-23T15:26:15-05:00 | about 2.5 min worker, 14 tool calls, reviewer PASS first time; easier than estimated |
+| WP2-U2 | Python developer, sonnet | 3 |  | `wp2/u2` | in flight |  |  |  |
+| WP2-U3 | Python developer, sonnet | 3 |  | `wp2/u3` | in flight |  |  |  |
+| WP2-U4 | Python developer, sonnet | 3 |  | `wp2/u4` | in flight |  |  |  |
+| WP2-U5 | test engineer, sonnet | 2 |  | `wp2/u5` | in flight |  |  |  |
+| WP2-U6 | test engineer and technical writer, sonnet | 3 |  | `wp2/u6` | queued | WP2-U2 to U5 merged |  |  |
+| WP3-U1 | research engineer, sonnet | 3 |  | `wp3/u1` | in review | reviewer |  |  |
+| WP3-U2 | research engineer, sonnet | 3 |  | `wp3/u2` | in review | reviewer |  |  |
+| WP3-U3 | research engineer, sonnet | 2 |  | `wp3/u3` | in review | reviewer |  |  |
+| WP3-U4 | technical writer, sonnet | 5 |  | `wp3/u4` | queued | WP3-U1 to U3 merged |  |  |
 
 ## Iterations and velocity
 
@@ -55,4 +55,4 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
 
-Current: no iterations have landed yet.
+Current: 47 est. pts proposed; 8 est. pts completed; 6 realized pts completed; no iteration has closed yet.
