@@ -23,7 +23,7 @@ Quotes are verbatim (line breaks joined). "Unreachable" entries are listed at th
 | S13 | iStar 2.0 Language Guide (Dalpiaz, Franch, Horkoff) | <https://arxiv.org/pdf/1605.07767> | arXiv v3, 16 Jun 2016 | Heldby, Addresses, disagreement |
 | S14 | OSLC Requirements Management 2.1, Part 2: Vocabulary | <https://docs.oasis-open-projects.org/oslc-op/rm/v2.1/os/requirements-management-vocab.html> | OASIS Standard, 21 Jun 2021 | Addresses |
 | S15 | Vocabulary status note (`vs:term_status`) | <https://www.w3.org/2003/06/sw-vocab-status/note> | Editor's draft of a potential W3C IG Note, 31 Dec 2009 | status |
-| S16 | schema.org `creativeWorkStatus`, `Event` | <https://schema.org/creativeWorkStatus>, <https://schema.org/Event> | schema.org v30.1 (release 2026-09-15; pages show the development version) | status, scenario |
+| S16 | schema.org `creativeWorkStatus`, `Event` | <https://schema.org/creativeWorkStatus>, <https://schema.org/Event> | schema.org v30.1 (release 2026-09-16 per the page footer; pages show the development version) | status, scenario |
 | S17 | ADMS | <https://www.w3.org/TR/vocab-adms/> | W3C Working Group Note, 1 Aug 2013 (retired Aug 2023; now maintained by SEMIC) | status |
 | S18 | PAV | <https://pav-ontology.github.io/pav/> | 2.3.1 | provenance |
 | S19 | Nanopublication Guidelines | <https://nanopub.net/guidelines/working_draft/> | working draft (undated on page) | disagreement |
@@ -157,5 +157,5 @@ Quotes are verbatim (line breaks joined). "Unreachable" entries are listed at th
 | CIDOC CRM entity pages (version 7.1.3) | HTTP 404 for E5 and P9; version page carries no definitions | none; not assessed |
 | Argument Interchange Format (arg.dundee.ac.uk, arg-tech.org) | connection failure / 404 | none; AIF is therefore not assessed |
 | OMG SysML 2.0 spec page | bot challenge page | S22 (repository), by reference only |
-| KAOS (van Lamsweerde) | not fetched (no open primary source tried) | none; not assessed |
+| KAOS (van Lamsweerde) | not fetched in this unit; fetched by WP1-U1 from the author's open copy (see `sc-survey.md`) | `sc-survey.md` KAOS entry; its conflict link is used in section 8 |
 | Gibson on affordances | not fetched here (Affordance class unit) | none |

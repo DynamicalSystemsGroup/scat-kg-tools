@@ -28,7 +28,7 @@ and offered by a tool in an architecture; the class sits between Concern and Tec
 | A7. Maier and Fadel affordance-based design | S5, S6 | Med (theory) | n/a | Med | n/a | n/a | No vocabulary reached (content unread); source of method, not of terms. |
 
 **Recommendation (one line):** Author the `Affordance` class (our IRI), take its definition verbatim from Gibson as
-cited via Toyoshima (S2), and record mappings to `td:InteractionAffordance` and SEBoK Capability as anchors only; adopt
+cited via Toyoshima (S2), and record a `skos:closeMatch` to SEBoK Capability, with WoT `td:InteractionAffordance` kept only as a loose `rdfs:seeAlso` (it describes a Thing to machine consumers); adopt
 no class.
 
 **Runner-up:** A3, SEBoK Capability adopted as the class (relabelled or with "affordance" as an alternate label).
@@ -38,7 +38,7 @@ scenario record needs the possibility on offer, before any outcome; and the miss
 If the TBox work prefers recognition over fit, A3 wins on Recognition and coherence with cds.
 
 Honest note: nothing adoptable beat custom on fit. The "adopt over mint" test is met by adopting Gibson's wording and
-mapping to two published terms, not by importing a class.
+mapping to one published term (Capability), not by importing a class.
 
 ## Technology
 
@@ -47,7 +47,7 @@ action situation in a scenario but out of view.
 
 | Option | Source | Fit | Simplicity (terms carried) | Recognition | Maintenance | Cost | Note |
 |---|---|---|---|---|---|---|---|
-| T1. Adopt the definition of SEBoK / ISO 15288 **System Element** ("A system element is a discrete part of a system that can be implemented to fulfill specified requirements."); class carried under our label `Technology`, anchored by `skos:exactMatch`-style mapping to the SEBoK entry, as cds does | S12, S15, S20 | High: parts and wholes; may be hardware, software, data, humans, processes ... so it covers whole assemblages | High: 1 term | High: the SE canon, and `concept-definition-stage` uses the same pattern | High: stable glossary URL, ISO source, v2.14 | Low | "Technology" is the mission's word; SEBoK has no Technology entry (S23), so the label is ours and the meaning adopted. |
+| T1. Adopt the definition of SEBoK / ISO 15288 **System Element** ("A system element is a discrete part of a system that can be implemented to fulfill specified requirements."); class carried under our label `Technology`, anchored by `skos:closeMatch` to the SEBoK entry (not exact: SEBoK has no Technology entry and the label is ours; cds uses `exactMatch` for terms SEBoK does define) | S12, S15, S20 | High: parts and wholes; may be hardware, software, data, humans, processes ... so it covers whole assemblages | High: 1 term | High: the SE canon, and `concept-definition-stage` uses the same pattern | High: stable glossary URL, ISO source, v2.14 | Low | "Technology" is the mission's word; SEBoK has no Technology entry (S23), so the label is ours and the meaning adopted. |
 | T2. SysML v2 `PartDefinition`, by reference | S16, S15 | Med-High: "an ItemDefinition of a Class of systems or parts of systems"; structural | High | High among MBSE users | Low-Med: OMG ships XMI/KPAR/JSON, **no OWL**; cds uses two different namespaces for it | Med: equivalence to a language metaclass invites SysML semantics | Mission says SysML by reference only; equivalence axioms exceed that. |
 | T3. SOSA/SSN `Platform` / `ssn:System` | S17 | Low-Med: hosts sensors and actuators; System "implement[s] Procedures" | Med: brings Procedure and Deployment | Med in sensing, low elsewhere | High: W3C Rec 2017 | Med | Domain too narrow. |
 | T4. SAREF `Device` | S18 | Low: "A tangible object designed to accomplish a particular task" excludes software and people | High | Low | Med | Med | Rejected on fit. |
@@ -55,7 +55,7 @@ action situation in a scenario but out of view.
 | T6. Author our own `Technology` with no external anchor | n/a | High: matches mission wording | High: 1 term | Low-Med: reads as invented to an SE | High | Low | Valid fallback; fails G10's "traces to its source". |
 
 **Recommendation (one line):** Carry `Technology` as our class label with the SEBoK / ISO/IEC/IEEE 15288 System Element
-definition adopted verbatim and mapped to the SEBoK entry; mention SysML `PartDefinition` as a reference mapping only.
+definition adopted verbatim and mapped to the SEBoK entry by `skos:closeMatch`; mention SysML `PartDefinition` as a reference mapping only.
 
 **Runner-up:** T2, SysML v2 `PartDefinition` as an equivalent class (the `concept-definition-stage` precedent for its
 System-of-Interest).

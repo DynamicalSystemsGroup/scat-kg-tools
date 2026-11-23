@@ -87,7 +87,7 @@ affordances). G1 lists the scenario only as a page type, so inner event structur
 
 | Option | Fit | Simplicity | Recog. | Maint. | Cost | Note |
 |---|---|---|---|---|---|---|
-| A. Adopt `schema:creativeWorkStatus` (S16) with our three values | + | + (0 new properties; 3 values authored) | 0 | + | + | "stage in a lifecycle ... Draft"; values DefinedTerm or Text, so our values are allowed |
+| A. Adopt `schema:creativeWorkStatus` (S16) with our three values | + | + (0 new properties; 3 values authored) | 0 | + | + | "stage in a lifecycle ... Draft"; values DefinedTerm or Text, so our values are allowed. Risk: schema.org lists `creativeWorkStatus` in its pending area (the page embeds `https://pending.schema.org`), so it may change or move. The property is typed for CreativeWork (schema.org lists CreativeWork under "used on"), so a page would also be typed `schema:CreativeWork`, or the domain is left unenforced |
 | B. Author `status` plus a three-value scheme | + | 0 (1 property + 3 values) | + | 0 | + | |
 | C. `vs:term_status` (S15) | - | + | 0 | - (unfinished note, 2009) | 0 | for vocabulary terms, values unstable/testing/stable/archaic |
 | D. `adms:status` (S17) | 0 | 0 | 0 | - (note retired 2023) | 0 | "status of the Asset in the context of a particular workflow process" |
