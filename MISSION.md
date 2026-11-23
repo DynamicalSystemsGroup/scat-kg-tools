@@ -21,8 +21,10 @@ interpretable dataset. That dataset is the data product, and its conformance to 
 analysable. The git repository is the data of record; the graph is derived from it.
 
 The point of departure is the toolchain and the Obsidian reading/review experience described in *Formalizing
-Document Assurance* (INCOSE IS 2026) and the earlier repos `assurances-audits-accountability`, `knowledgecomplex` and
-`ant-rdf`. The structure is simpler than those: no faces, no assurance triangles.
+Document Assurance* (INCOSE IS 2026) and the earlier repos `assurances-audits-accountability`, `knowledgecomplex`,
+`ant-rdf` and `concept-definition-stage`. The last of these is also a reference for the ontology: its SKOS+PROV
+spine, its authority-traced definitions, and its practice of anchoring to an external ontology through equivalence
+axioms instead of importing all of it. The structure here is simpler than any of them: no faces, no assurance triangles.
 
 ## Users and how they work
 
@@ -40,8 +42,10 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 
 ## Goals
 
-- **G1. Fixed TBox.** Turtle files define seven ontology classes — Stakeholder group, Concern, Property, Technology,
-  Heldby (stakeholder group × concern), Addresses (concern × property), Attributes (property × technology) — each
+- **G1. Fixed TBox.** Designed under G10, then fixed for v0.1. Turtle files define seven ontology classes — Stakeholder
+  group, Concern, Property, Technology, Heldby (stakeholder group × concern), Addresses (concern × property),
+  Attributes (property × technology), with names that may follow an adopted ontology — plus any easy-win relations
+  G10 adds, together with each
   record's required and optional fields, the other page types (class pages; raw and coded scenarios; raw and coded
   architectures), and the linking rules: coded scenarios and architectures link into the graph, and raw ones link to
   or embed their coded pages.
@@ -59,9 +63,12 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 - **G5. Two repositories.** `scpt-kg-tools`: a slim, separately maintained package holding the TBox, the parser, the
   checks, the CLI and the documentation site. `scpt-kg-template`: the vault to clone, which installs a pinned
   version of the tools. Both builds are reproducible with uv.
-- **G6. Worked example** in the template: minimal (users overwrite it) but with 2–3 records in every registry,
-  plus two scenarios and two architectures, each raw and coded. It doubles as the test fixture and the documentation
-  example.
+- **G6. Worked example: this project as its own case study.** The template's example content is the elicitation of
+  scpt-kg itself: its stakeholder groups, concerns (for example, anonymity versus attribution), properties and
+  technologies, drawn from the chief engineer's recorded statements and the decision log. Its stakeholder groups
+  follow the Chatham House rule like any other: no group stands for one identifiable person. It is minimal (users
+  overwrite it), but has 2–3 records in every registry, plus two scenarios and two architectures, each raw and coded.
+  It doubles as the test fixture and the documentation example.
 - **G7. Documentation on GitHub Pages** (from `scpt-kg-tools`), organised by the user journey J1–J7 (see User
   acceptance): getting started, a planning guide, two facilitation guides (scenarios with actors, architectures with
   technologists), a coding guide, and a reference for both the CLI and the Python API.
@@ -70,15 +77,25 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 - **G9. Clear user journey.** A technically savvy user who is not a developer can go from the docs site to a new
   repository made from the template, through an interactive working session, to a clean, navigable graph, using only the
   documentation. The documentation is clear and navigable at every step.
+- **G10. Ontology by evidence: import, don't mint.** A research sprint surveys existing ontologies for each SCPT
+  class and relation (for example ISO/IEC/IEEE 42010 for stakeholders and concerns, the SEBoK and INCOSE canon that
+  `concept-definition-stage` commits, SKOS and PROV). A trade study then decides, class by class, whether to adopt
+  (thinned to what we use, anchored by equivalence axioms rather than importing everything) or to author our own,
+  authoring only where nothing beats custom. The result is one coherent ontology, not a patchwork of imports. Every
+  term traces to the ontology it was adopted from, or is recorded as authored, with the reason. Easy wins in
+  expressiveness are taken where they don't complicate the software or the UX. An example is a conflict relation
+  between concerns, such as anonymity versus attribution.
 
 ## Non-goals
 
 - Gen-AI aided authoring; an Obsidian plugin (the CLI is designed so one can wrap it later).
 - Triangles or any faces, including ones inferred from scenarios and architectures.
-- Changing the TBox, or letting instance repos extend it.
+- Changing the TBox once WP3 has fixed it, or letting instance repos extend it.
 - Enforcing raw → coded links or embeds beyond a warning.
 - Checking that named entities are linked beyond a basic regex warning.
 - The verification / validation / human-signature assurance framework of the paper.
+- Attributing statements to individuals. v0.1 is built for Chatham House settings, and attribution is a possible
+  extension. How raw notes are taken is the facilitator's call; the guides explain the rule.
 - Analysis tooling over the graph.
 - Publishing to PyPI.
 - UX for non-technical users beyond the CLI and Obsidian.
@@ -87,11 +104,11 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 
 | ID | Deliverable | Serves |
 |---|---|---|
-| D-1 | TBox in Turtle, in `scpt-kg-tools` | G1 |
+| D-1 | TBox in Turtle, in `scpt-kg-tools` | G1, G10 |
 | D-2 | Parser, checks, status, index and stub commands, CLI, test suite with seeded-defect fixtures, in `scpt-kg-tools` | G2, G3, G4 |
-| D-3 | Template repository: vault skeleton (class pages, folders for raw and coded records), an Obsidian page template for every page type, instance configuration (stakeholder-group cardinality cap), pinned tools, worked example | G5, G6, G9 |
+| D-3 | Template repository: vault skeleton (class pages, folders for raw and coded records), an Obsidian page template for every page type, instance configuration (stakeholder-group cardinality cap), pinned tools, the case study (G6) | G5, G6, G9 |
 | D-4 | Documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9 |
-| D-5 | Decision records for the toolchain spike, with measurements | G8 |
+| D-5 | Research readouts and decision records: the ontology survey and trade study, and the toolchain spike, with evidence and measurements | G8, G10 |
 | D-6 | Reviewer's guide for the chief engineer, in the release PR. It is sized for a person and split into sittings by output: (1) the end-to-end walkthrough (UA-M below); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
 | D-7 | User-acceptance kit, in `scpt-kg-tools/acceptance/`: the AI tester personas and briefs, the report template, every AI test report with its dispositions, and the chief engineer's walkthrough script | G9 |
 
@@ -110,6 +127,7 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 | R-9 | Every command shown in the docs runs as shown, and the CLI reference matches `--help`. | Docs test that extracts and runs the commands; reference diff |
 | R-10 | The docs site has no dead ends or broken links. Every journey page says what you need before you start and where to go next. | Strict build plus link check; the ACE's browser pass over every page, at desktop and phone width |
 | R-11 | **Make the right way the easy way.** The template ships an Obsidian page template for every page type. `scpt` creates entailed pages and regenerates indexes, so users never write that structure by hand. Each journey stage's docs page leads with the one command or action to take next. | Inspection; the Haiku testers' reports |
+| R-12 | New repositories are private by default. The docs and the template's README recommend private repositories. Their "create your project" link opens GitHub's new-repository page from the template with private visibility pre-selected; if GitHub can't pre-select it, the docs give the `gh repo create --template … --private` command as the first path. | Probe of the link on the candidate; UA-M |
 
 ## User acceptance
 
@@ -118,7 +136,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
 | Stage | The user | Docs page |
 |---|---|---|
 | J1 Find | lands on the docs site and understands what this is for and how to start | home |
-| J2 Create | on GitHub's web interface, makes a new repository from `scpt-kg-template` ("Use this template"), then clones it | getting started |
+| J2 Create | on GitHub's web interface, makes a new **private** repository from `scpt-kg-template`, then clones it | getting started |
 | J3 Set up | runs one documented command, gets a working `scpt`, and opens the folder as an Obsidian vault | getting started |
 | J4 Plan | plans a facilitation event: who comes as actors and who as technologists, the Chatham House framing, stakeholder groups within the cap | planning guide |
 | J5 Capture | during the event, records raw scenarios and raw architectures | the two facilitation guides |
@@ -144,12 +162,12 @@ Acceptance is judged by people using the product, not only by tests. The journey
 - **Pass bar:** every tester, the Haiku testers included, reaches J7 with a clean `check --all`. Every guess counts
   as a finding. Every finding is dispositioned: either fixed and re-tested by a fresh tester, or accepted with a
   reason and listed in the reviewer's guide. The final round leaves no blocking finding unresolved.
-- A report that mentions the worked example's proper nouns, or that finds nothing, is void and is run again.
+- A report that reuses names from the worked example's records, or that finds nothing, is void and is run again.
 
 **UA-M, the chief engineer's walkthrough** (the first sitting of the reviewer's guide, and the core of acceptance):
 
-- He runs J1 to J7 himself on the candidate: starting from the Pages preview, using "Use this template" on GitHub
-  to make a real repository, cloning it, setting up, and working through an interactive session with the CLI and
+- He runs J1 to J7 himself on the candidate: starting from the Pages preview, using the docs' "create your project" link
+  (GitHub's template flow, private by default) to make a real repository, cloning it, setting up, and working through an interactive session with the CLI and
   the Python REPL, coding a small elicitation of his own choosing.
 - The walkthrough script gives each stage's entry point and what "done" looks like, so the session can be split up
   and resumed.
@@ -161,6 +179,8 @@ Acceptance is judged by people using the product, not only by tests. The journey
 
 - Make the right way the easy way: following the docs literally and using the provided templates and commands is
   the shortest path, and it produces a conformant vault.
+- The ontology is lean and recognisable: adopted where an existing ontology wins, authored where it doesn't, never a
+  patchwork.
 - A first-time user fixes every conformance error from the message alone, without reading the source.
 - The checks feel instant in an interactive session.
 - The tools are small enough that one person can maintain them.
@@ -168,10 +188,11 @@ Acceptance is judged by people using the product, not only by tests. The journey
 
 ## Definition of good enough
 
-- R-1 to R-11 met, with evidence.
+- R-1 to R-12 met, with evidence.
 - The AI user tests (UA-A) pass on the candidate.
 - The candidate is staged for the chief engineer's own walkthrough (UA-M), with the reviewer's guide ready.
-- The spike's decision records exist.
+- The ontology trade study and the toolchain decision records exist. Every TBox term traces to an adopted ontology
+  or is recorded as authored, with the trade study's reason.
 
 ## Definition of done
 
@@ -201,15 +222,20 @@ record above.
 
 ## Initial breakdown (a plan, not a contract; the ACE revises it at each work-package acceptance)
 
-1. **WP1 Toolchain spike.** OKF, oxigraph, pydantic and the rule language, tried on a throwaway mini-vault and
-   measured. Fixes: the toolchain.
-2. **WP2 Ontology and page contracts.** Fields per class, page types, link rules, status rules, the rule catalogue
-   with ids and message wording. Fixes: D-1 and the vault conventions.
-3. **WP3 Conformance tools.** Parser, checks, the Python API and the CLI over it, seeded-defect tests, benchmark.
+Ontology design comes before implementation, and the design is driven by research.
+
+1. **WP1 Ontology research sprint.** Survey existing ontologies for each SCPT class and relation, and the patterns
+   in `concept-definition-stage`. Run the trade study (adopt and thin, or author) and assess easy-win axioms.
+   Readout and decision records. Fixes: what the TBox imports, anchors to, or authors.
+2. **WP2 Toolchain spike.** In parallel with WP1. OKF, oxigraph, pydantic and the rule language, tried on a throwaway
+   mini-vault and measured. Fixes: the toolchain.
+3. **WP3 Ontology and page contracts.** From WP1 and WP2: the TBox in Turtle, fields per class, page types, link
+   rules, status rules, the rule catalogue with ids and message wording. Fixes: D-1 and the vault conventions.
+4. **WP4 Conformance tools.** Parser, checks, the Python API and the CLI over it, seeded-defect tests, benchmark.
    Fixes: D-2.
-4. **WP4 Template and worked example.** Can run in parallel with WP3 once WP2 is accepted. Fixes: D-3.
-5. **WP5 Docs and Pages.** Written journey-first (J1–J7). Fixes: D-4.
-6. **WP6 Candidate and user acceptance.** Integration, the candidate stage, UA-A rounds to the pass bar, the
+5. **WP5 Template and case study.** In parallel with WP4 once WP3 is accepted. Fixes: D-3.
+6. **WP6 Docs and Pages.** Written journey-first (J1–J7). Fixes: D-4.
+7. **WP7 Candidate and user acceptance.** Integration, the candidate stage, UA-A rounds to the pass bar, the
    reviewer's guide and the walkthrough script. Fixes: D-6, D-7.
 
 ## Agent's defaults
@@ -225,9 +251,9 @@ record above.
 - Branches: `main` holds approved missions and releases only; `dev` is the integration branch; work happens on
   short-lived unit branches off `dev`.
 - Licence: Apache-2.0, copyright Dynamical Systems Group, for code, docs and ontology (the chief engineer's decision, D-005).
-- Worked example domain: a city bike-share scheme. It's familiar, has clear stakeholder groups (riders, city transport
-  office, operator), and gives obvious stories of things going wrong and right.
-- The stakeholder-group cap is set in the template's configuration file, with the demo set to 3.
+- Adopted definitions follow `concept-definition-stage`'s licence practice. Text under a restrictive licence (SEBoK is
+  CC BY-NC-SA) is cited and linked, not reproduced, in anything we publish.
+- The stakeholder-group cap is set in the template's configuration file, with the worked example set to 3.
 - No AI attribution on commits, PRs or documents; CI fails on attribution lines, as in tradespace.
 
 ## Open decisions (for the chief engineer)

@@ -100,8 +100,8 @@ does not sign off the rendered part.
 - **Worktrees** are created explicitly (`git worktree add <path> -b <branch> dev`) outside the repository. Each one
   is removed (`git worktree remove`, then `git worktree prune`) as soon as its unit is pushed.
 - **No scratch** is left in the tree.
-- **The repository holds the present; git holds the history.** A package's spike outputs and raw reports leave the
-  tree when it is accepted, recorded in `work-packages/INDEX.md` with the commits where its scope was approved and
+- **The repository holds the present; git holds the history.** A package's scratch, spike workings and raw reports
+  leave the tree when it is accepted (the readouts and decision records the mission names as D-5 stay), recorded in `work-packages/INDEX.md` with the commits where its scope was approved and
   its result accepted.
 - **Negative edits are welcome.** Every piece of content must earn its place, including what is already there.
   When something is stuck, consider removing it before another round of rework.

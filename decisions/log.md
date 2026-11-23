@@ -126,3 +126,49 @@ Fixed (ACE):
 - **Open decisions:** the section was stale (it only cited D-001 and D-002) and now points to the log.
 - **ORG.md and pm.md:** the duplicated tester rules are replaced by a pointer to UA-A; testers' models follow UA-A;
   loop step 6 now follows the candidate → UA-A → guide → PRs → walkthrough sequence.
+
+## D-010 | 2026-11-23 | Privacy, attribution, case study, ontology research; second cleanup pass
+
+Decided by the chief engineer (pop-ups, typed by the ACE):
+- Repositories: "docs recommend private repos but i think its best if we can make the default private when the
+  template is used. the template is public. we're just suggesting people using these tools use them to make private
+  repos."
+- Raw notes: "facilitators call; its not currently built for attribution because we're using it chatham house rule
+  settings, but extensions could support projects where attribution is desired property. to keep this tight. let's
+  make this repo its own case study. so the example content in the template repo should be this package. we just had
+  our first case of a concern conflict (\"attribution\") vs (\"anonymity\"); those can be related by a disjointness
+  axiom. we should keep an eye out for easy wins in the ontology as long as they don't overcomplicate the software
+  implementation or UX."
+
+Directed by the chief engineer (chat, typed by the ACE): "actually i think you may need this
+/Users/z/Documents/GitHub/concept-definition-stage as another reference repo. it may help fill in details i left out
+in the ontology. I also want you to include research sprint on existing ontologies. if we have existing ontologies we
+can adopt (even if we have to thin it out) i've applied a doctrine of import don't mint for ontologies like we do with
+python packages. that also doesn't mean build a franken ontology. we can author ontologies instead of import them if
+there isn't one that beats custom in a trade study. the ontology design work here preceeds implementation and will
+require research spikes. lets make sure the advice above is followed then re-run the cruft, drift consistency pass on
+the mission docs."
+
+Outcome in `MISSION.md`:
+- R-12: private by default, through the docs' create link with private pre-selected, falling back to `gh repo create
+  --private`. J2 and UA-M updated to match.
+- New non-goal: attribution to individuals. How raw notes are taken is the facilitator's call.
+- G6: the worked example is this project's own case study. Its stakeholder groups follow the Chatham House rule, so
+  no group stands for one identifiable person; this last point is an ACE reading.
+- New G10, ontology by evidence: a survey, then a trade study per class (adopt and thin, anchored by equivalence
+  axioms in the `concept-definition-stage` pattern, or author where nothing beats custom). It must not become a patchwork,
+  every term is traced, and easy-win axioms are taken (the concern conflict is the first). G1 is now designed under G10.
+- The breakdown now opens with WP1, the ontology research sprint, and WP2, the toolchain spike, in parallel, then WP3,
+  ontology and page contracts, before any implementation. It now has seven work packages.
+- `concept-definition-stage` is added as a reference. Its licence practice for adopted definitions is now a default:
+  cite and link restricted text (SEBoK is CC BY-NC-SA).
+
+Second cleanup pass (ACE):
+- G10's spacing fixed.
+- G1 now admits the easy-win relations.
+- The non-goal "changing the TBox" is now bounded to after WP3.
+- D-1 now also serves G10.
+- The void rule for test reports uses the case study's record names, since the tool's own name is now in the
+  example.
+- "demo" becomes "worked example" in the defaults.
+- ORG hygiene now keeps D-5's readouts in the tree.
