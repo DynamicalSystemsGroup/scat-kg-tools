@@ -39,9 +39,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP3-U2 | research engineer, sonnet | 3 | 3 | `wp3/u2` | done |  | 2026-11-23T15:43:09-05:00 | 1 push-back for citation errors (summariser-read sources); about 1 min plus rework |
 | WP3-U3 | research engineer, sonnet | 2 | 5 | `wp3/u3` | done |  | 2026-11-23T15:50:36-05:00 | 3 rounds: two near-verbatim review failures and rewrites, squash; Drive connector worked first time |
 | WP3-U4 | technical writer, sonnet | 5 | 5 | `wp3/u4` | done |  | 2026-11-23T16:00:21-05:00 | 1 push-back (one wrong citation, privacy hardening) plus a re-review with the private brief |
-| WP4-U1 | ontology designer, sonnet | 5 | 5 | `wp4/u1` | done |  | 2026-11-23T16:12:21-05:00 | 1 push-back (R3 rules stated only in comments); 2 review passes; matches estimate |
-| WP4-U2 | page-contract designer, sonnet | 5 |  | `wp4/u2` | in flight |  |  |  |
-| WP4-U3 | rule-catalogue author, sonnet | 5 |  | `wp4/u3` | in flight |  |  |  |
+| WP4-U1 | ontology designer, sonnet | 5 | 5 | `wp4/u1` | in flight | rework after ACE ruling D-030 (relations as page types, namespace) |  |  |
+| WP4-U2 | page-contract designer, sonnet | 5 |  | `wp4/u2` | blocked | WP4-U1 rework merged (drafts exist, unreviewed) |  |  |
+| WP4-U3 | rule-catalogue author, sonnet | 5 |  | `wp4/u3` | blocked | WP4-U1 rework merged (drafts exist, unreviewed) |  |  |
 | WP4-U4 | technical writer, sonnet | 3 |  | `wp4/u4` | queued | WP4-U2, WP4-U3 merged |  |  |
 | WP4-U5 | cold-write tester, haiku | 3 |  | `wp4/u5` | queued | WP4-U2, WP4-U3 merged |  |  |
 | WP4-U6 | cross-check reviewer, sonnet | 3 |  | `wp4/u6` | queued | WP4-U1 to U5 merged |  |  |
