@@ -5,7 +5,7 @@ import re
 from scat_kg.checks.ctx import Ctx, page_rule
 from scat_kg.checks.text import is_missing, one, quote, steps, stub_cmd
 from scat_kg.tbox import TBOX
-from scat_kg.vault import Page, _blank_code
+from scat_kg.vault import Page, blank_code
 
 CODED = ("scenario-coded", "architecture-coded")
 RAW = ("scenario-raw", "architecture-raw")
@@ -153,7 +153,7 @@ def mention(ctx: Ctx, page: Page):
     if not ctx.typed(page) or page.type_key in (*RAW, "class") or not page.body:
         return []
     t = TBOX.page_types[page.type_key]
-    plain = _WIKILINK.sub(lambda m: re.sub(r"[^\n]", " ", m.group()), _blank_code(page.body))
+    plain = _WIKILINK.sub(lambda m: re.sub(r"[^\n]", " ", m.group()), blank_code(page.body))
     low = plain.lower()
     linked = {l.target for l in page.body_links}
     out = []
