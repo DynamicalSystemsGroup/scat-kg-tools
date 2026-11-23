@@ -475,3 +475,16 @@ Outcome:
 - ORG.md has a "Status reports" section, which makes the PM responsible for keeping that table true.
 - The ACE runs an hourly report from the board and the git history of `dev` *(ACE default cadence)*, without
   interrupting the PM.
+
+## D-025 | 2026-11-23 | Estimated and realized points in the hourly report
+
+Requested by the chief engineer (chat, typed by the ACE): "please include story points and velocity estimates in the
+hourly update. i want estimate points for the proposed work and realized points for completed work. i expect them to
+diverge. we have to allow them to deviate in order to learn the patterns and improve our future estimates".
+Outcome:
+- **The board** now records, for each unit, estimated points (set at planning and never revised) and realized points
+  (scored when the unit lands, with a one-line basis). Each iteration row shows the estimated and realized points,
+  their ratio, the elapsed time, and the velocity in realized points per hour.
+- **The forecast** is the remaining estimate, corrected by the running ratio, divided by the velocity.
+- **ORG.md** asks the PM to note at each package acceptance which kinds of unit ran over or under.
+- **The hourly report** now carries all of this.

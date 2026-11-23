@@ -86,6 +86,13 @@ it, and what is queued and what it is waiting on. The ACE builds it from `work-p
 of `dev`, so the PM keeps the board's Units table true at every state change: actor, state, what a queued or blocked
 unit is waiting on, and when each unit was done.
 
+**Estimated and realized points.** Each unit is given estimated points when it is planned, and they are never
+revised. When the unit lands, the PM scores its realized points on the same scale, from what it actually took: elapsed
+time, revision and push-back cycles, and the worker's tool use. The PM records the basis in one line. Estimates and
+realized points are expected to differ, and that's allowed: the gap is the data we learn from. Velocity is realized
+points per wall-clock hour. The running ratio of realized to estimated points corrects the forecast. At each package
+acceptance the PM notes which kinds of unit ran over or under, so the next estimates improve.
+
 ## Verification
 
 - **Tier 0, the author, before each commit:** `uv run ruff check`, `uv run ruff format --check` and `uv lock --check`

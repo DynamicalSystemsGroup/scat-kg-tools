@@ -19,14 +19,19 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 
 States: `queued` · `in flight` · `in review` · `done` · `blocked`. A queued or blocked unit says what it is waiting on.
 
-| Unit | Actor (worker identity, model) | Points | Branch | State | Waiting on | Done at |
-|---|---|---|---|---|---|---|
+Estimated points are set when a unit is planned and never revised. Realized points are scored on the same scale when
+the unit lands, from what it actually took. The two are expected to differ, and the gap is how we learn to estimate.
+
+| Unit | Actor (worker identity, model) | Est. pts | Realized pts | Branch | State | Waiting on | Done at | Basis for realized |
+|---|---|---|---|---|---|---|---|---|
 
 ## Iterations and velocity
 
-| Iteration | Units landed | Points done | Elapsed (wall clock) |
-|---|---|---|---|
+| Iteration | Units landed | Est. pts landed | Realized pts | Realized ÷ est. | Elapsed (wall clock) | Velocity (realized pts / hour) |
+|---|---|---|---|---|---|---|
 
 ## Forecast to the candidate
 
-Not yet: there's no velocity until the first iteration lands.
+Not yet: there's no velocity until the first iteration lands. Once it has, the forecast is:
+(remaining estimated points × the running realized-to-estimated ratio) ÷ realized velocity. Each figure is stated
+with its basis.
