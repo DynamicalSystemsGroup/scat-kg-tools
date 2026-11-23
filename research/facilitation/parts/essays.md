@@ -6,7 +6,7 @@ Unit WP3-U2. Input to WP3-D1 and WP3-G3. Research notes in our own words; no str
 
 - **[KOI]** "KOI & The Unicorn", Block Science blog, <https://blog.block.science/koi-and-the-unicorn/> (23 October 2025). Sections: an untitled opening, The Mirror, Diffraction, Terraforming, Conclusion. There is no section called Summary or Introduction; the opening is cited as "opening (untitled)".
 - **[Loop]** "Building the Loop: The Role of Ethnography in Artificial Organisational Intelligence", EPIC Proceedings 2025, DOI 10.1111/epic.70009, <https://doi.org/10.1111/epic.70009>. The DOI redirects to the publisher page <https://proceedings.epicpeople.org/article/154018-building-the-loop-the-role-of-ethnography-in-artificial-organisational-intelligence>, which was reachable. Sections: Abstract, Introduction, Methods, Theories and Practices of the Firm, Knowledge Organisation Infrastructure (KOI), Telescope, Ethnography as Building the Loop (with Observation, Interpretation, Inscription), Conclusion, and three end notes (n1 firms/organisations, n2 ontologisation, n3 model caveat).
-- **Reading.** Revised after review: the full text of both pages was fetched as raw HTML and read directly, not through a summarising tool. Every claim below was checked against that text. Quotes are avoided; all wording is ours.
+- **Reading.** Revised after review: the full text of both pages was fetched as raw HTML and read directly, not through a summarising tool. Every claim below was checked against that text. Quotes are short; the wording is otherwise ours.
 
 "Silent" means the source, as read, does not address the topic in that section or at all (WP3-R6). Where a line is our reading rather than the source's claim, it says "our inference".
 
@@ -77,7 +77,7 @@ Unit WP3-U2. Input to WP3-D1 and WP3-G3. Research notes in our own words; no str
 - **Not addressed directly.**
 - **Conclusion:** the Law passage is the nearest statement: ordering and representing the world tends to make it more singular than it is. The authors apply it to their approach as a reason to be "more than one". It concerns social-science representation, not group disagreement as such (our reading).
 - **Abstract; KOI:** argues against homogenisation of systems and against a unified ontology. Again about systems, not about disagreement among people.
-- **Observation; Interpretation; Conclusion:** the ethnographer configures what counts as meaning, acts as a "context-librarian", and holds authority through configuring and maintaining intelligibility. Our inference: this concentrates interpretive authority; the paper does not state it as a risk.
+- **Interpretation; Conclusion:** the ethnographer configures what counts as meaning, acts as a "context-librarian", and holds authority through configuring and maintaining intelligibility. Our inference: this concentrates interpretive authority; the paper does not state it as a risk.
 - **Note 3:** a model connected through retrieval to a KOI node still produces answers influenced by its vendor's training and rules. The note's point is that any model can be used, including organisation-made ones. It says nothing about flattening disagreement.
 - **KOI section (Goldenfein):** discusses human-in-the-loop oversight as a shortcut that hides how responsibility is distributed. It is about accountability for automated decisions, not about disagreement, so it is not placed under (c) or (d).
 
@@ -91,7 +91,7 @@ Capabilities, not terms. Each is a need that follows from a source's statement o
 2. **Show who or which group holds each account.** Basis: [Loop] Inscription (multi-authored; trace of who did what); [KOI] Diffraction (perspective as relation). Source silent on attribution of conflicting views.
 3. **Show where accounts differ, overlap or are in tension, as something visible.** Basis: [Loop] Inscription (traces can be contested); [KOI] Diffraction (interference, metaphor only). Neither source says how.
 4. **Show gaps: what has not been said, and where a model and its world part.** Basis: [KOI] opening (model/world gap); [Loop] Telescope (flagged items lacking context).
-5. **Keep each claim traceable to its source and to whoever recorded, annotated or interpreted it,** so the interpreter's role can be inspected. Basis: [Loop] Observation and Interpretation (ethnographer configures meaning), Inscription (trace of ethnographic labour).
+5. **Keep each claim traceable to its source and to whoever recorded, annotated or interpreted it,** so the interpreter's role can be inspected. Basis: [Loop] Interpretation (ethnographer configures meaning), Inscription (trace of ethnographic labour).
 6. **Show limits on who may see a record, and keep a trace when a record is withdrawn.** Basis: [Loop] Telescope (visible to some and not others; deletion history queryable; identifier persists). The paper is silent on analyses already published when consent is withdrawn, which is an open question for WP4.
 7. **Show change over time in an account or boundary.** Basis: [Loop] Telescope (boundary renegotiated), Conclusion (temporality); [KOI] Terraforming (rules shaped collectively).
 8. **Keep a proposed design distinct from the stories that motivate it.** Basis: both sources silent on eliciting designs; inferred from that gap.
