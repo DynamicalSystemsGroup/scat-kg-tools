@@ -26,7 +26,8 @@ There is no fixed roster. For each unit, instantiate a fresh worker:
    engineer, technical writer, simulated user, or reviewer. Write two or three lines on their expertise, their
    stance, and what good looks like for them.
 2. **Model.** Pin it explicitly: `claude-sonnet-5-5`, or `claude-haiku-5-5` for mechanical work (verbatim copies,
-   counts, greps). Use `claude-opus-5-5` only when the ACE has named the reason.
+   counts, greps). For user testers, use the models `MISSION.md` UA-A sets (mostly Haiku). Use `claude-opus-5-5` only when the ACE
+   has named the reason.
 3. **Brief.** Give the worker the identity, the unit's contract (below) and the repository. No conversation history.
 4. **Worktree.** Create it yourself, outside the repository: `git worktree add <path> -b <branch> dev`.
 

@@ -98,3 +98,31 @@ Outcome: `MISSION.md` has a new section, "Users and how they work". It describes
 GitHub web interface, an Obsidian vault, and an interactive session with the CLI and the Python REPL as equal paths,
 and who follows the docs literally. It also records the actor/technologist roles and the Chatham House stakeholder
 groups. The sources are his statements in this conversation and D-005 to D-007.
+
+## D-009 | 2026-11-23 | Consistency, drift and cruft pass on the mission
+
+Asked by the chief engineer (chat, typed by the ACE): "do a consistency, drift and cruft pass on the mission
+document since we just did some incremental iterations based on my feedback. let me know if any open questions
+surface so i can resolve them now".
+
+Fixed (ACE):
+- **Contradiction:** the non-goals and the defaults said the tools are pinned "by git tag", but the candidate stage
+  pins them to a commit. Everything now says pinned to the exact candidate commit, which `v0.1.0` tags at release.
+- **G1:** said raw records link into the graph; they don't. Coded records link into the graph, and raw records link
+  to their coded pages.
+- **G3:** "content page" was undefined. Status now applies to instance pages and to scenario and architecture pages.
+  Class pages are generated and carry none. Stubs are created by `scpt`, which matches R-4.
+- **G7:** rewritten against J1–J7, and now names the Python API reference (R-8).
+- **Users section:** "actor in one event and a technologist in another" had narrowed his words "some real people may
+  be both". Reworded to match them. Dropped a line that repeated the non-goals.
+- **Requirements:** R-11 moved into order. The browser pass at desktop and phone width moved into R-10's check, and
+  its duplicate in good enough was dropped.
+- **UA-A:** the REPL/CLI coverage rule was formatted as if it were a persona; fixed.
+- **Wording:** "demo vault" becomes "worked example"; "neighbourhood" becomes "neighborhood", to match the CLI flag.
+- **Header:** the ACE row now says "escalates only intent gaps".
+- **Breakdown:** D-1 (the Turtle) is fixed by WP2, not WP3. WP3 now names the Python API.
+- **Defaults:** dropped an unverified claim that bike-share differs from every DSG domain (`eBike-GDS-documentation`
+  exists).
+- **Open decisions:** the section was stale (it only cited D-001 and D-002) and now points to the log.
+- **ORG.md and pm.md:** the duplicated tester rules are replaced by a pointer to UA-A; testers' models follow UA-A;
+  loop step 6 now follows the candidate → UA-A → guide → PRs → walkthrough sequence.

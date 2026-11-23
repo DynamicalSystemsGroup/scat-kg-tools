@@ -14,7 +14,7 @@ reports to the chief engineer. No level is skipped.
 | **Chief engineer** | `mzargham` | — |
 | **ACE** (assistant to the chief engineer, the driver) | The main Claude session | the main session's model |
 | **PM** | One persistent subagent (`.claude/agents/pm.md`), spawned and managed by the ACE. It is swapped for a fresh PM when it slows or its context grows large. | Sonnet |
-| **Workers** | Fresh subagents the PM instantiates per unit, each with one bounded task: spike, design, build, test, write, user-test, review | Sonnet, or Haiku for mechanical work. Opus only on the ACE's word, for a named reason. |
+| **Workers** | Fresh subagents the PM instantiates per unit, each with one bounded task: spike, design, build, test, write, user-test, review | Sonnet, or Haiku for mechanical work. User testers run on the models UA-A sets. Opus only on the ACE's word, for a named reason. |
 
 ## Who answers what
 
@@ -55,8 +55,9 @@ bare problem.
    unpushed. A red head on `dev` is fixed forward straight away by the unit that owns it.
 5. The ACE verifies the package independently, accepts it, and revises the breakdown in `MISSION.md` if the package
    taught something.
-6. When the candidate is ready, the ACE writes the reviewer's guide (D-6) and opens the release PRs (`dev` → `main`).
-   Only the chief engineer merges them.
+6. When the packages are in, the ACE runs the candidate stage (`MISSION.md`, Governance) and the UA-A rounds to their pass
+   bar, writes the reviewer's guide (D-6), and opens the release PRs (`dev` → `main`). The chief engineer then does his
+   walkthrough (UA-M). Anything he flags is fixed on `dev`. Only he merges.
 
 ## Scope rules (what the PM enforces)
 
@@ -108,12 +109,8 @@ does not sign off the rendered part.
   `pm.md`, the board with its states true, the log, and the outgoing PM's one-page note. The outgoing PM finishes
   the units it has in flight and starts nothing new.
 
-## Simulated-user tests
+## User tests
 
-- Write the persona in the user's own words, not the tool's vocabulary.
-- Use a different domain from the worked example. Grep the report for the example's proper nouns; if they appear,
-  the run is void.
-- Give each tester an isolated `git clone --no-hardlinks` with the remote removed.
-- Forbid reading `src/` and `tests/`.
-- Require pasted command output.
-- Count what the tester had to guess as defects, and treat an empty report as suspicious.
+AI user tests run exactly as `MISSION.md` (User acceptance, UA-A) defines: mostly Haiku testers, isolated clones, no
+reading of `src/` or `tests/`, pasted output, and guesses counted as findings. The PM provisions the testers; the ACE
+reads every report and dispositions the findings.

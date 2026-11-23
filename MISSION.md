@@ -4,10 +4,10 @@
 |---|---|
 | **Status** | DRAFT. Approved only by the recorded act below. Nothing is executed before then. |
 | **Chief engineer (accountable)** | `mzargham` — final design authority; approves this mission and its amendments; accepts the v0.1 delivery |
-| **Assistant to the chief engineer (ACE)** | The main Claude session — manages the team, writes and approves work-package scopes inside this mission, accepts work packages, escalates only what this mission cannot settle |
+| **Assistant to the chief engineer (ACE)** | The main Claude session — manages the team, writes and approves work-package scopes inside this mission, accepts work packages, escalates only intent gaps |
 | **Repositories** | `scpt-kg-tools` (conformance tools, TBox, docs site; this document lives here) and `scpt-kg-template` (the vault to clone) |
 | **Approval record** | The chief engineer's merge of this document's PR into `main` of `DynamicalSystemsGroup/scpt-kg-tools` (public) |
-| **Acceptance record** | The chief engineer's merge of the release PR from `dev` into `main` in each repository. The ACE opens these PRs when the candidate is ready, and no one else does. The merge tags `v0.1.0` and deploys the site. |
+| **Acceptance record** | The chief engineer's merge of the release PR from `dev` into `main` in each repository. The ACE opens these PRs when the candidate is ready, and no one else does. The release then tags `v0.1.0` and deploys the site (see Governance). |
 
 ## Purpose
 
@@ -35,21 +35,21 @@ The v0.1 user is a facilitator-analyst: technically savvy, but not a software de
 - follow documentation literally, step by step. Testers on a small model stand in for this user, so the right way
   has to be the easy way.
 
-One person may act as an actor in one event and a technologist in another; neither is a role in the data model. The
+One person may be both an actor and a technologist; these are roles in elicitation, not classes in the data model. The
 people in the data are stakeholder **groups**, under the Chatham House rule, so no individual is identifiable.
-
-Further UX (an Obsidian plugin, gen-AI help, a non-technical path) comes after v0.1.
 
 ## Goals
 
 - **G1. Fixed TBox.** Turtle files define seven ontology classes — Stakeholder group, Concern, Property, Technology,
   Heldby (stakeholder group × concern), Addresses (concern × property), Attributes (property × technology) — each
-  record's required and optional fields, the page types that link into them (raw and coded scenarios, raw and coded
-  architectures, class pages), and the linking rules.
+  record's required and optional fields, the other page types (class pages; raw and coded scenarios; raw and coded
+  architectures), and the linking rules: coded scenarios and architectures link into the graph, and raw ones link to
+  or embed their coded pages.
 - **G2. Vault ↔ graph.** Markdown pages with YAML frontmatter parse into an ABox that is checked against the TBox.
   Every class has a class page: a description plus an index table (name, short description, link) of its instances.
-- **G3. Page lifecycle.** Every content page carries a status: `stub → draft → done`. A page that the ontology
-  entails but that does not exist is created as a `stub`, so the graph is never incomplete, only unfinished.
+- **G3. Page lifecycle.** Every instance page and every scenario or architecture page carries a status:
+  `stub → draft → done`. (Class pages are generated, so they carry none.) `scpt` creates a page that the ontology
+  entails but that doesn't exist yet as a `stub`, so the graph is never incomplete, only unfinished.
 - **G4. CLI** usable by a technically savvy non-developer in an interactive session:
   - `check <page>`, `check <page> --neighborhood`, `check --all` — conformance, with actionable messages;
   - `status` at the same three scopes, and a command to set a page's status;
@@ -62,9 +62,9 @@ Further UX (an Obsidian plugin, gen-AI help, a non-technical path) comes after v
 - **G6. Worked example** in the template: minimal (users overwrite it) but with 2–3 records in every registry,
   plus two scenarios and two architectures, each raw and coded. It doubles as the test fixture and the documentation
   example.
-- **G7. Documentation on GitHub Pages** (from `scpt-kg-tools`), following the user journey: plan a facilitation event;
-  facilitate and capture raw notes (one guide for scenarios with actors, one for architectures with technologists);
-  code the notes afterward; run the checks; plus a CLI reference.
+- **G7. Documentation on GitHub Pages** (from `scpt-kg-tools`), organised by the user journey J1–J7 (see User
+  acceptance): getting started, a planning guide, two facilitation guides (scenarios with actors, architectures with
+  technologists), a coding guide, and a reference for both the CLI and the Python API.
 - **G8. Toolchain decided by evidence.** Oxigraph, Open Knowledge Format (OKF), pydantic and the choice of rule
   language are tried on a small vault before the implementation is locked in. Each choice is recorded with its evidence.
 - **G9. Clear user journey.** A technically savvy user who is not a developer can go from the docs site to a new
@@ -80,7 +80,7 @@ Further UX (an Obsidian plugin, gen-AI help, a non-technical path) comes after v
 - Checking that named entities are linked beyond a basic regex warning.
 - The verification / validation / human-signature assurance framework of the paper.
 - Analysis tooling over the graph.
-- Publishing to PyPI *(default: the template pins the tools by git tag)*.
+- Publishing to PyPI.
 - UX for non-technical users beyond the CLI and Obsidian.
 
 ## Deliverables
@@ -101,7 +101,6 @@ Further UX (an Obsidian plugin, gen-AI help, a non-technical path) comes after v
 |---|---|---|
 | R-1 | Errors block; warnings do not. Errors: required fields and types, relation endpoints of the right classes, coded scenarios and architectures linking into the graph correctly, stakeholder groups within the cap, valid status. Warnings: unlinked mention of a graph entity; raw record not linking or embedding its coded pages. | Seeded-defect tests, one or more per rule |
 | R-2 | Every message names the file, the field or link, and the rule broken (by id). It gives the fix as something a literal reader can apply: the exact command to run, or the exact field and value to write. | Golden-output tests on seeded defects |
-| R-11 | **Make the right way the easy way.** The template ships an Obsidian page template for every page type. `scpt` creates entailed pages and regenerates indexes, so users never write that structure by hand. Each journey stage's docs page leads with the one command or action to take next. | Inspection; the Haiku testers' reports |
 | R-3 | How strict a check is follows the page status: a stub needs only identity, type and status; draft and done are checked in full *(default: missing required fields warn on draft, error on done)*. | Tests per status |
 | R-4 | `index` is the only command that rewrites class pages; the stub command is the only one that creates pages; checks never write. | Tests; inspection |
 | R-5 | Speed on a laptop with a 500-page vault: local check < 1 s, neighborhood < 2 s, full < 5 s *(default thresholds)*. | Benchmark script |
@@ -109,7 +108,8 @@ Further UX (an Obsidian plugin, gen-AI help, a non-technical path) comes after v
 | R-7 | Both repositories commit `uv.lock`; CI runs tests and checks on every push. | CI runs |
 | R-8 | The interactive session has two equal paths: the `scpt` CLI in a terminal, and the Python REPL (`import scpt_kg`). Every operation is available on both, with the same messages, and the docs show both side by side. The CLI is a thin layer over the Python API. | Tests calling both paths; docs test runs both |
 | R-9 | Every command shown in the docs runs as shown, and the CLI reference matches `--help`. | Docs test that extracts and runs the commands; reference diff |
-| R-10 | The docs site has no dead ends or broken links. Every journey page says what you need before you start and where to go next. | Strict build plus link check; the ACE's browser pass |
+| R-10 | The docs site has no dead ends or broken links. Every journey page says what you need before you start and where to go next. | Strict build plus link check; the ACE's browser pass over every page, at desktop and phone width |
+| R-11 | **Make the right way the easy way.** The template ships an Obsidian page template for every page type. `scpt` creates entailed pages and regenerates indexes, so users never write that structure by hand. Each journey stage's docs page leads with the one command or action to take next. | Inspection; the Haiku testers' reports |
 
 ## User acceptance
 
@@ -122,7 +122,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
 | J3 Set up | runs one documented command, gets a working `scpt`, and opens the folder as an Obsidian vault | getting started |
 | J4 Plan | plans a facilitation event: who comes as actors and who as technologists, the Chatham House framing, stakeholder groups within the cap | planning guide |
 | J5 Capture | during the event, records raw scenarios and raw architectures | the two facilitation guides |
-| J6 Code | afterwards, in an interactive session (the `scpt` CLI in a terminal, or the Python REPL), decompiles the raw notes into SCPT pages and relations: creates stubs, moves pages to draft and done, regenerates the indexes, and fixes each error from its message using local and neighbourhood checks | coding guide, CLI reference |
+| J6 Code | afterwards, in an interactive session (the `scpt` CLI in a terminal, or the Python REPL), decompiles the raw notes into SCPT pages and relations: creates stubs, moves pages to draft and done, regenerates the indexes, and fixes each error from its message using local and neighborhood checks | coding guide, CLI reference |
 | J7 Finish | reaches a clean `check --all`, commits and pushes, and navigates the resulting graph in Obsidian | coding guide |
 
 **UA-A, the AI user tests** (run by the team on the candidate, before the chief engineer's walkthrough):
@@ -132,16 +132,18 @@ Acceptance is judged by people using the product, not only by tests. The journey
   the easy way.
   - a facilitator-analyst who is comfortable with a terminal, GitHub and Obsidian but is not a developer (Haiku);
   - a newcomer to Obsidian and the command line who is careful and follows instructions literally (Haiku);
-  - at least one Haiku tester works in the Python REPL and at least one uses the CLI;
-  - the same facilitator-analyst on Sonnet, as a control: a step that Sonnet passes and Haiku fails points to the docs or the tool, not the user.
+  - the same facilitator-analyst on Sonnet, as a control: a step that Sonnet passes and Haiku fails points to the
+    docs or the tool, not the user.
+
+  Between them, at least one Haiku tester works in the Python REPL and at least one uses the CLI.
 - Each tester starts from the Pages preview URL and follows only what the docs site says. J2 is simulated with
   `git clone --no-hardlinks` of the template with its remote removed; all other stages run as written. Each tester
   codes a small elicitation in a domain of its own, different from the worked example.
 - Testers may not read `src/` or `tests/`. Every claim comes with pasted command output. Each tester reports, per
   stage: where it got stuck, what it had to guess, and where the docs left it with nowhere to go.
-- **Pass bar:** every tester, the Haiku testers included, reaches J7 with a clean `check --all`. Every finding is dispositioned: fixed (and
-  re-tested by a fresh tester), or accepted with a reason and listed in the reviewer's guide. Every guess counts as a
-  finding. The final round has no unresolved blocking finding.
+- **Pass bar:** every tester, the Haiku testers included, reaches J7 with a clean `check --all`. Every guess counts
+  as a finding. Every finding is dispositioned: either fixed and re-tested by a fresh tester, or accepted with a
+  reason and listed in the reviewer's guide. The final round leaves no blocking finding unresolved.
 - A report that mentions the worked example's proper nouns, or that finds nothing, is void and is run again.
 
 **UA-M, the chief engineer's walkthrough** (the first sitting of the reviewer's guide, and the core of acceptance):
@@ -162,14 +164,12 @@ Acceptance is judged by people using the product, not only by tests. The journey
 - A first-time user fixes every conformance error from the message alone, without reading the source.
 - The checks feel instant in an interactive session.
 - The tools are small enough that one person can maintain them.
-- The demo vault reads in Obsidian as well as the paper's reader/reviewer screenshots suggest.
+- The worked example reads in Obsidian as well as the paper's reader/reviewer screenshots suggest.
 
 ## Definition of good enough
 
 - R-1 to R-11 met, with evidence.
 - The AI user tests (UA-A) pass on the candidate.
-- The documentation site covers the whole journey and has had the ACE's browser pass on every page (desktop and
-  phone width), with findings fixed or listed.
 - The candidate is staged for the chief engineer's own walkthrough (UA-M), with the reviewer's guide ready.
 - The spike's decision records exist.
 
@@ -193,8 +193,9 @@ record above.
   approval and amendments, and the **candidate stage** the chief engineer's walkthrough needs:
   - the docs site deploys from `dev` to Pages, with a banner marking it pre-release;
   - `scpt-kg-template` is marked as a GitHub template, with `dev` as its default branch until the release;
-  - the template pins the tools by the exact candidate commit, which the `v0.1.0` tag then marks.
-  At the release, the template's default branch returns to `main`.
+  - the template pins the tools to the exact candidate commit.
+  At the release, `v0.1.0` tags that same commit, the site redeploys from `main`, and the template's default branch
+  returns to `main`.
 - Amendments to this mission are approved by the same act as the mission.
 - How the team runs is in `ORG.md`.
 
@@ -203,8 +204,9 @@ record above.
 1. **WP1 Toolchain spike.** OKF, oxigraph, pydantic and the rule language, tried on a throwaway mini-vault and
    measured. Fixes: the toolchain.
 2. **WP2 Ontology and page contracts.** Fields per class, page types, link rules, status rules, the rule catalogue
-   with ids and message wording. Fixes: the TBox and the vault conventions.
-3. **WP3 Conformance tools.** Parser, checks, CLI, seeded-defect tests, benchmark. Fixes: D-1, D-2.
+   with ids and message wording. Fixes: D-1 and the vault conventions.
+3. **WP3 Conformance tools.** Parser, checks, the Python API and the CLI over it, seeded-defect tests, benchmark.
+   Fixes: D-2.
 4. **WP4 Template and worked example.** Can run in parallel with WP3 once WP2 is accepted. Fixes: D-3.
 5. **WP5 Docs and Pages.** Written journey-first (J1–J7). Fixes: D-4.
 6. **WP6 Candidate and user acceptance.** Integration, the candidate stage, UA-A rounds to the pass bar, the
@@ -214,7 +216,7 @@ record above.
 
 - Names: `scpt-kg-tools`, `scpt-kg-template`, CLI command `scpt`.
 - The mission, org and decision records live in `scpt-kg-tools`.
-- Python ≥ 3.12; the template installs the tools from a git tag through uv; no PyPI.
+- Python ≥ 3.12. The template installs the tools through uv as a git dependency pinned to a commit; no PyPI.
 - Facilitation and coding guides are written once, on the Pages site; the template links to them rather than copying them.
 - Status strictness (R-3) and speed thresholds (R-5) as stated above.
 - Documentation built with MkDocs Material (as in `assurances-audits-accountability` and `knowledgecomplex`).
@@ -224,12 +226,10 @@ record above.
   short-lived unit branches off `dev`.
 - Licence: Apache-2.0, copyright Dynamical Systems Group, for code, docs and ontology (the chief engineer's decision, D-005).
 - Worked example domain: a city bike-share scheme. It's familiar, has clear stakeholder groups (riders, city transport
-  office, operator), and gives obvious stories of things going wrong and right. It differs from any DSG project domain.
+  office, operator), and gives obvious stories of things going wrong and right.
 - The stakeholder-group cap is set in the template's configuration file, with the demo set to 3.
 - No AI attribution on commits, PRs or documents; CI fails on attribution lines, as in tradespace.
 
 ## Open decisions (for the chief engineer)
 
-None. Every item was resolved through the decision loop: 1 decided by the chief engineer (OD1: public repositories
-in `DynamicalSystemsGroup`, approval by PR merge), 1 assigned to the ACE (OD2: the Agent's defaults are the ACE's
-sign-off under the governance rule), 0 deferred, 0 raised. See `decisions/log.md` D-001 and D-002.
+None. Every item was resolved through the decision loop and is recorded in `decisions/log.md`.
