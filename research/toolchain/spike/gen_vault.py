@@ -7,14 +7,14 @@ import random
 import sys
 from pathlib import Path
 
-COUNTS = {"StakeholderGroup": 40, "Concern": 80, "Property": 60, "Technology": 40,
+COUNTS = {"StakeholderGroup": 40, "Concern": 80, "Affordance": 60, "Technology": 40,
           "Heldby": 100, "Addresses": 100, "Attributes": 80}  # sums to 500
-PREFIX = {"StakeholderGroup": "Group", "Concern": "Concern", "Property": "Property",
+PREFIX = {"StakeholderGroup": "Group", "Concern": "Concern", "Affordance": "Affordance",
           "Technology": "Tech"}
 STATUSES = ["done"] * 6 + ["draft"] * 3 + ["stub"]
 RELS = {"Heldby": ("stakeholder", "StakeholderGroup", "concern", "Concern"),
-        "Addresses": ("concern", "Concern", "property", "Property"),
-        "Attributes": ("property", "Property", "technology", "Technology")}
+        "Addresses": ("concern", "Concern", "affordance", "Affordance"),
+        "Attributes": ("affordance", "Affordance", "technology", "Technology")}
 
 
 def page(meta, body):

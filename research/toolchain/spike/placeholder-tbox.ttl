@@ -6,7 +6,7 @@
 
 # PLACEHOLDER TBox for the WP2 spike. Own namespace; no adopted ontology (WP1 decides).
 # Field annotations: sp:requiredField / sp:optionalField hold frontmatter key names.
-# A key whose name is an object-property below (stakeholder, concern, property, technology)
+# A key whose name is an object-property below (stakeholder, concern, affordance, technology)
 # holds a "[[wikilink]]" to a page of the property's range class.
 
 sp:Class a owl:Class ; rdfs:label "SCPT class" .
@@ -21,8 +21,8 @@ sp:Concern a owl:Class, sp:Class ;
     sp:requiredField "name", "description" ;
     sp:optionalField "category" .
 
-sp:Property a owl:Class, sp:Class ;
-    rdfs:label "Property" ;
+sp:Affordance a owl:Class, sp:Class ;
+    rdfs:label "Affordance" ;
     sp:requiredField "name", "description" ;
     sp:optionalField "metric" .
 
@@ -39,12 +39,12 @@ sp:Heldby a owl:Class, sp:Class ;
 
 sp:Addresses a owl:Class, sp:Class ;
     rdfs:label "Addresses" ;
-    sp:requiredField "concern", "property" ;
+    sp:requiredField "concern", "affordance" ;
     sp:optionalField "rationale" .
 
 sp:Attributes a owl:Class, sp:Class ;
     rdfs:label "Attributes" ;
-    sp:requiredField "property", "technology" ;
+    sp:requiredField "affordance", "technology" ;
     sp:optionalField "rationale" .
 
 sp:heldbyStakeholder a owl:ObjectProperty ; rdfs:label "stakeholder" ;
@@ -53,10 +53,10 @@ sp:heldbyConcern a owl:ObjectProperty ; rdfs:label "concern" ;
     rdfs:domain sp:Heldby ; rdfs:range sp:Concern .
 sp:addressesConcern a owl:ObjectProperty ; rdfs:label "concern" ;
     rdfs:domain sp:Addresses ; rdfs:range sp:Concern .
-sp:addressesProperty a owl:ObjectProperty ; rdfs:label "property" ;
-    rdfs:domain sp:Addresses ; rdfs:range sp:Property .
-sp:attributesProperty a owl:ObjectProperty ; rdfs:label "property" ;
-    rdfs:domain sp:Attributes ; rdfs:range sp:Property .
+sp:addressesAffordance a owl:ObjectProperty ; rdfs:label "affordance" ;
+    rdfs:domain sp:Addresses ; rdfs:range sp:Affordance .
+sp:attributesAffordance a owl:ObjectProperty ; rdfs:label "affordance" ;
+    rdfs:domain sp:Attributes ; rdfs:range sp:Affordance .
 sp:attributesTechnology a owl:ObjectProperty ; rdfs:label "technology" ;
     rdfs:domain sp:Attributes ; rdfs:range sp:Technology .
 

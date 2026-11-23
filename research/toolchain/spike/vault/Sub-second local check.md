@@ -1,5 +1,5 @@
 ---
-type: Property
+type: Affordance
 name: Sub-second local check
 status: stub
 description: A single-page check completes in under one second.

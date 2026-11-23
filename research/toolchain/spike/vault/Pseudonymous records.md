@@ -1,5 +1,5 @@
 ---
-type: Property
+type: Affordance
 name: Pseudonymous records
 status: done
 description: Records name groups, never individuals.
