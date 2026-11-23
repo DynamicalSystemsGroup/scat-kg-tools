@@ -248,3 +248,22 @@ Mission approval verified: PR #1 was merged by `mzargham` at 2026-11-23T19:00:31
 ACE created `dev` from it, along with `work-packages/board.md` and drafts of WP1 (ontology research sprint) and WP2
 (toolchain spike). The two run in parallel, and their blast radii (`research/ontology/**` and
 `research/toolchain/**`) don't overlap.
+
+## D-016 | 2026-11-23 | WP1 and WP2 scopes approved (ACE)
+
+The PM's scope check returned 7 fixes for WP1 and 8 for WP2. All were applied:
+- unit-prefixed IDs;
+- blast radii limited to `research/ontology/**` and `research/toolchain/**`, with the board owned by the PM;
+- requirements for every goal (WP1-R5 to WP1-R7, WP2-R3, WP2-R6 and WP2-R7), including word limits on the readouts;
+- "neighborhood" defined as one hop in each direction;
+- stacks A, B and C named;
+- a placeholder TBox path for the spike.
+
+ACE calls:
+- The spike's PyPI dependencies are pre-approved: pyoxigraph, rdflib, pyshacl, pydantic, pyyaml, python-frontmatter
+  and pytest.
+- OKF may be installed only from the chief engineer's named repository, pinned to a recorded commit, cloned into its
+  own empty directory, read before running, and run with paths passed as arguments.
+
+The PM's proposed units are approved as given: WP1 at 20 points and WP2 at 19, run in parallel.
+Approved: WP1 and WP2 scopes, at the commit that records this entry.
