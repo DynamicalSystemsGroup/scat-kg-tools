@@ -83,7 +83,7 @@ name is made from the title like this, and the tools use it whenever they propos
    characters in step 2: they become hyphens, they are never transliterated;
 2. replace every run of characters outside `a-z0-9` with one `-`, and trim `-` from both ends;
 3. cut to 64 characters and trim a trailing `-`: this is the stem;
-4. the stem is the name unless it is taken: the name of an existing page, or a reserved name (including the seven
+4. the stem is the name unless it is taken: the name of any existing `.md` file (a Markdown file without `type` is not a page but still blocks the name), or a reserved name (including the seven
    class page names and `con`), counts as taken; names are compared without regard to case. Then try `<stem>-2`, `<stem>-3`, and so on, cutting the stem first so
    the whole name stays within 64 characters (trim a trailing `-` from the cut stem before adding the suffix), until
    the name is free.
@@ -127,9 +127,12 @@ scenario and architecture pages; section 7 gives the target of each.
 **In the body**, a link is `[[page-name]]`, optionally `[[page-name|text to show]]` or `[[page-name#Heading]]`; the
 tools strip `|...`, `#...` and `^...` (a block reference) and read the page name, which must exist. What is and is
 not a body link:
-- Text inside code spans and fenced code blocks is never a link.
+- Text inside matched code spans and fenced code blocks is never a link. An indented code block is not code here, and
+  an unmatched backtick starts nothing.
 - An embed `![[page-name]]` of a page name is a body link.
 - Markdown-style links `[text](target)` are not wikilinks and are ignored.
+- The tests below apply to the target after stripping `|alias`, `#heading` and `^block`. A target left empty by the
+  stripping (`[[^blk]]`, `[[|a]]`) is not a page link.
 - A target that is not a page is not a page link, and is never checked or stubbed: anything containing a dot
   (`[[photo.png]]`, `[[v1.2-notes]]`; page names never contain a dot, see 2), anything with a `/`, and a same-page link
   `[[#Heading]]`.
@@ -246,7 +249,7 @@ explicitly, and then it creates it exactly as above. The slugs it accepts are th
 (`stakeholder-group`, `concern`, `affordance`, `technology`) and the four record keys (`scenario-raw`,
 `scenario-coded`, `architecture-raw`, `architecture-coded`). It refuses any other slug: a relation page is made only by
 naming a pair, and a class page only by the index operation. It also refuses a name that is illegal (2) or already
-taken, when the name is given directly and not derived: it creates nothing and says why. With no type, it creates
+taken (any existing `.md` file name counts), when the name is given directly and not derived: it creates nothing and says why. With no type, it creates
 nothing and reports the link. The usual way to give a body link a type is to name the page in the right link field of
 the same page, which entails the stub with that type and makes the body link resolve.
 
@@ -262,8 +265,8 @@ the same page, which entails the stub with that type and makes the body link res
 
 ## 6. Page types: folders
 
-Section 7 gives each page type's fields. The folder the tools create its pages in is the slug, with one exception:
-`class` pages go in `class/`. The `type` value is always the slug. Every page type has `type`, `title` and
+Section 7 gives each page type's fields. The folder the tools create its pages in is the slug, for every page type (`class` pages go in `class/`). The `type` value
+is the slug. Every page type has `type`, `title` and
 `description`, and every type except `class` has `status`.
 
 ## 7. Page types: fields
@@ -624,7 +627,7 @@ The cap is not in the TBox. It is set per vault in a file named **`scat.toml` at
 stakeholder_group_cap = 3
 ```
 
-- The value is a whole number of 1 or more. The tools read this key and ignore any other key in the file.
+- The value is a TOML integer of 1 or more (a float such as `3.0` is a configuration problem). The tools read this key and ignore any other key in the file.
 - The count is the number of pages with `type: stakeholder-group`, at every status, stubs included.
 - The cap is checked over the whole vault. A vault above the cap is not conformant.
 - The key is at the top level of the file. There is no default: if the file is missing or not valid TOML, or the key
