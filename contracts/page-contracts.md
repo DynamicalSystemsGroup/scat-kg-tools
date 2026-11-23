@@ -161,7 +161,7 @@ the one place that fact is written: there is no field for it on the group, conce
   pages, one per group, so each group's account stays its own. The endpoints are required at every status, even on a
   stub: a relation page without both says nothing.
 - **Where an account lives.** The optional `notes` field on a relation page holds a one-line account of that pair
-  (for a `heldby` page, how that group holds that concern), quoted like `title` (1). A longer account goes in the
+  (for a `heldby` page, how that group holds that concern), quoted as `title` is (1). A longer account goes in the
   page body, which is free text.
 - **Users need not write a relation page's structure.** The stub operation creates it with `type`, `status`, `title`
   and both endpoint links filled, from the pair the author names (5), and the author then writes only `description`,

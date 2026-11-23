@@ -207,7 +207,7 @@ defect, and expects exactly one message of the rule, equal to the golden text, a
 
 ### SCAT-FM-PARSE
 - **Severity:** error. **Fires:** every status.
-- **Trigger:** the file starts with a `---` line (so it means to be a page) and either has no closing `---` line, or the text between them is not valid YAML, or is not a mapping. Quotes around `title`, `description` and `notes` are not required (contract section 1): unquoted plain text is valid YAML and gets no message, but text with `:` or `#`, or a leading quote, left unquoted is not valid YAML and is reported here. A Markdown file with no frontmatter, or with frontmatter and no `type` key, is not a page and gets no message; a link to it is a dangling link and says so (SCAT-LINK-DANGLING).
+- **Trigger:** the file starts with a `---` line (so it means to be a page) and either has no closing `---` line, or the frontmatter is not valid YAML (for example `title: a: b`, or a value that starts with a quote and continues after it), or is not a mapping. Quotes around `title`, `description` and `notes` are not required (contract section 1),  so most unquoted text is valid YAML and gets no message here. An unquoted ` #` silently cuts the rest of the line as a YAML comment and is not reported, which is why the contract advises quoting. A Markdown file with no frontmatter, or with frontmatter and no `type` key, is not a page and gets no message; a link to it is a dangling link and says so (SCAT-LINK-DANGLING).
 - **Message:**
 ```
 error [SCAT-FM-PARSE] <file>[:<line>] frontmatter: <parser's reason, or "the closing --- line is missing">
@@ -282,15 +282,15 @@ error [SCAT-FM-INDEXES] <file> field `indexes`: `<value>` is not a class
 
 ### SCAT-FM-SHAPE
 - **Severity:** error. **Fires:** every status.
-- **Trigger:** `type`, `status`, `title`, `description`, `indexes` or `notes` is present and not empty, and is not a single string (a list, a mapping, a number).
+- **Trigger:** `type`, `status`, `title`, `description`, `indexes` or `notes` is present and not empty, and is not a single string (a list, a mapping, a number, or a boolean such as an unquoted `yes` or `true`). An unquoted `null` or `~` is missing, by the Empty rule above.
 - **Message:**
 ```
-error [SCAT-FM-SHAPE] <file> field `<field>`: expected one line of text, found <a list | a mapping | a number>
-  Fix: replace the field with the line `<field>: "<text>"`          (a one-item list of text: the item)
+error [SCAT-FM-SHAPE] <file> field `<field>`: expected one line of text, found <a list | a mapping | a number | a boolean>
+  Fix: replace the field with the line `<field>: "<text>"`          (a one-item list of text: the item; a boolean or number: the value as written, quoted)
   Fix: replace the field with one line of text you write            (otherwise; no exact value exists)
 ```
-- **Fix kind:** exact for a one-item list of text; otherwise manual, because the intended text is unknowable.
-- **Test:** `title:` as a one-item list (exact) and as a mapping (manual).
+- **Fix kind:** exact for a one-item list of text, a boolean and a number (quote the value); otherwise manual, because the intended text is unknowable.
+- **Test:** `title:` as a one-item list (exact), as a mapping (manual), and `title: yes` (exact: `title: "yes"`).
 
 ### SCAT-NAME
 - **Severity:** error. **Fires:** every status.
