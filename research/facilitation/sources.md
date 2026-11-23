@@ -16,7 +16,7 @@ The four topics (WP3-G1): **(a)** eliciting stories and proposed designs; **(b)*
 | [ant-rdf] | One question at a time, never pre-sorting; many entry routes; raw capture kept apart from later reading. Silent on live rooms and on eliciting a proposed design. | Strong: every statement sits under the perspective it was authored in; one thing can be read two ways without conflict. Cross-perspective handling is stated as unfinished. | Comparison shows where readings flip; each reading's silence is stated; failure and gaps are first-class; acknowledged gaps carry a reason. Silent on surfacing friction live. | Strong, as design stance: merging frames is a loss; agreement is a finding, not truth. Silent on social harm to a group. |
 | [KOI] | Silent as a method; participatory rule-setting only. | Developed, theoretical: differences arise through relation. | Largely silent on disagreement among people. | Silent on flattening disagreement; warns instead against mistaking the model for the world. |
 | [Loop] | Flagging, consent and co-built tools; tagging by participants. Silent on narrative or design elicitation. | Developed for access, authorship and legibility; no single ontology. Silent on holding conflicting views. | Contest is possible in principle; a withdrawn-consent episode left an auditable trace. Silent on dissent and its handling. | Adjacent only: ordering the world makes it more singular than it is. |
-| The supplied drafts | Draw on what people already do; machine drafts labelled and open to correction. Silent on designs. | Each party's account kept apart, with origin and time. | Show where accounts differ and where reliance is concentrated, as questions, not findings. | Condensing many accounts favours the commonest view and falsely reassures. |
+| The supplied drafts | Draw on what people already do; others' notes stay open to the owner's correction. Silent on designs. | Each party's account kept apart, with origin and time. | Put differences and unexamined arrangements to people as questions. | Boiling accounts down to one can mislead a group about its own spread of views. |
 
 ## [ant-rdf]
 
@@ -40,8 +40,8 @@ section on dissent as such; its stance is in its vocabulary and authoring rules.
 - **(c) Controversy and gaps.** A comparison of two readings lists where they converge, where they diverge and what
   only one holds; each reading states what it is silent on. (`briefs/koi-comparison.md`; a2ec48e.) Every association
   is in principle contestable; failure and incompleteness are allowed, and an acknowledged gap needs a stated reason
-  and an author. (`ONTOLOGICAL_COMMITMENTS.md` C5; `ontology/shapes/ant-shapes-warnings.ttl`;
-  `adr/0000-foundational-decisions.md` R9b; a2ec48e.) A subversive use recorded as a documented exception is a worked
+  and an author. (`ONTOLOGICAL_COMMITMENTS.md` C5 for contestability; C7 for the waiver justification;
+  `ontology/shapes/ant-shapes-warnings.ttl`; `adr/0000-foundational-decisions.md` R9b for who waived; a2ec48e.) A subversive use recorded as a documented exception is a worked
   dissent case. (`briefs/koi-ethnographic-network.md`; a2ec48e.) Silent on noticing friction before anyone voices it.
 - **(d) Collapse.** A single global typing would smuggle one observer's frame into the model, so it is withheld;
   union of two frames is rejected in favour of partial connection; convergence is a finding, not objectivity;
@@ -79,15 +79,13 @@ Unpublished drafts from the same collaboration were read for principles. They co
 facilitation sessions, so they bear on the topics indirectly. They are an unnamed group; nothing here is quoted,
 linked or attributed.
 
-- **(a)** Gather accounts from what people are already doing instead of asking for extra work. Anything a machine
-  drafts is labelled as such and stays open to its owner, who may correct or withdraw it. Offer interpretations for
-  acceptance; never settle them on the owner's behalf. Silent on proposed designs.
-- **(b)** Keep each party's account apart. The party controls what leaves it, and passing it outward is deliberate
-  and recorded. Each contribution carries its origin and time.
-- **(c)** Show where accounts differ, where a structure leans heavily on one element, and what has gone unexamined
-  for long. Put these as questions to look at, not as findings.
-- **(d)** Condensing many accounts into one favours the commonest view, hides the structure beneath it and leaves a
-  group falsely reassured.
+- **(a)** Accounts are best drawn from what people already do, not from extra work asked of them. Whatever someone
+  other than the owner writes down stays open to the owner's correction or withdrawal. Silent on proposed designs.
+- **(b)** A party's account stays its own, and the party decides what travels beyond it. Contributions keep a note of
+  where and when they came from.
+- **(c)** Differences between accounts, and arrangements nobody has looked at lately, are put to people as questions
+  to consider.
+- **(d)** Boiling many accounts down to one can leave a group misled about its own spread of views.
 
 ## Where the sources are silent
 

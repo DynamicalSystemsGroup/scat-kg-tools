@@ -25,8 +25,8 @@ Three limits keep it honest.
 - **Within the cap.** Each vault sets a cap on the number of stakeholder groups. Participants are clustered into
   groups that fit under it. Clustering is by shared standpoint, not by size or by who is loudest.
 
-Why this matters: condensing many accounts into one favours the commonest view and falsely reassures a group (the
-supplied drafts); [ant-rdf] treats merging frames as a loss (`adr/0000-foundational-decisions.md` R2). [KOI] and
+Why this matters: boiling many accounts down to one can leave a group misled about its own spread of views (the
+supplied drafts); [ant-rdf] plans partial connection of readings rather than their union (`FUTURE_WORK.md`, multiplicity section; a2ec48e). [KOI] and
 [Loop] offer theory for plurality (Diffraction; Conclusion) but no live-room method, so the moves below are *(our
 design)*, shaped by [ant-rdf]'s authoring manner.
 
@@ -73,8 +73,9 @@ sees it this way?"), not test ("is that really a group?").
 
 **"From this perspective" at this stage.** The plan names each stakeholder group as a standpoint, in a sentence a
 member would accept as theirs: "from where we sit, ...". Each session's prompt is worded from a stated perspective,
-so no one's wording is treated as the neutral default. [ant-rdf]'s catechism asks the person which practice they
-speak from before anything else (`.claude/skills/ant-mgmt.md`); the plan does the same for the room.
+so no one's wording is treated as the neutral default. [ant-rdf]'s catechism asks, later in its sequence and as an optional but encouraged question, from whose practice the
+person is describing this (`CLAUDE.md`, "Authoring flow", step 2; a2ec48e). Our plan asks it first, for the room
+*(our design)*.
 
 **Not here.** No step asks groups to agree a shared agenda by weighing topics against each other; topics are
 added, not eliminated.
@@ -173,12 +174,12 @@ shaped as it is. Coding needs the following from capture; each comes from a move
 5. **Gaps as recorded facts.** "Not addressed" and "no account offered" become visible gaps, not blanks.
 6. **Tensions as named.** A tension noticed aloud in the room is carried across and stays as a tension.
 7. **A draft label.** What is coded from raw notes enters as a draft, open to the group it came from to correct or
-   withdraw (the supplied drafts; [ant-rdf] C7: verification is machine, validation is human).
+   withdraw (the supplied drafts on owner correction; [ant-rdf] C7: verification is machine, validation is human).
 
-**"Yes, and" in coding.** The coder takes up every offered line and builds on it with a stub or a link; nothing is
-dropped for being awkward. When a note does not fit the page types, the coder makes a stub and goes on, because an
-unfinished page is not an error. Where two notes seem to say the same thing, the coder keeps both and links them as
-"similar", and does not merge them into one.
+**"Yes, and" in coding.** The coder takes up every offered line and builds on it with a placeholder or a link; nothing is
+dropped for being awkward. When a note does not fit the page types, the coder leaves a placeholder for it and goes on, because an
+unfinished page is not an error. Where two notes seem to say the same thing, the coder keeps both and marks them as
+related, and does not merge them into one.
 
 **"From this perspective" in coding.** Every coded relation keeps its group. The same concern held by two groups
 is one concern, held by two groups, each in its own wording. The coder writes the reading as "under this group's

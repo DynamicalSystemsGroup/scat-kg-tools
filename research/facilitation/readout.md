@@ -42,18 +42,19 @@ Capabilities, not terms or mechanisms. The first two are the minimum.
 8. Several designs for one concern, and several concerns for one design.
 9. A proposed design held distinct from the stories that motivated it.
 10. Raw capture kept apart from its later reading, so what was said survives any interpretation.
-11. The origin, time and status (drafted or confirmed) of each contribution, and the correction history when a
+11. The origin, time and status (offered, drafted by someone else, or confirmed by its owner) of each contribution, and the correction history when a
     group revises its account.
 12. Agreement between groups recorded as an observation, not as a settled answer.
 13. What a group agreed to share outward, and a trace when something is withdrawn.
 14. Reliance on a single design or element, and arrangements long left unexamined, shown as questions to look at.
-15. A stub, an unfinished page, shown as unfinished, not as an error.
+15. Material that is unfinished, shown as unfinished and not as a fault.
 
 ## Pointers for WP7
 
-- **J4, planning.** Write the planning guide around five acts: choose sessions and keep scenarios and architectures
+- **J4, planning.** Write the planning guide around six acts: choose sessions and keep scenarios and architectures
   apart; cluster people into stakeholder groups within the cap by standpoint; seat every group in every session;
-  frame Chatham House aloud and on the page; and note where groups may share a concern yet differ on others.
+  frame Chatham House aloud and on the page; note where groups may share a concern yet differ on others; and plan how raw notes are taken and kept apart from
+  any later reading.
   Show "yes, and" as a planner who adds a requested topic instead of trading it off, and "from this perspective" as
   each group named in a sentence a member would accept as theirs. See `strategy.md`, J4.
 - **J5, capturing.** Write two facilitation guides, one per kind of record, each ready to read aloud.
@@ -64,7 +65,7 @@ Capabilities, not terms or mechanisms. The first two are the minimum.
   who was talked over, and how to record silence. See `strategy.md`, J5a and J5b.
 - **J6, coding.** Write the coding guide from what coding needs from capture: raw notes still raw, a group on every
   note, concerns in the speaker's words, gaps and tensions carried across, and a draft label until the group
-  confirms. Show "yes, and" as a coder who takes up every awkward line with a stub, and "from this perspective" as
+  confirms. Show "yes, and" as a coder who takes up every awkward line with a placeholder, and "from this perspective" as
   each relation keeping its group and a corrected reading added beside the old one. Where a tool message seems to
   call for a fix that erases a difference, show how to record the difference and mark the gap with a reason
   instead. See `strategy.md`, J6.
