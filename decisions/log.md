@@ -464,3 +464,14 @@ ACE calls:
   identity goes only in the spawn prompts of that unit and its reviewer.
 
 Approved: the WP1, WP2 and WP3 scopes, at the commit that records this entry.
+
+## D-024 | 2026-11-23 | Periodic status report
+
+Requested by the chief engineer (chat, typed by the ACE): "i want a periodic report on recently completed work, whats
+in flight & what actor is working on it, then what's queued, and what the queued items are waiting on."
+Outcome:
+- The board's Units table now records, for each unit, the actor, its state, what it is waiting on, and when it was
+  done.
+- ORG.md has a "Status reports" section, which makes the PM responsible for keeping that table true.
+- The ACE runs an hourly report from the board and the git history of `dev` *(ACE default cadence)*, without
+  interrupting the PM.

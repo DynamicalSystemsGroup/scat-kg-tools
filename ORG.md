@@ -79,6 +79,13 @@ Each scope must have:
 Bigger changes (a new mechanism, an ontology change, a new tool) are scoped in stages: spike, decide (the ACE),
 build, quality control, integrate, and review the cascade to a clean merged state.
 
+## Status reports
+
+The chief engineer gets a periodic report: recently completed work, what is in flight and which actor is working on
+it, and what is queued and what it is waiting on. The ACE builds it from `work-packages/board.md` and the git history
+of `dev`, so the PM keeps the board's Units table true at every state change: actor, state, what a queued or blocked
+unit is waiting on, and when each unit was done.
+
 ## Verification
 
 - **Tier 0, the author, before each commit:** `uv run ruff check`, `uv run ruff format --check` and `uv lock --check`

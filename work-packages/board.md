@@ -17,8 +17,10 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 
 ## Units
 
-| Unit | Worker (model) | Points | Branch | State |
-|---|---|---|---|---|
+States: `queued` · `in flight` · `in review` · `done` · `blocked`. A queued or blocked unit says what it is waiting on.
+
+| Unit | Actor (worker identity, model) | Points | Branch | State | Waiting on | Done at |
+|---|---|---|---|---|---|---|
 
 ## Iterations and velocity
 
