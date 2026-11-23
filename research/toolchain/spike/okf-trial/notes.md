@@ -12,15 +12,15 @@ Throwaway trial, 2026-11-23. Trial machine: macOS 24.6 (Darwin), x86_64, system 
 ### Source and pin
 
 ```
-$ git clone https://github.com/open-knowledge-format/open-knowledge-format okf-clone     # in <scratchpad>/okf-clone
+$ git clone https://github.com/open-knowledge-format/open-knowledge-format okf-clone     # in <scratch>/okf-clone
 $ git rev-parse HEAD
 527e81aff55992be21507e97004286789126f88c
 $ git log -1 --format='%ci %s'
 2026-11-18 09:00:25 -0800 Update SPEC.md
 ```
 
-Pinned commit: **527e81aff55992be21507e97004286789126f88c** (spec v0.3). Clone is 1.6 MB, kept outside the repository
-(`/private/tmp/claude-501/-Users-z-Documents-GitHub/b40c0a13-b60e-4132-b167-1824838bc4cf/scratchpad/okf-clone`); nothing from it is committed.
+Pinned commit: **527e81aff55992be21507e97004286789126f88c** (spec v0.3). The integrator is also to copy this pinned commit into `measurements.md`. Clone is 1.6 MB, kept outside the repository
+(`<scratch>/okf-clone`, where `<scratch>` is the session scratchpad directory); nothing from it is committed.
 Licence: Apache 2.0 (Google LLC headers).
 
 ### What "install" is, and what I ran
@@ -50,8 +50,8 @@ Installed 1 package in 7ms
  + pyyaml==6.0.4
 ```
 
-Every run: `cd /tmp; <scratchpad>/okf-venv/bin/python -I <clone>/<script> <bundle path>` (no interpreter run inside the clone;
-`-I` isolated mode). `$S` below is the scratchpad path above; `$V` is `research/toolchain/spike/vault`.
+Every run: `cd /tmp; <scratch>/okf-venv/bin/python -I <clone>/<script> <bundle path>` (no interpreter run inside the clone;
+`-I` isolated mode). `$S` below is `<scratch>`; `$V` is `research/toolchain/spike/vault`.
 
 ### Run 1: validate.py on the clean mini-vault (unchanged)
 
