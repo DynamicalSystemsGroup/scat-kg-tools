@@ -41,9 +41,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP3-U4 | technical writer, sonnet | 5 | 5 | `wp3/u4` | done |  | 2026-11-23T16:00:21-05:00 | 1 push-back (one wrong citation, privacy hardening) plus a re-review with the private brief |
 | WP4-U1 | ontology designer, sonnet | 5 | 8 | `wp4/u1` | done |  | 2026-11-23T16:25:01-05:00 | rework after D-030 (relations as page types, namespace); 2 push-backs, 3 review passes; about 25 min worker |
 | WP4-U2 | page-contract designer, sonnet | 5 | 8 | `wp4/u2` | done |  | 2026-11-23T16:48:41-05:00 | reworked for D-030 and D-031; 3 push-backs, 3 reviews; spec-heavy |
-| WP4-U3 | rule-catalogue author, sonnet | 5 |  | `wp4/u3` | in flight |  |  |  |
-| WP4-U4 | technical writer, sonnet | 3 |  | `wp4/u4` | queued | WP4-U2, WP4-U3 merged |  |  |
-| WP4-U5 | cold-write tester, haiku | 3 |  | `wp4/u5` | queued | WP4-U2, WP4-U3 merged |  |  |
+| WP4-U3 | rule-catalogue author, sonnet | 5 | 8 | `wp4/u3` | done |  | 2026-11-23T16:53:33-05:00 | reworked for D-030 and D-031; 4 push-backs, 4 reviews; last round checked by PM re-run, cross-read left to U6 |
+| WP4-U4 | technical writer, sonnet | 3 |  | `wp4/u4` | in flight |  |  |  |
+| WP4-U5 | cold-write tester, haiku | 3 |  | `wp4/u5` | in flight |  |  |  |
 | WP4-U6 | cross-check reviewer, sonnet | 3 |  | `wp4/u6` | queued | WP4-U1 to U5 merged |  |  |
 | WP4-U7 | cold-write rerun tester, haiku | 2 |  | `wp4/u7` | queued | only if U5 finds defects |  |  |
 
