@@ -1,0 +1,94 @@
+# STACK B rules as SHACL, "core" variant: SHACL-core constraints only (minCount, class, not), with
+# conditions ("status is done and class is X") expressed as SHACL-AF SPARQL *targets*, which pyshacl
+# evaluates once per shape, not once per focus node (see README for why this matters).
+# Rule ids: scat:ruleId on a shape, else by constraint component (class -> SCAT-002, not -> SCAT-003).
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix scat:  <https://example.org/scat-placeholder#> .
+@prefix shape: <https://example.org/scat-placeholder/shape#> .
+
+<https://example.org/scat-placeholder/shapes> a owl:Ontology ;
+    sh:declare [ sh:prefix "scat" ; sh:namespace "https://example.org/scat-placeholder#"^^xsd:anyURI ] .
+
+# SCAT-001: always-required fields
+shape:Always a sh:NodeShape ; sh:targetClass scat:Page ;
+    sh:property shape:ReqTitle, shape:ReqStatus .
+shape:ReqTitle a sh:PropertyShape ; scat:ruleId "SCAT-001" ; sh:path scat:title ; sh:minCount 1 .
+shape:ReqStatus a sh:PropertyShape ; scat:ruleId "SCAT-001" ; sh:path scat:status ; sh:minCount 1 .
+
+# SCAT-001 (done pages need a description) and SCAT-004 (done coded records need their link types)
+shape:DonePage a sh:NodeShape ;
+    sh:target [ a sh:SPARQLTarget ; sh:prefixes <https://example.org/scat-placeholder/shapes> ;
+        sh:select "SELECT ?this WHERE { ?this a scat:Page ; scat:status \"done\" }" ] ;
+    sh:property shape:ReqDescription .
+shape:ReqDescription a sh:PropertyShape ; scat:ruleId "SCAT-001" ;
+    sh:path scat:description ; sh:minCount 1 .
+
+shape:DoneCodedScenario a sh:NodeShape ;
+    sh:target [ a sh:SPARQLTarget ; sh:prefixes <https://example.org/scat-placeholder/shapes> ;
+        sh:select "SELECT ?this WHERE { ?this a scat:CodedScenario ; scat:status \"done\" }" ] ;
+    sh:property shape:ReqCsGroups, shape:ReqCsConcerns, shape:ReqCsAffordances .
+shape:ReqCsGroups a sh:PropertyShape ; scat:ruleId "SCAT-004" ; sh:path scat:groups ; sh:minCount 1 .
+shape:ReqCsConcerns a sh:PropertyShape ; scat:ruleId "SCAT-004" ; sh:path scat:concerns ; sh:minCount 1 .
+shape:ReqCsAffordances a sh:PropertyShape ; scat:ruleId "SCAT-004" ;
+    sh:path scat:affordances ; sh:minCount 1 .
+
+shape:DoneCodedArchitecture a sh:NodeShape ;
+    sh:target [ a sh:SPARQLTarget ; sh:prefixes <https://example.org/scat-placeholder/shapes> ;
+        sh:select "SELECT ?this WHERE { ?this a scat:CodedArchitecture ; scat:status \"done\" }" ] ;
+    sh:property shape:ReqCaConcerns, shape:ReqCaAffordances, shape:ReqCaTechnologies .
+shape:ReqCaConcerns a sh:PropertyShape ; scat:ruleId "SCAT-004" ; sh:path scat:concerns ; sh:minCount 1 .
+shape:ReqCaAffordances a sh:PropertyShape ; scat:ruleId "SCAT-004" ;
+    sh:path scat:affordances ; sh:minCount 1 .
+shape:ReqCaTechnologies a sh:PropertyShape ; scat:ruleId "SCAT-004" ;
+    sh:path scat:technologies ; sh:minCount 1 .
+
+# SCAT-003 for body links: a mention must resolve
+shape:Mentions a sh:NodeShape ; sh:targetClass scat:Page ; sh:property shape:EpMentions .
+shape:EpMentions a sh:PropertyShape ; sh:path scat:mentions ; sh:not [ sh:class scat:Missing ] .
+
+# SCAT-002 (class) and SCAT-003 (not Missing) on every typed relation
+shape:EndpointHeldby a sh:NodeShape ; sh:targetClass scat:StakeholderGroup ;
+    sh:property shape:EpHeldby .
+shape:EpHeldby a sh:PropertyShape ; sh:path scat:heldby ;
+    sh:class scat:Concern ; sh:not [ sh:class scat:Missing ] .
+shape:EndpointAddresses a sh:NodeShape ; sh:targetClass scat:Concern ;
+    sh:property shape:EpAddresses .
+shape:EpAddresses a sh:PropertyShape ; sh:path scat:addresses ;
+    sh:class scat:Affordance ; sh:not [ sh:class scat:Missing ] .
+shape:EndpointAttributes a sh:NodeShape ; sh:targetClass scat:Affordance ;
+    sh:property shape:EpAttributes .
+shape:EpAttributes a sh:PropertyShape ; sh:path scat:attributes ;
+    sh:class scat:Technology ; sh:not [ sh:class scat:Missing ] .
+
+shape:EndpointCodedScenario a sh:NodeShape ; sh:targetClass scat:CodedScenario ;
+    sh:property shape:EpCsGroups, shape:EpCsConcerns, shape:EpCsAffordances, shape:EpCsRaw .
+shape:EpCsGroups a sh:PropertyShape ; sh:path scat:groups ;
+    sh:class scat:StakeholderGroup ; sh:not [ sh:class scat:Missing ] .
+shape:EpCsConcerns a sh:PropertyShape ; sh:path scat:concerns ;
+    sh:class scat:Concern ; sh:not [ sh:class scat:Missing ] .
+shape:EpCsAffordances a sh:PropertyShape ; sh:path scat:affordances ;
+    sh:class scat:Affordance ; sh:not [ sh:class scat:Missing ] .
+shape:EpCsRaw a sh:PropertyShape ; sh:path scat:raw ;
+    sh:class scat:RawScenario ; sh:not [ sh:class scat:Missing ] .
+
+shape:EndpointCodedArchitecture a sh:NodeShape ; sh:targetClass scat:CodedArchitecture ;
+    sh:property shape:EpCaConcerns, shape:EpCaAffordances, shape:EpCaTechnologies, shape:EpCaRaw .
+shape:EpCaConcerns a sh:PropertyShape ; sh:path scat:concerns ;
+    sh:class scat:Concern ; sh:not [ sh:class scat:Missing ] .
+shape:EpCaAffordances a sh:PropertyShape ; sh:path scat:affordances ;
+    sh:class scat:Affordance ; sh:not [ sh:class scat:Missing ] .
+shape:EpCaTechnologies a sh:PropertyShape ; sh:path scat:technologies ;
+    sh:class scat:Technology ; sh:not [ sh:class scat:Missing ] .
+shape:EpCaRaw a sh:PropertyShape ; sh:path scat:raw ;
+    sh:class scat:RawArchitecture ; sh:not [ sh:class scat:Missing ] .
+
+shape:EndpointRawScenario a sh:NodeShape ; sh:targetClass scat:RawScenario ;
+    sh:property shape:EpRsCoded .
+shape:EpRsCoded a sh:PropertyShape ; sh:path scat:coded ;
+    sh:class scat:CodedScenario ; sh:not [ sh:class scat:Missing ] .
+shape:EndpointRawArchitecture a sh:NodeShape ; sh:targetClass scat:RawArchitecture ;
+    sh:property shape:EpRaCoded .
+shape:EpRaCoded a sh:PropertyShape ; sh:path scat:coded ;
+    sh:class scat:CodedArchitecture ; sh:not [ sh:class scat:Missing ] .
