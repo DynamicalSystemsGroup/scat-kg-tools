@@ -241,3 +241,48 @@ Not changed, because each is as simple as it can be: the candidate stage, the th
 personas.
 Note: `MISSION.md` grew slightly (from about 4,000 to about 4,100 words). R-13, the prerequisites and the
 one-way-per-page rule added more than the trims removed.
+
+## D-017 | 2026-11-23 | Mission Amendment 1: SCAT; scenarios are behavioural, architectures structural; roll back and restart
+
+(D-015 and D-016 were recorded on `dev` and are rolled back with it; see below. This entry is numbered after them so
+no record number is reused.)
+
+New intent from the chief engineer. He shared a stakeholder conversation as intent information; the participants are
+not named in this public record. He also wrote (chat, typed by the ACE): "one thing i noticed is that affordances may
+be better than propeties here. that said, it makes our acronym scat. i think we might as well roll with it. the jazz
+singing should be the reference of record to avoid the feces association."
+
+From the stakeholder conversation, in his words: the work is "scaled to human note taker and focusing on obsidian for
+'coding' data from conversations with the workshop participants. the distinction between actors and technologists is
+somewhat artificial since many people will be both"; "scenarios stories center on behavior ~ chains of events,
+outcomes, consequences, etc"; "architecture stories center on structure ~ arrangements of technologies into tools
+with specific properties (affordances)"; "its just enough structure to make the data interpretable but mostly its a
+formal structure for arranging obsidian notes".
+
+Decided by the chief engineer (pop-up, typed by the ACE): "rename everything. i hope i caught you earlier enough. if
+you are worried about drift you could revert to an earlier commit, make the change in the mission before it
+propogates, and start again. i would also like to add that the clarification about how scenarios are behavioral and
+architectures are structural is an important heuristic.
+- scenarios tell the story of persons within an action situation doing things where outcomes and consequences are
+wraught, its temporal, and technologies are part of the action situation but are not themselves the focus.
+- architectures formulate assemblages they provide structures, they are about parts and wholes, and how parts are
+assembled to provide affordances which address concerns.
+in scenarios that technologies are relatively fix and out of view, the affordances are what are legible
+in architectures the stakeholders are pretty abstracted away and the concerns are what are being addressed. the same
+concerns can arise from different stakeholders and the architectures themselves provide affordances that address
+concerns but cannot presume which stakeholders will adopt their architectures."
+And (chat): "my intuition is we do a roll back and mission revision then kick off again".
+
+Outcome:
+- **Property becomes Affordance.** Addresses is now concern × affordance, and Attributes is now affordance × technology.
+  The acronym is SCAT; scat singing is the reference of record.
+- **Renames:** the repositories become `scat-kg-tools` and `scat-kg-template`, the CLI `scat`, and the Python package
+  `scat_kg`.
+- **New mission section, "Scenarios and architectures",** as a core heuristic. The ACE reading: a coded scenario links
+  stakeholder groups, concerns and affordances, and a coded architecture links concerns, affordances and technologies.
+  This matches the original sketch's Scenarios (s,c,p) and Architectures (c,p,t).
+- **Purpose** adds the human-note-taker scale and "just enough structure".
+- **Rollback:** the WP1/WP2 work in flight was stopped before anything merged. `dev` is reverted to the approved
+  mission (history kept, no force-push), and WP1 and WP2 are re-scoped from this amendment and restarted.
+
+Approval of this amendment: the chief engineer's merge of its PR into `main`.

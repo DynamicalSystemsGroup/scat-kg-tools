@@ -1,12 +1,12 @@
-# Mission — Scope of work: scpt-kg v0.1
+# Mission — Scope of work: scat-kg v0.1
 
 | | |
 |---|---|
 | **Status** | DRAFT. Approved only by the recorded act below. Nothing is executed before then. |
 | **Chief engineer (accountable)** | `mzargham` — final design authority; approves this mission and its amendments; accepts the v0.1 delivery |
 | **Assistant to the chief engineer (ACE)** | The main Claude session — manages the team, writes and approves work-package scopes inside this mission, accepts work packages, escalates only intent gaps |
-| **Repositories** | `scpt-kg-tools` (conformance tools, TBox, docs site; this document lives here) and `scpt-kg-template` (the vault to clone) |
-| **Approval record** | The chief engineer's merge of this document's PR into `main` of `DynamicalSystemsGroup/scpt-kg-tools` (public) |
+| **Repositories** | `scat-kg-tools` (conformance tools, TBox, docs site; this document lives here) and `scat-kg-template` (the vault to clone) |
+| **Approval record** | The chief engineer's merge of this document's PR into `main` of `DynamicalSystemsGroup/scat-kg-tools` (public) |
 | **Acceptance record** | The chief engineer's merge of the release PR from `dev` into `main` in each repository. The ACE opens these PRs, and no one else does, once the candidate is ready. The chief engineer's walkthrough (UA-M) runs against them, and merging them is the acceptance. The release then tags `v0.1.0` and deploys the site (see Governance). |
 
 ## Purpose
@@ -15,9 +15,10 @@ DSG needs, for an upcoming project, a first usable release of a toolkit for turn
 conformant knowledge graph. Actors (users, sponsors, other stakeholders) tell stories, which become scenarios.
 Technologists (researchers, developers, operators) pitch architectures. Their raw notes are coded into pages of an
 Obsidian vault in git. Coding decompiles each scenario and architecture into four concepts — **s**takeholders,
-**c**oncerns, **p**roperties and **t**echnologies (SCPT) — and relates them through explicit relationships, layered
-as bipartite graphs: stakeholders–concerns, concerns–properties, properties–technologies. The result is a navigable,
-interpretable dataset. That dataset is the data product, and its conformance to a fixed ontology is what makes it
+**c**oncerns, **a**ffordances and **t**echnologies (SCAT, named for scat singing in jazz) — and relates them through
+explicit relationships, layered as bipartite graphs: stakeholders–concerns, concerns–affordances,
+affordances–technologies. The result is a navigable, interpretable dataset. It is scaled to a human note-taker:
+just enough structure to make the data interpretable, but mostly a formal structure for arranging Obsidian notes. That dataset is the data product, and its conformance to a fixed ontology is what makes it
 analysable. The git repository is the data of record; the graph is derived from it.
 
 The point of departure is the toolchain and the Obsidian reading/review experience described in *Formalizing
@@ -33,12 +34,29 @@ axioms instead of importing all of it. The structure here is simpler than any of
 
 When a choice isn't settled elsewhere, these decide it.
 
+## Scenarios and architectures
+
+The two record types look at the same graph from opposite sides. This distinction is a core heuristic for
+facilitating, capturing and coding.
+
+- **Scenarios are behavioural.** They tell the story of people within an action situation doing things, through which
+  outcomes and consequences are wrought. They are temporal. Technologies are part of the action situation but are not
+  the focus: they stay relatively fixed and out of view, and what is legible is their **affordances**. A coded
+  scenario links stakeholder groups, concerns and affordances.
+- **Architectures are structural.** They formulate assemblages: parts and wholes, and how parts are assembled into
+  tools that provide affordances which address concerns. Stakeholders are largely abstracted away. What is addressed
+  is the concerns, and the same concern can arise from different stakeholders; an architecture can't presume which
+  stakeholders will adopt it. A coded architecture links concerns, affordances and technologies.
+
+The split between actors (who tell scenarios) and technologists (who pitch architectures) is a facilitation device,
+not a division of people. Many people are both.
+
 ## Users and how they work
 
 The v0.1 user is a facilitator-analyst: technically savvy, but not a software developer. They:
 - navigate GitHub's web interface, including creating a repository from a template;
 - read, write and follow links in an Obsidian vault;
-- work in an **interactive session** in the Python REPL (`import scpt_kg`), with the `scpt` CLI as an equal path to
+- work in an **interactive session** in the Python REPL (`import scat_kg`), with the `scat` CLI as an equal path to
   the same operations and messages. The docs lead with the REPL, because CLI commands get long when run through uv.
 - follow documentation literally, step by step. Testers on a small model stand in for this user, so the right way
   has to be the easy way.
@@ -49,8 +67,8 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 ## Goals
 
 - **G1. Fixed TBox**, designed under G10 and then fixed for v0.1. Turtle files define:
-  - the seven SCPT classes: Stakeholder group, Concern, Property, Technology, and the relations Heldby (stakeholder
-    group × concern), Addresses (concern × property) and Attributes (property × technology). Names may follow an
+  - the seven SCAT classes: Stakeholder group, Concern, Affordance, Technology, and the relations Heldby (stakeholder
+    group × concern), Addresses (concern × affordance) and Attributes (affordance × technology). Names may follow an
     adopted ontology;
   - any easy-win relations G10 adds;
   - each record's required and optional fields;
@@ -59,9 +77,9 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 - **G2. Vault ↔ graph.** Markdown pages with YAML frontmatter parse into an ABox that is checked against the TBox.
   Every class has a class page: a description plus an index table (name, short description, link) of its instances.
 - **G3. Page lifecycle.** Every instance page and every scenario or architecture page carries a status:
-  `stub → draft → done`. (Class pages are generated, so they carry none.) `scpt` creates a page that the ontology
+  `stub → draft → done`. (Class pages are generated, so they carry none.) `scat` creates a page that the ontology
   entails but that doesn't exist yet as a `stub`, so the graph is never incomplete, only unfinished.
-- **G4. Operations**, in the Python API and the `scpt` CLI, usable by a technically savvy non-developer in an
+- **G4. Operations**, in the Python API and the `scat` CLI, usable by a technically savvy non-developer in an
   interactive session:
   - `check <page>`, `check <page> --neighborhood`, `check --all` — conformance, with actionable messages;
   - `status` at the same three scopes, and a command to set a page's status;
@@ -69,23 +87,23 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
   - a command that creates entailed missing pages as stubs.
   Local and neighborhood checks act as a fast linter during working sessions. Every operation takes a page by the
   name Obsidian shows (its filename, with or without `.md`) or by its path.
-- **G5. Two repositories.** `scpt-kg-tools`: a slim, separately maintained package holding the TBox, the parser, the
-  checks, the CLI and the documentation site. `scpt-kg-template`: the vault to clone, which installs the tools
+- **G5. Two repositories.** `scat-kg-tools`: a slim, separately maintained package holding the TBox, the parser, the
+  checks, the CLI and the documentation site. `scat-kg-template`: the vault to clone, which installs the tools
   pinned to a commit. Both builds are reproducible with uv.
 - **G6. Worked example: this project as its own case study.** The template's example content is the elicitation of
-  scpt-kg itself: its stakeholder groups, concerns (for example, anonymity versus attribution), properties and
+  scat-kg itself: its stakeholder groups, concerns (for example, anonymity versus attribution), affordances and
   technologies, drawn from the chief engineer's recorded statements and the decision log. Its stakeholder groups
   follow the Chatham House rule like any other: no group stands for one identifiable person. It is minimal (users
   overwrite it), but has 2–3 records in every registry, plus two scenarios and two architectures, each raw and coded.
   It doubles as the test fixture and the documentation example.
-- **G7. Documentation on GitHub Pages** (from `scpt-kg-tools`), one page per journey stage (see the table under
+- **G7. Documentation on GitHub Pages** (from `scat-kg-tools`), one page per journey stage (see the table under
   User acceptance), plus a reference for the Python API and the CLI.
 - **G8. Toolchain decided by evidence.** Oxigraph, Open Knowledge Format (OKF), pydantic and the choice of rule
   language are tried on a small vault before the implementation is locked in. Each choice is recorded with its evidence.
 - **G9. Clear user journey.** A technically savvy user who is not a developer can go from the docs site to a new
   repository made from the template, through an interactive working session, to a clean, navigable graph, using only the
   documentation. The documentation is clear and navigable at every step.
-- **G10. Ontology by evidence: import, don't mint.** A research sprint surveys existing ontologies for each SCPT
+- **G10. Ontology by evidence: import, don't mint.** A research sprint surveys existing ontologies for each SCAT
   class and relation (for example ISO/IEC/IEEE 42010 for stakeholders and concerns, the SEBoK and INCOSE canon that
   `concept-definition-stage` commits, SKOS and PROV). A trade study then decides, class by class, whether to adopt
   (thinned to what we use, anchored by equivalence axioms rather than importing everything) or to author our own,
@@ -113,13 +131,13 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 
 | ID | Deliverable | Serves |
 |---|---|---|
-| D-1 | TBox in Turtle, in `scpt-kg-tools` | G1, G10 |
-| D-2 | Parser, checks, status, index and stub commands, CLI, test suite with seeded-defect fixtures, in `scpt-kg-tools` | G2, G3, G4 |
+| D-1 | TBox in Turtle, in `scat-kg-tools` | G1, G10 |
+| D-2 | Parser, checks, status, index and stub commands, CLI, test suite with seeded-defect fixtures, in `scat-kg-tools` | G2, G3, G4 |
 | D-3 | Template repository: vault skeleton (class pages, folders for raw and coded records), Obsidian page templates for the four record types, instance configuration (stakeholder-group cardinality cap), pinned tools, the case study (G6) | G5, G6, G9 |
 | D-4 | Documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9 |
 | D-5 | Research readouts and decision records: the ontology survey and trade study, and the toolchain spike, with evidence and measurements | G8, G10 |
 | D-6 | Reviewer's guide for the chief engineer, in the release PR. It is sized for a person and split into sittings by output: (1) the end-to-end walkthrough (UA-M below); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
-| D-7 | User-acceptance kit, in `scpt-kg-tools/acceptance/`: the AI tester personas and briefs, the report template, every AI test report with its dispositions, and the chief engineer's walkthrough script | G9 |
+| D-7 | User-acceptance kit, in `scat-kg-tools/acceptance/`: the AI tester personas and briefs, the report template, every AI test report with its dispositions, and the chief engineer's walkthrough script | G9 |
 
 ## Requirements
 
@@ -132,11 +150,11 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 | R-5 | Speed on a laptop with a 500-page vault: local check < 1 s, neighborhood < 2 s, full < 5 s *(default thresholds)*. | Benchmark script over a synthetic 500-page vault that it generates |
 | R-6 | From a machine with only the documented prerequisites: fresh clone of the template → one documented setup command → `check --all` passes on the worked example. | Clean-clone trial |
 | R-7 | Both repositories commit `uv.lock`; CI runs tests and checks on every push. | CI runs |
-| R-8 | The interactive session has two equal paths: the Python REPL (`import scpt_kg`) and the `scpt` CLI in a terminal. Every operation is available on both, with the same messages. The docs lead with the REPL and show the CLI
+| R-8 | The interactive session has two equal paths: the Python REPL (`import scat_kg`) and the `scat` CLI in a terminal. Every operation is available on both, with the same messages. The docs lead with the REPL and show the CLI
   equivalent in a tab. The CLI is a thin layer over the Python API. | Tests calling both paths; docs test runs both |
 | R-9 | Every REPL snippet and command shown in the docs runs as shown, and the CLI reference matches `--help`. | Docs test that extracts and runs the snippets and commands; reference diff |
 | R-10 | The docs site has no dead ends or broken links. Every journey page says what you need before you start and where to go next. | Strict build plus link check; the ACE's browser pass over every page, at desktop and phone width |
-| R-11 | **Make the right way the easy way: one way to create each kind of page.** Raw and coded scenarios and architectures, which people write in Obsidian, come from Obsidian page templates. Every SCPT and relation page comes from `scpt`: link it from a coded record, then run the stub command, which creates it with the right type. Class pages come from `index`. Users never write that structure by hand. Each journey stage's docs page leads with the one action to take next. | A test that each of the four record types has a template; tests of the stub command; the Haiku testers' reports |
+| R-11 | **Make the right way the easy way: one way to create each kind of page.** Raw and coded scenarios and architectures, which people write in Obsidian, come from Obsidian page templates. Every SCAT and relation page comes from `scat`: link it from a coded record, then run the stub command, which creates it with the right type. Class pages come from `index`. Users never write that structure by hand. Each journey stage's docs page leads with the one action to take next. | A test that each of the four record types has a template; tests of the stub command; the Haiku testers' reports |
 | R-12 | New repositories are private by default. The docs and the template's README recommend private repositories. Their "create your project" link opens GitHub's new-repository page from the template with private visibility pre-selected; if GitHub can't pre-select it, the docs give the `gh repo create --template … --private` command as the first path. | Probe of the link on the candidate; UA-M |
 | R-13 | The schema has one source. The TBox is authoritative; any other form the checks use (for example pydantic models) is either generated from it or held equal to it by a test. WP2 picks the mechanism. | The generator, or the equality test, in CI |
 
@@ -147,11 +165,11 @@ Acceptance is judged by people using the product, not only by tests. The journey
 | Stage | The user | Docs page |
 |---|---|---|
 | J1 Find | lands on the docs site and understands what this is for and how to start | home |
-| J2 Create | on GitHub's web interface, makes a new **private** repository from `scpt-kg-template`, then clones it | getting started |
-| J3 Set up | installs the prerequisites from exact commands (uv, and a one-time GitHub sign-in so a private repository can be cloned), runs one setup command, gets a working `scpt_kg`, and opens the folder as an Obsidian vault | getting started |
+| J2 Create | on GitHub's web interface, makes a new **private** repository from `scat-kg-template`, then clones it | getting started |
+| J3 Set up | installs the prerequisites from exact commands (uv, and a one-time GitHub sign-in so a private repository can be cloned), runs one setup command, gets a working `scat_kg`, and opens the folder as an Obsidian vault | getting started |
 | J4 Plan | plans a facilitation event: who comes as actors and who as technologists, the Chatham House framing, stakeholder groups within the cap | planning guide |
 | J5 Capture | during the event, records raw scenarios and raw architectures | the two facilitation guides |
-| J6 Code | afterwards, in an interactive session (the Python REPL, or the `scpt` CLI), decompiles the raw notes into SCPT pages and relations: creates stubs, moves pages to draft and done, regenerates the indexes, and fixes each error from its message using local and neighborhood checks | coding guide, API and CLI reference |
+| J6 Code | afterwards, in an interactive session (the Python REPL, or the `scat` CLI), decompiles the raw notes into SCAT pages and relations: creates stubs, moves pages to draft and done, regenerates the indexes, and fixes each error from its message using local and neighborhood checks | coding guide, API and CLI reference |
 | J7 Finish | reaches a clean `check --all`, commits and pushes, and navigates the resulting graph in Obsidian | coding guide |
 
 **UA-A, the AI user tests** (run by the team on the candidate, before the chief engineer's walkthrough):
@@ -224,7 +242,7 @@ record above.
 - Until the release PR, nothing is merged to `main`, tagged or published. The exceptions are this mission's own
   approval and amendments, and the **candidate stage** the chief engineer's walkthrough needs:
   - the docs site deploys from `dev` to Pages, with a banner marking it pre-release;
-  - `scpt-kg-template` is marked as a GitHub template, with `dev` as its default branch until the release;
+  - `scat-kg-template` is marked as a GitHub template, with `dev` as its default branch until the release;
   - the template pins the tools to the exact candidate commit.
   At the release, `v0.1.0` tags that same commit, the site redeploys from `main`, and the template's default branch
   returns to `main`.
@@ -247,7 +265,7 @@ to be noisy at first.
 
 Ontology design comes before implementation, and the design is driven by research.
 
-1. **WP1 Ontology research sprint.** Survey existing ontologies for each SCPT class and relation, and the patterns
+1. **WP1 Ontology research sprint.** Survey existing ontologies for each SCAT class and relation, and the patterns
    in `concept-definition-stage`. Run the trade study (adopt and thin, or author) and assess easy-win axioms.
    Readout and decision records. Fixes: what the TBox imports, anchors to, or authors; D-5 (ontology part).
 2. **WP2 Toolchain spike.** In parallel with WP1. OKF, oxigraph, pydantic and the rule language, tried on a throwaway
@@ -264,7 +282,7 @@ Ontology design comes before implementation, and the design is driven by researc
 
 ## Agent's defaults
 
-- Names: `scpt-kg-tools`, `scpt-kg-template`, CLI command `scpt`.
+- Names: `scat-kg-tools`, `scat-kg-template`, CLI command `scat`.
 - Python ≥ 3.12. The template installs the tools through uv as a git dependency pinned to a commit; no PyPI.
 - Facilitation and coding guides are written once, on the Pages site; the template links to them rather than copying them.
 - Status strictness (R-3) and speed thresholds (R-5) as stated above.
