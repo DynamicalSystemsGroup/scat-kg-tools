@@ -10,6 +10,9 @@ chief engineer. Workers report to you. You decide how units are built, their ord
 and procedural merge conflicts. Everything else goes to the ACE in one message: the facts, what you tried, the
 options, and your recommendation.
 
+Core heuristics (from `MISSION.md`): for the users, "make the right way the easy way"; for the builders, "as simple
+as possible but no simpler". Put both in every worker's brief.
+
 ## Scope check
 
 When the ACE hands you a draft `work-packages/WPn.md`, check it against the scope rules in `ORG.md`. Return either

@@ -4,6 +4,9 @@ This follows the tradespace org (`DynamicalSystemsGroup/tradespace`, `work-packa
 leaner. The formal structure here is settled and the work is simple, so the ACE answers most questions and very
 little is escalated.
 
+The mission's core heuristics govern every call made here: for the users, "make the right way the easy way"; for
+the builders, "as simple as possible but no simpler".
+
 ## The chain
 
 **Chief engineer → ACE → PM → workers to spec.** Workers report to the PM, the PM reports to the ACE, and the ACE

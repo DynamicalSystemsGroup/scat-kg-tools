@@ -211,3 +211,10 @@ used a cold reader, so it isn't anchored on the ACE's own wording. Fixed:
 - Open decisions now carry their counts.
 - Not changed: findings about the log's historical wording. The log records what was true when each entry was
   written.
+
+## D-013 | 2026-11-23 | Core heuristics
+
+Stated by the chief engineer (chat, typed by the ACE): "our core heuristics * for the users: \"make the right way the
+easy way\" * for the builders: \"as simple as possible but no simpler\"".
+Outcome: a Core heuristics section near the top of `MISSION.md`, as the tie-breaker for any choice not settled
+elsewhere. ORG.md states both, and the PM puts them in every worker's brief.

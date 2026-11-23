@@ -26,6 +26,13 @@ Document Assurance* (INCOSE IS 2026) and the earlier repos `assurances-audits-ac
 spine, its authority-traced definitions, and its practice of anchoring to an external ontology through equivalence
 axioms instead of importing all of it. The structure here is simpler than any of them: no faces, no assurance triangles.
 
+## Core heuristics
+
+- **For the users: "make the right way the easy way".**
+- **For the builders: "as simple as possible but no simpler".**
+
+When a choice isn't settled elsewhere, these decide it.
+
 ## Users and how they work
 
 The v0.1 user is a facilitator-analyst: technically savvy, but not a software developer. They:
