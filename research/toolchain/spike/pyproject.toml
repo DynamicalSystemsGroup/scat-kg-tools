@@ -1,0 +1,17 @@
+[project]
+name = "scpt-spike"
+version = "0.0.0"
+description = "WP2 toolchain spike (throwaway)"
+requires-python = ">=3.12"
+dependencies = [
+    "pyoxigraph",
+    "rdflib",
+    "pyshacl",
+    "pydantic",
+    "pyyaml",
+    "python-frontmatter",
+    "pytest",
+]
+
+[tool.uv]
+package = false
