@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | Approved by the ACE when the decision log records it. Runs inside `MISSION.md`: G2, G3, G4, G5 (the tools half), R-1 to R-5, R-7, R-8, R-13, the platform constraint, and deliverable D-2. |
 | **Branch** | Each unit works on `wp5/u<k>`, branched off `dev` and merged back into `dev` (ORG.md). |
-| **Inputs** | `ontology/scat.ttl`, `contracts/page-contracts.md`, `contracts/rule-catalogue.md`, `contracts/examples/`, `research/toolchain/` (stack C), and log D-028, D-031 and D-032 |
+| **Inputs** | `ontology/scat.ttl`, `contracts/page-contracts.md`, `contracts/rule-catalogue.md`, `contracts/examples/`, `research/toolchain/` (stack C), and log D-028 to D-033 |
 
 ## Purpose
 
@@ -53,11 +53,11 @@ These are `MISSION.md`'s requirements, made specific to this package.
 | WP5-R2 | Every message names the file, the field or link, and the rule id, and gives the catalogue's exact fix (R-2). Golden tests compare those four elements, not the full prose. | Golden tests |
 | WP5-R3 | Status behaves as R-3 and the catalogue say. | Tests per status |
 | WP5-R4 | Checks never write. Every write is an explicit operation (R-4). | Tests that snapshot the vault before and after each operation |
-| WP5-R5 | R-5's thresholds are met on a generated 500-page vault. | `uv run` benchmark, with output pasted in the PR |
+| WP5-R5 | R-5's thresholds are met on a generated 500-page vault. | `uv run` benchmark, with output pasted in the worker's report |
 | WP5-R6 | Every operation is available from the Python API and the CLI, with the same messages (R-8). | Tests that run both paths on the same fixtures |
 | WP5-R7 | The models the checks use are generated from the TBox, or held equal to it by a test that covers slugs, descriptions, fields, status values, link rules and endpoint order (R-13). | The generator or test, in CI |
 | WP5-R8 | Every page in `contracts/examples/` checks clean, except where an example is meant to show a warning. | A test |
-| WP5-R9 | CI runs on every push and is green at delivery. The package installs from a git commit with `uv`, in a fresh directory. | The CI run; a clean-install trial, with output pasted |
+| WP5-R9 | CI runs on every push and is green at delivery. The package installs from a git commit with `uv`, in a fresh directory. | The CI run; a clean-install trial, with output pasted in the worker's report |
 | WP5-R10 | Nothing puts Linux or Windows support at risk: paths through `pathlib`, no shell calls, UTF-8 and line endings handled, and filename rules as the contracts state. | The reviewer's inspection; CI on Linux |
 
 ## Definition of good
@@ -72,11 +72,13 @@ WP5-R1 to WP5-R10 are met.
 
 ## Blast radius
 
-`pyproject.toml`, `uv.lock`, `.python-version`, `src/**`, `tests/**`, `.github/**`, and the endpoint-order triples
+`pyproject.toml`, `uv.lock`, `.python-version`, `.gitignore`, `src/**`, `tests/**`, `.github/**`, and the endpoint-order triples
 in `ontology/scat.ttl`. Nothing else.
 
 ## Agent's defaults
 
-- CLI framework: the standard library's `argparse` unless the PM finds a strong reason otherwise, to keep the
-  dependencies to pydantic and PyYAML.
+- **Dependencies (ACE ruling, D-033):** at runtime, pydantic, PyYAML and rdflib. The tools read `scat.ttl` with
+  rdflib when they load, and build their models from it, so there is one source and no generated copy. For
+  development: pytest and ruff. Any other dependency goes to the ACE.
+- CLI framework: the standard library's `argparse`.
 - The build backend ships `ontology/scat.ttl` inside the wheel. It is never copied by hand.

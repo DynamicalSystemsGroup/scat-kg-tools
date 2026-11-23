@@ -652,3 +652,28 @@ estimate of 5, and a cold-write test needs a planned fix unit after it. WP4 came
 points (ratio 1.31), and part of the overrun came from the ACE's mid-stream rulings D-030 and D-031.
 
 WP4 is accepted.
+
+## D-033 | 2026-11-23 | WP5 and WP6 scopes approved (ACE)
+
+A fresh PM checked both scopes. Its fixes are applied: 4 to WP5 and 7 to WP6.
+- WP5: the input list is completed, `.gitignore` joins the blast radius, and evidence is pasted in worker reports
+  (there are no PRs between units).
+- WP6:
+  - the Obsidian templates are built from the contracts' skeletons;
+  - the blast radius is listed as paths;
+  - the sequencing note says what waits on WP5's CLI and pins that `dev` commit;
+  - every case-study page is `done`, so `SCAT-CONFLICT-BOTH` is the only warning;
+  - a gap clause: contracts and ontology are read-only for WP6, and gaps go to the ACE.
+
+ACE rulings:
+- **Runtime dependencies are pydantic, PyYAML and rdflib.** The tools read `scat.ttl` with rdflib when they load and
+  build their models from it. That is one source with no generated copy, which is simpler than a build-time
+  generator with a freshness check. rdflib is pure Python and cross-platform. Development dependencies are pytest and
+  ruff.
+- **A bootstrap README stub on `scat-kg-template`'s `main` is allowed** as a one-off, so that `dev` can be branched.
+  The governance rule ("nothing merged to `main` until release") exists to prevent releasing before acceptance, and a
+  stub is not a release.
+- **The template repository is public, as intended** (log D-001). R-12 covers the repositories users create from it.
+
+Approved: the WP5 scope (8 units, 37 estimated points) and the WP6 scope (7 units, 25 estimated points), at the
+commit that records this entry.
