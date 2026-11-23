@@ -1,0 +1,23 @@
+[project]
+name = "scat-toolchain-spike"
+version = "0.0.0"
+description = "Throwaway WP2 toolchain spike (not production code)"
+requires-python = ">=3.11"
+dependencies = [
+    "pyoxigraph",
+    "rdflib",
+    "pyshacl",
+    "pydantic",
+    "pyyaml",
+    "python-frontmatter",
+    "pytest",
+]
+
+[dependency-groups]
+dev = ["ruff"]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100

@@ -1,0 +1,48 @@
+# PLACEHOLDER TBox for the WP2 toolchain spike. This is NOT deliverable D-1.
+# It only gives the spike classes, relations and page types to work against.
+@prefix scat: <https://example.org/scat-placeholder#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+
+<https://example.org/scat-placeholder> a owl:Ontology ;
+    rdfs:comment "PLACEHOLDER, not D-1. Spike use only." .
+
+# The four SCAT classes (MISSION G1)
+scat:StakeholderGroup a owl:Class ; rdfs:label "Stakeholder group" .
+scat:Concern          a owl:Class ; rdfs:label "Concern" .
+scat:Affordance       a owl:Class ; rdfs:label "Affordance" .
+scat:Technology       a owl:Class ; rdfs:label "Technology" .
+
+# The three relations (MISSION G1)
+scat:heldby a owl:ObjectProperty ; rdfs:label "Heldby" ;
+    rdfs:domain scat:StakeholderGroup ; rdfs:range scat:Concern .
+scat:addresses a owl:ObjectProperty ; rdfs:label "Addresses" ;
+    rdfs:domain scat:Concern ; rdfs:range scat:Affordance .
+scat:attributes a owl:ObjectProperty ; rdfs:label "Attributes" ;
+    rdfs:domain scat:Affordance ; rdfs:range scat:Technology .
+
+# Page types: the four classes above (instance pages), plus the record types
+scat:Record a owl:Class ; rdfs:label "Record" .
+scat:RawScenario        a owl:Class ; rdfs:subClassOf scat:Record ; rdfs:label "Raw scenario" .
+scat:CodedScenario      a owl:Class ; rdfs:subClassOf scat:Record ; rdfs:label "Coded scenario" .
+scat:RawArchitecture    a owl:Class ; rdfs:subClassOf scat:Record ; rdfs:label "Raw architecture" .
+scat:CodedArchitecture  a owl:Class ; rdfs:subClassOf scat:Record ; rdfs:label "Coded architecture" .
+
+# Record-to-concept link types (a coded scenario relates groups, concerns, affordances;
+# a coded architecture relates concerns, affordances, technologies)
+scat:groups       a owl:ObjectProperty ; rdfs:domain scat:CodedScenario ; rdfs:range scat:StakeholderGroup .
+scat:concerns     a owl:ObjectProperty ; rdfs:range scat:Concern .
+scat:affordances  a owl:ObjectProperty ; rdfs:range scat:Affordance .
+scat:technologies a owl:ObjectProperty ; rdfs:domain scat:CodedArchitecture ; rdfs:range scat:Technology .
+scat:raw   a owl:ObjectProperty ; rdfs:label "coded record's raw record" .
+scat:coded a owl:ObjectProperty ; rdfs:label "raw record's coded record" .
+
+# Required link types per coded record type (consumed by checks; placeholder encoding)
+scat:CodedScenario   scat:requiresLink scat:groups, scat:concerns, scat:affordances .
+scat:CodedArchitecture scat:requiresLink scat:concerns, scat:affordances, scat:technologies .
+scat:requiresLink a owl:AnnotationProperty .
+
+# Lifecycle (MISSION G3)
+scat:Status a owl:Class ; rdfs:label "Status" .
+scat:stub  a scat:Status . scat:draft a scat:Status . scat:done a scat:Status .
