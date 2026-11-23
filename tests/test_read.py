@@ -279,3 +279,17 @@ def test_reading_leaves_the_tree_unchanged(make_vault):
         v = read_vault(tree)
         v.address("a"), v.dangling(), v.inbound("b")
         assert snapshot(tree) == before
+
+
+def test_unhashable_type_does_not_abort_the_read(make_vault):
+    root = make_vault({
+        "list.md": "---\ntype: [concern, x]\n---\n",
+        "map.md": "---\ntype:\n  a: b\n---\n",
+        "ok.md": page("concern"),
+    })  # fmt: skip
+    v = read_vault(root)
+    assert [p.name for p in v.pages] == ["list", "map", "ok"]
+    for name in ("list", "map"):
+        p = v.address(name).page
+        assert p.frontmatter_error is None and p.type_key is None and p.model is None
+    assert v.address("list").page.type == ["concern", "x"]

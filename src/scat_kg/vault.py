@@ -260,7 +260,7 @@ def _read_page(path: Path, rel: str) -> Page | None:
         body, body_line = "\n".join(lines[close + 1 :]), close + 2
         body_links = _body_links(body, body_line)
     model, model_error = None, None
-    if error is None and fields["type"] in MODELS:
+    if error is None and isinstance(fields["type"], str) and fields["type"] in MODELS:
         try:
             model = MODELS[fields["type"]].model_validate(fields)
         except ValidationError as e:
