@@ -3,7 +3,7 @@ type: Addresses
 name: Reproducible setup addressed by Locked dependencies
 status: draft
 concern: "[[Reproducible setup]]"
-property: "[[Locked dependencies]]"
+affordance: "[[Locked dependencies]]"
 rationale: Pins make builds repeatable.
 ---
 # Reproducible setup addressed by Locked dependencies

@@ -1,5 +1,5 @@
 ---
-type: Property
+type: Affordance
 name: Locked dependencies
 status: draft
 description: All installs resolve to pinned versions.

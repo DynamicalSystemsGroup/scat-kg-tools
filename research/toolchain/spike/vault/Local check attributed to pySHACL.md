@@ -2,7 +2,7 @@
 type: Attributes
 name: Local check attributed to pySHACL
 status: stub
-property: "[[Sub-second local check]]"
+affordance: "[[Sub-second local check]]"
 technology: "[[pySHACL]]"
 rationale: Validation engine.
 ---

@@ -17,7 +17,7 @@ Run everything from this directory.
 
 One `.md` per page; page name = filename stem. YAML frontmatter keys: `type` (class name, e.g. `Concern`), `name`,
 `status` (`stub|draft|done`), then class fields (`description`, ...). Relation pages hold endpoint links as quoted
-strings: Heldby `stakeholder`, `concern`; Addresses `concern`, `property`; Attributes `property`, `technology`
+strings: Heldby `stakeholder`, `concern`; Addresses `concern`, `affordance`; Attributes `affordance`, `technology`
 (e.g. `concern: "[[Anonymity]]"`). Link syntax: `[[Page name]]` (also `[[Page#heading|alias]]`, target = name part),
 in frontmatter values and body.
 

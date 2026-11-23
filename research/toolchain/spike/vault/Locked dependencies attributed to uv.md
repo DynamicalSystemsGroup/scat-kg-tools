@@ -2,7 +2,7 @@
 type: Attributes
 name: Locked dependencies attributed to uv
 status: done
-property: "[[Locked dependencies]]"
+affordance: "[[Locked dependencies]]"
 technology: "[[uv]]"
 rationale: uv.lock.
 ---

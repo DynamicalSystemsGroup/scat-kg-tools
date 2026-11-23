@@ -2,7 +2,7 @@
 type: Attributes
 name: Local check attributed to Oxigraph
 status: draft
-property: "[[Sub-second local check]]"
+affordance: "[[Sub-second local check]]"
 technology: "[[Oxigraph]]"
 rationale: Embedded store is fast.
 ---
