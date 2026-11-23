@@ -13,7 +13,6 @@ event vocabularies, affordance sources), are for other units.
 | ISO42010 | The standard itself: <https://www.iso.org/standard/74393.html> | 42010:2022 (second edition) | **No: HTTP 403** (also the ISO browsing platform, 403) | Stakeholder, Concern |
 | SEBoK-SH | SEBoK glossary, Stakeholder: <https://sebokwiki.org/wiki/Stakeholder_(glossary)> | Page last edited 18 September 2025 | Yes | Stakeholder |
 | SEBoK-CO | SEBoK glossary, Concern: <https://sebokwiki.org/wiki/Concern_(glossary)> | n/a | **No such page: HTTP 404.** Architecture, Architecture Framework (<https://sebokwiki.org/wiki/Architecture_Framework_(glossary)>) and other glossary pages were fetched and give no definition of Concern | Concern (negative finding) |
-| SEBoK-SNR | SEBoK, Stakeholder Needs and Requirements: <https://sebokwiki.org/wiki/Stakeholder_Needs_and_Requirements> | Page last edited as shown by the live page | Yes | Stakeholder |
 | CDS | `concept-definition-stage`, <https://github.com/Open-MBEE/concept-definition-stage>, files `src/cds/ontology/concept-definition.ttl`, `cds-core.ttl`, `waivers.ttl` | Commit `99cecd1d36c7ffd4af540773b0907b59a122c65d` (2026-07-25); `pyproject.toml` version 0.1.0; vocabulary `owl:versionInfo "0.1.0"` | Yes (shallow clone) | Stakeholder; the SKOS+PROV spine |
 | SKOS | SKOS Reference: <https://www.w3.org/TR/skos-reference/> | W3C Recommendation 18 August 2009 | Yes | Concern (scaffolding), both (anchoring properties) |
 | PROV-O | PROV-O: <https://www.w3.org/TR/prov-o/> | W3C Recommendation 30 April 2013 | Yes | Stakeholder group (as agent) |
@@ -41,11 +40,11 @@ The site's text is written in the first-edition vocabulary ("System of Interest"
 second edition. The wording of the 2022 edition's own definitions was **not** verified. WP4 or the ACE should check
 them against the standard before any definition is copied (D-012 requires adopted definitions to be used directly).
 
-SEBoK carries the 42010 definition of **Stakeholder** (SEBoK-SH, entry 1, citing ISO/IEC/IEEE 2015):
+SEBoK's glossary entry for **Stakeholder** (SEBoK-SH, entry 1) cites ISO/IEC/IEEE 15288:2015 (*System Life Cycle Processes*), not 42010. SEBoK's source list names 15288:2015 for entry 1, ISO/IEC CD 29148 (June 2010) for entry 2, ISO/IEC 26702:2007 for entry 3, and Freeman (1984) for entry 4. Entry 1 reads:
 
 > "Individual or organization having a right, share, claim, or interest in a system or in its possession of characteristics that meet their needs and expectations"
 
-and a further entry (SEBoK-SH, entry 3, citing ISO/IEC 2007):
+and entry 3 (citing ISO/IEC 26702:2007):
 
 > "An individual, team, or organization (or classes thereof) with interests in, or concerns relative to, a system."
 
@@ -53,7 +52,7 @@ SEBoK has **no glossary entry for Concern** (SEBoK-CO, 404).
 
 ### concept-definition-stage
 
-CDS already anchors the same definition (CDS, `cdsterm:stakeholder`): `cds:definitionSource "ISO/IEC/IEEE 2015"`,
+CDS already anchors the same definition as SEBoK entry 1, that is the 15288:2015 text (CDS, `cdsterm:stakeholder`): `cds:definitionSource "ISO/IEC/IEEE 2015"` (the year only; CDS does not name the standard number, and SEBoK's source list shows it is 15288),
 `skos:definition` identical to the SEBoK entry 1 text above, and `skos:exactMatch
 <https://sebokwiki.org/wiki/Stakeholder_(glossary)>`. This is the equivalence-axiom anchoring practice named in
 `MISSION.md`. CDS has **no concern term**. Its only use of the word is inside the definition of `problem`: "A concern
@@ -123,8 +122,8 @@ requirement and holding as a stakeholder parameter, which is heavier than the SC
 
 | Source | Stakeholder group | Concern | Heldby endpoints |
 |---|---|---|---|
-| ISO42010 / ISO42010-site | Yes | Yes | Yes ("holding Concerns") |
-| SEBoK | Yes (SH, SNR) | **No entry** | No |
+| ISO42010 / ISO42010-site | Yes (community site only) | Yes (community site only) | Yes ("holding Concerns") |
+| SEBoK | Yes (15288 text) | **No entry** | No |
 | CDS | Yes | No (risk sense only) | No |
 | SKOS | Scaffolding | Scaffolding | `skos:related` (untyped) |
 | PROV-O | Agent only | No | No |

@@ -20,22 +20,22 @@ Ratings are High, Med or Low, with the reason in the cell. "Author our own" is t
 
 | # | Option | Fit | Terms | Recog | Maint | Cost |
 |---|---|---|---|---|---|---|
-| S1 | **Adopt 42010 Stakeholder**, with the definition SEBoK carries, anchored by `skos:exactMatch` to the SEBoK glossary entry (the CDS practice). The class is labelled "Stakeholder group" and the vault uses it for groups only. | High. The 42010 text covers "individuals, groups or organizations" (ISO42010-site), and SEBoK-SH entry 3 adds "(or classes thereof)". The only gap is that the adopted term says nothing special about groups; "group" is our usage convention. | 1 class | High. The term every SE already knows. | Low. Definition is cited, not ours. One caveat: the 2022 edition's wording was not verified (ISO42010 unreachable). | Low. One class, one class page. |
+| S1 | **Adopt the SEBoK Stakeholder definition (ISO/IEC/IEEE 15288:2015, normative text)**, anchored by `skos:exactMatch` to the SEBoK glossary entry (the CDS practice). The 42010 community site's "individuals, groups or organizations holding Concerns" is secondary support, from a different source than the Concern text in C1. The class is labelled "Stakeholder group" and the vault uses it for groups only. | Med to High. The 15288 text says "Individual or organization" and does not mention groups. Groups are covered by SEBoK-SH entry 3 (ISO/IEC 26702:2007, "(or classes thereof)") and by the community site's "groups". "Group" is our usage convention. | 1 class | High. The term every SE already knows, and SEBoK is the canon named in G10. | Low. Definition is cited, not ours. The 15288:2015 text itself was reached only through SEBoK, not the standard. | Low. One class, one class page. |
 | S2 | **Author our own** `StakeholderGroup`, defined by us, with `skos:closeMatch` to the SEBoK entry. | High. Exactly "a class of people with a stake". | 1 class | Med. The label is recognisable, the definition is new to them. | Med. We write and defend a definition (against D-012). | Low. |
 | S3 | **iStar 2.0 Role** (with Actor and Agent). | Med. Role is "an abstract characterization of the behavior of a social actor" (iStar), close to a class of people. It brings the actor boundary, where intentional elements live inside the actor. | 2 to 3 classes (Actor, Role, Agent) | Med. Known to requirements engineers, less to systems engineers. | Med. Tracking an academic language guide. | Med. Invites goal-model structure the vault does not use. |
 | S4 | **`dcterms:AgentClass`** ("A group of agents."). | Med. Right shape, a class of agents. Defined for audiences of resources. | 1 class | Low. Known to metadata people. | Low. Stable DCMI term. | Low. |
 | S5 | **`foaf:Group`** or **`org:Organization`**. | Low. These enumerate named members, or model a formal organization with a purpose. SCAT groups are open categories ("note-takers"). | 1 class (plus member property if used) | Med. | Low. | Low to Med. Pulls toward listing members. |
 | S6 | **`prov:Agent`** (with Organization, Person). | Low. Defined as bearing "responsibility for an activity". That says who did something, not who has a stake. | 1 to 3 classes | Med. | Low. | Low. |
 | S7 | **SysML v2 stakeholder parameter** (by reference only). | Low. A role in a requirement, not a free-standing class. | n/a | High | n/a | Not usable. |
-| S8 | **CDS `cdsterm:stakeholder`** (the same 42010 text, already published as SKOS). | High, same as S1. | 1 class | Med. | Med. Depends on a young 0.1.0 vocabulary whose IRIs were not dereferenced here. | Low. |
+| S8 | **CDS `cdsterm:stakeholder`** (the same 15288:2015 text as S1, already published as SKOS). | High, same as S1. | 1 class | Med. | Med. Depends on a young 0.1.0 vocabulary whose IRIs were not dereferenced here. | Low. |
 
-**Recommendation (S1):** Adopt the ISO/IEC/IEEE 42010 Stakeholder term and its cited definition, anchored to the SEBoK
-entry by `skos:exactMatch`, and carry "group" as our usage, not as a new class.
+**Recommendation (S1):** Adopt the SEBoK Stakeholder definition (ISO/IEC/IEEE 15288:2015 text, which is the normative
+source here; the 42010 community site is supporting only), anchored to the SEBoK entry by `skos:exactMatch`, and carry "group" as our usage, not as a new class.
 
 **Runner-up:** S2, author our own `StakeholderGroup`.
 
-**Deciding criterion:** recognisability, with maintenance behind it. Fit is level, because the adopted definition
-already admits groups and classes, so authoring buys no meaning and costs a definition we would have to defend. S8
+**Deciding criterion:** recognisability, with maintenance behind it. Fit is close to level: the 15288 text omits groups,
+but SEBoK entry 3 and the 42010 community site admit them, so authoring buys little meaning and costs a definition we would have to defend. S8
 is the same text through a younger intermediary; S1 cites the SEBoK source directly (as CDS itself does).
 
 **Flag:** the class name ("Stakeholder group") and the IRI minted for it are WP4's call. If WP4 prefers a distinct
@@ -45,7 +45,7 @@ class name, S2 with `skos:closeMatch` costs one extra class and no extra propert
 
 | # | Option | Fit | Terms | Recog | Maint | Cost |
 |---|---|---|---|---|---|---|
-| C1 | **Adopt 42010 Concern**: term and definition "A Concern is any interest in the system." (ISO42010-site), modelled as a `skos:Concept` subclass so labels, definitions, `skos:related` and match properties come from SKOS. | High. "Any interest" is broad enough for anonymity, attribution, cost, and a concern can be shared by several groups. | 1 class (SKOS properties are reused, not new) | High. The 42010 term; SysML v2 uses it as well. | Low to Med. Source text is a secondary site, the 2022 standard text is unverified, and SEBoK has no entry to cite. WP4 must check the standard before copying a definition. | Low. |
+| C1 | **Adopt 42010 Concern**: term and definition "A Concern is any interest in the system." (ISO42010-site only; this is a different source from the Stakeholder text in S1, so the two definitions are not from one standard), modelled as a `skos:Concept` subclass so labels, definitions, `skos:related` and match properties come from SKOS. | High. "Any interest" is broad enough for anonymity, attribution, cost, and a concern can be shared by several groups. | 1 class (SKOS properties are reused, not new) | High. The 42010 term; SysML v2 uses it as well. | Low to Med. Source text is a secondary site, the 2022 standard text is unverified, and SEBoK has no entry to cite. WP4 must check the standard before copying a definition. | Low. |
 | C2 | **Author our own** `Concern`, our definition, `skos:closeMatch` to 42010 if wished. | High. | 1 class | Med to High. The word is the same, the definition is ours. | Med. We own the definition, and we have no primary definition to cite. | Low. |
 | C3 | **iStar Goal and Quality.** | Med. "Intentional elements are the things actors want." A concern need not be a wanted state ("cost" or "anonymity" is an interest, not an achievement). Goals have "clear-cut criteria of achievement". | 2 classes (Goal, Quality) plus the actor containment | Med. | Med. | Med. Pushes notes toward success criteria. |
 | C4 | **KAOS Goal.** | Low. "An objective the system under consideration should achieve" is system-owned and optative. The paper has no stakeholder concern class. | 1 class (plus link types if used) | Low to Med. | Med. | Med. |
@@ -93,6 +93,6 @@ unit.
 
 | Element | One-line recommendation | Runner-up | Deciding criterion |
 |---|---|---|---|
-| Stakeholder group | Adopt 42010 Stakeholder (SEBoK-cited definition, `skos:exactMatch`), "group" as usage | S2, author `StakeholderGroup` | Recognisability |
+| Stakeholder group | Adopt the SEBoK/15288:2015 Stakeholder definition (`skos:exactMatch`), "group" as usage | S2, author `StakeholderGroup` | Recognisability |
 | Concern | Adopt 42010 Concern on `skos:Concept`; verify the 2022 wording first | C2, author `Concern` | Recognisability |
 | Heldby endpoints | Domain Stakeholder, range Concern | H2, author local typing | Fit |
