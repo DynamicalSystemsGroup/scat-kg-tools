@@ -185,3 +185,29 @@ agents are our team".
 Outcome: a new Timeline section in `MISSION.md`, and the agile role mapping added under Governance. In ORG.md and
 pm.md, the PM gives units story points, records velocity on the board, and reports the forecast to the candidate
 (including testing, UA-A rounds and revisions).
+
+## D-012 | 2026-11-23 | No licence handling for standards; third cleanup pass
+
+Decided by the chief engineer (chat, typed by the ACE): "i don't want complex licences. these are engineering
+standards. just use them and cite them per engineering practice. we're not selling anything here".
+Outcome: the default that cited restricted text instead of reproducing it is replaced. Adopted ontologies,
+standards and definitions are used directly and cited.
+
+Third cleanup pass (ACE). It ran after D-011, because the second pass came before the timeline was added. It also
+used a cold reader, so it isn't anchored on the ACE's own wording. Fixed:
+- G5's stale "pinned version" now says pinned to a commit.
+- The acceptance record states the sequence once: the ACE opens the PRs, UA-M runs against them, and the merge is
+  the acceptance.
+- The concern conflict in G10 has one term, and WP1 and WP3 own its form and its check.
+- R-3: status relaxes only missing fields; links and relation endpoints are checked at every status.
+- Checks that can now be run: R-4 (vault snapshots), R-5 (a generated synthetic 500-page vault), R-11 (a
+  template-per-page-type test).
+- UA-A now defines "guess" and "blocking".
+- The definition of good drops a duplicate of R-5 and a criterion that couldn't be checked; the worked example's
+  reading is now judged in UA-M.
+- WP1 and WP2 now fix deliverable D-5, and WP4 builds on WP2's toolchain.
+- Timeline: the point scale, "iteration", and elapsed time (so velocity converts to a date). The ACE creates
+  `work-packages/` at WP1.
+- Open decisions now carry their counts.
+- Not changed: findings about the log's historical wording. The log records what was true when each entry was
+  written.

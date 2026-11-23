@@ -45,8 +45,8 @@ bare problem.
 
 1. The ACE writes a one-page scope for the next work package (`work-packages/WPn.md`, `scope-of-work` shape). The PM
    checks it against the scope rules below. The ACE approves it and logs the approval.
-2. The PM splits the package into **units** and gives each one story points. Each unit has one tight scope and one set of files, and units with
-   disjoint files run in parallel. The PM keeps `work-packages/board.md` current: every unit, its owner, branch,
+2. The PM splits the package into **units** and gives each one story points. Each unit has one tight scope and one
+   set of files, and units with disjoint files run in parallel. The PM keeps `work-packages/board.md` current: every unit, its owner, branch,
    state and points; the velocity per iteration; and the forecast to the candidate (`MISSION.md`, Timeline).
 3. For each unit, a worker builds it in its own worktree. A fresh reviewer then checks it against the requirements
    by running the stated checks. Defects against a stated requirement are fixed and re-reviewed without asking
@@ -58,6 +58,8 @@ bare problem.
 6. When the packages are in, the ACE runs the candidate stage (`MISSION.md`, Governance) and the UA-A rounds to their pass
    bar, writes the reviewer's guide (D-6), and opens the release PRs (`dev` → `main`). The chief engineer then does his
    walkthrough (UA-M). Anything he flags is fixed on `dev`. Only he merges.
+
+The ACE creates `work-packages/` (with `board.md` and `INDEX.md`) at the start of WP1.
 
 ## Scope rules (what the PM enforces)
 
@@ -101,7 +103,7 @@ does not sign off the rendered part.
   is removed (`git worktree remove`, then `git worktree prune`) as soon as its unit is pushed.
 - **No scratch** is left in the tree.
 - **The repository holds the present; git holds the history.** A package's scratch, spike workings and raw reports
-  leave the tree when it is accepted (the readouts and decision records the mission names as D-5 stay), recorded in `work-packages/INDEX.md` with the commits where its scope was approved and
+  leave the tree when it is accepted (the readouts and decision records of deliverable D-5 stay), recorded in `work-packages/INDEX.md` with the commits where its scope was approved and
   its result accepted.
 - **Negative edits are welcome.** Every piece of content must earn its place, including what is already there.
   When something is stuck, consider removing it before another round of rework.
