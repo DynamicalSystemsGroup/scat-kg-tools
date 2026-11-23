@@ -13,27 +13,25 @@ custom (and we author it). The result must be one coherent ontology, not a patch
 
 ## Goals
 
-- **WP1-G1.** Survey candidate ontologies and vocabularies for each **element**:
+- G1. Survey candidate ontologies and vocabularies for each element:
   - Stakeholder group, Concern, Property, Technology;
   - Heldby, Addresses, Attributes;
   - the scenario and architecture records;
   - page status and provenance.
 
   Starting points (not a closed list): ISO/IEC/IEEE 42010, the SEBoK/INCOSE canon and patterns in
-  `/Users/z/Documents/GitHub/concept-definition-stage` (read only), SKOS, PROV-O, Dublin Core, SOSA/SSN, QUDT,
-  iStar/KAOS goal models, OSLC RM, and SysML v2 (by reference, using the equivalence-axiom pattern of
-  `concept-definition-stage`).
-- **WP1-G2.** A trade study for each element: the best adopt option against authoring our own. Criteria:
-  - fit to the element's intended meaning, as set out in `MISSION.md` (Purpose, Users, G1, G10) and
-    `decisions/log.md` (D-003, D-010, D-013);
+  `/Users/z/Documents/GitHub/concept-definition-stage`, SKOS, PROV-O, Dublin Core, SOSA/SSN, QUDT, iStar/KAOS goal
+  models, OSLC RM, SysML v2 (by reference, using the equivalence-axiom pattern of `concept-definition-stage`).
+- G2. A trade study for each element: the best adopt option against authoring our own. Criteria:
+  - fit to the meaning the chief engineer gave the element;
   - simplicity, measured as the terms we would carry;
   - recognisability to systems engineers;
   - maintenance;
   - cost to the software and the UX.
-- **WP1-G3.** Assess easy-win axioms, starting with the conflict between concerns (anonymity vs attribution, which the
-  chief engineer called a disjointness axiom): the form it would take, what it costs, and a recommendation.
-- **WP1-G4.** A composition recommendation: per element, the adopted term (IRI and source) or "authored", with the
-  reason, and how the pieces fit into one ontology.
+- G3. Assess easy-win axioms, starting with the conflict between concerns (anonymity vs attribution, which the chief
+  engineer called a disjointness axiom): the form it would take, what it costs, and a recommendation.
+- G4. A composition recommendation: per element, the adopted term (IRI and source) or "authored", with the reason, and
+  how the pieces fit into one ontology.
 
 ## Non-goals
 
@@ -46,24 +44,18 @@ custom (and we author it). The result must be one coherent ontology, not a patch
 
 | ID | Deliverable | Serves |
 |---|---|---|
-| WP1-D1 | `research/ontology/survey.md`: each candidate with source link, version and the elements it covers | WP1-G1 |
-| WP1-D2 | `research/ontology/trade-study.md`: one table per element, plus an axioms section | WP1-G2, WP1-G3 |
-| WP1-D3 | `research/ontology/readout.md`: the composition recommendation with a term-trace table | WP1-G4 |
-
-Units write partial files under `research/ontology/parts/` and the synthesis unit assembles them, so units never
-share a file.
+| WP1-D1 | `research/ontology/survey.md`: each candidate with source link, version and what it covers | G1 |
+| WP1-D2 | `research/ontology/trade-study.md`: one table per element | G2, G3 |
+| WP1-D3 | `research/ontology/readout.md`: the composition recommendation (at most two pages) with a term-trace table | G4 |
 
 ## Requirements
 
 | ID | Requirement | Checked by |
 |---|---|---|
-| WP1-R1 | Every claim about an external ontology carries a link to its primary source (spec, standard page or published IRI). Quoted definitions are verbatim, with a citation. | Reviewer fetches at least 10 links |
-| WP1-R2 | Every element has a trade table with at least two options, one of which is "author our own". | Checklist of the elements against `trade-study.md` |
-| WP1-R3 | Each element in the readout's term-trace table has an adopted IRI with its source, or "authored" with the reason. | Inspection |
-| WP1-R4 | The recommendation adds no element beyond `MISSION.md` G1 except easy-win axioms, each with its cost stated. | Inspection against `MISSION.md` G1 and G10 |
-| WP1-R5 | `trade-study.md` has an axioms section covering the concern conflict: its form, its cost and a recommendation. | Inspection |
-| WP1-R6 | `survey.md` covers every starting-point source and every element, each source with a link and a version. | Checklist |
-| WP1-R7 | `readout.md` is no longer than 1,000 words. | `wc -w` |
+| R1 | Every claim about an external ontology carries a link to its primary source (spec, standard page or published IRI), and quoted definitions are verbatim with a citation. | Reviewer spot-checks at least 10 links by fetching them |
+| R2 | Every element has at least two options in its trade table, one of which is "author our own". | Inspection of `trade-study.md` |
+| R3 | Every element in the readout's term-trace table has either an adopted IRI with its source, or "authored" with the reason. | Inspection |
+| R4 | The recommendation adds no element outside G1's list except easy-win axioms, each with its cost stated. | Inspection against `MISSION.md` G1 and G10 |
 
 ## Definition of good
 
@@ -72,15 +64,14 @@ feels bolted on.
 
 ## Definition of good enough
 
-WP1-R1 to WP1-R7 met. Each element in the readout has a one-line recommendation, the runner-up option, and the
-criterion that decided between them.
+R1 to R4 met, and the readout is clear enough for the ACE to rule on each element.
 
 ## Blast radius
 
-`research/ontology/**` only. `work-packages/board.md` belongs to the PM.
+`research/ontology/**` and this file's board rows. Nothing else.
 
 ## Agent's defaults
 
-- Research units take one cluster each: stakeholders and concerns; properties and technologies; relations, records,
-  status, provenance and axioms. A synthesis unit follows them.
+- Research workers each take a cluster of elements (stakeholders and concerns; properties and technologies;
+  relations, records, status and provenance), plus one synthesis unit.
 - Web research uses primary sources.
