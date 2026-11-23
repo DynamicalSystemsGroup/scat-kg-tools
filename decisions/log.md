@@ -241,10 +241,3 @@ Not changed, because each is as simple as it can be: the candidate stage, the th
 personas.
 Note: `MISSION.md` grew slightly (from about 4,000 to about 4,100 words). R-13, the prerequisites and the
 one-way-per-page rule added more than the trims removed.
-
-## D-015 | 2026-11-23 | Mission approved; dev created; WP1 and WP2 drafted
-
-Mission approval verified: PR #1 was merged by `mzargham` at 2026-11-23T19:00:31Z, as merge commit `3437230`. The
-ACE created `dev` from it, along with `work-packages/board.md` and drafts of WP1 (ontology research sprint) and WP2
-(toolchain spike). The two run in parallel, and their blast radii (`research/ontology/**` and
-`research/toolchain/**`) don't overlap.
