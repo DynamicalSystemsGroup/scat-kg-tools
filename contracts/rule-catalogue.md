@@ -12,7 +12,7 @@ exact field and value) or the rule records why it cannot be.
 ## 1. Conventions every rule shares
 
 **Page terms.** A page is `<page-name>.md`. `<type-key>` is the value of a page's `type` field (`scat:key` of its
-page type). A *link field* is a field with a `scat:targetType`. A *body link* is a wikilink in the page after the
+page type). A *link field* is a field with a `scat:targetType`: a list of wikilinks, or exactly one wikilink when `scat:single` is true (the relation pages' endpoint fields `group`, `concern`, `affordance`, `technology`). An *item line* is `- "[[<target>]]"` in a list field and `<field>: "[[<target>]]"` in a single field. A *relation page* is a page of type `heldby`, `addresses` or `attributes`. A *body link* is a wikilink in the page after the
 frontmatter. A link's *target* is the page name inside the brackets. A page's *status* is `stub`, `draft` or `done`.
 A page type with `scat:carriesStatus false` (the class page) is treated as `done` by every status rule below.
 
@@ -27,16 +27,16 @@ missing or invalid is checked by no rule that needs its type. A link whose targe
 is checked by no rule marked "needs status"; the status error is reported once, on the page.
 
 **Empty.** A field is *missing* when the key is absent or its value is null, an empty or blank string, or an empty
-list. A link field that is present and empty is not an error by itself, except where a rule says the field is required.
+list. A link field that is present and empty is not an error by itself, except where a rule says the field is required. "Present and non-empty" is the one reading used for every rule that says "carries" or "present" about a link field.
 
 **Status behaviour (R-3), in one table.**
 
 | Kind of rule | stub | draft | done |
 |---|---|---|---|
-| Required from `stub` (`type`, `status`, `title`, `indexes`) | error | error | error |
+| Required from `stub` (`type`, `status`, `title`, `indexes`, and a relation page's endpoint fields) | error | error | error |
 | Required from `done` (`description`, required link fields) | silent | warning | error |
 | Link shape, unlisted link, endpoint, dangling link (frontmatter and body) | error | error | error |
-| Discouraged field, discouraged body link, conflict, mention, backlink, index | warning | warning | warning |
+| Discouraged field, discouraged body link, conflict, self-conflict, mention, backlink, missing relation page, index | warning | warning | warning |
 | SCAT-RAW-UNCODED | silent | silent | warning |
 | Cap | error | error | error |
 
@@ -66,7 +66,7 @@ printed on both paths (R-8).
 
 | Operation | CLI form | REPL form | What the messages rely on |
 |---|---|---|---|
-| stub | `scat stub <page-name> --type <type-key>` | `scat_kg.stub("<page-name>", type="<type-key>")` | Creates `<page-name>.md` with `status: stub` and every field required from `stub` filled, so the new page has no error. Refuses an existing page. Accepts the eight non-class type keys. |
+| stub | `scat stub <page-name> --type <type-key>` | `scat_kg.stub("<page-name>", type="<type-key>")` | Creates `<page-name>.md` with `status: stub` and every field required from `stub` filled, so the new page has no error. Refuses an existing page. Accepts every type key except `class`. For the three relation types it also takes the two endpoint pages, so the new page has no error: `scat stub <relation-page-name> --type <key> --<field-a> <page-a> --<field-b> <page-b>` (REPL: `scat_kg.stub("<relation-page-name>", type="<key>", <field-a>="<page-a>", <field-b>="<page-b>")`), with the name the page-contracts entailment rule gives. |
 | set-status | `scat set-status <page-name> <status>` | `scat_kg.set_status("<page-name>", "<status>")` | Sets `status`, adding the key if absent. |
 | index | `scat index` | `scat_kg.index()` | Writes every class page's generated index, creating a missing class page. |
 
@@ -81,10 +81,10 @@ trigger or severity. `S(<field>)` for a page P is:
 
 | Field | Suggested pages |
 |---|---|
-| `groups` | groups that hold (`heldby`) a concern listed in P's `concerns` |
-| `concerns` | concerns held by a group listed in P's `groups`, plus concerns whose `addresses` lists an affordance in P's `affordances` |
-| `affordances` | affordances in `addresses` of a concern listed in P's `concerns`, plus affordances whose `attributes` lists a technology in P's `technologies` |
-| `technologies` | technologies in `attributes` of an affordance listed in P's `affordances` |
+| `groups` | the `group` of each `heldby` page whose `concern` is listed in P's `concerns` |
+| `concerns` | the `concern` of each `heldby` page whose `group` is listed in P's `groups`, plus the `concern` of each `addresses` page whose `affordance` is listed in P's `affordances` |
+| `affordances` | the `affordance` of each `addresses` page whose `concern` is listed in P's `concerns`, plus the `affordance` of each `attributes` page whose `technology` is listed in P's `technologies` |
+| `technologies` | the `technology` of each `attributes` page whose `affordance` is listed in P's `affordances` |
 | `raw` | raw pages of the field's target type whose `coded` lists P |
 
 ## 2. The four decisions
@@ -101,12 +101,15 @@ gives it. Class pages have no status, so only the first alternative is offered t
 
 **(2) Wrong endpoint: numbered replacements in a fixed order.** Let `W` be the wrong target, `T` the field's
 target type and `P` the page. The options, in this order, are:
-1. *Move*, if `P`'s page type lists, as required or optional, a field whose target type is `W`'s type and `W` is not
-   already in it: move the line there. (The common slip is the right page in the wrong field.)
+1. *Move* (list fields): if `P`'s page type lists, as required or optional, a list field whose target type is `W`'s
+   type and `W` is not already in it, move the line there. *Swap* (a relation page): if both endpoint fields hold a
+   page of the other's type, swap the two values. (The common slip is the right page in the wrong field.)
 2. *Replace* with a page of type `T` not already in the field, in tiers: first pages of type `T` that link to or
-   from `W` (frontmatter or body), then pages of type `T` that `P`'s body links; within a tier, page name in byte
+   from `W` (frontmatter or body) or that share a relation page with `W` (the other endpoint of a relation page
+   that has `W` as an endpoint), then pages of type `T` that `P`'s body links; within a tier, page name in byte
    order; at most 5 shown (`(+<n> more)`). No other pages are offered.
-3. *Delete* the line (always last).
+3. *Delete* the item line (always last), except in a field required from `stub`, where deleting would only trade
+   this error for SCAT-FM-REQUIRED-LINK.
 
 **(3) Stub type for a dangling link.** For a frontmatter link the type is the field's target type, so the fix is
 exact: `stub <target> --type <type-key>`, offered after the near match if there is one (a name that is one letter
@@ -115,10 +118,12 @@ duplicate). A stub for a `stakeholder-group` target is not offered when the vaul
 says so, because the stub would trigger SCAT-CAP. For a body link the target's type is not stated, so the type is
 inferred, in order: (a) if some frontmatter link field in the vault names the same target, that field's target
 type (all of them, if several, sorted by type key); (b) otherwise the four class keys in the order
-`stakeholder-group`, `concern`, `affordance`, `technology`, each a separate numbered exact command. A type the
+`stakeholder-group`, `concern`, `affordance`, `technology`, each a separate numbered exact command (a stub for a
+relation type needs its two endpoints, which a body link does not give). A type the
 page type discourages for body links is left out of the numbered stubs (it would only trade an error for
-SCAT-LINK-DISCOURAGED-BODY) and the message says it was left out. Raw and coded record pages are written by people,
-so a body link to a missing record page gets no stub option.
+SCAT-LINK-DISCOURAGED-BODY) and the message says it was left out. Raw and coded record pages are written by people and
+relation pages are created from coded records, so a body link to a missing record or relation page gets no stub
+option.
 
 **(4) Missing link type: the exact field and the skeleton, suggestions only, the choice stays with the author.**
 Per log D-029 there is no TBox axiom that derives a record's affordances from its concerns. The message names the
@@ -133,7 +138,8 @@ skeleton carries one slot *(author)*. The alternative `set-status draft` is alwa
 |---|---|---|---|---|
 | SCAT-FM-PARSE | error | every status | file has no readable frontmatter mapping | manual |
 | SCAT-FM-REQUIRED | error | every status | a field required from `stub` is missing | options |
-| SCAT-FM-TYPE | error | every status | `type` is not one of the nine keys | options |
+| SCAT-FM-TYPE | error | every status | `type` is not one of the twelve keys | options |
+| SCAT-FM-REQUIRED-LINK | error | every status | a relation page's required endpoint field is missing or empty | slot |
 | SCAT-FM-STATUS | error | every status | `status` is not `stub`, `draft` or `done` | options |
 | SCAT-FM-INDEXES | error | every status | class page `indexes` is outside its value set | options |
 | SCAT-FM-SHAPE | error | every status | a text field is not a single non-empty string | exact |
@@ -141,7 +147,7 @@ skeleton carries one slot *(author)*. The alternative `set-status draft` is alwa
 | SCAT-DONE-LINK | error | done | required link field missing or empty | slot |
 | SCAT-DRAFT-FIELD | warning | draft | required text field missing | slot |
 | SCAT-DRAFT-LINK | warning | draft | required link field missing or empty | slot |
-| SCAT-LINK-SHAPE | error | every status | link field is not a list of `"[[<page-name>]]"` | exact |
+| SCAT-LINK-SHAPE | error | every status | link field is not a list of `"[[<page-name>]]"` (a single field: not exactly one) | exact |
 | SCAT-LINK-UNLISTED | error | every status | non-empty link field the page type does not list | exact |
 | SCAT-LINK-ENDPOINT | error | every status | link target exists but has the wrong type | options |
 | SCAT-LINK-DANGLING | error | every status | frontmatter link target page does not exist | options |
@@ -151,6 +157,8 @@ skeleton carries one slot *(author)*. The alternative `set-status draft` is alwa
 | SCAT-CAP | error | vault | more stakeholder-group pages than the cap | options |
 | SCAT-CAP-CONFIG | error | vault | cap missing or not a whole number of at least 1 | slot |
 | SCAT-CONFLICT-BOTH | warning | every status | a coded record lists both ends of a conflict | advisory |
+| SCAT-CONFLICT-SELF | warning | every status | a concern lists itself under `conflicts` | exact |
+| SCAT-REL-MISSING | warning | every status | a coded record entails a relation page that does not exist | exact |
 | SCAT-MENTION | warning | every status | body names an existing page in plain text | exact |
 | SCAT-RAW-BACKLINK | warning | every status | a coded page lists this raw page, which does not list it back | exact |
 | SCAT-RAW-UNCODED | warning | done | a done raw page has no coded page | slot |
@@ -175,34 +183,45 @@ error [SCAT-FM-PARSE] <file>[:<line>] frontmatter: <parser's reason, or "the fil
 
 ### SCAT-FM-REQUIRED
 - **Severity:** error. **Fires:** every status.
-- **Trigger:** a field the page type requires from `stub` is missing: `type`, `status` and `title` on a content page; `type`, `title` and `indexes` on a class page. One message per field.
+- **Trigger:** a field the page type requires from `stub` is missing: `type`, `status` and `title` on a content page; `type`, `title` and `indexes` on a class page. (A relation page's endpoint fields are required from `stub` too; their link kind has its own rule, SCAT-FM-REQUIRED-LINK.) One message per field.
 - **Messages:**
 ```
 error [SCAT-FM-REQUIRED] <file> field `type`: missing
   Fix, choose the one that describes this page: add the line `type: <key>`, where <key> is
-    <key>: <scat:pageDescription>     (one line per page type: the nine keys, in alphabetical order)
+    <key>: <scat:pageDescription>     (one line per page type: the twelve keys, in alphabetical order)
 error [SCAT-FM-REQUIRED] <file> field `status`: missing
   Fix: run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`); use `stub` or `done` instead of `draft` if that is the truth
 error [SCAT-FM-REQUIRED] <file> field `title`: missing
   Fix: add the line `title: "<page-name>"` (the page name is a valid title; reword it if you like)
 error [SCAT-FM-REQUIRED] <file> field `indexes`: missing
-  Fix: add the line `indexes: <key>`      (if the page name equals one of stakeholder-group, concern, affordance, technology, that key; otherwise choose one:)
-    1. `indexes: stakeholder-group`  2. `indexes: concern`  3. `indexes: affordance`  4. `indexes: technology`
+  Fix: add the line `indexes: <key>`      (if the page name equals one of the seven class keys, that key; otherwise choose one:)
+    one numbered line `indexes: <key>` for each of stakeholder-group, concern, affordance, technology, heldby, addresses, attributes
 ```
-- **Fix kind:** options. `type`: the page's intended type is the author's, so the nine descriptions are the exact alternatives. `status`: the author knows whether it is finished; `draft` is the one that never overstates. `title` and `indexes` are exact when the name gives the answer.
+- **Fix kind:** options. `type`: the page's intended type is the author's, so the twelve descriptions are the exact alternatives. `status`: the author knows whether it is finished; `draft` is the one that never overstates. `title` and `indexes` are exact when the name gives the answer.
 - **Test:** four seeds (one per field), each at status draft (the `title`, `type` and `indexes` seeds also at stub, to show no status excuses them). A page whose `type` is missing gets no type-dependent message.
 
 ### SCAT-FM-TYPE
 - **Severity:** error. **Fires:** every status.
-- **Trigger:** `type` is present, is a string, and is not one of the nine page-type keys.
+- **Trigger:** `type` is present, is a string, and is not one of the twelve page-type keys.
 - **Message:**
 ```
 error [SCAT-FM-TYPE] <file> field `type`: `<value>` is not a page type
-  Fix: change it to `type: <near match>`            (when a near match among the nine keys exists)
-  Fix, choose the one that describes this page: `type: <key>` ...    (otherwise, the nine keys as in SCAT-FM-REQUIRED)
+  Fix: change it to `type: <near match>`            (when a near match among the twelve keys exists)
+  Fix, choose the one that describes this page: `type: <key>` ...    (otherwise, the twelve keys as in SCAT-FM-REQUIRED)
 ```
 - **Fix kind:** options (exact when the near match exists).
 - **Test:** `type: Concern` (near match `concern`, exact) and `type: gadget` (list). Links to this page from other pages give no endpoint error (cascade guard).
+
+### SCAT-FM-REQUIRED-LINK
+- **Severity:** error. **Fires:** every status.
+- **Trigger:** a link field required from `stub` is missing or empty: on a `heldby` page `group` and `concern`; on an `addresses` page `concern` and `affordance`; on an `attributes` page `affordance` and `technology`. One message per field.
+- **Message:**
+```
+error [SCAT-FM-REQUIRED-LINK] <file> field `<field>`: missing; a <type-key> page names exactly one <expected-key> page here, at every status
+  Fix: add the line `<field>: "[[<one <expected-key> page you choose>]]"` (author)
+```
+- **Fix kind:** slot. Why not exact: the TBox derives neither endpoint from the other and the page's name is not read as data, so which pair the page records is the author's reading. Tool-created relation pages (the stub operation) have both endpoints filled, so this error comes from a hand edit.
+- **Test:** each of the six endpoint fields removed in turn, at `stub`, `draft` and `done` (same message at each); `group: ` with no value.
 
 ### SCAT-FM-STATUS
 - **Severity:** error. **Fires:** every status. Not evaluated on class pages.
@@ -218,12 +237,12 @@ error [SCAT-FM-STATUS] <file> field `status`: `<value>` is not a status
 
 ### SCAT-FM-INDEXES
 - **Severity:** error. **Fires:** every status. Class pages only.
-- **Trigger:** `indexes` is present and is not one of `stakeholder-group`, `concern`, `affordance`, `technology`.
+- **Trigger:** `indexes` is present and is not one of `stakeholder-group`, `concern`, `affordance`, `technology`, `heldby`, `addresses`, `attributes`.
 - **Message:**
 ```
 error [SCAT-FM-INDEXES] <file> field `indexes`: `<value>` is not a class
-  Fix: change it to `indexes: <near match>`                                   (when a near match among the four keys exists)
-  Fix, choose one: `indexes: stakeholder-group`, `indexes: concern`, `indexes: affordance`, `indexes: technology`      (otherwise)
+  Fix: change it to `indexes: <near match>`                                   (when a near match among the seven keys exists)
+  Fix, choose one: the seven keys, each as `indexes: <key>`      (otherwise)
 ```
 - **Fix kind:** options.
 - **Test:** `indexes: concerns` on a class page (near match `concern`).
@@ -252,11 +271,11 @@ error [SCAT-DONE-FIELD] <file> field `description`: missing on a page with statu
 ```
 On a class page the first line reads `... missing` and only option 1 is printed.
 - **Fix kind:** slot. Why not exact: the sentence is the author's reading (decision 1).
-- **Test:** `description` removed at `done` (two options) and on a class page (one option); at `stub` and `draft` the same page gives no SCAT-DONE-FIELD.
+- **Test:** `description` removed at `done` (two options), on a relation page at `done`, and on a class page (one option); at `stub` and `draft` the same page gives no SCAT-DONE-FIELD.
 
 ### SCAT-DONE-LINK
 - **Severity:** error. **Fires:** status `done`. **Needs status.**
-- **Trigger:** a link field required from `done` is missing or empty. One message per field.
+- **Trigger:** a list link field required from `done` (`raw`, `groups`, `concerns`, `affordances`, `technologies` of the coded records) is missing or empty. One message per field.
 - **Message:**
 ```
 error [SCAT-DONE-LINK] <file> field `<field>`: required link field is missing or empty on a page with status: done
@@ -287,7 +306,7 @@ warning [SCAT-DRAFT-LINK] <file> field `<field>`: required link field is missing
 
 ### SCAT-LINK-SHAPE
 - **Severity:** error. **Fires:** every status.
-- **Trigger:** a link field the page type lists is present and its value is not a list whose items are all strings of exactly the form `[[<page-name>]]` (no `|alias`, no `#heading`). An unquoted `[[x]]` in YAML is a nested list and so triggers it.
+- **Trigger:** a link field the page type lists is present and non-empty, and its value is not a list whose items are all strings of exactly the form `[[<page-name>]]` (no `|alias`, no `#heading`); for a single field (`scat:single`), not exactly one such string and no list. An unquoted `[[x]]` in YAML is a nested list and so triggers it. A one-item list in a single field triggers it too.
 - **Message:**
 ```
 error [SCAT-LINK-SHAPE] <file>:<line> field `<field>`: <value is one line, not a list | an item is not a quoted [[page-name]] link | ...>
@@ -295,20 +314,20 @@ error [SCAT-LINK-SHAPE] <file>:<line> field `<field>`: <value is one line, not a
          <field>:
            - "[[<page-name>]]"
 ```
-The block is rebuilt from the value: a bare string or a nested list gives its text; `[[a|b]]` and `[[a#b]]` give `[[a]]`; an item that is not text is replaced by the line `- "[[<one page you choose>]]"` (author), and the message says that item could not be read.
-- **Fix kind:** exact, except an unreadable item (manual: nothing in it names a page).
-- **Test:** four seeds: a scalar, an unquoted `[[x]]`, an alias item, a number item.
+For a single field the fix is the one line `<field>: "[[<page-name>]]"`; when the value is a list of several items the choices are one numbered line per item (keep that one), and the message adds "a relation page holds one pair; to relate more pairs, create more relation pages". The block is rebuilt from the value: a bare string or a nested list gives its text; `[[a|b]]` and `[[a#b]]` give `[[a]]`; an item that is not text is replaced by the line `- "[[<one page you choose>]]"` (author), and the message says that item could not be read.
+- **Fix kind:** exact, except an unreadable item (manual: nothing in it names a page), and a several-item list in a single field (options: which item to keep is the author's).
+- **Test:** four seeds: a scalar, an unquoted `[[x]]`, an alias item, a number item; and on a relation page, `group` as a one-item list (exact) and as a two-item list (two options).
 
 ### SCAT-LINK-UNLISTED
 - **Severity:** error (`scat:unlistedLinkLevel`). **Fires:** every status.
-- **Trigger:** the page has a non-empty value under a key that is a link field of some page type but that its own page type lists in none of required, optional and discouraged. (A key that is no link field of any type is ignored; an empty list is ignored.)
+- **Trigger:** the page has a non-empty value under a key that is a link field of some page type but that its own page type lists in none of required, optional and discouraged. (A key that is no link field of any type is ignored; an empty value is ignored.)
 - **Message:**
 ```
 error [SCAT-LINK-UNLISTED] <file>:<line> field `<field>`: a <type-key> page does not take `<field>` (its link fields are: <list, alphabetical>)
   Fix: delete `<field>:` and its list items
 ```
-- **Fix kind:** exact. No move is offered: the field names carry different relations (`heldby` and `concerns` both take concerns, with different meanings), so the tools do not guess that the author meant another field.
-- **Test:** `groups` on a concern page; `heldby` on a coded scenario; an empty `groups: []` on a concern page gives none.
+- **Fix kind:** exact. No move is offered: the field names carry different relations, so the tools do not guess that the author meant another field.
+- **Test:** `groups` on a concern page; `concern` on a coded scenario; an empty `groups: []` on a concern page gives none. A first-member key from the old design (`heldby:` on a group page) is no link field of any type now and is ignored; see section 5.
 
 ### SCAT-LINK-ENDPOINT
 - **Severity:** error (`scat:wrongTargetLevel`). **Fires:** every status.
@@ -317,13 +336,13 @@ error [SCAT-LINK-UNLISTED] <file>:<line> field `<field>`: a <type-key> page does
 ```
 error [SCAT-LINK-ENDPOINT] <file>:<line> field `<field>`: [[<target>]] is a <actual-key> page, but `<field>` must link <expected-key> pages
   Fix, choose one:
-    1. move the line `- "[[<target>]]"` from `<field>` to `<other-field>`
-    2. replace `- "[[<target>]]"` with `- "[[<candidate>]]"`        (one numbered option per candidate)
-    n. delete the line `- "[[<target>]]"` under `<field>`
+    1. move the item line `<item>` from `<field>` to `<other-field>`        (list fields; on a relation page: swap the values of `<field>` and `<other-field>`)
+    2. replace `<item>` with `<item with candidate>`        (one numbered option per candidate)
+    n. delete the item line `<item>` under `<field>`        (not in a field required from `stub`)
 ```
-Options follow the order of decision 2. With none of options 1 and 2 available the message says "no existing <expected-key> page was found" and prints only the delete.
+Options follow the order of decision 2. With no replacement available the message says "no existing <expected-key> page was found"; in a field required from `stub` it then has no option at all, and says the pair must be changed by hand (manual).
 - **Fix kind:** options. Every option is exact; which one is meant is the author's intent, so the rule never picks.
-- **Test:** the measurement defect (a technology under `addresses`); a coded scenario with an affordance under `concerns` (move option 1 present); a case with no candidates; a case with tier-1 and tier-2 candidates, to fix the order. At each status the same message appears.
+- **Test:** the measurement defect (a technology under `addresses`); a coded scenario with an affordance under `concerns` (move option 1 present); a relation page whose `group` holds a concern and `concern` holds a group (swap, both messages), and one whose `affordance` holds a technology (replacements, tier 1 through the sharing `attributes` page, no delete); a case with no candidates; a case with tier-1 and tier-2 candidates, to fix the order. At each status the same message appears.
 
 ### SCAT-LINK-DANGLING
 - **Severity:** error. **Fires:** every status.
@@ -332,11 +351,11 @@ Options follow the order of decision 2. With none of options 1 and 2 available t
 ```
 error [SCAT-LINK-DANGLING] <file>:<line> field `<field>`: [[<target>]] does not exist (no file <target>.md)
   Fix, choose one:
-    1. replace `- "[[<target>]]"` with `- "[[<near match>]]"` (the closest existing <expected-key> page)       (only if a near match exists among pages of the field's target type)
+    1. replace `<item>` with `<item with near match>` (the closest existing <expected-key> page)       (only if a near match exists among pages of the field's target type)
     2. run `scat stub <target> --type <expected-key>` (REPL: `scat_kg.stub("<target>", type="<expected-key>")`) to create it as a stub
 ```
 When the target is a `stakeholder-group` and the vault is at its cap, option 2 is replaced by "the vault is at its cap of <cap> stakeholder groups, so a new group page would break SCAT-CAP; choose an existing group".
-- **Fix kind:** options. Exact because the type comes from the field (decision 3). The tools cannot tell a typo from a page the author means to create, so both are offered.
+- **Fix kind:** options. Exact because the type comes from the field (decision 3). On a relation page the stub option is the same command for the endpoint's own type (`group` gives `stakeholder-group`). The tools cannot tell a typo from a page the author means to create, so both are offered.
 - **Test:** the measurement defect (`safety-briefings`, near match `safety-briefing`); a target with no near match (one option); a target differing from an existing page only in case (near match, ratio 1); a group target at the cap.
 
 ### SCAT-LINK-DANGLING-BODY
@@ -416,6 +435,29 @@ warning [SCAT-CONFLICT-BOTH] <file>:<line> field `concerns`: this record holds b
 - **Fix kind:** advisory. Why: the graph holds disagreement and does not resolve it (log D-028), so the rule must not ask for the difference to be removed.
 - **Test:** record lists both with a declaration on A only, on B only, and on both (one message each case, same text apart from "declared on"); lists one only (none); lists both with no declaration (none); a draft and a done record (same message).
 
+### SCAT-CONFLICT-SELF
+- **Severity:** warning. **Fires:** every status. Concern pages.
+- **Trigger:** a concern page lists itself under `conflicts`. (The self pair is also ignored by SCAT-CONFLICT-BOTH.)
+- **Message:**
+```
+warning [SCAT-CONFLICT-SELF] <file>:<line> field `conflicts`: [[<page-name>]] is this page; a concern cannot conflict with itself
+  Fix: delete the line `- "[[<page-name>]]"` under `conflicts`
+```
+- **Fix kind:** exact. Two aspects of one concern in tension are two concerns; the message does not say which, and the tools do not split a concern for the author.
+- **Test:** a concern listing itself (one message); listing itself and another (one message, the other pair still counts for SCAT-CONFLICT-BOTH).
+
+### SCAT-REL-MISSING
+- **Severity:** warning. **Fires:** every status. Coded records (`scenario-coded`, `architecture-coded`).
+- **Trigger:** a coded record's links entail a relation page, according to the entailment rule in `contracts/page-contracts.md`, and no page with the entailed name exists. This catalogue names no pair and no page name itself: it only takes "the relation pages the page-contracts entailment rule names" for this record, as (relation type, page name, endpoint A, endpoint B). A relation page that exists with other endpoints is not this rule's business. One message per missing page. Dangling record links are SCAT-LINK-DANGLING's, not this rule's: a pair is entailed only when both of its endpoints exist.
+- **Message:**
+```
+warning [SCAT-REL-MISSING] <file>:<line> link [[<endpoint-a>]] with [[<endpoint-b>]]: this record entails the <relation-key> page <relation-page-name>, which does not exist
+  Fix: run `scat stub <relation-page-name> --type <relation-key> --<field-a> <endpoint-a> --<field-b> <endpoint-b>` (REPL: `scat_kg.stub("<relation-page-name>", type="<relation-key>", <field-a>="<endpoint-a>", <field-b>="<endpoint-b>")`)
+```
+`<line>` is the line of the first of the two links.
+- **Fix kind:** exact. It is a warning, not an error, because the graph is "never incomplete, only unfinished" (G3) only once the stub operation has run; until then the relation is unrecorded, which is advice. The page-contracts entailment rule is a dependency (section 6), and so are the stub operation's endpoint arguments.
+- **Test:** a done coded scenario in a fixture whose relation pages are all present (none); delete one entailed `heldby` page (one message, golden command); the same at `stub` and `draft`; delete an entailed page whose record link is dangling (only SCAT-LINK-DANGLING).
+
 ### SCAT-MENTION
 - **Severity:** warning (basic). **Fires:** every status. Not on raw or class pages.
 - **Trigger:** the body of a page contains, as plain text, the `title` or the page name of an existing page of type `stakeholder-group`, `concern`, `affordance` or `technology`, matched case-insensitively at word boundaries, for a title or name of at least 4 characters, outside code, outside any wikilink, and when the body has no link to that page. Not the page itself. Not a page of a class that the page type discourages for body links. Reported once per page and target, at the first occurrence. No stemming, no plurals.
@@ -452,7 +494,7 @@ The type is `scenario-coded` for a raw scenario and `architecture-coded` for a r
 
 ### SCAT-INDEX-STALE
 - **Severity:** warning. **Fires:** every status. Class pages and the vault.
-- **Trigger:** a class page is missing for one of the four classes, or its generated index differs from what `index` would write from the instance pages (page-contracts defines the generated part). The check compares and never writes.
+- **Trigger:** a class page is missing for one of the seven classes, or its generated index differs from what `index` would write from the instance pages (page-contracts defines the generated part). The check compares and never writes.
 - **Message:**
 ```
 warning [SCAT-INDEX-STALE] <class-file> index table: <the page is missing | the table differs from the <type-key> pages>
@@ -465,7 +507,7 @@ warning [SCAT-INDEX-STALE] <class-file> index table: <the page is missing | the 
 
 | Requirement | Rules |
 |---|---|
-| R-1 required fields and types | SCAT-FM-PARSE, SCAT-FM-REQUIRED, SCAT-FM-TYPE, SCAT-FM-INDEXES, SCAT-FM-SHAPE, SCAT-DONE-FIELD, SCAT-DONE-LINK, SCAT-LINK-SHAPE |
+| R-1 required fields and types | SCAT-FM-PARSE, SCAT-FM-REQUIRED, SCAT-FM-REQUIRED-LINK, SCAT-FM-TYPE, SCAT-FM-INDEXES, SCAT-FM-SHAPE, SCAT-DONE-FIELD, SCAT-DONE-LINK, SCAT-LINK-SHAPE |
 | R-1 relation endpoints | SCAT-LINK-ENDPOINT |
 | R-1 linking rules, error level | SCAT-LINK-UNLISTED |
 | R-1 linking rules, warning level (scenario to technology, architecture to stakeholder group; frontmatter and body) | SCAT-LINK-DISCOURAGED, SCAT-LINK-DISCOURAGED-BODY |
@@ -475,9 +517,10 @@ warning [SCAT-INDEX-STALE] <class-file> index table: <the page is missing | the 
 | R-3 unfinished is never an error | SCAT-DRAFT-FIELD, SCAT-DRAFT-LINK (warnings at draft); nothing fires for `done` fields at stub |
 | R-3 full contract at `done`; required-from-status | SCAT-DONE-FIELD, SCAT-DONE-LINK, SCAT-FM-REQUIRED |
 | R-3 links and endpoints at every status | SCAT-LINK-SHAPE, SCAT-LINK-UNLISTED, SCAT-LINK-ENDPOINT, SCAT-LINK-DANGLING, SCAT-LINK-DANGLING-BODY |
-| D3 conflict warning | SCAT-CONFLICT-BOTH |
+| D3 conflict warning | SCAT-CONFLICT-BOTH, SCAT-CONFLICT-SELF |
 | Unlinked-mention warning (basic) | SCAT-MENTION |
 | Raw-to-coded warning | SCAT-RAW-BACKLINK, SCAT-RAW-UNCODED |
+| Relation pages entailed by coded records (R-11, D-030) | SCAT-REL-MISSING |
 | Generated index (G2, R-11) | SCAT-INDEX-STALE |
 
 TBox coverage map. One line per field or link rule of the TBox: `<kind> <type-key>.<field-or-class-key> -> <rule ids>`.
@@ -485,11 +528,16 @@ It is checked against `ontology/scat.ttl` by a script. Every required field, dis
 link of the TBox must appear.
 
 ```
+required addresses.affordance -> SCAT-FM-REQUIRED-LINK, SCAT-LINK-SHAPE
+required addresses.concern -> SCAT-FM-REQUIRED-LINK, SCAT-LINK-SHAPE
+required addresses.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
+required addresses.status -> SCAT-FM-REQUIRED
+required addresses.title -> SCAT-FM-REQUIRED
+required addresses.type -> SCAT-FM-REQUIRED
 required affordance.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
 required affordance.status -> SCAT-FM-REQUIRED
 required affordance.title -> SCAT-FM-REQUIRED
 required affordance.type -> SCAT-FM-REQUIRED
-optional affordance.attributes -> SCAT-LINK-ENDPOINT, SCAT-LINK-DANGLING
 required architecture-coded.affordances -> SCAT-DONE-LINK, SCAT-DRAFT-LINK
 required architecture-coded.concerns -> SCAT-DONE-LINK, SCAT-DRAFT-LINK
 required architecture-coded.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
@@ -506,6 +554,12 @@ required architecture-raw.title -> SCAT-FM-REQUIRED
 required architecture-raw.type -> SCAT-FM-REQUIRED
 discouraged-body-link architecture-raw.stakeholder-group -> SCAT-LINK-DISCOURAGED-BODY
 optional architecture-raw.coded -> SCAT-RAW-BACKLINK, SCAT-RAW-UNCODED
+required attributes.affordance -> SCAT-FM-REQUIRED-LINK, SCAT-LINK-SHAPE
+required attributes.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
+required attributes.status -> SCAT-FM-REQUIRED
+required attributes.technology -> SCAT-FM-REQUIRED-LINK, SCAT-LINK-SHAPE
+required attributes.title -> SCAT-FM-REQUIRED
+required attributes.type -> SCAT-FM-REQUIRED
 required class.description -> SCAT-DONE-FIELD
 required class.indexes -> SCAT-FM-REQUIRED
 required class.title -> SCAT-FM-REQUIRED
@@ -514,8 +568,13 @@ required concern.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
 required concern.status -> SCAT-FM-REQUIRED
 required concern.title -> SCAT-FM-REQUIRED
 required concern.type -> SCAT-FM-REQUIRED
-optional concern.addresses -> SCAT-LINK-ENDPOINT, SCAT-LINK-DANGLING
-optional concern.conflicts -> SCAT-CONFLICT-BOTH
+optional concern.conflicts -> SCAT-CONFLICT-BOTH, SCAT-CONFLICT-SELF
+required heldby.concern -> SCAT-FM-REQUIRED-LINK, SCAT-LINK-SHAPE
+required heldby.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
+required heldby.group -> SCAT-FM-REQUIRED-LINK, SCAT-LINK-SHAPE
+required heldby.status -> SCAT-FM-REQUIRED
+required heldby.title -> SCAT-FM-REQUIRED
+required heldby.type -> SCAT-FM-REQUIRED
 required scenario-coded.affordances -> SCAT-DONE-LINK, SCAT-DRAFT-LINK
 required scenario-coded.concerns -> SCAT-DONE-LINK, SCAT-DRAFT-LINK
 required scenario-coded.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
@@ -536,7 +595,6 @@ required stakeholder-group.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
 required stakeholder-group.status -> SCAT-FM-REQUIRED
 required stakeholder-group.title -> SCAT-FM-REQUIRED
 required stakeholder-group.type -> SCAT-FM-REQUIRED
-optional stakeholder-group.heldby -> SCAT-LINK-ENDPOINT, SCAT-LINK-DANGLING
 required technology.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
 required technology.status -> SCAT-FM-REQUIRED
 required technology.title -> SCAT-FM-REQUIRED
@@ -545,9 +603,11 @@ required technology.type -> SCAT-FM-REQUIRED
 
 ## 5. Needs from the TBox
 
-Nothing blocks. Two clarifications would remove a reading this catalogue had to choose:
-- `scat:discouragedField` says "present and non-empty" but `scat:unlistedLinkLevel` says only "carries". The catalogue ignores an empty list in both cases. The TBox could say so for the unlisted rule.
-- The status ranking used here (stub, then draft, then done) is read from `scat:StatusValues`, and "required from" from `scat:requiredFrom`; both are stated. The catalogue hard-codes that raw and class pages are exempt from SCAT-MENTION and that SCAT-RAW-UNCODED fires at `done`; these are rules and not schema, so they are not asked of the TBox.
+Nothing blocks. Two points for the PM:
+- `scat:unlistedLinkLevel` still says a page "carries" a link field, while `scat:discouragedField` says "present and non-empty". The catalogue reads both as present and non-empty. One sentence in the TBox would make it the single reading.
+- The first-member fields (`heldby`, `addresses`, `attributes` on group, concern and affordance pages) are gone, so a stale `heldby:` key on a group page is no link field of any type and is ignored, not flagged. That follows the TBox comment ("keys that are not link fields and not listed are ignored"). If a hand-converted vault is expected, the TBox would have to list the old keys as retired for a rule to catch them; the catalogue does not ask for it.
+
+The catalogue reads the status order from `scat:StatusValues`, "required from" from `scat:requiredFrom`, single-link fields from `scat:single`, and the class page's seven values from the `indexes` value set; all are stated. It hard-codes that raw and class pages are exempt from SCAT-MENTION and that SCAT-RAW-UNCODED fires at `done`; these are rules, not schema.
 
 ## 6. Needs from the page contracts (WP4-U2)
 
@@ -555,3 +615,5 @@ Nothing blocks. Two clarifications would remove a reading this catalogue had to 
 - The configuration file and the cap key (`<config-file>`, `<cap-key>`) and its format.
 - The generated part of a class page and its table (SCAT-INDEX-STALE), and whether `index` creates a missing class page (this catalogue assumes it does).
 - What a stub page contains beyond the fields required from `stub` (the catalogue only requires that it have no error).
+- The entailment rule: which links in a coded record entail which relation pages, and the relation page's name (SCAT-REL-MISSING takes the names and endpoints from it and states none).
+- The stub operation's endpoint arguments for relation pages (the operations table above is the contract the messages rely on).
