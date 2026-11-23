@@ -48,16 +48,17 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP4-U7 | cold-write rerun tester, haiku | 2 | 2 | `wp4/u7` | done |  | 2026-11-23T17:09:44-05:00 | fresh Haiku, new domain: 29 pages, 0 errors; no branch (scratch output) |
 | WP4-U8 | contract fixer, sonnet | 3 | 3 | `wp4/u8` | done |  | 2026-11-23T17:09:44-05:00 | unplanned fix unit for the 9 review defects; 1 push-back, 2 reviews; added by PM |
 | WP5-U1 | Python developer (packaging, CI, TBox loader), sonnet | 5 | 5 | `wp5/u1` | done |  | 2026-11-23T17:22:50-05:00 | first-time review PASS; about 3 min worker plus 1 min review; matches estimate |
-| WP5-U2 | Python developer (vault reader), sonnet | 5 |  | `wp5/u2` | in flight | push-back fix (type list or map crash) |  |  |
-| WP5-U3 | Python developer (checks), sonnet | 8 |  | `wp5/u3` | queued | WP5-U2 merged |  |  |
-| WP5-U4 | Python developer (operations), sonnet | 8 |  | `wp5/u4` | queued | WP5-U2 merged |  |  |
-| WP5-U5 | Python developer (CLI and API), sonnet | 3 |  | `wp5/u5` | queued | WP5-U3 and WP5-U4 merged |  |  |
+| WP5-U2 | Python developer (vault reader), sonnet | 5 | 5 | `wp5/u2` | done |  | 2026-11-23T17:53:23-05:00 | 1 push-back (non-string type crashed the reader), 2 reviews; about 8 min worker plus rework; matches estimate |
+| WP5-U3 | Python developer (checks), sonnet | 8 | 8 | `wp5/u3` | done |  | 2026-11-23T17:53:23-05:00 | 27 rules, 244 tests, first-time review PASS; about 18 min worker; matches estimate |
+| WP5-U4 | Python developer (operations), sonnet | 8 | 8 | `wp5/u4` | done |  | 2026-11-23T17:53:23-05:00 | 90 tests, first-time review PASS; about 7 min worker; 12 contract gaps flagged; matches estimate |
+| WP5-U5 | Python developer (CLI and API), sonnet | 3 |  | `wp5/u5` | blocked | edit to tests/checks/helpers.py denied by the permission classifier; ACE decision needed |  |  |
 | WP5-U6 | test engineer, sonnet | 3 |  | `wp5/u6` | queued | WP5-U5 merged |  |  |
 | WP5-U7 | clean-install tester, haiku | 2 |  | none (scratch) | queued | WP5-U5 merged |  |  |
+| WP5-U9 | Python developer (reader exclusion, D-034), sonnet | 1 | 1 | `wp5/u9` | done |  | 2026-11-23T17:53:23-05:00 | unplanned unit added by PM after ruling D-034; first-time PASS; small |
 | WP5-U8 | fixer, sonnet | 3 |  | `wp5/u8` | queued | WP5-U6 and WP5-U7 |  |  |
-| WP6-U1 | template designer, sonnet | 5 |  | `wp6/u1` | blocked | ACE ruling: templates/ folder is read as pages by the contracts |  |  |
-| WP6-U2 | case-study writer, sonnet | 8 |  | `wp6/u2` | queued | WP6-U1 merged |  |  |
-| WP6-U3 | technical writer, sonnet | 2 |  | `wp6/u3` | queued | WP6-U1 merged |  |  |
+| WP6-U1 | template designer, sonnet | 5 | 5 | `wp6/u1` | done |  | 2026-11-23T17:53:23-05:00 | 1 amendment for D-034 (templates_folder key); first-time review PASS; about 3 min worker; matches estimate |
+| WP6-U2 | case-study writer, sonnet | 8 |  | `wp6/u2` | queued | ready; held at hand-back |  |  |
+| WP6-U3 | technical writer, sonnet | 2 |  | `wp6/u3` | queued | ready; held at hand-back |  |  |
 | WP6-U4 | Python developer (pin and CI), sonnet | 3 |  | `wp6/u4` | queued | WP5-U5 merged on dev |  |  |
 | WP6-U5 | mechanical checker, haiku | 2 |  | none (scratch) | queued | WP6-U2 and WP6-U4 merged |  |  |
 | WP6-U6 | fixer, sonnet | 3 |  | `wp6/u6` | queued | WP6-U5 review |  |  |
