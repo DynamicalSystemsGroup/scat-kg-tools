@@ -106,6 +106,10 @@ does not sign off the rendered part.
 
 - **Worktrees** are created explicitly (`git worktree add <path> -b <branch> dev`) outside the repository. Each one
   is removed (`git worktree remove`, then `git worktree prune`) as soon as its unit is pushed.
+- **Branches are cleaned up periodically** (the chief engineer's guideline). A unit branch is deleted, locally and on
+  `origin`, once it's merged. A package branch is deleted once the package is accepted. At each package acceptance
+  the ACE checks that only `main`, `dev` and live work remain. Work that is abandoned rather than merged is kept as a
+  tag under `archive/` before its branch is deleted.
 - **No scratch** is left in the tree.
 - **Negative edits are welcome.** Every piece of content must earn its place, including what is already there.
   When something is stuck, consider removing it before another round of rework.

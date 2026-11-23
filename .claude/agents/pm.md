@@ -69,7 +69,7 @@ to the ACE.
 When the gate passes:
 1. Run tier 1 (the full suite).
 2. Merge with `git merge --no-ff -m "WPn-Uk: <summary>"` into `dev`, and push.
-3. Remove the worktree.
+3. Remove the worktree, and delete the unit branch locally and on `origin`.
 4. Update the board.
 
 ## Your own context

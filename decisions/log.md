@@ -425,3 +425,17 @@ Outcome: macOS is the supported user platform for v0.1, and CI runs on Linux. Th
 defaults to the chief engineer's constraints in Governance: nothing may be built in a way known to put later Linux or
 Windows support at risk. That means no platform-specific paths, shells, line endings or tools in the package, and
 anything unavoidably platform-specific is isolated and recorded.
+
+## D-022 | 2026-11-23 | Amendment 1 approved; branch hygiene
+
+Amendment 1 approval verified: PR #2 was merged by `mzargham` at 2026-11-23T20:07:01Z, as merge commit `3c3a5ef`.
+`dev` is now brought up to date with `main`.
+
+Guideline from the chief engineer (chat, typed by the ACE): "this is more of a guideline than a mission mandate but i
+do want you to make sure the branches get cleaned up periodically".
+Outcome:
+- ORG.md Hygiene now says unit branches are deleted once merged and package branches once accepted. The ACE checks at
+  each package acceptance, and abandoned work is tagged under `archive/` first.
+- pm.md's merge steps now include deleting the unit branch.
+- Applied now: `mission/v0.1` and `amendment/1-scat` are deleted (both merged), and the amendment worktree is removed.
+  Only `main` and `dev` remain, and the 8 `archive/pre-amendment-1/*` tags are kept.
