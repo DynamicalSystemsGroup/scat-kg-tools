@@ -488,3 +488,16 @@ Outcome:
 - **The forecast** is the remaining estimate, corrected by the running ratio, divided by the velocity.
 - **ORG.md** asks the PM to note at each package acceptance which kinds of unit ran over or under.
 - **The hourly report** now carries all of this.
+
+## D-026 | 2026-11-23 | Velocity: raw first, smoothed later
+
+Directed by the chief engineer (chat, typed by the ACE): "velocity estimates only really become useful once we have a
+few data points so don't need force it. i think raw counts of story points estimate and completed, then velocities,
+and once we have a bit more data i'd like an exponetionally smoothed weighted average with the recent velocities
+carrying the weight".
+Outcome:
+- Reports give the raw point counts (estimated proposed, estimated completed, realized completed), then the raw
+  velocity for each iteration.
+- From 3 iterations onwards *(ACE default)*, they add an exponentially weighted moving average,
+  v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(ACE default)*, so recent iterations carry the weight.
+- A forecast appears only once the smoothed velocity exists.

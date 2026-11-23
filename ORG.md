@@ -89,8 +89,10 @@ unit is waiting on, and when each unit was done.
 **Estimated and realized points.** Each unit is given estimated points when it is planned, and they are never
 revised. When the unit lands, the PM scores its realized points on the same scale, from what it actually took: elapsed
 time, revision and push-back cycles, and the worker's tool use. The PM records the basis in one line. Estimates and
-realized points are expected to differ, and that's allowed: the gap is the data we learn from. Velocity is realized
-points per wall-clock hour. The running ratio of realized to estimated points corrects the forecast. At each package
+realized points are expected to differ, and that's allowed: the gap is the data we learn from. Reports give the raw counts
+and the raw velocity for each iteration (realized points per wall-clock hour). Once there are a few iterations, they
+also give an exponentially smoothed velocity that weights recent iterations most, and only then a forecast, corrected
+by the running ratio of realized to estimated points (`work-packages/board.md`). At each package
 acceptance the PM notes which kinds of unit ran over or under, so the next estimates improve.
 
 ## Verification

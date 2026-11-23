@@ -45,8 +45,14 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | Iteration | Units landed | Est. pts landed | Realized pts | Realized ÷ est. | Elapsed (wall clock) | Velocity (realized pts / hour) |
 |---|---|---|---|---|---|---|
 
-## Forecast to the candidate
+## Velocity and forecast
 
-Not yet: there's no velocity until the first iteration lands. Once it has, the forecast is:
-(remaining estimated points × the running realized-to-estimated ratio) ÷ realized velocity. Each figure is stated
-with its basis.
+- **Raw counts first:** estimated points proposed (all planned units), estimated points of the completed units, and
+  realized points of the completed units.
+- **Raw velocity** for each iteration: realized points ÷ elapsed hours.
+- **Smoothed velocity**, once there are at least 3 iterations *(default)*: an exponentially weighted moving average
+  that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
+- **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
+  realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: no iterations have landed yet.
