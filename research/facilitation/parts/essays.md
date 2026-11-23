@@ -4,11 +4,11 @@ Unit WP3-U2. Input to WP3-D1 and WP3-G3. Research notes in our own words; no str
 
 ## Sources and how they were read
 
-- **[KOI]** "KOI & The Unicorn", Block Science blog, <https://blog.block.science/koi-and-the-unicorn/>. Sections cited: Introduction, The Mirror, Diffraction, Terraforming, Conclusion.
-- **[Loop]** "Building the Loop: The Role of Ethnography in Artificial Organisational Intelligence", EPIC 2025, DOI 10.1111/epic.70009, <https://doi.org/10.1111/epic.70009>. The DOI redirects to the publisher page <https://proceedings.epicpeople.org/article/154018-building-the-loop-the-role-of-ethnography-in-artificial-organisational-intelligence>, which was reachable and is what was read. Sections cited: Abstract, Introduction, Methods, Theories and Practices of the Firm, Knowledge Organisation Infrastructure, Telescope, Ethnography as Building the Loop (Observation, Interpretation, Inscription), Conclusion, Notes.
-- **Reading caveat.** Both pages were read through an automated fetch-and-summarise tool, not by a person reading the full text. Section attributions follow the headings the tool reported. A human check of the cited sections is advised before the claims are relied on. Quotes are kept to a minimum.
+- **[KOI]** "KOI & The Unicorn", Block Science blog, <https://blog.block.science/koi-and-the-unicorn/> (23 October 2025). Sections: an untitled opening, The Mirror, Diffraction, Terraforming, Conclusion. There is no section called Summary or Introduction; the opening is cited as "opening (untitled)".
+- **[Loop]** "Building the Loop: The Role of Ethnography in Artificial Organisational Intelligence", EPIC Proceedings 2025, DOI 10.1111/epic.70009, <https://doi.org/10.1111/epic.70009>. The DOI redirects to the publisher page <https://proceedings.epicpeople.org/article/154018-building-the-loop-the-role-of-ethnography-in-artificial-organisational-intelligence>, which was reachable. Sections: Abstract, Introduction, Methods, Theories and Practices of the Firm, Knowledge Organisation Infrastructure (KOI), Telescope, Ethnography as Building the Loop (with Observation, Interpretation, Inscription), Conclusion, and three end notes (n1 firms/organisations, n2 ontologisation, n3 model caveat).
+- **Reading.** Revised after review: the full text of both pages was fetched as raw HTML and read directly, not through a summarising tool. Every claim below was checked against that text. Quotes are avoided; all wording is ours.
 
-"Silent" below means the source, as read, does not address the topic in that section or at all (WP3-R6).
+"Silent" means the source, as read, does not address the topic in that section or at all (WP3-R6). Where a line is our reading rather than the source's claim, it says "our inference".
 
 ---
 
@@ -16,32 +16,32 @@ Unit WP3-U2. Input to WP3-D1 and WP3-G3. Research notes in our own words; no str
 
 ### (a) Eliciting stories and proposed designs
 
-- **Largely silent.** The post does not describe a method for gathering people's stories or proposed designs (Summary across sections; Introduction, The Mirror, Conclusion silent).
-- **Diffraction:** says traces of contributions, knowledge and practices become visible, but not how they are collected from people.
-- **Terraforming:** closest. Participants shape a system's ground rules together, set against rules imposed without their knowledge. This is participatory rule-setting, not story or design elicitation.
+- **Silent as a method.** The post does not describe gathering stories or proposed designs from people (all sections).
+- **Terraforming:** closest. Participants shape the system's ground rules together, set against rules that change on them without their knowing. This is participatory rule-setting, not story or design elicitation.
+- **Diffraction:** says what the infrastructure shows is the material traces of contributions, knowledge and practices. It does not say how those are collected from people.
 
 ### (b) Keeping multiple perspectives
 
-- The most developed theme, though carried by theory more than by the views of people involved (across sections).
-- **Diffraction:** differences arise through overlapping relations, and the approach helps a group notice patterns it already makes together. Strongest passage on this topic.
-- **The Mirror:** a mirror gives one viewer their own image; the post draws on feminist critiques and Barad's work on separateness to question it. Limited on plurality of views.
-- **Introduction:** contrasts a model with the world it mirrors; humans outside the model must recalibrate it. Implicit.
-- **Terraforming, Conclusion:** implicit only (collective change; relation over representation).
+- The most developed theme, carried mostly by theory (Barad) rather than by the views of people involved.
+- **Diffraction:** differences emerge through relation, not separation; observer and observed are entangled; the approach helps a group notice patterns it is already making together.
+- **The Mirror:** a mirror gives a bounded subject its own image; the post notes feminist critiques and Barad's "separateness" and moves away from it. Little on plural views.
+- **Opening (untitled):** a model and the world it mirrors cannot align, so people outside the model must recalibrate it. Implicit at most.
+- **Terraforming, Conclusion:** implicit (collective rule-setting; relation over representation). No account of differing views within a group.
 
 ### (c) Exposing controversy, friction, gaps and dissent
 
-- **Mostly silent** about internal disagreement among the people or organisations KOI serves (Summary).
-- **Introduction:** names a gap between model and world and cites a warning that digital twins are useful enough to be dangerous. That is a critique of twins, not of group dissent.
-- **The Mirror:** admits problems with its own metaphor.
-- **Diffraction:** interference patterns suggest friction only as a metaphor; no conflicts, dissent or gaps are named.
+- **Largely silent** on disagreement among the people KOI serves (all sections).
+- **Opening (untitled):** names a gap between model and world that widens with each iteration, and cites a warning that digital twins are "useful enough to be dangerous". This is a critique of digital twins, not of group dissent.
+- **The Mirror:** admits the mirror metaphor has problems.
+- **Diffraction:** interference patterns are used only as a metaphor; no conflicts, dissent or gaps are named.
 - **Terraforming, Conclusion:** silent.
 
 ### (d) Risks of collapsing disagreement
 
-- **Silent** on flattening disagreement in a group (Summary).
-- **Introduction:** warns against treating a model as the thing it represents. This is a different risk (confusing map and territory).
-- **The Mirror:** flags the risk of reinforcing a bounded, self-regulating subject. Not about disagreement.
-- **Diffraction, Terraforming, Conclusion:** silent. Reader's note: the emphasis on connection could smooth over disagreement, and the post does not consider this; that is our inference, not the source's claim.
+- **Silent** on flattening disagreement inside a group (all sections).
+- **Opening (untitled):** warns that treating a model as the thing it represents risks acting inside the simulation. A different risk (confusing model and world).
+- **The Mirror:** flags reinforcing a bounded, self-regulating subject. Not about disagreement.
+- **Diffraction, Terraforming, Conclusion:** silent. Our inference, not the source's claim: stressing connection and co-presence could smooth over disagreement; the post does not consider it.
 
 ---
 
@@ -49,55 +49,60 @@ Unit WP3-U2. Input to WP3-D1 and WP3-G3. Research notes in our own words; no str
 
 ### (a) Eliciting stories and proposed designs
 
-- **Methods:** a participatory, design-oriented ethnography in three phases, from consented capture, to annotation, to syncing back into organisations. Tools are co-developed with participants.
-- **Telescope:** capture is triggered by participants flagging messages with an emoji, with a consent flow; a plugin for Obsidian syncs notes. A worked example covers a consent withdrawal.
-- **Theories and Practices of the Firm:** cites Orr's work on storytelling, but the paper does not itself use interviews or narrative elicitation.
-- **Assessment:** participation is strongest in tool design and consent, weaker in eliciting people's own accounts. Elicitation of *proposed designs* as such: silent.
+- **Methods:** a design-oriented, participatory ethnography; tools co-developed with collaborators and field participants; three phases (consent automation and collection of approved posts; a plug-in to pull posts into local vaults with notes, tags and links; sending annotated notes back so participants see additions and changes, including deletions). Decisions on consent, visibility and "who participates in interpretation" are built into the architecture.
+- **Telescope:** participants flag messages with an emoji; a bot asks the author for consent; approved content is shown in a dedicated channel. Early deployments showed that flagged messages needed added context and links to be interpretable (the reason for the move to KOI).
+- **Ethnography as Building the Loop / Interpretation:** research participants can tag data to signal importance to a topic.
+- **Theories and Practices of the Firm:** cites Orr's work on storytelling among technicians, as background. The paper does not itself describe interviews or narrative elicitation.
+- **Silent** on eliciting *proposed designs* from participants (all sections). Participation is documented for tool design, flagging and consent, not for gathering people's accounts.
 
 ### (b) Keeping multiple perspectives
 
-- **Abstract, KOI section:** KOI links systems without homogenising them; there is no single unified ontology; organisations keep control of their data; participants can make material visible to some people or models and not others.
-- **Theories and Practices of the Firm / KOI:** draws on John Law's idea of a world that is more than one.
-- **Ethnography as Building the Loop (Interpretation, Inscription):** interpretation becomes recursive and multi-agent; inscription becomes a queryable, multi-authored mesh.
-- **Limit:** the multiplicity is mostly about access and legibility. The paper does not show how conflicting interpretations among people are held or reconciled.
+- **Abstract; Theories and Practices of the Firm; KOI:** KOI connects disparate systems and practices without homogenisation, without forcing organisations into a unified database, centralised ontology (n2 defines the term) or loss of control of their data. KOI standardises communication between nodes, not what nodes do inside.
+- **Telescope:** the same record can be available to some people or machines and not others; an ethnographer can set a note as available to a colleague, the community or an LLM.
+- **Interpretation:** sense-making is spread across ethnographers, LLMs and agents; data is deliberately oversampled so a diverse set of human and machine actors can interpret it later; boundaries and rules stay visible and co-created.
+- **Inscription:** inscription becomes multi-authored, not a single fixed narrative; cites Anderson et al. that narrating from a human perspective alone is not enough.
+- **Conclusion:** cites Law that the world is more than one but less than many, and that social science often makes it more singular than it is; says the approach is "more than one", with interpretation co-produced with moderators, stewards and AI agents.
+- **Limit:** the plurality described is mostly of access, authorship and legibility. The paper does not show how conflicting interpretations among people are held side by side.
 
 ### (c) Exposing controversy, friction, gaps and dissent
 
-- **Thin.** Friction appears in the consent-withdrawal episode (Telescope), which the authors treat as a renegotiated boundary, and in the use of Goldenfein's critique of human oversight (KOI section).
-- Gaps are treated as things to make legible, not as sites of disagreement (across sections).
-- **Silent** on dissent within communities and on how contested interpretations or annotations were handled (whole paper).
-- The paper reports "initial explorations" and "ongoing experiments" (Conclusion/Methods): no findings, no limitations section.
+- **Inscription:** the closest statement. Inscribed traces form a queryable mesh that humans and algorithmic agents can traverse, contest and augment, instead of one fixed narrative. This allows contest in principle; no instance of contested interpretation is reported.
+- **Telescope (withdrawal episode):** a contributor revoked consent soon after approving a post. The post was deleted, but its identifier stayed, and the history of the deletion (not its content) stayed queryable as an auditable record that a boundary had been renegotiated. The authors call the consent layer a live governance surface.
+- **Telescope (early deployments):** the gap between a flagged message and what is needed to interpret it was a limitation found in practice.
+- **Conclusion:** the field is described as enacted through boundary-setting and permissions, not discovered.
+- **Silent** on dissent within communities, on disagreement over annotations or interpretations, and on how any such disagreement was handled (whole paper). The work is described as "initial explorations" (Introduction) with "ongoing experiments" (end of Inscription); there is no findings or limitations section.
 
 ### (d) Risks of collapsing disagreement
 
 - **Not addressed directly.**
-- It argues against homogenisation (Abstract, KOI section).
-- **Related risk, partly implied:** the ethnographer "configures" what counts as meaning and acts as a context-librarian (Ethnography as Building the Loop), which concentrates interpretive authority. Whether that collapses disagreement is our reading, not stated.
-- **Notes:** a caveat that model behaviour still reflects its training; LLM querying over annotated notes could flatten nuance. The paper touches this only in passing.
-- Silent on how LLM outputs are checked or corrected by participants.
+- **Conclusion:** the Law passage is the nearest statement: ordering and representing the world tends to make it more singular than it is. The authors apply it to their approach as a reason to be "more than one". It concerns social-science representation, not group disagreement as such (our reading).
+- **Abstract; KOI:** argues against homogenisation of systems and against a unified ontology. Again about systems, not about disagreement among people.
+- **Observation; Interpretation; Conclusion:** the ethnographer configures what counts as meaning, acts as a "context-librarian", and holds authority through configuring and maintaining intelligibility. Our inference: this concentrates interpretive authority; the paper does not state it as a risk.
+- **Note 3:** a model connected through retrieval to a KOI node still produces answers influenced by its vendor's training and rules. The note's point is that any model can be used, including organisation-made ones. It says nothing about flattening disagreement.
+- **KOI section (Goldenfein):** discusses human-in-the-loop oversight as a shortcut that hides how responsibility is distributed. It is about accountability for automated decisions, not about disagreement, so it is not placed under (c) or (d).
 
 ---
 
 ## 3. Capabilities the graph would need to show (feeds WP3-G3)
 
-Capabilities, not terms. Each is a need implied by a source's gap or stated concern, so each is marked as inferred. None is a design.
+Capabilities, not terms. Each is a need that follows from a source's statement or gap; the basis shows which. All are inferences for WP4 to confirm, none is a design.
 
-1. **Hold more than one account of the same thing side by side without merging them.** Basis: [KOI] Diffraction; [Loop] KOI section (no unified ontology; world "more than one"). Both sources value plurality but neither shows how conflicting accounts coexist, so the graph must supply that.
-2. **Show who or which group holds each account.** Basis: [KOI] Mirror and Diffraction (perspective as relation); [Loop] Interpretation and Inscription (multi-authored). Source silent on attribution of conflicting views.
-3. **Show where accounts differ, overlap or are in tension, as a visible thing.** Basis: [KOI] Diffraction (interference as metaphor only); [Loop] silent on handling contested interpretation. Inferred.
-4. **Show gaps: where nobody has said anything, or where a model and the world part.** Basis: [KOI] Introduction (model/world gap); [Loop] gaps treated as legibility problems.
-5. **Keep the trace from a claim back to its source and to whoever recorded or interpreted it,** so an interpreter's role is inspectable. Basis: [Loop] Ethnography as Building the Loop (ethnographer configures meaning); Telescope (consent flow, provenance).
-6. **Show visibility and consent limits on a record,** and a record's change when consent is withdrawn. Basis: [Loop] KOI and Telescope (visible to some, not others; withdrawal example). Loop is silent on already-published analyses, so the graph should at least not hide that question.
-7. **Show change over time in an account,** including renegotiated boundaries. Basis: [Loop] Telescope (withdrawal as renegotiation); [KOI] Terraforming (collectively shaped rules).
-8. **Keep a proposed design distinct from the stories that motivate it.** Basis: both sources silent on eliciting designs ([KOI] (a), [Loop] (a)). Inferred from the gap, flagged for WP4 to confirm.
+1. **Hold more than one account of the same thing side by side without merging them.** Basis: [KOI] Diffraction; [Loop] KOI section (no unified ontology), Inscription (multi-authored, not one fixed narrative), Conclusion (Law). Neither source shows conflicting accounts coexisting, so the graph must supply that.
+2. **Show who or which group holds each account.** Basis: [Loop] Inscription (multi-authored; trace of who did what); [KOI] Diffraction (perspective as relation). Source silent on attribution of conflicting views.
+3. **Show where accounts differ, overlap or are in tension, as something visible.** Basis: [Loop] Inscription (traces can be contested); [KOI] Diffraction (interference, metaphor only). Neither source says how.
+4. **Show gaps: what has not been said, and where a model and its world part.** Basis: [KOI] opening (model/world gap); [Loop] Telescope (flagged items lacking context).
+5. **Keep each claim traceable to its source and to whoever recorded, annotated or interpreted it,** so the interpreter's role can be inspected. Basis: [Loop] Observation and Interpretation (ethnographer configures meaning), Inscription (trace of ethnographic labour).
+6. **Show limits on who may see a record, and keep a trace when a record is withdrawn.** Basis: [Loop] Telescope (visible to some and not others; deletion history queryable; identifier persists). The paper is silent on analyses already published when consent is withdrawn, which is an open question for WP4.
+7. **Show change over time in an account or boundary.** Basis: [Loop] Telescope (boundary renegotiated), Conclusion (temporality); [KOI] Terraforming (rules shaped collectively).
+8. **Keep a proposed design distinct from the stories that motivate it.** Basis: both sources silent on eliciting designs; inferred from that gap.
 
-## 4. Where both sources are silent (WP3-R6 summary)
+## 4. Where the sources are silent (WP3-R6 summary)
 
 | Topic | KOI | Loop |
 |---|---|---|
-| (a) eliciting | silent, except participatory rule-setting (Terraforming) | participant-flagged capture and co-built tools; silent on narrative or design elicitation |
-| (b) perspectives | developed, theoretical | developed, structural (access, no single ontology) |
-| (c) controversy and dissent | essentially silent | thin; no handling of contested interpretation |
-| (d) collapse risk | silent | not addressed directly; related concern about interpretive authority |
+| (a) eliciting | silent as method; participatory rule-setting only (Terraforming) | flagging, consent, co-built tools, tagging; silent on narrative or design elicitation |
+| (b) perspectives | developed, theoretical | developed: no unified ontology, multi-authored inscription, Law; silent on holding conflicting views |
+| (c) controversy and dissent | essentially silent | contest named as possible (Inscription); consent-withdrawal episode; silent on dissent and handling it |
+| (d) collapse risk | silent | not directly addressed; Law passage and interpretive-authority point are adjacent |
 
-Consequence: neither source supplies a method for holding disagreement. The strategy has to draw that from `ant-rdf` and the other WP3 sources, not from these two.
+Consequence: neither source supplies a method for holding disagreement. That has to come from `ant-rdf` and the other WP3 sources.
