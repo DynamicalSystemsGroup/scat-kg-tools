@@ -159,7 +159,8 @@ scat:Heldby a owl:Class ;
     scat:key "heldby" ;
     scat:pageDescription "A Heldby page: which group holds which concern, with notes on that pair." ;
     scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description, scat:field-group, scat:field-concern ;
-    scat:optionalField scat:field-notes .
+    scat:optionalField scat:field-notes ;
+    scat:endpointOrder ( scat:field-group scat:field-concern ) .
 
 scat:Addresses a owl:Class ;
     rdfs:label "Addresses" ;
@@ -169,7 +170,8 @@ scat:Addresses a owl:Class ;
     scat:key "addresses" ;
     scat:pageDescription "An Addresses page: which concern an affordance addresses, with notes on that pair." ;
     scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description, scat:field-concern, scat:field-affordance ;
-    scat:optionalField scat:field-notes .
+    scat:optionalField scat:field-notes ;
+    scat:endpointOrder ( scat:field-concern scat:field-affordance ) .
 
 scat:Attributes a owl:Class ;
     rdfs:label "Attributes" ;
@@ -179,7 +181,8 @@ scat:Attributes a owl:Class ;
     scat:key "attributes" ;
     scat:pageDescription "An Attributes page: which technology an affordance is attributed to, with notes on that pair." ;
     scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description, scat:field-affordance, scat:field-technology ;
-    scat:optionalField scat:field-notes .
+    scat:optionalField scat:field-notes ;
+    scat:endpointOrder ( scat:field-affordance scat:field-technology ) .
 
 ##############################################################################
 # Record and class page types
@@ -473,6 +476,11 @@ scat:discouragedField a owl:AnnotationProperty ;
 scat:discouragedBodyLink a owl:AnnotationProperty ;
     skos:definition "A class that the body of a page of this type should not link to; a link is graded at warning level." ;
     scat:authored "The body-text counterpart of scat:discouragedField, from the same design guidance. Body links are otherwise untyped." ;
+    scat:verification "authored" .
+
+scat:endpointOrder a owl:AnnotationProperty ;
+    skos:definition "Stated on a relation page type: the order of its two endpoint fields, an RDF list of two fields, the first endpoint then the second. A tool that names or fills a relation's endpoints takes the order from here." ;
+    scat:authored "Page contracts section 4 gave the order in a table; log D-032 ruling 2 moves it into a triple so tools take it from the TBox (R-13)." ;
     scat:verification "authored" .
 
 scat:mapsTo a owl:AnnotationProperty ;

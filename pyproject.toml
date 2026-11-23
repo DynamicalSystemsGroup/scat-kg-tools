@@ -1,0 +1,29 @@
+[project]
+name = "scat-kg"
+version = "0.1.0"
+description = "Tools for checking and working on a SCAT knowledge-graph vault"
+requires-python = ">=3.12"
+dependencies = ["pydantic", "PyYAML", "rdflib"]
+
+[project.scripts]
+scat = "scat_kg.cli:main"
+
+[dependency-groups]
+dev = ["pytest", "ruff"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/scat_kg"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"ontology/scat.ttl" = "scat_kg/scat.ttl"
+
+[tool.ruff]
+line-length = 100
+extend-exclude = ["research", "*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
