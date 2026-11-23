@@ -73,7 +73,7 @@ Document Assurance* (INCOSE IS 2026) and the earlier repos `assurances-audits-ac
 |---|---|---|
 | D-1 | TBox in Turtle, in `scpt-kg-tools` | G1 |
 | D-2 | Parser, checks, status, index and stub commands, CLI, test suite with seeded-defect fixtures, in `scpt-kg-tools` | G2, G3, G4 |
-| D-3 | Template repository: vault skeleton (class pages, folders for raw and coded records), instance configuration (stakeholder-group cardinality cap), pinned tools, worked example | G5, G6 |
+| D-3 | Template repository: vault skeleton (class pages, folders for raw and coded records), an Obsidian page template for every page type, instance configuration (stakeholder-group cardinality cap), pinned tools, worked example | G5, G6, G9 |
 | D-4 | Documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9 |
 | D-5 | Decision records for the toolchain spike, with measurements | G8 |
 | D-6 | Reviewer's guide for the chief engineer, in the release PR. It is sized for a person and split into sittings by output: (1) the end-to-end walkthrough (UA-M below); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
@@ -84,7 +84,8 @@ Document Assurance* (INCOSE IS 2026) and the earlier repos `assurances-audits-ac
 | ID | Requirement | Checked by |
 |---|---|---|
 | R-1 | Errors block; warnings do not. Errors: required fields and types, relation endpoints of the right classes, coded scenarios and architectures linking into the graph correctly, stakeholder groups within the cap, valid status. Warnings: unlinked mention of a graph entity; raw record not linking or embedding its coded pages. | Seeded-defect tests, one or more per rule |
-| R-2 | Every message names the file, the field or link, the rule broken (by id), and what to do to fix it. | Golden-output tests on seeded defects |
+| R-2 | Every message names the file, the field or link, and the rule broken (by id). It gives the fix as something a literal reader can apply: the exact command to run, or the exact field and value to write. | Golden-output tests on seeded defects |
+| R-11 | **Make the right way the easy way.** The template ships an Obsidian page template for every page type. `scpt` creates entailed pages and regenerates indexes, so users never write that structure by hand. Each journey stage's docs page leads with the one command or action to take next. | Inspection; the Haiku testers' reports |
 | R-3 | How strict a check is follows the page status: a stub needs only identity, type and status; draft and done are checked in full *(default: missing required fields warn on draft, error on done)*. | Tests per status |
 | R-4 | `index` is the only command that rewrites class pages; the stub command is the only one that creates pages; checks never write. | Tests; inspection |
 | R-5 | Speed on a laptop with a 500-page vault: local check < 1 s, neighborhood < 2 s, full < 5 s *(default thresholds)*. | Benchmark script |
@@ -110,16 +111,18 @@ Acceptance is judged by people using the product, not only by tests. The journey
 
 **UA-A, the AI user tests** (run by the team on the candidate, before the chief engineer's walkthrough):
 
-- At least two personas, each written in the user's own words, never the tool's vocabulary:
-  - a facilitator-analyst who is comfortable with a terminal, GitHub and Obsidian but is not a developer
-    (Sonnet);
-  - a newcomer to Obsidian and the command line who is careful and follows instructions literally (Haiku).
+- At least three personas, each written in the user's own words, never the tool's vocabulary. **Most of them run on
+  Haiku**, so the test doesn't depend on a lot of reasoning: if the right way needs reasoning to find, it isn't yet
+  the easy way.
+  - a facilitator-analyst who is comfortable with a terminal, GitHub and Obsidian but is not a developer (Haiku);
+  - a newcomer to Obsidian and the command line who is careful and follows instructions literally (Haiku);
+  - the same facilitator-analyst on Sonnet, as a control: a step that Sonnet passes and Haiku fails points to the docs or the tool, not the user.
 - Each tester starts from the Pages preview URL and follows only what the docs site says. J2 is simulated with
   `git clone --no-hardlinks` of the template with its remote removed; all other stages run as written. Each tester
   codes a small elicitation in a domain of its own, different from the worked example.
 - Testers may not read `src/` or `tests/`. Every claim comes with pasted command output. Each tester reports, per
   stage: where it got stuck, what it had to guess, and where the docs left it with nowhere to go.
-- **Pass bar:** every tester reaches J7 with a clean `check --all`. Every finding is dispositioned: fixed (and
+- **Pass bar:** every tester, the Haiku testers included, reaches J7 with a clean `check --all`. Every finding is dispositioned: fixed (and
   re-tested by a fresh tester), or accepted with a reason and listed in the reviewer's guide. Every guess counts as a
   finding. The final round has no unresolved blocking finding.
 - A report that mentions the worked example's proper nouns, or that finds nothing, is void and is run again.
@@ -137,6 +140,8 @@ Acceptance is judged by people using the product, not only by tests. The journey
 
 ## Definition of good
 
+- Make the right way the easy way: following the docs literally and using the provided templates and commands is
+  the shortest path, and it produces a conformant vault.
 - A first-time user fixes every conformance error from the message alone, without reading the source.
 - The checks feel instant in an interactive session.
 - The tools are small enough that one person can maintain them.
@@ -144,7 +149,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
 
 ## Definition of good enough
 
-- R-1 to R-10 met, with evidence.
+- R-1 to R-11 met, with evidence.
 - The AI user tests (UA-A) pass on the candidate.
 - The documentation site covers the whole journey and has had the ACE's browser pass on every page (desktop and
   phone width), with findings fixed or listed.

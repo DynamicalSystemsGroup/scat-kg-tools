@@ -70,3 +70,16 @@ Decided by the chief engineer (chat, typed by the ACE): "i am think apache 2.0. 
 this. but for this one i want apache".
 Outcome: Apache-2.0, copyright Dynamical Systems Group, for code, docs and ontology. This replaces the MIT default in
 D-004.
+
+## D-006 | 2026-11-23 | Haiku testers; make the right way the easy way
+
+Decided by the chief engineer (chat, typed by the ACE): "also when running user testing agents (at least some of the
+personas) needs to be haiku so we don't expect a lot of reasoning. we need to \"make the right way the easy way\"".
+Outcome in `MISSION.md`:
+- UA-A now runs at least three personas, most of them on Haiku. A Sonnet run of the same facilitator persona acts as a
+  control, and the pass bar binds the Haiku testers.
+- R-2: every fix is given as an exact command, or an exact field and value.
+- New R-11: Obsidian page templates for every page type, `scpt` generates the structure, and each docs page leads
+  with the next action.
+- "Make the right way the easy way" is now the first item of the definition of good.
+- D-3 now includes the page templates.
