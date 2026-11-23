@@ -91,7 +91,7 @@ Document Assurance* (INCOSE IS 2026) and the earlier repos `assurances-audits-ac
 | R-5 | Speed on a laptop with a 500-page vault: local check < 1 s, neighborhood < 2 s, full < 5 s *(default thresholds)*. | Benchmark script |
 | R-6 | Fresh clone of the template → one documented setup command → `check --all` passes on the worked example. | Clean-clone trial |
 | R-7 | Both repositories commit `uv.lock`; CI runs tests and checks on every push. | CI runs |
-| R-8 | Every operation the CLI offers can also be called from a Python REPL (`import scpt_kg`), with the same messages. The CLI is a thin layer over that API. | Tests calling both paths |
+| R-8 | The interactive session has two equal paths: the `scpt` CLI in a terminal, and the Python REPL (`import scpt_kg`). Every operation is available on both, with the same messages, and the docs show both side by side. The CLI is a thin layer over the Python API. | Tests calling both paths; docs test runs both |
 | R-9 | Every command shown in the docs runs as shown, and the CLI reference matches `--help`. | Docs test that extracts and runs the commands; reference diff |
 | R-10 | The docs site has no dead ends or broken links. Every journey page says what you need before you start and where to go next. | Strict build plus link check; the ACE's browser pass |
 
@@ -106,7 +106,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
 | J3 Set up | runs one documented command, gets a working `scpt`, and opens the folder as an Obsidian vault | getting started |
 | J4 Plan | plans a facilitation event: who comes as actors and who as technologists, the Chatham House framing, stakeholder groups within the cap | planning guide |
 | J5 Capture | during the event, records raw scenarios and raw architectures | the two facilitation guides |
-| J6 Code | afterwards, in an interactive session (terminal or Python REPL), decompiles the raw notes into SCPT pages and relations: creates stubs, moves pages to draft and done, regenerates the indexes, and fixes each error from its message using local and neighbourhood checks | coding guide, CLI reference |
+| J6 Code | afterwards, in an interactive session (the `scpt` CLI in a terminal, or the Python REPL), decompiles the raw notes into SCPT pages and relations: creates stubs, moves pages to draft and done, regenerates the indexes, and fixes each error from its message using local and neighbourhood checks | coding guide, CLI reference |
 | J7 Finish | reaches a clean `check --all`, commits and pushes, and navigates the resulting graph in Obsidian | coding guide |
 
 **UA-A, the AI user tests** (run by the team on the candidate, before the chief engineer's walkthrough):
@@ -116,6 +116,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
   the easy way.
   - a facilitator-analyst who is comfortable with a terminal, GitHub and Obsidian but is not a developer (Haiku);
   - a newcomer to Obsidian and the command line who is careful and follows instructions literally (Haiku);
+  - at least one Haiku tester works in the Python REPL and at least one uses the CLI;
   - the same facilitator-analyst on Sonnet, as a control: a step that Sonnet passes and Haiku fails points to the docs or the tool, not the user.
 - Each tester starts from the Pages preview URL and follows only what the docs site says. J2 is simulated with
   `git clone --no-hardlinks` of the template with its remote removed; all other stages run as written. Each tester
@@ -130,8 +131,8 @@ Acceptance is judged by people using the product, not only by tests. The journey
 **UA-M, the chief engineer's walkthrough** (the first sitting of the reviewer's guide, and the core of acceptance):
 
 - He runs J1 to J7 himself on the candidate: starting from the Pages preview, using "Use this template" on GitHub
-  to make a real repository, cloning it, setting up, and working through an interactive session in the terminal or
-  a REPL, coding a small elicitation of his own choosing.
+  to make a real repository, cloning it, setting up, and working through an interactive session with the CLI and
+  the Python REPL, coding a small elicitation of his own choosing.
 - The walkthrough script gives each stage's entry point and what "done" looks like, so the session can be split up
   and resumed.
 - **Pass:** he completes the journey from the documentation without help, and judges the documentation clear and

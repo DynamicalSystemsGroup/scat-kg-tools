@@ -83,3 +83,10 @@ Outcome in `MISSION.md`:
   with the next action.
 - "Make the right way the easy way" is now the first item of the definition of good.
 - D-3 now includes the page templates.
+
+## D-007 | 2026-11-23 | CLI and Python REPL
+
+Decided by the chief engineer (chat, typed by the ACE): "using a cli and assume we use the python repl".
+This confirms the ACE's reading of "terminal/repl" in D-005. The interactive session has two equal paths, the `scpt`
+CLI and the Python REPL. R-8, J6 and UA-M now say so, the docs show both paths side by side, and UA-A covers both
+(at least one Haiku tester on each).
