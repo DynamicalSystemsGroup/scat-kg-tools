@@ -35,9 +35,10 @@ Free text in Markdown. Nothing in it is required.
 - The frontmatter is a YAML block between two lines of exactly `---`, at the very top of the file.
 - Keys are written exactly as in the field tables below. The order does not matter; the tables' order is the one the
   tools write.
-- `title`, `description` and `notes` are always written in double quotes, on one line, by hand too: a bare colon or `#`
-  in an unquoted value breaks the YAML. Inside the quotes, `"` is written `\"` and `\` is written `\\`. `type` and
-  `status` are written bare.
+- `title`, `description` and `notes` are on one line. The tools always write them in double quotes; by hand the quotes
+  are required only when the text contains `:` or `#`, starts with a quote, or has other characters YAML treats
+  specially (a bare colon or `#` in an unquoted value breaks the YAML). Unquoted plain text is accepted. Inside
+  quotes, `"` is written `\"` and `\` is written `\\`. `type` and `status` are written bare.
 - Keys that the TBox does not list for the page type, are ignored, whatever they hold (you may add your
   own note keys). A key that is a link field of some other page type is not ignored: see 3.
 
@@ -160,11 +161,11 @@ the one place that fact is written: there is no field for it on the group, conce
   pages, one per group, so each group's account stays its own. The endpoints are required at every status, even on a
   stub: a relation page without both says nothing.
 - **Where an account lives.** The optional `notes` field on a relation page holds a one-line account of that pair
-  (for a `heldby` page, how that group holds that concern), in double quotes like `title`. A longer account goes in the
+  (for a `heldby` page, how that group holds that concern), quoted like `title` (1). A longer account goes in the
   page body, which is free text.
-- **Users never write a relation page's structure.** The stub operation creates it with `type`, `status`, `title` and
-  both endpoint links filled, from the pair the author names (5). The author then writes only `description`, `notes`
-  and the body.
+- **Users need not write a relation page's structure.** The stub operation creates it with `type`, `status`, `title`
+  and both endpoint links filled, from the pair the author names (5), and the author then writes only `description`,
+  `notes` and the body. To write one by hand, copy the skeleton in 5. The endpoint order is the one in the table above.
 - To see which groups hold a concern, use the index of `heldby` pages (`heldby-pairs`) or Obsidian's backlinks on the
   concern page. The concern page does not repeat them.
 - A relation key written on the wrong page type (`group` on a concern page, say) is an unlisted link field (1), and is
@@ -220,8 +221,10 @@ does not say which group holds which concern, or which affordance addresses whic
 every concern would state facts the coder never stated, so no list of links in a coded record entails a `heldby`,
 `addresses` or `attributes` page, whatever it lists. A relation page is created only for a pair the author names, and
 then it is entailed, not hand-written:
-- the operation is given the relation (`heldby`, `addresses` or `attributes`) and the two endpoint names, in the order
-  of the table in 4 (group then concern; concern then affordance; affordance then technology);
+- the operation is `scat stub-pair <relation> <endpoint-a> <endpoint-b>` on the command line, and
+  `scat_kg.stub_pair("<relation>", "<endpoint-a>", "<endpoint-b>")` in the REPL: the relation (`heldby`, `addresses` or
+  `attributes`) and the two endpoint names, in the order of the table in 4 (group then concern; concern then
+  affordance; affordance then technology);
 - it creates the page below, and also stubs either endpoint that does not exist, by the table above;
 - if a page of that relation with exactly those two endpoints already exists, under any name, it creates nothing and
   reports that page: one page per pair;
@@ -281,7 +284,7 @@ One page per stakeholder group: who the group is, in the group's own terms. The 
 | `type` | `stakeholder-group` | | stub |
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
-| `description` | text, one sentence | | done |
+| `description` | short text | | done |
 
 ```
 ---
@@ -302,7 +305,7 @@ are stated on `heldby` and `addresses` pages.
 | `type` | `concern` | | stub |
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
-| `description` | text, one sentence | | done |
+| `description` | short text | | done |
 | `conflicts` | list of wikilinks | `concern` | optional |
 
 ```
@@ -325,7 +328,7 @@ One page per affordance: what is offered. The technologies it is attributed to a
 | `type` | `affordance` | | stub |
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
-| `description` | text, one sentence | | done |
+| `description` | short text | | done |
 
 ```
 ---
@@ -344,7 +347,7 @@ One page per technology: what the part is. It has no link field.
 | `type` | `technology` | | stub |
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
-| `description` | text, one sentence | | done |
+| `description` | short text | | done |
 
 ```
 ---
@@ -364,7 +367,7 @@ groups has several of these, one per group.
 | `type` | `heldby` | | stub |
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
-| `description` | text, one sentence | | done |
+| `description` | short text | | done |
 | `group` | one wikilink | `stakeholder-group` | stub |
 | `concern` | one wikilink | `concern` | stub |
 | `notes` | text | | optional |
@@ -390,7 +393,7 @@ One page per (concern, affordance) pair: this affordance addresses this concern,
 | `type` | `addresses` | | stub |
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
-| `description` | text, one sentence | | done |
+| `description` | short text | | done |
 | `concern` | one wikilink | `concern` | stub |
 | `affordance` | one wikilink | `affordance` | stub |
 | `notes` | text | | optional |
@@ -414,7 +417,7 @@ One page per (affordance, technology) pair: this affordance is attributed to thi
 | `type` | `attributes` | | stub |
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
-| `description` | text, one sentence | | done |
+| `description` | short text | | done |
 | `affordance` | one wikilink | `affordance` | stub |
 | `technology` | one wikilink | `technology` | stub |
 | `notes` | text | | optional |
@@ -439,7 +442,7 @@ stay in the body. The body should not link a `technology` page.
 | `type` | `scenario-raw` | | stub |
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
-| `description` | text, one sentence | | done |
+| `description` | short text | | done |
 | `coded` | list of wikilinks | `scenario-coded` | optional |
 
 ```
@@ -465,7 +468,7 @@ link technologies, and its body should not link a `technology` page.
 | `type` | `scenario-coded` | | stub |
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
-| `description` | text, one sentence | | done |
+| `description` | short text | | done |
 | `raw` | list of wikilinks | `scenario-raw` | done |
 | `groups` | list of wikilinks | `stakeholder-group` | done |
 | `concerns` | list of wikilinks | `concern` | done |
@@ -499,7 +502,7 @@ body should not link a `stakeholder-group` page.
 | `type` | `architecture-raw` | | stub |
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
-| `description` | text, one sentence | | done |
+| `description` | short text | | done |
 | `coded` | list of wikilinks | `architecture-coded` | optional |
 
 ```
@@ -522,7 +525,7 @@ should not link stakeholder groups, and its body should not link a `stakeholder-
 | `type` | `architecture-coded` | | stub |
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
-| `description` | text, one sentence | | done |
+| `description` | short text | | done |
 | `raw` | list of wikilinks | `architecture-raw` | done |
 | `concerns` | list of wikilinks | `concern` | done |
 | `affordances` | list of wikilinks | `affordance` | done |
@@ -548,14 +551,14 @@ technologies:
 
 ### `class`
 
-The page of one of the seven classes (the four classes and the three relations): a description of the class, and the
-index table of its instances (8). It carries no status, so every field here is required at all times.
+The page of one of the seven classes (the four classes and the three relations): its description (the default is in 8)
+and the index table of its instances. It carries no status, so every field here is required at all times.
 
 | Key | Value | Target type | Required from |
 |---|---|---|---|
 | `type` | `class` | | always |
 | `title` | text | | always |
-| `description` | text, one sentence | | always |
+| `description` | short text | | always |
 | `indexes` | `stakeholder-group`, `concern`, `affordance`, `technology`, `heldby`, `addresses` or `attributes` | | always |
 
 ```
@@ -571,17 +574,17 @@ indexes: concern
 
 There are seven class pages, one per class, with these names (they are reserved, see 2) and `indexes` values:
 
-| Page name | `indexes` | Default title |
-|---|---|---|
-| `stakeholder-groups` | `stakeholder-group` | "Stakeholder groups" |
-| `concerns` | `concern` | "Concerns" |
-| `affordances` | `affordance` | "Affordances" |
-| `technologies` | `technology` | "Technologies" |
-| `heldby-pairs` | `heldby` | "Heldby" |
-| `addresses-pairs` | `addresses` | "Addresses" |
-| `attributes-pairs` | `attributes` | "Attributes" |
+| Page name | `indexes` | Default title | Default description |
+|---|---|---|---|
+| `stakeholder-groups` | `stakeholder-group` | "Stakeholder groups" | "One page per stakeholder group: who the group is, in the group's own terms. The concerns it holds are stated on Heldby pages." |
+| `concerns` | `concern` | "Concerns" | "One page per concern: what the interest is, and any concerns it conflicts with. Who holds it and what addresses it are stated on Heldby and Addresses pages." |
+| `affordances` | `affordance` | "Affordances" | "One page per affordance: what is offered. The technologies it is attributed to are stated on Attributes pages." |
+| `technologies` | `technology` | "Technologies" | "One page per technology: what the part is." |
+| `heldby-pairs` | `heldby` | "Heldby" | "A Heldby page: which group holds which concern, with notes on that pair." |
+| `addresses-pairs` | `addresses` | "Addresses" | "An Addresses page: which concern an affordance addresses, with notes on that pair." |
+| `attributes-pairs` | `attributes` | "Attributes" | "An Attributes page: which technology an affordance is attributed to, with notes on that pair." |
 
-A class page is the frontmatter above, then your description of the class in the body, then the generated region:
+A class page is the frontmatter in 7, then a body that is free text and optional, then the generated region:
 
 ```
 <!-- scat:index:start -->
@@ -595,6 +598,12 @@ A class page is the frontmatter above, then your description of the class in the
 - **Rows.** One row for every page whose `type` equals the `indexes` value, at every status (a stub is a row).
 - **Columns.** `Name` is the page's `title`; `Description` is its `description` (empty if it has none); `Link` is the
   wikilink `[[page-name]]`. In a cell, `|` is written `\|`, and the text is on one line.
+- **Row template.** Each row is `| <title> | <description> | [[<page-name>]] |`: a pipe, one space, the cell text, one
+  space, a pipe, and so on. A page with no description has an empty description cell, written `| name |  | [[name]] |`
+  (two spaces between the pipes). The header row is `| Name | Description | Link |` and the separator row is
+  `|---|---|---|`. The line just before the end marker is the last row, or the separator row when there are no rows.
+- **Padding.** The generated region is compared with padding and trailing spaces ignored: spaces around a cell's
+  text, and spaces at the end of a line, make no difference. A table that is aligned with extra spaces is not stale.
 - **Order.** By page name, ascending, in plain character order (names are ASCII, so there is one order).
 - **Markers.** The two lines `<!-- scat:index:start -->` and `<!-- scat:index:end -->` are exact, each on a line of its
   own. The index operation replaces everything between them, header included, and nothing outside them. Do not edit
@@ -604,8 +613,7 @@ A class page is the frontmatter above, then your description of the class in the
   markers included, at the end of the body, and leaves every stray marker line and all author text untouched. Marker
   lines beyond the first well-formed pair are likewise left alone.
 - **When missing.** If a class page does not exist, the stub or index operation creates it with the default title, the
-  `indexes` value, a `description` that is the TBox's `pageDescription` of the instance page type the class page
-  indexes (for `concern`, the sentence in the `class` example in 7), an empty body and the region.
+  `indexes` value, the default description from the table above, an empty body and the region.
 
 ## 9. Raw and coded pages
 
@@ -638,7 +646,8 @@ stakeholder_group_cap = 3
 
 Every key in the field tables is a `scat:key` of a field of that page type in the TBox, and every field the TBox lists
 for a page type is in its table, with the TBox's level (`requiredField` with its `requiredFrom`, `optionalField`,
-`discouragedField`). The `unlistedLinkLevel`, `wrongTargetLevel` and `discouragedBodyLink` statements are the TBox's;
+`discouragedField`). The seven default descriptions in 8 are compared with the TBox: each equals the `pageDescription` of
+the page type in the `indexes` column. The `unlistedLinkLevel`, `wrongTargetLevel` and `discouragedBodyLink` statements are the TBox's;
 this document only says where a person writes the links they govern. Things in this document that the TBox does not
 state (names, folders, the markers, the sort order, the cap file, what a link entails) are the contract's own.
 

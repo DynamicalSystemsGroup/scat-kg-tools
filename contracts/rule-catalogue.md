@@ -91,10 +91,11 @@ draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`)``. The same text is 
 |---|---|---|---|
 | stub | `scat stub <page-name> --type <type-key>` | `scat_kg.stub("<page-name>", type="<type-key>")` | Creates the page as the contract's section 5 says: `status: stub`, title from the name. Accepts only the four class keys and the record keys `scenario-raw`, `scenario-coded`, `architecture-raw`, `architecture-coded`, and refuses an illegal name and any name that is already an existing `.md` file (a page or not). It derives the opposite raw/coded link itself, on the new page only: creating a raw page writes `coded` on the new page, listing every coded page that names it in `raw`; creating a coded page writes `raw` on the new page, listing every raw page that names it in `coded`. Existing pages are never written, and the caller names no entailing page. |
 | set-status | `scat set-status <page-name> <status>` | `scat_kg.set_status("<page-name>", "<status>")` | Sets `status`, adding the key if absent. |
+| stub-pair | `scat stub-pair <relation> <endpoint-a> <endpoint-b>` | `scat_kg.stub_pair("<relation>", "<endpoint-a>", "<endpoint-b>")` | Creates a relation page for a named pair as the contract's section 5 says (and stubs a missing endpoint); `<relation>` is `heldby`, `addresses` or `attributes`, the endpoints are in the order of the relation (group, concern; concern, affordance; affordance, technology). Creates nothing, and reports the existing page, when a page of that relation already has that pair. |
 | index | `scat index` | `scat_kg.index()` | Rewrites the generated region of every class page, creating a missing class page (contract section 8). |
 
-A relation page is created from a pair the author names (contract section 5, log D-031). No message in this
-catalogue names that operation, so its form is not set here.
+A relation page is created from a pair the author names (contract section 5, log D-031), with the stub-pair operation
+above. No message in this catalogue names it.
 
 **Near match.** For a text `a` and a list of names, the near match is the name `b` with the highest
 `difflib.SequenceMatcher(None, a.lower(), b.lower()).ratio()`, if that ratio is at least 0.8; ties go to the name
@@ -206,7 +207,7 @@ defect, and expects exactly one message of the rule, equal to the golden text, a
 
 ### SCAT-FM-PARSE
 - **Severity:** error. **Fires:** every status.
-- **Trigger:** the file starts with a `---` line (so it means to be a page) and either has no closing `---` line, or the text between them is not valid YAML, or is not a mapping. A Markdown file with no frontmatter, or with frontmatter and no `type` key, is not a page and gets no message; a link to it is a dangling link and says so (SCAT-LINK-DANGLING).
+- **Trigger:** the file starts with a `---` line (so it means to be a page) and either has no closing `---` line, or the text between them is not valid YAML, or is not a mapping. Quotes around `title`, `description` and `notes` are not required (contract section 1): unquoted plain text is valid YAML and gets no message, but text with `:` or `#`, or a leading quote, left unquoted is not valid YAML and is reported here. A Markdown file with no frontmatter, or with frontmatter and no `type` key, is not a page and gets no message; a link to it is a dangling link and says so (SCAT-LINK-DANGLING).
 - **Message:**
 ```
 error [SCAT-FM-PARSE] <file>[:<line>] frontmatter: <parser's reason, or "the closing --- line is missing">
@@ -293,7 +294,7 @@ error [SCAT-FM-SHAPE] <file> field `<field>`: expected one line of text, found <
 
 ### SCAT-NAME
 - **Severity:** error. **Fires:** every status.
-- **Trigger:** one of, for a page: (a) its name is not legal (a character outside `a-z`, `0-9`, `-`; a leading, trailing or doubled hyphen; more than 64 characters; or a reserved name that the page is not entitled to), which includes names that differ from another only by case; (b) another page elsewhere in the vault has the same name (reported on the page whose `<file>` sorts later); (c) a `class` page whose name is not the one the contract's class-page table gives for its `indexes`. One message per page.
+- **Trigger:** one of, for a page: (a) its name is not legal (a character outside `a-z`, `0-9`, `-`; a leading, trailing or doubled hyphen; more than 64 characters; or a reserved name that the page is not entitled to: a page is entitled to a class page name when it has `type: class` and its name is in the contract section 8 table, whatever its `indexes` value), which includes names that differ from another only by case; (b) another page elsewhere in the vault has the same name (reported on the page whose `<file>` sorts later); (c) a `class` page whose name is not the one the contract's class-page table gives for its `indexes`. One message per page.
 - **Message:**
 ```
 error [SCAT-NAME] <file> frontmatter: the page name `<page-name>` <is not legal (<reason>) | is also the name of <other-file> | is not the name of the <indexes> class page>
@@ -600,6 +601,7 @@ required addresses.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
 required addresses.status -> SCAT-FM-REQUIRED
 required addresses.title -> SCAT-FM-REQUIRED
 required addresses.type -> SCAT-FM-TYPE, SCAT-LINK-DANGLING
+optional addresses.notes -> SCAT-FM-SHAPE
 required affordance.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
 required affordance.status -> SCAT-FM-REQUIRED
 required affordance.title -> SCAT-FM-REQUIRED
@@ -626,6 +628,7 @@ required attributes.status -> SCAT-FM-REQUIRED
 required attributes.technology -> SCAT-FM-REQUIRED-LINK, SCAT-LINK-SHAPE
 required attributes.title -> SCAT-FM-REQUIRED
 required attributes.type -> SCAT-FM-TYPE, SCAT-LINK-DANGLING
+optional attributes.notes -> SCAT-FM-SHAPE
 required class.description -> SCAT-DONE-FIELD
 required class.indexes -> SCAT-FM-REQUIRED
 required class.title -> SCAT-FM-REQUIRED
@@ -641,6 +644,7 @@ required heldby.group -> SCAT-FM-REQUIRED-LINK, SCAT-LINK-SHAPE
 required heldby.status -> SCAT-FM-REQUIRED
 required heldby.title -> SCAT-FM-REQUIRED
 required heldby.type -> SCAT-FM-TYPE, SCAT-LINK-DANGLING
+optional heldby.notes -> SCAT-FM-SHAPE
 required scenario-coded.affordances -> SCAT-DONE-LINK, SCAT-DRAFT-LINK
 required scenario-coded.concerns -> SCAT-DONE-LINK, SCAT-DRAFT-LINK
 required scenario-coded.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD

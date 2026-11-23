@@ -451,7 +451,7 @@ scat:key a owl:AnnotationProperty ;
     scat:verification "authored" .
 
 scat:pageDescription a owl:AnnotationProperty ;
-    skos:definition "A one-sentence description of what a page of this type is." ;
+    skos:definition "A short description of what a page of this type is." ;
     scat:authored "Distinct from skos:definition, which defines the class itself and may be adopted wording." ;
     scat:verification "authored" .
 
