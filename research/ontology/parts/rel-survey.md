@@ -99,7 +99,7 @@ Quotes are verbatim (line breaks joined). "Unreachable" entries are listed at th
 - S18: PAV defines authorship and versioning (`pav:authoredBy`, `pav:previousVersion`), no status property was found.
 
 ### Provenance
-- S2: `prov:wasDerivedFrom`: "A derivation is a transformation of one entity into another." `prov:generatedAtTime`
+- S2: `prov:wasDerivedFrom`: "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity." `prov:generatedAtTime`
   bounds an Entity's existence. `prov:wasAttributedTo` as above.
 - S4: `dcterms:source`: "A related resource from which the described resource is derived." `dcterms:provenance`: "A
   statement of any changes in ownership and custody of the resource since its creation that are significant for its

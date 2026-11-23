@@ -40,6 +40,6 @@ Recommended: D0, D1 and D3. Deferred: D4, D6 and per-source named graphs. OWL `D
 
 - 42010:2022 text was unreachable (ISO returned HTTP 403). Concern and Stakeholder wording comes from the community site's conceptual-model page, which still carries first-edition phrasing. WP4 or the ACE must check the standard before copying a definition. If it differs, authored wording replaces it.
 - Gibson's book is an image-only scan, so the quotation is read via Toyoshima 2017. Toyoshima 2022 and Maier and Fadel were not read.
-- CDS IRIs under `w3id.org` were not dereferenced.
+- CDS IRIs under `w3id.org`: the namespace root `https://w3id.org/cds/` returns HTTP 404, so they do not resolve there.
 - Event Ontology, LODE, CIDOC CRM, AIF and ArchiMate were unreachable and are not assessed.
 - Ratings are judgment, not measurement.
