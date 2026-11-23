@@ -9,7 +9,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP1 | Ontology research sprint | accepted | `WP1.md` |
 | WP2 | Toolchain spike | accepted | `WP2.md` |
 | WP3 | Facilitation research spike | accepted | `WP3.md` |
-| WP4 | Ontology and page contracts | approved | `WP4.md` |
+| WP4 | Ontology and page contracts | accepted | `WP4.md` |
 | WP5 | Conformance tools | not yet scoped | — |
 | WP6 | Template and case study | not yet scoped | — |
 | WP7 | Docs and Pages | not yet scoped | — |

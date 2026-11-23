@@ -620,3 +620,35 @@ engineer's brief: coding means "populating their individual pages and ensuring o
 R-11 holds, because users name the pair and `scat` writes the page. This corrects D-030's wording: the page contracts
 define how an author names a pair, not which links entail relation pages. The rule SCAT-REL-MISSING is dropped, and no
 rule may guess missing pairs.
+
+## D-032 | 2026-11-23 | WP4 accepted (ACE)
+
+The ACE re-ran the checks at `a3dcc28`:
+- R1: the TBox parses, with 503 triples.
+- R2: all 60 SCAT terms have a definition. 56 are marked authored, and 4 unverified (the four class definitions,
+  whose primary sources were unreachable).
+- The catalogue has 28 distinct rule ids, and there are 25 example pages plus a README.
+- No private paths, placeholder namespace or private-document strings appear in `ontology/` or `contracts/`.
+- Only `main` and `dev` remain.
+
+The cold-write test passed: a fresh Haiku rerun, in a new domain, produced 29 pages with 0 errors. The first run's
+gaps were closed by an unplanned fix unit, U8.
+
+Rulings on the PM's open items:
+1. **U3's last round** was re-checked by the PM rather than a fifth independent review, and the independent U6
+   cross-check then read it against the contract. Accepted.
+2. **Relation endpoint order** is in the contract (section 4), not the TBox. Under R-13, tools must take it from the
+   TBox, so WP5's first unit adds it to `ontology/scat.ttl` as a stated triple. This is a TBox change within v0.1,
+   the ACE's call, and it changes no meaning.
+3. **Catalogue length and wording.** The message prose is guidance for WP5. WP5's golden tests check the rule id, the
+   file, the field and the exact fix, not the full prose, to avoid over-specifying. The `<one sentence you write>`
+   versus "short text" nit is left as it is.
+4. **Examples** don't show `SCAT-CONFLICT-BOTH`. WP6's case study must, because the anonymity-versus-attribution
+   conflict is part of it.
+5. **The four unverified class definitions** are accepted, and are listed in the reviewer's guide (D-6).
+
+Estimation lesson, recorded for the PM. Specification units that others must align with ran at 8 against an
+estimate of 5, and a cold-write test needs a planned fix unit after it. WP4 came in at 29 estimated and 38 realized
+points (ratio 1.31), and part of the overrun came from the ACE's mid-stream rulings D-030 and D-031.
+
+WP4 is accepted.
