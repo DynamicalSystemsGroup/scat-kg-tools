@@ -45,8 +45,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP4-U4 | technical writer, sonnet | 3 | 3 | `wp4/u4` | done |  | 2026-11-23T17:03:08-05:00 | first-time pass; independent checker 0 errors; matches estimate |
 | WP4-U5 | cold-write tester, haiku | 3 | 3 | `wp4/u5` | done |  | 2026-11-23T17:03:08-05:00 | 29 conformant pages from the two contracts alone; defects fed to U8; no branch (scratch output) |
 | WP4-U6 | cross-check reviewer, sonnet | 3 | 3 | `wp4/u6` | done |  | 2026-11-23T17:03:08-05:00 | R3, R5, R7, R8 pass; 9 defects found; no branch (read-only) |
-| WP4-U7 | cold-write rerun tester, haiku | 2 |  | `wp4/u7` | queued | WP4-U8 merged |  |  |
-| WP4-U8 | contract fixer (TBox, contracts, catalogue), sonnet | 3 |  | `wp4/u8` | in flight |  |  | unplanned: fixes the 9 defects from U6 and U5; added by PM |
+| WP4-U7 | cold-write rerun tester, haiku | 2 | 2 | `wp4/u7` | done |  | 2026-11-23T17:09:44-05:00 | fresh Haiku, new domain: 29 pages, 0 errors; no branch (scratch output) |
+| WP4-U8 | contract fixer, sonnet | 3 | 3 | `wp4/u8` | done |  | 2026-11-23T17:09:44-05:00 | unplanned fix unit for the 9 review defects; 1 push-back, 2 reviews; added by PM |
 
 ## Iterations and velocity
 
@@ -55,6 +55,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 1 | WP1-U1, WP1-U2, WP1-U3, WP2-U1, WP3-U1, WP3-U2, WP3-U3 | 24 | 27 | 1.12 | 0.66 h | 40.9 |
 | 2 | WP2-U2, WP2-U3, WP2-U4, WP2-U5 | 11 | 10 | 0.91 | 0.41 h | 24.4 |
 | 3 | WP1-U4, WP1-U5, WP2-U6, WP3-U4 | 12 | 15 | 1.25 | 0.16 h | 93.8 |
+| 4 | WP4-U1 to WP4-U8 | 29 | 38 | 1.31 | 1.09 h | 34.9 |
 
 ## Velocity and forecast
 
@@ -66,4 +67,6 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
 
-Current: 47 est. pts proposed (WP1 to WP3 only; WP4 to WP8 are not scoped, so not estimated); 47 est. pts completed; 52 realized pts completed. 3 iterations closed; running realized/estimated ratio 1.11; raw velocities [40.9, 24.4, 93.8]; smoothed velocity v-hat 63.2 realized pts/hour. Forecast: not stated as a number, because the remaining estimated points do not exist yet (WP4 to WP8 have no scopes); see the report to the ACE for the formula applied to an assumed size. Iterations overlap in wall-clock time and the workers are fast, so the velocity is noisy and likely far above what a gated pace will sustain.
+Current: 76 est. pts proposed (WP1 to WP4; WP5 to WP8 not yet scoped, so not estimated); 76 est. pts completed; 90 realized pts completed. 4 iterations closed; running realized/estimated ratio 1.18; raw velocities [40.9, 24.4, 93.8, 34.9]; smoothed velocity v-hat 49.0 realized pts/hour. Forecast: still not stated as a number, because the remaining estimated points do not exist yet (WP5 to WP8 have no scopes). Iteration 4 is one package (WP4) with its units overlapping, and its 1.09 h includes the waits for the ACE's rulings D-030 and D-031, so its velocity is the first one that reflects a gated pace.
+
+Over and under, WP4: the three specification units (TBox, page contracts, rule catalogue) ran at 8 against an estimate of 5 each, because two ACE rulings arrived mid-flight and each unit took three or four review rounds. The examples, cold-write, cross-check and rerun units landed at their estimates. Spec-heavy units that other units must align with should be estimated at 8, and an unplanned fix unit should be planned for after any cold-write test.
