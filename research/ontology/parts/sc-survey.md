@@ -78,7 +78,7 @@ applications"). It also states that "skos:Collection is disjoint with each of sk
 - DCMI (DCMI): `dcterms:Agent`, "A resource that acts or has the power to act."; `dcterms:AgentClass`, "A group of
   agents."; and `dcterms:audience`, "A class of agents for whom the resource is intended or useful."
 - FOAF (FOAF): `foaf:Group`, "The Group class represents a collection of individual agents (and may itself play the
-  role of a Agent , ie. something that can perform actions). This concept is intentionally quite broad, covering
+  role of a Agent, ie. something that can perform actions). This concept is intentionally quite broad, covering
   informal and ad-hoc groups, long-lived communities, organizational groups within a workplace, etc." Also
   `foaf:interest` has range `Document` ("A page about a topic of interest to this person"), so it cannot link a group
   to a concern as a class instance.
