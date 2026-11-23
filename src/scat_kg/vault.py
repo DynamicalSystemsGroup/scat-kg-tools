@@ -29,6 +29,10 @@ _FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
 _KEY_LINE = re.compile(r"""^(?:"([^"]*)"|'([^']*)'|([^\s#:'"-][^:]*?))\s*:(?:\s|$)""")
 
 
+# The Obsidian page-template folder, skipped whole (D-034); `.obsidian/` is a dot-folder, skipped too.
+DEFAULT_TEMPLATES_FOLDER = "templates"
+
+
 @dataclass(frozen=True)
 class Link:
     target: (
@@ -87,6 +91,7 @@ class VaultConfig:
     problem: str | None  # "missing", "invalid-toml", "key-missing" or "bad-value"
     detail: str | None  # the parser's reason (invalid-toml); the value as TOML shows it (bad-value)
     cap: int | None  # stakeholder_group_cap when usable
+    templates_folder: str = DEFAULT_TEMPLATES_FOLDER  # vault-relative folder the reader skips
 
 
 @dataclass(frozen=True)
@@ -214,7 +219,7 @@ def _frontmatter_links(
     return found
 
 
-def _blank_code(body: str) -> str:
+def blank_code(body: str) -> str:
     """The body with fenced code blocks and code spans turned to spaces (line breaks kept)."""
     out, fence = [], None
     for line in body.split("\n"):
@@ -234,7 +239,7 @@ def _blank_code(body: str) -> str:
 
 def _body_links(body: str, first_line: int) -> tuple[Link, ...]:
     links = []
-    for m in _BODY_LINK.finditer(_blank_code(body)):
+    for m in _BODY_LINK.finditer(blank_code(body)):
         target = re.split(r"[|#^]", m.group(1), maxsplit=1)[0]
         if not target or "." in target or "/" in target:
             continue
@@ -288,19 +293,26 @@ def _read_config(root: Path) -> VaultConfig:
         data = tomllib.loads(file.read_bytes().decode("utf-8", errors="replace"))
     except tomllib.TOMLDecodeError as e:
         return VaultConfig("invalid-toml", str(e), None)
+    folder = data.get("templates_folder")
+    if not isinstance(folder, str) or not folder.strip("/ "):
+        folder = DEFAULT_TEMPLATES_FOLDER
+    folder = folder.strip("/ ")
     if "stakeholder_group_cap" not in data:
-        return VaultConfig("key-missing", None, None)
+        return VaultConfig("key-missing", None, None, folder)
     value = data["stakeholder_group_cap"]
     if isinstance(value, int) and not isinstance(value, bool) and value >= 1:
-        return VaultConfig(None, None, value)
-    return VaultConfig("bad-value", repr(value), None)
+        return VaultConfig(None, None, value, folder)
+    return VaultConfig("bad-value", repr(value), None, folder)
 
 
 def read_vault(root: str | Path) -> Vault:
     root = Path(root)
+    config = _read_config(root)
+    skip = PurePosixPath(config.templates_folder).parts
     pages, non_pages = [], []
     for dirpath, dirnames, filenames in os.walk(root):
-        dirnames[:] = sorted(d for d in dirnames if not d.startswith("."))
+        here = Path(dirpath).relative_to(root).parts
+        dirnames[:] = sorted(d for d in dirnames if not d.startswith(".") and (*here, d) != skip)
         for filename in filenames:
             if not filename.endswith(".md"):
                 continue
@@ -323,6 +335,6 @@ def read_vault(root: str | Path) -> Vault:
         pages=tuple(pages),
         by_name={n: tuple(ps) for n, ps in by_name.items()},
         non_pages=tuple(sorted(non_pages)),
-        config=_read_config(root),
+        config=config,
         backlinks={n: tuple(b) for n, b in inbound.items()},
     )

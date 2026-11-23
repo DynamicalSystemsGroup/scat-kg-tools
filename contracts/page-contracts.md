@@ -9,7 +9,8 @@ that is the rule catalogue (`contracts/rule-catalogue.md`), and "the catalogue" 
 ## 1. Pages
 
 **A page** is a Markdown file ending `.md`, anywhere in the vault outside folders whose name starts with a dot, whose
-frontmatter has a `type` key. Other Markdown files (a README, say) are not pages and are ignored.
+frontmatter has a `type` key. Other Markdown files (a README, say) are not pages and are ignored. The vault's Obsidian
+page-template folder (10) is not read, nor is `.obsidian/`.
 
 **Layout.** The tools put each page they create in the folder named for its type, at the vault root:
 `stakeholder-group/`, `concern/`, `affordance/`, `technology/`, `heldby/`, `addresses/`, `attributes/`, `scenario-raw/`, `scenario-coded/`,
@@ -635,7 +636,7 @@ The cap is not in the TBox. It is set per vault in a file named **`scat.toml` at
 stakeholder_group_cap = 3
 ```
 
-- The value is a TOML integer of 1 or more (a float such as `3.0` is a configuration problem). The tools read this key and ignore any other key in the file.
+- The value is a TOML integer of 1 or more (a float such as `3.0` is a configuration problem). The tools read this key and ignore any other key in the file, except `templates_folder`: the vault-relative folder of the Obsidian page templates, which the tools do not read as pages (1). It is a string; if the key is absent, empty or not a string, the folder is `templates`.
 - The count is the number of pages with `type: stakeholder-group`, at every status, stubs included.
 - The cap is checked over the whole vault. A vault above the cap is not conformant.
 - The key is at the top level of the file. There is no default: if the file is missing or not valid TOML, or the key

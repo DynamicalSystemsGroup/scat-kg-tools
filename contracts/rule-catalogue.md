@@ -13,7 +13,7 @@ exact field and value) or the rule records why it cannot be.
 ## 1. Conventions every rule shares
 
 **Page terms.** A page is a Markdown file, anywhere in the vault outside folders whose name starts with a dot (`.obsidian`,
-`.trash`), whose frontmatter has a `type` key (contract section 1); any other Markdown file is not a page and is ignored. `<file>` is the vault-relative path of the page, with `/` separators,
+`.trash`) and outside the Obsidian page-template folder (contract section 10), whose frontmatter has a `type` key (contract section 1); any other Markdown file is not a page and is ignored. `<file>` is the vault-relative path of the page, with `/` separators,
 for example `concern/safe-handling-of-tools.md`. `<page-name>` is the file name without `.md`, unique across the
 vault (contract section 2). `<type-key>` is the value of a page's `type` field (`scat:key` of its page type). A
 *link field* is a field with a `scat:targetType`: a list of wikilinks, or exactly one wikilink when `scat:single` is
