@@ -677,3 +677,16 @@ ACE rulings:
 
 Approved: the WP5 scope (8 units, 37 estimated points) and the WP6 scope (7 units, 25 estimated points), at the
 commit that records this entry.
+
+## D-034 | 2026-11-23 | Obsidian template and settings folders are outside the vault scan
+
+The board showed WP6-U1 blocked on an ACE ruling ("templates/ folder is read as pages by the contracts"). The question
+hadn't reached the ACE, who ruled on seeing the board.
+Ruling: the tools don't read the vault's Obsidian page-template folder or `.obsidian/` as pages.
+- **Why:** templates are skeletons by design. Scanning them would put every template in breach of its own contract.
+- **Contract change:** a one-line exclusion, a v0.1 change within the ACE's call that alters no meaning.
+- **Who does what:** WP6-U1 names the folder in `scat.toml` (the instance configuration), defaulting to `templates/`.
+  WP5's reader skips it and `.obsidian/`. The page contracts gain the sentence in the same unit that implements it in
+  WP5 (U3 or U4, the PM's choice); `contracts/` stays read-only for WP6.
+
+Process note to the PM: a blocking question must be sent to the ACE as a message, not only recorded on the board.
