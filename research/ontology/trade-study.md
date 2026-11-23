@@ -10,14 +10,14 @@ section covers options for holding disagreement (WP1-G3, WP1-R7). Assembled 2026
 |---|---|---|---|---|---|
 | Stakeholder group | Part A, Element 1 | S1 to S8 (S2 author) | Adopt SEBoK/15288:2015 Stakeholder definition; "group" is usage | S2, author `StakeholderGroup` | Recognisability |
 | Concern | Part A, Element 2 | C1 to C8 (C2 author) | Adopt 42010 Concern wording on `skos:Concept` | C2, author | Recognisability |
-| Affordance | Part B, Affordance | A1 to A7 (A1 author) | Author, Gibson's wording, map to WoT and Capability | A3, SEBoK Capability | Fit |
+| Affordance | Part B, Affordance | A1 to A7 (A1 author) | Author, Gibson's wording, `skos:closeMatch` to Capability, WoT as see-also only | A3, SEBoK Capability | Fit |
 | Technology | Part B, Technology | T1 to T6 (T6 author) | Adopt SEBoK System Element definition | T2, SysML v2 PartDefinition | Maintenance, with fit |
 | Heldby | Part C, section 1 (and Part A, Heldby endpoints) | A to D (A author) | Author `heldBy`; domain Stakeholder group, range Concern | B, `prov:wasAttributedTo` | Fit |
 | Addresses | Part C, section 2 | A to E (A author) | Author | B, `cds:addresses` | Simplicity, independence |
 | Attributes | Part C, section 3 | A to D (A author) | Author | B, RO `has disposition` (conditional, see 2) | Simplicity |
 | Scenario record | Part C, section 4 | A to E (A author) | Author; events stay in the body | B, SEM | Simplicity under R4 |
 | Architecture record | Part C, section 5 | A to E (A, E author) | Author class; `dcterms:hasPart` only if WP4 wants a part-whole link | C, `ssn:hasSubSystem` | Simplicity, recognisability |
-| Page status | Part C, section 6 | A to E (B author) | Adopt `schema:creativeWorkStatus`, authored values | B, authored `status` | Adopt over mint at equal terms |
+| Page status | Part C, section 6 | A to E (B author) | Adopt `schema:creativeWorkStatus` (pending-area risk), authored values | B, authored `status` | Adopt over mint at equal terms |
 | Provenance | Part C, section 7 | A to E (E author) | Adopt `prov:wasDerivedFrom` | B, `dcterms:source` | Recognisability, fit |
 | Disagreement | Part C, section 8 | D0 to D6 | D0 plus D1 plus D3 | D4 | Simplicity and UX cost |
 
@@ -63,7 +63,7 @@ Ratings are High, Med or Low, with the reason in the cell. "Author our own" is t
 
 | # | Option | Fit | Terms | Recog | Maint | Cost |
 |---|---|---|---|---|---|---|
-| S1 | **Adopt the SEBoK Stakeholder definition (ISO/IEC/IEEE 15288:2015, normative text)**, anchored by `skos:exactMatch` to the SEBoK glossary entry (the CDS practice). The 42010 community site's "individuals, groups or organizations holding Concerns" is secondary support, from a different source than the Concern text in C1. The class is labelled "Stakeholder group" and the vault uses it for groups only. | Med to High. The 15288 text says "Individual or organization" and does not mention groups. Groups are covered by SEBoK-SH entry 3 (ISO/IEC 26702:2007, "(or classes thereof)") and by the community site's "groups". "Group" is our usage convention. | 1 class | High. The term every SE already knows, and SEBoK is the canon named in G10. | Low. Definition is cited, not ours. The 15288:2015 text itself was reached only through SEBoK, not the standard. | Low. One class, one class page. |
+| S1 | **Adopt the SEBoK Stakeholder definition (ISO/IEC/IEEE 15288:2015, normative text)**, anchored by `skos:closeMatch` to the SEBoK glossary entry (not `exactMatch`: the 15288 text says "individual or organization" and our "group" is usage, so the match is close, not exact) (the CDS practice). The 42010 community site's "individuals, groups or organizations holding Concerns" is secondary support, from a different source than the Concern text in C1. The class is labelled "Stakeholder group" and the vault uses it for groups only. | Med to High. The 15288 text says "Individual or organization" and does not mention groups. Groups are covered by SEBoK-SH entry 3 (ISO/IEC 26702:2007, "(or classes thereof)") and by the community site's "groups". "Group" is our usage convention. | 1 class | High. The term every SE already knows, and SEBoK is the canon named in G10. | Low. Definition is cited, not ours. The 15288:2015 text itself was reached only through SEBoK, not the standard. | Low. One class, one class page. |
 | S2 | **Author our own** `StakeholderGroup`, defined by us, with `skos:closeMatch` to the SEBoK entry. | High. Exactly "a class of people with a stake". | 1 class | Med. The label is recognisable, the definition is new to them. | Med. We write and defend a definition (against D-012). | Low. |
 | S3 | **iStar 2.0 Role** (with Actor and Agent). | Med. Role is "an abstract characterization of the behavior of a social actor" (iStar), close to a class of people. It brings the actor boundary, where intentional elements live inside the actor. | 2 to 3 classes (Actor, Role, Agent) | Med. Known to requirements engineers, less to systems engineers. | Med. Tracking an academic language guide. | Med. Invites goal-model structure the vault does not use. |
 | S4 | **`dcterms:AgentClass`** ("A group of agents."). | Med. Right shape, a class of agents. Defined for audiences of resources. | 1 class | Low. Known to metadata people. | Low. Stable DCMI term. | Low. |
@@ -73,7 +73,7 @@ Ratings are High, Med or Low, with the reason in the cell. "Author our own" is t
 | S8 | **CDS `cdsterm:stakeholder`** (the same 15288:2015 text as S1, already published as SKOS). | High, same as S1. | 1 class | Med. | Med. Depends on a young 0.1.0 vocabulary whose IRIs were not dereferenced here. | Low. |
 
 **Recommendation (S1):** Adopt the SEBoK Stakeholder definition (ISO/IEC/IEEE 15288:2015 text, which is the normative
-source here; the 42010 community site is supporting only), anchored to the SEBoK entry by `skos:exactMatch`, and carry "group" as our usage, not as a new class.
+source here; the 42010 community site is supporting only), anchored to the SEBoK entry by `skos:closeMatch`, and carry "group" as our usage, not as a new class.
 
 **Runner-up:** S2, author our own `StakeholderGroup`.
 
@@ -136,7 +136,7 @@ unit.
 
 | Element | One-line recommendation | Runner-up | Deciding criterion |
 |---|---|---|---|
-| Stakeholder group | Adopt the SEBoK/15288:2015 Stakeholder definition (`skos:exactMatch`), "group" as usage | S2, author `StakeholderGroup` | Recognisability |
+| Stakeholder group | Adopt the SEBoK/15288:2015 Stakeholder definition (`skos:closeMatch`), "group" as usage | S2, author `StakeholderGroup` | Recognisability |
 | Concern | Adopt 42010 Concern on `skos:Concept`; verify the 2022 wording first | C2, author `Concern` | Recognisability |
 | Heldby endpoints | Domain Stakeholder, range Concern | H2, author local typing | Fit |
 
@@ -158,7 +158,7 @@ and offered by a tool in an architecture; the class sits between Concern and Tec
 | A7. Maier and Fadel affordance-based design | S5, S6 | Med (theory) | n/a | Med | n/a | n/a | No vocabulary reached (content unread); source of method, not of terms. |
 
 **Recommendation (one line):** Author the `Affordance` class (our IRI), take its definition verbatim from Gibson as
-cited via Toyoshima (S2), and record mappings to `td:InteractionAffordance` and SEBoK Capability as anchors only; adopt
+cited via Toyoshima (S2), and record a `skos:closeMatch` to SEBoK Capability, with WoT `td:InteractionAffordance` kept only as a loose `rdfs:seeAlso` (it describes a Thing to machine consumers); adopt
 no class.
 
 **Runner-up:** A3, SEBoK Capability adopted as the class (relabelled or with "affordance" as an alternate label).
@@ -168,7 +168,7 @@ scenario record needs the possibility on offer, before any outcome; and the miss
 If the TBox work prefers recognition over fit, A3 wins on Recognition and coherence with cds.
 
 Honest note: nothing adoptable beat custom on fit. The "adopt over mint" test is met by adopting Gibson's wording and
-mapping to two published terms, not by importing a class.
+mapping to one published term (Capability), not by importing a class.
 
 ### Technology
 
@@ -177,7 +177,7 @@ action situation in a scenario but out of view.
 
 | Option | Source | Fit | Simplicity (terms carried) | Recognition | Maintenance | Cost | Note |
 |---|---|---|---|---|---|---|---|
-| T1. Adopt the definition of SEBoK / ISO 15288 **System Element** ("A system element is a discrete part of a system that can be implemented to fulfill specified requirements."); class carried under our label `Technology`, anchored by `skos:exactMatch`-style mapping to the SEBoK entry, as cds does | S12, S15, S20 | High: parts and wholes; may be hardware, software, data, humans, processes ... so it covers whole assemblages | High: 1 term | High: the SE canon, and `concept-definition-stage` uses the same pattern | High: stable glossary URL, ISO source, v2.14 | Low | "Technology" is the mission's word; SEBoK has no Technology entry (S23), so the label is ours and the meaning adopted. |
+| T1. Adopt the definition of SEBoK / ISO 15288 **System Element** ("A system element is a discrete part of a system that can be implemented to fulfill specified requirements."); class carried under our label `Technology`, anchored by `skos:closeMatch` to the SEBoK entry (not exact: SEBoK has no Technology entry and the label is ours; cds uses `exactMatch` for terms SEBoK does define) | S12, S15, S20 | High: parts and wholes; may be hardware, software, data, humans, processes ... so it covers whole assemblages | High: 1 term | High: the SE canon, and `concept-definition-stage` uses the same pattern | High: stable glossary URL, ISO source, v2.14 | Low | "Technology" is the mission's word; SEBoK has no Technology entry (S23), so the label is ours and the meaning adopted. |
 | T2. SysML v2 `PartDefinition`, by reference | S16, S15 | Med-High: "an ItemDefinition of a Class of systems or parts of systems"; structural | High | High among MBSE users | Low-Med: OMG ships XMI/KPAR/JSON, **no OWL**; cds uses two different namespaces for it | Med: equivalence to a language metaclass invites SysML semantics | Mission says SysML by reference only; equivalence axioms exceed that. |
 | T3. SOSA/SSN `Platform` / `ssn:System` | S17 | Low-Med: hosts sensors and actuators; System "implement[s] Procedures" | Med: brings Procedure and Deployment | Med in sensing, low elsewhere | High: W3C Rec 2017 | Med | Domain too narrow. |
 | T4. SAREF `Device` | S18 | Low: "A tangible object designed to accomplish a particular task" excludes software and people | High | Low | Med | Med | Rejected on fit. |
@@ -185,7 +185,7 @@ action situation in a scenario but out of view.
 | T6. Author our own `Technology` with no external anchor | n/a | High: matches mission wording | High: 1 term | Low-Med: reads as invented to an SE | High | Low | Valid fallback; fails G10's "traces to its source". |
 
 **Recommendation (one line):** Carry `Technology` as our class label with the SEBoK / ISO/IEC/IEEE 15288 System Element
-definition adopted verbatim and mapped to the SEBoK entry; mention SysML `PartDefinition` as a reference mapping only.
+definition adopted verbatim and mapped to the SEBoK entry by `skos:closeMatch`; mention SysML `PartDefinition` as a reference mapping only.
 
 **Runner-up:** T2, SysML v2 `PartDefinition` as an equivalent class (the `concept-definition-stage` precedent for its
 System-of-Interest).
@@ -283,7 +283,7 @@ affordances). G1 lists the scenario only as a page type, so inner event structur
 
 | Option | Fit | Simplicity | Recog. | Maint. | Cost | Note |
 |---|---|---|---|---|---|---|
-| A. Adopt `schema:creativeWorkStatus` (S16) with our three values | + | + (0 new properties; 3 values authored) | 0 | + | + | "stage in a lifecycle ... Draft"; values DefinedTerm or Text, so our values are allowed. The property is typed for CreativeWork (schema.org lists CreativeWork under "used on"), so a page would also be typed `schema:CreativeWork`, or the domain is left unenforced |
+| A. Adopt `schema:creativeWorkStatus` (S16) with our three values | + | + (0 new properties; 3 values authored) | 0 | + | + | "stage in a lifecycle ... Draft"; values DefinedTerm or Text, so our values are allowed. Risk: schema.org lists `creativeWorkStatus` in its pending area (the page embeds `https://pending.schema.org`), so it may change or move. The property is typed for CreativeWork (schema.org lists CreativeWork under "used on"), so a page would also be typed `schema:CreativeWork`, or the domain is left unenforced |
 | B. Author `status` plus a three-value scheme | + | 0 (1 property + 3 values) | + | 0 | + | |
 | C. `vs:term_status` (S15) | - | + | 0 | - (unfinished note, 2009) | 0 | for vocabulary terms, values unstable/testing/stable/archaic |
 | D. `adms:status` (S17) | 0 | 0 | 0 | - (note retired 2023) | 0 | "status of the Asset in the context of a particular workflow process" |

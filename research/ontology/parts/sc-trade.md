@@ -20,7 +20,7 @@ Ratings are High, Med or Low, with the reason in the cell. "Author our own" is t
 
 | # | Option | Fit | Terms | Recog | Maint | Cost |
 |---|---|---|---|---|---|---|
-| S1 | **Adopt the SEBoK Stakeholder definition (ISO/IEC/IEEE 15288:2015, normative text)**, anchored by `skos:exactMatch` to the SEBoK glossary entry (the CDS practice). The 42010 community site's "individuals, groups or organizations holding Concerns" is secondary support, from a different source than the Concern text in C1. The class is labelled "Stakeholder group" and the vault uses it for groups only. | Med to High. The 15288 text says "Individual or organization" and does not mention groups. Groups are covered by SEBoK-SH entry 3 (ISO/IEC 26702:2007, "(or classes thereof)") and by the community site's "groups". "Group" is our usage convention. | 1 class | High. The term every SE already knows, and SEBoK is the canon named in G10. | Low. Definition is cited, not ours. The 15288:2015 text itself was reached only through SEBoK, not the standard. | Low. One class, one class page. |
+| S1 | **Adopt the SEBoK Stakeholder definition (ISO/IEC/IEEE 15288:2015, normative text)**, anchored by `skos:closeMatch` to the SEBoK glossary entry (not `exactMatch`: the 15288 text says "individual or organization" and our "group" is usage, so the match is close, not exact) (the CDS practice). The 42010 community site's "individuals, groups or organizations holding Concerns" is secondary support, from a different source than the Concern text in C1. The class is labelled "Stakeholder group" and the vault uses it for groups only. | Med to High. The 15288 text says "Individual or organization" and does not mention groups. Groups are covered by SEBoK-SH entry 3 (ISO/IEC 26702:2007, "(or classes thereof)") and by the community site's "groups". "Group" is our usage convention. | 1 class | High. The term every SE already knows, and SEBoK is the canon named in G10. | Low. Definition is cited, not ours. The 15288:2015 text itself was reached only through SEBoK, not the standard. | Low. One class, one class page. |
 | S2 | **Author our own** `StakeholderGroup`, defined by us, with `skos:closeMatch` to the SEBoK entry. | High. Exactly "a class of people with a stake". | 1 class | Med. The label is recognisable, the definition is new to them. | Med. We write and defend a definition (against D-012). | Low. |
 | S3 | **iStar 2.0 Role** (with Actor and Agent). | Med. Role is "an abstract characterization of the behavior of a social actor" (iStar), close to a class of people. It brings the actor boundary, where intentional elements live inside the actor. | 2 to 3 classes (Actor, Role, Agent) | Med. Known to requirements engineers, less to systems engineers. | Med. Tracking an academic language guide. | Med. Invites goal-model structure the vault does not use. |
 | S4 | **`dcterms:AgentClass`** ("A group of agents."). | Med. Right shape, a class of agents. Defined for audiences of resources. | 1 class | Low. Known to metadata people. | Low. Stable DCMI term. | Low. |
@@ -30,7 +30,7 @@ Ratings are High, Med or Low, with the reason in the cell. "Author our own" is t
 | S8 | **CDS `cdsterm:stakeholder`** (the same 15288:2015 text as S1, already published as SKOS). | High, same as S1. | 1 class | Med. | Med. Depends on a young 0.1.0 vocabulary whose IRIs were not dereferenced here. | Low. |
 
 **Recommendation (S1):** Adopt the SEBoK Stakeholder definition (ISO/IEC/IEEE 15288:2015 text, which is the normative
-source here; the 42010 community site is supporting only), anchored to the SEBoK entry by `skos:exactMatch`, and carry "group" as our usage, not as a new class.
+source here; the 42010 community site is supporting only), anchored to the SEBoK entry by `skos:closeMatch`, and carry "group" as our usage, not as a new class.
 
 **Runner-up:** S2, author our own `StakeholderGroup`.
 
@@ -93,6 +93,6 @@ unit.
 
 | Element | One-line recommendation | Runner-up | Deciding criterion |
 |---|---|---|---|
-| Stakeholder group | Adopt the SEBoK/15288:2015 Stakeholder definition (`skos:exactMatch`), "group" as usage | S2, author `StakeholderGroup` | Recognisability |
+| Stakeholder group | Adopt the SEBoK/15288:2015 Stakeholder definition (`skos:closeMatch`), "group" as usage | S2, author `StakeholderGroup` | Recognisability |
 | Concern | Adopt 42010 Concern on `skos:Concept`; verify the 2022 wording first | C2, author `Concern` | Recognisability |
 | Heldby endpoints | Domain Stakeholder, range Concern | H2, author local typing | Fit |
