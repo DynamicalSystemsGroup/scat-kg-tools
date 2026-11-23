@@ -50,3 +50,23 @@ history, the WP0 setup (`42813502`, `727af775`), the autonomous phase (`e8bb13cf
 - D-6 is a reviewer's guide in sittings by output, listing every ACE call (as in tradespace's 0.1 hand-off).
 - Defaults: MIT, copyright DSG (the tradespace precedent); `.python-version` 3.12, ruff and `uv lock --check` in CI;
   CI fails on attribution lines.
+
+## D-005 | 2026-11-23 | User acceptance criteria; licence
+
+Raised by the chief engineer (chat, typed by the ACE): "i think we may be missing clear user accept criteria. this
+means the documentation is clear and navigable, the user journey is clear. we need all the requirements for the AI
+user tests as well as my own user tests using terminal/repl, the github pages, also the github web where repo is
+crated from template to start a new one from template and then do an interactive session."
+Outcome in `MISSION.md`: G9; R-8 to R-10; a User acceptance section with the journey (J1 to J7), the AI user tests
+(UA-A) with their pass bar, and the chief engineer's walkthrough (UA-M); D-7, the acceptance kit; the reviewer's guide
+now opens with the walkthrough; WP6 is now the candidate and user acceptance.
+ACE readings (his to reverse):
+- "terminal/repl" is read as: every CLI operation is also callable from a Python REPL with the same messages (R-8).
+- His walkthrough needs a live Pages site and a usable GitHub template before acceptance. So the mission now defines
+  a candidate stage: Pages deploys from `dev` with a pre-release banner; the template is marked as a GitHub template
+  with `dev` as its default branch until release; tools are pinned to the exact candidate commit.
+
+Decided by the chief engineer (chat, typed by the ACE): "i am think apache 2.0. i know i've gone back and forth on
+this. but for this one i want apache".
+Outcome: Apache-2.0, copyright Dynamical Systems Group, for code, docs and ontology. This replaces the MIT default in
+D-004.

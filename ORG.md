@@ -87,7 +87,8 @@ does not sign off the rendered part.
 ## Limits
 
 - Nothing outside the two repositories and the session scratchpad is changed.
-- No merge to `main`, no tag, no deployment, no publishing, except the chief engineer's merges.
+- No merge to `main`, no tag and no publishing, except the chief engineer's merges and the candidate stage defined
+  in `MISSION.md` (governance), which the ACE carries out.
 - No edit to a test or record that weakens a requirement; a test changes only when its requirement changed by a
   recorded decision.
 - No AI attribution anywhere.
