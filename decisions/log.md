@@ -580,3 +580,25 @@ author.
 
 The unit split is approved as proposed: 7 units, 24 estimated points, plus 2 if the rerun is needed.
 Approved: the WP4 scope, at the commit that records this entry.
+
+## D-030 | 2026-11-23 | WP4-U1 rulings: namespace; relations are page types
+
+The PM flagged four points from WP4-U1 (the TBox). ACE rulings:
+
+1. **Namespace:** `https://w3id.org/scat#`, replacing the placeholder `https://scat-kg.example/ns#`.
+   `https://w3id.org/scat/` returned 404, so it is free. The chief engineer's `ant-rdf` namespace is registered
+   through his w3id.org fork. Registration is outward-facing, so the ACE prepares it at release for the chief
+   engineer to submit. Fixing the IRI now avoids churning identifiers later.
+2. **Relations stay page types; the worker's link-field modelling is overruled.** The chief engineer's recorded
+   intent (initial brief, typed by the ACE): "every 'table' in my drawing is a class, it gets a page in the vault that
+   describes the class, and then a table with name, short description and a link". His sketch gives Heldby its own
+   notes. `MISSION.md` G1 and G2 count seven classes, each with a class page and an index.
+   - Heldby, Addresses and Attributes are classes of record, each with two required endpoint links and optional
+     notes.
+   - The page contracts define which links in coded records entail which relation pages, so the stub operation
+     creates them (R-11).
+   - D1 is an optional `conflicts` link field on concern pages. It is the lightest form, and it isn't one of his
+     tables.
+3. **The required `indexes` field on class pages:** accepted, as within scope.
+4. **The affordance definition:** an authored paraphrase, citing Gibson through Toyoshima 2017 and marked unverified,
+   is accepted.
