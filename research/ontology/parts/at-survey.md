@@ -18,14 +18,14 @@ quotes were checked against the retrieved text. Quotes are verbatim.
 |---|---|---|---|---|
 | S1 | Gibson, *The Ecological Approach to Visual Perception* (1979); the scan titled "The Theory of Affordances" | <https://monoskop.org/images/c/c6/Gibson_James_J_1977_1979_The_Theory_of_Affordances.pdf> | Houghton Mifflin 1979; Routledge Classic Edition 2014 | Scan fetched, but image-only: no text layer, no OCR available. **Substitute:** S2's verbatim quotation of the book, p. 119. |
 | S2 | Toyoshima, "Modeling Affordances with Dispositions" | <https://ceur-ws.org/Vol-2205/paper20_caos3.pdf> | CEUR-WS Vol-2205 (CAOS workshop, JOWO 2017 proceedings), 6 pp. | Fetched, text read |
-| S3 | Toyoshima, Barton, Ethier, "Affordances and their ontological core", *Applied Ontology* 17(2) | <https://doi.org/10.3233/AO-220267> | 2022-05-02, DOI 10.3233/AO-220267 | Publisher page returned HTTP 403. **Substitute:** Crossref record <https://api.crossref.org/works/10.3233/AO-220267> (fetched; abstract read). Body text not read. |
+| S3 | Toyoshima, Barton, Ethier, "Affordances and their ontological core", *Applied Ontology* 17(2) | <https://doi.org/10.3233/AO-220267> | 2022-05-02, DOI 10.3233/AO-220267 | Publisher page returned HTTP 403 (the DOI link also returns 403, re-checked in WP1-U4). **Substitute:** Crossref record <https://api.crossref.org/works/10.3233/AO-220267> (fetched; abstract read). Body text not read. |
 | S4 | Norman, "Affordances and Design", jnd.org | <https://jnd.org/affordances-and-design/> | 2008-11-17 | Fetched |
 | S5 | Maier and Fadel, "Affordance based design: a relational theory for design", *Research in Engineering Design* 20(1) | <https://doi.org/10.1007/s00163-008-0060-3> | 2008-12-12 online; DOI as shown | Springer page redirects to a login handshake. **Substitute:** Crossref record <https://api.crossref.org/works/10.1007/s00163-008-0060-3> (title, authors, venue only; no abstract). Content not read. |
 | S6 | Maier and Fadel, "Affordance-based design methods for innovative design, redesign and reverse engineering", *Res. Eng. Design* 20(4) | <https://doi.org/10.1007/s00163-009-0064-7> | 2009-03-12 | Same as S5; Crossref record only. Content not read. |
-| S7 | Gaver, "Technology affordances", CHI '91 | <https://doi.org/10.1145/108844.108856> | 1991 | Bibliographic record only (Crossref). Content not read; not scored. |
-| S8 | Hartson, "Cognitive, physical, sensory, and functional affordances in interaction design", *Behaviour & IT* 22 | <https://doi.org/10.1080/01449290310001592587> | 2003-09 | Bibliographic record only (Crossref). Content not read; not scored. |
+| S7 | Gaver, "Technology affordances", CHI '91 | <https://doi.org/10.1145/108844.108856> | 1991 | Bibliographic record only (Crossref). The DOI link redirects and returns HTTP 403 (checked in WP1-U4). Content not read; not scored. |
+| S8 | Hartson, "Cognitive, physical, sensory, and functional affordances in interaction design", *Behaviour & IT* 22 | <https://doi.org/10.1080/01449290310001592587> | 2003-09 | Bibliographic record only (Crossref). The DOI link redirects and returns HTTP 403 (checked in WP1-U4). Content not read; not scored. |
 | S9 | Moralez, "Affordance Ontology: Towards a Unified Description of Affordances as Events", *Int. J. Undergraduate Research and Creative Activities* | <https://doi.org/10.7710/2155-4838.1145> | 2016-06-24 | Crossref record only. ResearchGate copy returned HTTP 403. A web-search summary says it has a DOLCE-based OWL TBox; **not verified**, so not scored. |
-| S10 | W3C, Web of Things (WoT) Thing Description 1.1 | <https://www.w3.org/TR/2023/REC-wot-thing-description11-20231205/> | W3C Recommendation, 2023-12-05; vocabulary `https://www.w3.org/2019/wot/td#` | Fetched, text read |
+| S10 | W3C, Web of Things (WoT) Thing Description 1.1 | <https://www.w3.org/TR/2023/REC-wot-thing-description11-20231205/> | W3C Recommendation, 2023-12-05; vocabulary `https://www.w3.org/2019/wot/td#` (a namespace IRI, not a document: requesting it returns HTTP 300 multiple choices) | Fetched, text read |
 | S11 | W3C, WoT Architecture 1.1 | <https://www.w3.org/TR/2023/REC-wot-architecture11-20231205/> | W3C Recommendation, 2023-12-05 | Fetched, text read |
 | S12 | SEBoK glossary: System Element | <https://sebokwiki.org/wiki/System_Element_(glossary)> | SEBoK v2.14, released 18 May 2026; text from ISO/IEC/IEEE 15288:2015 | Fetched, text read |
 | S13 | SEBoK glossary: Capability | <https://sebokwiki.org/wiki/Capability_(glossary)> | SEBoK v2.14 | Fetched, text read |
@@ -121,7 +121,7 @@ Search for "affordance" across the SEBoK found nothing relevant (web-search resu
 or parts of systems." The OMG page (S16) lists normative machine-readable artefacts: MOF XMI, KerML KPAR libraries,
 JSON schema. **No OWL or Turtle file is among them**, so there is no OMG-published IRI for `PartDefinition` to anchor
 to. cds nevertheless declares `omg-sysml:PartDefinition` in the namespace
-`https://www.omg.org/spec/SysML/20240801/SysML#` and `sysml:PartDefinition` in `https://www.omg.org/spec/SysML/2.0/`,
+`https://www.omg.org/spec/SysML/20240801/SysML#` (requested in WP1-U4 without the fragment: HTTP 404, so it is a namespace string, not a served document) and `sysml:PartDefinition` in `https://www.omg.org/spec/SysML/2.0/`,
 joined by `owl:equivalentClass`, and tags `cdsterm:system-of-interest` with `cds:sysmlConstruct sysml:PartDefinition`
 (S15, l.531-541, 570-593). Two namespaces for one construct, neither an OMG-served ontology, is a maintenance warning.
 

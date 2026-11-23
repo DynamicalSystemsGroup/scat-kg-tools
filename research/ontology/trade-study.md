@@ -70,7 +70,7 @@ Ratings are High, Med or Low, with the reason in the cell. "Author our own" is t
 | S5 | **`foaf:Group`** or **`org:Organization`**. | Low. These enumerate named members, or model a formal organization with a purpose. SCAT groups are open categories ("note-takers"). | 1 class (plus member property if used) | Med. | Low. | Low to Med. Pulls toward listing members. |
 | S6 | **`prov:Agent`** (with Organization, Person). | Low. Defined as bearing "responsibility for an activity". That says who did something, not who has a stake. | 1 to 3 classes | Med. | Low. | Low. |
 | S7 | **SysML v2 stakeholder parameter** (by reference only). | Low. A role in a requirement, not a free-standing class. | n/a | High | n/a | Not usable. |
-| S8 | **CDS `cdsterm:stakeholder`** (the same 15288:2015 text as S1, already published as SKOS). | High, same as S1. | 1 class | Med. | Med. Depends on a young 0.1.0 vocabulary whose IRIs were not dereferenced here. | Low. |
+| S8 | **CDS `cdsterm:stakeholder`** (the same 15288:2015 text as S1, already published as SKOS). | High, same as S1. | 1 class | Med. | Med. Depends on a young 0.1.0 vocabulary whose namespace root `https://w3id.org/cds/` returns HTTP 404. | Low. |
 
 **Recommendation (S1):** Adopt the SEBoK Stakeholder definition (ISO/IEC/IEEE 15288:2015 text, which is the normative
 source here; the 42010 community site is supporting only), anchored to the SEBoK entry by `skos:closeMatch`, and carry "group" as our usage, not as a new class.
@@ -302,7 +302,7 @@ attribution to named people is out of scope for the graph.
 
 | Option | Fit | Simplicity | Recog. | Maint. | Cost | Note |
 |---|---|---|---|---|---|---|
-| A. `prov:wasDerivedFrom` for coded-from-raw (S2); everything else left to git | + | + (1 term) | + | + (W3C Rec) | + | "a transformation of one entity into another" |
+| A. `prov:wasDerivedFrom` for coded-from-raw (S2); everything else left to git | + | + (1 term) | + | + (W3C Rec) | + | "a transformation of an entity into another" |
 | B. `dcterms:source` (S4) | + | + (1 term) | + | + | + | "A related resource from which the described resource is derived." Looser, no PROV chain |
 | C. Add `prov:wasAttributedTo`, `prov:generatedAtTime` | 0 | - | + | + | - | duplicates git; attribution raises the Chatham House issue |
 | D. PAV `authoredBy`, `previousVersion` (S18) | 0 | - | 0 | + | 0 | duplicates git |

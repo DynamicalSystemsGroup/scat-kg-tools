@@ -36,6 +36,8 @@ which is a secondary description and not the standard text. It describes the con
 
 > "A Concern is any interest in the system."
 
+Verbatim after HTML tags are stripped and whitespace collapsed (the sentences are split across tags on the source page).
+
 The site's text is written in the first-edition vocabulary ("System of Interest"), though its page also introduces the
 second edition. The wording of the 2022 edition's own definitions was **not** verified. WP4 or the ACE should check
 them against the standard before any definition is copied (D-012 requires adopted definitions to be used directly).
@@ -58,7 +60,7 @@ CDS already anchors the same definition as SEBoK entry 1, that is the 15288:2015
 `MISSION.md`. CDS has **no concern term**. Its only use of the word is inside the definition of `problem`: "A concern
 that has a probability of occurrence equal to one, a consequence of occurrence greater than zero, and a time-frame that
 is current." That is the risk-management sense and is not the 42010 sense. The CDS IRIs under `https://w3id.org/cds/`
-were not dereferenced in this unit; whether they resolve is unverified.
+were not dereferenced in this unit. WP1-U4 later requested the namespace root <https://w3id.org/cds/>: it returns HTTP 404, so the CDS IRIs do not resolve at that root.
 
 ### SKOS
 

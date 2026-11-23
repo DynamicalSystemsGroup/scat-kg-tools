@@ -106,7 +106,7 @@ attribution to named people is out of scope for the graph.
 
 | Option | Fit | Simplicity | Recog. | Maint. | Cost | Note |
 |---|---|---|---|---|---|---|
-| A. `prov:wasDerivedFrom` for coded-from-raw (S2); everything else left to git | + | + (1 term) | + | + (W3C Rec) | + | "a transformation of one entity into another" |
+| A. `prov:wasDerivedFrom` for coded-from-raw (S2); everything else left to git | + | + (1 term) | + | + (W3C Rec) | + | "a transformation of an entity into another" |
 | B. `dcterms:source` (S4) | + | + (1 term) | + | + | + | "A related resource from which the described resource is derived." Looser, no PROV chain |
 | C. Add `prov:wasAttributedTo`, `prov:generatedAtTime` | 0 | - | + | + | - | duplicates git; attribution raises the Chatham House issue |
 | D. PAV `authoredBy`, `previousVersion` (S18) | 0 | - | 0 | + | 0 | duplicates git |

@@ -60,7 +60,7 @@ parts below with link and version.
 | 1 | <http://www.iso-architecture.org/42010/cm/> | 200. Stakeholder and Concern text confirmed verbatim; 2nd-edition note present |
 | 2 | <http://www.iso-architecture.org/ieee-1471/cm/> | 200. Same two sentences |
 | 3 | <https://www.iso.org/standard/74393.html> | 403, not reachable |
-| 4 | <https://schema.org/creativeWorkStatus> | OK. "Used on" CreativeWork; expected DefinedTerm and Text; footer "V30.1 \| 2026-09-16" |
+| 4 | <https://schema.org/creativeWorkStatus> | OK. "The status of a creative work in terms of its stage in a lifecycle." "Used on" CreativeWork; expected DefinedTerm and Text; footer "V30.1 \| 2026-09-16" |
 | 5 | <http://xmlns.com/foaf/spec/> | OK. Phrase "(and may itself play the role of a Agent, ie. something that can perform actions)" confirmed |
 | 6 | <https://sebokwiki.org/wiki/Stakeholder_(glossary)> | OK. Four definitions, entry 1 from ISO/IEC/IEEE 15288:2015, entry 3 from ISO/IEC 26702:2007 confirmed |
 | 7 | <https://sebokwiki.org/wiki/System_Element_(glossary)> | OK. "A system element is a discrete part of a system that can be implemented to fulfill specified requirements." confirmed |
@@ -75,6 +75,11 @@ parts below with link and version.
 | 16 | <https://raw.githubusercontent.com/Open-MBEE/concept-definition-stage/99cecd1d36c7ffd4af540773b0907b59a122c65d/src/cds/ontology/cds-core.ttl> | 200. `cds:addresses` with comment and `rdfs:domain cds:Term` confirmed |
 | 17 | <https://www.w3.org/TR/skos-reference/>, <https://docs.oasis-open-projects.org/oslc-op/rm/v2.1/os/requirements-management-vocab.html>, <https://www.qudt.org/>, <https://github.com/Open-MBEE/concept-definition-stage>, <https://www.w3.org/TR/vocab-ssn/> | 200 each (reachability only) |
 | 18 | <http://linkedevents.org/ontology/> | 404 again |
+| 19 | <https://w3id.org/cds/> | 404 (WP1-U4 fix-forward) |
+| 20 | <https://www.omg.org/spec/SysML/20240801/SysML> | 404; a namespace string, not a document |
+| 21 | <https://doi.org/10.1145/108844.108856>, <https://doi.org/10.1080/01449290310001592587>, <https://doi.org/10.3233/AO-220267> | 302 redirect, final HTTP 403 each |
+| 22 | <https://www.w3.org/2019/wot/td> | 300 multiple choices; a namespace IRI |
+| 23 | <https://www.w3.org/TR/prov-o/> | `prov:wasDerivedFrom` entry reads "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity."; the page's overview prose says "one entity into another" |
 
 Not re-fetched in WP1-U4 (stand on the unit's own fetch): RO, OWL-Time, BFO, SAREF, PAV, ADMS, nanopublications,
 `ant-rdf`, OWL 2, SHACL, iStar, SysML v2, ORG, DCMI audience.
@@ -112,6 +117,8 @@ which is a secondary description and not the standard text. It describes the con
 
 > "A Concern is any interest in the system."
 
+Verbatim after HTML tags are stripped and whitespace collapsed (the sentences are split across tags on the source page).
+
 The site's text is written in the first-edition vocabulary ("System of Interest"), though its page also introduces the
 second edition. The wording of the 2022 edition's own definitions was **not** verified. WP4 or the ACE should check
 them against the standard before any definition is copied (D-012 requires adopted definitions to be used directly).
@@ -134,7 +141,7 @@ CDS already anchors the same definition as SEBoK entry 1, that is the 15288:2015
 `MISSION.md`. CDS has **no concern term**. Its only use of the word is inside the definition of `problem`: "A concern
 that has a probability of occurrence equal to one, a consequence of occurrence greater than zero, and a time-frame that
 is current." That is the risk-management sense and is not the 42010 sense. The CDS IRIs under `https://w3id.org/cds/`
-were not dereferenced in this unit; whether they resolve is unverified.
+were not dereferenced in this unit. WP1-U4 later requested the namespace root <https://w3id.org/cds/>: it returns HTTP 404, so the CDS IRIs do not resolve at that root.
 
 #### SKOS
 
@@ -226,14 +233,14 @@ requirement and holding as a stakeholder parameter, which is heavier than the SC
 |---|---|---|---|---|
 | S1 | Gibson, *The Ecological Approach to Visual Perception* (1979); the scan titled "The Theory of Affordances" | <https://monoskop.org/images/c/c6/Gibson_James_J_1977_1979_The_Theory_of_Affordances.pdf> | Houghton Mifflin 1979; Routledge Classic Edition 2014 | Scan fetched, but image-only: no text layer, no OCR available. **Substitute:** S2's verbatim quotation of the book, p. 119. |
 | S2 | Toyoshima, "Modeling Affordances with Dispositions" | <https://ceur-ws.org/Vol-2205/paper20_caos3.pdf> | CEUR-WS Vol-2205 (CAOS workshop, JOWO 2017 proceedings), 6 pp. | Fetched, text read |
-| S3 | Toyoshima, Barton, Ethier, "Affordances and their ontological core", *Applied Ontology* 17(2) | <https://doi.org/10.3233/AO-220267> | 2022-05-02, DOI 10.3233/AO-220267 | Publisher page returned HTTP 403. **Substitute:** Crossref record <https://api.crossref.org/works/10.3233/AO-220267> (fetched; abstract read). Body text not read. |
+| S3 | Toyoshima, Barton, Ethier, "Affordances and their ontological core", *Applied Ontology* 17(2) | <https://doi.org/10.3233/AO-220267> | 2022-05-02, DOI 10.3233/AO-220267 | Publisher page returned HTTP 403 (the DOI link also returns 403, re-checked in WP1-U4). **Substitute:** Crossref record <https://api.crossref.org/works/10.3233/AO-220267> (fetched; abstract read). Body text not read. |
 | S4 | Norman, "Affordances and Design", jnd.org | <https://jnd.org/affordances-and-design/> | 2008-11-17 | Fetched |
 | S5 | Maier and Fadel, "Affordance based design: a relational theory for design", *Research in Engineering Design* 20(1) | <https://doi.org/10.1007/s00163-008-0060-3> | 2008-12-12 online; DOI as shown | Springer page redirects to a login handshake. **Substitute:** Crossref record <https://api.crossref.org/works/10.1007/s00163-008-0060-3> (title, authors, venue only; no abstract). Content not read. |
 | S6 | Maier and Fadel, "Affordance-based design methods for innovative design, redesign and reverse engineering", *Res. Eng. Design* 20(4) | <https://doi.org/10.1007/s00163-009-0064-7> | 2009-03-12 | Same as S5; Crossref record only. Content not read. |
-| S7 | Gaver, "Technology affordances", CHI '91 | <https://doi.org/10.1145/108844.108856> | 1991 | Bibliographic record only (Crossref). Content not read; not scored. |
-| S8 | Hartson, "Cognitive, physical, sensory, and functional affordances in interaction design", *Behaviour & IT* 22 | <https://doi.org/10.1080/01449290310001592587> | 2003-09 | Bibliographic record only (Crossref). Content not read; not scored. |
+| S7 | Gaver, "Technology affordances", CHI '91 | <https://doi.org/10.1145/108844.108856> | 1991 | Bibliographic record only (Crossref). The DOI link redirects and returns HTTP 403 (checked in WP1-U4). Content not read; not scored. |
+| S8 | Hartson, "Cognitive, physical, sensory, and functional affordances in interaction design", *Behaviour & IT* 22 | <https://doi.org/10.1080/01449290310001592587> | 2003-09 | Bibliographic record only (Crossref). The DOI link redirects and returns HTTP 403 (checked in WP1-U4). Content not read; not scored. |
 | S9 | Moralez, "Affordance Ontology: Towards a Unified Description of Affordances as Events", *Int. J. Undergraduate Research and Creative Activities* | <https://doi.org/10.7710/2155-4838.1145> | 2016-06-24 | Crossref record only. ResearchGate copy returned HTTP 403. A web-search summary says it has a DOLCE-based OWL TBox; **not verified**, so not scored. |
-| S10 | W3C, Web of Things (WoT) Thing Description 1.1 | <https://www.w3.org/TR/2023/REC-wot-thing-description11-20231205/> | W3C Recommendation, 2023-12-05; vocabulary `https://www.w3.org/2019/wot/td#` | Fetched, text read |
+| S10 | W3C, Web of Things (WoT) Thing Description 1.1 | <https://www.w3.org/TR/2023/REC-wot-thing-description11-20231205/> | W3C Recommendation, 2023-12-05; vocabulary `https://www.w3.org/2019/wot/td#` (a namespace IRI, not a document: requesting it returns HTTP 300 multiple choices) | Fetched, text read |
 | S11 | W3C, WoT Architecture 1.1 | <https://www.w3.org/TR/2023/REC-wot-architecture11-20231205/> | W3C Recommendation, 2023-12-05 | Fetched, text read |
 | S12 | SEBoK glossary: System Element | <https://sebokwiki.org/wiki/System_Element_(glossary)> | SEBoK v2.14, released 18 May 2026; text from ISO/IEC/IEEE 15288:2015 | Fetched, text read |
 | S13 | SEBoK glossary: Capability | <https://sebokwiki.org/wiki/Capability_(glossary)> | SEBoK v2.14 | Fetched, text read |
@@ -329,7 +336,7 @@ Search for "affordance" across the SEBoK found nothing relevant (web-search resu
 or parts of systems." The OMG page (S16) lists normative machine-readable artefacts: MOF XMI, KerML KPAR libraries,
 JSON schema. **No OWL or Turtle file is among them**, so there is no OMG-published IRI for `PartDefinition` to anchor
 to. cds nevertheless declares `omg-sysml:PartDefinition` in the namespace
-`https://www.omg.org/spec/SysML/20240801/SysML#` and `sysml:PartDefinition` in `https://www.omg.org/spec/SysML/2.0/`,
+`https://www.omg.org/spec/SysML/20240801/SysML#` (requested in WP1-U4 without the fragment: HTTP 404, so it is a namespace string, not a served document) and `sysml:PartDefinition` in `https://www.omg.org/spec/SysML/2.0/`,
 joined by `owl:equivalentClass`, and tags `cdsterm:system-of-interest` with `cds:sysmlConstruct sysml:PartDefinition`
 (S15, l.531-541, 570-593). Two namespaces for one construct, neither an OMG-served ontology, is a maintenance warning.
 
@@ -463,7 +470,7 @@ so the starting point is covered.
 - S18: PAV defines authorship and versioning (`pav:authoredBy`, `pav:previousVersion`), no status property was found.
 
 #### Provenance
-- S2: `prov:wasDerivedFrom`: "A derivation is a transformation of one entity into another." `prov:generatedAtTime`
+- S2: `prov:wasDerivedFrom`: "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity." `prov:generatedAtTime`
   bounds an Entity's existence. `prov:wasAttributedTo` as above.
 - S4: `dcterms:source`: "A related resource from which the described resource is derived." `dcterms:provenance`: "A
   statement of any changes in ownership and custody of the resource since its creation that are significant for its
