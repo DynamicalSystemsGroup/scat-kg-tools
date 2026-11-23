@@ -1,0 +1,328 @@
+"""Reading a vault: the pages, links, backlinks and configuration of a directory, as data.
+
+Reading never writes, and never raises for what is wrong in a vault: a frontmatter that cannot be read,
+a missing or malformed `scat.toml`, a name that is ambiguous or absent are all represented in the result,
+for the checks (a later unit) to grade. The contract is `contracts/page-contracts.md`; "section N" below
+means its sections.
+"""
+
+import os
+import re
+import tomllib
+from dataclasses import dataclass, field
+from pathlib import Path, PurePosixPath
+from typing import Any
+
+import yaml
+from pydantic import BaseModel, ValidationError
+
+from scat_kg.models import MODELS
+from scat_kg.tbox import TBOX
+
+# The keys of the eleven link fields (section 3), whatever page type lists them.
+LINK_KEYS = frozenset(f.key for t in TBOX.page_types.values() for f in t.fields if f.is_link)
+
+_FRONT_LINK = re.compile(r"\[\[(.*)\]\]", re.DOTALL)
+_BODY_LINK = re.compile(r"\[\[([^\[\]\n]*)\]\]")
+_CODE_SPAN = re.compile(r"(`+)(?!`)((?:(?!\n[ \t]*\n).)*?)(?<!`)\1(?!`)", re.DOTALL)
+_FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
+_KEY_LINE = re.compile(r"""^(?:"([^"]*)"|'([^']*)'|([^\s#:'"-][^:]*?))\s*:(?:\s|$)""")
+
+
+@dataclass(frozen=True)
+class Link:
+    target: (
+        str  # the name inside the brackets; in frontmatter exactly as written, in a body stripped
+    )
+    line: int  # 1-based line in the file
+    field: str | None  # the frontmatter key it was written under; None for a body link
+
+
+@dataclass(frozen=True)
+class FrontmatterError:
+    reason: str  # the parser's reason, or "the closing --- line is missing"
+    line: int | None  # 1-based file line the parser rejected, when it says
+
+
+@dataclass(frozen=True, eq=False)
+class Page:
+    path: str  # vault-relative, `/` separators: the catalogue's <file>
+    name: str  # the file name without `.md`
+    fields: dict[str, Any]  # the frontmatter mapping as YAML read it; {} when unreadable
+    field_lines: dict[str, int]  # 1-based file line of each top-level key
+    frontmatter_error: FrontmatterError | None
+    fm_links: dict[str, tuple[Link, ...]]  # per link-field key present, items in file order
+    body: str  # everything after the closing `---`, with LF line endings
+    body_line: int  # 1-based file line of the first body line
+    body_links: tuple[Link, ...]  # page links in the body, in file order (section 3)
+    model: (
+        BaseModel | None
+    )  # the page type's model of the fields; None if type unknown or shape wrong
+    model_error: ValidationError | None
+
+    @property
+    def type(self) -> Any:
+        """The `type` value as written (None for a page whose frontmatter is unreadable)."""
+        return self.fields.get("type")
+
+    @property
+    def type_key(self) -> str | None:
+        """The `type`, when it is one of the TBox's page types."""
+        t = self.type
+        return t if isinstance(t, str) and t in TBOX.page_types else None
+
+    @property
+    def status(self) -> Any:
+        return self.fields.get("status")
+
+    @property
+    def links(self) -> tuple[Link, ...]:
+        return tuple(l for ls in self.fm_links.values() for l in ls) + self.body_links
+
+
+@dataclass(frozen=True)
+class VaultConfig:
+    """`scat.toml` (section 10). `problem` is None when the cap is a usable value."""
+
+    problem: str | None  # "missing", "invalid-toml", "key-missing" or "bad-value"
+    detail: str | None  # the parser's reason (invalid-toml); the value as TOML shows it (bad-value)
+    cap: int | None  # stakeholder_group_cap when usable
+
+
+@dataclass(frozen=True)
+class Backlink:
+    source: str  # path of the page that links
+    field: str | None  # the frontmatter key; None for a body link
+    line: int
+
+
+@dataclass(frozen=True)
+class Lookup:
+    """The answer to addressing a page: zero, one or several pages."""
+
+    ref: str
+    pages: tuple[Page, ...]
+
+    @property
+    def page(self) -> Page | None:
+        return self.pages[0] if len(self.pages) == 1 else None
+
+    @property
+    def not_found(self) -> bool:
+        return not self.pages
+
+    @property
+    def ambiguous(self) -> bool:
+        return len(self.pages) > 1
+
+
+@dataclass(frozen=True)
+class Vault:
+    root: Path
+    pages: tuple[Page, ...]  # sorted by path
+    by_name: dict[str, tuple[Page, ...]]  # more than one page under a name is a duplicate
+    non_pages: tuple[str, ...]  # paths of `.md` files that are not pages: they still take a name
+    config: VaultConfig
+    backlinks: dict[str, tuple[Backlink, ...]] = field(default_factory=dict)  # by target name
+
+    def of_type(self, slug: str) -> tuple[Page, ...]:
+        return tuple(p for p in self.pages if p.type == slug)
+
+    def inbound(self, name: str) -> tuple[Backlink, ...]:
+        return self.backlinks.get(name, ())
+
+    def dangling(self) -> tuple[tuple[Page, Link], ...]:
+        """Every page link (frontmatter or body) whose target is not the name of a page."""
+        return tuple((p, l) for p in self.pages for l in p.links if l.target not in self.by_name)
+
+    def address(self, ref: str) -> Lookup:
+        """Find a page by name or by path. A name never contains a dot (section 2), a path ends in `.md`.
+
+        A path is vault-relative with `/` (the catalogue's <file>), or absolute inside the vault.
+        """
+        if not ref.endswith(".md") and "/" not in ref and "\\" not in ref:
+            return Lookup(ref, self.by_name.get(ref, ()))
+        path = Path(ref)
+        if path.is_absolute():
+            try:
+                path = path.relative_to(self.root)
+            except ValueError:
+                return Lookup(ref, ())
+        rel = PurePosixPath(*path.parts).as_posix() if len(path.parts) else ""
+        return Lookup(ref, tuple(p for p in self.pages if p.path == rel))
+
+
+def _lines(text: str) -> list[str]:
+    return re.split(r"\r\n|\n", text)
+
+
+def _split(lines: list[str]) -> tuple[int | None, bool]:
+    """(index of the closing `---` line, whether the file opens with `---`)."""
+    if lines[0] != "---":
+        return None, False
+    for i in range(1, len(lines)):
+        if lines[i] == "---":
+            return i, True
+    return None, True
+
+
+def _parse_frontmatter(lines: list[str], close: int | None) -> tuple[dict, FrontmatterError | None]:
+    if close is None:
+        return {}, FrontmatterError("the closing --- line is missing", None)
+    try:
+        data = yaml.safe_load("\n".join(lines[1:close]))
+    except yaml.YAMLError as e:
+        mark = getattr(e, "problem_mark", None)
+        reason = getattr(e, "problem", None) or str(e)
+        return {}, FrontmatterError(reason, None if mark is None else mark.line + 2)
+    if not isinstance(data, dict):
+        return {}, FrontmatterError("the frontmatter is not a mapping of keys to values", None)
+    return data, None
+
+
+def _key_lines(lines: list[str], close: int) -> dict[str, int]:
+    found: dict[str, int] = {}
+    for i in range(1, close):
+        m = _KEY_LINE.match(lines[i])
+        if m:
+            found.setdefault(next(g for g in m.groups() if g is not None), i + 1)
+    return found
+
+
+def _frontmatter_links(
+    fields: dict, field_lines: dict[str, int], lines: list[str], close: int
+) -> dict[str, tuple[Link, ...]]:
+    ordered = sorted(field_lines.values())
+    found = {}
+    for key, value in fields.items():
+        if key not in LINK_KEYS or key not in field_lines:
+            continue
+        items = value if isinstance(value, list) else [value]
+        start = field_lines[key]  # 1-based line of the key
+        later = [n for n in ordered if n > start]
+        end = (later[0] if later else close + 1) - 1  # last line that belongs to the key
+        cursor, links = start, []
+        for item in items:
+            m = _FRONT_LINK.fullmatch(item) if isinstance(item, str) else None
+            if not m:
+                continue
+            written = f"[[{m.group(1)}]]"
+            line = next((n for n in range(cursor, end + 1) if written in lines[n - 1]), start)
+            cursor = line + (1 if lines[line - 1].lstrip().startswith("-") else 0)
+            links.append(Link(m.group(1), line, key))
+        found[key] = tuple(links)
+    return found
+
+
+def _blank_code(body: str) -> str:
+    """The body with fenced code blocks and code spans turned to spaces (line breaks kept)."""
+    out, fence = [], None
+    for line in body.split("\n"):
+        m = _FENCE.match(line)
+        if fence is None and m:
+            fence = (m.group(1)[0], len(m.group(1)))
+            out.append(" " * len(line))
+        elif fence is not None:
+            if m and m.group(1)[0] == fence[0] and len(m.group(1)) >= fence[1]:
+                fence = None
+            out.append(" " * len(line))
+        else:
+            out.append(line)
+    text = "\n".join(out)
+    return _CODE_SPAN.sub(lambda m: re.sub(r"[^\n]", " ", m.group(0)), text)
+
+
+def _body_links(body: str, first_line: int) -> tuple[Link, ...]:
+    links = []
+    for m in _BODY_LINK.finditer(_blank_code(body)):
+        target = re.split(r"[|#^]", m.group(1), maxsplit=1)[0]
+        if not target or "." in target or "/" in target:
+            continue
+        links.append(Link(target, first_line + body.count("\n", 0, m.start()), None))
+    return tuple(links)
+
+
+def _read_page(path: Path, rel: str) -> Page | None:
+    """The page in a file, or None when the file is not a page (section 1)."""
+    text = path.read_bytes().decode("utf-8", errors="replace").removeprefix("﻿")
+    lines = _lines(text)
+    close, opens = _split(lines)
+    if not opens:
+        return None
+    fields, error = _parse_frontmatter(lines, close)
+    if error is None and "type" not in fields:
+        return None
+    body, body_line = "", len(lines) + 1
+    field_lines, fm_links, body_links = {}, {}, ()
+    if error is None:
+        field_lines = _key_lines(lines, close)
+        fm_links = _frontmatter_links(fields, field_lines, lines, close)
+        body, body_line = "\n".join(lines[close + 1 :]), close + 2
+        body_links = _body_links(body, body_line)
+    model, model_error = None, None
+    if error is None and fields["type"] in MODELS:
+        try:
+            model = MODELS[fields["type"]].model_validate(fields)
+        except ValidationError as e:
+            model_error = e
+    return Page(
+        path=rel,
+        name=rel.rsplit("/", 1)[-1].removesuffix(".md"),
+        fields=fields,
+        field_lines=field_lines,
+        frontmatter_error=error,
+        fm_links=fm_links,
+        body=body,
+        body_line=body_line,
+        body_links=body_links,
+        model=model,
+        model_error=model_error,
+    )
+
+
+def _read_config(root: Path) -> VaultConfig:
+    file = root / "scat.toml"
+    if not file.is_file():
+        return VaultConfig("missing", None, None)
+    try:
+        data = tomllib.loads(file.read_bytes().decode("utf-8", errors="replace"))
+    except tomllib.TOMLDecodeError as e:
+        return VaultConfig("invalid-toml", str(e), None)
+    if "stakeholder_group_cap" not in data:
+        return VaultConfig("key-missing", None, None)
+    value = data["stakeholder_group_cap"]
+    if isinstance(value, int) and not isinstance(value, bool) and value >= 1:
+        return VaultConfig(None, None, value)
+    return VaultConfig("bad-value", repr(value), None)
+
+
+def read_vault(root: str | Path) -> Vault:
+    root = Path(root)
+    pages, non_pages = [], []
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = sorted(d for d in dirnames if not d.startswith("."))
+        for filename in filenames:
+            if not filename.endswith(".md"):
+                continue
+            path = Path(dirpath, filename)
+            rel = path.relative_to(root).as_posix()
+            page = _read_page(path, rel)
+            if page is None:
+                non_pages.append(rel)
+            else:
+                pages.append(page)
+    pages.sort(key=lambda p: p.path)
+    by_name: dict[str, list[Page]] = {}
+    inbound: dict[str, list[Backlink]] = {}
+    for p in pages:
+        by_name.setdefault(p.name, []).append(p)
+        for l in p.links:
+            inbound.setdefault(l.target, []).append(Backlink(p.path, l.field, l.line))
+    return Vault(
+        root=root,
+        pages=tuple(pages),
+        by_name={n: tuple(ps) for n, ps in by_name.items()},
+        non_pages=tuple(sorted(non_pages)),
+        config=_read_config(root),
+        backlinks={n: tuple(b) for n, b in inbound.items()},
+    )
