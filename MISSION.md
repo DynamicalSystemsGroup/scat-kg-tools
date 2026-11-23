@@ -51,6 +51,17 @@ facilitating, capturing and coding.
 The split between actors (who tell scenarios) and technologists (who pitch architectures) is a facilitation device,
 not a division of people. Many people are both.
 
+## Facilitation stance: improvisational jazz
+
+SCAT takes its name, and its manner, from scat singing in improvised jazz. Facilitation works by "yes, and" and "from
+this perspective". Each contribution is taken up and built on, and each is located in the perspective it comes from.
+
+The model **holds disagreement rather than collapsing it.** As in `ant-rdf`, it exposes frictions, gaps and dissenting
+views, and it can represent margins of potential conflict: for example, groups that share a concern while their
+other concerns are directly opposed. So nobody has to argue anyone into agreement. We capture people's stories and
+people's proposed architectures. We do not debate which architecture is correct, or which stories should be the
+focal point of a design.
+
 ## Users and how they work
 
 The v0.1 user is a facilitator-analyst: technically savvy, but not a software developer. They:
@@ -110,19 +121,22 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
   authoring only where nothing beats custom. The result is one coherent ontology, not a patchwork of imports. Every
   term traces to the ontology it was adopted from, or is recorded as authored, with the reason. Easy wins in
   expressiveness are taken where they don't complicate the software or the UX. The first candidate is a conflict
-  between concerns, such as anonymity versus attribution (the chief engineer called it a disjointness axiom): WP1
-  decides its form, and WP3's rule catalogue says how it is checked.
+  between concerns, such as anonymity versus attribution (the chief engineer called it a disjointness axiom). More
+  generally, WP1 assesses the lightest way for the graph to hold disagreement and margins of potential conflict
+  (see Facilitation stance). WP1 decides the form, and WP4's rule catalogue says how it is checked.
 
 ## Non-goals
 
 - Gen-AI aided authoring; an Obsidian plugin (the CLI is designed so one can wrap it later).
 - Triangles or any faces, including ones inferred from scenarios and architectures.
-- Changing the TBox once WP3 has fixed it, or letting instance repos extend it.
+- Changing the TBox once WP4 has fixed it, or letting instance repos extend it.
 - Enforcing raw → coded links or embeds beyond a warning.
 - Checking that named entities are linked beyond a basic regex warning.
 - The verification / validation / human-signature assurance framework of the paper.
 - Attributing statements to individuals. v0.1 is built for Chatham House settings, and attribution is a possible
   extension. How raw notes are taken is the facilitator's call; the guides explain the rule.
+- Adjudicating between stories or architectures: neither the tools nor the facilitation guides judge which
+  architecture is correct or which stories should be focal.
 - Analysis tooling over the graph.
 - Publishing to PyPI.
 - UX for non-technical users beyond the CLI and Obsidian.
@@ -135,7 +149,7 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 | D-2 | Parser, checks, status, index and stub commands, CLI, test suite with seeded-defect fixtures, in `scat-kg-tools` | G2, G3, G4 |
 | D-3 | Template repository: vault skeleton (class pages, folders for raw and coded records), Obsidian page templates for the four record types, instance configuration (stakeholder-group cardinality cap), pinned tools, the case study (G6) | G5, G6, G9 |
 | D-4 | Documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9 |
-| D-5 | Research readouts and decision records: the ontology survey and trade study, and the toolchain spike, with evidence and measurements | G8, G10 |
+| D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, and the facilitation research, with evidence and measurements | G7, G8, G10 |
 | D-6 | Reviewer's guide for the chief engineer, in the release PR. It is sized for a person and split into sittings by output: (1) the end-to-end walkthrough (UA-M below); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
 | D-7 | User-acceptance kit, in `scat-kg-tools/acceptance/`: the AI tester personas and briefs, the report template, every AI test report with its dispositions, and the chief engineer's walkthrough script | G9 |
 
@@ -220,7 +234,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
 - R-1 to R-13 met, with evidence.
 - The AI user tests (UA-A) pass on the candidate.
 - The candidate is staged for the chief engineer's own walkthrough (UA-M), with the reviewer's guide ready.
-- The ontology trade study and the toolchain decision records exist. Every TBox term traces to an adopted ontology
+- The ontology trade study, the toolchain decision records and the facilitation readout exist. Every TBox term traces to an adopted ontology
   or is recorded as authored, with the trade study's reason.
 
 ## Definition of done
@@ -266,18 +280,24 @@ to be noisy at first.
 Ontology design comes before implementation, and the design is driven by research.
 
 1. **WP1 Ontology research sprint.** Survey existing ontologies for each SCAT class and relation, and the patterns
-   in `concept-definition-stage`. Run the trade study (adopt and thin, or author) and assess easy-win axioms.
-   Readout and decision records. Fixes: what the TBox imports, anchors to, or authors; D-5 (ontology part).
+   in `concept-definition-stage`. Run the trade study (adopt and thin, or author) and assess the easy-win axioms,
+   including how disagreement is held. Readout and decision records. Fixes: what the TBox imports, anchors to, or
+   authors; D-5 (ontology part).
 2. **WP2 Toolchain spike.** In parallel with WP1. OKF, oxigraph, pydantic and the rule language, tried on a throwaway
    mini-vault and measured. Fixes: the toolchain; D-5 (toolchain part).
-3. **WP3 Ontology and page contracts.** From WP1 and WP2: the TBox in Turtle, fields per class, page types, link
-   rules, status rules, the rule catalogue with ids and message wording. Fixes: D-1 and the vault conventions.
-4. **WP4 Conformance tools.** Built on the toolchain WP2 fixed: parser, checks, the Python API and the CLI over it,
-   seeded-defect tests, benchmark.
-   Fixes: D-2.
-5. **WP5 Template and case study.** In parallel with WP4 once WP3 is accepted. Fixes: D-3.
-6. **WP6 Docs and Pages.** Written journey-first (J1–J7). Fixes: D-4.
-7. **WP7 Candidate and user acceptance.** Integration, the candidate stage, UA-A rounds to the pass bar, the
+3. **WP3 Facilitation research spike.** In parallel with WP1. A pass back through `ant-rdf` (its handling of
+   controversy, dissent and multiple perspectives), the post "KOI & The Unicorn"
+   (<https://blog.block.science/koi-and-the-unicorn/>), "Building the Loop" (EPIC 2025), and Ellie Rennie's recent
+   grant proposal drafts shared with the chief engineer. Fixes: the facilitation strategy (the "yes, and" and "from this
+   perspective" stance, eliciting scenarios and architectures, and holding disagreement) that the planning and
+   facilitation guides are written from; inputs to WP4 on representing disagreement; D-5 (facilitation part).
+4. **WP4 Ontology and page contracts.** From WP1 to WP3: the TBox in Turtle, fields per class, page types, link rules,
+   status rules, the rule catalogue with ids and message wording. Fixes: D-1 and the vault conventions.
+5. **WP5 Conformance tools.** Built on the toolchain WP2 fixed: parser, checks, the Python API and the CLI over it,
+   seeded-defect tests, benchmark. Fixes: D-2.
+6. **WP6 Template and case study.** In parallel with WP5 once WP4 is accepted. Fixes: D-3.
+7. **WP7 Docs and Pages.** Written journey-first (J1–J7), with the facilitation guides built on WP3. Fixes: D-4.
+8. **WP8 Candidate and user acceptance.** Integration, the candidate stage, UA-A rounds to the pass bar, the
    reviewer's guide and the walkthrough script. Fixes: D-6, D-7.
 
 ## Agent's defaults
@@ -294,6 +314,8 @@ Ontology design comes before implementation, and the design is driven by researc
 - Licence: Apache-2.0, copyright Dynamical Systems Group, for code, docs and ontology (the chief engineer's decision, D-005).
 - Adopted ontologies, standards and their definitions are used directly and cited, per engineering practice.
 - The stakeholder-group cap is set in the template's configuration file, with the worked example set to 3.
+- Private sources (such as unpublished grant drafts) are read for principles only. Since the repositories are
+  public, the readouts summarise them in our own words and cite only published work.
 - No AI attribution on commits, PRs or documents; CI fails on attribution lines, as in tradespace.
 
 ## Open decisions (for the chief engineer)

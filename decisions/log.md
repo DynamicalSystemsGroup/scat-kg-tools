@@ -286,3 +286,34 @@ Outcome:
   mission (history kept, no force-push), and WP1 and WP2 are re-scoped from this amendment and restarted.
 
 Approval of this amendment: the chief engineer's merge of its PR into `main`.
+
+## D-018 | 2026-11-23 | Amendment 1, continued: improvisational jazz stance; holding disagreement; facilitation research
+
+Directed by the chief engineer (chat, typed by the ACE; one participant's name is replaced with [a stakeholder] in this
+public record): "i want to add a note, mostly for aesthetics/language choice that we're using improvizational jazz
+(scat). we want our facilitation style to involve a lot of \"yes and\"+\"from this perspective\", our model allows us
+(like in ant-rdf) to expose and explore disagreements and frictions, gaps, and dissenting opinions. this means we do
+not need to litigate to agreement in. i want you to include a pass back through the ANT-RDF work and potentially
+ellie's recent grant proposal docs that shes shared with me, and/or the koi and the unicorn blog she and i wrote. that
+research spike feeds the facilitation strategy stuff and importantly an affordance of our approach is that it can hold
+rather than collapse disagreement, and can represent margins of potential conflict. in my discussion with
+[a stakeholder] i noted that secrete police in an authoritarian regime AND an oppressed population in that same
+scenario can share a concern for privacy, anonymity while also being directly in opposition to each others political
+will. one to be free from the others control, and the other to exert it. that's a bit loaded so i'd avoid it as our
+worked example but my point is that we want to capture people stories, and capture peoples proposed architectures. we
+do not want to get into debates about which architecture us correct, or which stories should be the focal point of
+designs."
+
+Outcome in `MISSION.md`:
+- New section, "Facilitation stance: improvisational jazz": "yes, and" and "from this perspective"; the model holds
+  disagreement rather than collapsing it, and represents margins of potential conflict; no litigating to agreement.
+- New non-goal: adjudicating between stories or architectures.
+- G10: WP1 assesses the lightest way for the graph to hold disagreement.
+- New WP3, a facilitation research spike, running in parallel with WP1 and WP2. Its sources, located by the ACE:
+  `ant-rdf`; "KOI & The Unicorn" (blog.block.science); "Building the Loop" (EPIC 2025); and Ellie Rennie's recent
+  grant drafts shared on Drive. The later packages are renumbered WP4 to WP8.
+- D-5 and good enough now include the facilitation readout.
+- New default: private sources are read for principles only. The repositories are public, so readouts cite only
+  published work.
+
+The authoritarian-regime illustration is kept out of the worked example, as directed.
