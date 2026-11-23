@@ -1,0 +1,254 @@
+OKF commit: 527e81aff55992be21507e97004286789126f88c
+venv packages:
+Package Version
+------- -------
+pyyaml  6.0.4
+
+===== A1 validate.py on the vault copy, as is (wikilinks, spike frontmatter) =====
+.: warning W125 add a bundle-root index.md with okf_version: "0.3" (section 8.1)
+Anonymity addressed by Pseudonymous records.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Anonymity addressed by Pseudonymous records.md:1: info I203 extension keys without the x- prefix: affordance, concern, name, rationale (section 4.1)
+Anonymity.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Anonymity.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Attribution.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Facilitators hold Anonymity.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Facilitators hold Anonymity.md:1: info I203 extension keys without the x- prefix: concern, name, rationale, stakeholder (section 4.1)
+Facilitators.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Facilitators.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Fast feedback addressed by Sub-second local check.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Fast feedback addressed by Sub-second local check.md:1: info I203 extension keys without the x- prefix: affordance, concern, name, rationale (section 4.1)
+Fast feedback.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Fast feedback.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Local check attributed to Oxigraph.md:1: info I203 extension keys without the x- prefix: affordance, name, rationale, technology (section 4.1)
+Local check attributed to pySHACL.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Local check attributed to pySHACL.md:1: info I203 extension keys without the x- prefix: affordance, name, rationale, technology (section 4.1)
+Locked dependencies attributed to uv.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Locked dependencies attributed to uv.md:1: info I203 extension keys without the x- prefix: affordance, name, rationale, technology (section 4.1)
+Locked dependencies.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Oxigraph.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Project sponsors.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Project sponsors.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Pseudonymous records.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Pseudonymous records.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Reproducible setup addressed by Locked dependencies.md:1: info I203 extension keys without the x- prefix: affordance, concern, name, rationale (section 4.1)
+Reproducible setup.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Reproducible setup.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Sponsors hold Reproducible setup.md:1: info I203 extension keys without the x- prefix: concern, name, rationale, stakeholder (section 4.1)
+Sub-second local check.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Sub-second local check.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Technologists hold Fast feedback.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Technologists hold Fast feedback.md:1: info I203 extension keys without the x- prefix: concern, name, rationale, stakeholder (section 4.1)
+Technologists.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+pySHACL.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+pySHACL.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+uv.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+uv.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+22 files checked: 0 errors, 16 warnings, 22 info. The bundle is conformant.
+
+===== A2 scan.py on the vault copy =====
+Bundle vault-copy: 22 concepts, okf_version not declared, now 2026-11-23T19:24:51.755403+00:00
+Types: Concern 4, Addresses 3, Heldby 3, StakeholderGroup 3, Attributes 3, Affordance 3, Technology 3
+Trust: human-reviewed 0, machine-confirmed 0, unverified 22. Stale 0, deprecated 0, draft 7, not current 15.
+
+Anonymity addressed by Pseudonymous records  [Addresses]  unverified, done, no stale_after
+    Anonymity addressed by Pseudonymous records
+    note: unknown status 'done': not current
+Anonymity  [Concern]  unverified, done, no stale_after
+    Anonymity: Participants must not be identifiable from the records.
+    note: unknown status 'done': not current
+Attribution  [Concern]  unverified, draft, no stale_after
+    Attribution: Contributions can be credited to their source.
+Facilitators hold Anonymity  [Heldby]  unverified, done, no stale_after
+    Facilitators hold Anonymity
+    note: unknown status 'done': not current
+Facilitators  [StakeholderGroup]  unverified, done, no stale_after
+    Facilitators: People who run elicitation sessions and code the raw notes.
+    note: unknown status 'done': not current
+Fast feedback addressed by Sub-second local check  [Addresses]  unverified, stub, no stale_after
+    Fast feedback addressed by Sub second local check
+    note: unknown status 'stub': not current
+Fast feedback  [Concern]  unverified, stub, no stale_after
+    Fast feedback: Checks return quickly enough to act as a linter.
+    note: unknown status 'stub': not current
+Local check attributed to Oxigraph  [Attributes]  unverified, draft, no stale_after
+    Local check attributed to Oxigraph
+Local check attributed to pySHACL  [Attributes]  unverified, stub, no stale_after
+    Local check attributed to pySHACL
+    note: unknown status 'stub': not current
+Locked dependencies attributed to uv  [Attributes]  unverified, done, no stale_after
+
+===== A3 scan.py --type Concern =====
+Bundle vault-copy: 22 concepts, okf_version not declared, now 2026-11-23T19:24:51.837934+00:00
+Types: Concern 4, Addresses 3, Heldby 3, StakeholderGroup 3, Attributes 3, Affordance 3, Technology 3
+Trust: human-reviewed 0, machine-confirmed 0, unverified 22. Stale 0, deprecated 0, draft 7, not current 15.
+Showing 4 concepts that match the filters.
+
+Anonymity  [Concern]  unverified, done, no stale_after
+    Anonymity: Participants must not be identifiable from the records.
+    note: unknown status 'done': not current
+Attribution  [Concern]  unverified, draft, no stale_after
+    Attribution: Contributions can be credited to their source.
+Fast feedback  [Concern]  unverified, stub, no stale_after
+    Fast feedback: Checks return quickly enough to act as a linter.
+    note: unknown status 'stub': not current
+Reproducible setup  [Concern]  unverified, done, no stale_after
+    Reproducible setup: A fresh machine reaches a working state with one command.
+    note: unknown status 'done': not current
+
+===== A4 baseline wikilinks in vault (independent regex) =====
+pages=22 body_link_pairs=19 frontmatter_link_pairs=18 total_distinct=19
+
+===== A5 OKF graph builder on the vault as is =====
+concepts: 22  edges: 0
+types: {'Addresses': 3, 'Concern': 4, 'Heldby': 3, 'StakeholderGroup': 3, 'Attributes': 3, 'Affordance': 3, 'Technology': 3}
+status as seen by OKF: {'done': 9, 'draft': 7, 'stub': 6}
+trust tiers: {'unverified': 22}
+edge sample: []
+nodes with no edge: ['Anonymity', 'Anonymity addressed by Pseudonymous records', 'Attribution', 'Facilitators', 'Facilitators hold Anonymity', 'Fast feedback', 'Fast feedback addressed by Sub-second local check', 'Local check attributed to Oxigraph', 'Local check attributed to pySHACL', 'Locked dependencies', 'Locked dependencies attributed to uv', 'Oxigraph', 'Project sponsors', 'Pseudonymous records', 'Reproducible setup', 'Reproducible setup addressed by Locked dependencies', 'Sponsors hold Reproducible setup', 'Sub-second local check', 'Technologists', 'Technologists hold Fast feedback', 'pySHACL', 'uv']
+
+===== A6 OKF document parse->serialize round trip on the vault as is =====
+--- first difference in Anonymity addressed by Pseudonymous records.md
+--- orig
++++ okf-serialized
+@@ -4,6 +4,7 @@
+ status: done
+-concern: "[[Anonymity]]"
+-affordance: "[[Pseudonymous records]]"
++concern: '[[Anonymity]]'
++affordance: '[[Pseudonymous records]]'
+ rationale: Group-level data only.
+ ---
++
+ # Anonymity addressed by Pseudonymous records
+
+--- first difference in Anonymity.md
+--- orig
++++ okf-serialized
+@@ -6,2 +6,3 @@
+ ---
++
+ # Anonymity
+
+parse->serialize identical=0 different=22
+
+===== B1 adapter: wikilinks in bodies -> markdown links (frontmatter untouched) =====
+name: Facilitators hold Anonymity
+concern: "[[Anonymity]]"
+# Facilitators hold Anonymity
+[Facilitators](Facilitators.md) and [Anonymity](Anonymity.md): Chatham House setting.
+
+===== B2 validate.py on the converted bundle =====
+.: warning W125 add a bundle-root index.md with okf_version: "0.3" (section 8.1)
+Anonymity addressed by Pseudonymous records.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Anonymity addressed by Pseudonymous records.md:1: info I203 extension keys without the x- prefix: affordance, concern, name, rationale (section 4.1)
+Anonymity.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Anonymity.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Attribution.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Facilitators hold Anonymity.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Facilitators hold Anonymity.md:1: info I203 extension keys without the x- prefix: concern, name, rationale, stakeholder (section 4.1)
+Facilitators.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Facilitators.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Fast feedback addressed by Sub-second local check.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Fast feedback addressed by Sub-second local check.md:1: info I203 extension keys without the x- prefix: affordance, concern, name, rationale (section 4.1)
+Fast feedback.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Fast feedback.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Local check attributed to Oxigraph.md:1: info I203 extension keys without the x- prefix: affordance, name, rationale, technology (section 4.1)
+Local check attributed to pySHACL.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Local check attributed to pySHACL.md:1: info I203 extension keys without the x- prefix: affordance, name, rationale, technology (section 4.1)
+Locked dependencies attributed to uv.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Locked dependencies attributed to uv.md:1: info I203 extension keys without the x- prefix: affordance, name, rationale, technology (section 4.1)
+Locked dependencies.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Oxigraph.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Project sponsors.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Project sponsors.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Pseudonymous records.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Pseudonymous records.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Reproducible setup addressed by Locked dependencies.md:1: info I203 extension keys without the x- prefix: affordance, concern, name, rationale (section 4.1)
+Reproducible setup.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Reproducible setup.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Sponsors hold Reproducible setup.md:1: info I203 extension keys without the x- prefix: concern, name, rationale, stakeholder (section 4.1)
+Sub-second local check.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Sub-second local check.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Technologists hold Fast feedback.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Technologists hold Fast feedback.md:1: info I203 extension keys without the x- prefix: concern, name, rationale, stakeholder (section 4.1)
+Technologists.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+pySHACL.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+pySHACL.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+uv.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+uv.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+22 files checked: 0 errors, 16 warnings, 22 info. The bundle is conformant.
+
+===== B3 OKF graph builder on the converted bundle =====
+concepts: 22  edges: 19
+types: {'Addresses': 3, 'Concern': 4, 'Heldby': 3, 'StakeholderGroup': 3, 'Attributes': 3, 'Affordance': 3, 'Technology': 3}
+status as seen by OKF: {'done': 9, 'draft': 7, 'stub': 6}
+trust tiers: {'unverified': 22}
+edge sample: [('Anonymity addressed by Pseudonymous records', 'Anonymity'), ('Anonymity addressed by Pseudonymous records', 'Pseudonymous records'), ('Attribution', 'Anonymity'), ('Facilitators hold Anonymity', 'Anonymity'), ('Facilitators hold Anonymity', 'Facilitators')]
+nodes with no edge: []
+
+===== B4 OKF viewer (visualize) on the converted bundle =====
+{'concepts': 22, 'edges': 19, 'bytes': 32476}
+
+===== B5 round trip: to-md then back to wikilinks, diff against original vault =====
+round trip wikilinks->md->wikilinks: byte-identical
+
+===== C1 TBox probe: page of unknown class, missing required field, bad status, link to a missing page =====
+---
+type: Concern
+name: Anonymity
+status: done
+---
+# Anonymity
+.: warning W125 add a bundle-root index.md with okf_version: "0.3" (section 8.1)
+Anonymity addressed by Pseudonymous records.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Anonymity addressed by Pseudonymous records.md:1: info I203 extension keys without the x- prefix: affordance, concern, name, rationale (section 4.1)
+Anonymity.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Anonymity.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Attribution.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Bogus.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'wibble' as not current (section 5.4)
+Bogus.md:6: warning W115 link target 'Nope.md' is not in the bundle (section 6.1)
+Facilitators hold Anonymity.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Facilitators hold Anonymity.md:1: info I203 extension keys without the x- prefix: concern, name, rationale, stakeholder (section 4.1)
+Facilitators.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Facilitators.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Fast feedback addressed by Sub-second local check.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Fast feedback addressed by Sub-second local check.md:1: info I203 extension keys without the x- prefix: affordance, concern, name, rationale (section 4.1)
+Fast feedback.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Fast feedback.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Local check attributed to Oxigraph.md:1: info I203 extension keys without the x- prefix: affordance, name, rationale, technology (section 4.1)
+Local check attributed to pySHACL.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Local check attributed to pySHACL.md:1: info I203 extension keys without the x- prefix: affordance, name, rationale, technology (section 4.1)
+Locked dependencies attributed to uv.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Locked dependencies attributed to uv.md:1: info I203 extension keys without the x- prefix: affordance, name, rationale, technology (section 4.1)
+Locked dependencies.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Oxigraph.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Project sponsors.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Project sponsors.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Pseudonymous records.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Pseudonymous records.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Reproducible setup addressed by Locked dependencies.md:1: info I203 extension keys without the x- prefix: affordance, concern, name, rationale (section 4.1)
+Reproducible setup.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+Reproducible setup.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Sponsors hold Reproducible setup.md:1: info I203 extension keys without the x- prefix: concern, name, rationale, stakeholder (section 4.1)
+Sub-second local check.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Sub-second local check.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+Technologists hold Fast feedback.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+Technologists hold Fast feedback.md:1: info I203 extension keys without the x- prefix: concern, name, rationale, stakeholder (section 4.1)
+Technologists.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+pySHACL.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'stub' as not current (section 5.4)
+pySHACL.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+uv.md:1: warning W105 status is draft, stable, or deprecated; consumers treat 'done' as not current (section 5.4)
+uv.md:1: info I203 extension keys without the x- prefix: name (section 4.1)
+23 files checked: 0 errors, 18 warnings, 22 info. The bundle is conformant.
+strict: exit 1
+
+===== C2 spike-vault 'status' vocabulary vs OKF (stub|draft|done vs draft|stable|deprecated) =====
+status as seen by OKF: {'done': 9, 'draft': 7, 'wibble': 1, 'stub': 6}
+
+===== D dependency footprint if the full reference agent were installed (dry run, nothing installed) =====
+ + uvicorn==0.54.0
+ + watchdog==7.1.1
+ + websockets==15.0.1
+63
+
+===== done =====
