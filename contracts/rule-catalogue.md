@@ -12,17 +12,15 @@ exact field and value) or the rule records why it cannot be.
 
 ## 1. Conventions every rule shares
 
-**Page terms.** A page is a Markdown file whose frontmatter has a `type` key (contract section 1); a Markdown file
-without one is not a page and is ignored. `<file>` is the vault-relative path of the page, with `/` separators,
+**Page terms.** A page is a Markdown file, anywhere in the vault outside folders whose name starts with a dot (`.obsidian`,
+`.trash`), whose frontmatter has a `type` key (contract section 1); any other Markdown file is not a page and is ignored. `<file>` is the vault-relative path of the page, with `/` separators,
 for example `concern/safe-handling-of-tools.md`. `<page-name>` is the file name without `.md`, unique across the
 vault (contract section 2). `<type-key>` is the value of a page's `type` field (`scat:key` of its page type). A
 *link field* is a field with a `scat:targetType`: a list of wikilinks, or exactly one wikilink when `scat:single` is
 true (a relation page's endpoint fields `group`, `concern`, `affordance`, `technology`). An *item line* is
 `- "[[<target>]]"` in a list field and `<field>: "[[<target>]]"` in a single field. A *relation page* is a page of
-type `heldby`, `addresses` or `attributes`. A *body link* is a wikilink in the page after the frontmatter, read as
-the contract's section 3 says: the target is read with `|` and `#` stripped, an embed counts, text in code spans and
-fenced code blocks is never a link, and a target with a file extension or a `/`, a same-page `[[#Heading]]` and a
-block reference are not page links and are not checked. A link's *target* is
+type `heldby`, `addresses` or `attributes`. A *body link* is a wikilink in the page after the frontmatter, read as the contract's section 3 says: `|alias`, `#heading` and `^block` are stripped and what remains is the page name, so `[[page^block]]` is a link to the page `page`
+and must exist; an embed counts; text in code spans and fenced code blocks is never a link; and a target with a file extension or a `/`, and a same-page `[[#Heading]]`, are not page links and are not checked. A link's *target* is
 the name inside the brackets. A page's *status* is `stub`, `draft` or `done`. A page type with
 `scat:carriesStatus false` (the class page) is treated as `done` by every status rule below.
 
@@ -48,6 +46,11 @@ list. A link field that is present and empty is not an error by itself, except w
 required. "Present and non-empty" is the one reading used for every rule that says "carries" or "present" about a
 link field.
 
+**Add or replace.** A fix that writes a line for a field says "add the line `X`" when the key is absent, and "replace the
+line `<field>: <current>` with `X`" when the key is present but empty (`<current>` is the text after the colon as
+written, or nothing). Messages below show the "add" wording and carry this rule; where the "replace" wording differs
+it is shown.
+
 **Status behaviour (R-3), in one table.**
 
 | Kind of rule | stub | draft | done |
@@ -61,8 +64,9 @@ link field.
 
 An unfinished page is never an error for being unfinished: nothing in the `done` row is an error before `done`.
 
-**Order and format.** Messages sort by file path (byte order), then line (a message with no line sorts before the
-messages with one), then rule id. The format:
+**Order and format.** Messages sort by file path (byte order), then line (a message with no line sorts before the messages with one), then
+column (only SCAT-MENTION has one; messages without sort first), then rule id, then the field or link key in the order
+the page's file lists them, then the target name (byte order). The order is total: no two messages compare equal. The format:
 
 ```
 <severity> [<rule-id>] <file>[:<line>] <where>: <what is wrong>
@@ -75,7 +79,7 @@ or, when the fix is a choice between exact alternatives:
     2. <exact fix>
 ```
 `<severity>` is `error` or `warning`. `<line>` is the 1-based line of the link item or the field key; it is given
-for link rules and omitted for field-level rules. `<where>` is ``field `<name>` ``, ``link [[<target>]]`` or
+for link rules and omitted for field-level rules. SCAT-MENTION prints `<file>:<line>:<column>`, the 1-based column of the first character of the text. `<where>` is ``field `<name>` ``, ``link [[<target>]]`` or
 `frontmatter`. Angle-bracket words are filled in by the tool, except a slot marked *(author)*, which stays in the
 message literally because only the author can fill it. An *edit* fix says exactly which lines to write, replace or
 delete. An *operation* fix names a command and its REPL twin on one line, as in ``run `scat set-status <page-name>
@@ -85,7 +89,7 @@ draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`)``. The same text is 
 
 | Operation | CLI form | REPL form | What the messages rely on |
 |---|---|---|---|
-| stub | `scat stub <page-name> --type <type-key>` | `scat_kg.stub("<page-name>", type="<type-key>")` | Creates the page as the contract's section 5 says: `status: stub`, title from the name, and for a raw or coded page the opposite link back. Writes only new files and refuses an existing page or an illegal name. The messages pass only the four class keys and the record keys `scenario-raw`, `scenario-coded`, `architecture-raw`, `architecture-coded`. |
+| stub | `scat stub <page-name> --type <type-key>` | `scat_kg.stub("<page-name>", type="<type-key>")` | Creates the page as the contract's section 5 says: `status: stub`, title from the name. Accepts only the four class keys and the record keys `scenario-raw`, `scenario-coded`, `architecture-raw`, `architecture-coded`, and refuses an illegal or existing name. It derives the opposite raw/coded link itself: creating a raw page that coded pages name in `raw` writes `coded` back on every such coded page, and creating a coded page that raw pages name in `coded` writes `raw` on every such raw page; the caller names no entailing page. |
 | set-status | `scat set-status <page-name> <status>` | `scat_kg.set_status("<page-name>", "<status>")` | Sets `status`, adding the key if absent. |
 | index | `scat index` | `scat_kg.index()` | Rewrites the generated region of every class page, creating a missing class page (contract section 8). |
 
@@ -98,7 +102,7 @@ first in byte order. No near match means none.
 
 **Suggestions (never required, never written).** Where a message offers pages to link, they come from relation
 pages the vault already has, are sorted by page name in byte order, leave out pages already listed in the field,
-show at most 8 (then `(+<n> more)`), and are labelled as suggestions the author confirms. A suggestion never
+show at most 8 (a ninth and later page is replaced by one final line `(+<n> more)` after the list), and are labelled as suggestions the author confirms. A suggestion never
 changes a rule's trigger or severity. `S(<field>)` for a page P is:
 
 | Field | Suggested pages |
@@ -133,7 +137,7 @@ target type and `P` the page. The options, in this order, are:
 2. *Replace* with a page of type `T` not already in the field, in tiers: first pages of type `T` that link to or
    from `W` (frontmatter or body) or that share a relation page with `W` (the other endpoint of a relation page
    that has `W` as an endpoint), then pages of type `T` that `P`'s body links; within a tier, page name in byte
-   order; at most 5 shown (`(+<n> more)`). No other pages are offered.
+   order; at most 5 shown, then one final option line `(+<n> more not shown)`, which is not an option. No other pages are offered.
 3. *Delete* the item line (always last), except in a field required from `stub`, where deleting would only trade
    this error for SCAT-FM-REQUIRED-LINK.
 
@@ -219,9 +223,9 @@ error [SCAT-FM-PARSE] <file>[:<line>] frontmatter: <parser's reason, or "the clo
 error [SCAT-FM-REQUIRED] <file> field `status`: missing
   Fix: run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`); use `stub` or `done` instead of `draft` if that is the truth
 error [SCAT-FM-REQUIRED] <file> field `title`: missing
-  Fix: add the line `title: "<Title>"`, where <Title> is the page name with each - replaced by a space and the first letter upper case (reword it if you like)
+  Fix: add the line `title: "<Title>"` (when `title:` is present but empty, replace that line), where <Title> is the page name with each - replaced by a space and the first letter upper case (reword it if you like)
 error [SCAT-FM-REQUIRED] <file> field `indexes`: missing
-  Fix: add the line `indexes: <key>`      (when the page name is in the contract's class-page table: that table's value; otherwise choose one:)
+  Fix: add the line `indexes: <key>`      (when `indexes:` is present but empty, replace that line; when the page name is in the contract's class-page table: that table's value; otherwise choose one:)
     one numbered line `indexes: <key>` for each of stakeholder-group, concern, affordance, technology, heldby, addresses, attributes
 ```
 The contract's table (section 8) maps `stakeholder-groups` to `stakeholder-group`, `concerns` to `concern`, `affordances` to `affordance`, `technologies` to `technology`, `heldby-pairs` to `heldby`, `addresses-pairs` to `addresses` and `attributes-pairs` to `attributes`.
@@ -246,7 +250,7 @@ error [SCAT-FM-TYPE] <file> field `type`: `<value>` is not a page type
 - **Message:**
 ```
 error [SCAT-FM-REQUIRED-LINK] <file> field `<field>`: missing; a <type-key> page names exactly one <expected-key> page here, at every status
-  Fix: add the line `<field>: "[[<one <expected-key> page you choose>]]"` (author)
+  Fix: <add the line | replace the line `<field>: <current>` with> `<field>: "[[<one <expected-key> page you choose>]]"` (author)
 ```
 - **Fix kind:** slot. Why not exact: the TBox derives neither endpoint from the other and the page's name is not read as data, so which pair the page records is the author's reading. Tool-created relation pages (the stub operation) have both endpoints filled, so this error comes from a hand edit.
 - **Test:** each of the six endpoint fields removed in turn, at `stub`, `draft` and `done` (same message at each); `group: ` with no value.
@@ -293,7 +297,7 @@ error [SCAT-FM-SHAPE] <file> field `<field>`: expected one line of text, found <
 - **Message:**
 ```
 error [SCAT-NAME] <file> frontmatter: the page name `<page-name>` <is not legal (<reason>) | is also the name of <other-file> | is not the name of the <indexes> class page>
-  Fix: rename the file to `<new-name>.md` (in Obsidian, so the links to it are rewritten)
+  Fix: change the file name to `<new-name>.md`, then change every link that names `<page-name>` to `[[<new-name>]]`
 ```
 `<new-name>` is the free derived name of the page's `title` for (a) and (b), and the table's name for (c). When the title is missing or its derived name is empty, the fix is "choose a legal name by hand (contract section 2)".
 - **Fix kind:** exact. The derivation is the contract's, so the name is not a guess; a hand choice is needed only when the title gives nothing.
@@ -306,7 +310,7 @@ error [SCAT-NAME] <file> frontmatter: the page name `<page-name>` <is not legal 
 ```
 error [SCAT-DONE-FIELD] <file> field `description`: missing on a page with status: done
   Fix, choose one:
-    1. add the line `description: "<one sentence you write>"` (author)
+    1. <add the line | replace the line `description: <current>` with> `description: "<one sentence you write>"` (author)
     2. run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`) if the page is not finished
 ```
 On a class page the first line reads `... missing` and only option 1 is printed.
@@ -335,7 +339,7 @@ Option 1 says "add this to the frontmatter" when the key is absent, and "replace
 - **Message:** the same problem and suggestions as the `done` rules, no `set-status` option, because nothing is blocked:
 ```
 warning [SCAT-DRAFT-FIELD] <file> field `description`: missing (required once the page is done)
-  Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
+  Fix: <add the line | replace the line `description: <current>` with> `description: "<one sentence you write>"` (author) before you set status: done
 warning [SCAT-DRAFT-LINK] <file> field `<field>`: required link field is missing or empty (required once the page is done)
   Fix: <add this to the frontmatter | replace the line `<field>: <current>` with this>, keeping the lines that fit (suggestions found from relation pages; you decide):
          <field>:
@@ -382,7 +386,7 @@ error [SCAT-LINK-ENDPOINT] <file>:<line> field `<field>`: [[<target>]] is a <act
 ```
 Options follow the order of decision 2. With no replacement available the message says "no existing <expected-key> page was found"; in a field required from `stub` it then has no option at all, and says the pair must be changed by hand (manual).
 
-The swap case is one message, not two. When a relation page's two endpoint fields each hold a page of the other's type (a `heldby` page with a concern under `group` and a group under `concern`), the one message names both fields, is reported at the line of the first, and prints the result literally:
+The swap case is one message, not two. When a relation page's two endpoint fields each hold a page of the other's type (a `heldby` page with a concern under `group` and a group under `concern`), the one message names both fields, is reported at the line of the first, and prints the result literally. `<field-a>` is the endpoint field that appears first in the file and `<field-b>` the other; `<w1>` is the value under `<field-a>`:
 ```
 error [SCAT-LINK-ENDPOINT] <file>:<line> fields `<field-a>` and `<field-b>`: [[<w1>]] is a <key-1> page and [[<w2>]] is a <key-2> page, but `<field-a>` must link <expected-a> pages and `<field-b>` <expected-b> pages
   Fix: replace the two lines
@@ -406,10 +410,10 @@ error [SCAT-LINK-DANGLING] <file>:<line> field `<field>`: [[<target>]] does not 
     2. run `scat stub <target> --type <expected-key>` (REPL: `scat_kg.stub("<target>", type="<expected-key>")`) to create it as a stub
 ```
 Variant (a): options 1 (only if a near match exists among pages of the field's target type) and 2. When the target is a `stakeholder-group` and the vault is at its cap, option 2 is replaced by "the vault is at its cap of <cap> stakeholder groups, so a new group page would break SCAT-CAP; choose an existing group".
-Variant (b): option 2 is replaced by "add these lines to the frontmatter of <other-file> (at the very top of the file if it has none): `type: <expected-key>`, `status: draft`, `title: "<Title>"`", because the stub operation refuses an existing file.
-Variant (c): no stub of `<target>` is offered, because the contract's stub operation entails nothing for an illegal name. Option 1 is the near match if any. Then, if the derived name `<d>` of the target is not empty: when a page `<d>` of the expected type exists, "replace `<item>` with `<item with d>`"; otherwise "replace `<item>` with `<item with d>`, then run `scat stub <d> --type <expected-key>`". When the derived name is empty the message says "choose a legal page name by hand (contract section 2), then write the link with it".
+Variant (b): option 2 is replaced by "add these lines to the frontmatter of <other-file> (at the very top of the file if it has none): `type: <expected-key>`, `status: stub`, `title: "<Title>"`", because the stub operation refuses an existing file.
+Variant (c): no stub of `<target>` is offered, because the stub operation refuses an illegal name. The replacement names are collected in this order and then deduplicated, so no two options print the same replacement: the near match `N` among pages of the field's target type; the derived name `d` of the target when it is not empty. For each name that survives: if a page of that name and the expected type exists, "replace `<item>` with `<item with name>`"; if no page of that name exists (only possible for `d`), "replace `<item>` with `<item with d>`, then run `scat stub <d> --type <expected-key>`"; if a page of that name exists with another type, no option is printed for it and the message adds "(`<name>` is a <key> page, so replacing the link with it would only trade this error for SCAT-LINK-ENDPOINT)". When the derived name is empty and there is no near match the message says "choose a legal page name by hand (contract section 2), then write the link with it".
 - **Fix kind:** options. Exact because the type comes from the field (decision 3). On a relation page the stub option is the same command for the endpoint's own type (`group` gives `stakeholder-group`). The tools cannot tell a typo from a page the author means to create, so both are offered.
-- **Test:** the measurement defect (`safety-briefings`, near match `safety-briefing`); a target with no near match (one option); `[[Safety-Briefing]]` against an existing `safety-briefing` (variant c, ratio 1); `[[Safety briefing]]` with no such page (derived name `safety-briefing`, replace then stub); a target made only of non-Latin text (hand choice); a link to a file with no `type` (variant b); a group target at the cap.
+- **Test:** the measurement defect (`safety-briefings`, near match `safety-briefing`); a target with no near match (one option); `[[Safety-Briefing]]` against an existing `safety-briefing` (variant c, ratio 1); `[[Safety briefing]]` with no such page (derived name `safety-briefing`, replace then stub); `[[Safety-Briefing]]` where the near match and the derived name are the same page (one option, not two); a derived name that is an existing page of another type (withheld, with the note); a target made only of non-Latin text (hand choice); a link to a file with no `type` (variant b); a group target at the cap.
 
 ### SCAT-LINK-DANGLING-BODY
 - **Severity:** error. **Fires:** every status.
@@ -424,7 +428,7 @@ error [SCAT-LINK-DANGLING-BODY] <file>:<line> link [[<target>]]: does not reach 
 ```
 Types the page type discourages for body links are left out of the stubs, and the message adds "(<key> left out: a <page-type> page should not link to it)". A name that is not legal, or a file with no `type`, takes the variant wording of SCAT-LINK-DANGLING: no stub of the illegal name; the derived name replaces it in the link, and the stub runs on the derived name.
 - **Fix kind:** options. The type is not written down at a body link, so the stub options are alternatives, not a guess (decision 3). The contract's other route, naming the page in the right link field of the same page, is also true and is stated in the message as a last note.
-- **Test:** a body link in a coded scenario to a name that a frontmatter field elsewhere also names (one inferred type); to a name nothing else names (four options, minus `technology` on a scenario); a near match; a non-legal name; a body link inside a code fence, `[[photo.png]]`, `[[#Heading]]` (no message).
+- **Test:** a body link in a coded scenario to a name that a frontmatter field elsewhere also names (one inferred type); to a name nothing else names (four options, minus `technology` on a scenario); a near match; a non-legal name; a body link inside a code fence, `[[photo.png]]`, `[[#Heading]]` (no message); `[[ghost^abc123]]` with no page `ghost` (a message naming target `ghost`).
 
 ### SCAT-LINK-DISCOURAGED
 - **Severity:** warning. **Fires:** every status.
@@ -472,14 +476,14 @@ error [SCAT-CAP] scat.toml field `stakeholder_group_cap`: the vault holds <n> st
 - **Message:**
 ```
 error [SCAT-CAP-CONFIG] scat.toml field `stakeholder_group_cap`: <the file is missing | the file is not valid TOML: <parser's reason> | the key is missing | the value `<value>` is not a whole number of at least 1>
-  Fix: write the line `stakeholder_group_cap = <number you choose>` (author) in scat.toml; the vault has <n> stakeholder-group pages now, so choose <n> or more
+  Fix: <add the line | replace the line `stakeholder_group_cap = <current>` with> `stakeholder_group_cap = <number you choose>` (author) in scat.toml; the vault has <n> stakeholder-group pages now, so choose <n> or more
 ```
 - **Fix kind:** slot. Why not exact: the cap is a planning decision.
 - **Test:** the file removed; the file with a broken line; the key removed; `stakeholder_group_cap = "three"`; `stakeholder_group_cap = 0`; `stakeholder_group_cap = 2.5`.
 
 ### SCAT-CONFLICT-BOTH
 - **Severity:** warning (D3). **Fires:** every status.
-- **Trigger:** a coded record (`scenario-coded` or `architecture-coded`) lists in `concerns` two existing concern pages A and B such that {A, B} is in the conflict relation. The relation is the symmetric closure of the declarations: {A, B} is in it when A's `conflicts` lists B, or B's `conflicts` lists A, or both. A one-sided declaration is complete: no message asks for the other side. A concern listing itself is ignored. One message per record and per pair, pairs sorted by name.
+- **Trigger:** a coded record (`scenario-coded` or `architecture-coded`) lists in `concerns` two existing concern pages A and B such that {A, B} is in the conflict relation. The relation is the symmetric closure of the declarations: {A, B} is in it when A's `conflicts` lists B, or B's `conflicts` lists A, or both. A one-sided declaration is complete: no message asks for the other side. A concern listing itself is ignored. One message per record and per pair; within a pair A is the page whose name sorts first and B the other, and the pairs are sorted by (A, B). The message is reported at the line of the `concerns:` key of the coded page.
 - **Message:**
 ```
 warning [SCAT-CONFLICT-BOTH] <file>:<line> field `concerns`: this record holds both [[<A>]] and [[<B>]], which conflict (declared on <declaring page(s)>)
@@ -505,10 +509,11 @@ warning [SCAT-CONFLICT-SELF] <file>:<line> field `conflicts`: [[<page-name>]] is
 - **Message:**
 ```
 warning [SCAT-REL-DUPLICATE] <file> frontmatter: this <type-key> page states the same pair as [[<kept-page>]] (`<field-a>` [[<a>]], `<field-b>` [[<b>]]); a pair has one page
-  Fix: 1. copy the `notes` line of <file>, and any part of its body worth keeping, into <kept-file>
-       2. delete <file>
+  Fix, two steps:
+       1. in <kept-file>: if <file> has a `notes` line, put its text into the `notes` line of <kept-file> (add `notes: "<text>"` when <kept-file> has none; join the two sentences in one line when both have one; skip this when <file> has none), and copy any part of the body of <file> you want to keep
+       2. delete <file>, then run `scat index` (REPL: `scat_kg.index()`) and change every link that named `<page-name>` to `[[<kept-page>]]` (each shows as SCAT-LINK-DANGLING-BODY on the next check)
 ```
-- **Fix kind:** exact. The steps are exact; what is worth keeping from the body is the author's reading, and the message says so rather than merging prose.
+- **Fix kind:** exact, as two steps. The steps are exact; what is worth keeping from the body is the author's reading, and the message says so rather than merging prose.
 - **Test:** two `heldby` pages for the same (group, concern) with different names and folders (one message, on the later name); the same concern with two different groups (none); `heldby` and `addresses` pages that share an endpoint (none); a duplicate of a duplicate (two messages).
 
 ### SCAT-MENTION
@@ -516,7 +521,7 @@ warning [SCAT-REL-DUPLICATE] <file> frontmatter: this <type-key> page states the
 - **Trigger:** the body of a page contains, as plain text, the `title` or the page name of an existing page of type `stakeholder-group`, `concern`, `affordance` or `technology`, matched case-insensitively at word boundaries, for a title or name of at least 4 characters, outside code, outside any wikilink, and when the body has no link to that page. Not the page itself. Not a page of a class that the page type discourages for body links. Reported once per page and target, at the first occurrence. No stemming, no plurals.
 - **Message:**
 ```
-warning [SCAT-MENTION] <file>:<line> text `<as written>`: names the <type-key> page [[<page-name>]] but does not link it
+warning [SCAT-MENTION] <file>:<line>:<column> text `<as written>`: names the <type-key> page [[<page-name>]] but does not link it
   Fix: on line <line> replace `<as written>` with `[[<page-name>|<as written>]]`          (`[[<page-name>]]` when the text is the page name)
 ```
 - **Fix kind:** exact. Raw pages are exempt because they keep the story as told (facilitation capability 10); linking happens in the coded page.
@@ -539,11 +544,13 @@ warning [SCAT-RAW-BACKLINK] <file> field `coded`: [[<C>]] lists this page in `ra
 - **Message:**
 ```
 warning [SCAT-RAW-UNCODED] <file> field `coded`: status is done but no coded page derives from this page
-  Fix: choose a name for the coded page, run `scat stub <coded-page-name> --type <coded-key>` (REPL: `scat_kg.stub("<coded-page-name>", type="<coded-key>")`), then write `raw:` with the line `- "[[<page-name>]]"` in it (author: the name)
+  Fix, two steps, in this order:
+       1. in <file>: <add | replace the line `coded: <current>` with> `coded:` and under it the line `- "[[<coded-page-name>]]"` (author: choose the name)
+       2. run `scat stub <coded-page-name> --type <coded-key>` (REPL: `scat_kg.stub("<coded-page-name>", type="<coded-key>")`); the operation writes `raw` on the new page itself
 ```
 `<coded-key>` is `scenario-coded` for a raw scenario and `architecture-coded` for a raw architecture.
 - **Fix kind:** slot. Why not exact: the coded page's name is the author's.
-- **Test:** done raw page with nothing coded (message); the same at draft (none); after adding a coded page with `raw` (SCAT-RAW-BACKLINK instead).
+- **Test:** done raw page with nothing coded (message); the same at draft (none); after both steps (none: the stub wrote `raw`, and `coded` already names it), and after step 2 alone on a hand-edited page (SCAT-RAW-BACKLINK instead).
 
 ### SCAT-INDEX-STALE
 - **Severity:** warning. **Fires:** every status. Class pages and the vault.
