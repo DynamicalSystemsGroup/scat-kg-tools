@@ -513,3 +513,51 @@ Outcome:
 - `work-packages/metrics.md` documents the schema and a one-line pandas read.
 - The PM is the only writer, which keeps appends conflict-free. Derived figures (the smoothed velocity and the
   forecast) are not stored, so the log holds only observations *(ACE default)*.
+
+## D-028 | 2026-11-23 | WP1, WP2 and WP3 accepted (ACE); rulings on the research
+
+The ACE's own verification:
+- all units are merged on `dev`, and only `main` and `dev` remain;
+- the spike's 5 R-13 tests pass on rerun;
+- the readouts are 841, 961 and 927 words, against a limit of 1,000;
+- the private-document grep is clean across the tree and across `origin/dev`'s history (0 hits);
+- `metrics.jsonl` has 37 records.
+
+**Metrics log.** Two units have an early `done` record without realized points, followed by a complete one. The log
+is append-only, so the fix is the documented rule that the latest record per unit is authoritative (`metrics.md`).
+Iterations overlapped in wall-clock time, so the early velocities overstate throughput, and that is now noted.
+
+**WP2 ruling: the toolchain is stack C** (pydantic models plus plain Python), on the readout's evidence. All stacks
+are well inside R-5, the messages don't separate them, and C needs no graph store and no second rule language for a
+contributor to learn.
+- OKF is rejected as the format between vault and graph. It treats wikilinks as non-links, found 0 edges, caught 0
+  of 4 defects, and its status vocabulary clashes with ours.
+- The question is left open for WP5: R-13 for C is currently a hand-written model held equal to the TBox by a test
+  that can't see slugs, descriptions or status values. WP4's TBox must state these, and WP5 should prefer generating
+  the models from the TBox if that proves simple.
+- Exact fixes for three of the four defect kinds need project decisions. These go into WP4's rule catalogue.
+
+**WP1 ruling: the composition recommendation is accepted as WP4's starting point.**
+- One SKOS spine, with authored SCAT IRIs, adopted definitions and `skos:closeMatch` anchors.
+- Authored relations and record classes; `prov:wasDerivedFrom` from coded to raw; adopted
+  `schema:creativeWorkStatus` with authored values. Because it sits in schema.org's pending area, WP4 may author
+  `status` instead if it judges the instability a risk.
+- Unverified sources (the ISO 42010:2022 text was unreachable, and Gibson was read via a secondary source): WP4 uses
+  authored wording that cites the source it could reach, and marks it as unverified. This is not an intent gap.
+- Disagreement: D0 (many-to-many Heldby), D1 (an authored, symmetric conflict relation between concerns) and D3 (a
+  warning when a record touches both ends of a conflict) are accepted. OWL disjointness is rejected, because it would
+  turn a tension into an inconsistency, against the mission's "holds rather than collapses". **Extension flag for the
+  chief engineer:** he called the concern conflict "a disjointness axiom". The ruling keeps his intent, a conflict
+  between concerns that the graph shows, but implements it as a relation plus a warning, not as an OWL disjointness
+  axiom.
+
+**WP3 ruling: the strategy is accepted, and its 15 capabilities are triaged for WP4 under "as simple as possible".**
+- Capabilities 1–3 (shared concerns, concerns in tension, margins of conflict) are required. They are met by D0, D1
+  and D3.
+- Capabilities met by structure that is already planned need nothing new: raw kept apart from its reading (10),
+  status and unfinished work (11 in part, and 15), provenance (11 in part), and several designs per concern and
+  concerns per design (8).
+- The rest (4–7, 9, 12–14) are met through page content and the facilitation guides, or deferred. WP4 adds no
+  element beyond `MISSION.md` G1 and D1 without a written trade-off.
+
+WP1, WP2 and WP3 are accepted.

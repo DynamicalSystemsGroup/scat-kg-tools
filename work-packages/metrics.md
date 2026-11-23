@@ -15,6 +15,17 @@ iterations = m[m.kind == "iteration"]
 
 Every record has `ts` (ISO 8601 with timezone) and `kind`.
 
+**The latest record for a unit is authoritative.** Because the log is append-only, a unit can have several records,
+including more than one `done` record when a correction follows (for example, a later record adding realized points).
+Take the last record per unit:
+
+```python
+latest = units.sort_values("ts").groupby("unit").tail(1)
+```
+
+**Iterations can overlap in wall-clock time,** because units run in parallel. So `elapsed_h` and `velocity` for
+overlapping iterations overstate throughput. Treat early velocities as noisy.
+
 **`unit`**: a unit was planned, or changed state.
 
 | Field | Type | Meaning |
