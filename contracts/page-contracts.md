@@ -206,7 +206,8 @@ For the two pairs raw and coded only, the new stub also gets the opposite link b
 (`raw: ["[[the-raw-page]]"]` on a new coded stub; `coded: ["[[the-coded-page]]"]` on a new raw stub), because that link
 is certain and the coded page requires it at `done`. Nothing else is pre-filled.
 
-**A coded record entails no relation page by itself (ACE decision pending: see 12).** A coded scenario lists groups, concerns and affordances, but it
+**A coded record entails no relation page by itself** (ACE ruling, log D-031: the contracts define how an author names a
+pair, not which links entail relation pages). A coded scenario lists groups, concerns and affordances, but it
 does not say which group holds which concern, or which affordance addresses which concern. Pairing every group with
 every concern would state facts the coder never stated, so no list of links in a coded record entails a `heldby`,
 `addresses` or `attributes` page, whatever it lists. A relation page is created only for a pair the author names, and
@@ -627,12 +628,7 @@ for a page type is in its table, with the TBox's level (`requiredField` with its
 this document only says where a person writes the links they govern. Things in this document that the TBox does not
 state (names, folders, the markers, the sort order, the cap file, what a link entails) are the contract's own.
 
-## 12. Open decision, and needs from the TBox and the catalogue
-
-**ACE decision pending.** D-030 asked for coded-record links to entail relation pages. This contract finds no rule
-that invents no facts: a coded record lists groups, concerns and affordances without saying which pairs hold. The
-options are (a) a relation page is created only for a pair the author names (the current text of 5); (b) the cross
-product of the lists in the record, which states pairs the coder did not state; (c) another rule. The PM escalates it.
+## 12. Needs from the TBox and the catalogue
 
 **Needs from the TBox.** Nothing blocks this contract. Points for the PM:
 - The TBox does not say a concern may not list itself in `conflicts`; section 4 says so. The catalogue may want a rule,
