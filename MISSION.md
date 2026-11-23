@@ -369,7 +369,7 @@ recording why.
 ## Open decisions (for the chief engineer)
 
 None. Every item was resolved through the decision loop and is recorded in `decisions/log.md`:
-- 14 decided by the chief engineer: log D-001, D-003, D-005 to D-008, D-010 to D-014, D-017 to D-019;
+- 15 decided by the chief engineer: log D-001, D-003, D-005 to D-008, D-010 to D-014, D-017 to D-019, D-021;
 - 1 assigned to the ACE: log D-002;
 - 1 deferred by him: the target date, until velocity is known (log D-011, which also decided the timeline method).
 
