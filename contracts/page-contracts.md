@@ -35,7 +35,8 @@ Free text in Markdown. Nothing in it is required.
 - The frontmatter is a YAML block between two lines of exactly `---`, at the very top of the file.
 - Keys are written exactly as in the field tables below. The order does not matter; the tables' order is the one the
   tools write.
-- `title`, `description` and `notes` are always written in double quotes, on one line (a `"` inside is written `\"`). `type` and
+- `title`, `description` and `notes` are always written in double quotes, on one line, by hand too: a bare colon or `#`
+  in an unquoted value breaks the YAML. Inside the quotes, `"` is written `\"` and `\` is written `\\`. `type` and
   `status` are written bare.
 - Keys that the TBox does not list for the page type, and that hold no wikilink, are ignored (you may add your
   own note keys). A key that is a link field of some other page type is not ignored: see 3.
@@ -64,7 +65,7 @@ the name is unique across the whole vault, whatever the type or folder.
 - only the characters `a` to `z`, `0` to `9` and the hyphen `-`;
 - starts and ends with a letter or digit, and never has two hyphens in a row;
 - at most 64 characters;
-- not one of the reserved names: `con`, `prn`, `aux`, `nul`, `com1` to `com9`, `lpt1` to `lpt9` (Windows device names),
+- not one of the reserved names: `con`, `prn`, `aux`, `nul`, `com0` to `com9`, `lpt0` to `lpt9` (Windows device names),
   and the seven class page names `stakeholder-groups`, `concerns`, `affordances`, `technologies`, `heldby-pairs`,
   `addresses-pairs`, `attributes-pairs` (see 8).
 
@@ -76,12 +77,17 @@ exactly `.md`, lower case.
 
 **The title is the name as a person reads it.** It is free text, any language, and is what an index table shows. The
 name is made from the title like this, and the tools use it whenever they propose a name:
-1. lower-case the title and drop accents (decompose, then remove the combining marks);
+1. lower-case the title and decompose it with Unicode NFKD, then remove the combining marks (so `é` becomes `e`).
+   Letters that do not decompose (`ß`, `ø`, `æ`, any non-Latin script) are not in `a-z0-9` and are treated as the
+   characters in step 2: they become hyphens, they are never transliterated;
 2. replace every run of characters outside `a-z0-9` with one `-`, and trim `-` from both ends;
-3. cut to 64 characters and trim a trailing `-`;
-4. if that name is taken, add `-2`, then `-3`, and so on, until it is free.
+3. cut to 64 characters and trim a trailing `-`: this is the stem;
+4. the stem is the name unless it is taken: the name of an existing page, or a reserved name (including the seven
+   class page names and `con`), counts as taken. Then try `<stem>-2`, `<stem>-3`, and so on, cutting the stem first so
+   the whole name stays within 64 characters (trim a trailing `-` from the cut stem before adding the suffix), until
+   the name is free.
 
-"Safe handling of tools" gives `safe-handling-of-tools`. If step 3 leaves nothing (a title with no Latin letters or
+A derived name is therefore always a legal name. "Safe handling of tools" gives `safe-handling-of-tools`. If step 3 leaves nothing (a title with no Latin letters or
 digits), choose a name by hand. After a page exists, its title and its name are independent: editing the title does not
 rename the file, and nothing checks that they agree. Rename a file in Obsidian, which rewrites the links to it.
 
@@ -118,14 +124,20 @@ links, on relation pages), `conflicts`, `groups`, `concerns`, `affordances`, `te
 scenario and architecture pages; section 7 gives the target of each.
 
 **In the body**, a link is `[[page-name]]`, optionally `[[page-name|text to show]]` or `[[page-name#Heading]]`; the
-tools read the part before `|` and `#`. A body link is untyped: it says "see also" and nothing more, so it is never
+tools strip `|...` and `#...` and read the page name. What is and is not a body link:
+- Text inside code spans and fenced code blocks is never a link.
+- An embed `![[page-name]]` of a page name is a body link.
+- A target that is not a page is not a page link, and is never checked or stubbed: anything with a file extension
+  (`[[photo.png]]`, `[[notes.pdf]]`), anything with a `/`, a same-page link `[[#Heading]]`, and a block reference
+  `[[page-name^block]]` (read as the page `page-name`, with the block part stripped).
+
+A body link is untyped: it says "see also" and nothing more, so it is never
 read into the graph as a relation. Two checks still look at it:
 - it must reach a page that exists;
 - a scenario page's body should not link a `technology` page, and an architecture page's body should not link a
   `stakeholder-group` page (warning-level, as the TBox says).
 
-An embed `![[page-name]]` is read as a body link. Links elsewhere in frontmatter (a key that is not a link field) are
-ignored.
+Links elsewhere in frontmatter (a key that is not a link field) are ignored.
 
 ## 4. The three relations and the conflict relation
 
@@ -194,7 +206,7 @@ For the two pairs raw and coded only, the new stub also gets the opposite link b
 (`raw: ["[[the-raw-page]]"]` on a new coded stub; `coded: ["[[the-coded-page]]"]` on a new raw stub), because that link
 is certain and the coded page requires it at `done`. Nothing else is pre-filled.
 
-**A coded record entails no relation page by itself.** A coded scenario lists groups, concerns and affordances, but it
+**A coded record entails no relation page by itself (ACE decision pending: see 12).** A coded scenario lists groups, concerns and affordances, but it
 does not say which group holds which concern, or which affordance addresses which concern. Pairing every group with
 every concern would state facts the coder never stated, so no list of links in a coded record entails a `heldby`,
 `addresses` or `attributes` page, whatever it lists. A relation page is created only for a pair the author names, and
@@ -232,28 +244,17 @@ the same page, which entails the stub with that type and makes the body link res
 - A link whose target exists but has the wrong type entails nothing: it is a wrong-endpoint problem, and the author
   decides whether the link or the page's `type` is wrong.
 - A link that is not an exact slug name (2) entails nothing: it is corrected in the link.
+- A stub that would be a `stakeholder-group` page, if creating it would take the vault over its cap (section 10), is not
+  created: the operation refuses, prints the cap problem, and creates nothing from that call. The cap is lifted by
+  raising it in `scat.toml`, or by linking an existing group.
 - The seven class pages are entailed by the TBox itself. If one is missing, the stub operation (and the index operation)
   creates it as in 8. They are not created from links.
 
-## 6. Page types: summary
+## 6. Page types: folders
 
-| `type` | A page of this type is | Folder |
-|---|---|---|
-| `stakeholder-group` | one stakeholder group | `stakeholder-group/` |
-| `concern` | one concern | `concern/` |
-| `affordance` | one affordance | `affordance/` |
-| `technology` | one technology | `technology/` |
-| `heldby` | one group holds one concern | `heldby/` |
-| `addresses` | one affordance addresses one concern | `addresses/` |
-| `attributes` | one affordance is attributed to one technology | `attributes/` |
-| `scenario-raw` | a scenario as told | `scenario-raw/` |
-| `scenario-coded` | a reading of a raw scenario | `scenario-coded/` |
-| `architecture-raw` | an architecture pitch as given | `architecture-raw/` |
-| `architecture-coded` | a reading of a raw architecture | `architecture-coded/` |
-| `class` | the page of one of the seven classes | `class/` |
-
-Every page type has the keys `type`, `status`, `title` and `description` (a class page has no `status`). The rest are in
-the tables. The value of `type` is the slug in the first column.
+Section 7 gives each page type's fields. The folder the tools create its pages in is the slug, with one exception:
+`class` pages go in `class/`. The `type` value is always the slug. Every page type has `type`, `title` and
+`description`, and every type except `class` has `status`.
 
 ## 7. Page types: fields
 
@@ -535,8 +536,7 @@ technologies:
 ### `class`
 
 The page of one of the seven classes (the four classes and the three relations): a description of the class, and the
-index table of its instances (8). It carries
-no status, so every field here is required at all times.
+index table of its instances (8). It carries no status, so every field here is required at all times.
 
 | Key | Value | Target type | Required from |
 |---|---|---|---|
@@ -549,7 +549,7 @@ no status, so every field here is required at all times.
 ---
 type: class
 title: "Concerns"
-description: "Every concern in the vault, with the affordances that address it."
+description: "One page per concern: what the interest is, and any concerns it conflicts with. Who holds it and what addresses it are stated on Heldby and Addresses pages."
 indexes: concern
 ---
 ```
@@ -586,10 +586,11 @@ A class page is the frontmatter above, then your description of the class in the
 - **Markers.** The two lines `<!-- scat:index:start -->` and `<!-- scat:index:end -->` are exact, each on a line of its
   own. The index operation replaces everything between them, header included, and nothing outside them. Do not edit
   between them: the next run overwrites it. With no instances the region holds the header and separator rows only. If a
-  page lacks the markers, the operation appends the region at the end of the body.
+  page lacks both markers, the operation appends the region at the end of the body. A missing end marker, a duplicated
+  marker or markers out of order make the index stale, and the operation repairs them by regenerating the region.
 - **When missing.** If a class page does not exist, the stub or index operation creates it with the default title, the
-  `indexes` value, a `description` that is the page type's one-sentence description from the TBox, an empty body and the
-  region.
+  `indexes` value, a `description` that is the TBox's `pageDescription` of the instance page type the class page
+  indexes (for `concern`, the sentence in the `class` example in 7), an empty body and the region.
 
 ## 9. Raw and coded pages
 
@@ -614,8 +615,9 @@ stakeholder_group_cap = 3
 - The value is a whole number of 1 or more. The tools read this key and ignore any other key in the file.
 - The count is the number of pages with `type: stakeholder-group`, at every status, stubs included.
 - The cap is checked over the whole vault. A vault above the cap is not conformant.
-- There is no default: if the file or the key is missing, or the value is not such a number, that is itself a
-  configuration problem for the catalogue to report.
+- The key is at the top level of the file. There is no default: if the file is missing or not valid TOML, or the key
+  is missing, not at the top level, or not such a number, that is itself a configuration problem for the catalogue to
+  report.
 
 ## 11. Agreement with the TBox
 
@@ -625,15 +627,28 @@ for a page type is in its table, with the TBox's level (`requiredField` with its
 this document only says where a person writes the links they govern. Things in this document that the TBox does not
 state (names, folders, the markers, the sort order, the cap file, what a link entails) are the contract's own.
 
-## 12. Needs from the TBox
+## 12. Open decision, and needs from the TBox and the catalogue
 
-Nothing blocks this contract. Four points for the PM:
+**ACE decision pending.** D-030 asked for coded-record links to entail relation pages. This contract finds no rule
+that invents no facts: a coded record lists groups, concerns and affordances without saying which pairs hold. The
+options are (a) a relation page is created only for a pair the author names (the current text of 5); (b) the cross
+product of the lists in the record, which states pairs the coder did not state; (c) another rule. The PM escalates it.
+
+**Needs from the TBox.** Nothing blocks this contract. Points for the PM:
 - The TBox does not say a concern may not list itself in `conflicts`; section 4 says so. The catalogue may want a rule,
   or the TBox a note.
 - The TBox gives no rule for which page a body link entails. Section 5 decides (no type without an explicit one) and
-  needs no TBox term; it is recorded here so the catalogue's dangling-link fix for a body link is two-step.
+  needs no TBox term; the catalogue's dangling-link fix for a body link is therefore two-step.
 - `scat:requiredFrom` on `description` is `done`, but a class page has no status. This contract reads that, with
   `carriesStatus false`, as "always required" (section 7, `class`). The TBox is consistent with that reading, but says
   it only in a comment.
 - The TBox does not say whether two relation pages may state the same pair. This contract says one page per pair (5),
   which the stub operation honours; a hand-written duplicate is for the catalogue to grade.
+
+**Needs from the rule catalogue.** The contract names these conditions; the catalogue grades them:
+- Name validity: a name that is not a slug (2); a name over 64 characters; a reserved name; two pages with the same
+  name in different folders; two names that differ only by case.
+- A single-link field written as a list, or empty or missing on a relation page.
+- A relation page that duplicates another's pair; a concern listing itself in `conflicts`.
+- A stale or malformed index region (8); a missing or invalid `scat.toml` (10); a stakeholder-group stub that would
+  exceed the cap (5, 10), for which the stub option is withdrawn.
