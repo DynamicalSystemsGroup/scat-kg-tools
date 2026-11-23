@@ -1,5 +1,8 @@
 # WP1-U3 trade study: relations, records, status, provenance, axioms
 
+Revised after the rename of Property to Affordance (SCAT: Stakeholders, Concerns, Affordances, Technologies) and the
+framing that scenario records centre on behaviour and architecture records on structure.
+
 Source entries are in `u3-survey.md` (section numbers below, e.g. S1.2). Scores are 1 to 5, 5 best, on the WP1-G2
 criteria: **Fit** (to the meaning in MISSION Purpose/G1 and D-003, D-010, D-013), **Simple** (fewer terms carried scores
 higher), **Recog** (recognisability to systems engineers), **Maint** (low maintenance burden, stable upstream), **UX/SW**
@@ -27,7 +30,7 @@ external term, not replace the page. The cost of that shape is the same for ever
   thing" is PROV attribution, which is the wrong claim. Re-open D if the stakeholders-and-concerns unit adopts 42010 terms
   for the two ends, since the relation name should then follow them.
 
-## 2. Addresses (concern x property)
+## 2. Addresses (concern x affordance)
 
 | Option | Fit | Simple | Recog | Maint | UX/SW | Total | Note |
 |---|---|---|---|---|---|---|---|
@@ -43,40 +46,98 @@ external term, not replace the page. The cost of that shape is the same for ever
 - Deciding criterion: fit (the relation is "addresses", which is weaker than "satisfies", and ungraded in v0.1); simplicity
   rules out iStar's four levels.
 
-## 3. Attributes (property x technology)
+## 3. Attributes (affordance x technology)
 
 | Option | Fit | Simple | Recog | Maint | UX/SW | Total | Note |
 |---|---|---|---|---|---|---|---|
 | A. Author own `Attributes` relation class | 5 | 4 | 3 | 5 | 5 | 22 | Name in G1. "Attributes" is not common SE usage, but the user's glossary can say it |
 | B. `sosa:isObservedBy` (S1.6) | 1 | 3 | 2 | 5 | 2 | 13 | Observation of a quality by a sensor, not provision |
-| C. OSLC `oslc_rm:satisfiedBy` (S1.7) | 3 | 3 | 4 | 4 | 3 | 17 | Direction fits (property satisfied by technology); semantics stronger ("satisfied") than "attributed"; domain/range unverified |
+| C. OSLC `oslc_rm:satisfiedBy` (S1.7) | 3 | 3 | 4 | 4 | 3 | 17 | Direction fits (affordance satisfied by technology); semantics stronger ("satisfied") than "attributed"; domain/range unverified |
 | D. iStar contribution (S1.8) | 3 | 1 | 4 | 3 | 2 | 13 | As for Addresses |
 
 - Recommendation: **A, author**, noting `oslc_rm:satisfiedBy` in the description as the nearest published term.
 - Runner-up: C.
-- Deciding criterion: fit and simplicity; no published term means "technology is credited with a property", and the
+- Deciding criterion: fit and simplicity; no published term means "technology is credited with an affordance", and the
   strongest candidates over-claim or add grades. Flag for the synthesis unit: the three relations are consistent in being
   authored; if one adopts, adopt for all, or the ontology reads as a patchwork.
 
 ## 4. Scenario and architecture records (raw and coded)
 
-G1 requires four page types: raw and coded scenarios, raw and coded architectures; the R-11 templates cover these four.
+Framing (chief engineer, via the ACE): scenario stories centre on **behaviour** (chains of events, outcomes,
+consequences); architecture stories centre on **structure** (arrangements of technologies into tools with specific
+affordances). Design intent: "just enough structure to make the data interpretable but mostly a formal structure for
+arranging obsidian notes", scaled to a human note-taker. G1 fixes four page types; R-11 gives them four templates.
+WP1-R4 forbids new elements beyond G1 (apart from easy-win axioms), so a new Event or Tool class is out of scope unless the
+ACE and chief engineer widen G1. Section 4.1 decides the record classes; 4.2 and 4.3 test whether behaviour and structure
+need terms beyond them.
+
+### 4.1 The four record classes
 
 | Option | Fit | Simple | Recog | Maint | UX/SW | Total | Note |
 |---|---|---|---|---|---|---|---|
 | A. Author four classes `RawScenario`, `CodedScenario`, `RawArchitecture`, `CodedArchitecture`, all `rdfs:subClassOf prov:Entity` | 5 | 3 | 4 | 5 | 5 | 22 | One class per template; the page type is the class |
-| B. Author two classes (`Scenario`, `Architecture`) plus a raw/coded flag | 4 | 4 | 4 | 5 | 3 | 20 | Fewer classes, but the rules for raw and coded differ (coded links into graph, raw links to coded), so the flag becomes a hidden class and needs conditional shapes |
-| C. 42010 Architecture Description as the architecture record (S1.9) | 3 | 3 | 5 | 4 | 3 | 18 | Right for coded architectures; "raw pitch notes" are not an AD; nothing for scenarios; no IRI |
-| D. SysML v2 `UseCaseDefinition` / `PartDefinition` anchors (S1.10) | 2 | 2 | 5 | 4 | 3 | 16 | Anchors as annotation per the cds pattern; a scenario is a story, not a use case definition, so equivalence would be wrong |
+| B. Author two classes (`Scenario`, `Architecture`) plus a raw/coded flag | 4 | 4 | 4 | 5 | 3 | 20 | Two fewer terms, but raw and coded records obey different rules (coded links into the graph; raw links to coded), so the flag acts as a hidden class and every rule needs a condition on it |
+| C. 42010 Architecture Description as the architecture record (S1.9) | 3 | 3 | 5 | 4 | 3 | 18 | Right for coded architectures; a raw pitch note is not an AD; nothing for scenarios; no published IRI |
+| D. SysML v2 `UseCaseDefinition` / `PartDefinition` anchors (S1.10) | 2 | 2 | 5 | 4 | 3 | 16 | Annotation only, per the cds pattern; a scenario story is not a use case definition, so no equivalence |
 | E. cds `Source` boundary object (S1.11) | 2 | 3 | 3 | 3 | 3 | 14 | Models cited authority documents, not facilitated notes |
+| F. Scenario record as `prov:Activity`, architecture record as `prov:Entity` (S1.2) | 2 | 3 | 3 | 5 | 3 | 16 | A note about events is not itself an event; the record is an artifact |
 
 - Recommendation: **A, author four classes**, each a subclass of `prov:Entity` so provenance (section 6) attaches without
-  extra terms. Optionally annotate the coded architecture with a pointer to 42010 AD in its description.
+  extra terms. Optionally note 42010 AD in the coded architecture class description.
 - Runner-up: B (two classes plus a flag).
-- Deciding criterion: "make the right way the easy way": four templates map to four classes with no conditional rules for
-  the user to learn. B saves two terms but costs conditional checks and clearer messages. Do not use SysML equivalence for
-  scenarios.
-- Cost note: four classes versus two is two extra terms; they are authored, so no upstream dependency.
+- Deciding criterion: "make the right way the easy way": four templates map to four classes, so the user learns no
+  conditional rules. B saves two terms, but each rule must then test the raw/coded flag, and its error messages must say
+  which of two conditions failed.
+- Cost note: four classes against two is two extra terms; they are authored, so no upstream dependency.
+
+### 4.2 Behaviour in scenarios (events, causal chains, outcomes, consequences)
+
+Question: does the ontology need a term for an event, or a link between events, beyond the scenario classes? Candidates
+surveyed (S1.2, S1.14, S1.16 to S1.18): PROV-O `Activity` with `wasInformedBy`/`wasInfluencedBy`, the Event Ontology, SEM, CIDOC-CRM
+`E5 Event`, OWL-Time. **No surveyed vocabulary has a dedicated cause or consequence term**: Event Ontology defines no
+causal property (its `event:factor` text mentions "an abstract cause" only); SEM `hasSubEvent` "does not mean ... that there
+is any causal relationship" (sic, as fetched); OWL-Time defines no event class; PROV and CIDOC-CRM have generic influence links
+(`wasInfluencedBy`; `P15 was influenced by`). LODE could not be fetched.
+
+| Option | Fit | Simple | Recog | Maint | UX/SW | Total | Note |
+|---|---|---|---|---|---|---|---|
+| A. No event term: the chain, outcomes and consequences are ordered text in the coded scenario note, with links to the concern, stakeholder-group and affordance pages it mentions (the existing graph links) | 4 | 5 | 4 | 5 | 5 | 23 | Zero terms beyond G1; matches the "arranging notes" intent; behaviour is read by people, not queried |
+| B. Event pages: new class `prov:Activity` subclass, `prov:wasInformedBy` for the chain (S1.2) | 4 | 2 | 3 | 5 | 2 | 16 | Adds a class, a page type, a template and stub rules beyond G1; best PROV fit |
+| C. Event Ontology `event:Event`, `event:sub_event`, `event:factor` (S1.14) | 2 | 2 | 2 | 2 | 2 | 10 | Music-domain origin, 2007, no causal term; stale |
+| D. SEM `sem:Event`, `sem:hasActor`, `sem:hasTime` (S1.16) | 3 | 2 | 2 | 3 | 2 | 12 | General events, 2009; no causal or sequence property; actors are an attribution risk (D-010) |
+| E. CIDOC-CRM `E5 Event` with `P15 was influenced by` (S1.17) | 3 | 1 | 2 | 4 | 1 | 11 | Heritage-domain; a large model for a note-taking aid |
+| F. OWL-Time `time:before` for sequence (S1.18) | 1 | 3 | 3 | 4 | 3 | 14 | Orders temporal entities, not events; sequence is already the order of the list in the note |
+| G. Author `Event` and `causes` classes | 4 | 1 | 2 | 5 | 1 | 13 | Same cost as B with no recognisability |
+
+- Recommendation: **A, no event term in v0.1**; behaviour stays as ordered text in the coded scenario note, linked to
+  graph pages by ordinary links.
+- Runner-up: B (`prov:Activity` + `prov:wasInformedBy`), should events later need to be pages.
+- Deciding criterion: G1/R4 (no element beyond the SCAT classes) and the design intent that the note, not the graph,
+  carries behaviour; B is the escape hatch that stays inside PROV, which section 6 already adopts.
+- Honest limit: if analysis later needs "which consequences did concerns X and Y share", text will not answer it. That is a
+  scope change for the chief engineer, not a v0.1 default.
+
+### 4.3 Structure in architectures (technologies arranged into tools with affordances)
+
+Question: does the ontology need a term for a tool or for composition of technologies? The Attributes relation
+(affordance x technology) already ties a technology to an affordance. A "tool" is a Technology composed of other
+Technologies. Candidates: `dcterms:hasPart`/`isPartOf` (S1.3), SysML v2 parts (S1.10, by reference), 42010 architecture
+description (S1.9), cds `sysml:PartDefinition` anchor (S1.11).
+
+| Option | Fit | Simple | Recog | Maint | UX/SW | Total | Note |
+|---|---|---|---|---|---|---|---|
+| A. No composition term: the arrangement is a diagram or list in the coded architecture note, linking to Technology pages and the Attributes pages | 4 | 5 | 4 | 5 | 5 | 23 | Zero terms beyond G1 |
+| B. Adopt `dcterms:hasPart` (S1.3) between Technology pages ("A related resource that is included either physically or logically in the described resource.") | 4 | 4 | 4 | 5 | 4 | 21 | One adopted term, one optional link on a Technology page; a tool is just a Technology with parts; no new class |
+| C. SysML v2 `PartDefinition`/part usage anchored by reference (S1.10, S1.11) | 3 | 2 | 5 | 4 | 2 | 16 | Right word for SE users; heavy semantics (definition vs usage, ports); annotation at most |
+| D. 42010 architecture description with views (S1.9) | 3 | 2 | 5 | 4 | 2 | 16 | Defines how to describe an architecture, not an arrangement relation; text unretrieved |
+| E. Author `composedOf` | 4 | 3 | 3 | 5 | 4 | 19 | Same meaning as B at one more authored term |
+
+- Recommendation: **A, no composition term in v0.1**.
+- Runner-up: B (`dcterms:hasPart`).
+- Deciding criterion: R4, no element beyond G1; B is an optional easy-win relation (G1 allows "easy-win relations G10 adds"):
+  cost 1 adopted term, 1 optional link on Technology pages, 0 required fields, 0 rules. It is a decision for the ACE
+  and chief engineer, because it widens the graph from three relations to four.
+- Note: structure that matters analytically (which technology gives which affordance) is already in Attributes.
 
 ## 5. Page status (stub, draft, done)
 
@@ -108,7 +169,7 @@ from raw). The tool derives one from the other. Cost: users write one link; the 
 | D. Author own `codedFrom` | 4 | 3 | 2 | 5 | 4 | 18 | One extra term for the same meaning |
 
 - Recommendation: **A, adopt `prov:wasDerivedFrom`** (`http://www.w3.org/ns/prov#wasDerivedFrom`), from coded record (and its
-  SCPT and relation pages, if wanted) to the raw record. Use the same property for any later page-to-page derivation.
+  SCAT and relation pages, if wanted) to the raw record. Use the same property for any later page-to-page derivation.
 - Runner-up: B (`dcterms:source`).
 - Deciding criterion: coherence; one ontology, one provenance vocabulary, already the spine of `concept-definition-stage`.
 - Do not adopt `prov:wasAttributedTo` or `prov:Agent` in v0.1: raw notes are Chatham House (D-010), so no agent is named.
@@ -132,7 +193,7 @@ Our concerns, anonymity and attribution, are **instances** (pages): one page per
   a class). Metamodeling is allowed (s5.9: one IRI can refer to more than one type of entity), but then the
   disjointness holds for the class view and still means "nothing is both an Anonymity thing and an Attribution thing". It
   does not mean "a stakeholder group should not hold both", and it adds a class per concern, so the user has to model concerns
-  as classes. That breaks the page model (a concern is a page) and the SCPT class count, and is not an easy win.
+  as classes. That breaks the page model (a concern is a page) and the SCAT class count, and is not an easy win.
 
 So, taken literally, **a disjointness axiom does not express the conflict**; the honest consequence is that either it is
 vacuous (no individual is typed as both), or it forces concerns into classes. What the chief engineer wants is a typed
@@ -163,7 +224,7 @@ pairwise relation between concerns.
 
 **What the user gets, and its cost.**
 - Value: the graph can show tensions; a facilitator sees conflicts, and a stakeholder group holding both concerns, or a
-  property that addresses both, is visible (the case-study case, G6).
+  affordance that addresses both, is visible (the case-study case, G6).
 - Cost, user: 1 optional link on a concern page; 0 new page types; 0 required fields.
 - Cost, software: 1 property; 1 to 3 rules, all at warning or info severity, never errors, since a group may hold
   conflicting concerns; the rule to find "a group holds both" is a SHACL-SPARQL query (the one that needs a SPARQL engine).
@@ -174,7 +235,7 @@ pairwise relation between concerns.
 
 | Axiom | Value | Cost | Recommendation |
 |---|---|---|---|
-| Pairwise disjointness of the four SCPT classes (S, C, P, T); `owl:AllDisjointClasses`, in the style of SKOS Concept vs Collection (S1.1) | Catches a page typed as two classes, e.g. after a bad merge | 1 axiom; 0 fields; 0 UX; a rule only fires if a page has two types, which the page templates make rare, so low value | **Adopt**; near-zero cost. Skip if it adds any rule or message the user sees |
+| Pairwise disjointness of the four SCAT classes (S, C, A, T); `owl:AllDisjointClasses`, in the style of SKOS Concept vs Collection (S1.1) | Catches a page typed as two classes, e.g. after a bad merge | 1 axiom; 0 fields; 0 UX; a rule only fires if a page has two types, which the page templates make rare, so low value | **Adopt**; near-zero cost. Skip if it adds any rule or message the user sees |
 | Domain/range of the three relations (end checks, `sh:class`) | The "relation endpoints of the right classes" error in MISSION R-1 | Already required by R-1; not an extra axiom | Not an easy win but baseline; WP3 |
 | `owl:inverseOf` for each relation (for example `heldBy` / `holds`) | Backward navigation in queries | 3 more terms; the Obsidian backlinks already cover the reading case | **Do not adopt** |
 | Property disjointness of `conflictsWith` and `skos:related` (S1.1 shows SKOS does a similar disjointness itself) | Stops a pair of concerns being both related and in conflict | Pulls SKOS associative links into the vocabulary just to forbid them | **Do not adopt** |
@@ -184,7 +245,7 @@ pairwise relation between concerns.
 
 - Concern conflict: **B, authored symmetric and irreflexive `conflictsWith`**; runner-up E; criterion: expresses instance-level
   conflict with no class-per-concern.
-- Class disjointness of S, C, P, T: adopt at zero cost, optional.
+- Class disjointness of S, C, A, T: adopt at zero cost, optional.
 - Nothing else is recommended; each extra axiom would add terms or messages without a user-visible gain in v0.1.
 
 ## 8. Composition notes (for the synthesis unit)
@@ -194,18 +255,20 @@ pairwise relation between concerns.
 | Heldby | authored relation class | authored; reason: no term matches without implying attribution |
 | Addresses | authored relation class | authored; same word as `cds:addresses`, not imported |
 | Attributes | authored relation class | authored; nearest `oslc_rm:satisfiedBy`, not adopted |
-| Scenario, architecture records | four authored classes under `prov:Entity` | `http://www.w3.org/ns/prov#Entity` (parent only), the rest authored |
+| Scenario, architecture records | four authored classes under `prov:Entity`; behaviour and structure stay as note text (no event or composition term) | `http://www.w3.org/ns/prov#Entity` (parent only), the rest authored |
 | Status | authored `status` + 3-concept SKOS scheme | authored; pattern from `cds:retrievalStatus`; uses `skos:Concept`, `skos:ConceptScheme` |
 | Provenance | `prov:wasDerivedFrom` | `http://www.w3.org/ns/prov#wasDerivedFrom` |
 | Concern conflict | authored `conflictsWith` (symmetric, irreflexive) | authored; OWL 2 property characteristics |
-| Class disjointness | `owl:AllDisjointClasses` over S, C, P, T | OWL 2, optional |
+| Class disjointness | `owl:AllDisjointClasses` over S, C, A, T | OWL 2, optional |
 
 Imported terms carried by this cluster: `prov:Entity`, `prov:wasDerivedFrom`, `skos:Concept`, `skos:ConceptScheme`. All others are
-authored, which fits the patchwork test only if the stakeholders-and-concerns and properties-and-technologies units also
+authored, which fits the patchwork test only if the stakeholders-and-concerns and affordances-and-technologies units also
 author or adopt consistently; flagged for synthesis.
 
 ## 9. Caveats
 
+- LODE could not be fetched (404 at both URLs tried); it is [NF] in the survey.
+- No surveyed vocabulary was found with a dedicated cause or consequence term; the survey of causal vocabularies is not exhaustive.
 - 42010 text is paywalled and was not retrievable; the Heldby option D and the AD record option C rest on that gap.
 - KAOS conflict links were not retrieved.
 - OSLC RM formal domain and range for `satisfies` and `satisfiedBy` were not checked.
