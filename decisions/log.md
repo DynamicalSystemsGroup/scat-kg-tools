@@ -439,3 +439,28 @@ Outcome:
 - pm.md's merge steps now include deleting the unit branch.
 - Applied now: `mission/v0.1` and `amendment/1-scat` are deleted (both merged), and the amendment worktree is removed.
   Only `main` and `dev` remain, and the 8 `archive/pre-amendment-1/*` tags are kept.
+
+## D-023 | 2026-11-23 | WP1, WP2 and WP3 scopes approved (ACE)
+
+A fresh PM checked the scopes. Its 12 fixes are applied:
+- **Branches:** units branch off `dev` as `wpN/uK`.
+- **WP1:** requirements for the disagreement options (WP1-R7) and for each element's recommendation, runner-up and
+  deciding criterion (WP1-R8).
+- **WP2:**
+  - OKF is cloned outside the repository;
+  - the fixes for each defect are made exact (WP2-R8);
+  - the readout lists anything platform-specific (WP2-R9).
+- **WP3:**
+  - topic coverage (WP3-R6);
+  - the stance made concrete in J4, J5 and J6 (WP3-R7);
+  - a concrete definition of good enough for what WP4 and WP7 receive.
+
+WP3's mention of the private draft was removed before this, so the PM withdrew that fix.
+
+ACE calls:
+- The PM's unit split is approved: WP1 at 15 points, WP2 at 19, WP3 at 13.
+- Models are pinned by alias (sonnet, haiku), because the agent tool accepts only aliases.
+- WP3-U3 may open the private drafts through the Drive connector. The chief engineer asked for them to be read. Their
+  identity goes only in the spawn prompts of that unit and its reviewer.
+
+Approved: the WP1, WP2 and WP3 scopes, at the commit that records this entry.

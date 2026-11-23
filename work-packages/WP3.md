@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Status** | Approved by the ACE when the decision log records it. Runs inside `MISSION.md`: G11, R-14, and deliverable D-5. |
-| **Branch** | `wp3/facilitation-research`. Units branch off it and are merged into `dev`. |
+| **Branch** | Each unit works on `wp3/u<k>`, branched off `dev` and merged back into `dev` (ORG.md). |
 
 ## Purpose
 
@@ -60,6 +60,8 @@ It also gives the TBox design (WP4) what the facilitation side needs the graph t
 | WP3-R3 | The strategy covers J4, J5 and J6, and for J5 treats scenarios (behavioural) and architectures (structural) separately. | A checklist |
 | WP3-R4 | The list for WP4 names capabilities, not terms or mechanisms. | Inspection |
 | WP3-R5 | `readout.md` is no longer than 1,000 words. | `wc -w` |
+| WP3-R6 | `sources.md` covers each source against each of the four WP3-G1 topics (or says the source is silent on it). | A checklist |
+| WP3-R7 | `strategy.md` makes the stance concrete in each of J4, J5 and J6: what "yes, and" and "from this perspective" look like at that stage. | A checklist |
 
 ## Definition of good
 
@@ -68,7 +70,8 @@ and nothing anyone said would be lost.
 
 ## Definition of good enough
 
-WP3-R1 to WP3-R5 are met, and the readout gives WP4 and WP7 what they need.
+WP3-R1 to WP3-R7 are met. The list for WP4 includes at least the same concern held by different groups and concerns
+in tension, and the readout gives WP7 a pointer for each of J4, J5 and J6.
 
 ## Blast radius
 

@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Status** | Approved by the ACE when the decision log records it. Runs inside `MISSION.md`: G8, R-2, R-5, R-13, and deliverable D-5. |
-| **Branch** | `wp2/toolchain-spike`. Units branch off it and are merged into `dev`. |
+| **Branch** | Each unit works on `wp2/u<k>`, branched off `dev` and merged back into `dev` (ORG.md). |
 
 ## Purpose
 
@@ -63,6 +63,8 @@ summarised under "Design guidance" in `MISSION.md`. This run verifies them afres
 | WP2-R5 | The R-13 mechanism runs: a change to the placeholder TBox either shows up in the models or fails the equality test. | The reviewer runs it |
 | WP2-R6 | The mini-vault has 15–25 pages, and one `uv run` command generates the 500-page vault. | `ls`, then the command |
 | WP2-R7 | `readout.md` is no longer than 1,000 words. | `wc -w` |
+| WP2-R8 | For each defect, `measurements.md` states what it takes to make the fix exact. | Inspection |
+| WP2-R9 | The readout lists anything platform-specific (paths, shells, line endings, tools) in the recommended stack, and how it is isolated. | Inspection |
 
 ## Definition of good
 
@@ -70,7 +72,7 @@ The recommended stack is the simplest one that meets R-5 and gives the clearest 
 
 ## Definition of good enough
 
-WP2-R1 to WP2-R7 are met, and the readout names one stack, with the evidence that decided it.
+WP2-R1 to WP2-R9 are met, and the readout names one stack, with the evidence that decided it.
 
 ## Blast radius
 
@@ -81,5 +83,5 @@ WP2-R1 to WP2-R7 are met, and the readout names one stack, with the evidence tha
 - **Dependencies:** pyoxigraph, rdflib, pyshacl, pydantic, pyyaml, python-frontmatter and pytest, all from PyPI. Any
   other dependency is named in the readout, with the reason.
 - **OKF:** install it only from <https://github.com/open-knowledge-format/open-knowledge-format>, pinned to a commit
-  recorded in `measurements.md`. Clone it into its own empty directory under `research/toolchain/spike/okf/`, and read
-  its install steps and entry points before running anything. Run it with paths passed as arguments.
+  recorded in `measurements.md`. Clone it into its own empty directory outside the repository (for example in the session scratchpad), and read
+  its install steps and entry points before running anything. Only notes and outputs come into the repository. Run it with paths passed as arguments.

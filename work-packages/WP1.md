@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Status** | Approved by the ACE when the decision log records it. Runs inside `MISSION.md`: G10, part of G1, and deliverable D-5. |
-| **Branch** | `wp1/ontology-research`. Units branch off it and are merged into `dev`. |
+| **Branch** | Each unit works on `wp1/u<k>`, branched off `dev` and merged back into `dev` (ORG.md). |
 
 ## Purpose
 
@@ -72,6 +72,8 @@ Units write partial files under `research/ontology/parts/`, and the synthesis un
 | WP1-R4 | The recommendation adds no element beyond `MISSION.md` G1, except options for holding disagreement, each with its cost. | Inspection against G1 and G10 |
 | WP1-R5 | `survey.md` covers every starting point and every element, with a link and a version for each source. | A checklist |
 | WP1-R6 | `readout.md` is no longer than 1,000 words. | `wc -w` |
+| WP1-R7 | Each disagreement option in `trade-study.md` states its form, its cost, and what it would let the graph show. | A checklist per option |
+| WP1-R8 | Each element in the term-trace table has a one-line recommendation, the runner-up, and the criterion that decided between them. | A checklist over the table |
 
 ## Definition of good
 
@@ -80,8 +82,7 @@ feels bolted on.
 
 ## Definition of good enough
 
-WP1-R1 to WP1-R6 are met. Each element in the readout has a one-line recommendation, the runner-up, and the criterion
-that decided between them.
+WP1-R1 to WP1-R8 are met.
 
 ## Blast radius
 
