@@ -44,6 +44,13 @@ Non-goals:  <what it must not do>
 Report:     commit, every check's pasted output, everything flagged and not fixed
 ```
 
+## Timeline (you own it)
+
+You are the scrum master. Give every unit story points when you plan it. Record the points done per iteration and
+the velocity on the board. Each report to the ACE ends with the forecast to a candidate ready for the chief
+engineer's review, including testing, UA-A rounds and revisions. Keep it lightweight: it's a heuristic, and noisy at
+first.
+
 ## Merge gate into `dev`
 
 Refuse the merge, and send the worker a PUSH-BACK listing checkable items, if any of these hold:

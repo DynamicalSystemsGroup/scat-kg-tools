@@ -218,7 +218,19 @@ record above.
   At the release, `v0.1.0` tags that same commit, the site redeploys from `main`, and the template's default branch
   returns to `main`.
 - Amendments to this mission are approved by the same act as the mission.
+- In agile terms, the chief engineer is the product owner, the ACE is the product manager, the PM is the scrum
+  master, and the workers are the team.
 - How the team runs is in `ORG.md`.
+
+## Timeline
+
+No date is set. A date is deferred until velocity has been established. The estimates are lightweight and agile in
+style: a heuristic for driving convergence and forecasting, not a schedule fixed in advance, and they are expected
+to be noisy at first.
+- The PM owns the timeline. Every unit gets story points when it is planned. The board records points done per
+  iteration, and the forecast to the candidate is updated from the measured velocity.
+- The forecast runs to **a candidate ready for the chief engineer's review**. It includes testing, the UA-A rounds,
+  and the revisions they cause. Time to address his review feedback is estimated later, when that feedback exists.
 
 ## Initial breakdown (a plan, not a contract; the ACE revises it at each work-package acceptance)
 

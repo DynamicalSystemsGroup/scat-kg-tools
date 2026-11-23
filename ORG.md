@@ -45,9 +45,9 @@ bare problem.
 
 1. The ACE writes a one-page scope for the next work package (`work-packages/WPn.md`, `scope-of-work` shape). The PM
    checks it against the scope rules below. The ACE approves it and logs the approval.
-2. The PM splits the package into **units**. Each unit has one tight scope and one set of files, and units with
-   disjoint files run in parallel. The PM keeps `work-packages/board.md` current: every unit, its owner, branch and
-   state.
+2. The PM splits the package into **units** and gives each one story points. Each unit has one tight scope and one set of files, and units with
+   disjoint files run in parallel. The PM keeps `work-packages/board.md` current: every unit, its owner, branch,
+   state and points; the velocity per iteration; and the forecast to the candidate (`MISSION.md`, Timeline).
 3. For each unit, a worker builds it in its own worktree. A fresh reviewer then checks it against the requirements
    by running the stated checks. Defects against a stated requirement are fixed and re-reviewed without asking
    anyone.

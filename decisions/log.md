@@ -172,3 +172,16 @@ Second cleanup pass (ACE):
   example.
 - "demo" becomes "worked example" in the defaults.
 - ORG hygiene now keeps D-5's readouts in the tree.
+
+## D-011 | 2026-11-23 | Timeline: deferred; velocity-based forecasting
+
+Decided by the chief engineer (pop-up, typed by the ACE): "defer date until velocity is established. you can use
+story points, and velocity estimate agile style. keep it lightweight its just a heuristic that allows you to drive
+convergence and estimate timelines without pre ordaining them. i am assuming my timeline estimates to be noisy at
+first. also do no forget to account for testing and feedback and revisions. this is timeline to having a candidate
+for me to review. we can estimate timelines to address my feedback later when we get to that. PM role owns times. in
+agile terms, that PM is basically scrum-master, i am the product owner, you are the product manager, and the task
+agents are our team".
+Outcome: a new Timeline section in `MISSION.md`, and the agile role mapping added under Governance. In ORG.md and
+pm.md, the PM gives units story points, records velocity on the board, and reports the forecast to the candidate
+(including testing, UA-A rounds and revisions).
