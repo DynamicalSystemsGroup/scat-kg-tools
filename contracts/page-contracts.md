@@ -38,7 +38,7 @@ Free text in Markdown. Nothing in it is required.
 - `title`, `description` and `notes` are always written in double quotes, on one line, by hand too: a bare colon or `#`
   in an unquoted value breaks the YAML. Inside the quotes, `"` is written `\"` and `\` is written `\\`. `type` and
   `status` are written bare.
-- Keys that the TBox does not list for the page type, and that hold no wikilink, are ignored (you may add your
+- Keys that the TBox does not list for the page type, are ignored, whatever they hold (you may add your
   own note keys). A key that is a link field of some other page type is not ignored: see 3.
 
 **Status.** Every page except a class page has `status`: `stub`, `draft` or `done`, in that order.
@@ -77,13 +77,14 @@ exactly `.md`, lower case.
 
 **The title is the name as a person reads it.** It is free text, any language, and is what an index table shows. The
 name is made from the title like this, and the tools use it whenever they propose a name:
-1. lower-case the title and decompose it with Unicode NFKD, then remove the combining marks (so `é` becomes `e`).
+1. decompose the title with Unicode NFKD, remove the combining marks (Unicode category M), then lower-case it (so
+   `É` becomes `e`).
    Letters that do not decompose (`ß`, `ø`, `æ`, any non-Latin script) are not in `a-z0-9` and are treated as the
    characters in step 2: they become hyphens, they are never transliterated;
 2. replace every run of characters outside `a-z0-9` with one `-`, and trim `-` from both ends;
 3. cut to 64 characters and trim a trailing `-`: this is the stem;
 4. the stem is the name unless it is taken: the name of an existing page, or a reserved name (including the seven
-   class page names and `con`), counts as taken. Then try `<stem>-2`, `<stem>-3`, and so on, cutting the stem first so
+   class page names and `con`), counts as taken; names are compared without regard to case. Then try `<stem>-2`, `<stem>-3`, and so on, cutting the stem first so
    the whole name stays within 64 characters (trim a trailing `-` from the cut stem before adding the suffix), until
    the name is free.
 
@@ -124,12 +125,14 @@ links, on relation pages), `conflicts`, `groups`, `concerns`, `affordances`, `te
 scenario and architecture pages; section 7 gives the target of each.
 
 **In the body**, a link is `[[page-name]]`, optionally `[[page-name|text to show]]` or `[[page-name#Heading]]`; the
-tools strip `|...` and `#...` and read the page name. What is and is not a body link:
+tools strip `|...`, `#...` and `^...` (a block reference) and read the page name, which must exist. What is and is
+not a body link:
 - Text inside code spans and fenced code blocks is never a link.
 - An embed `![[page-name]]` of a page name is a body link.
-- A target that is not a page is not a page link, and is never checked or stubbed: anything with a file extension
-  (`[[photo.png]]`, `[[notes.pdf]]`), anything with a `/`, a same-page link `[[#Heading]]`, and a block reference
-  `[[page-name^block]]` (read as the page `page-name`, with the block part stripped).
+- Markdown-style links `[text](target)` are not wikilinks and are ignored.
+- A target that is not a page is not a page link, and is never checked or stubbed: anything containing a dot
+  (`[[photo.png]]`, `[[v1.2-notes]]`; page names never contain a dot, see 2), anything with a `/`, and a same-page link
+  `[[#Heading]]`.
 
 A body link is untyped: it says "see also" and nothing more, so it is never
 read into the graph as a relation. Two checks still look at it:
@@ -202,9 +205,11 @@ and an empty body. For example, `affordances: ["[[safety-briefing]]"]` on a code
 | `coded` on a `scenario-raw` page | `scenario-coded` |
 | `coded` on an `architecture-raw` page | `architecture-coded` |
 
-For the two pairs raw and coded only, the new stub also gets the opposite link back to the page that entailed it
-(`raw: ["[[the-raw-page]]"]` on a new coded stub; `coded: ["[[the-coded-page]]"]` on a new raw stub), because that link
-is certain and the coded page requires it at `done`. Nothing else is pre-filled.
+For the two pairs raw and coded only, the operation derives the opposite link itself, with no extra argument. When it
+creates a raw page that coded pages name in `raw`, it writes `coded` on the new page, listing every coded page of the
+matching kind that names it; when it creates a coded page that raw pages name in `coded`, it writes `raw` listing every
+raw page that names it. So a stub made to fix a dangling `raw` or `coded` link starts with the link back already
+there. Nothing else is pre-filled.
 
 **A coded record entails no relation page by itself** (ACE ruling, log D-031: the contracts define how an author names a
 pair, not which links entail relation pages). A coded scenario lists groups, concerns and affordances, but it
@@ -237,7 +242,11 @@ creates none of them.
 
 **A link in the body entails a page, but not its type.** The body does not say what the page is, and guessing would put
 words in the coder's mouth. So the stub operation creates a page for a body link only when it is given the type slug
-explicitly (the same slug that appears in `type`), and then it creates it exactly as above. With no type, it creates
+explicitly, and then it creates it exactly as above. The slugs it accepts are the four class keys
+(`stakeholder-group`, `concern`, `affordance`, `technology`) and the four record keys (`scenario-raw`,
+`scenario-coded`, `architecture-raw`, `architecture-coded`). It refuses any other slug: a relation page is made only by
+naming a pair, and a class page only by the index operation. It also refuses a name that is illegal (2) or already
+taken, when the name is given directly and not derived: it creates nothing and says why. With no type, it creates
 nothing and reports the link. The usual way to give a body link a type is to name the page in the right link field of
 the same page, which entails the stub with that type and makes the body link resolve.
 
@@ -586,9 +595,11 @@ A class page is the frontmatter above, then your description of the class in the
 - **Order.** By page name, ascending, in plain character order (names are ASCII, so there is one order).
 - **Markers.** The two lines `<!-- scat:index:start -->` and `<!-- scat:index:end -->` are exact, each on a line of its
   own. The index operation replaces everything between them, header included, and nothing outside them. Do not edit
-  between them: the next run overwrites it. With no instances the region holds the header and separator rows only. If a
-  page lacks both markers, the operation appends the region at the end of the body. A missing end marker, a duplicated
-  marker or markers out of order make the index stale, and the operation repairs them by regenerating the region.
+  between them: the next run overwrites it. With no instances the region holds the header and separator rows only. The
+  first well-formed pair (a start marker followed by an end marker) is the region. If there is none (both markers
+  missing, an end marker missing, or the markers out of order), the operation writes a fresh region, start and end
+  markers included, at the end of the body, and leaves every stray marker line and all author text untouched. Marker
+  lines beyond the first well-formed pair are likewise left alone.
 - **When missing.** If a class page does not exist, the stub or index operation creates it with the default title, the
   `indexes` value, a `description` that is the TBox's `pageDescription` of the instance page type the class page
   indexes (for `concern`, the sentence in the `class` example in 7), an empty body and the region.
@@ -600,7 +611,7 @@ A class page is the frontmatter above, then your description of the class in the
 - A coded page links to the raw page it was read from with `raw`, a list: a coded page may be derived from more than
   one raw page, and one raw page may have several coded pages. `raw` is required at `done`.
 - The two sides are separate, so the same relation can be written on both. The tools never write one for you, except
-  the pre-filled link on a new stub (5).
+  the link a new stub derives (5).
 - A raw page is linked, not embedded: the contract has no embed. An `![[...]]` embed in a body is an ordinary body link.
 - The target of `raw` and `coded` follows the page's own pair: scenarios link scenarios, architectures link
   architectures. A scenario linking an architecture is a wrong endpoint.
