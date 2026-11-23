@@ -9,8 +9,10 @@ the builders, "as simple as possible but no simpler".
 
 ## The chain
 
-**Chief engineer → ACE → PM → workers to spec.** Workers report to the PM, the PM reports to the ACE, and the ACE
-reports to the chief engineer. No level is skipped.
+**Chief engineer → ACE → PM → workers to spec.** In agile terms: the chief engineer is the product owner,
+the ACE is the product manager, the PM is the scrum master, and the workers are the team.
+
+Workers report to the PM, the PM reports to the ACE, and the ACE reports to the chief engineer. No level is skipped.
 
 | Role | Who | Model |
 |---|---|---|
@@ -62,7 +64,7 @@ bare problem.
    bar, writes the reviewer's guide (D-6), and opens the release PRs (`dev` → `main`). The chief engineer then does his
    walkthrough (UA-M). Anything he flags is fixed on `dev`. Only he merges.
 
-The ACE creates `work-packages/` (with `board.md` and `INDEX.md`) at the start of WP1.
+The ACE creates `work-packages/` (with `board.md`) at the start of WP1. Work-package records stay there for v0.1.
 
 ## Scope rules (what the PM enforces)
 
@@ -105,9 +107,6 @@ does not sign off the rendered part.
 - **Worktrees** are created explicitly (`git worktree add <path> -b <branch> dev`) outside the repository. Each one
   is removed (`git worktree remove`, then `git worktree prune`) as soon as its unit is pushed.
 - **No scratch** is left in the tree.
-- **The repository holds the present; git holds the history.** A package's scratch, spike workings and raw reports
-  leave the tree when it is accepted (the readouts and decision records of deliverable D-5 stay), recorded in `work-packages/INDEX.md` with the commits where its scope was approved and
-  its result accepted.
 - **Negative edits are welcome.** Every piece of content must earn its place, including what is already there.
   When something is stuck, consider removing it before another round of rework.
 - **State lives in files** (the board, the scopes, the log), not in conversation. A PM handover is: this file,

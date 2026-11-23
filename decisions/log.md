@@ -218,3 +218,26 @@ Stated by the chief engineer (chat, typed by the ACE): "our core heuristics * fo
 easy way\" * for the builders: \"as simple as possible but no simpler\"".
 Outcome: a Core heuristics section near the top of `MISSION.md`, as the tie-breaker for any choice not settled
 elsewhere. ORG.md states both, and the PM puts them in every worker's brief.
+
+## D-014 | 2026-11-23 | Review against the core heuristics
+
+Asked by the chief engineer (chat, typed by the ACE): "review the document against those two heuristics". The ACE
+proposed seven changes. The chief engineer answered (chat, typed by the ACE): "2 lead with REPL because otherwise
+commands get long due to uv". The ACE took this as approval of all seven, with item 2 reversed.
+Applied:
+1. One way to create each kind of page (R-11). Obsidian templates cover the four record types only; SCPT and relation
+   pages come from linking and the stub command; class pages come from `index`.
+2. The docs lead with the Python REPL and show the CLI in a tab (users section, R-8, J6). R-9 now also runs the REPL
+   snippets. G4 is renamed "Operations".
+3. Pages are named the way Obsidian shows them, or by path (G4).
+4. Setup prerequisites: J3 covers uv and a one-time GitHub sign-in. R-6 runs from a machine with only those, and AI
+   testers start without uv.
+5. New R-13: the schema has one source. The TBox is authoritative; other forms are generated from it or tested equal
+   to it.
+6. ORG.md drops `INDEX.md` and the rule that records leave the tree; records stay in `work-packages/` for v0.1.
+7. G1 is split into short lines. G7 points to the journey table instead of repeating it. The agile role mapping now
+   appears only in ORG.md.
+Not changed, because each is as simple as it can be: the candidate stage, the three statuses, and the three tester
+personas.
+Note: `MISSION.md` grew slightly (from about 4,000 to about 4,100 words). R-13, the prerequisites and the
+one-way-per-page rule added more than the trims removed.

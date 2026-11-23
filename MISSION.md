@@ -38,9 +38,8 @@ When a choice isn't settled elsewhere, these decide it.
 The v0.1 user is a facilitator-analyst: technically savvy, but not a software developer. They:
 - navigate GitHub's web interface, including creating a repository from a template;
 - read, write and follow links in an Obsidian vault;
-- work in an **interactive session**, with the `scpt` CLI in a terminal and a Python REPL (`import scpt_kg`) open
-  alongside it. Both are equal paths to the same operations and the same messages. The CLI suits one-off commands; the
-  REPL suits looping over pages while coding.
+- work in an **interactive session** in the Python REPL (`import scpt_kg`), with the `scpt` CLI as an equal path to
+  the same operations and messages. The docs lead with the REPL, because CLI commands get long when run through uv.
 - follow documentation literally, step by step. Testers on a small model stand in for this user, so the right way
   has to be the easy way.
 
@@ -49,24 +48,27 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 
 ## Goals
 
-- **G1. Fixed TBox.** Designed under G10, then fixed for v0.1. Turtle files define seven ontology classes — Stakeholder
-  group, Concern, Property, Technology, Heldby (stakeholder group × concern), Addresses (concern × property),
-  Attributes (property × technology), with names that may follow an adopted ontology — plus any easy-win relations
-  G10 adds, together with each
-  record's required and optional fields, the other page types (class pages; raw and coded scenarios; raw and coded
-  architectures), and the linking rules: coded scenarios and architectures link into the graph, and raw ones link to
-  or embed their coded pages.
+- **G1. Fixed TBox**, designed under G10 and then fixed for v0.1. Turtle files define:
+  - the seven SCPT classes: Stakeholder group, Concern, Property, Technology, and the relations Heldby (stakeholder
+    group × concern), Addresses (concern × property) and Attributes (property × technology). Names may follow an
+    adopted ontology;
+  - any easy-win relations G10 adds;
+  - each record's required and optional fields;
+  - the other page types: class pages, raw and coded scenarios, raw and coded architectures;
+  - the linking rules: coded records link into the graph, and raw records link to or embed their coded pages.
 - **G2. Vault ↔ graph.** Markdown pages with YAML frontmatter parse into an ABox that is checked against the TBox.
   Every class has a class page: a description plus an index table (name, short description, link) of its instances.
 - **G3. Page lifecycle.** Every instance page and every scenario or architecture page carries a status:
   `stub → draft → done`. (Class pages are generated, so they carry none.) `scpt` creates a page that the ontology
   entails but that doesn't exist yet as a `stub`, so the graph is never incomplete, only unfinished.
-- **G4. CLI** usable by a technically savvy non-developer in an interactive session:
+- **G4. Operations**, in the Python API and the `scpt` CLI, usable by a technically savvy non-developer in an
+  interactive session:
   - `check <page>`, `check <page> --neighborhood`, `check --all` — conformance, with actionable messages;
   - `status` at the same three scopes, and a command to set a page's status;
   - `index` — regenerates class index tables from the instance pages;
   - a command that creates entailed missing pages as stubs.
-  Local and neighborhood checks act as a fast linter during working sessions.
+  Local and neighborhood checks act as a fast linter during working sessions. Every operation takes a page by the
+  name Obsidian shows (its filename, with or without `.md`) or by its path.
 - **G5. Two repositories.** `scpt-kg-tools`: a slim, separately maintained package holding the TBox, the parser, the
   checks, the CLI and the documentation site. `scpt-kg-template`: the vault to clone, which installs the tools
   pinned to a commit. Both builds are reproducible with uv.
@@ -76,9 +78,8 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
   follow the Chatham House rule like any other: no group stands for one identifiable person. It is minimal (users
   overwrite it), but has 2–3 records in every registry, plus two scenarios and two architectures, each raw and coded.
   It doubles as the test fixture and the documentation example.
-- **G7. Documentation on GitHub Pages** (from `scpt-kg-tools`), organised by the user journey J1–J7 (see User
-  acceptance): getting started, a planning guide, two facilitation guides (scenarios with actors, architectures with
-  technologists), a coding guide, and a reference for both the CLI and the Python API.
+- **G7. Documentation on GitHub Pages** (from `scpt-kg-tools`), one page per journey stage (see the table under
+  User acceptance), plus a reference for the Python API and the CLI.
 - **G8. Toolchain decided by evidence.** Oxigraph, Open Knowledge Format (OKF), pydantic and the choice of rule
   language are tried on a small vault before the implementation is locked in. Each choice is recorded with its evidence.
 - **G9. Clear user journey.** A technically savvy user who is not a developer can go from the docs site to a new
@@ -114,7 +115,7 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 |---|---|---|
 | D-1 | TBox in Turtle, in `scpt-kg-tools` | G1, G10 |
 | D-2 | Parser, checks, status, index and stub commands, CLI, test suite with seeded-defect fixtures, in `scpt-kg-tools` | G2, G3, G4 |
-| D-3 | Template repository: vault skeleton (class pages, folders for raw and coded records), an Obsidian page template for every page type, instance configuration (stakeholder-group cardinality cap), pinned tools, the case study (G6) | G5, G6, G9 |
+| D-3 | Template repository: vault skeleton (class pages, folders for raw and coded records), Obsidian page templates for the four record types, instance configuration (stakeholder-group cardinality cap), pinned tools, the case study (G6) | G5, G6, G9 |
 | D-4 | Documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9 |
 | D-5 | Research readouts and decision records: the ontology survey and trade study, and the toolchain spike, with evidence and measurements | G8, G10 |
 | D-6 | Reviewer's guide for the chief engineer, in the release PR. It is sized for a person and split into sittings by output: (1) the end-to-end walkthrough (UA-M below); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
@@ -129,13 +130,15 @@ people in the data are stakeholder **groups**, under the Chatham House rule, so 
 | R-3 | How strict a check is follows the page status, but only for missing fields: a stub needs only identity, type and status, and missing required fields warn on draft and are errors on done *(default)*. Links and relation endpoints are checked at every status. | Tests per status |
 | R-4 | `index` is the only command that rewrites class pages; the stub command is the only one that creates pages; checks never write. | Tests that snapshot the vault before and after each command |
 | R-5 | Speed on a laptop with a 500-page vault: local check < 1 s, neighborhood < 2 s, full < 5 s *(default thresholds)*. | Benchmark script over a synthetic 500-page vault that it generates |
-| R-6 | Fresh clone of the template → one documented setup command → `check --all` passes on the worked example. | Clean-clone trial |
+| R-6 | From a machine with only the documented prerequisites: fresh clone of the template → one documented setup command → `check --all` passes on the worked example. | Clean-clone trial |
 | R-7 | Both repositories commit `uv.lock`; CI runs tests and checks on every push. | CI runs |
-| R-8 | The interactive session has two equal paths: the `scpt` CLI in a terminal, and the Python REPL (`import scpt_kg`). Every operation is available on both, with the same messages, and the docs show both side by side. The CLI is a thin layer over the Python API. | Tests calling both paths; docs test runs both |
-| R-9 | Every command shown in the docs runs as shown, and the CLI reference matches `--help`. | Docs test that extracts and runs the commands; reference diff |
+| R-8 | The interactive session has two equal paths: the Python REPL (`import scpt_kg`) and the `scpt` CLI in a terminal. Every operation is available on both, with the same messages. The docs lead with the REPL and show the CLI
+  equivalent in a tab. The CLI is a thin layer over the Python API. | Tests calling both paths; docs test runs both |
+| R-9 | Every REPL snippet and command shown in the docs runs as shown, and the CLI reference matches `--help`. | Docs test that extracts and runs the snippets and commands; reference diff |
 | R-10 | The docs site has no dead ends or broken links. Every journey page says what you need before you start and where to go next. | Strict build plus link check; the ACE's browser pass over every page, at desktop and phone width |
-| R-11 | **Make the right way the easy way.** The template ships an Obsidian page template for every page type. `scpt` creates entailed pages and regenerates indexes, so users never write that structure by hand. Each journey stage's docs page leads with the one command or action to take next. | A test that every page type has a template file in the template repo; the Haiku testers' reports |
+| R-11 | **Make the right way the easy way: one way to create each kind of page.** Raw and coded scenarios and architectures, which people write in Obsidian, come from Obsidian page templates. Every SCPT and relation page comes from `scpt`: link it from a coded record, then run the stub command, which creates it with the right type. Class pages come from `index`. Users never write that structure by hand. Each journey stage's docs page leads with the one action to take next. | A test that each of the four record types has a template; tests of the stub command; the Haiku testers' reports |
 | R-12 | New repositories are private by default. The docs and the template's README recommend private repositories. Their "create your project" link opens GitHub's new-repository page from the template with private visibility pre-selected; if GitHub can't pre-select it, the docs give the `gh repo create --template … --private` command as the first path. | Probe of the link on the candidate; UA-M |
+| R-13 | The schema has one source. The TBox is authoritative; any other form the checks use (for example pydantic models) is either generated from it or held equal to it by a test. WP2 picks the mechanism. | The generator, or the equality test, in CI |
 
 ## User acceptance
 
@@ -145,10 +148,10 @@ Acceptance is judged by people using the product, not only by tests. The journey
 |---|---|---|
 | J1 Find | lands on the docs site and understands what this is for and how to start | home |
 | J2 Create | on GitHub's web interface, makes a new **private** repository from `scpt-kg-template`, then clones it | getting started |
-| J3 Set up | runs one documented command, gets a working `scpt`, and opens the folder as an Obsidian vault | getting started |
+| J3 Set up | installs the prerequisites from exact commands (uv, and a one-time GitHub sign-in so a private repository can be cloned), runs one setup command, gets a working `scpt_kg`, and opens the folder as an Obsidian vault | getting started |
 | J4 Plan | plans a facilitation event: who comes as actors and who as technologists, the Chatham House framing, stakeholder groups within the cap | planning guide |
 | J5 Capture | during the event, records raw scenarios and raw architectures | the two facilitation guides |
-| J6 Code | afterwards, in an interactive session (the `scpt` CLI in a terminal, or the Python REPL), decompiles the raw notes into SCPT pages and relations: creates stubs, moves pages to draft and done, regenerates the indexes, and fixes each error from its message using local and neighborhood checks | coding guide, CLI reference |
+| J6 Code | afterwards, in an interactive session (the Python REPL, or the `scpt` CLI), decompiles the raw notes into SCPT pages and relations: creates stubs, moves pages to draft and done, regenerates the indexes, and fixes each error from its message using local and neighborhood checks | coding guide, API and CLI reference |
 | J7 Finish | reaches a clean `check --all`, commits and pushes, and navigates the resulting graph in Obsidian | coding guide |
 
 **UA-A, the AI user tests** (run by the team on the candidate, before the chief engineer's walkthrough):
@@ -162,7 +165,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
     docs or the tool, not the user.
 
   Between them, at least one Haiku tester works in the Python REPL and at least one uses the CLI.
-- Each tester starts from the Pages preview URL and follows only what the docs site says. J2 is simulated with
+- Each tester starts on a machine without uv, from the Pages preview URL, and follows only what the docs site says. J2 is simulated with
   `git clone --no-hardlinks` of the template with its remote removed; all other stages run as written. Each tester
   codes a small elicitation in a domain of its own, different from the worked example.
 - Testers may not read `src/` or `tests/`. Every claim comes with pasted command output. Each tester reports, per
@@ -196,7 +199,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
 
 ## Definition of good enough
 
-- R-1 to R-12 met, with evidence.
+- R-1 to R-13 met, with evidence.
 - The AI user tests (UA-A) pass on the candidate.
 - The candidate is staged for the chief engineer's own walkthrough (UA-M), with the reviewer's guide ready.
 - The ontology trade study and the toolchain decision records exist. Every TBox term traces to an adopted ontology
@@ -226,8 +229,6 @@ record above.
   At the release, `v0.1.0` tags that same commit, the site redeploys from `main`, and the template's default branch
   returns to `main`.
 - Amendments to this mission are approved by the same act as the mission.
-- In agile terms, the chief engineer is the product owner, the ACE is the product manager, the PM is the scrum
-  master, and the workers are the team.
 - How the team runs is in `ORG.md`.
 
 ## Timeline
