@@ -355,3 +355,63 @@ Consistency pass (a cold reader and the ACE). Fixed:
   - the header status is updated;
   - a broken table row in R-8 is mended;
   - the README no longer says "once it is merged".
+
+## D-020 | 2026-11-23 | Final pass on the constitutive document; requirements separated from design
+
+Asked by the chief engineer (chat, typed by the ACE): "one last consistency, clarity, cruft, drift pass. this is the
+constitutive doc for the project so weaknesses here could ripple into major issues later". During the pass: "be
+careful not to specify design details. you can provide guidance, but overspecification is also failure mode." And:
+"we rolled back because we had a false start but fortunately our toolchain has affordances that allowed us to catch
+ourselves, refine our mission and then when its approved start again clean".
+
+The review used a cold reader on Opus (the ACE's named reason: this is the constitutive document) and the ACE's own
+read. `MISSION.md` was rewritten in full. Its IDs are kept, because the log refers to them.
+
+**Over-specification removed:**
+- Requirements now state outcomes:
+  - R-1 now names the classes of error and leaves severities to the rule catalogue;
+  - R-3 is "never an error just for being unfinished";
+  - R-4 is "checks never write";
+  - R-11 is "one obvious way to create each kind of page";
+  - R-12 is "private by default".
+- G4 describes operations, not command syntax.
+- D-2 and D-3 no longer list mechanisms.
+- The specific mechanisms moved to a new, non-binding "Design guidance" section that work packages may depart from,
+  with a reason.
+
+**Structural:**
+- The breakdown left the mission for `work-packages/plan.md`, owned by the ACE. The mission keeps only the
+  orderings, so goals no longer cite work-package numbers, and revising the plan no longer needs an amendment.
+- "Intent gap" now has one definition, in the mission, and ORG points to it.
+
+**Gaps closed:**
+- Release steps after the merge are now defined and authorised (tagging, redeploying, restoring the default branch),
+  and the pin rule is simplified.
+- A fix made during user acceptance now moves the pin and reruns CI, R-6 and R-9; the ACE decides whether UA-A
+  reruns.
+- TBox changes during v0.1 have a path: the ACE's call, or an intent gap if the graph's meaning changes.
+- How disagreement is held is now decided at TBox design, so the facilitation research can feed it.
+- The stakeholder-group cap is defined, citing the chief engineer's initial brief, which wasn't previously logged:
+  "stakeholders in the data model are stakeholder groups, essentially clustered down to fit in a cardinality parameter
+  (set per instance)".
+- A link to a missing page is now an error class.
+- The test environment is now buildable: a clean user environment, Obsidian steps checked through the files and
+  covered by UA-M, and macOS as the supported platform *(ACE default)*.
+- The void rule no longer voids clean reports; it voids reports without pasted output.
+- Source locations are given: all four reference repositories are public.
+- R-15's cold read excludes any page that explains the name.
+- "Neighborhood", "open item" and the G6 counts are defined, and OKF is linked.
+- `plan.md` fixes the sequencing: WP5 and WP6 set up their repositories and CI, WP6 is accepted after WP5, and WP7
+  after WP5 and WP6.
+
+**Cruft:**
+- Duplicates removed: the release sequence, "no faces", the defaults list repeating inline defaults, and a
+  maintainability criterion that couldn't be judged.
+- The chief engineer's own constraints (licence, citation, private sources, attribution) moved from the Agent's
+  defaults to Governance.
+- "Core heuristic" became "important heuristic", his word.
+
+**Scenario candidate for the worked example (G6):** the false start, then halt, roll back, refine the mission and
+restart clean. Concerns: staying faithful to intent, and avoiding drift. Affordances: a gated mission, halting before
+anything merges, reverting without losing history, and tags that keep findings available without seeding the
+restart. The stakeholder group is named by role, such as "project leads", under the Chatham House rule.
