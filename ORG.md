@@ -26,7 +26,8 @@ Workers report to the PM, the PM reports to the ACE, and the ACE reports to the 
 - **The PM decides** how a unit is built inside its scope, the order of units, which worker owns which files,
   fixes to defects against a stated requirement, and procedural merge conflicts.
 - **The ACE decides**:
-  - writing and approving every work-package scope and amendment inside `MISSION.md`;
+  - writing and approving every work-package scope, and every work-package scope amendment, inside `MISSION.md`;
+  - keeping `work-packages/plan.md`, the ordered work packages, within the orderings `MISSION.md` sets;
   - a detail a scope leaves open;
   - conflicts between packages over files or order;
   - dependencies (`pyproject.toml` and `uv.lock` are the ACE's);
@@ -36,10 +37,9 @@ Workers report to the PM, the PM reports to the ACE, and the ACE reports to the 
 
   Every such call goes in `decisions/log.md` with its evidence, for the chief engineer's review at acceptance.
 - **The chief engineer decides** two things only: the mission (and its amendments), and acceptance of the delivery,
-  by merging the release PRs. Before then the ACE goes to him only for an **intent gap**: something that contradicts
-  his recorded words, or a trade-off his words don't settle that changes what is built or whether it serves its
-  purpose. He gets one question at a time, with what was tried and a recommendation. His words are quoted verbatim
-  in `decisions/log.md`.
+  by merging the release PRs. Before then the ACE goes to him only for an **intent gap**, as `MISSION.md`
+  (Governance) defines it. He gets one question at a time, with what was tried and a recommendation. His words are
+  quoted verbatim in `decisions/log.md`.
 
 **Escalation** (his words, from tradespace): "don't just stop and complain to me. interrogate and resolve if
 possible, escalate to me only once there is no path forward that you can stand behind." This holds at every level:
@@ -58,8 +58,8 @@ bare problem.
    anyone.
 4. The PM checks that the unit works with the rest, merges it into `dev` and pushes. Nothing waits uncommitted or
    unpushed. A red head on `dev` is fixed forward straight away by the unit that owns it.
-5. The ACE verifies the package independently, accepts it, and revises the breakdown in `MISSION.md` if the package
-   taught something.
+5. The ACE verifies the package independently, accepts it, and revises `work-packages/plan.md` if the package taught
+   something.
 6. When the packages are in, the ACE runs the candidate stage (`MISSION.md`, Governance) and the UA-A rounds to their pass
    bar, writes the reviewer's guide (D-6), and opens the release PRs (`dev` → `main`). The chief engineer then does his
    walkthrough (UA-M). Anything he flags is fixed on `dev`. Only he merges.
@@ -84,8 +84,8 @@ build, quality control, integrate, and review the cascade to a clean merged stat
 - **Tier 0, the author, before each commit:** `uv run ruff check`, `uv run ruff format --check` and `uv lock --check`
   on the changed files, plus the tests mapped to them.
 - **Tier 1, the PM, before pushing to `dev`:** the full suite.
-- **Tier 2, the ACE, at each package acceptance and before the release PRs:** CI green on the exact commit, a
-  clean-clone trial of the template, and a browser pass over every rendered page.
+- **Tier 2, the ACE, at each package acceptance and before the release PRs:** CI green on the exact commit, plus,
+  once they exist, a clean-environment trial of the template and a browser pass over every rendered page.
 
 **Reviews run the thing.** A reviewer runs the CLI on real vaults, opens the docs pages in a browser (desktop and
 375 px), and opens the vault in Obsidian where the unit touches what a reader sees. Screenshots or pasted output go
@@ -95,8 +95,8 @@ does not sign off the rendered part.
 ## Limits
 
 - Nothing outside the two repositories and the session scratchpad is changed.
-- No merge to `main`, no tag and no publishing, except the chief engineer's merges and the candidate stage defined
-  in `MISSION.md` (governance), which the ACE carries out.
+- No merge to `main`, no tag and no publishing, except the chief engineer's merges, and the candidate stage and
+  release steps that `MISSION.md` (Governance) assigns to the ACE.
 - No edit to a test or record that weakens a requirement; a test changes only when its requirement changed by a
   recorded decision.
 - No AI attribution anywhere.

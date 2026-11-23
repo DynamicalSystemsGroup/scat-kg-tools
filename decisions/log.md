@@ -241,3 +241,187 @@ Not changed, because each is as simple as it can be: the candidate stage, the th
 personas.
 Note: `MISSION.md` grew slightly (from about 4,000 to about 4,100 words). R-13, the prerequisites and the
 one-way-per-page rule added more than the trims removed.
+
+## D-017 | 2026-11-23 | Mission Amendment 1: SCAT; scenarios are behavioural, architectures structural; roll back and restart
+
+(D-015 and D-016 were recorded on `dev` and are rolled back with it; see below. This entry is numbered after them so
+no record number is reused.)
+
+New intent from the chief engineer. He shared a stakeholder conversation as intent information; the participants are
+not named in this public record. He also wrote (chat, typed by the ACE): "one thing i noticed is that affordances may
+be better than propeties here. that said, it makes our acronym scat. i think we might as well roll with it. the jazz
+singing should be the reference of record to avoid the feces association."
+
+From the stakeholder conversation, in his words: the work is "scaled to human note taker and focusing on obsidian for
+'coding' data from conversations with the workshop participants. the distinction between actors and technologists is
+somewhat artificial since many people will be both"; "scenarios stories center on behavior ~ chains of events,
+outcomes, consequences, etc"; "architecture stories center on structure ~ arrangements of technologies into tools
+with specific properties (affordances)"; "its just enough structure to make the data interpretable but mostly its a
+formal structure for arranging obsidian notes".
+
+Decided by the chief engineer (pop-up, typed by the ACE): "rename everything. i hope i caught you earlier enough. if
+you are worried about drift you could revert to an earlier commit, make the change in the mission before it
+propogates, and start again. i would also like to add that the clarification about how scenarios are behavioral and
+architectures are structural is an important heuristic.
+- scenarios tell the story of persons within an action situation doing things where outcomes and consequences are
+wraught, its temporal, and technologies are part of the action situation but are not themselves the focus.
+- architectures formulate assemblages they provide structures, they are about parts and wholes, and how parts are
+assembled to provide affordances which address concerns.
+in scenarios that technologies are relatively fix and out of view, the affordances are what are legible
+in architectures the stakeholders are pretty abstracted away and the concerns are what are being addressed. the same
+concerns can arise from different stakeholders and the architectures themselves provide affordances that address
+concerns but cannot presume which stakeholders will adopt their architectures."
+And (chat): "my intuition is we do a roll back and mission revision then kick off again".
+
+Outcome:
+- **Property becomes Affordance.** Addresses is now concern × affordance, and Attributes is now affordance × technology.
+  The acronym is SCAT; scat singing is the reference of record.
+- **Renames:** the repositories become `scat-kg-tools` and `scat-kg-template`, the CLI `scat`, and the Python package
+  `scat_kg`.
+- **New mission section, "Scenarios and architectures",** as a core heuristic. The ACE reading: a coded scenario links
+  stakeholder groups, concerns and affordances, and a coded architecture links concerns, affordances and technologies.
+  This matches the original sketch's Scenarios (s,c,p) and Architectures (c,p,t).
+- **Purpose** adds the human-note-taker scale and "just enough structure".
+- **Rollback:** the WP1/WP2 work in flight was stopped before anything merged. `dev` is reverted to the approved
+  mission (history kept, no force-push), and WP1 and WP2 are re-scoped from this amendment and restarted.
+
+Approval of this amendment: the chief engineer's merge of its PR into `main`.
+
+## D-018 | 2026-11-23 | Amendment 1, continued: improvisational jazz stance; holding disagreement; facilitation research
+
+Directed by the chief engineer (chat, typed by the ACE; one participant's name is replaced with [a stakeholder] in this
+public record): "i want to add a note, mostly for aesthetics/language choice that we're using improvizational jazz
+(scat). we want our facilitation style to involve a lot of \"yes and\"+\"from this perspective\", our model allows us
+(like in ant-rdf) to expose and explore disagreements and frictions, gaps, and dissenting opinions. this means we do
+not need to litigate to agreement in. i want you to include a pass back through the ANT-RDF work and potentially
+ellie's recent grant proposal docs that shes shared with me, and/or the koi and the unicorn blog she and i wrote. that
+research spike feeds the facilitation strategy stuff and importantly an affordance of our approach is that it can hold
+rather than collapse disagreement, and can represent margins of potential conflict. in my discussion with
+[a stakeholder] i noted that secrete police in an authoritarian regime AND an oppressed population in that same
+scenario can share a concern for privacy, anonymity while also being directly in opposition to each others political
+will. one to be free from the others control, and the other to exert it. that's a bit loaded so i'd avoid it as our
+worked example but my point is that we want to capture people stories, and capture peoples proposed architectures. we
+do not want to get into debates about which architecture us correct, or which stories should be the focal point of
+designs."
+
+Outcome in `MISSION.md`:
+- New section, "Facilitation stance: improvisational jazz": "yes, and" and "from this perspective"; the model holds
+  disagreement rather than collapsing it, and represents margins of potential conflict; no litigating to agreement.
+- New non-goal: adjudicating between stories or architectures.
+- G10: WP1 assesses the lightest way for the graph to hold disagreement.
+- New WP3, a facilitation research spike, running in parallel with WP1 and WP2. Its sources, located by the ACE:
+  `ant-rdf`; "KOI & The Unicorn" (blog.block.science); "Building the Loop" (EPIC 2025); and recent unpublished
+  grant drafts from the same collaboration. The later packages are renumbered WP4 to WP8.
+- D-5 and good enough now include the facilitation readout.
+- New default: private sources are read for principles only. The repositories are public, so readouts cite only
+  published work.
+
+The authoritarian-regime illustration is kept out of the worked example, as directed.
+
+## D-019 | 2026-11-23 | Consistency pass on Amendment 1; jazz as the stylistic reference
+
+Asked by the chief engineer (chat, typed by the ACE): "can you do a cruft, drift and consistency pass for me." Then,
+during the pass: "you also seem to be not capturing my requirement that the scat package takes its stylistic
+references from jazz music. that is something we can cold read test for with the docs. even if its handled through
+visual metaphor".
+
+New: R-15. Jazz is the stylistic reference, in language and through visual metaphor, and never at the cost of
+clarity. It is checked by a cold read: the reader names jazz unprompted and finds no instruction obscured. G7 and the
+UA-A reports carry it.
+
+Consistency pass (a cold reader and the ACE). Fixed:
+- **Privacy:** an unpublished grant draft was named with its author and location in WP3 and in this log's D-018
+  outcome; both now read "unpublished grant-proposal drafts".
+- **Holding disagreement:** the facilitation stance promised it, but no goal required it. G1 now requires the TBox to
+  hold it, in the form WP1 decides, at minimum the same concern held by different groups.
+- **Link rules per record type:**
+  - G1 now states them;
+  - R-1 makes a missing required link type an error;
+  - a scenario linking a technology, or an architecture linking a stakeholder group, is a warning that points to the
+    affordance or the concern *(ACE default)*.
+- **Non-adjudication:** it was unchecked. New R-14 requires the guides to carry the stance with no ranking or
+  adjudication step. G6 now excludes politically loaded illustrations.
+- **G7 vs the journey table:** G7's "one page per stage" contradicted the table, which shares some pages between
+  stages. G7 now names the five guide pages.
+- **Traceability:** the facilitation research traced to no goal. New G11 (facilitation strategy) now carries D-4 and
+  D-5.
+- **Duplicates and leftovers:**
+  - the actor/technologist point appeared twice and J4 treated them as separate people; the duplicate is removed and
+    J4 is reworded around sessions;
+  - each UA-A tester now codes at least one scenario and one architecture.
+- **Bookkeeping:**
+  - the Open decisions counts were stale and are recounted;
+  - "log" now prefixes log ids where they sit next to deliverable ids;
+  - the header status is updated;
+  - a broken table row in R-8 is mended;
+  - the README no longer says "once it is merged".
+
+## D-020 | 2026-11-23 | Final pass on the constitutive document; requirements separated from design
+
+Asked by the chief engineer (chat, typed by the ACE): "one last consistency, clarity, cruft, drift pass. this is the
+constitutive doc for the project so weaknesses here could ripple into major issues later". During the pass: "be
+careful not to specify design details. you can provide guidance, but overspecification is also failure mode." And:
+"we rolled back because we had a false start but fortunately our toolchain has affordances that allowed us to catch
+ourselves, refine our mission and then when its approved start again clean".
+
+The review used a cold reader on Opus (the ACE's named reason: this is the constitutive document) and the ACE's own
+read. `MISSION.md` was rewritten in full. Its IDs are kept, because the log refers to them.
+
+**Over-specification removed:**
+- Requirements now state outcomes:
+  - R-1 now names the classes of error and leaves severities to the rule catalogue;
+  - R-3 is "never an error just for being unfinished";
+  - R-4 is "checks never write";
+  - R-11 is "one obvious way to create each kind of page";
+  - R-12 is "private by default".
+- G4 describes operations, not command syntax.
+- D-2 and D-3 no longer list mechanisms.
+- The specific mechanisms moved to a new, non-binding "Design guidance" section that work packages may depart from,
+  with a reason.
+
+**Structural:**
+- The breakdown left the mission for `work-packages/plan.md`, owned by the ACE. The mission keeps only the
+  orderings, so goals no longer cite work-package numbers, and revising the plan no longer needs an amendment.
+- "Intent gap" now has one definition, in the mission, and ORG points to it.
+
+**Gaps closed:**
+- Release steps after the merge are now defined and authorised (tagging, redeploying, restoring the default branch),
+  and the pin rule is simplified.
+- A fix made during user acceptance now moves the pin and reruns CI, R-6 and R-9; the ACE decides whether UA-A
+  reruns.
+- TBox changes during v0.1 have a path: the ACE's call, or an intent gap if the graph's meaning changes.
+- How disagreement is held is now decided at TBox design, so the facilitation research can feed it.
+- The stakeholder-group cap is defined, citing the chief engineer's initial brief, which wasn't previously logged:
+  "stakeholders in the data model are stakeholder groups, essentially clustered down to fit in a cardinality parameter
+  (set per instance)".
+- A link to a missing page is now an error class.
+- The test environment is now buildable: a clean user environment, Obsidian steps checked through the files and
+  covered by UA-M, and macOS as the supported platform *(ACE default)*.
+- The void rule no longer voids clean reports; it voids reports without pasted output.
+- Source locations are given: all four reference repositories are public.
+- R-15's cold read excludes any page that explains the name.
+- "Neighborhood", "open item" and the G6 counts are defined, and OKF is linked.
+- `plan.md` fixes the sequencing: WP5 and WP6 set up their repositories and CI, WP6 is accepted after WP5, and WP7
+  after WP5 and WP6.
+
+**Cruft:**
+- Duplicates removed: the release sequence, "no faces", the defaults list repeating inline defaults, and a
+  maintainability criterion that couldn't be judged.
+- The chief engineer's own constraints (licence, citation, private sources, attribution) moved from the Agent's
+  defaults to Governance.
+- "Core heuristic" became "important heuristic", his word.
+
+**Scenario candidate for the worked example (G6):** the false start, then halt, roll back, refine the mission and
+restart clean. Concerns: staying faithful to intent, and avoiding drift. Affordances: a gated mission, halting before
+anything merges, reverting without losing history, and tags that keep findings available without seeding the
+restart. The stakeholder group is named by role, such as "project leads", under the Chatham House rule.
+
+## D-021 | 2026-11-23 | Platforms
+
+Decided by the chief engineer (chat, typed by the ACE), on the ACE's macOS default: "i am willing to accept this. but
+will need to be clear that does not mean we should do anything we know introduces risks being able to support it on
+linux and windows."
+Outcome: macOS is the supported user platform for v0.1, and CI runs on Linux. The platform rule moves from the Agent's
+defaults to the chief engineer's constraints in Governance: nothing may be built in a way known to put later Linux or
+Windows support at risk. That means no platform-specific paths, shells, line endings or tools in the package, and
+anything unavoidably platform-specific is isolated and recorded.
