@@ -40,6 +40,8 @@
 <https://scat-kg.example/ns> a owl:Ontology ;
     rdfs:label "SCAT ontology" ;
     owl:versionInfo "0.1.0" ;
+    scat:unlistedLinkLevel "error" ;
+    scat:wrongTargetLevel "error" ;
     rdfs:comment "TBox for scat-kg v0.1: four SKOS-based classes, three relations, a conflict relation, five record and page types, and the fields and link rules of each. The IRI base is a placeholder for the ACE to replace." .
 
 ##############################################################################
@@ -202,6 +204,7 @@ scat:ClassPage a owl:Class ;
     scat:verification "authored" ;
     scat:key "class" ;
     scat:pageDescription "A class page: a description of one class and the generated index of its instances." ;
+    scat:carriesStatus false ;
     scat:requiredField scat:field-type, scat:field-title, scat:field-description, scat:field-indexes .
 
 ##############################################################################
@@ -247,7 +250,8 @@ scat:field-indexes a scat:Field ;
     skos:definition "On a class page, the scat:key of the class whose instances it indexes: stakeholder-group, concern, affordance or technology." ;
     scat:authored "See scat:ClassPage." ;
     scat:verification "authored" ;
-    scat:key "indexes" ; scat:requiredFrom scat:stub .
+    scat:key "indexes" ; scat:requiredFrom scat:stub ;
+    scat:valueSet ( "stakeholder-group" "concern" "affordance" "technology" ) .
 
 scat:field-heldby a scat:Field ;
     rdfs:label "heldby" ;
@@ -373,6 +377,21 @@ scat:done a skos:Concept ;
 # Vocabulary used above to state page types and fields
 ##############################################################################
 
+scat:unlistedLinkLevel a owl:AnnotationProperty ;
+    skos:definition "Stated on the ontology: the severity when a page carries a link field that its page type lists in none of required, optional or discouraged fields." ;
+    scat:authored "Puts the link rule in a triple so a tool needs no other file (WP4-R3)." ;
+    scat:verification "authored" .
+
+scat:wrongTargetLevel a owl:AnnotationProperty ;
+    skos:definition "Stated on the ontology: the severity when a link field's target is not a page of the field's scat:targetType; it applies at every status." ;
+    scat:authored "Puts the endpoint rule in a triple so a tool needs no other file (WP4-R3)." ;
+    scat:verification "authored" .
+
+scat:carriesStatus a owl:AnnotationProperty ;
+    skos:definition "Whether pages of this type carry a status. Where it is false, the page has no status field and every required field applies at all times. Where absent, the type carries a status." ;
+    scat:authored "Replaces special-casing class pages in tools (WP4-R3); MISSION G3 says class pages carry none." ;
+    scat:verification "authored" .
+
 scat:key a owl:AnnotationProperty ;
     skos:definition "The text a tool matches on: the slug of a page type (the value of a page's type field), or the frontmatter key of a field." ;
     scat:authored "Needed so tools need no other file for names (R-13)." ;
@@ -419,8 +438,8 @@ scat:requiredFrom a owl:AnnotationProperty ;
     scat:verification "authored" .
 
 scat:valueSet a owl:AnnotationProperty ;
-    skos:definition "The ordered collection of values a field may take." ;
-    scat:authored "Used for status only." ;
+    skos:definition "The ordered list of values a field may take: a skos:OrderedCollection of concepts (status) or an RDF list of literals (indexes)." ;
+    scat:authored "Used for status and indexes." ;
     scat:verification "authored" .
 
 scat:source a owl:AnnotationProperty ;
