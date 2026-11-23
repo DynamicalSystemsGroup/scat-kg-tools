@@ -90,3 +90,11 @@ Decided by the chief engineer (chat, typed by the ACE): "using a cli and assume 
 This confirms the ACE's reading of "terminal/repl" in D-005. The interactive session has two equal paths, the `scpt`
 CLI and the Python REPL. R-8, J6 and UA-M now say so, the docs show both paths side by side, and UA-A covers both
 (at least one Haiku tester on each).
+
+## D-008 | 2026-11-23 | The user pattern, documented
+
+Asked by the chief engineer (chat, typed by the ACE): "document that user pattern".
+Outcome: `MISSION.md` has a new section, "Users and how they work". It describes the facilitator-analyst, who uses the
+GitHub web interface, an Obsidian vault, and an interactive session with the CLI and the Python REPL as equal paths,
+and who follows the docs literally. It also records the actor/technologist roles and the Chatham House stakeholder
+groups. The sources are his statements in this conversation and D-005 to D-007.

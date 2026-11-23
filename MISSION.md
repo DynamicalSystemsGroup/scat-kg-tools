@@ -24,6 +24,22 @@ The point of departure is the toolchain and the Obsidian reading/review experien
 Document Assurance* (INCOSE IS 2026) and the earlier repos `assurances-audits-accountability`, `knowledgecomplex` and
 `ant-rdf`. The structure is simpler than those: no faces, no assurance triangles.
 
+## Users and how they work
+
+The v0.1 user is a facilitator-analyst: technically savvy, but not a software developer. They:
+- navigate GitHub's web interface, including creating a repository from a template;
+- read, write and follow links in an Obsidian vault;
+- work in an **interactive session**, with the `scpt` CLI in a terminal and a Python REPL (`import scpt_kg`) open
+  alongside it. Both are equal paths to the same operations and the same messages. The CLI suits one-off commands; the
+  REPL suits looping over pages while coding.
+- follow documentation literally, step by step. Testers on a small model stand in for this user, so the right way
+  has to be the easy way.
+
+One person may act as an actor in one event and a technologist in another; neither is a role in the data model. The
+people in the data are stakeholder **groups**, under the Chatham House rule, so no individual is identifiable.
+
+Further UX (an Obsidian plugin, gen-AI help, a non-technical path) comes after v0.1.
+
 ## Goals
 
 - **G1. Fixed TBox.** Turtle files define seven ontology classes — Stakeholder group, Concern, Property, Technology,
