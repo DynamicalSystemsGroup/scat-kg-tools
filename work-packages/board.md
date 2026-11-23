@@ -42,10 +42,11 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP4-U1 | ontology designer, sonnet | 5 | 8 | `wp4/u1` | done |  | 2026-11-23T16:25:01-05:00 | rework after D-030 (relations as page types, namespace); 2 push-backs, 3 review passes; about 25 min worker |
 | WP4-U2 | page-contract designer, sonnet | 5 | 8 | `wp4/u2` | done |  | 2026-11-23T16:48:41-05:00 | reworked for D-030 and D-031; 3 push-backs, 3 reviews; spec-heavy |
 | WP4-U3 | rule-catalogue author, sonnet | 5 | 8 | `wp4/u3` | done |  | 2026-11-23T16:53:33-05:00 | reworked for D-030 and D-031; 4 push-backs, 4 reviews; last round checked by PM re-run, cross-read left to U6 |
-| WP4-U4 | technical writer, sonnet | 3 |  | `wp4/u4` | in flight |  |  |  |
-| WP4-U5 | cold-write tester, haiku | 3 |  | `wp4/u5` | in flight |  |  |  |
-| WP4-U6 | cross-check reviewer, sonnet | 3 |  | `wp4/u6` | queued | WP4-U1 to U5 merged |  |  |
-| WP4-U7 | cold-write rerun tester, haiku | 2 |  | `wp4/u7` | queued | only if U5 finds defects |  |  |
+| WP4-U4 | technical writer, sonnet | 3 | 3 | `wp4/u4` | done |  | 2026-11-23T17:03:08-05:00 | first-time pass; independent checker 0 errors; matches estimate |
+| WP4-U5 | cold-write tester, haiku | 3 | 3 | `wp4/u5` | done |  | 2026-11-23T17:03:08-05:00 | 29 conformant pages from the two contracts alone; defects fed to U8; no branch (scratch output) |
+| WP4-U6 | cross-check reviewer, sonnet | 3 | 3 | `wp4/u6` | done |  | 2026-11-23T17:03:08-05:00 | R3, R5, R7, R8 pass; 9 defects found; no branch (read-only) |
+| WP4-U7 | cold-write rerun tester, haiku | 2 |  | `wp4/u7` | queued | WP4-U8 merged |  |  |
+| WP4-U8 | contract fixer (TBox, contracts, catalogue), sonnet | 3 |  | `wp4/u8` | in flight |  |  | unplanned: fixes the 9 defects from U6 and U5; added by PM |
 
 ## Iterations and velocity
 
