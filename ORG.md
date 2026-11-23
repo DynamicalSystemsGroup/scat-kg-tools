@@ -1,63 +1,118 @@
 # How the team runs
 
-This org is deliberately lean. The formal structure is settled and the work is simple, so most questions are
-answered by the ACE, not escalated.
+This follows the tradespace org (`DynamicalSystemsGroup/tradespace`, `work-packages/PM-BRIEF.md`, Nov 2026), made
+leaner. The formal structure here is settled and the work is simple, so the ACE answers most questions and very
+little is escalated.
 
-## Roles
+## The chain
 
-| Role | Who | Does | Never |
-|---|---|---|---|
-| **Chief engineer** | `mzargham` | Approves `MISSION.md` and its amendments; answers escalations; accepts v0.1 | — |
-| **ACE** (assistant to the chief engineer) | The main Claude session | Writes and approves work-package scopes; answers the team's questions; accepts work packages; decides what reaches the chief engineer; keeps `decisions/log.md` | Widens the mission; accepts v0.1 |
-| **PM** | Subagent, `.claude/agents/pm.md` | Process: holds scopes to the scope rules, writes work contracts, provisions workers, takes delivery, holds the merge gate, merges, resolves procedural conflicts | Decides design questions (they go to the ACE) |
-| **Workers** | Subagents the PM instantiates per contract | One SDLC activity each: spike, design, programming, testing, writing, user testing, review | Merge, push, or work outside their blast zone |
+**Chief engineer → ACE → PM → workers to spec.** Workers report to the PM, the PM reports to the ACE, and the ACE
+reports to the chief engineer. No level is skipped.
+
+| Role | Who | Model |
+|---|---|---|
+| **Chief engineer** | `mzargham` | — |
+| **ACE** (assistant to the chief engineer, the driver) | The main Claude session | the main session's model |
+| **PM** | One persistent subagent (`.claude/agents/pm.md`), spawned and managed by the ACE. It is swapped for a fresh PM when it slows or its context grows large. | Sonnet |
+| **Workers** | Fresh subagents the PM instantiates per unit, each with one bounded task: spike, design, build, test, write, user-test, review | Sonnet, or Haiku for mechanical work. Opus only on the ACE's word, for a named reason. |
+
+## Who answers what
+
+- **The PM decides** how a unit is built inside its scope, the order of units, which worker owns which files,
+  fixes to defects against a stated requirement, and procedural merge conflicts.
+- **The ACE decides**:
+  - writing and approving every work-package scope and amendment inside `MISSION.md`;
+  - a detail a scope leaves open;
+  - conflicts between packages over files or order;
+  - dependencies (`pyproject.toml` and `uv.lock` are the ACE's);
+  - whether a reported problem is a defect (fix it) or a question about the bar;
+  - accepting each package on its own independent verification;
+  - running a spike when the evidence for a call is missing.
+
+  Every such call goes in `decisions/log.md` with its evidence, for the chief engineer's review at acceptance.
+- **The chief engineer decides** two things only: the mission (and its amendments), and acceptance of the delivery,
+  by merging the release PRs. Before then the ACE goes to him only for an **intent gap**: something that contradicts
+  his recorded words, or a trade-off his words don't settle that changes what is built or whether it serves its
+  purpose. He gets one question at a time, with what was tried and a recommendation. His words are quoted verbatim
+  in `decisions/log.md`.
+
+**Escalation** (his words, from tradespace): "don't just stop and complain to me. interrogate and resolve if
+possible, escalate to me only once there is no path forward that you can stand behind." This holds at every level:
+find the cause, fix what can be stood behind, record it. Escalate with what was tried and the options left, not the
+bare problem.
 
 ## The loop
 
-1. The ACE writes the next work package's scope (`work-packages/WPn.md`, from the `scope-of-work` template) inside the mission.
-2. The PM checks it against the scope rules (below) and returns PASS or the items to fix. The ACE fixes them and approves it by logging the approval.
-3. The PM splits the package into contracts and provisions a worker for each; the main session launches them.
-4. Workers deliver on their branches. The PM runs the merge gate: an independent review on a different model, re-running the acceptance checks, and a diff that stays inside the blast zone. It then merges into the package branch.
-5. The ACE reviews the package against its scope (`work-acceptance`), accepts it, merges the package branch into `main`, and revises the breakdown in `MISSION.md` if needed.
-6. After WP6, the ACE prepares the v0.1 review and the chief engineer accepts or sends feedback.
+1. The ACE writes a one-page scope for the next work package (`work-packages/WPn.md`, `scope-of-work` shape). The PM
+   checks it against the scope rules below. The ACE approves it and logs the approval.
+2. The PM splits the package into **units**. Each unit has one tight scope and one set of files, and units with
+   disjoint files run in parallel. The PM keeps `work-packages/board.md` current: every unit, its owner, branch and
+   state.
+3. For each unit, a worker builds it in its own worktree. A fresh reviewer then checks it against the requirements
+   by running the stated checks. Defects against a stated requirement are fixed and re-reviewed without asking
+   anyone.
+4. The PM checks that the unit works with the rest, merges it into `dev` and pushes. Nothing waits uncommitted or
+   unpushed. A red head on `dev` is fixed forward straight away by the unit that owns it.
+5. The ACE verifies the package independently, accepts it, and revises the breakdown in `MISSION.md` if the package
+   taught something.
+6. When the candidate is ready, the ACE writes the reviewer's guide (D-6) and opens the release PRs (`dev` → `main`).
+   Only the chief engineer merges them.
 
 ## Scope rules (what the PM enforces)
 
 Each scope must have:
-- one clear, bounded intent;
-- goals and non-goals that don't contradict each other;
+- purpose, goals and non-goals, with no contradictions between them;
 - deliverables at stated paths, each traced to a goal;
-- requirements, each with a check that a reviewer can run;
-- a blast radius (the paths it may touch);
-- a definition of good and a concrete definition of good enough;
+- requirements, each with a check a reviewer can run;
+- a definition of good, and a concrete definition of good enough;
+- a **blast radius**: the files it owns, and nothing else;
 - nothing outside `MISSION.md`.
 
-## Questions and escalation
+Bigger changes (a new mechanism, an ontology change, a new tool) are scoped in stages: spike, decide (the ACE),
+build, quality control, integrate, and review the cascade to a clean merged state.
 
-- A worker's question goes to the PM. The PM answers it if it's procedural; otherwise it goes to the ACE.
-- The ACE answers from `MISSION.md`, the decision log and engineering judgement, and logs the answer.
-- Only an **intent gap** goes to the chief engineer: a question that `MISSION.md` and the chief engineer's recorded statements don't settle, and that changes what is built or whether it serves its purpose. The chief engineer signs off on the mission scope and on the mission's delivery, and on nothing else. Escalations come one at a time, with a recommendation, while other work continues.
+## Verification
 
-## Branches and records
+- **Tier 0, the author, before each commit:** `uv run ruff check`, `uv run ruff format --check` and `uv lock --check`
+  on the changed files, plus the tests mapped to them.
+- **Tier 1, the PM, before pushing to `dev`:** the full suite.
+- **Tier 2, the ACE, at each package acceptance and before the release PRs:** CI green on the exact commit, a
+  clean-clone trial of the template, and a browser pass over every rendered page.
 
-- `main` is the integrated state. No direct edits to `main`, by anyone, ACE included: everything arrives through the merge gate.
-- Each work package works on branch `wp<n>/<slug>`. Each task works on `wp<n>/<slug>/<task>`, in its own worktree outside the repository, created by the PM from a named base.
-- Merges use `--no-ff`. Commits are plain, with no AI co-author trailers.
-- Records:
-  - `work-packages/WPn.md` holds the scope, contracts and review;
-  - `decisions/log.md` holds the ACE's rulings and approvals;
-  - `decisions/adr-*.md` holds toolchain decisions with evidence.
+**Reviews run the thing.** A reviewer runs the CLI on real vaults, opens the docs pages in a browser (desktop and
+375 px), and opens the vault in Obsidian where the unit touches what a reader sees. Screenshots or pasted output go
+in the review record. Reading the code or the Markdown is not a review. A reviewer without a browser says so and
+does not sign off the rendered part.
 
-## Standing rules (lessons from earlier DSG projects)
+## Limits
 
-- Create worktrees explicitly with `git worktree add`. Never rely on default harness isolation; it once started from a stale commit.
-- Pin every worker's model in the launch. Author and reviewer run on different models.
-- Probe before asserting: a claim about a tool holds only once it has been run, and the output is pasted.
-- Never mask a check (`|| true` is banned). Report red as red.
-- Simulated-user tests:
-  - write the persona in the user's own words, not the tool's vocabulary;
-  - use a different domain from the worked example;
-  - use an isolated `git clone --no-hardlinks` with the remote removed;
-  - forbid reading `src/` and `tests/`;
-  - require pasted command output;
-  - count what the user had to guess as defects.
+- Nothing outside the two repositories and the session scratchpad is changed.
+- No merge to `main`, no tag, no deployment, no publishing, except the chief engineer's merges.
+- No edit to a test or record that weakens a requirement; a test changes only when its requirement changed by a
+  recorded decision.
+- No AI attribution anywhere.
+- Stop and report rather than improvise when a step would cross a limit.
+
+## Hygiene
+
+- **Worktrees** are created explicitly (`git worktree add <path> -b <branch> dev`) outside the repository. Each one
+  is removed (`git worktree remove`, then `git worktree prune`) as soon as its unit is pushed.
+- **No scratch** is left in the tree.
+- **The repository holds the present; git holds the history.** A package's spike outputs and raw reports leave the
+  tree when it is accepted, recorded in `work-packages/INDEX.md` with the commits where its scope was approved and
+  its result accepted.
+- **Negative edits are welcome.** Every piece of content must earn its place, including what is already there.
+  When something is stuck, consider removing it before another round of rework.
+- **State lives in files** (the board, the scopes, the log), not in conversation. A PM handover is: this file,
+  `pm.md`, the board with its states true, the log, and the outgoing PM's one-page note. The outgoing PM finishes
+  the units it has in flight and starts nothing new.
+
+## Simulated-user tests
+
+- Write the persona in the user's own words, not the tool's vocabulary.
+- Use a different domain from the worked example. Grep the report for the example's proper nouns; if they appear,
+  the run is void.
+- Give each tester an isolated `git clone --no-hardlinks` with the remote removed.
+- Forbid reading `src/` and `tests/`.
+- Require pasted command output.
+- Count what the tester had to guess as defects, and treat an empty report as suspicious.

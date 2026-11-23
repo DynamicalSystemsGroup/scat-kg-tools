@@ -7,7 +7,7 @@
 | **Assistant to the chief engineer (ACE)** | The main Claude session — manages the team, writes and approves work-package scopes inside this mission, accepts work packages, escalates only what this mission cannot settle |
 | **Repositories** | `scpt-kg-tools` (conformance tools, TBox, docs site; this document lives here) and `scpt-kg-template` (the vault to clone) |
 | **Approval record** | The chief engineer's merge of this document's PR into `main` of `DynamicalSystemsGroup/scpt-kg-tools` (public) |
-| **Acceptance record** | The chief engineer's merge of the v0.1 release into `main` of both repositories, and the `v0.1.0` tags |
+| **Acceptance record** | The chief engineer's merge of the release PR from `dev` into `main` in each repository. The ACE opens these PRs when the candidate is ready, and no one else does. The merge tags `v0.1.0` and deploys the site. |
 
 ## Purpose
 
@@ -18,8 +18,7 @@ Obsidian vault in git. Coding decompiles each scenario and architecture into fou
 **c**oncerns, **p**roperties and **t**echnologies (SCPT) — and relates them through explicit relationships, layered
 as bipartite graphs: stakeholders–concerns, concerns–properties, properties–technologies. The result is a navigable,
 interpretable dataset. That dataset is the data product, and its conformance to a fixed ontology is what makes it
-analysable. The git repository is the data of
-record; the graph is derived from it.
+analysable. The git repository is the data of record; the graph is derived from it.
 
 The point of departure is the toolchain and the Obsidian reading/review experience described in *Formalizing
 Document Assurance* (INCOSE IS 2026) and the earlier repos `assurances-audits-accountability`, `knowledgecomplex` and
@@ -72,9 +71,9 @@ Document Assurance* (INCOSE IS 2026) and the earlier repos `assurances-audits-ac
 | D-1 | TBox in Turtle, in `scpt-kg-tools` | G1 |
 | D-2 | Parser, checks, status, index and stub commands, CLI, test suite with seeded-defect fixtures, in `scpt-kg-tools` | G2, G3, G4 |
 | D-3 | Template repository: vault skeleton (class pages, folders for raw and coded records), instance configuration (stakeholder-group cardinality cap), pinned tools, worked example | G5, G6 |
-| D-4 | Documentation site on GitHub Pages | G7 |
+| D-4 | Documentation site, staged locally during the work and deployed to GitHub Pages by the release merge | G7 |
 | D-5 | Decision records for the toolchain spike, with measurements | G8 |
-| D-6 | v0.1 review report for the chief engineer | all |
+| D-6 | Reviewer's guide for the chief engineer, in the release PR. It is sized for a person and split into sittings by output (tools and checks; template and worked example; docs site; the ACE's calls). Each sitting has a short checklist and its own local entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
 
 ## Requirements
 
@@ -99,10 +98,11 @@ Document Assurance* (INCOSE IS 2026) and the earlier repos `assurances-audits-ac
 
 - R-1 to R-7 met, with evidence.
 - A simulated-user test passes: a cold agent with a technically savvy persona and an isolated clone of the template,
-  following only the published docs, codes a small elicitation in a different domain from the worked example and
+  following only the staged docs site, codes a small elicitation in a different domain from the worked example and
   reaches a clean `check --all`. Its report is pasted; what it had to guess is counted as defects and fixed or
   dispositioned.
-- The documentation site is published and covers the whole journey.
+- The documentation site builds strictly, covers the whole journey, and has had the ACE's browser pass on every page
+  (desktop and phone width), with findings fixed or listed. It deploys on the release merge.
 - The spike's decision records exist.
 
 ## Definition of done
@@ -119,6 +119,10 @@ record above.
 - The ACE escalates only an **intent gap**: a question whose answer this mission and the chief engineer's recorded
   statements don't settle, and that changes what is built or whether it serves its purpose. Escalations come one at a time,
   with a recommendation, and other work continues meanwhile.
+- The ACE runs a spike wherever the evidence for a call is missing. Every call the ACE makes is recorded with its
+  evidence for the chief engineer's review at acceptance; reversing any of them is his prerogative.
+- Until the release PR, nothing is merged to `main`, tagged, deployed or published. The only exception is this
+  mission's own approval and its amendments.
 - Amendments to this mission are approved by the same act as the mission.
 - How the team runs is in `ORG.md`.
 
@@ -141,12 +145,15 @@ record above.
 - Facilitation and coding guides are written once, on the Pages site; the template links to them rather than copying them.
 - Status strictness (R-3) and speed thresholds (R-5) as stated above.
 - Documentation built with MkDocs Material (as in `assurances-audits-accountability` and `knowledgecomplex`).
-- CI on GitHub Actions, ubuntu-latest; development on macOS.
-- Licences: Apache-2.0 for code, CC-BY-4.0 for docs and the ontology.
+- CI on GitHub Actions, ubuntu-latest; development on macOS. `.python-version` (3.12) and `uv.lock` are committed; CI runs
+  `uv sync --locked`, `uv lock --check`, ruff check and format, and pytest.
+- Branches: `main` holds approved missions and releases only; `dev` is the integration branch; work happens on
+  short-lived unit branches off `dev`.
+- Licence: MIT, copyright Dynamical Systems Group, for code, docs and ontology. This follows the tradespace precedent (`WP8-decisions.md` there).
 - Worked example domain: a city bike-share scheme. It's familiar, has clear stakeholder groups (riders, city transport
   office, operator), and gives obvious stories of things going wrong and right. It differs from any DSG project domain.
 - The stakeholder-group cap is set in the template's configuration file, with the demo set to 3.
-- Commits carry no AI co-author trailers.
+- No AI attribution on commits, PRs or documents; CI fails on attribution lines, as in tradespace.
 
 ## Open decisions (for the chief engineer)
 

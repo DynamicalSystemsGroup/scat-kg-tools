@@ -26,3 +26,27 @@ into those 4 concepts and interrelating them through explicitly relationships (l
 result is a navigable, interpretable dataset."
 Outcome: the repositories are renamed throughout, and `MISSION.md` Purpose carries this framing. ACE default: the CLI
 command is `scpt`.
+
+## D-004 | 2026-11-23 | Spot check against tradespace
+
+Asked by the chief engineer (chat, typed by the ACE): "tradespace, rather than toaster was the example i was thinking
+of. can you spot check against that one before i review the PR. revise if needed" and "you may need to look at its git
+history".
+ACE revisions after reading tradespace's `AGENTS.md`, `GOVERNANCE.md`, `work-packages/PM-BRIEF.md` and, from its
+history, the WP0 setup (`42813502`, `727af775`), the autonomous phase (`e8bb13cf`) and the 0.1 mandate (`85574ded`):
+- Branches: `dev` integrates and `main` holds releases only. Acceptance is the chief engineer's merge of the release PR
+  `dev` → `main`, which the ACE opens. Before this revision the ACE merged packages into `main`, which would have left
+  the acceptance merge with nothing to accept.
+- The chain is chief engineer → ACE → one persistent PM → fresh workers, with no level skipped. The PM spawns its own
+  workers and is swapped for a fresh one through a file-based handover.
+- Who answers what, the escalation rule (quoted from tradespace), and the ACE's calls recorded with evidence for review
+  at acceptance.
+- Verification in tiers, reviews that run the thing (browser and Obsidian), parallel units with disjoint files, commit
+  and push to `dev` as soon as a unit is done, worktree hygiene, negative edits, state in files.
+- Models by role: workers on Sonnet or Haiku, Opus only on the ACE's word. Dropped the toaster rule that author and
+  reviewer must run on different models; tradespace requires a fresh context instead.
+- Nothing is deployed, tagged or published before the release merge. The docs site is staged locally, and the
+  simulated-user test reads the staged site.
+- D-6 is a reviewer's guide in sittings by output, listing every ACE call (as in tradespace's 0.1 hand-off).
+- Defaults: MIT, copyright DSG (the tradespace precedent); `.python-version` 3.12, ruff and `uv lock --check` in CI;
+  CI fails on attribution lines.
