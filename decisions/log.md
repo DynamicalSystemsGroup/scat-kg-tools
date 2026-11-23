@@ -501,3 +501,15 @@ Outcome:
 - From 3 iterations onwards *(ACE default)*, they add an exponentially weighted moving average,
   v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(ACE default)*, so recent iterations carry the weight.
 - A forecast appears only once the smoothed velocity exists.
+
+## D-027 | 2026-11-23 | A JSON log of the planning data
+
+Requested by the chief engineer (chat, typed by the ACE): "keep a json log of this data so i can review it myself in
+a python notebook without disrupting your flow".
+Outcome:
+- `work-packages/metrics.jsonl` is an append-only JSON Lines log with two record kinds: a `unit` record for every unit
+  state change, with estimated and realized points, and an `iteration` record for every iteration close, with raw
+  velocity.
+- `work-packages/metrics.md` documents the schema and a one-line pandas read.
+- The PM is the only writer, which keeps appends conflict-free. Derived figures (the smoothed velocity and the
+  forecast) are not stored, so the log holds only observations *(ACE default)*.
