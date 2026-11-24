@@ -119,7 +119,7 @@ under it (the chief engineer's initial brief).
   each raw and coded. Its stakeholder groups follow the Chatham House rule like any others: no group stands for one
   identifiable person. It avoids politically loaded illustrations. It doubles as the test fixture and the
   documentation example.
-- **G7. Documentation on GitHub Pages**, from `scat-kg-tools` and styled after jazz (R-15). It has a page for each
+- **G7. Documentation on GitHub Pages**, from `scat-kg-tools`, with a light musical reference (R-15). It has a page for each
   stage of the journey: getting started, a planning guide, a scenario facilitation guide, an architecture facilitation
   guide and a coding guide. It also has a reference for the Python API and the CLI.
 - **G8. Toolchain decided by evidence.** The candidates are tried on a small vault and measured before the
@@ -154,7 +154,7 @@ under it (the chief engineer's initial brief).
 
 ## Non-goals
 
-- Gen-AI aided authoring, and an Obsidian plugin (the operations should be wrappable by one later).
+- Gen-AI aided authoring. An Obsidian plugin is explored on a feature branch (log D-054) and delivered, if at all, in a later package.
 - Faces or triangles of any kind, including ones inferred from scenarios and architectures.
 - Letting instance repositories extend the TBox, and evolving the TBox after v0.1.
 - Enforcing links from raw records to their coded pages beyond a warning.
@@ -164,7 +164,7 @@ under it (the chief engineer's initial brief).
   extension. How raw notes are taken is the facilitator's call, and the guides explain the rule.
 - Adjudicating between stories or architectures. Neither the tools nor the guides judge which architecture is correct
   or which stories should be focal.
-- Analysis tooling over the graph.
+- Analysis tooling over the graph, which is explored on a feature branch (log D-054) and delivered, if at all, in a later package.
 - Publishing to PyPI.
 - A path for users who don't use a terminal or REPL.
 
@@ -186,7 +186,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 
 | ID | Requirement | Checked by |
 |---|---|---|
-| R-1 | Conformance problems are graded: errors block and warnings don't. Errors cover the ontology's constraints (required fields and types, relation endpoints, the linking rules), the stakeholder-group cap, valid status, and links to pages that don't exist. The rule catalogue gives every rule an id and a severity. | Seeded-defect tests, at least one per rule |
+| R-1 | Conformance checks structure, never content: types, fields, links, names, status, the cap and index freshness. What the content says (tensions, matches, gaps) is for analysis, after conformance passes and the coder signs off the content (log D-052). Conformance problems are graded: errors block and warnings don't. Errors cover the ontology's constraints (required fields and types, relation endpoints, the linking rules), the stakeholder-group cap, valid status, and links to pages that don't exist. The rule catalogue gives every rule an id and a severity. | Seeded-defect tests, at least one per rule |
 | R-2 | Every message names the file, the field or link, and the rule broken (by id). It gives the fix as something a literal reader can apply: an exact command to run, or an exact field and value to write. | Golden-output tests on the seeded defects |
 | R-3 | An unfinished page is never an error just for being unfinished. The full contract applies when a page is `done`. Links and relation endpoints are checked at every status. | Tests per status |
 | R-4 | Checks never write to the vault. Every write is an explicit operation (index, stub, set status). | Tests that snapshot the vault before and after each operation |
@@ -200,7 +200,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-12 | Repositories made from the template are private by default, and the docs and the template's README recommend private repositories. | A probe of the documented creation path on the candidate; UA-M |
 | R-13 | The schema has one source. The TBox is authoritative; any other form the tools use is generated from it or held equal to it by a test. | The generator or the equality test, in CI |
 | R-14 | The planning and facilitation guides carry the improvisational stance ("yes, and"; "from this perspective"). They contain no step that ranks, votes on or adjudicates between stories or architectures. | The ACE's review of the guides; UA-M |
-| R-15 | **Jazz is the stylistic reference.** The package and its docs take their style from jazz music, in language and through visual metaphor, as a light touch that never costs clarity. | A cold read: a fresh reader of the docs pages, other than any page that explains the name, is asked openly what style or reference they evoke and names jazz or improvised music unprompted; the same reader reports no place where the metaphor obscured an instruction |
+| R-15 | **A light musical reference, clarity first.** The package and its docs carry the music-note logo and one brief aside on improvisation, where the "yes, and" stance is introduced. Everywhere else, plain words win over any musical reference. | The chief engineer's judgement in UA-M (log D-052) |
 
 ## User acceptance
 
@@ -234,7 +234,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
   - Each tester codes a small elicitation in a domain of its own, different from the worked example: at least one
     scenario and one architecture, each raw and coded.
 - **Reporting.** Testers may not read `src/` or `tests/`, and every claim comes with pasted output. A report first
-  answers what style or reference the docs evoke (R-15). Then, stage by stage, it says where the tester got stuck,
+  answers what style or reference the docs evoke. Then, stage by stage, it says where the tester got stuck,
   what it had to guess, and where the docs left it with nowhere to go.
 - **Pass bar.** Every tester, the Haiku testers included, reaches J7 with a clean check. Every guess (any action the
   docs did not literally state) counts as a finding. A finding is **blocking** if it stopped the tester short of J7,
