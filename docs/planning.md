@@ -36,7 +36,7 @@ person may tell a story in one session and pitch a design in the other, speaking
 
 Neither kind is the "real" one. The order you run them in is a choice about the day. It says nothing about which matters more.
 
-Take past and future at separate times too. Run one session or block for what has happened and another for what could or will happen, each with its own pass of the scenarios and architectures facilitation. The [phrase list](facilitate-scenarios.md#past-or-future-one-at-a-time) shows how to tell them apart.
+Take past and future at separate times too. Run one session or block for what has happened and another for what could or will happen, each with its own block of scenarios and architectures. The [phrase list](facilitate-scenarios.md#past-or-future-one-at-a-time) shows how to tell them apart.
 
 ## Stakeholder groups and the cap
 

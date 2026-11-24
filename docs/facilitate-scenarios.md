@@ -39,7 +39,7 @@ Each raw page carries a `timeframe:` line: `past`, `future` or `mixed`. The rule
 | Behavioural (scenarios) | what people did | what people could do or will do |
 | Structural (architectures) | a system that exists (baseline) | a system that is proposed (target) |
 
-People mix the two freely, so lead them to one at a time: take stories of what has happened in one block, and what could or will happen in another. If the other time comes up early, write it down on the page for its own block, say "let's hold that for its block", and return to it then.
+People mix the two freely, so lead them to one at a time: take stories of what has happened in one block, and what could or will happen in another. If the other time comes up early, jot it on a scrap or the board, carry it into that block's own page, say "let's hold that for its block", and return to it then.
 
 ### Scenario phrases
 
@@ -49,7 +49,7 @@ People mix the two freely, so lead them to one at a time: take stories of what h
 | "We always check the sheet on Mondays." | past | A habit is real. |
 | "We usually run out of drills by noon." | past | Usual means it has happened. |
 | "When someone would bring a drill back late, we chase it." | past | A habit, though it says "would". |
-| "The sheet shows who has what." | past | Present tense, but it really exists. |
+| "People can see who has what on the sheet." | past | Present tense, but it really exists. |
 | "What would happen if we lent drills overnight?" | future | A counterfactual is not yet real. |
 | "If we had a second desk, queues would shrink." | future | A counterfactual, though it says "had". |
 | "We are trialling weekly checks." | future | Under way, but not yet realized. What already happened in it is a separate past account. |
@@ -62,13 +62,13 @@ The non-obvious ones are the habit with "would", the present-tense line, the cou
 
 ### Architecture phrases
 
-For an architecture, past is the baseline: what exists, as is. Future is the target: what is proposed, to be.
+For an architecture, past is the baseline: what exists, or once existed. Future is the target: what is proposed, to be.
 
 | Phrase | Mark | Why |
 |---|---|---|
 | "The desk uses a paper sheet and a shelf label." | past | It exists: baseline. |
 | "The sheet records who has what." | past | Present tense, but it exists: baseline. |
-| "We tried a spreadsheet once and dropped it." | past | Past, but not part of today's baseline. |
+| "We tried a spreadsheet once and dropped it." | past | Past: it really happened, though it is no longer in use. |
 | "We want an app that texts borrowers." | future | Proposed: target. |
 | "The new app will replace the sheet." | future | Proposed: target. |
 | "We are building the app, but it is not live." | future | Under way, not yet real. |
@@ -77,7 +77,7 @@ For an architecture, past is the baseline: what exists, as is. Future is the tar
 
 The non-obvious ones are the present-tense line, the dropped spreadsheet, the app under way and the counterfactual.
 
-Use `mixed` for a scenario or an architecture when an account blurs the two and you cannot cleanly separate them, for example "it never worked, so we hope the new one will". It is the honest record, not a failure. Lead people to one time first; use `mixed` only when the account itself still blurs them. `scat stub` leaves the `timeframe:` line for the author to fill in on the raw page.
+Use `mixed` when an account blurs the two and you cannot cleanly separate them, for example "it never worked, so we hope the new one will". It is the honest record, not a failure. For a scenario, lead people to one time first and use `mixed` only when the account itself still blurs them. For an architecture it is the normal mark when one account describes what exists and what is proposed, and they hang together. `scat stub` leaves the `timeframe:` line for the author to fill in on the raw page.
 
 ## The stages
 
