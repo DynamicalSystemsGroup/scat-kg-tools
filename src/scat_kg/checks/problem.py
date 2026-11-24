@@ -2,6 +2,8 @@
 
 from dataclasses import dataclass, replace
 
+from scat_kg.fix import Fix
+
 # Every rule in the catalogue and its severity (section 3). SCAT-INDEX-STALE is listed so the id is known
 # and its severity is fixed, but no check function is registered for it yet (see registry.DEFERRED).
 SEVERITY = {
@@ -43,11 +45,21 @@ class Problem:
     file: str  # the catalogue's <file>: vault-relative, `/` separators (or `scat.toml`)
     where: str  # "field `x`", "link [[t]]", "fields `a` and `b`", "frontmatter", "text `...`"
     what: str  # what is wrong
-    fix: str  # the whole fix block, from "Fix" on; continuation lines are indented relative to it
+    fix: str  # the whole fix block, from "Fix" on; always the text of `fix_data`
     line: int | None = None
     column: int | None = None
     order: tuple = ()  # (file position of the key, target, field): the tail of the sort key
     repeat: int = 1  # how many identical messages this one stands for
+    fix_data: Fix | None = None  # the fix as data; None builds `Fix.legacy(fix)` from the string
+    field: str | None = (
+        None  # the front-matter field the problem is about; None for a link, name, etc.
+    )
+
+    def __post_init__(self):
+        if self.fix_data is None:
+            object.__setattr__(self, "fix_data", Fix.legacy(self.fix))
+        else:
+            object.__setattr__(self, "fix", self.fix_data.render())
 
     @property
     def elements(self) -> tuple[str, str, str, str]:
@@ -73,6 +85,21 @@ class Problem:
         again = f" (x{self.repeat})" if self.repeat > 1 else ""
         head = f"{self.severity} [{self.rule}] {loc} {self.where}: {self.what}{again}"
         return head + "\n" + "\n".join("  " + ln for ln in self.fix.split("\n"))
+
+    def to_dict(self) -> dict:
+        return {
+            "rule": self.rule,
+            "severity": self.severity,
+            "file": self.file,
+            "line": self.line,
+            "column": self.column,
+            "field": self.field,
+            "where": self.where,
+            "what": self.what,
+            "repeat": self.repeat,
+            "fix": self.fix_data.to_dict(),
+            "text": self.render(),
+        }
 
 
 def finalize(problems: list[Problem]) -> tuple[Problem, ...]:

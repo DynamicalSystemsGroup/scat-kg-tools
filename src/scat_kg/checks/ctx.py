@@ -6,6 +6,7 @@ from collections.abc import Callable
 
 from scat_kg.checks.problem import SEVERITY, Problem
 from scat_kg.checks.text import LINK_ITEM
+from scat_kg.fix import Fix
 from scat_kg.tbox import TBOX
 from scat_kg.vault import Link, Page, Vault
 
@@ -58,16 +59,28 @@ class Ctx:
         file: str,
         where: str,
         what: str,
-        fix: str,
+        fix: str | Fix,
         *,
         line: int | None = None,
         column: int | None = None,
         pos: int = 0,
         target: str = "",
-        field: str = "",
+        field: str = "",  # a sort-key tail, not the field the problem is about (that is `on`)
+        on: str | None = None,  # the front-matter field the problem is about
     ) -> Problem:
+        data = Fix.legacy(fix) if isinstance(fix, str) else fix
         return Problem(
-            rule, SEVERITY[rule], file, where, what, fix, line, column, (pos, target, field)
+            rule,
+            SEVERITY[rule],
+            file,
+            where,
+            what,
+            data.render(),
+            line,
+            column,
+            (pos, target, field),
+            fix_data=data,
+            field=on,
         )
 
     # pages
