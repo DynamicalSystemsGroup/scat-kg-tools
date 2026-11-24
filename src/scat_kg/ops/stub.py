@@ -20,7 +20,6 @@ from scat_kg.tbox import TBOX
 from scat_kg.vault import Vault
 
 GROUP = "stakeholder-group"
-_VERBS = {"heldby": "holds", "addresses": "addresses", "attributes": "attributed to"}
 _OPPOSITE = {"raw": "coded", "coded": "raw"}
 
 
@@ -308,7 +307,7 @@ def stub_pair(relation: str, endpoint_a: str, endpoint_b: str, *, root: str | Pa
     if refusals:
         return Result(op, refused=tuple(refusals))
     taken = taken_names(vault) | {n for _, n in new}
-    title = f"{titles[endpoint_a]} {_VERBS[relation]} {titles[endpoint_b]}"
+    title = f"{titles[endpoint_a]} {TBOX.page_types[relation].verb} {titles[endpoint_b]}"
     page_name = derive_name(title, taken)
     if page_name is None:
         return refused(

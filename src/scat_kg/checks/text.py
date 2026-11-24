@@ -4,39 +4,17 @@ import difflib
 import re
 import unicodedata
 
+from scat_kg.tbox import TBOX
+
+# Contract section 8, read from the TBox: class page name -> `indexes` value, and the default title of each.
+CLASS_PAGES = {n: c.indexes for n, c in TBOX.class_pages.items()}
+CLASS_TITLES = {n: c.title for n, c in TBOX.class_pages.items()}
 RESERVED = frozenset(
     {"con", "prn", "aux", "nul"}
     | {f"com{i}" for i in range(10)}
     | {f"lpt{i}" for i in range(10)}
-    | {
-        "stakeholder-groups",
-        "concerns",
-        "affordances",
-        "technologies",
-        "heldby-pairs",
-        "addresses-pairs",
-        "attributes-pairs",
-    }
+    | set(CLASS_PAGES)
 )
-# Contract section 8: class page name -> `indexes` value, and the default title of each.
-CLASS_PAGES = {
-    "stakeholder-groups": "stakeholder-group",
-    "concerns": "concern",
-    "affordances": "affordance",
-    "technologies": "technology",
-    "heldby-pairs": "heldby",
-    "addresses-pairs": "addresses",
-    "attributes-pairs": "attributes",
-}
-CLASS_TITLES = {
-    "stakeholder-groups": "Stakeholder groups",
-    "concerns": "Concerns",
-    "affordances": "Affordances",
-    "technologies": "Technologies",
-    "heldby-pairs": "Heldby",
-    "addresses-pairs": "Addresses",
-    "attributes-pairs": "Attributes",
-}
 LINK_ITEM = re.compile(r"\[\[([^\[\]|#^\n]+)\]\]")  # exactly `[[page-name]]`
 
 

@@ -235,15 +235,16 @@ The contract's table (section 8) maps `stakeholder-groups` to `stakeholder-group
 
 ### SCAT-FM-TYPE
 - **Severity:** error. **Fires:** every status.
-- **Trigger:** `type` is present, is a string, and is not one of the twelve page-type keys.
+- **Trigger:** `type` is present, is a string, and is not one of the twelve page-type keys; or `type` is present but empty (null or blank), which is likewise not one of the twelve (log D-035 ruling 3).
 - **Message:**
 ```
 error [SCAT-FM-TYPE] <file> field `type`: `<value>` is not a page type
   Fix: change it to `type: <near match>`            (when a near match among the twelve keys exists)
   Fix, choose the one that describes this page: `type: <key>` ...    (otherwise, one numbered line per key of the twelve, each with its `scat:pageDescription`, in alphabetical order)
 ```
+- **Empty `type`:** the message reads `the value is empty, which is not a page type` in place of `` `<value>` is not a page type``, and there is no near match, so the list is given.
 - **Fix kind:** options (exact when the near match exists).
-- **Test:** `type: Concern` (near match `concern`, exact) and `type: gadget` (list). Links to this page from other pages give no endpoint error (cascade guard). A file with no `type` at all is not a page (see SCAT-FM-PARSE and SCAT-LINK-DANGLING).
+- **Test:** `type: Concern` (near match `concern`, exact) and `type: gadget` (list). Links to this page from other pages give no endpoint error (cascade guard). `type:` with no value, or `type: ""`, is the empty case, once, with the list. A file with no `type` at all is not a page (see SCAT-FM-PARSE and SCAT-LINK-DANGLING).
 
 ### SCAT-FM-REQUIRED-LINK
 - **Severity:** error. **Fires:** every status.
@@ -559,7 +560,7 @@ warning [SCAT-RAW-UNCODED] <file> field `coded`: status is done but no coded pag
 
 ### SCAT-INDEX-STALE
 - **Severity:** warning. **Fires:** every status. Class pages and the vault.
-- **Trigger:** a class page is missing for one of the seven classes, or has no well-formed start-then-end marker pair (the first such pair is the region; extra marker lines after it are not stale), or the text between the markers differs from what `index` would write from the instance pages (contract section 8: rows, columns, order). The check compares and never writes.
+- **Trigger:** a class page is missing for one of the seven classes, or has no well-formed start-then-end marker pair (the region is the first end marker that has a start marker before it, paired with the nearest start marker before it; extra marker lines outside that pair are not stale), or the text between the markers differs from what `index` would write from the instance pages (contract section 8: rows, columns, order). The check compares and never writes.
 - **Message:**
 ```
 warning [SCAT-INDEX-STALE] <file> index table: <the page is missing | no well-formed marker pair | the table differs from the <type-key> pages>

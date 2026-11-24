@@ -160,6 +160,7 @@ scat:Heldby a owl:Class ;
     scat:pageDescription "A Heldby page: which group holds which concern, with notes on that pair." ;
     scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description, scat:field-group, scat:field-concern ;
     scat:optionalField scat:field-notes ;
+    scat:verb "holds" ;
     scat:endpointOrder ( scat:field-group scat:field-concern ) .
 
 scat:Addresses a owl:Class ;
@@ -171,6 +172,7 @@ scat:Addresses a owl:Class ;
     scat:pageDescription "An Addresses page: which concern an affordance addresses, with notes on that pair." ;
     scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description, scat:field-concern, scat:field-affordance ;
     scat:optionalField scat:field-notes ;
+    scat:verb "addresses" ;
     scat:endpointOrder ( scat:field-concern scat:field-affordance ) .
 
 scat:Attributes a owl:Class ;
@@ -182,7 +184,94 @@ scat:Attributes a owl:Class ;
     scat:pageDescription "An Attributes page: which technology an affordance is attributed to, with notes on that pair." ;
     scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description, scat:field-affordance, scat:field-technology ;
     scat:optionalField scat:field-notes ;
+    scat:verb "attributed to" ;
     scat:endpointOrder ( scat:field-affordance scat:field-technology ) .
+
+##############################################################################
+# The seven class pages: names, indexes values and default titles (contract section 8).
+# Not page types (they carry no scat:key): one named page each, read by the tools from here (R-13).
+##############################################################################
+
+scat:classpage-stakeholder-groups a scat:ClassPageName ;
+    rdfs:label "stakeholder-groups" ;
+    skos:definition "The name of the class page that indexes the stakeholder-group pages. The name is reserved: no other page may take it." ;
+    scat:authored "Contract section 8 table, moved into the TBox so no tool keeps a copy (log D-035 ruling 2)." ;
+    scat:verification "authored" ;
+    scat:indexesKey "stakeholder-group" ;
+    scat:defaultTitle "Stakeholder groups" .
+
+scat:classpage-concerns a scat:ClassPageName ;
+    rdfs:label "concerns" ;
+    skos:definition "The name of the class page that indexes the concern pages. The name is reserved: no other page may take it." ;
+    scat:authored "Contract section 8 table, moved into the TBox so no tool keeps a copy (log D-035 ruling 2)." ;
+    scat:verification "authored" ;
+    scat:indexesKey "concern" ;
+    scat:defaultTitle "Concerns" .
+
+scat:classpage-affordances a scat:ClassPageName ;
+    rdfs:label "affordances" ;
+    skos:definition "The name of the class page that indexes the affordance pages. The name is reserved: no other page may take it." ;
+    scat:authored "Contract section 8 table, moved into the TBox so no tool keeps a copy (log D-035 ruling 2)." ;
+    scat:verification "authored" ;
+    scat:indexesKey "affordance" ;
+    scat:defaultTitle "Affordances" .
+
+scat:classpage-technologies a scat:ClassPageName ;
+    rdfs:label "technologies" ;
+    skos:definition "The name of the class page that indexes the technology pages. The name is reserved: no other page may take it." ;
+    scat:authored "Contract section 8 table, moved into the TBox so no tool keeps a copy (log D-035 ruling 2)." ;
+    scat:verification "authored" ;
+    scat:indexesKey "technology" ;
+    scat:defaultTitle "Technologies" .
+
+scat:classpage-heldby-pairs a scat:ClassPageName ;
+    rdfs:label "heldby-pairs" ;
+    skos:definition "The name of the class page that indexes the heldby pages. The name is reserved: no other page may take it." ;
+    scat:authored "Contract section 8 table, moved into the TBox so no tool keeps a copy (log D-035 ruling 2)." ;
+    scat:verification "authored" ;
+    scat:indexesKey "heldby" ;
+    scat:defaultTitle "Heldby" .
+
+scat:classpage-addresses-pairs a scat:ClassPageName ;
+    rdfs:label "addresses-pairs" ;
+    skos:definition "The name of the class page that indexes the addresses pages. The name is reserved: no other page may take it." ;
+    scat:authored "Contract section 8 table, moved into the TBox so no tool keeps a copy (log D-035 ruling 2)." ;
+    scat:verification "authored" ;
+    scat:indexesKey "addresses" ;
+    scat:defaultTitle "Addresses" .
+
+scat:classpage-attributes-pairs a scat:ClassPageName ;
+    rdfs:label "attributes-pairs" ;
+    skos:definition "The name of the class page that indexes the attributes pages. The name is reserved: no other page may take it." ;
+    scat:authored "Contract section 8 table, moved into the TBox so no tool keeps a copy (log D-035 ruling 2)." ;
+    scat:verification "authored" ;
+    scat:indexesKey "attributes" ;
+    scat:defaultTitle "Attributes" .
+
+##############################################################################
+# Vocabulary for the terms above
+##############################################################################
+
+scat:ClassPageName a owl:Class ;
+    rdfs:label "Class page name" ;
+    skos:definition "One of the seven reserved names of class pages. Its rdfs:label is the page name; scat:indexesKey is the page type it indexes; scat:defaultTitle is the title a tool gives a class page it creates." ;
+    scat:authored "Carries the section 8 table as data (log D-035 ruling 2, R-13). Deliberately not a page type, so it has no scat:key." ;
+    scat:verification "authored" .
+
+scat:indexesKey a owl:AnnotationProperty ;
+    skos:definition "On a class page name: the slug of the page type whose pages its table lists, the value of the class page's indexes field." ;
+    scat:authored "Log D-035 ruling 2." ;
+    scat:verification "authored" .
+
+scat:defaultTitle a owl:AnnotationProperty ;
+    skos:definition "On a class page name: the title a tool writes when it creates that class page." ;
+    scat:authored "Log D-035 ruling 2." ;
+    scat:verification "authored" .
+
+scat:verb a owl:AnnotationProperty ;
+    skos:definition "On a relation page type: the verb that joins the two endpoint titles in the title of a relation page's stub (first endpoint, verb, second endpoint)." ;
+    scat:authored "Contract section 5 gave the verbs in prose; log D-035 ruling 2 moves them into the TBox." ;
+    scat:verification "authored" .
 
 ##############################################################################
 # Record and class page types
