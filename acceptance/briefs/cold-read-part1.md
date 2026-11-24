@@ -1,7 +1,7 @@
-# Brief: cold read of the documentation (R-15 check)
+# Brief, part 1: cold read of the documentation (R-15 check)
 
 You are a fresh reader. You have not seen this project, and you are not expected to know it. You are given the
-documentation pages, and a few questions.
+documentation pages, and a question.
 
 ## What you read
 
@@ -13,18 +13,12 @@ documentation pages, and a few questions.
 - Do not read the project's source folders, its decision log, or anything but the documentation pages.
 - Read the pages as a person who is about to use them: read, do not run anything.
 
-## What you answer
+## What you answer now
 
-Answer the first question in full before you read the second. Write down your answer as you give it, and do not
-change it afterwards. If you answered after seeing the second question, say so.
+Answer this one question in full. Write down your answer as you give it, and do not change it afterwards.
 
 **Question 1, open.** What style, tradition or reference do these pages evoke for you? Say what you noticed that makes
 you say so. If nothing comes to mind, say so. Do not guess to please anyone.
-
-**Question 2.** Was there any place where an image, a phrase or a metaphor made an instruction harder to follow or to
-understand? For each place, give the page, quote the words (a short quote), say what you thought it asked you to do,
-and say what you think it meant. If there was no such place, say so, and name the instruction you found hardest
-instead.
 
 ## Rules
 
@@ -35,5 +29,4 @@ instead.
 
 ## What you report
 
-Only the cold-read section of `report-template.md`, filled in: answer 1, answer 2, which pages you read, and whether
-you read any page not on the list.
+Answer 1, which pages you read, and whether you read any page not on the list. Use the cold-read section of `report-template.md`.

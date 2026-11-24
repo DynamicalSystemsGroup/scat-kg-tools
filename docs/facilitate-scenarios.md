@@ -6,8 +6,8 @@
 *Each group takes a turn: you listen, then build on what it said.*
 { .epigraph }
 
-A scenario session is a set of stories, one turn per group. It hears what people do in a situation, in time, and what comes of it. You run the session. You ask the questions, say whose turn it is, and listen, much as a player in a jazz combo builds on what the others play. In each group's turn, you listen to its story, write it down as offered, then ask a question that adds to it. A note-taker
-writes. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.
+A scenario session is a set of stories, one turn per group. It hears what people do in a situation, in time, and what comes of it. You run the session. You ask the questions, say whose turn it is, and listen. In each group's turn, you listen to its story, write it down as offered, then ask a question that adds to it. A note-taker
+writes. The lines under "Say" are your script: say them in the order given, as written or in your own words. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a story, and you never ask anyone to
 concede one.
@@ -21,13 +21,13 @@ concede one.
 
 Two moves keep the whole session in time.
 
-- **Yes, and.** Whatever someone offers is taken up and built on. You write it down as offered, then ask a question
-  that adds to it. You never ask a question that tests it. "Yes, and" is both the stance and words you say aloud: in
-  several stages below you start a question with "Yes, and".
+- **Yes, and.** Write down whatever someone offers, as offered. Then ask a question that adds to it. Never ask a
+  question that tests it. The words "Yes, and" are required wherever a line under "Say" contains them: say those two
+  words aloud, exactly, at the start of that question.
   If something offered seems wrong to you, do not correct it or rank it. Write it down as offered, ask what it adds,
   and set another perspective beside it: "from this perspective, ...".
-- **From this perspective.** Every contribution is placed in the group it comes from, and said that way: "from where
-  the operators sit, ...".
+- **From this perspective.** Place every contribution in the group it comes from, and say it that way: "from where
+  the operators sit, ...". The group names in the lines under "Say" (the operators, the borrowers) are examples. Use the names of your own groups.
 
 Scenarios are behavioural. Technology stays out of view. What you hear of a tool is what it let people do, or stopped
 them doing. That is an affordance.
@@ -175,6 +175,8 @@ Tension: Operators want a check before a tool leaves. Borrowers want it in hand 
 Trustees and funders: no account offered.
 ```
 
+One raw page holds one story, with the accounts of every group that spoke to it, each under its own group, as in the notes above. A different story gets its own raw page.
+
 Keep to the rules the notes carry:
 
 - the group heads every account, and no name appears;
@@ -214,7 +216,7 @@ title: "Lending desk saturday"
 ---
 ```
 
-Open the page in Obsidian and paste your notes under the front matter, as they were taken. Do not tidy them. Then
+Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Then
 mark the page as a draft and check it:
 
 === "Python"

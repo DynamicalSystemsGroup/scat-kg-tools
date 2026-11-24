@@ -44,7 +44,7 @@ Repeat this block for J1 to J7. If you did not reach a stage, write "not reached
 Severity:
 
 - **Blocking:** the tester was stopped short of J7, or a command on a page does not work as shown.
-- **The expected failure of the J7 push** (the isolated clone has no remote) is **not a finding and not blocking**. Paste it and move on.
+- **A failed or refused J7 push** (the isolated clone has no remote, and the environment may refuse it) is **not a finding and not blocking**. Paste what happened and move on.
 - **Not blocking:** everything else. Every guess is at least a not-blocking finding.
 
 Every guess is a finding, even one that went well.

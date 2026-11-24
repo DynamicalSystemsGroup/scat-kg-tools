@@ -43,6 +43,8 @@ A **relation page** says one fact: a group holds a concern, an affordance addres
 | `addresses` | concern, then affordance |
 | `attributes` | affordance, then technology |
 
+Choose each pair from the notes. For `heldby`, take a group and one concern that group voiced in its own words. For `addresses`, take that concern and an affordance the notes show answering it. For `attributes`, take that affordance and the technology the notes name as providing it. The description of a relation page is one sentence saying that fact in plain words, for example `description: "Participants want borrowed tools returned in the state they left."`
+
 ### The linking rules
 
 A coded page links to the pages it relates, and what it relates depends on what it is.
@@ -240,6 +242,8 @@ created technology/shared-spreadsheet.md
 created attributes/sign-out-sheet-attributed-to-shared-spreadsheet.md
 note: write `description`, `notes` and the body in attributes/sign-out-sheet-attributed-to-shared-spreadsheet.md; the endpoints are filled
 ```
+
+A relation page's file name is made from its title, joined by the relation's verb, and cut at 64 characters, not counting `.md`. If a pair's names are long, the file name is shorter than the two names together and may end partway through a word, and a clash with an existing name adds `-2`, `-3` and so on. The full title stays in the page's `title:` line, and you need not rename the file.
 
 That is the output of the first spelling you type. The second spelling prints `unchanged <file>` and a note that the page already states the pair, for each of the three. Nothing is written twice.
 
@@ -738,6 +742,8 @@ When one coded page holds both concerns, the checker marks the place with this w
 3. Run `uv run scat index` so the class pages match.
 4. Run `uv run scat check` again. When it ends `0 errors`, you are clean.
 
+Aim to bring every page you made to `done`: the raw pages, the coded pages, the relation pages, and the stubs the tools made for you. A page left at `stub` or `draft` does not stop a clean check, because the bar is 0 errors; a `draft` that lacks a field `done` needs gets a warning. To finish a page, write its description and links, run `set-status <page> done`, then run `check`.
+
 Then look at the warnings. Each is a to-do (a draft that still needs a sentence), a rule you can satisfy with a command, or a marker that may stay (`SCAT-CONFLICT-BOTH`).
 
 ## Commit and push
@@ -747,7 +753,7 @@ Your vault is a git repository, and your repository is private. Save the work as
 ```text
 git status
 git add .
-git commit -m "Code the Saturday notes"
+git commit -m "Code the notes from my first session"
 git push
 ```
 

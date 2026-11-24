@@ -6,7 +6,7 @@
 *The chart: who plays, and in what order, before anyone counts in.*
 { .epigraph }
 
-You are planning a facilitation event; think of it as writing the chart before the gig. The chart is your written plan: who takes part, in which session, in what order. It is a page of notes, nothing to file. By the end you will have a short plan: which sessions hear stories, which hear
+You are planning a facilitation event. Write down a plan: who takes part, in which session, in what order. Keep the plan in a text file anywhere outside the vault's page folders, for example `plan.txt` in your vault folder. It is not a SCAT page, and the check does not read it. By the end you will have a short plan: which sessions hear stories, which hear
 architectures, which groups are in the room, and how the notes will be kept.
 
 Two words come up below. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. The [home page](index.md) defines these and the other two kinds of thing, groups and technologies.
@@ -72,6 +72,8 @@ Groups
 "From where operators sit, we keep the desk open and the tools safe."
 ```
 
+The group names here (Operators, Borrowers) are examples. Write your own groups, from your own invitees.
+
 The last line is the test of a good group: a member would say it of themselves. If you cannot write it, the group
 is not yet a standpoint.
 
@@ -89,8 +91,7 @@ refused scat.toml field `stakeholder_group_cap`: the vault is at its cap of 3 st
   Fix: either link an existing group, or write `stakeholder_group_cap = 4` in scat.toml (the cap protects against identifying individuals; raise it only if the plan allows)
 ```
 
-The example vault ships with three example groups, which fill a cap of 3. Clear the example pages before you add
-your own groups. See [Start your own content](getting-started.md#5-start-your-own-content).
+The example vault ships with three example groups, which fill a cap of 3. Keep the example while you plan, as a model. When the plan is done, and before you code your own notes, clear the example pages: that is step 5 of Getting started, [Start your own content](getting-started.md#5-start-your-own-content).
 
 ## Give every group room in every session
 
@@ -101,7 +102,7 @@ Invite every group, and give each one room to speak in every session.
 - In architecture sessions, anyone who has a design to pitch is welcome. Groups that pitch nothing still have a place to
   say what concerns a design must meet.
 
-Yes, and: when an invitee asks for a topic or a session, add it. Do not trade it off against another. Your own questions
+When an invitee asks for a topic or a session, add it. Do not trade it off against another. Your own questions
 as you plan add ("who else sees it this way?"); they do not test ("is that really a group?").
 
 ## Say Chatham House, aloud and on the page
@@ -158,7 +159,7 @@ Raw notes are kept apart from any later reading of them. Capture comes first, an
 
 ## Where next
 
-Planned? Then facilitate:
+Planned? Then facilitate. Both pages sit under "Facilitating" in the site menu; that menu label is not a page, so use these links:
 
 - [Facilitating scenarios](facilitate-scenarios.md)
 - [Facilitating architectures](facilitate-architectures.md)
