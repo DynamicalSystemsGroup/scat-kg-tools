@@ -3,9 +3,12 @@
 !!! tip "Your next step"
     In your vault folder, run `uv run scat check` and read what it says.
 
-Coding is the step where your raw notes become part of the graph. You read a raw scenario or a raw architecture and write it again as a **coded page**. A coded page names the stakeholder groups, concerns, affordances and technologies the notes talk about. You do not summarise or judge. You name what is there.
+*The take you keep: raw notes played back as coded pages.*
+{ .epigraph }
 
-The tools do the bookkeeping. You say which things the notes name. The tools create the pages and links that follow, and the checker tells you in plain words what is still wrong. This page shows the whole loop, from a raw page to a pushed commit and a look at the graph.
+Coding is the step where your raw notes become part of the graph. You read a raw scenario or a raw architecture and write it again as a **coded page**. A coded page names the stakeholder groups, concerns, affordances and technologies the notes talk about. You do not summarise or judge. You name what is there, much as a player in a jazz combo improvises on what the others played without rewriting the tune.
+
+The tools do the bookkeeping. You say which things the notes name. The tools create the pages and links that follow, and the checker tells you in plain words what is still wrong. This page shows the whole loop, from start to finish: a raw page, a pushed commit and a look at the graph.
 
 ## Before you start
 
@@ -765,6 +768,8 @@ Open the vault folder in Obsidian (**Open folder as vault**). The same pages, no
 Obsidian shows the graph. Only the tools check it, so run `uv run scat check` before you commit.
 
 ## Where next
+
+Keep the reference close:
 
 - [Python API reference](reference/api.md): every REPL call, with all its options.
 - [CLI reference](reference/cli.md): every command and its full help text.

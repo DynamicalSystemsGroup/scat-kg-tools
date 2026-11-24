@@ -3,6 +3,13 @@
 !!! tip "Your next step"
     Go to [Getting started](getting-started.md) and create your private repository.
 
+*Every voice gets a chorus, and every chorus is taken up.* A facilitated discussion goes in; a graph you can walk through comes out.
+
+![A staff with a few notes: a short, swinging phrase ending in a double bar.](assets/hero.svg){ .hero }
+
+*The head: the tune the rest of these pages riff on.*
+{ .epigraph }
+
 ## Before you start
 
 You need nothing yet. You do not have to know the tools. This page tells you what SCAT is, why it has that name, and
@@ -20,8 +27,10 @@ into pages, using four kinds of thing:
 - **A**ffordances: what a tool or arrangement lets someone do.
 - **T**echnologies: the things that provide those affordances.
 
-Pages link to each other. A group holds a concern. A concern is addressed by an affordance. An affordance is attributed
+Pages link to each other, the way the parts of a band lock together. A group holds a concern. A concern is addressed by an affordance. An affordance is attributed
 to a technology. Those links are what make the notes a graph you can walk through.
+
+![The four SCAT concepts as a small band: Stakeholder groups, Concerns, Affordances and Technologies, joined by the links holds, addressed by and attributed to.](assets/bandstand.svg){ .bandstand }
 
 Two kinds of session feed it, and they look at the same graph from opposite sides:
 
@@ -65,7 +74,7 @@ pages are written for that.
 
 ## The journey
 
-Four stages, one page each. Do them in order the first time.
+Four stages, one page each. The first time through, take them in order, from the top.
 
 | Stage | What you do | Page |
 | --- | --- | --- |
@@ -81,5 +90,7 @@ need the exact form of a command, the reference has it: the [Python API](referen
 This documentation lives at <https://dynamicalsystemsgroup.github.io/scat-kg-tools/>.
 
 ## Where next
+
+Take it from the top:
 
 - [Getting started](getting-started.md): create your private repository and run your first check.

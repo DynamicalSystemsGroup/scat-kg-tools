@@ -3,6 +3,9 @@
 !!! tip "Your next step"
     Create your private repository from the template (step 1 below).
 
+*Tuning up: get the room ready before the first take.*
+{ .epigraph }
+
 ## Before you start
 
 - A Mac, and a GitHub account. If you have none, make one at <https://github.com>.
@@ -191,6 +194,8 @@ Do not do this yet if you want the example open while you read the other guides.
 
 ## Where next
 
-- [Planning](planning.md): decide your sessions, your groups and your framing.
+Tuned up? Then pick where to go next:
+
+- [Planning](planning.md): decide your sessions, your groups and your framing, before anyone counts in.
 - [Coding](coding.md): when you already have raw notes.
 - [Home](index.md): what SCAT is and why it has its name.

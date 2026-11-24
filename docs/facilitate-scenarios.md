@@ -3,7 +3,10 @@
 !!! tip "Your next step"
     Open the session by reading the Chatham House lines aloud, then ask the first group for a story that starts at a concrete moment.
 
-A scenario session hears what people do in a situation, in time, and what comes of it. You hold the room. A note-taker
+*A group's turn is its chorus: you listen, then build on it.*
+{ .epigraph }
+
+A scenario session is a set of stories, one turn per group. It hears what people do in a situation, in time, and what comes of it. You hold the room, much as a player in a jazz combo improvises on what the others play. A note-taker
 writes. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a story, and you never ask anyone to
@@ -16,7 +19,7 @@ concede one.
 
 ## The stance
 
-Two moves carry the whole session.
+Two moves keep the whole session in time.
 
 - **Yes, and.** Whatever someone offers is taken up and built on. You write it down as offered, then ask a question
   that adds to it. You never ask a question that tests it.
@@ -253,6 +256,8 @@ name. A name with capitals or spaces fails the check. `scat stub` is the one way
 says why.
 
 ## Where next
+
+Where to go from here:
 
 - [Facilitating architectures](facilitate-architectures.md)
 - [Coding](coding.md), to turn the raw page into a coded scenario.
