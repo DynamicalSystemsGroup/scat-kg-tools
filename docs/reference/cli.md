@@ -3,9 +3,6 @@
 !!! tip "Your next step"
     Open a terminal in your vault folder and type `uv run scat --help`.
 
-*The same tune at the command line.*
-{ .epigraph }
-
 ## Before you start
 
 - A vault folder with a `scat.toml` file in it, for example a copy of the template. [Getting started](../getting-started.md) makes one.

@@ -3,9 +3,6 @@
 !!! tip "Your next step"
     Create your private repository from the template (step 1 below).
 
-*Tuning up: get everything ready before your first session.*
-{ .epigraph }
-
 ## Before you start
 
 - A Mac, and a GitHub account. If you have none, make one at <https://github.com>.

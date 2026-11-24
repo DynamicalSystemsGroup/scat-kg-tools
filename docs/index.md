@@ -3,12 +3,9 @@
 !!! tip "Your next step"
     Go to [Getting started](getting-started.md) and create your private repository.
 
-*Every voice gets a chorus, and every chorus is taken up.* A facilitated discussion goes in; a graph you can walk through comes out.
+A facilitated discussion goes in; a graph you can walk through comes out.
 
-![A staff with a few notes: a short, swinging phrase ending in a double bar.](assets/hero.svg){ .hero }
-
-*The head: the tune the rest of these pages riff on.*
-{ .epigraph }
+![A staff with a few notes ending in a double bar.](assets/hero.svg){ .hero }
 
 ## Before you start
 
@@ -27,10 +24,10 @@ into pages, using four kinds of thing:
 - **A**ffordances: what a tool or arrangement lets someone do.
 - **T**echnologies: the things that provide those affordances.
 
-Pages link to each other, the way the parts of a band lock together. A group holds a concern. A concern is addressed by an affordance. An affordance is attributed
+Pages link to each other, the way the parts of a system fit together. A group holds a concern. A concern is addressed by an affordance. An affordance is attributed
 to a technology. Those links are what make the notes a graph you can walk through.
 
-![The four SCAT concepts as a small band: Stakeholder groups, Concerns, Affordances and Technologies, joined by the links holds, addressed by and attributed to.](assets/bandstand.svg){ .bandstand }
+![The four SCAT concepts as four linked cards: Stakeholder groups, Concerns, Affordances and Technologies, joined by the links holds, addressed by and attributed to.](assets/bandstand.svg){ .bandstand }
 
 Two kinds of session feed it, and they look at the same graph from opposite sides:
 
@@ -47,10 +44,8 @@ are clustered into groups that fit under it.
 
 ## Why it is called SCAT
 
-SCAT is an acronym for the four things above. It is also named for scat singing in improvised jazz, and it borrows
-the manner as well as the name.
-
-Two habits from improvisation carry through the whole method:
+SCAT is an acronym for the four things above. It is also named for scat singing, which is improvised: each singer takes what
+the others offer and adds to it. Two habits from that carry through the whole method:
 
 - **"Yes, and."** Whatever someone offers is written down as offered, then built on with a question that adds
   something. Nothing is turned away, and nothing is merged into someone else's line.

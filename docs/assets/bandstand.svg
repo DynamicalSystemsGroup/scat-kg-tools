@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 426" role="img" aria-labelledby="t d">
-<title id="t">The four SCAT concepts as a small band</title>
+<title id="t">The four SCAT concepts as four linked cards</title>
 <desc id="d">Four cards stacked top to bottom: Stakeholder groups, Concerns, Affordances, Technologies. Arrows between them read: holds, addressed by, attributed to.</desc>
 <rect x="20" y="16" width="320" height="64" rx="12" fill="#1c2570" stroke="#e0a526" stroke-width="2.5"/>
 <circle cx="56" cy="48.0" r="21" fill="#e0a526"/><text x="56" y="57.0" text-anchor="middle" font-family="system-ui, sans-serif" font-size="25" font-weight="700" fill="#1c2570">S</text>
