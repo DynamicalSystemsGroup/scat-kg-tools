@@ -1569,3 +1569,19 @@ not cover them.)
 pages are fixes for F-8 inside G7 and D-4, not a mission change. The ACE approved WP13 (`work-packages/WP13.md`). It is
 queued behind WP12, because both touch the nav and the home page. Its bar: no page prescribes a policy, every activity
 is named as a dependency with a "for example", and a cold project-manager reader can find her way.
+
+## D-070 | 2026-11-24 | Chatham House and personal attribution are example policies, not the rule
+
+**Direction (the chief engineer's words, typed by the ACE):** "we can use the chatham house rule vs personal
+attribution as examples of a policies, rather than asserting it should always be chatham house"
+
+**Outcome.** WP13 gains G4 and R3b:
+- The consent page shows the Chatham House rule and personal attribution as two example policies.
+- The home page, the planning guide and both facilitation guides stop saying every session must run under Chatham
+  House. They refer to "the participation terms agreed for the event", with Chatham House as the example the case
+  study uses.
+
+What the tools record stays stated as fact: coded pages name groups, never individuals, and attributing statements
+to individuals remains a v0.1 non-goal (MISSION.md). The mission is unchanged. Its line "How raw notes are taken is
+the facilitator's call" already leaves the policy open. `divergence/D-070` is tagged on the commit before this ruling.
+WP12's terms page is held to the same stance.
