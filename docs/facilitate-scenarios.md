@@ -39,7 +39,7 @@ Each raw page carries a `timeframe:` line: `past`, `future` or `mixed`. The rule
 | Behavioural (scenarios) | what people did | what people could do or will do |
 | Structural (architectures) | a system that exists (baseline) | a system that is proposed (target) |
 
-People mix the two freely, so lead them to one at a time: take stories of what has happened in one block, and what could or will happen in another. If the other time comes up early, jot it on a scrap or the board, carry it into that block's own page, say "let's hold that for its block", and return to it then.
+People mix the two freely, so lead them to one at a time: take stories of what has happened in one block, and what could or will happen in another. If the other time comes up early, jot it on a scrap or the board, carry it into that block's own page, and return to it then.
 
 ### Scenario phrases
 
