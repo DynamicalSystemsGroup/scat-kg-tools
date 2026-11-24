@@ -7,7 +7,7 @@
 { .epigraph }
 
 An architecture session is a round of designs, one proposer at a time. It hears how a proposed assembly of tools is put together, and which concerns it addresses. You
-run the session. You ask the questions, say whose turn it is, and listen, much as a player in a jazz combo builds on what the others play. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. This page runs you through the session stage by stage, then turns the notes into a
+run the session. You ask the questions, say whose turn it is, and listen. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. The lines under "Say" are your script: say them in the order given, as written, or in your own words, except that the words "Yes, and" stay as written. This page runs you through the session stage by stage, then turns the notes into a
 raw architecture page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a design, and you never ask a
@@ -24,13 +24,13 @@ proposer to defend a design against another.
 
 Two moves keep the whole session in time.
 
-- **Yes, and.** Whatever is pitched is taken up and built on. You write it down as offered, then ask a question that
-  adds to it. You never ask a question that tests it. "Yes, and" is both the stance and words you say aloud: in
-  several stages below you start a question with "Yes, and".
+- **Yes, and.** Write down whatever is pitched, as offered. Then ask a question that adds to it. Never ask a
+  question that tests it. The words "Yes, and" are required wherever a line under "Say" contains them: say those two
+  words aloud, exactly, at the start of that question.
   If a design seems wrong to you, do not correct it or rank it. Write it down as offered, ask what it adds, and set
   another perspective beside it: "from this perspective, ...".
-- **From this perspective.** Each pitch is tied to the group that proposes it and the practice it comes from: "from
-  where the operators sit, ...". It is never the standard way.
+- **From this perspective.** Tie each pitch to the group that proposes it and the practice it comes from: "from
+  where the operators sit, ...". It is never the standard way. The group names in the lines under "Say" (the operators) are examples. Use the names of your own groups.
 
 Architectures are structural. They are parts and wholes: tools assembled to give people something to do, in service of
 concerns. People are largely set aside. The same concern may come from several groups, and a design cannot say who
@@ -195,6 +195,8 @@ Pitch: a monthly report from the sheet.
 Borrowers: no account offered.
 ```
 
+One raw page holds one pitch, with the accounts of every group that spoke to it, each under its own group, as in the notes above. A different pitch gets its own raw page.
+
 Keep to the rules the notes carry:
 
 - the group heads every pitch, and no name appears;
@@ -235,7 +237,7 @@ title: "Booking sheet pitch"
 ---
 ```
 
-Open the page in Obsidian and paste your notes under the front matter, as they were taken. Do not tidy them. Then
+Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Then
 mark the page as a draft and check it:
 
 === "Python"

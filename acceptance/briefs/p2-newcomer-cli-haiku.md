@@ -69,8 +69,7 @@ Do these in order. For each, "done" is what you should be able to show with past
 6. **J6, code.** Using the coding page and the reference, turn those first-draft pages into the linked pages the guide describes, the finished version of each. Move each
    page from its first state through to finished, and fix every problem the tool reports from its message. Done:
    each of your pages is finished, and your story and your design proposal each exist both as the first draft from J5 and as the finished linked version.
-7. **J7, finish.** Reach a clean check of the whole folder. Save your work in git as the page says. Pushing will
-   fail, because your copy has no GitHub connection. That failure is expected: it is not a finding and not blocking. Run the push command as the page says anyway, paste what it prints, and move on. Then, through the files, show the links you can walk in Obsidian: pick one page of your own and search the other files in your folder for its page name; list the files that name it. Done: a clean whole-folder check, and your saved work shown in the
+7. **J7, finish.** Reach a clean check of the whole folder. Save your work in git as the page says: commit locally with `git commit`. The push cannot work, because your copy has no GitHub connection, and your environment may also refuse it. Run the push command as the page says anyway, paste what happened, and move on. Neither a failed nor a refused push is a finding, and neither is blocking. For J7, the clean check plus the local commit is the bar. Then, through the files, show the links you can walk in Obsidian: pick one page of your own and search the other files in your folder for its page name; list the files that name it. Done: a clean whole-folder check, and your saved work shown in the
    history.
 
 If you reach a stage you cannot finish, stop at that stage. Fill in the report for every stage you reached and say

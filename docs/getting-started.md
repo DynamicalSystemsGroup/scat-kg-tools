@@ -204,6 +204,6 @@ Do not do this yet if you want the example open while you read the other guides.
 
 Set up? Then pick where to go next:
 
-- [Planning](planning.md): decide your sessions, your groups and your framing, before anyone counts in.
+- [Planning](planning.md): decide your sessions, your groups and your framing, before the event.
 - [Coding](coding.md): when you already have raw notes.
 - [Home](index.md): what SCAT is and why it has its name.

@@ -35,6 +35,13 @@ and I want them turned into a set of linked pages I can walk through in Obsidian
   job, not yours). Run everything from there. Use the Python session or Terminal as your path says: **the interactive Python session (typing lines one at a time)**.
 - The `uv` program is already on your machine. Do not install anything else unless a page tells you to. Say plainly in
   your report that `uv` was already there when you began.
+- **There is no interactive terminal.** To use the Python session, type the lines by piping them into it, one `printf` per batch of lines, from your vault folder. Every batch starts a fresh session, so start each batch with `import scat_kg`. The pattern, which prints what the session would print:
+
+  ```text
+  printf '%s\n' 'import scat_kg' 'scat_kg.check()' | uv run python -i
+  ```
+
+  Put each line you would type in its own quotes. A line that fails shows its error in the output. Report it as it failed.
 - Your copy of the starting repository has no connection to GitHub. When a page tells you to make a repository on
   GitHub, do not try: your test lead made your copy already, so say that this step was done for you and carry on
   from the next step. Do anything the page says after that, such as saving your work.
@@ -73,8 +80,7 @@ Do these in order. For each, "done" is what you should be able to show with past
 6. **J6, code.** Using the coding page and the reference, turn those first-draft pages into the linked pages the guide describes, the finished version of each. Move each
    page from its first state through to finished, and fix every problem the tool reports from its message. Done:
    each of your pages is finished, and your story and your design proposal each exist both as the first draft from J5 and as the finished linked version.
-7. **J7, finish.** Reach a clean check of the whole folder. Save your work in git as the page says. Pushing will
-   fail, because your copy has no GitHub connection. That failure is expected: it is not a finding and not blocking. Run the push command as the page says anyway, paste what it prints, and move on. Then, through the files, show the links you can walk in Obsidian: pick one page of your own and search the other files in your folder for its page name; list the files that name it. Done: a clean whole-folder check, and your saved work shown in the
+7. **J7, finish.** Reach a clean check of the whole folder. Save your work in git as the page says: commit locally with `git commit`. The push cannot work, because your copy has no GitHub connection, and your environment may also refuse it. Run the push command as the page says anyway, paste what happened, and move on. Neither a failed nor a refused push is a finding, and neither is blocking. For J7, the clean check plus the local commit is the bar. Then, through the files, show the links you can walk in Obsidian: pick one page of your own and search the other files in your folder for its page name; list the files that name it. Done: a clean whole-folder check, and your saved work shown in the
    history.
 
 If you reach a stage you cannot finish, stop at that stage. Fill in the report for every stage you reached and say
