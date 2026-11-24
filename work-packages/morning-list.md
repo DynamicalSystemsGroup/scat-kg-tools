@@ -21,6 +21,10 @@ log entry and, where the ruling changed direction, the `divergence/` tag to reve
     within 3 concerns;
   - "Attribution" has no sourced holder, which is left as a recorded gap.
 
+- **D-038:** WP6 accepted after the paraphrase. A few lines still echo the gist of public mission wording, which
+  was judged acceptable. The docs' address is fixed as `https://dynamicalsystemsgroup.github.io/scat-kg-tools/`, and
+  the docs test clones the template at a pinned commit.
+
 ## Held for you
 
 - None so far.
