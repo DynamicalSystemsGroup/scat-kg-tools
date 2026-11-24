@@ -146,8 +146,7 @@ Raw notes are kept apart from any later reading of them. Capture comes first, an
         uv run scat check
         ```
 
-  Both end with `0 errors`. The one warning about two conflicting concerns (`SCAT-CONFLICT-BOTH`) belongs to the
-  example vault and is allowed to stay. A warning marks a place where two concerns pull apart; it does not block you.
+  Both end with `no problems`.
 
 - **A note-taker for each session.** Someone other than the facilitator, so the facilitator can listen. They write
   what was offered, in the speaker's words, headed by the group, with a rough time. Never a name. Both facilitation
