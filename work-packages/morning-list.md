@@ -46,6 +46,9 @@ log entry and, where the ruling changed direction, the `divergence/` tag to reve
   walkthrough. 12 docs fixes are going into U11, and round 2 adds a mandatory Haiku REPL tester. The WP8 metrics
   timestamps were placeholders and are being corrected by appended records.
 
+- **D-045:** the round-1 fixes are merged. Confirmed: one raw page per story or pitch, holding every group's
+  account, each labelled with its group.
+
 ## Held for you
 
 - **D-040 / D-041: UA-A ran with uv preinstalled,** whereas `MISSION.md` UA-A says "uv not installed". Only you
