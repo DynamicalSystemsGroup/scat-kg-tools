@@ -2,8 +2,10 @@
 
 import re
 
+from scat_kg.checks import fixes
 from scat_kg.checks.ctx import Ctx, page_rule
-from scat_kg.checks.text import is_missing, one, quote, steps, stub_cmd
+from scat_kg.checks.text import LINK_ITEM, is_missing, quote
+from scat_kg.fix import Fix
 from scat_kg.tbox import TBOX
 from scat_kg.vault import Page, blank_code
 
@@ -15,16 +17,32 @@ RAW = ("scenario-raw", "architecture-raw")
 def conflict_self(ctx: Ctx, page: Page):
     if page.type_key != "concern":
         return []
+    value = page.fields.get("conflicts")
+    items = value if isinstance(value, list) else [value]
+    # the whole new list: every item but the ones that are exactly this page's own link
+    kept = [
+        i
+        for i in items
+        if not (isinstance(i, str) and (m := LINK_ITEM.fullmatch(i)) and m[1] == page.name)
+    ]
+    fix = fixes.single(
+        fixes.option(
+            "exact",
+            f'delete the line `- "[[{page.name}]]"` under `conflicts`',
+            fixes.set_field(page.path, "conflicts", kept),
+        )
+    )
     return [
         ctx.problem(
             "SCAT-CONFLICT-SELF",
             page.path,
             "field `conflicts`",
             f"[[{page.name}]] is this page; a concern cannot list itself under `conflicts`",
-            one(f'delete the line `- "[[{page.name}]]"` under `conflicts`'),
+            fix,
             line=link.line,
             pos=ctx.pos(page, "conflicts"),
             target=link.target,
+            on="conflicts",
         )
         for link in ctx.links(page, "conflicts")
         if link.target == page.name
@@ -63,25 +81,43 @@ def rel_duplicate(ctx: Ctx, page: Page):
         theirs = kept.fields.get("notes")
         cur = f"`{f'notes: {ctx.current(kept, "notes")}'.rstrip()}`"
         if isinstance(theirs, str) and theirs.strip():
-            put = f"replace the line {cur} with `notes: {quote(theirs.strip() + ' ' + text)}`"
+            joined = theirs.strip() + " " + text
+            put = f"replace the line {cur} with `notes: {quote(joined)}`"
         elif "notes" in kept.fields:
+            joined = text
             put = f"replace the line {cur} with `notes: {quote(text)}`"
         else:
+            joined = text
             put = f"add the line `notes: {quote(text)}`"
-        first = f"in {kept.path}: {put}, and {body}"
-    else:
-        first = f"in {kept.path}: {body} (`notes` of {page.path} has no text to move)"
-    second = (
-        f"delete {page.path}, then run `scat index` (REPL: `scat_kg.index()`) and change every link "
+        first = fixes.option(
+            "exact",
+            f"in {kept.path}: {put}, and {body}",
+            fixes.set_field(kept.path, "notes", joined),
+        )
+    else:  # nothing to write; what to keep of the body is the author's reading
+        first = fixes.option(
+            "advisory", f"in {kept.path}: {body} (`notes` of {page.path} has no text to move)"
+        )
+    second = fixes.option(
+        "exact",
+        f"delete {page.path}, then run {fixes.phrase(fixes.index())} and change every link "
         f"that named `{page.name}` to `[[{kept.name}]]` (each shows as SCAT-LINK-DANGLING-BODY on "
-        "the next check)"
+        "the next check)",
+        fixes.delete_file(page.path),
+        command=fixes.index(),
     )
     what = (
         f"this {t.slug} page states the same pair as [[{kept.name}]] "
         f"(`{fa}` [[{a}]], `{fb}` [[{b}]]); a pair has one page"
     )
     return [
-        ctx.problem("SCAT-REL-DUPLICATE", page.path, "frontmatter", what, steps([first, second]))
+        ctx.problem(
+            "SCAT-REL-DUPLICATE",
+            page.path,
+            "frontmatter",
+            what,
+            Fix.steps("exact", [first, second]),
+        )
     ]
 
 
@@ -134,7 +170,13 @@ def mention(ctx: Ctx, page: Page):
                 page.path,
                 f"text `{written}`",
                 f"names the {target.type_key} page [[{target.name}]] but does not link it",
-                one(f"on line {line} replace `{written}` with `{link}`"),
+                fixes.single(
+                    fixes.option(
+                        "exact",
+                        f"on line {line} replace `{written}` with `{link}`",
+                        fixes.replace_text(page.path, line, written, link, column=column),
+                    )
+                ),
                 line=line,
                 column=column,
                 target=target.name,
@@ -160,9 +202,20 @@ def raw_backlink(ctx: Ctx, page: Page):
                 page.path,
                 "field `coded`",
                 f"[[{coded.name}]] lists this page in `raw`, but this page does not list it",
-                one(ctx.add_items(page, "coded", [coded.name], in_file=True)),
+                fixes.single(
+                    fixes.option(
+                        "exact",
+                        ctx.add_items(page, "coded", [coded.name], in_file=True),
+                        fixes.set_field(
+                            page.path,
+                            "coded",
+                            [f"[[{t}]]" for t in (*ctx.targets(page, "coded"), coded.name)],
+                        ),
+                    )
+                ),
                 pos=ctx.pos(page, "coded"),
                 target=coded.name,
+                on="coded",
             )
         )
     return out
@@ -177,15 +230,20 @@ def raw_uncoded(ctx: Ctx, page: Page):
     if any(b.field == "raw" for b in ctx.vault.inbound(page.name)):
         return []
     key = TBOX.page_types[page.type_key].field("coded").target_type
-    line = '`coded:` and under it the line `- "[[<coded-page-name>]]"` (author: choose the name)'
+    slot = "<coded-page-name>"
+    line = f'`coded:` and under it the line `- "[[{slot}]]"` (author: choose the name)'
     if "coded" in page.fields:
         cur = f"coded: {ctx.current(page, 'coded')}".rstrip()
-        first = f"in {page.path}: replace the line `{cur}` with {line}"
+        text = f"in {page.path}: replace the line `{cur}` with {line}"
     else:
-        first = f"in {page.path}: add {line}"
-    second = (
-        f"run {stub_cmd('<coded-page-name>', key)}; the operation writes `raw` on the new page itself, "
-        "listing this page (until it runs, the new `coded` link shows as SCAT-LINK-DANGLING)"
+        text = f"in {page.path}: add {line}"
+    first = fixes.option(
+        "slot", text, fixes.set_field(page.path, "coded", [f"[[{slot}]]"], author_slot=slot)
+    )
+    second = fixes.run_option(
+        fixes.stub(slot, key, slot=slot),
+        suffix="; the operation writes `raw` on the new page itself, listing this page "
+        "(until it runs, the new `coded` link shows as SCAT-LINK-DANGLING)",
     )
     return [
         ctx.problem(
@@ -193,7 +251,8 @@ def raw_uncoded(ctx: Ctx, page: Page):
             page.path,
             "field `coded`",
             "status is done but no coded page derives from this page",
-            steps([first, second], head="Fix, two steps, in this order:"),
+            Fix.steps("slot", [first, second], head="Fix, two steps, in this order:"),
             pos=ctx.pos(page, "coded"),
+            on="coded",
         )
     ]

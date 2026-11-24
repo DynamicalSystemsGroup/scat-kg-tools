@@ -78,6 +78,9 @@ class Fix:
     verbatim: str | None = (
         None  # a legacy fix's text, returned as is by render(); not part of the data
     )
+    inline: bool = (
+        False  # render the options on one line, `<head> <text>, <text>`; not part of the data
+    )
 
     @classmethod
     def one(cls, kind: str, option: FixOption) -> "Fix":
@@ -107,6 +110,8 @@ class Fix:
     def render(self) -> str:
         if self.verbatim is not None:
             return self.verbatim
+        if self.inline:
+            return f"{self.head or 'Fix, choose one:'} " + ", ".join(o.text for o in self.options)
         if self.sequence:
             head, indent = self.head or "Fix, two steps:", "     "
         elif len(self.options) == 1 and self.head is None:

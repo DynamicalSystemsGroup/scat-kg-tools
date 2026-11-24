@@ -1,5 +1,6 @@
 """WP11-U2: the fix data model renders today's text and serialises to the machine-interface schema."""
 
+import dataclasses
 import importlib.util
 import json
 from pathlib import Path
@@ -8,6 +9,7 @@ import pytest
 from jsonschema import Draft202012Validator
 
 import scat_kg
+from scat_kg.checks.problem import Problem
 from scat_kg.checks.text import choose, one, steps
 from scat_kg.fix import Command, Edit, Fix, FixOption
 
@@ -79,6 +81,18 @@ def test_clean_check_validates(make_vault):
     assert d["problems"] == [] and d["ok"] is True
 
 
+PROBLEM = Draft202012Validator({"$ref": "#/$defs/Problem", "$defs": SCHEMA["$defs"]})
+
+
+def assert_problem_json_matches(p, q):
+    """True whether the fix is the legacy one-option wrapper or typed: the JSON carries the fix data, and the
+    rendered text carries the whole fix block (each line indented two spaces)."""
+    assert p["text"] == q.render()
+    assert p["fix"] == q.fix_data.to_dict()
+    assert q.fix == q.fix_data.render()
+    assert "\n".join("  " + ln for ln in q.fix.split("\n")) in p["text"]
+
+
 def test_seeded_defect_validates(make_vault):
     files = base()
     files["concern/safe-handling.md"] = files["concern/safe-handling.md"].replace(
@@ -89,7 +103,7 @@ def test_seeded_defect_validates(make_vault):
     d = check_doc(result)
     assert d["problems"], "the seeded defect must produce a problem"
     for p, q in zip(d["problems"], result.problems):
-        assert p["text"] == q.render() and p["fix"]["options"][0]["text"] == q.fix
+        assert_problem_json_matches(p, q)
 
 
 def test_typed_fix_validates_and_renders():
@@ -129,3 +143,25 @@ def test_typed_fix_validates_and_renders():
         "argv": ["set-status", "x", "draft"],
         "repl": 'scat_kg.set_status("x", "draft")',
     }
+
+
+def test_problem_json_matches_for_a_typed_multi_option_fix():
+    legacy = Problem("SCAT-DONE-FIELD", "error", "concern/x.md", "field `d`", "missing", "Fix: x")
+    cmd = Command(("set-status", "x", "draft"), 'scat_kg.set_status("x", "draft")')
+    fix = Fix.choose(
+        "options",
+        [
+            FixOption("exact", "run it\n       twice", command=cmd),
+            FixOption("manual", "write it"),
+        ],
+        notes=("A note.",),
+    )
+    q = dataclasses.replace(legacy, fix_data=fix)
+    p = q.to_dict()
+    assert PROBLEM.is_valid(p), [e.message for e in PROBLEM.iter_errors(p)]
+    assert (
+        p["fix"]["options"][0]["text"] != q.fix
+    )  # what the old assertion got wrong for typed fixes
+    assert_problem_json_matches(p, q)
+    # and for the legacy wrapper
+    assert_problem_json_matches(legacy.to_dict(), legacy)
