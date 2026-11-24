@@ -9,7 +9,11 @@ dependencies = ["pydantic", "PyYAML", "rdflib"]
 scat = "scat_kg.cli:main"
 
 [dependency-groups]
-dev = ["pytest", "ruff"]
+dev = [
+    "jsonschema>=4.26.0",
+    "pytest",
+    "ruff",
+]
 docs = [
     "mkdocs-material>=9.8.2",
 ]

@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://scat-kg-tools.invalid/contracts/machine-interface.schema.json",
+  "title": "scat machine interface, schema_version 1",
+  "description": "The one JSON document a scat command prints with --json, and the dict a Python result's to_dict() returns. Every object allows extra fields: adding a field does not change schema_version. The set of rule ids is not enumerated here, only its pattern.",
+  "oneOf": [
+    { "$ref": "#/$defs/CheckResult" },
+    { "$ref": "#/$defs/StatusResult" },
+    { "$ref": "#/$defs/OperationResult" }
+  ],
+  "$defs": {
+    "SchemaVersion": { "const": 1 },
+    "OperationName": {
+      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-pair, stub-links). New commands may appear, so the names are not enumerated.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "VaultPath": {
+      "description": "Vault-relative, / separators, no leading slash.",
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[^/\\\\][^\\\\]*$"
+    },
+    "RuleId": {
+      "description": "Stable: never renamed, only retired. The set grows without a version bump.",
+      "type": "string",
+      "pattern": "^SCAT-[A-Z0-9]+(-[A-Z0-9]+)*$"
+    },
+    "PositiveIntOrNull": {
+      "oneOf": [{ "type": "integer", "minimum": 1 }, { "type": "null" }]
+    },
+    "StringList": { "type": "array", "items": { "type": "string" } },
+    "PathList": { "type": "array", "items": { "$ref": "#/$defs/VaultPath" } },
+
+    "CheckResult": {
+      "description": "What check returns when it ran. A check that could not run (not a vault, page not found, ...) is an OperationResult with ok false.",
+      "type": "object",
+      "required": ["schema_version", "kind", "operation", "ok", "problems"],
+      "properties": {
+        "schema_version": { "$ref": "#/$defs/SchemaVersion" },
+        "kind": { "const": "check" },
+        "operation": { "const": "check" },
+        "ok": { "type": "boolean", "description": "False when any problem has severity error; warnings alone keep it true. The exit code encodes the same boolean." },
+        "problems": { "type": "array", "items": { "$ref": "#/$defs/Problem" }, "description": "In the catalogue's sort order." }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "ok": { "const": true } }, "required": ["ok"] },
+          "then": { "properties": { "problems": { "items": { "properties": { "severity": { "const": "warning" } } } } } }
+        },
+        {
+          "if": { "properties": { "ok": { "const": false } }, "required": ["ok"] },
+          "then": { "properties": { "problems": { "contains": { "properties": { "severity": { "const": "error" } }, "required": ["severity"] } } } }
+        }
+      ]
+    },
+
+    "StatusResult": {
+      "description": "What status returns when it ran. A status that could not run is an OperationResult with ok false.",
+      "type": "object",
+      "required": ["schema_version", "kind", "operation", "ok", "scope", "rows", "counts", "notes"],
+      "properties": {
+        "schema_version": { "$ref": "#/$defs/SchemaVersion" },
+        "kind": { "const": "status" },
+        "operation": { "const": "status" },
+        "ok": { "const": true },
+        "scope": { "enum": ["page", "neighborhood", "vault"] },
+        "rows": { "type": "array", "items": { "$ref": "#/$defs/StatusRow" } },
+        "counts": {
+          "description": "Pages per status. Besides the statuses of the ontology, other is a missing or invalid status and none is a class page (which carries no status).",
+          "type": "object",
+          "required": ["other", "none"],
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "notes": { "$ref": "#/$defs/StringList" }
+      }
+    },
+    "StatusRow": {
+      "type": "object",
+      "required": ["path", "name", "type", "status"],
+      "properties": {
+        "path": { "$ref": "#/$defs/VaultPath" },
+        "name": { "type": "string", "description": "The file name without .md." },
+        "type": { "type": ["string", "null"], "description": "The type key as written; null when there is none that is a string." },
+        "status": { "type": ["string", "null"], "description": "The status as written; null when missing, not a string, or on a class page." }
+      }
+    },
+
+    "OperationResult": {
+      "description": "What every other command returns, and what check and status return when they refuse. ok is true exactly when refused is empty.",
+      "type": "object",
+      "required": ["schema_version", "kind", "operation", "ok", "created", "changed", "unchanged", "refused", "notes"],
+      "properties": {
+        "schema_version": { "$ref": "#/$defs/SchemaVersion" },
+        "kind": { "const": "operation" },
+        "operation": { "$ref": "#/$defs/OperationName" },
+        "ok": { "type": "boolean" },
+        "created": { "$ref": "#/$defs/PathList" },
+        "changed": { "$ref": "#/$defs/PathList" },
+        "unchanged": { "$ref": "#/$defs/PathList", "description": "Looked at and already right: nothing written." },
+        "refused": { "type": "array", "items": { "$ref": "#/$defs/Refusal" } },
+        "notes": { "$ref": "#/$defs/StringList" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "ok": { "const": true } }, "required": ["ok"] },
+          "then": { "properties": { "refused": { "maxItems": 0 } } }
+        },
+        {
+          "if": { "properties": { "ok": { "const": false } }, "required": ["ok"] },
+          "then": { "properties": { "refused": { "minItems": 1 } } }
+        }
+      ]
+    },
+    "Refusal": {
+      "type": "object",
+      "required": ["subject", "why", "fix"],
+      "properties": {
+        "subject": { "type": "string", "description": "The file, field or name the refusal is about." },
+        "why": { "type": "string" },
+        "fix": { "$ref": "#/$defs/Fix" }
+      }
+    },
+
+    "Problem": {
+      "type": "object",
+      "required": ["rule", "severity", "file", "line", "column", "field", "where", "what", "repeat", "fix", "text"],
+      "properties": {
+        "rule": { "$ref": "#/$defs/RuleId" },
+        "severity": { "enum": ["error", "warning"] },
+        "file": { "$ref": "#/$defs/VaultPath" },
+        "line": { "$ref": "#/$defs/PositiveIntOrNull" },
+        "column": { "$ref": "#/$defs/PositiveIntOrNull" },
+        "field": { "type": ["string", "null"], "description": "The front-matter field the problem is about; null when it is about a link, the whole front matter, a name, and so on." },
+        "where": { "type": "string" },
+        "what": { "type": "string" },
+        "repeat": { "type": "integer", "minimum": 1 },
+        "fix": { "$ref": "#/$defs/Fix" },
+        "text": { "type": "string", "description": "The whole message exactly as scat check prints it, fix included." }
+      }
+    },
+
+    "Fix": {
+      "type": "object",
+      "required": ["kind", "options", "notes"],
+      "properties": {
+        "kind": { "enum": ["exact", "options", "slot", "advisory", "manual"] },
+        "head": { "type": "string", "description": "The line that introduces the options, for example Fix, choose one:" },
+        "sequence": { "type": "boolean", "description": "True: do every option in order (steps). Absent or false: the options are alternatives; the author picks one." },
+        "options": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/FixOption" } },
+        "notes": { "$ref": "#/$defs/StringList" }
+      },
+      "if": { "properties": { "kind": { "const": "options" } }, "required": ["kind"] },
+      "then": { "properties": { "options": { "minItems": 2 } } }
+    },
+    "FixOption": {
+      "type": "object",
+      "required": ["kind", "text"],
+      "properties": {
+        "kind": { "enum": ["exact", "slot", "advisory", "manual"] },
+        "text": { "type": "string", "description": "The sentence shown today." },
+        "command": { "$ref": "#/$defs/Command" },
+        "edits": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/Edit" }, "description": "Apply in order, then run command if there is one." }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "enum": ["advisory", "manual"] } }, "required": ["kind"] },
+          "then": { "properties": { "command": false, "edits": false } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "exact" } }, "required": ["kind"] },
+          "then": { "anyOf": [{ "required": ["command"] }, { "required": ["edits"] }] }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "slot" } }, "required": ["kind"] },
+          "then": {
+            "required": ["edits"],
+            "properties": { "edits": { "contains": { "required": ["author_slot"] } } }
+          }
+        }
+      ]
+    },
+    "Command": {
+      "type": "object",
+      "required": ["argv", "repl"],
+      "properties": {
+        "argv": { "$ref": "#/$defs/StringList", "minItems": 1, "description": "The scat command line as an argument list, without the leading scat." },
+        "repl": { "type": "string", "description": "The same call in the Python REPL." }
+      }
+    },
+
+    "Edit": {
+      "description": "One change a tool can apply. A closed list of actions; a new action bumps schema_version.",
+      "oneOf": [
+        { "$ref": "#/$defs/SetField" },
+        { "$ref": "#/$defs/DeleteField" },
+        { "$ref": "#/$defs/ReplaceText" },
+        { "$ref": "#/$defs/RenameFile" },
+        { "$ref": "#/$defs/DeleteFile" }
+      ]
+    },
+    "SetField": {
+      "description": "Set a front-matter field to value (add the field when absent, replace it otherwise). On scat.toml, a top-level key. A list value is the whole new list.",
+      "type": "object",
+      "required": ["action", "file", "field", "value"],
+      "properties": {
+        "action": { "const": "set-field" },
+        "file": { "$ref": "#/$defs/VaultPath" },
+        "field": { "type": "string", "minLength": 1 },
+        "value": { "type": ["string", "integer", "number", "boolean", "array"], "description": "A JSON value; the tool writing it chooses the YAML or TOML form." },
+        "author_slot": { "type": "string", "minLength": 1, "description": "Present when value holds a placeholder the author must replace: this is that placeholder's exact text. Never write it as is." }
+      }
+    },
+    "DeleteField": {
+      "description": "Delete a front-matter field and its value.",
+      "type": "object",
+      "required": ["action", "file", "field"],
+      "properties": {
+        "action": { "const": "delete-field" },
+        "file": { "$ref": "#/$defs/VaultPath" },
+        "field": { "type": "string", "minLength": 1 }
+      }
+    },
+    "ReplaceText": {
+      "description": "Replace the text find with replace on a line of the page (its body, or front matter lines that are not a plain field).",
+      "type": "object",
+      "required": ["action", "file", "line", "find", "replace"],
+      "properties": {
+        "action": { "const": "replace-text" },
+        "file": { "$ref": "#/$defs/VaultPath" },
+        "line": { "type": "integer", "minimum": 1 },
+        "column": { "type": "integer", "minimum": 1, "description": "Where find starts on the line, when the line holds it more than once." },
+        "find": { "type": "string", "minLength": 1 },
+        "replace": { "type": "string" }
+      }
+    },
+    "RenameFile": {
+      "description": "Rename a file. Links that named it are not rewritten by this edit.",
+      "type": "object",
+      "required": ["action", "file", "to"],
+      "properties": {
+        "action": { "const": "rename-file" },
+        "file": { "$ref": "#/$defs/VaultPath" },
+        "to": { "$ref": "#/$defs/VaultPath" }
+      }
+    },
+    "DeleteFile": {
+      "type": "object",
+      "required": ["action", "file"],
+      "properties": {
+        "action": { "const": "delete-file" },
+        "file": { "$ref": "#/$defs/VaultPath" }
+      }
+    }
+  }
+}
