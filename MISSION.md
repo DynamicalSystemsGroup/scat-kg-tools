@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Approved by the chief engineer's merge of PR #1 into `main` of `DynamicalSystemsGroup/scat-kg-tools`. Each amendment is approved by the merge of its own PR; Amendment 1 is PR #2, Amendment 2 is PR #4, Amendment 3 is PR #5 and Amendment 4 is PR #6. |
+| **Status** | Approved by the chief engineer's merge of PR #1 into `main` of `DynamicalSystemsGroup/scat-kg-tools`. Each amendment is approved by the merge of its own PR; Amendment 1 is PR #2, Amendment 2 is PR #4, Amendment 3 is PR #5, Amendment 4 is PR #6 and Amendment 5 is PR #8. |
 | **Chief engineer (accountable)** | `mzargham`: final design authority. Approves this mission and its amendments, and accepts the v0.1 delivery. |
 | **Assistant to the chief engineer (ACE)** | The main Claude session. Manages the team, writes and approves work-package scopes inside this mission, accepts work packages, and escalates only intent gaps (see Governance). |
 | **Repositories** | `scat-kg-tools` (the tools, the TBox, the docs site; this document) and `scat-kg-template` (the vault to clone). |
@@ -114,7 +114,10 @@ under it (the chief engineer's initial brief).
   - the past, future or mixed mark every scenario and architecture records (see "Scenarios and architectures");
   - the linking rules, reflecting how scenarios and architectures differ;
   - how the graph holds disagreement and margins of potential conflict. At minimum, the same concern can be held by
-    different stakeholder groups.
+    different stakeholder groups;
+  - one generic **relationship** between two records of the same class: a note with a place in the graph, whose only
+    rule is that both ends share a class. It is optional, the tools give it no meaning, and analysis views leave it
+    out. It replaces the typed `conflicts` link between concerns (Amendment 5).
 - **G2. Vault ↔ graph.** Markdown pages with YAML frontmatter parse into an ABox that is checked against the TBox.
   Every class has a class page: a description, plus an index table of its instances (name, short description, link)
   that the tools generate from the instance pages.
@@ -160,8 +163,9 @@ under it (the chief engineer's initial brief).
   - **Coherence:** the result is one coherent ontology, not a patchwork. Every term traces to its source, or is
     recorded as authored, with the reason.
   - **Easy wins:** we take easy wins in expressiveness where they don't complicate the software or the UX. The first
-    candidate is a conflict between concerns, such as anonymity versus attribution, which the chief engineer called a
-    disjointness axiom.
+    candidate was a conflict between concerns, such as anonymity versus attribution, which the chief engineer called a
+    disjointness axiom. Amendment 5 withdraws it: typed links between records of the same class are not yet stable
+    enough to fix, so v0.1 offers only the generic relationship (G1).
   - **Disagreement:** how the graph holds disagreement is decided when the TBox is designed, from both this research
     and G11's.
 - **G11. Facilitation strategy grounded in research.** The planning and facilitation guides are written from a
@@ -170,10 +174,24 @@ under it (the chief engineer's initial brief).
   2025, DOI 10.1111/epic.70009), and recent unpublished grant-proposal drafts from the same collaboration, which the
   chief engineer supplies and which are read for principles only. The strategy covers the improvisational stance,
   eliciting scenarios and architectures, and holding disagreement without adjudicating it.
+- **G12. A template analysis notebook (Amendment 5).** The template carries a notebook that loads a vault bound to the
+  schema and gives a few named views. The first is the **narrative view**: for one coded narrative, the stakeholder
+  groups, concerns, affordances and technologies it names, and the links among them that appear in that field note. A
+  narrative is the parent of scenario and architecture, and the past/future mark is a property of the narrative.
+  Relationships (G1) stay out of the views.
+- **G13. Ripple-aware change (Amendment 5).** A change to a term, a contract, a rule or the mission reaches every
+  artifact that depends on it, in one package, and no two packages edit the same file in turn (see Governance).
 
 ## Non-goals
 
-- Gen-AI aided authoring. An Obsidian plugin is explored on a feature branch (log D-054) and delivered in a later package; v0.1 provides the stable interface it builds on (R-16).
+- Gen-AI aided authoring or coding in v0.1. Two spikes explore it (Amendment 5): the feasibility of AI-aided coding,
+  with a tooling choice (tool calls, skills, or an MCP server that depends on `scat-kg`); and compatibility with
+  inference.coop, the only AI approved to touch the pilot's field notes. Their readouts feed later amendments.
+- The Obsidian plugin (Amendment 5). It stays on its feature branch (log D-054); v0.1 provides the stable interface it
+  builds on (R-16).
+- Typed links between records of the same class, such as incompatible concerns, adversarial groups, complementary
+  affordances or compatible technologies. They are parked on the feature branch `feature/same-type-edges`
+  (Amendment 5), and nothing in the release refers to them.
 - Faces or triangles of any kind, including ones inferred from scenarios and architectures.
 - Letting instance repositories extend the TBox, and evolving the TBox after v0.1.
 - Enforcing links from raw records to their coded pages beyond a warning.
@@ -185,7 +203,7 @@ under it (the chief engineer's initial brief).
   problematization is for a richer ontology such as `ant-rdf`, applied afterwards (log D-057).
 - Adjudicating between stories or architectures. Neither the tools nor the guides judge which architecture is correct
   or which stories should be focal.
-- Analysis tooling over the graph, which is explored on a feature branch (log D-054) and delivered, if at all, in a later package.
+- Analysis tooling beyond the template notebook's views (G12). RS2 stays on its feature branch (log D-054).
 - Publishing to PyPI.
 - A path for users who don't use a terminal or REPL.
 
@@ -195,9 +213,9 @@ under it (the chief engineer's initial brief).
 |---|---|---|
 | D-1 | The TBox in Turtle, in `scat-kg-tools` | G1, G10 |
 | D-2 | The tools (parser, checks, the operations, the Python API and CLI, and their machine-readable output with its schema) with their test suite, in `scat-kg-tools` | G2, G3, G4 |
-| D-3 | The template repository: vault skeleton, class pages, instance configuration (the stakeholder-group cap), the pinned tools, and the case study | G5, G6, G9 |
+| D-3 | The template repository: vault skeleton, class pages, instance configuration (the stakeholder-group cap), the pinned tools, the case study, and the analysis notebook | G5, G6, G9, G12 |
 | D-4 | The documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9, G11 |
-| D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, and the facilitation research | G8, G10, G11 |
+| D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, the facilitation research, and the two AI spikes (Amendment 5) | G8, G10, G11 |
 | D-6 | The reviewer's guide for the chief engineer, in the `scat-kg-tools` release PR. It is sized for a person and split into sittings: (1) the end-to-end walkthrough (UA-M); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
 | D-7 | The user-acceptance kit, in `scat-kg-tools/acceptance/`: the AI tester personas and briefs, the report template, every AI test report with its dispositions, and the walkthrough script | G9 |
 
@@ -223,6 +241,8 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-14 | The planning and facilitation guides carry the improvisational stance ("yes, and"; "from this perspective"). They contain no step that ranks, votes on or adjudicates between stories or architectures. | The ACE's review of the guides; UA-M |
 | R-15 | **A light musical reference, clarity first.** The package and its docs carry the music-note logo and one brief aside on improvisation, where the "yes, and" stance is introduced. Everywhere else, plain words win over any musical reference. | The chief engineer's judgement in UA-M (log D-052) |
 | R-16 | **A stable machine interface.** Every result the operations return is also available as versioned, machine-readable data, from the Python API and the CLI alike. Its schema lives with the contracts, and changing it follows a stated versioning rule. A fix is data a tool can apply (what kind of fix it is, the exact command, or the field to write), not only a sentence. This is the interface the Obsidian plugin and any later tool build on (log D-060). | Every operation's output validated against the schema in tests; a test that the text messages and the data agree |
+| R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault, and its narrative view gives, for each coded narrative, exactly the records it names and the links among them, with no relationship. | The notebook executed in the template's CI, with a test on the view |
+| R-18 | **Ripple-complete changes.** Before a package that changes a term, contract, rule or the mission is approved, its impact map lists every artifact that refers to what changes, each marked change, keep (with why) or historical. At acceptance, the same sweep finds no reference that is unmarked or still says the old thing. | The impact map in the scope; the sweep's output in the acceptance record |
 
 ## User acceptance
 
@@ -343,6 +363,10 @@ The chief engineer has accepted by merging the release PRs.
   3. The ACE then tags `v0.1.0` on the merge commit in each repository, redeploys the site from `main` without the
      pre-release mark, and restores `main` as the template's default branch. The template's pin stays on the
      accepted candidate commit, whose content the tag marks.
+- **Ripple-aware change (Amendment 5).** A change-management consultant, an agent that supports the PM, builds each
+  impact map (R-18) before the ACE approves a scope and re-runs the sweep before acceptance. It also keeps the file
+  map of the packages in flight: packages whose blast radii overlap are merged or put in order, never run so that
+  one undoes another.
 - **How the team runs** is set out in `ORG.md`.
 
 ## Timeline
@@ -396,10 +420,37 @@ recording why.
   told; a coded page is a reading of its raw page and inherits it. Working field name `timeframe`, with the chief
   engineer's values `past`, `future` and `mixed`. Like every required field (R-3), a missing value is an error on a
   `done` page and a warning before.
+- Amendment 5 *(default)*:
+  - **Relationship's form.** A relation page per pair, like the three links: type `relationship`, two ends of the same
+    class, and the note in its body. Its only rule is the same-class check; it is never entailed, never required and
+    never in an index's required links. The `conflicts` field, its rule `SCAT-CONFLICT-SELF` and every mention of
+    them leave the release; existing `conflicts` values migrate to relationship pages.
+  - **The parked branch.** `feature/same-type-edges` holds the withdrawn `conflicts` material and the chief engineer's
+    notes on the four typed links. It is a parked design, not work to build.
+  - **The notebook** reads the vault through the tools' public data (R-16) where it can, which needs the public vault
+    loader that Amendment 4 left for "the packages that need them".
+  - **The consultant** runs on Sonnet as a role in `.claude/agents/`. Its sweep is a written list of search terms per
+    change, run with `git grep` over both repositories and the live branches, so the same sweep runs at scoping and
+    at acceptance.
+  - **The spikes** run on side branches with readouts in `research/`. In spike B the chief engineer signs in; the
+    agent never enters credentials, and only synthetic data goes to inference.coop.
+  - **Order.** WP12 is accepted, then the relationship change, which absorbs WP13's pages so the shared docs are
+    edited once, then the notebook. The spikes run alongside, since they touch no release file.
 
 ## Open decisions (for the chief engineer)
 
-None. Every item was resolved through the decision loop and is recorded in `decisions/log.md`:
+Amendment 5 (open, asked one at a time):
+1. **Narrative in the schema.** Is "narrative" a page type of its own, so a field note can be neither scenario nor
+   architecture, or only a grouping the notebook uses over scenarios and architectures?
+2. **Which links "appear within" a field note.** Today a link page does not record where it came from. The view can
+   infer it (both ends named on that narrative's coded page), or each link page can name its source narrative.
+3. **Chatham House in this mission** *(raised by the ripple sweep)*. The mission asserts the rule in four places
+   (Scenarios and architectures, G6, J4, and the non-goal on attribution), while log D-070 makes it one example
+   policy in the docs. Bring the mission in line, or keep it?
+4. **The Agent's defaults** for Amendment 5, as one item.
+
+Earlier amendments: none open. Every item was resolved through the decision loop and is recorded in
+`decisions/log.md`:
 - 15 decided by the chief engineer: log D-001, D-003, D-005 to D-008, D-010 to D-014, D-017 to D-019, D-021;
 - 1 assigned to the ACE: log D-002;
 - 1 deferred by him: the target date, until velocity is known (log D-011, which also decided the timeline method);
