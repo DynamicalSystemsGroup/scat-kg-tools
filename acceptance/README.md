@@ -11,6 +11,7 @@ run by the tools or by CI. The kit is not in the docs site's navigation.
 | `personas/` | Three personas in the user's own words: p1 facilitator-analyst, Python session, Haiku; p2 newcomer, command line, Haiku; p3 facilitator-analyst, Python session, Sonnet, as control. |
 | `briefs/` | One self-contained brief per persona, which is all a tester is given, and `cold-read-part1.md` and `cold-read-part2.md`, the two halves of the R-15 cold read. The cold-read briefs are retained for reference only: the cold read is not part of this release's acceptance (D-052). |
 | `report-template.md` | What a tester returns: the cold-read answer first, then J1 to J7, findings, severity, dispositions, void rules. |
+| `personas/p4-…`, `briefs/p4-…` | Persona 4 and its brief (`personas/p4-event-coordinator-haiku.md`, `briefs/p4-event-coordinator-haiku.md`) are the project-manager cold read of one docs page, the Terms page, for WP12-R3. The tester gets the brief plus the page text only and uses no tools, so the clean-environment setup below does not apply. The reports are `reports/wp12-r3-round1.md` to `wp12-r3-round4.md`. |
 
 Each persona has a coding domain of its own, none of them the worked example: p1 flood readiness in a river town, p2
 stall allocation at a farmers' market, p3 parts ordering at a bicycle-repair co-operative. Each brief carries its
