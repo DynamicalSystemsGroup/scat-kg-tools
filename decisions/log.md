@@ -1328,3 +1328,17 @@ and its an honest ability to record that"
 **Outcome.** The axis is past/future, with values `past`, `future`, `mixed`; the docs' 2×2 shows past and future; the
 facilitation guides separate past and future in time. The import-don't-mint naming check is dropped: the chief engineer
 set the values. Working field name `timeframe` (ACE default, in Amendment 3).
+
+**Direction (the chief engineer's words, typed by the ACE):** "i called them past and future to avoid the reaction but
+to be clear in the explanation about how to use these fields. counterfactual stories about "what would happen if" is
+future, and historical descriptions "when someone would do x then y happens" is past. i think our facilitation guide
+should have a list of examples of phrases (including non obvious ones) to guide the user. this stuff stays strictly in
+the facilitation documentation as it just tags the captured narratives. don't bloat, this is meant to improve the
+structure of the facilitation and data capture so that we can allow both types of narration but reduce the mixing to
+make it a bit more interpretable after the fact. this should be address by a full work cycle rather than edited adhoc
+in place since that risks destabilizing the repo. think of it as a blast radius targeted work package focused on
+tightening the facilitation -> recorded raw narratives so we get a cleaner data set"
+
+**Outcome.** Amendment 3 states the counterfactual and habitual cases and that the guidance lives in the facilitation
+guides alone. The build is WP10, a scoped package with a named blast radius (`work-packages/WP10.md`), approved by the
+ACE once Amendment 3 is merged; nothing is edited in place before then.
