@@ -13,7 +13,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP5 | Conformance tools | accepted | `WP5.md` |
 | WP6 | Template and case study | accepted | `WP6.md` |
 | WP7 | Docs and Pages | accepted | `WP7.md` |
-| WP8 | Candidate and user acceptance | approved | `WP8.md` |
+| WP8 | Candidate and user acceptance | all units done except WP8-U1 (held for the chief engineer); handed back to the ACE for the release PRs | `WP8.md` |
 
 ## Units
 
@@ -116,6 +116,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 5 | WP5-U1 to WP5-U10 (U9, U10 unplanned), WP6-U1 to WP6-U7 | 64 | 70 | 1.09 | 2.94 h | 23.8 |
 | 6 | WP6-U8 | 3 | 5 | 1.67 | 0.11 h | 45.5 |
 | 7 | WP7-U1 to WP7-U8, WP7-R5, WP7-R6 | 43 | 53 | 1.23 | 1.38 h | 38.4 |
+| 8 | WP8-U2 to WP8-U19 (28 units, WP8-U8b, U8c, U14b to U14d, U15b to U15d, U16b and U16c added by the PM; WP8-U1 held) | 120 | 128 | 1.07 | 2.64 h | 48.5 |
 
 ## Velocity and forecast
 
@@ -127,7 +128,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
 
-Current: WP8 approved (D-041): 21 units, 103 est. pts planned (U16 conditional). Iteration 8 open: U2 to U11 done (55 est. pts, 59 realized); U1 held for the chief engineer; U12 (re-pin to the U11 candidate) is next, then UA-A round 2. See pm-handover.md. Before WP8: 186 est. pts proposed (WP1 to WP7, including the unplanned WP5-U9, WP5-U10 and WP6-U8, and the two WP7 reads; WP8 not yet scoped); 186 est. pts completed; 218 realized pts completed. 7 iterations closed; running realized/estimated ratio 1.17; raw velocities [40.9, 24.4, 93.8, 34.9, 23.8, 45.5, 38.4]; smoothed velocity v-hat 39.7 realized pts/hour. Forecast: still not stated as a number, because the remaining estimated points do not exist yet (WP8 has no scope). WP7 landed at 43 estimated and 53 realized (ratio 1.23). Iteration 7 is five units in parallel, so its 1.38 h of wall clock counts overlapping workers once and its velocity is noisy.
+Current: WP8 (D-041): every unit is done except WP8-U1, which is held for the chief engineer (est. 5, branch `wp8/u1` and its worktree untouched). Iteration 8 closed at 2026-11-24T00:23:13-05:00: 28 units landed, 120 est. pts, 128 realized (ratio 1.07), 2.64 h, raw velocity 48.5 realized pts/hour. The candidate is tools `126a6be` (last change to `src/` and `docs/`), template `9e9bad8`; CI, Pages and the template's clean-clone check are green; the reviewer's guide and the w3id registration file are in `acceptance/`; UA-A ran five rounds and R-15 is met with two known-weak items (D-049). Totals: 306 est. pts completed over WP1 to WP8 (WP8-U1 aside), 346 realized, running realized/estimated ratio 1.13; raw velocities [40.9, 24.4, 93.8, 34.9, 23.8, 45.5, 38.4, 48.5]; smoothed velocity v-hat 44.1 realized pts/hour. Forecast: the remaining estimated work for the candidate is WP8-U1 (5 est. pts, if the chief engineer authorises it): 5 x 1.13 / 44.1 = 0.13 h; after that the ACE opens the release PRs. Over and under, WP8: the UA-A rounds were the cost. Round 1 and the first fix unit landed near estimate; rounds 3 to 5 and the fix and re-pin units after them (U14b to U14d, U15b to U15d, U16b, U16c) were not planned, because the R-15 cold read changed its failure each round (the cold reader names a new phrase every time, always Haiku); the reviewer's guide ran over (13 against 8) because D-046 to D-049 changed the facts it states twice. Lessons: plan a chain of fix, re-pin and read as one unit with a stop rule from the start, state what counts as a style failure before the first cold read, and write the reviewer's guide's pin-dependent facts last.
 
 Over and under, WP7: on estimate: the skeleton (3), home and getting started (5), planning and facilitation guides (8), the reference (5), the docs test (5) and the style pass (3). Over: the coding guide, 8 against 5, because a guide that shows provoked messages must give each one a stated start state (three push-backs, four reviews; a PM ruling settled it); and the planned fix unit, 8 against 5, because the reruns found a real defect (a placeholder swallowed as an HTML tag) and each read still turned up minor phrases. Lessons: a guide that shows real tool output should be planned with a start state per example; plan Haiku reads with their reruns (3 each, not 2); a style pass should state in its brief where a metaphor may not stand in for an instruction.
 
