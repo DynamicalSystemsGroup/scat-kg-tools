@@ -220,6 +220,8 @@ $ uv run scat check --json
 }
 ```
 
+Change the typo back (`[[intent-without-drfit]]` to `[[intent-without-drift]]`) before you type the next commands, which assume that page as the template has it.
+
 ## scat status
 
 ```text

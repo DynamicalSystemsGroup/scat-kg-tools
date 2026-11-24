@@ -201,6 +201,8 @@ To see a problem with a fix a program can apply, change `[[intent-without-drift]
 }
 ```
 
+Change the typo back (`[[intent-without-drfit]]` to `[[intent-without-drift]]`) before you type the next commands, which assume that page as the template has it.
+
 ## scat_kg.status
 
 ```text
