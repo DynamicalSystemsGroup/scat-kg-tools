@@ -59,6 +59,11 @@ log entry and, where the ruling changed direction, the `divergence/` tag to reve
   including a clearer "Yes, and" rule: "ask a question that adds to it; do not ask whether it is true, right or
   complete". R-15 is now read as concerning style elements only, which ends the round loop.
 
+- **D-048: round 4.** Readers named jazz again, but flagged three style-in-instruction phrases. One was a framing
+  sentence the ACE had approved, which contradicted "restate in your own words"; that was partly the ACE's error and
+  is now fixed. A stop rule applies: one last reader pair, then the ACE dispositions anything left directly, as
+  known-weak in the guide.
+
 ## Held for you
 
 - **D-040 / D-041: UA-A ran with uv preinstalled,** whereas `MISSION.md` UA-A says "uv not installed". Only you
