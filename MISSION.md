@@ -107,6 +107,8 @@ They:
   the same operations and messages. The docs lead with the REPL, because CLI commands get long when run through uv;
 - follow documentation literally, step by step.
 
+Amendment 5 adds coders who work through a chat with an MCP server and never open a terminal (G14, path 2).
+
 The people in the data are stakeholder **groups**, never individuals. What participants are told about how their
 contributions are used is the event's own agreed policy: for example, the Chatham House rule or personal attribution
 (Amendment 5).
@@ -226,7 +228,8 @@ matters without claiming to be exhaustive. No particular project's choices appea
      tools only through MCP servers. The open-source service is built for it: the MCP server with its tools, prompts
      and skills, depending on `scat-kg`. A workable chat workflow is a UX design problem in its own right: the input
      material is uploaded to the chat as a collection, files are created and downloaded, kept in a private git
-     repository and edited in Obsidian, with copying and pasting where it can't be avoided. It is kept simple.
+     repository and edited in Obsidian, with copying and pasting where it can't be avoided. It is kept simple. Its
+     user may never open a terminal, so the path's setup, git and checks work without one (Amendment 5).
   3. **An IDE with agents**, such as Cursor, or VS Code with an agent. Supported, not the priority.
 
   Whatever path is used, the assistance does mechanical work only; the interpretive act stays with the human coder.
@@ -266,7 +269,6 @@ matters without claiming to be exhaustive. No particular project's choices appea
   or which stories should be focal.
 - Analysis tooling beyond the template notebook's views (G12). RS2 stays on its feature branch (log D-054).
 - Publishing to PyPI.
-- A path for users who don't use a terminal or REPL.
 
 ## Deliverables
 
