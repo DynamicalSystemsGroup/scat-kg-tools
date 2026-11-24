@@ -1398,3 +1398,22 @@ when the amendment is merged, and sequenced after WP10's code unit (both touch `
 branch, and a PM board/metrics commit (`5e9365a`, with an untracked `site/` build folder swept in) landed there. It was
 never pushed. The ACE undid it locally, removed the build folder, and checked that the PM's records are on `dev`
 (they are). From now on the ACE drafts in its own worktree and never switches the shared checkout's branch.
+
+## D-061 | 2026-11-24 | The estimation data is an operational requirement, checked in CI
+
+**Raised by the chief engineer (his words, typed by the ACE):** "also i want to make sure we're keeping to our work
+estimation practice. i find this data very helpful to review work:
+https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/work-packages/metrics.jsonl", then "i want to make this
+an operational requirement since it impacts my ability to assess delivered code".
+
+**Outcome.** `ORG.md`, "Status reports", now states the operational requirement. `work-packages/check_metrics.py`
+(standard library only) enforces it on every record after line 251, the log's length when WP10 was approved. Earlier
+records are history: they predate the check, and several WP8 records would fail it (no `actor`, first recorded as done,
+one estimate of 12 points). CI runs the check on every push, once WP10's records pass. The ACE accepts a package only
+when `--accept WPn` passes.
+
+**First run (ACE).** The practice was kept in substance for WP10: units were planned with estimates at 09:13, two minutes
+after approval and before work landed; realized points carry a basis; and a mid-package scope change is named in
+U2's basis. It found one gap: the four `done` records (U1 to U4) lack `iteration`, which the schema requires. The PM
+appends corrected records. Also noted: U4 was split, with U4 at 5 estimated and 2 realized, and U4b planned at 3 when
+it started. The split is now ruled: the original unit keeps its estimate, and the new unit is planned before it starts.
