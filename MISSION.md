@@ -204,9 +204,13 @@ matters without claiming to be exhaustive. No particular project's choices appea
 
 ## Non-goals
 
-- Gen-AI aided authoring or coding in v0.1. Two spikes explore it (Amendment 5): the feasibility of AI-aided coding,
-  with a tooling choice (tool calls, skills, or an MCP server that depends on `scat-kg`); and compatibility with
-  a privacy-focused inference service, inference.coop. Their readouts feed later amendments.
+- Gen-AI aided authoring or coding in v0.1. LLM use is never assumed (R-19). Two spikes explore optional AI
+  assistance (Amendment 5), and their readouts feed later amendments:
+  - **Spike A:** whether AI-aided coding is feasible through interfaces that work with any LLM provider: standard tool
+    calls and skills, with an MCP server only if the spike shows it is needed.
+  - **Spike B, the interoperability test case:** the same work driven by inference.coop, a privacy-focused service
+    anyone can use. Testing with Claude would be cheating, since Claude is the development team; a different provider
+    forces the work through the cross-platform interfaces, and through Obsidian for coding and review.
 - The Obsidian plugin (Amendment 5). It stays on its feature branch (log D-054); v0.1 provides the stable interface it
   builds on (R-16).
 - Typed links between records of the same class, such as incompatible concerns, adversarial groups, complementary
@@ -264,6 +268,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-16 | **A stable machine interface.** Every result the operations return is also available as versioned, machine-readable data, from the Python API and the CLI alike. Its schema lives with the contracts, and changing it follows a stated versioning rule. A fix is data a tool can apply (what kind of fix it is, the exact command, or the field to write), not only a sentence. This is the interface the Obsidian plugin and any later tool build on (log D-060). | Every operation's output validated against the schema in tests; a test that the text messages and the data agree |
 | R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault, and its narrative view gives, for each coded narrative, exactly its support, with no relationship. | The notebook executed in the template's CI, with a test on the view |
 | R-18 | **Ripple-complete changes.** Before a package that changes a term, contract, rule or the mission is approved, its impact map lists every artifact that refers to what changes, each marked change, keep (with why) or historical. At acceptance, the same sweep finds no reference that is unmarked or still says the old thing. | The impact map in the scope; the sweep's output in the acceptance record |
+| R-19 | **Manual first.** Every step, from field notes to coded vault to analysis, can be done by a person by hand, in Obsidian and the CLI, with no LLM. The process stays consistent with ethnographic coding practice, so a project whose data rights rule out AI loses nothing but speed. Any AI assistance is optional, provider-agnostic, and does mechanical work only; the interpretive act stays with the human coder. | The UA-M walkthrough and the docs test, run with no LLM; the ACE's review of each spike readout against it |
 
 ## User acceptance
 
