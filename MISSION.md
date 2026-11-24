@@ -56,12 +56,16 @@ capturing and coding.
   is concerns, and the same concern can arise from different stakeholders; an architecture can't presume which
   stakeholders will adopt it. A coded architecture relates concerns, affordances and technologies.
 
-A second lens cuts across the first: **grounding**. A story may be historical, told from what happened, or
-demonstrative, showing what could happen. An architecture may be as-is, describing a system that exists, or to-be,
-proposing one. So each record is grounded in observation of what exists, projects what could be, or mixes the two.
-Behavioural or structural, observed or projected: a 2×2 for unbundling narratives. Every scenario and architecture
-records its grounding (log D-057). Grounding marks only the records: stakeholder groups, concerns, affordances and
-technologies are not marked with it, and the three relations don't change.
+A second lens cuts across the first: **past or future**. A story may tell what happened or what could happen. An
+architecture may describe a system that exists or one that is proposed. The rule is simple, because the present is
+nebulous: anything real that can be narrated is past, and anything being done with intention but not yet realized is
+future. Behavioural or structural, past or future: the docs show this as a 2×2 for unbundling narratives. Every
+scenario and architecture records which it is (log D-057). Only these records are marked: stakeholder groups,
+concerns, affordances and technologies are not, and the three relations don't change.
+
+People mix past and future freely when they talk. The facilitation guides therefore lead participants to the past and
+the future at separate times in a workshop, so that the accounts are easier to sort. A record may also be marked
+**mixed**: that is the honest record of an account that blurs the two.
 
 Whether the narrator sees what is told as good, bad or a mix is not recorded in the schema. For anything real a mix is
 expected, and it stays in the story's own words. SCAT is pragmatic and thin. It doesn't compete with richer ontologies
@@ -105,8 +109,7 @@ under it (the chief engineer's initial brief).
     technology). Names may follow an adopted ontology;
   - each record's required and optional fields;
   - the other page types: class pages, raw and coded scenarios, raw and coded architectures;
-  - the grounding every scenario and architecture records: observed, projected or mixed (see "Scenarios and
-    architectures");
+  - the past, future or mixed mark every scenario and architecture records (see "Scenarios and architectures");
   - the linking rules, reflecting how scenarios and architectures differ;
   - how the graph holds disagreement and margins of potential conflict. At minimum, the same concern can be held by
     different stakeholder groups.
@@ -381,11 +384,10 @@ recording why.
 - Branches: `main` holds approved missions and releases only, `dev` is the integration branch, and work happens on
   short-lived unit branches off `dev`.
 - The worked example sets the stakeholder-group cap to 3.
-- Grounding (Amendment 3) is a field on the raw scenario and raw architecture pages, the record of what was told; a
-  coded page is a reading of its raw page and inherits it. The field and its values (working names: `grounding`, with
-  `observed`, `projected`, `mixed`) are named after a short import-don't-mint check, and the guides map them to
-  historical/demonstrative and as-is/to-be. Like every required field (R-3), a missing value is an error on a `done`
-  page and a warning before.
+- The past/future mark (Amendment 3) is a field on the raw scenario and raw architecture pages, the record of what was
+  told; a coded page is a reading of its raw page and inherits it. Working field name `timeframe`, with the chief
+  engineer's values `past`, `future` and `mixed`. Like every required field (R-3), a missing value is an error on a
+  `done` page and a warning before.
 
 ## Open decisions (for the chief engineer)
 
@@ -393,7 +395,7 @@ None. Every item was resolved through the decision loop and is recorded in `deci
 - 15 decided by the chief engineer: log D-001, D-003, D-005 to D-008, D-010 to D-014, D-017 to D-019, D-021;
 - 1 assigned to the ACE: log D-002;
 - 1 deferred by him: the target date, until velocity is known (log D-011, which also decided the timeline method);
-- Amendment 3: 2 decided by the chief engineer, log D-057 (grounding into v0.1; required, with "mixed").
+- Amendment 3: 3 decided by the chief engineer, log D-057 (into v0.1; required, with "mixed"; a past/future axis).
 
 Log D-004, D-009, D-012, D-019 and D-020 also record consistency passes. Log D-015 and D-016 were rolled back with
 `dev`.
