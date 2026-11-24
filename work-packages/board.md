@@ -132,7 +132,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP10-U2 | technical writer (facilitation and planning guides), sonnet | 5 | 8 | `wp10/u2` | done | | 2026-11-24T09:43:32-05:00 | 3 push-backs, R3 scope change mid-flight, 4 reviews; net 844 words with U1; merged ec5e75a |
 | WP10-U4 | Python developer (template re-pin), haiku | 5 | 2 | `wp10/u4` (template) | done | | 2026-11-24T09:47:12-05:00 | split by the PM: template re-pin only, Haiku worker and reviewer, first-time PASS; template dev 6ebd305; the tools-side refresh moved to U4b |
 | WP10-U4b | Python developer (docs test pin, walkthrough, reviewer's guide, Pages, fresh-clone trial), sonnet | 3 | | `wp10/u4b` | done | | 2026-11-24T09:54:18-05:00 | first-time reviewer PASS (5 nits), about 6 min worker; added by the PM when U4 was split; merged 6fe2507 |
-| WP11-U1 | API designer and technical writer (contract page, JSON Schema), sonnet | 5 |  | `wp11/u1` | queued | WP11 queue start |  |  |
+| WP11-U1 | API designer and technical writer (contract page, JSON Schema), sonnet | 5 |  | `wp11/u1` | in flight |  |  |  |
 | WP11-U2 | Python developer (fix data model, check-result serialisation), sonnet | 5 |  | `wp11/u2` | queued | U1 merged (the schema) |  |  |
 | WP11-U3 | Python developer (operation results, `--json` on every command), sonnet | 5 |  | `wp11/u3` | queued | U2 merged (the model) |  |  |
 | WP11-U4 | test engineer (schema and fix-command harness over the check tests), sonnet | 3 |  | `wp11/u4` | queued | U2 merged (the model) |  |  |
