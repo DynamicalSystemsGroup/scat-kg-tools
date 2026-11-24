@@ -1,0 +1,21 @@
+name: CI
+
+on: push
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --locked
+      - run: uv lock --check
+      - run: uv run scat check
+      - name: No AI attribution in commit messages
+        run: |
+          if git log --format=%B | grep -iE 'Co-Authored-By: *Claude|Generated with'; then
+            echo "A commit message carries an AI attribution line." >&2
+            exit 1
+          fi
