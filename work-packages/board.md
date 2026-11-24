@@ -16,7 +16,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP8 | Candidate and user acceptance | all units done except WP8-U1 (held for the chief engineer); handed back to the ACE for the release PRs | `WP8.md` |
 | WP9 | v0.1 cleanup after the chief engineer's skim (D-052) | all units done and verified on fresh clones | `WP9.md` |
 | WP10 | Past or future on the captured narratives (D-057, D-058) | all units done; handed to the ACE for acceptance | `WP10.md` |
-| WP11 | A stable machine interface (R-16; D-060, D-062) | planned: 11 units, 48 est. pts, iteration 11 | `WP11.md` |
+| WP11 | A stable machine interface (R-16; D-060, D-062) | all units done and merged; handed to the ACE for acceptance | `WP11.md` |
 | RS1 | Research spike: Obsidian plugin (outside v0.1; branch `spike/obsidian-plugin`, never merged into `dev`) | readout, installable plugin and tests done | `RS1-obsidian-plugin.md` |
 | RS2 | Research spike: graph analysis (outside v0.1; branch `spike/analysis`, never merged into `dev`) | readout, package, notebook and tests done | `RS2-analysis.md` |
 
@@ -161,6 +161,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 8 | WP8-U2 to WP8-U19 (28 units, WP8-U8b, U8c, U14b to U14d, U15b to U15d, U16b and U16c added by the PM; WP8-U1 held) | 120 | 128 | 1.07 | 2.64 h | 48.5 |
 | 9 | WP9-U1 to U7 (U1b unplanned), RS1-U1 to U5, RS2-U1 to U5 (RS1-U4, RS1-U5, RS2-U4, RS2-U5 added by the PM; WP8-U1 held) | 71 | 71 | 1.00 | 0.79 h | 89.9 |
 | 10 | WP10-U1 to U4, U4b (U4b added by the PM) | 23 | 23 | 1.00 | 0.72 h | 31.9 |
+| 11 | WP11-U1 to U11, U5b, U7b, U7c (U5b, U7b, U7c added by the PM) | 52 | 51 | 0.98 | 2.14 h | 23.8 |
 
 ## Velocity and forecast
 
@@ -171,6 +172,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP11 is done: 14 units merged into `dev` (tools candidate commit 32150b0, template `dev` 5a7290f). Iteration 11 closed: 52 est. pts, 51 realized (ratio 0.98), 2.14 h, raw velocity 23.8 realized pts/hour. `python3 work-packages/check_metrics.py --accept WP11` passes. Over and under, WP11: on estimate; the largest rule family and the contract page each took a push-back round; U10 under (Haiku, mechanical). Lessons: a unit that converts rules can break a test of an earlier unit that assumed the placeholder, so plan the first typed conversion with its test fallout; a worker cannot edit a file outside its brief even when told by message, so put every file in the brief or plan a follow-up unit; keep a contract page's word budget with headroom, because late clarifications cost a trim round.
 
 Current: WP9 is done and verified (D-052 to D-054): every unit merged into `dev` with --no-ff and pushed, tools `dev` f2eb3c6 (candidate commit e1701ab) and template `dev` 2562949; fresh clones of both give `no problems` (0 errors, 0 warnings) with no index diff, 522 tests, ruff, strict docs build, CI and Pages green. RS1 (`spike/obsidian-plugin`) and RS2 (`spike/analysis`) are pushed with readouts, the installable plugin and the analysis package, and carry dev merged in; they are never merged into `dev`. WP8-U1 is still held for the chief engineer (est. 5, `wp8/u1` untouched). Iteration 9 closed at 2026-11-24T01:34:54-05:00: 18 units, 71 est. pts, 71 realized (ratio 1.00), 0.79 h, raw velocity 89.9 realized pts/hour (overlapping units, so noisy). Totals: 377 est. pts over WP1 to WP9, RS1 and RS2 (WP8-U1 aside), 417 realized, running ratio 1.11; smoothed velocity v-hat 67.0. Forecast: the remaining estimated work is WP8-U1 (5 est. pts, if authorised): 5 x 1.11 / 67.0 = 0.08 h; the candidate is ready for the chief engineer's review now. Over and under, WP9: the docs, kit and guide sync ran over (8 against 5) because outputs had to be replayed and two stale sentences survived the first pass; the rest ran at estimate. Lesson: a text grep for the removed rule id misses prose that describes its behaviour, so brief the sync worker to grep for the behaviour as well, and fix the pin chain (tools, template, docs test) as one planned unit.
 
