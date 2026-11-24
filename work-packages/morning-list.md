@@ -1,5 +1,43 @@
 # Morning list for the chief engineer
 
+## Start here (updated overnight, 24 November)
+
+**1. Approve Mission Amendment 2:** https://github.com/DynamicalSystemsGroup/scat-kg-tools/pull/4 (6 lines in `MISSION.md`).
+- **R-1:** conformance checks structure, never content.
+- **R-15:** a light musical reference, clarity first.
+- **The plugin and analysis:** noted as explored on feature branches.
+
+**2. Play-test v0.1, then approve the release PRs:**
+- https://github.com/DynamicalSystemsGroup/scat-kg-tools/pull/3
+- https://github.com/DynamicalSystemsGroup/scat-kg-template/pull/1
+
+Start from `acceptance/reviewers-guide.md`. Sitting 1 is your walkthrough.
+
+**What changed since you skimmed** (WP9, checkpoint `checkpoint/v0.1-rc1` if you want to compare or revert):
+- SCAT-CONFLICT-BOTH is removed. `conflicts` links stay, checked only structurally.
+- The other 27 rules were audited (D-053). Two messages were trimmed to the bare structural fact.
+- Jazz is toned down to the music-note logo and one improvisation aside on the home page.
+- A fresh template clone now checks with "no problems" (0 errors, 0 warnings).
+
+**3. Try the two features** (outside v0.1, on their own branches; the ACE ran both from clean checkouts):
+- **Graph analysis** (`spike/analysis`): check out the branch, then `cd research/analysis && uv run jupyter lab
+  notebook/scat-graph-analysis.ipynb`. Six descriptive analyses (traceability chains and gaps, tensions, shared
+  concerns, centrality and more), each with a "does not mean" line. It runs on the case study and a 163-page synthetic
+  vault. 22 tests.
+- **Obsidian plugin** (`spike/obsidian-plugin`): follow `research/obsidian-plugin/README.md`. You copy `dist/scat/` into
+  a vault's `.obsidian/plugins/scat/` and enable it. It checks the open note and lists the messages in a side panel,
+  with a status-bar count. It needs uv. 31 tests pass, including end-to-end tests with real uv; it was never run
+  inside Obsidian itself.
+- **For a later package:** `scat check --json` would remove the plugin's Python shim, and a public vault loader would
+  serve the analysis package.
+
+**4. Held for you:**
+- **WP8-U1:** a test-assertion edit only you can authorise (details below).
+- **The uv gap:** UA-A ran with uv preinstalled.
+- **Paths in git history:** the local paths are redacted from the files but remain in history (a force-push to remove).
+- **w3id:** submit the registration after the merge.
+- **Node:** see below.
+
 ## Overnight, after your skim (D-052)
 
 - **Checkpoint:** `checkpoint/v0.1-rc1` is tagged on both repositories, at exactly what you skimmed.
@@ -16,18 +54,6 @@
     `brew upgrade node && brew cleanup` for the clean Homebrew build. After that you can delete
     `~/.local/opt/node-v26.13.1-darwin-x64`.
 - This section is updated with results as they land.
-
-## Start here
-
-**The v0.1 candidate is ready for your acceptance.** The release PRs are open:
-- https://github.com/DynamicalSystemsGroup/scat-kg-tools/pull/3
-- https://github.com/DynamicalSystemsGroup/scat-kg-template/pull/1
-
-Read `acceptance/reviewers-guide.md` (four sittings; sitting 1 is your walkthrough), then merge both with a merge
-commit to accept. The four items under "Held for you" are yours, and none blocks reading or walking through.
-
-Items the ACE decided overnight that you may want to look at, and anything held for you. Each one names its decision
-log entry and, where the ruling changed direction, the `divergence/` tag to revert to. Appended through the night.
 
 ## Rulings you may want to reverse
 
