@@ -7,7 +7,7 @@
 { .epigraph }
 
 An architecture session is a round of designs, one proposer at a time. It hears how a proposed assembly of tools is put together, and which concerns it addresses. You
-hold the room, much as a player in a jazz combo improvises on what the others play. A note-taker writes. This page runs you through the session stage by stage, then turns the notes into a
+run the session. You ask the questions, say whose turn it is, and listen, much as a player in a jazz combo builds on what the others play. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. This page runs you through the session stage by stage, then turns the notes into a
 raw architecture page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a design, and you never ask a
@@ -25,15 +25,18 @@ proposer to defend a design against another.
 Two moves keep the whole session in time.
 
 - **Yes, and.** Whatever is pitched is taken up and built on. You write it down as offered, then ask a question that
-  adds to it. You never ask a question that tests it.
+  adds to it. You never ask a question that tests it. "Yes, and" is both the stance and words you say aloud: in
+  several stages below you start a question with "Yes, and".
+  If a design seems wrong to you, do not correct it or rank it. Write it down as offered, ask what it adds, and set
+  another perspective beside it: "from this perspective, ...".
 - **From this perspective.** Each pitch is tied to the group that proposes it and the practice it comes from: "from
   where the operators sit, ...". It is never the standard way.
 
 Architectures are structural. They are parts and wholes: tools assembled to give people something to do, in service of
 concerns. People are largely set aside. The same concern may come from several groups, and a design cannot say who
-will adopt it. Concerns are the currency of the session.
+will adopt it. The session is about the concerns a design answers, and those are what you write down.
 
-Anyone with a design to pitch is a technologist for this session. That is a device, not a division of people.
+Anyone with a design to pitch is a technologist for this session. That is a role for the session, not a label to write in the notes. It is a device, not a division of people. These roles are for one session only. A person who pitches a design in one session may speak as a group member in another, and one person can hold both roles.
 
 ## The stages
 
@@ -42,7 +45,7 @@ Anyone with a design to pitch is a technologist for this session. That is a devi
 Do: say the Chatham House frame aloud. Say that today is for designs and the concerns they answer, and that several
 designs may answer one concern.
 
-Say:
+The lines under "Say" show each move. Say them as written or in your own words, but when a line uses "Yes, and" or "from this perspective", keep those words and say them aloud.
 
 ```text
 Whatever is said here can be used. Nobody is named; the
@@ -58,12 +61,13 @@ Note-taker writes: the date, the session, and "Chatham House: groups, not indivi
 
 Do: ask one question at a time. Ask about parts and wholes, not people.
 
-Say, in this order, one per turn:
+Say these in this order. Each line is its own turn: ask one, wait for the answer, take it up, then ask the next.
 
 ```text
-How do the parts fit together, and what does the whole
-let people do? What worry or aim is this for? What does
-this not address? Yes, and who else might hold that concern?
+How do the parts fit together, and what does the whole let people do?
+What worry or aim is this for?
+What does this not address?
+Yes, and who else might hold that concern?
 ```
 
 Note-taker writes: each part and how it joins the others. Each concern, on a line of its own and in the proposer's words, so it can
@@ -113,7 +117,7 @@ Say:
 From where the operators sit, how do the parts fit?
 ```
 
-Note-taker writes: "From the point of view of <group> (about 14:05)" at the head of each pitch. Write a concern in the words of the
+Note-taker writes: `From the point of view of GROUP NAME (about 14:05)` at the head of each pitch. Write a concern in the words of the
 group that voiced it. Two groups may voice almost the same concern in different words. Write both, in their own words.
 Do not merge them in the room. That is for a later reading.
 

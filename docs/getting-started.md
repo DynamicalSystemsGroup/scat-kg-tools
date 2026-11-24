@@ -3,7 +3,7 @@
 !!! tip "Your next step"
     Create your private repository from the template (step 1 below).
 
-*Tuning up: get the room ready before the first take.*
+*Tuning up: get everything ready before your first session.*
 { .epigraph }
 
 ## Before you start
@@ -13,7 +13,7 @@
   Return after each.
 - [Obsidian](https://obsidian.md), the app you will read the vault in. It is free to install.
 
-If you have not read what SCAT is, start at the [home page](index.md).
+SCAT stands for Stakeholder groups, Concerns, Affordances and Technologies: the four kinds of thing your notes are coded into. If you have not read what that means, start at the [home page](index.md).
 
 ## 1. Create your private repository
 
@@ -59,8 +59,8 @@ You should see `scat.toml` in the list, with folders such as `concern` and `clas
     use that name wherever you see `my-vault`.
 
 !!! note "If you see only `README.md`"
-    While SCAT is still a candidate release, the template's default branch is `dev`, and `main` is only a stub
-    that holds a README. If `ls` shows nothing but `README.md`, you are on the stub. Run this, then `ls` again:
+    SCAT is a preview that is still being tried before its first release (version 0.1.0). In this preview, the
+    template's default branch is `dev`, and `main` is only a stub that holds a README. If `ls` shows nothing but `README.md`, you are on the stub. Run this, then `ls` again:
 
     ```text
     git checkout dev
@@ -83,7 +83,7 @@ cd my-vault
 
 If Terminal now says `uv: command not found`, the installer's closing message tells you how to make `uv` available. Read that message, follow it, and open another new window. You can also run the installer command again.
 
-Run the one setup command. It downloads Python and the SCAT tools into this folder, and it takes a minute or two:
+Run the one setup command. It downloads Python and the SCAT tools from the internet into this folder, so it needs a connection, and it takes a minute or two:
 
 ```text
 uv sync
@@ -99,7 +99,7 @@ Run the check from inside your vault folder. It looks at every page and prints w
 uv run scat check
 ```
 
-The template ships with a worked example, so you can see what a vault looks like. A clean result for it is this:
+The template ships with a worked example, so you can see what a vault looks like. A clean result for it is this. A clean check means **0 errors**; warnings may stay:
 
 ```text
 warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
@@ -108,7 +108,7 @@ warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-cod
 ```
 
 That is a pass. **Errors** block you: a vault with errors is not clean. **Warnings** do not block you. This
-warning, `SCAT-CONFLICT-BOTH`, is expected and allowed. It marks a place where one record holds two concerns that pull
+warning, `SCAT-CONFLICT-BOTH`, is the first one you meet. A clean vault may keep it. It marks a place where one record holds two concerns that pull
 against each other, and holding both is the point of SCAT, so you leave it in place.
 
 Run the check again after every change you make.
@@ -171,9 +171,10 @@ the graph.
 
 ## 5. Start your own content
 
-The example is only there to show you the shape. You will use it as a model while you plan, then remove it before you
-code your own notes. In a scratch copy, this is what removing it looked like: delete the page folders and keep
-`class` and `templates`. Then rebuild the class tables and check:
+The example is only there to show you the shape. You will use it as a model while you plan, then remove it from your
+own vault before you code your own notes. When you are ready, type these commands in your vault folder. The first
+deletes the example page folders and keeps `class` and `templates`. The second rebuilds the class tables. The third
+checks:
 
 ```text
 git rm -r addresses affordance architecture-coded architecture-raw attributes concern heldby scenario-coded scenario-raw stakeholder-group technology
@@ -181,10 +182,18 @@ uv run scat index
 uv run scat check
 ```
 
-`scat index` printed `changed` for each of the seven class pages, and `scat check` then printed:
+`scat index` prints `changed` for each of the seven class pages, and `scat check` then prints:
 
 ```text
 no problems
+```
+
+`git rm` only stages the removal. Save it as a commit, so your vault keeps the change and the removal is not lost.
+`git add .` also stages the rebuilt class tables:
+
+```text
+git add .
+git commit -m "Remove the example"
 ```
 
 Your vault is now empty and clean. You do not write the folders or pages for your own content by hand. The tools
@@ -194,7 +203,7 @@ Do not do this yet if you want the example open while you read the other guides.
 
 ## Where next
 
-Tuned up? Then pick where to go next:
+Set up? Then pick where to go next:
 
 - [Planning](planning.md): decide your sessions, your groups and your framing, before anyone counts in.
 - [Coding](coding.md): when you already have raw notes.
