@@ -90,11 +90,11 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP8-U11 | fixer (planned, after round 1), sonnet | 8 | 8 | `wp8/u11` | done |  | 2026-11-23T22:50:45-05:00 | applies all 12 accepted round-1 fixes plus the round-2 kit changes (cold-read split in two parts, mandatory REPL tester, J7 bar); 1 push-back from the fresh review (a cold-read pointer that exposed question 2, one wording tension, one tagline); the push-back delta was verified by the PM re-running the reviewer's greps, no second full review; ran over the estimate of 8 by 0 |
 | WP8-U12 | re-pin and rerun, sonnet | 2 | 2 | `wp8/u12` | done |  | 2026-11-23T22:55:09-05:00 | template pinned to 2a9cc07 (merge 81940e1), docs test pinned to it; CI and Pages green; Haiku rerun of U9 passed 6 of 7, the one red (pin rule read literally) is the known merge-commit false flag; at estimate |
 | WP8-U13 | UA-A round 2 testers, haiku | 12 | 12 | `wp8/u13` | done |  | 2026-11-23T23:06:06-05:00 | three persona runs reached J7 (clean check, local commit) and one cold read in two ordered messages, no void reports; digest in acceptance/reports/r2-findings.md; cold read left open (jazz word only on the home page; 7 places listed); ACE to disposition; at estimate |
-| WP8-U14 | fixer (planned, after round 2), sonnet | 5 |  | `wp8/u14` | in flight |  |  |  |
+| WP8-U14 | fixer (planned, after round 2), sonnet | 5 | 5 | `wp8/u14` | done |  | 2026-11-23T23:16:16-05:00 | fix unit for round 2 under the D-046 placement rule: framing sentences, 7 cold-read places, example-clearing step with real outputs, briefs; 1 push-back from the fresh Sonnet review incl. browser at desktop and 375 px (a contradictory script rule, a fragment); PM verified the delta by diff; at estimate |
 | WP8-U15 | re-pin and rerun, sonnet | 2 |  | `wp8/u15` | queued | U14 |  |  |
 | WP8-U16 | UA-A round 3 (conditional), haiku | 12 |  | `wp8/u16` | queued | U15 and a blocking finding in round 2 |  |  |
 | WP8-U17 | technical writer (reviewer's guide), sonnet | 8 |  | `wp8/u17` | queued | U16 or a clean round 2 |  |  |
-| WP8-U18 | technical writer (w3id registration file), sonnet | 2 |  | `wp8/u18` | in flight |  |  |  |
+| WP8-U18 | technical writer (w3id registration file), sonnet | 2 | 3 | `wp8/u18` | done |  | 2026-11-23T23:16:16-05:00 | w3id registration file (ids/scat/ layout from the registry's current guide); 1 push-back from the fresh Haiku review (timing: submit only after the release merge, notes separated from PR content, qualifications); httpd-tested locally; PM verified the delta by re-running the greps; ran a little over |
 | WP8-U19 | sweep checker, haiku | 1 |  | `wp8/u19` | queued | U17 |  |  |
 
 ## Iterations and velocity
