@@ -345,11 +345,19 @@ Fill `timeframe:` in the architecture's raw page (past, future or mixed, from th
 Use `addresses` and `attributes` for the relations in an architecture (a coded architecture relates concerns,
 affordances and technologies).
 
+Then see the machine form, the one a plugin reads, in two lines (the CLI reference, "Machine-readable output"):
+
+```text
+uv run scat check --json
+uv run scat status --json
+```
+
 **Done looks like.**
 
 - The same kinds of message as stage 6, from the CLI, with the same wording.
 - Your architecture's pages exist and are `done` or `draft`, as you judge them.
 - You can say whether the REPL and CLI felt equal, with the same messages.
+- Each `--json` line prints one JSON document that starts with `schema_version`, and nothing else.
 
 **If it fails.** As in stage 6. Also note any message that differed between the REPL and CLI, and any command in the
 CLI reference that did not behave as shown.
@@ -361,6 +369,7 @@ CLI reference that did not behave as shown.
 - [ ] I used the CLI for every operation in this stage.
 - [ ] I coded one architecture, raw and coded.
 - [ ] The messages matched the REPL's.
+- [ ] Both `--json` lines printed one JSON document.
 - [ ] I fixed each problem from its message.
 
 ---
