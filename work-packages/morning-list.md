@@ -68,6 +68,10 @@ log entry and, where the ruling changed direction, the `divergence/` tag to reve
   framing sentence ("play its meaning back in plain words") and folded in plain wording fixes. "Yes, and" and the CLI
   epigraph are kept as known-weak for your judgement. There are no more reader rounds.
 
+- **D-050: local paths redacted.** Scratch paths embedding your machine username had been committed in 11 UA-A
+  reports, the PM handover note and one log quote. They are now `<scratch>` or `<local>`. They remain in git history,
+  and removing them would need a force-push, which is your call.
+
 ## Held for you
 
 - **D-040 / D-041: UA-A ran with uv preinstalled,** whereas `MISSION.md` UA-A says "uv not installed". Only you

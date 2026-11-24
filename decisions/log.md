@@ -1086,3 +1086,29 @@ dispositions them directly, and no reader round follows.
 **R-15 is recorded as met** on its first clause: every reader in rounds 3 to 5 named jazz unprompted. It is met on
 its second clause after T1, with T2 and T3 listed as known-weak in the reviewer's guide (sitting 4), where the chief
 engineer judges them at acceptance.
+
+## D-050 | 2026-11-24 | Candidate verified; final dispositions; local paths redacted
+
+**The ACE's verification of the candidate:**
+- tools `dev` at `cbd2101` (candidate commit `126a6be`): 520 tests pass, ruff and the strict docs build are clean, and
+  CI and Pages are green;
+- Pages serves the D-049 wording;
+- a fresh clone of the template's default branch (`dev`, at `9e9bad8`) runs `uv sync` and `scat check`, giving 0 errors
+  and the single SCAT-CONFLICT-BOTH warning;
+- `scat index` produces no diff, and the template pins `126a6be`.
+
+**Dispositions:**
+1. **R-15** is met as D-049 records, with T2 and T3 known-weak.
+2. **Round-3 persona findings.** The 16 findings from round 3's Haiku REPL tester, all non-blocking, are accepted for
+   the reasons D-046 gives (environment artefacts, coding judgement calls, framing epigraphs). Those that later rounds
+   addressed are closed by U14b to U14d. They are listed as weakness (i) in the reviewer's guide.
+3. **Gaps left for UA-M:** opening Obsidian, the push at J7, and whether a repository created from the template
+   starts with fresh history. They stay in the guide's known weaknesses.
+
+**Redaction.** The U19 sweep missed local paths that embed the user's machine username:
+- session scratch paths in 11 UA-A report files and in `pm-handover.md`;
+- one local path in a verbatim quote in this log (the D-010 entry).
+
+The repository is public, so they are replaced with `<scratch>` and `<local>`. Only paths change, never any
+substance. Earlier commits still hold them in git history; removing them from history would need a force-push, which
+is not done without the chief engineer's say-so. This is on his morning list.
