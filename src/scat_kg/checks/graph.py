@@ -20,7 +20,7 @@ def conflict_self(ctx: Ctx, page: Page):
             "SCAT-CONFLICT-SELF",
             page.path,
             "field `conflicts`",
-            f"[[{page.name}]] is this page; a concern cannot conflict with itself",
+            f"[[{page.name}]] is this page; a concern cannot list itself under `conflicts`",
             one(f'delete the line `- "[[{page.name}]]"` under `conflicts`'),
             line=link.line,
             pos=ctx.pos(page, "conflicts"),

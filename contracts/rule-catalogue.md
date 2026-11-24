@@ -492,10 +492,10 @@ error [SCAT-CAP-CONFIG] scat.toml field `stakeholder_group_cap`: <the file is mi
 - **Trigger:** a concern page lists itself under `conflicts`.
 - **Message:**
 ```
-warning [SCAT-CONFLICT-SELF] <file>:<line> field `conflicts`: [[<page-name>]] is this page; a concern cannot conflict with itself
+warning [SCAT-CONFLICT-SELF] <file>:<line> field `conflicts`: [[<page-name>]] is this page; a concern cannot list itself under `conflicts`
   Fix: delete the line `- "[[<page-name>]]"` under `conflicts`
 ```
-- **Fix kind:** exact. Two aspects of one concern in tension are two concerns; the message does not say which, and the tools do not split a concern for the author.
+- **Fix kind:** exact.
 - **Test:** a concern listing itself (one message); listing itself and another (one message).
 
 ### SCAT-REL-DUPLICATE
