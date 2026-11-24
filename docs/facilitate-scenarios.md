@@ -37,11 +37,11 @@ Each raw page carries a `timeframe:` line: `past`, `future` or `mixed`. The rule
 | | Past | Future |
 |---|---|---|
 | Behavioural (scenarios) | what people did | what people could do or will do |
-| Structural (architectures) | a system that exists | a system that is proposed |
+| Structural (architectures) | a system that exists (baseline) | a system that is proposed (target) |
 
 People mix the two freely, so lead them to one at a time: take stories of what has happened in one block, and what could or will happen in another. If the other time comes up early, write it down, say "let's hold that for its block", and return to it then.
 
-### Phrases that tell you which
+### Scenario phrases
 
 | Phrase | Mark | Why |
 |---|---|---|
@@ -58,9 +58,26 @@ People mix the two freely, so lead them to one at a time: take stories of what h
 | "The trustees will decide in spring." | future | "Will" looks ahead. |
 | "Imagine an app that texts borrowers." | future | Imagined, not real. |
 
-The non-obvious ones are the habit with "would", the two present-tense lines, the counterfactual with "had", the pilot and the move under way.
+The non-obvious ones are the habit with "would", the present-tense line, the counterfactual with "had", the pilot and the move under way.
 
-Use `mixed` when an account blurs the two and you cannot cleanly separate them, for example "it never worked, so we hope the new one will". It is the honest record, not a failure. Do not split a story to avoid it. `scat stub` leaves the `timeframe:` line for the author to fill in on the raw page.
+### Architecture phrases
+
+For an architecture, past is the baseline: what exists, as is. Future is the target: what is proposed, to be.
+
+| Phrase | Mark | Why |
+|---|---|---|
+| "The desk uses a paper sheet and a shelf label." | past | It exists: baseline. |
+| "The sheet records who has what." | past | Present tense, but it exists: baseline. |
+| "We tried a spreadsheet once and dropped it." | past | It existed, so it is real, though gone. |
+| "We want an app that texts borrowers." | future | Proposed: target. |
+| "The new app will replace the sheet." | future | Proposed: target. |
+| "We are building the app, but it is not live." | future | Under way, not yet real. |
+| "If the sheet had a phone link, borrowers could check it." | future | A counterfactual, not yet real. |
+| "The sheet stays, and an app will sit on top of it." | mixed | Part exists, part is proposed, and they hang together. |
+
+The non-obvious ones are the present-tense line, the dropped spreadsheet, the app under way and the counterfactual.
+
+Use `mixed` for a scenario or an architecture when an account blurs the two and you cannot cleanly separate them, for example "it never worked, so we hope the new one will". It is the honest record, not a failure. Do not split a story to avoid it. `scat stub` leaves the `timeframe:` line for the author to fill in on the raw page.
 
 ## The stages
 
