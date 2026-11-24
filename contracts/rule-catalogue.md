@@ -206,7 +206,8 @@ Fix kinds: **exact** (one exact edit or command); **options** (numbered alternat
 author's); **slot** (exact except one *(author)* slot, why recorded); **advisory** (no change is required; why
 recorded); **manual** (no exact fix is possible; why recorded). Per-rule notes follow. "Test" says what a
 seeded-defect test needs: every test starts from a clean fixture vault with zero messages, injects exactly one
-defect, and expects exactly one message of the rule, equal to the golden text, and no other message.
+defect, and expects exactly one message of the rule, equal to the golden text, and no other message. Every fix is also data
+(its kind, its command, its edit), described in `contracts/machine-interface.md`.
 
 ### SCAT-FM-PARSE
 - **Severity:** error. **Fires:** every status.
