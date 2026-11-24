@@ -1255,7 +1255,7 @@ edited on that branch, so `main` and `dev` won't conflict at release.
 - the logo shows only in the drawer below about 1,220 px (Material's behaviour, which predates WP9);
 - the RS unit estimates were recorded after the fact.
 
-## D-056 — Dependency factoring: each layer brings only what it needs (24 November)
+## D-056 | 2026-11-24 | Dependency factoring: each layer brings only what it needs
 
 **Asked by:** the chief engineer, after merging Amendment 2: confirm that analysis dependencies are separate from the
 conformance tools', and keep dependency tracking and factoring careful so a user installs only what they need.
