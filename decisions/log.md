@@ -1352,3 +1352,29 @@ merged into `dev`. The ACE approves WP10 (`work-packages/WP10.md`). Revert point
 assertions on them must gain the field (additions only, no weakened checks). The test-edit guard only accepts that on
 your direct word. Do you authorise WP10 units to edit existing tests for this?"
 **Answer (the chief engineer's choice, typed by the ACE):** "Yes, authorise".
+
+**Direction for WP10 (the chief engineer's words, typed by the ACE):** "let me note that for architectures past can be
+baseline (as is) and target (to be). TOGAF is a fine source to borrow from but don't force cite it. just explain in
+plain language. the architectures also have mixed as stories often involve a lot of things that exist and things that
+could exist so its still fits. we will need similar examples of things people might say and how to label them for the
+architectures"
+**Outcome.** WP10-R3 now asks for the phrase list in two parts, scenarios and architectures, with architecture past =
+baseline (as-is), future = target (to-be), mixed allowed, in plain language. The 900-word cap (R4) stands. The PM is
+told mid-package.
+
+## D-059 | 2026-11-24 | The code play test runs on the template mid-WP10, by the chief engineer's choice
+
+**Context.** The chief engineer began testing the code (reviewer's guide, sitting 3, then hands-on) while WP10 runs.
+His bench is `~/scat-playtest`: tools at `e1701ab` (green block: 522 passed, lock, ruff and the strict build clean;
+benchmark 245, 249 and 286 ms), and a fresh template clone that came out at `cdc0707` (WP10-U3, raw case-study pages
+tagged `timeframe`), not the candidate `2562949`. Its pin is still `e1701ab`, whose tools ignore the unlisted key
+(contract section 2, by design), so `scat check` gives `no problems`. The ACE offered to pin the clone back to
+`2562949`.
+
+**Decision (the chief engineer's words, typed by the ACE):** "i am okay with testing on the new one with the extra
+field added. lets just make sure we track that choice"
+
+**Consequence.** Findings from this sitting are against template `cdc0707` with tools `e1701ab`. The field's own
+checks are not exercised here, because the pinned tools don't know it yet; they are covered by WP10's tests and the
+refreshed candidate. Also noted for a later package: Material for MkDocs reaches end of life on 5 May 2027 (its build
+notice names Zensical as the successor); no effect on v0.1.
