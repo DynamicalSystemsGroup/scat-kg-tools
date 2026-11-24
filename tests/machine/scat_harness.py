@@ -5,7 +5,7 @@ The two checks are plain functions so a unit test can call them directly:
 
 - `validate_report` (R1): every Problem, and the whole check document, validates against the schema.
 - `assert_option_works` (R2): an exact option's command, run as given on a copy of the vault, exits 0 and the
-  problem is gone on a re-check; a slot option's (or any sequence step's) argv is accepted by `scat`'s parser.
+  problem is gone on a re-check; a slot option's, an option with edits', or any sequence step's argv is accepted by `scat`'s parser.
 """
 
 import contextlib
@@ -90,7 +90,9 @@ def assert_option_works(problem: Problem, i: int, copy: Path) -> str:
     fix, opt = problem.fix_data, problem.fix_data.options[i]
     cmd = opt.command
     argv = list(cmd.argv)
-    if opt.kind != "exact" or cmd.author_slot is not None or fix.sequence:
+    # An option with edits is parse-only for its command: the harness does not apply edits, so the command
+    # alone need not clear the problem.
+    if opt.kind != "exact" or cmd.author_slot is not None or fix.sequence or opt.edits:
         _parses(problem, i, argv, copy)
         commands_parsed += 1
         return "parsed"
