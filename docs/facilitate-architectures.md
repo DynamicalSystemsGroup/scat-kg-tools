@@ -3,8 +3,11 @@
 !!! tip "Your next step"
     Open the session by reading the Chatham House lines aloud, then ask the first proposer how the parts fit together and what the whole lets people do.
 
-An architecture session hears how a proposed assembly of tools is put together, and which concerns it addresses. You
-hold the room. A note-taker writes. This page runs you through the session stage by stage, then turns the notes into a
+*Each proposer plays a design in turn, and you build on what you hear.*
+{ .epigraph }
+
+An architecture session is a round of designs, one proposer at a time. It hears how a proposed assembly of tools is put together, and which concerns it addresses. You
+hold the room, much as a player in a jazz combo improvises on what the others play. A note-taker writes. This page runs you through the session stage by stage, then turns the notes into a
 raw architecture page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a design, and you never ask a
@@ -19,7 +22,7 @@ proposer to defend a design against another.
 
 ## The stance
 
-Two moves carry the whole session.
+Two moves keep the whole session in time.
 
 - **Yes, and.** Whatever is pitched is taken up and built on. You write it down as offered, then ask a question that
   adds to it. You never ask a question that tests it.
@@ -273,6 +276,8 @@ file name. A name with capitals or spaces fails the check. `scat stub` is the on
 and says why.
 
 ## Where next
+
+Where to go from here:
 
 - [Coding](coding.md), to turn the raw page into a coded architecture.
 - [Planning](planning.md), for the next event.

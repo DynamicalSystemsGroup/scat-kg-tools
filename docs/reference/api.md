@@ -3,6 +3,9 @@
 !!! tip "Your next step"
     In a terminal in your vault folder, type `uv run python`.
 
+*Sheet music for the REPL: every call, as written.*
+{ .epigraph }
+
 ## Before you start
 
 - A vault folder with a `scat.toml` file in it, for example a copy of the template. [Getting started](../getting-started.md) makes one.
@@ -450,6 +453,8 @@ A `Result` prints its lines in this order: `created`, `changed`, `unchanged`, `r
     The command prints the message that `str(result)` holds. Its exit code is `result.ok` as 0 or 1: here 0, because warnings alone are not errors.
 
 ## Where next
+
+Keep the reference close:
 
 - [CLI reference](cli.md): the same operations as `scat` commands, with their `--help` text.
 - [Coding guide](../coding.md): how to use them while you code your notes.

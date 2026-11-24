@@ -3,6 +3,9 @@
 !!! tip "Your next step"
     Open a terminal in your vault folder and type `uv run scat --help`.
 
+*The same tune at the command line.*
+{ .epigraph }
+
 ## Before you start
 
 - A vault folder with a `scat.toml` file in it, for example a copy of the template. [Getting started](../getting-started.md) makes one.
@@ -416,6 +419,8 @@ Exit codes: 0 when it created pages or had nothing to do, 1 for a refusal (links
     ```
 
 ## Where next
+
+Keep the reference close:
 
 - [Python API reference](api.md): every operation, with its parameters and what it returns.
 - [Coding guide](../coding.md): how to use these commands while you code your notes.

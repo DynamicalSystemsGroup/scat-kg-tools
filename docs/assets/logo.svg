@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-labelledby="t">
+<title id="t">SCAT mark: a brass note on indigo</title>
+<rect width="32" height="32" rx="7" fill="#1c2570"/>
+<ellipse cx="12" cy="23" rx="5.5" ry="4" transform="rotate(-20 12 23)" fill="#e0a526"/>
+<line x1="16.8" y1="22" x2="16.8" y2="7" stroke="#e0a526" stroke-width="2"/>
+<path d="M16.8 7 C 20 9 24 10 24 15 C 22 12 20 12 16.8 11 Z" fill="#e0a526"/>
+</svg>

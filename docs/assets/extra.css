@@ -1,0 +1,88 @@
+/* SCAT: a small indigo and brass colour scheme. Light touch; all contrast checked. */
+
+:root {
+  --scat-indigo: #1c2570;
+  --scat-brass: #8a5a00;      /* brass on light backgrounds (>= 5:1 on white) */
+  --scat-brass-bright: #e0a526;
+}
+
+/* System font stack: the site makes no third-party font requests. */
+body, input, button {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+code, kbd, pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+/* Light palette */
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #1c2570;
+  --md-primary-fg-color--light: #3a47a8;
+  --md-primary-fg-color--dark: #131a52;
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: #e8ebff;
+  --md-accent-fg-color: #8a5a00;
+  --md-typeset-a-color: #2a37a0;
+  --md-default-bg-color: #fcfbf8;
+}
+
+/* Dark palette: deep indigo, brass accents */
+[data-md-color-scheme="slate"] {
+  --md-hue: 232;
+  --md-primary-fg-color: #141a4a;
+  --md-primary-fg-color--light: #2a37a0;
+  --md-primary-fg-color--dark: #0d1133;
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: #d7dcff;
+  --md-accent-fg-color: #e0a526;
+  --md-typeset-a-color: #f0b93c;
+  --md-default-bg-color: #12142b;
+  --md-default-bg-color--light: #1a1d3d;
+  --md-default-fg-color: #ffffffde;
+  --md-default-fg-color--light: #c9cdf0;
+  --md-code-bg-color: #1b1e42;
+}
+
+/* Tip admonition ("Your next step") in brass, like a downbeat. */
+.md-typeset .admonition.tip,
+.md-typeset details.tip {
+  border-color: #b9810f;
+}
+.md-typeset .tip > .admonition-title,
+.md-typeset .tip > summary {
+  background-color: rgba(185, 129, 15, 0.12);
+}
+.md-typeset .tip > .admonition-title::before,
+.md-typeset .tip > summary::before {
+  background-color: #b9810f;
+}
+
+/* Headings: a little weight, indigo in light mode */
+[data-md-color-scheme="default"] .md-typeset h1,
+[data-md-color-scheme="default"] .md-typeset h2 {
+  color: #1c2570;
+}
+
+/* One-line epigraph under a page title: a label, not an instruction. */
+.md-typeset .epigraph {
+  margin: 0.2em 0 1.2em;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #595959;
+  border-left: 3px solid #b9810f;
+  padding-left: 0.7em;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .epigraph { color: #c9cdf0; }
+
+/* Images made for the site scale to the column. */
+.md-typeset .hero,
+.md-typeset .bandstand {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 1em auto;
+}
+.md-typeset .hero { max-width: 760px; }
+.md-typeset .bandstand { max-width: 360px; }
+.md-header__button.md-logo img { height: 1.6rem; width: auto; }

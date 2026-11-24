@@ -3,7 +3,10 @@
 !!! tip "Your next step"
     Cluster the people you expect into stakeholder groups that fit under your cap.
 
-You are planning a facilitation event. By the end you will have a short plan: which sessions hear stories, which hear
+*The chart: who plays, and in what order, before anyone counts in.*
+{ .epigraph }
+
+You are planning a facilitation event; think of it as writing the chart before the gig. By the end you will have a short plan: which sessions hear stories, which hear
 architectures, which groups are in the room, and how the notes will be kept.
 
 Nothing here is ranked, voted on or adjudicated. Your plan adds topics and voices; it never trades one off against
@@ -150,6 +153,8 @@ Raw notes are kept apart from any later reading of them. Capture comes first, an
 - **A line on the notes page**: "Chatham House: groups, not individuals."
 
 ## Where next
+
+Chart in hand, you are ready to play:
 
 - [Facilitating scenarios](facilitate-scenarios.md)
 - [Facilitating architectures](facilitate-architectures.md)
