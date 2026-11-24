@@ -8,7 +8,7 @@ Read first: `ORG.md`, `MISSION.md`, `work-packages/WP8.md`, `decisions/log.md` D
   points landed, 59 realized.
 - **U1 is held**: the chief engineer's authorisation is needed to edit two existing assertions in
   `tests/ops/test_ops_stub.py` (D-042 morning list). Branch `wp8/u1` (commits `3ed3163`, `9e6ca44`) and its worktree
-  `/Users/z/Documents/GitHub/scat-wt/wp8-u1` stay as they are. Never delete them. When it lands, `src/` changes, so
+  `scat-wt/wp8-u1` (beside the repository folder) stay as they are. Never delete them. When it lands, `src/` changes, so
   every pin moves and the U1-dependent docs spots listed in the U3 report change (coding.md about lines 190, 361, 382,
   message 7; reference/api.md about lines 247 and 276 to 282).
 - **Pins are one step behind.** The candidate tools commit is the last tools commit that changes `src/` or `docs/`
