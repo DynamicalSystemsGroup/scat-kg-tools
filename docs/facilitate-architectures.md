@@ -26,11 +26,10 @@ proposer to defend a design against another.
 
 Use two habits in every turn of the session: "Yes, and" and "From this perspective".
 
-- **Yes, and.** Write down whatever is pitched, as offered. Then ask a question that adds to it. Never ask a
-  question that tests it. The words "Yes, and" are required wherever a line under "Say" contains them: say those two
+- **Yes, and.** Write down whatever is pitched, as offered. Then ask a question that adds to it. Do not ask whether it is true, right or complete. The words "Yes, and" are required wherever a line under "Say" contains them: say those two
   words aloud, exactly, at the start of that question.
   If a design seems wrong to you, do not correct it or rank it. Write it down as offered, ask what it adds, and set
-  another perspective beside it: "from this perspective, ...". Saying "Yes, and" means you accept the design as offered and add to it. It does not mean you agree with it. If you think a design is wrong, you can still say: "Yes, and which concern would you say this answers, and what does it leave open?"
+  another perspective beside it: "from this perspective, ...". Saying "Yes, and" means you accept the design as offered and add to it. It does not mean you agree with it. An example is "Yes, and what did that design let people do?".
 - **From this perspective.** Tie each pitch to the group that proposes it and the practice it comes from: "from
   where the operators sit, ...". It is never the standard way. The group names in the lines under "Say" (the operators) are examples. Use the names of your own groups.
 
