@@ -1,5 +1,15 @@
 # Morning list for the chief engineer
 
+## Overnight, after your skim (D-052)
+
+- **Checkpoint:** `checkpoint/v0.1-rc1` is tagged on both repositories, at exactly what you skimmed.
+- **WP9 (release scope):** SCAT-CONFLICT-BOTH removed, because conformance checks structure, never content. All the
+  other rules audited for content judgement. Jazz toned down: the music-note logo and one improvisation aside stay,
+  the epigraphs and framing go.
+- **Spikes, outside v0.1, on side branches:** RS1, an Obsidian plugin (`spike/obsidian-plugin`); RS2, graph analysis
+  in Jupyter (`spike/analysis`).
+- This section is updated with results as they land.
+
 ## Start here
 
 **The v0.1 candidate is ready for your acceptance.** The release PRs are open:
