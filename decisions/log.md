@@ -1058,3 +1058,31 @@ ACE rulings:
 - If anything style-related remains, the ACE dispositions it directly by editing to the placement rule, with no
   further round. Every remaining item goes into the reviewer's guide as known-weak, for the chief engineer's judgement
   at acceptance.
+
+## D-049 | 2026-11-24 | Round 5: the ACE's direct dispositions (stop rule)
+
+Round 5 (U16c) ran against candidate tools `a4ebb63` and template `313ceac`. Both fresh readers named jazz unprompted,
+with no home-page text seen (the fetch rule was tightened). Style items remain, so under the D-048 stop rule the ACE
+dispositions them directly, and no reader round follows.
+
+- **T1, fixed.** "In your own voice" can read as licence to interpret, against "add no judgement of your own". The
+  coding framing sentence becomes: "Coding borrows one habit from jazz: hear a phrase, then play its meaning back in
+  plain words."
+- **T2 ("Yes, and"), accepted as known-weak.** It is the mission's own stance term (Facilitation stance), and the
+  page defines it in the next sentence. Removing it would remove the stance.
+- **T3 (the CLI epigraph "The same tune at the command line"), accepted as known-weak.** It is framing (D-045 item 2)
+  and blocked nothing.
+- **The non-style items are folded in as plain fixes:**
+  - **(E)** the scenarios "Taking up" line becomes a question in question form: "Yes, and what did that look like
+    from where you sit?";
+  - **(E)** "seated" becomes "assigned to (in your session plan)";
+  - **(F)** the architectures page keeps one "Yes, and" wording and drops the alternative;
+  - **(F)** script lines may be skipped when the group has already answered them, and their order otherwise holds;
+  - **(F)** "set another perspective beside it" is defined: "add another group's account next to this one; it does
+    not have to disagree".
+
+**One last small unit** (estimate 2), then a re-pin (estimate 2). There is no cold read, by the stop rule.
+
+**R-15 is recorded as met** on its first clause: every reader in rounds 3 to 5 named jazz unprompted. It is met on
+its second clause after T1, with T2 and T3 listed as known-weak in the reviewer's guide (sitting 4), where the chief
+engineer judges them at acceptance.
