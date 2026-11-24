@@ -12,14 +12,10 @@ from scat_kg.vault import Link, Page, Vault
 PAGE_RULES: list[Callable[["Ctx", Page], list[Problem]]] = []
 VAULT_RULES: list[Callable[["Ctx"], list[Problem]]] = []
 
-# Rules in the catalogue that are not implemented here, and why. Each needs an operation another unit owns.
-# SCAT-INDEX-STALE needs the index renderer (WP5-U4). To add it: write a function `(ctx, page) -> [Problem]`
-# for class pages (decorate it with @page_rule) and one `(ctx) -> [Problem]` for the seven class pages the
-# vault lacks (@vault_rule), build its Problems with `ctx.problem("SCAT-INDEX-STALE", ...)`, and delete the
-# entry below. Nothing else changes: the three check functions pick registered rules up.
-DEFERRED = {
-    "SCAT-INDEX-STALE": "compares a class page with what `index` writes; needs the index renderer (U4)"
-}
+# Rules in the catalogue that are not implemented here, and why: none now. A rule is added by writing a function
+# in a module of this package, decorating it with @page_rule or @vault_rule, and importing the module in
+# `checks/__init__.py`.
+DEFERRED: dict[str, str] = {}
 
 
 def page_rule(fn):
@@ -37,6 +33,8 @@ def vault_rule(fn):
 class Ctx:
     def __init__(self, vault: Vault):
         self.vault = vault
+        self.whole = False  # True when the whole vault is being checked
+        self.focus: Page | None = None  # the page a page or neighborhood check is of
         self._lines: dict[str, list[str]] = {}
         self._relations: dict[str, list[dict[str, str]]] = {}
         self.cache: dict[str, object] = {}  # per-check scratch for the rules

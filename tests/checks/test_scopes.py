@@ -75,7 +75,8 @@ def test__scopes__a_defect_two_links_away_is_outside_the_neighborhood(make_vault
 def test__scopes__the_neighborhood_follows_links_in_both_directions(make_vault):
     v = vault(make_vault)
     names = {p.name for p in neighborhood(v, "staff")}
-    assert names == {"staff", "desk-day-coded", "staff-holds-safe-handling"}  # backlinks only
+    # backlinks only: the relation page, the coded scenario, and the class page whose table lists the group
+    assert names == {"staff", "desk-day-coded", "staff-holds-safe-handling", "stakeholder-groups"}
     names = {p.name for p in neighborhood(v, "desk-day-coded")}
     assert names == {"desk-day-coded", "desk-day", "staff", "safe-handling", "self-checkout"}
 
@@ -129,8 +130,8 @@ def test__errors_block_and_warnings_do_not(make_vault):
     assert all(p.severity == SEVERITY[p.rule] for p in both.problems)
 
 
-def test__every_rule_has_one_severity_and_the_deferred_one_is_named():
-    assert set(DEFERRED) == {"SCAT-INDEX-STALE"} and SEVERITY["SCAT-INDEX-STALE"] == "warning"
+def test__every_rule_has_one_severity_and_none_is_deferred():
+    assert DEFERRED == {} and SEVERITY["SCAT-INDEX-STALE"] == "warning"  # every rule is implemented
     assert len(SEVERITY) == 28
     assert len(PAGE_RULES) + len(VAULT_RULES) >= 15
 

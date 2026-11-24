@@ -1,4 +1,4 @@
-"""Every rule in the catalogue has a seeded-defect test, except the one that waits on the index renderer.
+"""Every rule in the catalogue has a seeded-defect test.
 
 A seeded-defect test is named `test__<rule id, lower case, - as _>__<what is seeded>`.
 """
@@ -22,7 +22,7 @@ def test__the_registry_knows_every_rule_in_the_catalogue():
     assert catalogue_severities() == SEVERITY
 
 
-def test__every_rule_but_the_deferred_one_has_a_seeded_test(request, capsys):
+def test__every_rule_has_a_seeded_test(request, capsys):
     seeded = {}
     for item in request.session.items:
         parts = (item.originalname or item.name).split("__")
@@ -36,5 +36,6 @@ def test__every_rule_but_the_deferred_one_has_a_seeded_test(request, capsys):
         for i in ids:
             print(f"  {i:28} {len(seeded.get(i, ())):3} test(s)")
         print("without a test:", uncovered)
-    assert uncovered == sorted(DEFERRED)
+    assert uncovered == []
+    assert DEFERRED == {}
     assert set(seeded) <= set(ids)

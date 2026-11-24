@@ -1,7 +1,7 @@
 """Seeded defects for the SCAT-FM-* rules and SCAT-NAME. Test names carry the rule id (see test_coverage)."""
 
 import pytest
-from helpers import choose, doc, got, report_of, seeded, set_status
+from helpers import choose, doc, got, region_for, report_of, seeded, set_status
 
 C = "concern/safe-handling.md"
 H = "heldby/staff-holds-safe-handling.md"
@@ -83,7 +83,9 @@ def test__scat_fm_required__title_of_a_relation_page_uses_its_endpoints(make_vau
 
 
 def test__scat_fm_required__title_of_a_class_page_is_the_default(make_vault):
-    page = "---\ntype: class\nindexes: concern\ndescription: D\n---\n"
+    page = "---\ntype: class\nindexes: concern\ndescription: D\n---\n" + region_for(
+        make_vault, "concerns"
+    )
     fix = 'Fix: add the line `title: "Concerns"` (the default title of the `concerns` class page)'
     seeded(
         make_vault, {"class/concerns.md": page}, (REQ, "class/concerns.md", "field `title`", fix)
@@ -91,7 +93,9 @@ def test__scat_fm_required__title_of_a_class_page_is_the_default(make_vault):
 
 
 def test__scat_fm_required__indexes_of_a_named_class_page(make_vault):
-    page = '---\ntype: class\ntitle: "Concerns"\ndescription: D\n---\n'
+    page = '---\ntype: class\ntitle: "Concerns"\ndescription: D\n---\n' + region_for(
+        make_vault, "concerns"
+    )
     fix = "Fix: add the line `indexes: concern`"
     seeded(
         make_vault, {"class/concerns.md": page}, (REQ, "class/concerns.md", "field `indexes`", fix)
@@ -193,7 +197,9 @@ IDX = "SCAT-FM-INDEXES"
 
 
 def test__scat_fm_indexes__near_match_is_exact(make_vault):
-    page = doc("class", "Concerns", status=None, extra="indexes: concerns")
+    page = doc("class", "Concerns", status=None, extra="indexes: concerns") + region_for(
+        make_vault, "concerns"
+    )
     fix = "Fix: change it to `indexes: concern`"
     seeded(
         make_vault, {"class/concerns.md": page}, (IDX, "class/concerns.md", "field `indexes`", fix)
@@ -201,7 +207,9 @@ def test__scat_fm_indexes__near_match_is_exact(make_vault):
 
 
 def test__scat_fm_indexes__no_near_match_lists_the_seven(make_vault):
-    page = doc("class", "Concerns", status=None, extra="indexes: widgets")
+    page = doc("class", "Concerns", status=None, extra="indexes: widgets") + region_for(
+        make_vault, "concerns"
+    )
     keys = [
         "stakeholder-group",
         "concern",
@@ -250,6 +258,9 @@ def test__scat_fm_shape__null_is_missing_not_shape(make_vault):
 
 
 NAME = "SCAT-NAME"
+
+
+SHARED = " (two pages share the name: change only the links that meant this page; the links meant for the other page keep `[[concerns]]`)"
 
 
 def _name_fix(old, new):
@@ -328,7 +339,9 @@ def test__scat_name__class_page_with_the_wrong_name(make_vault):
 
 
 def test__scat_name__class_page_with_its_own_name_is_fine(make_vault):
-    page = doc("class", "Concerns", status=None, extra="indexes: concern")
+    page = doc("class", "Concerns", status=None, extra="indexes: concern") + region_for(
+        make_vault, "concerns"
+    )
     seeded(make_vault, {"class/concerns.md": page})
 
 
@@ -337,7 +350,13 @@ def test__scat_name__a_content_page_may_not_take_a_class_name(make_vault):
     seeded(
         make_vault,
         {path: doc("concern", "Concerns")},
-        (NAME, path, "frontmatter", _name_fix("concerns", "concerns-2")),
+        (
+            NAME,
+            path,
+            "frontmatter",
+            _name_fix("concerns", "concerns-2")
+            + SHARED,  # the class page `concerns` shares the name
+        ),
     )
 
 

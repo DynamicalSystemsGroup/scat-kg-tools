@@ -1,7 +1,18 @@
 """SCAT-DONE-* and SCAT-DRAFT-*, and how every status behaves (R-3)."""
 
 import pytest
-from helpers import choose, coded, doc, got, lines, links, report_of, seeded, set_status
+from helpers import (
+    choose,
+    coded,
+    doc,
+    got,
+    lines,
+    links,
+    region_for,
+    report_of,
+    seeded,
+    set_status,
+)
 
 C = "concern/safe-handling.md"
 H = "heldby/staff-holds-safe-handling.md"
@@ -34,7 +45,9 @@ def test__scat_done_field__on_a_relation_page(make_vault):
 
 def test__scat_done_field__class_page_always_and_one_option(make_vault):
     path = "class/concerns.md"
-    page = doc("class", "Concerns", status=None, description=None, extra="indexes: concern")
+    page = doc(
+        "class", "Concerns", status=None, description=None, extra="indexes: concern"
+    ) + region_for(make_vault, "concerns")
     r = seeded(
         make_vault,
         {path: page},
