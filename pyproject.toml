@@ -10,6 +10,9 @@ scat = "scat_kg.cli:main"
 
 [dependency-groups]
 dev = ["pytest", "ruff"]
+docs = [
+    "mkdocs-material>=9.8.2",
+]
 
 [build-system]
 requires = ["hatchling"]
