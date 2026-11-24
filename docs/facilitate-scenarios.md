@@ -30,6 +30,38 @@ Use two habits in every turn of the session: "Yes, and" and "From this perspecti
 Scenarios are behavioural. Technology stays out of view. What you hear of a tool is what it let people do, or stopped
 them doing. That is an affordance. When a technology comes up, ask what the tool let people do or stopped them doing, and write that down, not what the tool is.
 
+## Past or future, one at a time
+
+Each raw page carries a `timeframe:` line: `past`, `future` or `mixed`. The rule: anything real that can be narrated is past, and anything being done with intention but not yet realized is future. The present is not a separate value; it folds into one of these.
+
+| | Past | Future |
+|---|---|---|
+| Behavioural (scenarios) | what people did | what people could do or will do |
+| Structural (architectures) | a system that exists | a system that is proposed |
+
+People mix the two freely, so lead them to one at a time: take stories of what has happened in one block, and what could or will happen in another. If the other time comes up early, write it down, say "let's hold that for its block", and return to it then.
+
+### Phrases that tell you which
+
+| Phrase | Mark | Why |
+|---|---|---|
+| "Last Saturday three people asked for one drill." | past | It happened. |
+| "We always check the sheet on Mondays." | past | A habit is real. |
+| "We usually run out of drills by noon." | past | Usual means it has happened. |
+| "When someone would bring a drill back late, we chase it." | past | A habit, though it says "would". |
+| "The sheet shows who has what." | past | Present tense, but it really exists. |
+| "What would happen if we lent drills overnight?" | future | A counterfactual is not yet real. |
+| "If we had a second desk, queues would shrink." | future | A counterfactual, though it says "had". |
+| "We are trialling weekly checks." | future | A pilot under way is intention not yet realized. What has already happened in it is past. |
+| "We are moving to a new sheet this month." | future | Being done with intention, not yet realized. |
+| "Next time we should add a shelf label." | future | "Next time" and "should" look ahead. |
+| "The trustees will decide in spring." | future | "Will" looks ahead. |
+| "Imagine an app that texts borrowers." | future | Imagined, not real. |
+
+The non-obvious ones are the habit with "would", the two present-tense lines, the counterfactual with "had", the pilot and the move under way.
+
+Use `mixed` when an account blurs the two and you cannot cleanly separate them, for example "it never worked, so we hope the new one will". It is the honest record, not a failure. Do not split a story to avoid it. `scat stub` leaves the `timeframe:` line for the author to fill in on the raw page.
+
 ## The stages
 
 ### 1. Opening
