@@ -2,8 +2,12 @@ site_name: SCAT
 site_url: https://dynamicalsystemsgroup.github.io/scat-kg-tools/
 strict: true
 
+exclude_docs: |
+  overrides/
+
 theme:
   name: material
+  custom_dir: docs/overrides
   font: false
   logo: assets/logo.svg
   favicon: assets/logo.svg
