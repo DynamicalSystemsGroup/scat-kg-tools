@@ -966,3 +966,36 @@ ACE confirmations:
 2. **The epigraph tagline in `planning.md`** ("The chart… before anyone counts in") is style in framing, as D-039
    allows. If the cold reader flags it, that is not an obscured instruction, so long as the instruction sentences stay
    plain.
+
+## D-046 | 2026-11-24 | UA-A round 2: R-15 not yet met; U14 approved with a placement rule
+
+**Round 2** ran against candidate tools `2a9cc07` and template `81940e1`, with uv preinstalled.
+- All three personas reached J7 with a clean check and a local commit: p1 Haiku on the REPL, p2 Haiku on the CLI,
+  and p3, the Sonnet control.
+- No finding was blocking, and no docs command failed.
+
+**R-15 is not met.**
+- The cold reader named "improvisation" and "improv theatre", not jazz or improvised music.
+- It listed 7 places where a phrase made an instruction harder.
+- Diagnosis: the rounds are swinging between two failures. Round 1's fix removed the phrase that obscured an
+  instruction, and with it the only jazz signal outside the excluded home page.
+
+**ACE ruling: U14 is approved as the PM recommends,** under a placement rule that ends the swing:
+- **Style lives only in framing:** page epigraphs, section intros and one plain framing sentence per guide that names
+  jazz and says what the stance borrows from it ("yes, and", "from this perspective", taking turns).
+- **Instructions are plain:** steps, scripts, commands, field guidance and fixes. Every instruction sentence on the
+  cold reader's list of 7 is rewritten plainly.
+- **Content wording is a separate case.** For example, "technology stays out of view" is the mission's own heuristic
+  for scenarios, not a metaphor. Where it obscures, a plain sentence of what to do is added beside it ("ask what the
+  tool let them do, not what it is"); the heuristic itself is not removed.
+
+U14 also carries P1 and P2:
+- **P1, clearing the example:** it moves to a point before any drafts exist, or the coding page repeats it. `git
+  add` must not sweep in drafts, and the shown output must be real.
+- **P2:** the kit briefs drop "show the page templates", in line with D-043.
+
+The PM's proposed acceptances (environment artefacts, internal commit subjects in a clone's history, coding
+judgement calls, and the "Tuning up" epigraph) are accepted with their reasons.
+
+**After U14:** U15 re-pins. Then U16 runs two fresh cold readers plus one fresh Haiku REPL tester on the changed
+pages. If R-15 fails again, the ACE reviews the framing sentences directly before another round.
