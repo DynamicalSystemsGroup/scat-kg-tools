@@ -287,7 +287,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault, and its narrative view gives, for each coded narrative, exactly its support, with no relationship. | The notebook executed in the template's CI, with a test on the view |
 | R-18 | **Ripple-complete changes.** Before a package that changes a term, contract, rule or the mission is approved, its impact map lists every artifact that refers to what changes, each marked change, keep (with why) or historical. At acceptance, the same sweep finds no reference that is unmarked or still says the old thing. | The impact map in the scope; the sweep's output in the acceptance record |
 | R-19 | **Manual first.** Every step, from field notes to coded vault to analysis, can be done by a person by hand, in Obsidian and the CLI, with no LLM. The process stays consistent with ethnographic coding practice, so a project whose data rights rule out AI loses nothing but speed. Any AI assistance is optional, provider-agnostic, and does mechanical work only; the interpretive act stays with the human coder. | The UA-M walkthrough and the docs test, run with no LLM; the ACE's review of each spike readout against it |
-| R-20 | **Private-LLM integration.** The assistance path G14 builds passes its integration tests against inference.coop, on synthetic data only. Passing there is the v0.1 bar for private LLM use; other providers are not tested in v0.1. | The integration tests, run against inference.coop with the chief engineer's key, their output in the acceptance record |
+| R-20 | **Private-LLM integration, at two test levels.** The assistance path G14 builds passes its integration tests against inference.coop at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents. The field test comes after v0.1 and is not part of this repository. Other providers are not tested in v0.1. | The lab and range tests, run against inference.coop with the chief engineer's key, their output in the acceptance record |
 | R-21 | **Coding happens in Obsidian.** A coder can code a narrative and review its support in Obsidian alone, without the same content held on two pages, and without opening pages that carry no content of their own. | A review in Obsidian with screenshots in the record; UA-M |
 
 ## User acceptance
@@ -478,7 +478,7 @@ recording why.
     change, run with `git grep` over both repositories and the live branches, so the same sweep runs at scoping and
     at acceptance.
   - **The spikes** run on side branches with readouts in `research/`. In spike B the chief engineer signs in; the
-    agent never enters credentials, and only synthetic data goes to inference.coop.
+    agent never enters credentials, and only lab and range material (R-20) goes to inference.coop.
   - **Order.** WP12 is accepted, then one schema-and-projection package (G1, G15), which absorbs WP13's pages so the
     shared docs are edited once, then the notebook. The spikes run alongside, since they touch no release file; the assistance path
     spike B chooses is built after them (G14, R-20). R-20's integration tests run on demand, not on every push.
