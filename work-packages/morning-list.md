@@ -34,6 +34,13 @@ log entry and, where the ruling changed direction, the `divergence/` tag to reve
 - **D-040:** AI testers don't run uv's downloaded installer. They use the existing uv in a clean home directory, and
   the install step is left to your walkthrough. No agent creates repositories from the template.
 
+- **D-042 / D-043:** the candidate stage is live.
+  - Pages serves the pre-release docs.
+  - The template repo is now a GitHub template, with `dev` as its default branch.
+  - The Obsidian page templates are removed from the template repo (`divergence/D-043`). They held frontmatter only,
+    so they couldn't serve as body skeletons, and the docs had to tell people not to use them. `scat stub` is the one
+    way to create pages.
+
 ## Held for you
 
 - **D-040 / D-041: UA-A ran with uv preinstalled,** whereas `MISSION.md` UA-A says "uv not installed". Only you
