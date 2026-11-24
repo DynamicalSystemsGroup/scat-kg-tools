@@ -4,6 +4,9 @@
 The two checks are plain functions so a unit test can call them directly:
 
 - `validate_report` (R1): every Problem, and the whole check document, validates against the schema.
+- `check_closing` (the closing guards G1..G5, run on every Problem `guard_report` hands it): the fix is typed data,
+  its text is generated from the data, its kind is the catalogue's (bar the named `DEVIATIONS`), `field` follows
+  `where`, and each command and edit value appears in the text. G6 is `validate_report`.
 - `assert_option_works` (R2): an exact option's command, run as given on a copy of the vault, exits 0 and the
   problem is gone on a re-check; a slot option's, an option with edits', or any sequence step's argv is accepted by `scat`'s parser.
 """
@@ -11,6 +14,7 @@ The two checks are plain functions so a unit test can call them directly:
 import contextlib
 import io
 import json
+import re
 import shutil
 import tempfile
 from collections import Counter
@@ -31,9 +35,44 @@ SAMPLES_PER_KEY = 3
 _DOC = Draft202012Validator(SCHEMA)
 _PROBLEM = Draft202012Validator({"$ref": "#/$defs/Problem", "$defs": SCHEMA["$defs"]})
 
+CATALOGUE = ROOT / "contracts" / "rule-catalogue.md"
+
+# Where a Problem's fix kind is not the catalogue table's kind for its rule: (rule, observed kind) -> why.
+# A pair outside this table that differs from the catalogue fails G3; a pair here that is not observed fails
+# the coverage test, so the table is exactly what the suite produces.
+_SINGLE = "a single-option fix takes its option's kind"
+_NEAR = "a near match to a value set is one exact edit"
+_HAND = "nothing can be placed, so the fix is by hand"
+DEVIATIONS: dict[tuple[str, str], str] = {
+    ("SCAT-FM-REQUIRED", "exact"): _SINGLE,
+    ("SCAT-FM-TYPE", "exact"): _NEAR,
+    ("SCAT-FM-STATUS", "exact"): _NEAR,
+    ("SCAT-FM-INDEXES", "exact"): _NEAR,
+    ("SCAT-FM-TIMEFRAME", "exact"): _NEAR,
+    ("SCAT-FM-SHAPE", "manual"): "a list or mapping value has no knowable intended text",
+    (
+        "SCAT-LINK-SHAPE",
+        "options",
+    ): "several items in a single field: which to keep is the author's",
+    ("SCAT-LINK-SHAPE", "slot"): "the suggested links are complete values the author picks from",
+    ("SCAT-LINK-DANGLING", "exact"): _SINGLE,
+    ("SCAT-LINK-DANGLING", "manual"): _HAND,
+    ("SCAT-LINK-ENDPOINT", "exact"): _SINGLE,
+    (
+        "SCAT-LINK-ENDPOINT",
+        "manual",
+    ): "no replacement page exists (rule note), so the pair is changed by hand",
+    ("SCAT-LINK-DISCOURAGED", "exact"): _SINGLE,
+    ("SCAT-NAME", "manual"): "no legal name can be derived, so the author chooses one",
+}
+
 # What the session saw (read by tests/machine/test_harness_coverage.py).
 tests_seen: set[str] = set()  # node ids of the check tests that ran
 rules_validated: set[str] = set()
+pairs_seen: set[tuple[str, str]] = set()  # (rule id, fix kind) of the problems validated
+rules_guarded: set[str] = set()
+problems_guarded = 0
+options_with_edits = 0  # options (of the problems guarded) that carry edits
 severities_seen: dict[str, str] = {}  # rule id -> severity of the problems validated
 problems_validated = 0
 commands_run = 0
@@ -66,6 +105,68 @@ def validate_report(report: Report) -> None:
         raise AssertionError(
             f"schema: check document: {e.message} at /{'/'.join(map(str, e.path))}"
         )
+
+
+def guard_report(report: Report) -> None:
+    """G1..G5 on every Problem of a Report, and the counts the coverage test reads (what `wrap` calls)."""
+    global problems_guarded, options_with_edits
+    for p in report.problems:
+        check_closing(p)
+        pairs_seen.add((p.rule, p.fix_data.kind))
+        rules_guarded.add(p.rule)
+        problems_guarded += 1
+        options_with_edits += sum(1 for o in p.fix_data.options if o.edits)
+
+
+def catalogue_kinds() -> dict[str, str]:
+    """Rule id -> the "Fix kind" column of the catalogue's table."""
+    text = CATALOGUE.read_text(encoding="utf-8")
+    pat = r"^\| (SCAT-[A-Z-]+) \| (?:error|warning) \|.*\| (\w+) \|$"
+    return dict(re.findall(pat, text, re.MULTILINE))
+
+
+def check_closing(p: Problem, kinds: dict[str, str] | None = None, deviations=None) -> None:
+    """G1..G5 for one Problem. Raise AssertionError naming rule id and file on the first that fails.
+
+    `kinds` is the catalogue's rule -> kind (read from the file by default), `deviations` the named table.
+    """
+    kinds = catalogue_kinds() if kinds is None else kinds
+    deviations = DEVIATIONS if deviations is None else deviations
+    fix = p.fix_data
+    at = f"{p.rule} in {p.file}"
+    if fix.verbatim is not None:
+        raise AssertionError(f"G1 legacy fix wrapper, not typed data: {at}")
+    if fix.render() != p.fix:
+        raise AssertionError(f"G2 fix text is not the data's render: {at}")
+    if "\n".join(p.render().split("\n")[1:]) != "\n".join(
+        "  " + ln for ln in fix.render().split("\n")
+    ):
+        raise AssertionError(f"G2 rendered fix lines are not the data's render: {at}")
+    pair = (p.rule, fix.kind)
+    if fix.kind != kinds.get(p.rule) and pair not in deviations:
+        raise AssertionError(
+            f"G3 fix kind `{fix.kind}` is not the catalogue's `{kinds.get(p.rule)}` and is not a named deviation: {at}"
+        )
+    want = p.where.split("`")[1] if p.where.startswith("field `") else None
+    if p.field != want:
+        raise AssertionError(f"G4 field {p.field!r} does not follow where {p.where!r}: {at}")
+    for i, opt in enumerate(fix.options, 1):
+        if opt.command is not None:
+            for word in (opt.command.repl, *opt.command.argv):
+                if word not in opt.text:
+                    raise AssertionError(
+                        f"G5 option {i} text lacks command part `{word}`: {at}\n{opt.text}"
+                    )
+        for e in opt.edits:
+            # A string value is what the fix writes, so its text says it. A list is the field's whole new
+            # contents (it also holds items the fix leaves alone, or is what remains after a delete), so it is
+            # not checked against the text.
+            if isinstance(e.value, str):
+                for piece in e.value.split(e.author_slot) if e.author_slot else [e.value]:
+                    if piece and piece not in fix.render():
+                        raise AssertionError(
+                            f"G5 edit value `{piece}` is not in the fix text: {at}\n{fix.render()}"
+                        )
 
 
 def _where(problem: Problem, i: int, argv) -> str:
@@ -155,6 +256,7 @@ def wrap(original):
     def run(vault, *args, **kwargs):
         report = original(vault, *args, **kwargs)
         if not _busy:
+            guard_report(report)
             observe(Path(vault.root), report)
         return report
 

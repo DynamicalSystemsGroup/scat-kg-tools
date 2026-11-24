@@ -55,7 +55,17 @@ def test__every_catalogue_rule_was_validated(request, capsys):
         print(
             f"\nharness: {len(h.rules_validated & set(rows))} of {len(rows)} rule ids validated; "
             f"{h.problems_validated} problems validated; fix commands: "
-            f"{h.commands_run} run, {h.commands_parsed} parsed"
+            f"{h.commands_run} run, {h.commands_parsed} parsed; closing guards: "
+            f"{len(h.rules_guarded)} rules, {h.problems_guarded} problems, "
+            f"{h.options_with_edits} options with edits, {len(h.DEVIATIONS)} named kind deviations"
         )
     assert sorted(set(rows) - h.rules_validated) == []
+    # WP11-R2 closing guards: every rule's problems went through h.check_closing, and the deviation table is
+    # exactly the observed (rule, kind) pairs that differ from the catalogue.
+    kinds = h.catalogue_kinds()
+    assert len(kinds) == 28
+    assert sorted(set(rows) - h.rules_guarded) == []
+    observed = {pair for pair in h.pairs_seen if kinds[pair[0]] != pair[1]}
+    assert sorted(observed - set(h.DEVIATIONS)) == []
+    assert sorted(set(h.DEVIATIONS) - observed) == []
     assert {r: s for r, s in h.severities_seen.items() if rows.get(r) != s} == {}
