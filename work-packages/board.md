@@ -126,9 +126,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | RS2-U3 | research software engineer (package, tests, README), sonnet | 5 | 5 | `spike/analysis` | done |  | 2026-11-24T01:10:16-05:00 | D-054 target: scat_analysis package, 22 tests, README; reviewer PASS with 3 should-fix; at estimate |
 | RS2-U5 | research software engineer (review fixes), sonnet | 2 | 2 | `spike/analysis` | done |  | 2026-11-24T01:25:14-05:00 | unplanned: pair count wording, node labels, README layout line; at estimate |
 | RS2-U4 | research software engineer (sync with dev), sonnet | 2 | 2 | `spike/analysis` | done |  | 2026-11-24T01:33:08-05:00 | dev merged into the spike; case-study copy refreshed; at estimate |
-| WP10-U3 | template editor (case-study tags), sonnet | 2 | | `wp10/u3` (template) | in flight | | | |
-| WP10-U1 | Python developer and ontology designer (TBox, contracts, rule, stub, tests), sonnet | 8 | | `wp10/u1` | queued | U3 merged (the docs test pin needs the tagged template) | | |
-| WP10-U2 | technical writer (facilitation and planning guides), sonnet | 5 | | `wp10/u2` | queued | U3 merged (then runs in parallel with U1) | | |
+| WP10-U3 | template editor (case-study tags), sonnet | 2 | 2 | `wp10/u3` (template) | done | | 2026-11-24T09:14:38-05:00 | first-time reviewer PASS, about 2 min; reviewer would tag both pitches `mixed` (worker: `future`), flagged to the ACE; template dev cdc0707 |
+| WP10-U1 | Python developer and ontology designer (TBox, contracts, rule, stub, tests), sonnet | 8 | | `wp10/u1` | in flight | | | |
+| WP10-U2 | technical writer (facilitation and planning guides), sonnet | 5 | | `wp10/u2` | in flight | | | |
 | WP10-U4 | Python developer (refresh: pins, walkthrough, reviewer's guide, Pages, fresh clone), sonnet | 5 | | `wp10/u4` | queued | U1, U2, U3 merged | | |
 
 ## Iterations and velocity
