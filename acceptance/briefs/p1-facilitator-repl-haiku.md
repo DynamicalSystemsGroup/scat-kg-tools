@@ -58,7 +58,7 @@ Do these in order. For each, "done" is what you should be able to show with past
 2. **J2, create.** The pages tell you to create your own private repository from a template, then download it. Follow
    the page as far as your situation allows (see "Where you start"). Done: you are inside your own folder and the page's
    check that you are in the right folder shows what the page says it should.
-3. **J3, set up.** Install what the pages say, run their one setup command, and run their first check. Done: the
+3. **J3, set up.** Install what the pages say, with one exception: **skip the step that installs `uv`, and do not run the `curl ... | sh` line.** `uv` is already on your machine and on your path, so go on to the next command on the page. Then run the page's one setup command, and run the page's first check. Done: the
    check ends the way the page says a clean one does. Then open the folder as a vault in Obsidian. Obsidian is not
    available to you, so check it through the files instead: show the folder holds the page templates and the settings
    the page says Obsidian will find.
@@ -66,15 +66,13 @@ Do these in order. For each, "done" is what you should be able to show with past
    gathers stories and which gathers design proposals, who takes part in each, how you will frame it as the page
    describes, and how your participants fit into the groups the page allows. Write the plan in a file in your folder.
    Done: the file exists and each part of it comes from a page.
-5. **J5, capture.** Using the two facilitation pages, turn the notes below into the raw records the pages describe:
-   at least one story and one design proposal. Done: both exist as files, made the way the pages tell you.
-6. **J6, code.** Using the coding page and the reference, turn those raw records into linked, coded pages. Move each
+5. **J5, capture.** Using the two facilitation pages, turn the notes below into the first-draft pages the pages describe, one for
+   a story told and one for a design proposed. Done: both exist as files, made the way the pages tell you.
+6. **J6, code.** Using the coding page and the reference, turn those first-draft pages into the linked pages the guide describes, the finished version of each. Move each
    page from its first state through to finished, and fix every problem the tool reports from its message. Done:
-   each of your pages is finished, and your story and your design proposal are each both raw and coded.
+   each of your pages is finished, and your story and your design proposal each exist both as the first draft from J5 and as the finished linked version.
 7. **J7, finish.** Reach a clean check of the whole folder. Save your work in git as the page says. Pushing will
-   not work, because your copy has no GitHub connection: run the push command as the page says anyway, paste what
-   it prints, and do not try to fix it. Then, through the files, show the links you can walk in Obsidian: for
-   one page of your own, list what links to it. Done: a clean whole-folder check, and your saved work shown in the
+   fail, because your copy has no GitHub connection. That failure is expected: it is not a finding and not blocking. Run the push command as the page says anyway, paste what it prints, and move on. Then, through the files, show the links you can walk in Obsidian: pick one page of your own and search the other files in your folder for its page name; list the files that name it. Done: a clean whole-folder check, and your saved work shown in the
    history.
 
 If you reach a stage you cannot finish, stop at that stage. Fill in the report for every stage you reached and say

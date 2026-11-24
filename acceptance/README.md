@@ -53,7 +53,7 @@ cd my-vault && git remote remove origin          # simulates J2; nothing can pus
   says. J7's push fails because there is no remote; the tester pastes the failure and goes on.
 - **Obsidian.** J3 and J7 are checked through files. Obsidian itself is UA-M's.
 - **Docs source.** Start from the Pages URL <https://dynamicalsystemsgroup.github.io/scat-kg-tools/> if the tester
-  can fetch it. If not, serve a local build of the same commit (`uv run mkdocs build`) and **record the report as
+  can fetch it. If not, serve a local build of the same commit (`uv run --group docs mkdocs build`) and **record the report as
   known-weak**, since it skips what the Pages deploy does.
 
 ## Tester isolation
@@ -67,10 +67,10 @@ cd my-vault && git remote remove origin          # simulates J2; nothing can pus
 ## Checking a report mechanically
 
 For the void rule on reused names, grep a report for the worked example's names and the docs' own example names.
-**Keep this list from testers.** Refresh it from the template's example pages whenever they change.
+**Keep this list from testers.** It was built from the page folders of the template's example (`scat-kg-template`) and the `[[...]]` names in `docs/`. Refresh it whenever either changes.
 
 ```text
-grep -niE 'anonymity|attribution|tools-come-back|shared-spreadsheet|sign-out-sheet|saturday-at-the-tool-library|workshop-participants|travel-time|shared-sheet-pitch|tool-library|lending|borrowers|volunteer-staff|funders|booking-app|kiosk|self-checkout|quick-checkout|safe-handling|careful-record-keeping|reading-group|study-circle|project-leads|reading-list' report.md
+grep -niE 'anonymity|attribution|intent-without-drift|gated-approval|groups-clustered-under-a-cap|revert-with-history-kept|groups-under-a-cap-pitch|two-branches-and-tags-pitch|false-start-and-clean-restart|notes-at-a-chatham-house-session|facilitator-analysts|project-leads|workshop-participants|volunteer-stewards|cap-setting|archive-tags|main-and-dev-branches|tools-come-back|shared-spreadsheet|sign-out-sheet|shared-sheet-pitch|saturday-at-the-tool-library|travel-time|tool-library|lending|borrowers|volunteer-staff|funders|booking-app|kiosk|self-checkout|quick-checkout|safe-handling|careful-record-keeping|reading-group|study-circle|reading-list' report.md
 ```
 
 A hit in the pasted output of the untouched example is expected. A hit in a name the tester chose, or in output after the
@@ -103,9 +103,18 @@ example was removed, makes the report void.
 | The final round leaves no blocking finding | this README, step 5 |
 | Void reports: reused names or claims with no pasted output; a report with no findings checked by the ACE for plausibility | `report-template.md`, "Void reports" and section 4; this README, "Checking a report mechanically" |
 
+## Cold-read answers in persona reports do not count
+
+Each persona report opens with a cold-read answer, but those testers read the home page, which explains the name. That
+answer does **not** count toward R-15. Only `briefs/cold-read.md` counts, and the ACE judges it on the words the reader
+noticed, since the guide text carries the word jazz in one plain sentence.
+
 ## Known gaps
 
 - uv is preinstalled, not installed from the docs' command. The docs' install step is exercised only by the chief
   engineer (UA-M). Log D-040 and D-041.
+- The isolated clone has no remote, so J7's push fails. This is a known limit of the isolation. The briefs and the
+  report template say the failure is expected, is not a finding and is not blocking.
+- The test git identity is pre-set in the environment (the docs' own `git` identity prompt is not exercised).
 - A local build of the docs is weaker than the Pages deploy and is recorded as such.
 - The persona text is a model's reading of a person. It tests the docs, not real users, which UA-M covers.
