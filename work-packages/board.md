@@ -66,11 +66,11 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP6-U7 | clean-environment tester, haiku | 2 | 2 | none (scratch) | done |  | 2026-11-23T20:10:59-05:00 | README path ran as written from 'uv installed' on; install, gh and web paths not exercised (no download permission); matches estimate |
 | WP6-U8 | case-study editor, sonnet | 3 | | `wp6/u8` | done | | 2026-11-23T20:21:00-05:00 | fix unit for D-037; 2 push-backs (near-verbatim echoes, then clause-structure echoes), 3 fresh reviews; merged to template `dev` at f446a02; about 7 min |
 | WP7-U1 | Python developer (mkdocs skeleton, docs group, CI), sonnet | 3 | 3 | `wp7/u1` | done |  | 2026-11-23T20:26:03-05:00 | first-time review PASS (build, tests, browser at desktop and 375 px); the brief said 9 pages, the nav has 8; matches estimate |
-| WP7-U2 | technical writer (home and getting started), sonnet | 5 |  | `wp7/u2` | in flight |  |  |  |
-| WP7-U3 | technical writer (planning and facilitation guides), sonnet | 8 |  | `wp7/u3` | in flight |  |  |  |
-| WP7-U4 | technical writer (coding guide), sonnet | 5 |  | `wp7/u4` | in flight |  |  |  |
-| WP7-U5 | technical writer (API and CLI reference), sonnet | 5 |  | `wp7/u5` | in flight |  |  |  |
-| WP7-U6 | test engineer (docs test), sonnet | 5 |  | `wp7/u6` | in flight |  |  |  |
+| WP7-U2 | technical writer (home and getting started), sonnet | 5 |  | `wp7/u2` | in review |  |  |  |
+| WP7-U3 | technical writer (planning and facilitation guides), sonnet | 8 |  | `wp7/u3` | in review |  |  |  |
+| WP7-U4 | technical writer (coding guide), sonnet | 5 |  | `wp7/u4` | in review |  |  |  |
+| WP7-U5 | technical writer (API and CLI reference), sonnet | 5 |  | `wp7/u5` | in review |  |  |  |
+| WP7-U6 | test engineer (docs test), sonnet | 5 |  | `wp7/u6` | in review |  |  |  |
 | WP7-U7 | technical writer (jazz style and visual assets), sonnet | 3 |  | `wp7/u7` | queued | WP7-U2 to WP7-U6 |  |  |
 | WP7-U8 | fixer (planned fix unit), sonnet | 5 |  | `wp7/u8` | queued | WP7-U7 and the two Haiku reads |  |  |
 
