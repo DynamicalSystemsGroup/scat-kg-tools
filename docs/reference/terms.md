@@ -7,7 +7,7 @@ type (the vault is your folder of linked pages), its stage (plan, capture, code 
 
 ## Elicitation
 
-A facilitated event: groups tell stories and pitch designs.
+A facilitated event: [groups](#stakeholder-group) tell stories and pitch designs.
 
 - **Vault:** none. The notes become [raw records](#raw-and-coded-records).
 - **Stage:** plan.
@@ -21,7 +21,7 @@ A story of people doing things over time.
 - **Vault:** `scenario-raw`, `scenario-coded`. [Coded](#raw-and-coded-records), it links [groups](#stakeholder-group),
   [concerns](#concern), [affordances](#affordance).
 - **Stage:** plan.
-- **Check:** the plan gives each group a prompt.
+- **Check:** the plan gives each [group](#stakeholder-group) a prompt.
 
 ## Architecture
 
