@@ -26,7 +26,10 @@ def test_templates_folder_is_not_read(make_vault):
     assert [p.path for p in v.pages] == ["concern/real.md"]
     assert v.non_pages == ()
     assert "concern" not in v.by_name
-    assert check_vault(v).problems == ()
+    problems = check_vault(v).problems
+    # Only the expected missing-class-page INDEX-STALE warnings; nothing about templates/ or .obsidian/.
+    assert {p.rule for p in problems} == {"SCAT-INDEX-STALE"}
+    assert all(p.file.startswith("class/") for p in problems)
 
 
 def test_custom_templates_folder(make_vault):
