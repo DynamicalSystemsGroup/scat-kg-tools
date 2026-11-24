@@ -9,7 +9,7 @@
 This guide borrows the taking of turns from jazz: each proposer's design is heard in full, one at a time, and none is set against another.
 
 An architecture session is a round of designs, one proposer at a time. It hears how a proposed assembly of tools is put together, and which concerns it addresses. You
-run the session. You ask the questions, say whose turn it is, and listen. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. The lines under "Say" are your script. Their order is fixed, except as the next sentence says: say them in the order given. You may skip a script line if the group has already answered it; otherwise keep the order. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a
+run the session. You ask the questions, say whose turn it is, and listen. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. You may skip a script line if the group has already answered it; otherwise keep the order. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a
 raw architecture page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a design, and you never ask a
@@ -62,7 +62,7 @@ Note-taker writes: the date, the session, and "Chatham House: groups, not indivi
 
 Do: ask one question at a time. Ask about parts and wholes, not people.
 
-Say these in this order. They are questions. Ask one at a time, then wait for the answer, accept it as offered, and only then ask the next. Do not ask two at once.
+Say these in this order. They are questions. Ask one at a time, then wait for the answer, accept it as offered, and only then ask the next. Do not ask two at once. The line "Yes, and is there a concern this was not aimed at?" is asked as an addition, never as a test of the design.
 
 ```text
 How do the parts fit together, and what does the whole let people do?
