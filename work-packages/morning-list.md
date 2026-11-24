@@ -25,6 +25,15 @@ log entry and, where the ruling changed direction, the `divergence/` tag to reve
   was judged acceptable. The docs' address is fixed as `https://dynamicalsystemsgroup.github.io/scat-kg-tools/`, and
   the docs test clones the template at a pinned commit.
 
+- **D-039:** WP7 (docs) accepted after the ACE's browser pass over all 8 pages. Two things are carried into WP8:
+  - every cold read named jazz unprompted, but flagged 5–7 phrases where the jazz figure of speech made an
+    instruction less plain;
+  - four small tool gaps the doc writers found.
+
+  The coding guide is long, at about 5,000 words.
+- **D-040:** AI testers don't run uv's downloaded installer. They use the existing uv in a clean home directory, and
+  the install step is left to your walkthrough. No agent creates repositories from the template.
+
 ## Held for you
 
 - None so far.
