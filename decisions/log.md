@@ -1529,3 +1529,19 @@ analyzed satisfactorily"
 **Outcome.** G7 lists the docs pages, and this one is new, for a reader the mission didn't name. So it goes in as
 Mission Amendment 5 (PR #7): one sentence in G7 and one Agent's default. The ACE wrote WP12 to build it. WP12 is
 approved when PR #7 merges.
+
+## D-068 | 2026-11-24 | The terms reference is a fix for a field finding, not a mission change (supersedes D-067)
+
+**Direction (the chief engineer's words, typed by the ACE):** "is it a mission change? i guess it impacts the
+deliverables but i am not sure its actually a new requirement rather than an implementation detail. this feedback
+comes from showing the documentation to a real user in a real field site. the PM in question expressed confusion and a
+need for a place to check the "schema" so she can more clearly see how this relates to her facilitation plan, the
+field note taking, the coding, and analysis work that follows. so i am giving you her feedback vis-a-vis the current
+mission"
+
+**Ruling.** The ACE agrees. The mission already serves this reader. J4 to J7 describe the user who plans the event,
+captures the notes, codes them and finishes the vault. G7 and D-4 already make the docs site serve that journey. A
+real user who can't see how the pieces relate is a user-acceptance finding against the current mission (F-8). Fixing it
+with a reference page is an implementation detail inside D-4, so it's the ACE's call. Amendment 5 (PR #7) is withdrawn,
+and D-067's outcome is superseded. WP12 is approved now. Its scope gains one thing from her words: each term says where
+it enters the work (plan, capture, code, analyse).
