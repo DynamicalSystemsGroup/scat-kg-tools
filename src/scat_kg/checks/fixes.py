@@ -95,7 +95,7 @@ def alternatives(
 
 def inline(opts: list[FixOption], head: str = "Fix, choose one:") -> Fix:
     """Alternatives told on one line, `<head> <text>, <text>`. The text is made from the options' own."""
-    return Fix("options", tuple(opts), head, verbatim=f"{head} " + ", ".join(o.text for o in opts))
+    return Fix("options", tuple(opts), head, inline=True)
 
 
 # put this line
