@@ -10,6 +10,8 @@ Every rule has an id, a severity (`error` blocks, `warning` does not), a trigger
 that names the file, the field or link, and the rule id, and gives a fix. A fix is **exact** (a command, or an
 exact field and value) or the rule records why it cannot be.
 
+Checks concern structure only: tensions, matches and gaps are for analysis, after conformance passes and a coder signs off the content.
+
 ## 1. Conventions every rule shares
 
 **Page terms.** A page is a Markdown file, anywhere in the vault outside folders whose name starts with a dot (`.obsidian`,
@@ -191,7 +193,6 @@ skeleton carries one slot *(author)*. The alternative `set-status draft` is alwa
 | SCAT-LINK-DISCOURAGED-BODY | warning | every status | body link to a class the page type discourages | options |
 | SCAT-CAP | error | vault | more stakeholder-group pages than the cap | options |
 | SCAT-CAP-CONFIG | error | vault | `scat.toml` or its cap missing, malformed or not a whole number of at least 1 | slot |
-| SCAT-CONFLICT-BOTH | warning | every status | a coded record lists both ends of a conflict | advisory |
 | SCAT-CONFLICT-SELF | warning | every status | a concern lists itself under `conflicts` | exact |
 | SCAT-REL-DUPLICATE | warning | every status | two relation pages state the same pair | exact |
 | SCAT-MENTION | warning | every status | body names an existing page in plain text | exact |
@@ -486,28 +487,16 @@ error [SCAT-CAP-CONFIG] scat.toml field `stakeholder_group_cap`: <the file is mi
 - **Fix kind:** slot. Why not exact: the cap is a planning decision.
 - **Test:** the file removed; the file with a broken line; the key removed; `stakeholder_group_cap = "three"`; `stakeholder_group_cap = 0`; `stakeholder_group_cap = 2.5`; `stakeholder_group_cap = 3.0`.
 
-### SCAT-CONFLICT-BOTH
-- **Severity:** warning (D3). **Fires:** every status.
-- **Trigger:** a coded record (`scenario-coded` or `architecture-coded`) lists in `concerns` two existing concern pages A and B such that {A, B} is in the conflict relation. The relation is the symmetric closure of the declarations: {A, B} is in it when A's `conflicts` lists B, or B's `conflicts` lists A, or both. A one-sided declaration is complete: no message asks for the other side. A concern listing itself is ignored. One message per record and per pair; within a pair A is the page whose name sorts first and B the other, and the pairs are sorted by (A, B). The message is reported at the line of the `concerns:` key of the coded page.
-- **Message:**
-```
-warning [SCAT-CONFLICT-BOTH] <file>:<line> field `concerns`: this record holds both [[<A>]] and [[<B>]], which conflict (declared on <declaring pages>)
-  Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[<A or B>]]"` under `concerns`.
-```
-`<declaring pages>` is the names of the concern pages whose `conflicts` lists the other, as `[[name]]`, sorted by name and separated by `, `.
-- **Fix kind:** advisory. Why: the graph holds disagreement and does not resolve it (log D-028), so the rule must not ask for the difference to be removed.
-- **Test:** record lists both with a declaration on A only, on B only, and on both (one message each case, same text apart from "declared on"); lists one only (none); lists both with no declaration (none); a draft and a done record (same message).
-
 ### SCAT-CONFLICT-SELF
 - **Severity:** warning. **Fires:** every status. Concern pages.
-- **Trigger:** a concern page lists itself under `conflicts`. (The self pair is also ignored by SCAT-CONFLICT-BOTH.)
+- **Trigger:** a concern page lists itself under `conflicts`.
 - **Message:**
 ```
 warning [SCAT-CONFLICT-SELF] <file>:<line> field `conflicts`: [[<page-name>]] is this page; a concern cannot conflict with itself
   Fix: delete the line `- "[[<page-name>]]"` under `conflicts`
 ```
 - **Fix kind:** exact. Two aspects of one concern in tension are two concerns; the message does not say which, and the tools do not split a concern for the author.
-- **Test:** a concern listing itself (one message); listing itself and another (one message, the other pair still counts for SCAT-CONFLICT-BOTH).
+- **Test:** a concern listing itself (one message); listing itself and another (one message).
 
 ### SCAT-REL-DUPLICATE
 - **Severity:** warning. **Fires:** every status. Relation pages.
@@ -587,7 +576,7 @@ For a missing page `<file>` is the path the index operation would create (`class
 | R-3 unfinished is never an error | SCAT-DRAFT-FIELD, SCAT-DRAFT-LINK (warnings at draft); nothing fires for `done` fields at stub |
 | R-3 full contract at `done`; required-from-status | SCAT-DONE-FIELD, SCAT-DONE-LINK, SCAT-FM-REQUIRED |
 | R-3 links and endpoints at every status | SCAT-LINK-SHAPE, SCAT-LINK-UNLISTED, SCAT-LINK-ENDPOINT, SCAT-LINK-DANGLING, SCAT-LINK-DANGLING-BODY |
-| D3 conflict warning | SCAT-CONFLICT-BOTH, SCAT-CONFLICT-SELF |
+| D3 conflict warning | SCAT-CONFLICT-SELF |
 | Unlinked-mention warning (basic) | SCAT-MENTION |
 | Raw-to-coded warning | SCAT-RAW-BACKLINK, SCAT-RAW-UNCODED |
 | Duplicate relation page (contract section 5) | SCAT-REL-DUPLICATE |
@@ -640,7 +629,7 @@ required concern.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
 required concern.status -> SCAT-FM-REQUIRED
 required concern.title -> SCAT-FM-REQUIRED
 required concern.type -> SCAT-FM-TYPE, SCAT-LINK-DANGLING
-optional concern.conflicts -> SCAT-CONFLICT-BOTH, SCAT-CONFLICT-SELF
+optional concern.conflicts -> SCAT-CONFLICT-SELF
 required heldby.concern -> SCAT-FM-REQUIRED-LINK, SCAT-LINK-SHAPE
 required heldby.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
 required heldby.group -> SCAT-FM-REQUIRED-LINK, SCAT-LINK-SHAPE

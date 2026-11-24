@@ -132,7 +132,7 @@ def test__errors_block_and_warnings_do_not(make_vault):
 
 def test__every_rule_has_one_severity_and_none_is_deferred():
     assert DEFERRED == {} and SEVERITY["SCAT-INDEX-STALE"] == "warning"  # every rule is implemented
-    assert len(SEVERITY) == 28
+    assert len(SEVERITY) == 27
     assert len(PAGE_RULES) + len(VAULT_RULES) >= 15
 
 
