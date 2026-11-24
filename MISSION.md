@@ -60,7 +60,8 @@ A second lens cuts across the first: **grounding**. A story may be historical, t
 demonstrative, showing what could happen. An architecture may be as-is, describing a system that exists, or to-be,
 proposing one. So each record is grounded in observation of what exists, projects what could be, or mixes the two.
 Behavioural or structural, observed or projected: a 2×2 for unbundling narratives. Every scenario and architecture
-records its grounding (log D-057). The four SCAT classes and their relations don't change.
+records its grounding (log D-057). Grounding marks only the records: stakeholder groups, concerns, affordances and
+technologies are not marked with it, and the three relations don't change.
 
 Whether the narrator sees what is told as good, bad or a mix is not recorded in the schema. For anything real a mix is
 expected, and it stays in the story's own words. SCAT is pragmatic and thin. It doesn't compete with richer ontologies
