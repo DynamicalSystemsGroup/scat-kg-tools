@@ -5,11 +5,17 @@ Position, ring order and colour are drawing conveniences, never measurements. No
 
 import textwrap
 
-import matplotlib
-import matplotlib.pyplot as plt
+try:
+    import matplotlib
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from matplotlib.ticker import MaxNLocator
+except ImportError as e:  # the analyses work without plotting; say how to add it
+    raise ImportError(
+        "scat_analysis.plots needs the 'plot' extra: install scat-analysis[plot] "
+        "(or, in this checkout, `uv sync --extra plot`)."
+    ) from e
 import networkx as nx
-import numpy as np
-from matplotlib.ticker import MaxNLocator
 
 from .analyses import CHAIN_STATES, centrality, communities, conflict_records, group_coverage, projection, provenance_matrix
 from .graph import LAYER_LABEL, LAYERS

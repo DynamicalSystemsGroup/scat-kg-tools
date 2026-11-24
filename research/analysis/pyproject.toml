@@ -3,18 +3,26 @@ name = "scat-analysis"
 version = "0.0.0"
 description = "RS2 research spike: graph analysis of SCAT vaults (not part of the scat_kg package)"
 requires-python = ">=3.12"
+# Layered so a user installs only what they need:
+#   core (this list): load a vault as a graph and run the analyses; returns DataFrames.
+#   extra "plot":      scat_analysis.plots (matplotlib).
+#   group "notebook":  the Jupyter environment for the bundled notebook; never a runtime dependency.
+# scat-kg itself stays pydantic + PyYAML + rdflib; nothing here is added to it.
 dependencies = [
     "scat-kg",
     "networkx",
     "pandas",
-    "matplotlib",
-    "jupyter",
-    "nbconvert",
-    "ipykernel",
 ]
+
+[project.optional-dependencies]
+plot = ["matplotlib", "numpy"]
 
 [dependency-groups]
 dev = ["pytest"]
+notebook = ["matplotlib", "numpy", "jupyter", "nbconvert", "ipykernel"]
+
+[tool.uv]
+default-groups = ["dev", "notebook"]   # `uv run jupyter lab ...` in a checkout still works with one command
 
 [build-system]
 requires = ["hatchling"]

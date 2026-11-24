@@ -24,6 +24,20 @@ uv run pytest -q
 
 The notebook runs offline on two vaults committed here: `notebook/case-study/` (a copy of the template's case study) and `synth/vault/` (synthetic, see below). Point it at your own vault by editing the path variables in its second cell. `status="done"` (variable `STATUS`) keeps only signed-off pages.
 
+## What to install
+
+The dependencies are layered, so you take only what you need. None of them is added to `scat_kg`, which stays
+pydantic, PyYAML and rdflib.
+
+| You want | Install | Adds |
+|---|---|---|
+| The analyses (DataFrames out) | `scat-analysis` | networkx, pandas |
+| Plus the plotting helpers | `scat-analysis[plot]` | matplotlib, numpy |
+| The bundled notebook | a checkout, `uv run jupyter lab ...` | the `notebook` group: Jupyter, nbconvert, ipykernel |
+
+In this checkout `uv` installs the `notebook` and `dev` groups by default, so the one command above just works. For
+the analyses alone: `uv sync --no-default-groups`; add `--extra plot` for the plots.
+
 ## Use it in your own notebook
 
 ```python

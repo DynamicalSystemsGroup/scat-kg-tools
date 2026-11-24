@@ -2330,34 +2330,50 @@ wheels = [
 name = "scat-analysis"
 version = "0.0.0"
 source = { editable = "." }
+default-groups = ["dev", "notebook"]
 dependencies = [
-    { name = "ipykernel" },
-    { name = "jupyter" },
-    { name = "matplotlib" },
-    { name = "nbconvert" },
     { name = "networkx" },
     { name = "pandas" },
     { name = "scat-kg" },
+]
+
+[package.optional-dependencies]
+plot = [
+    { name = "matplotlib" },
+    { name = "numpy" },
 ]
 
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
 ]
-
-[package.metadata]
-requires-dist = [
+notebook = [
     { name = "ipykernel" },
     { name = "jupyter" },
     { name = "matplotlib" },
     { name = "nbconvert" },
+    { name = "numpy" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "matplotlib", marker = "extra == 'plot'" },
     { name = "networkx" },
+    { name = "numpy", marker = "extra == 'plot'" },
     { name = "pandas" },
     { name = "scat-kg", editable = "../../" },
 ]
+provides-extras = ["plot"]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest" }]
+notebook = [
+    { name = "ipykernel" },
+    { name = "jupyter" },
+    { name = "matplotlib" },
+    { name = "nbconvert" },
+    { name = "numpy" },
+]
 
 [[package]]
 name = "scat-kg"
