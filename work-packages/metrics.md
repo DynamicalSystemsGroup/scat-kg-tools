@@ -17,10 +17,10 @@ Every record has `ts` (ISO 8601 with timezone) and `kind`.
 
 **The latest record for a unit is authoritative.** Because the log is append-only, a unit can have several records,
 including more than one `done` record when a correction follows (for example, a later record adding realized points).
-Take the last record per unit:
+Take the last record per unit **in file order** (a few WP8 records were appended later to correct a placeholder time, so their `ts` can sort before the record they correct; those carry a `corrects` field holding the old `ts`):
 
 ```python
-latest = units.sort_values("ts").groupby("unit").tail(1)
+latest = units.groupby("unit").tail(1)  # file order, not sorted by ts
 ```
 
 **Iterations can overlap in wall-clock time,** because units run in parallel. So `elapsed_h` and `velocity` for
