@@ -107,9 +107,12 @@ under it (the chief engineer's initial brief).
 
 A SCAT project holds three classes of material, each with its own rules for who and what may touch it, where it is
 kept, and how far it is released (Amendment 5):
-- **the inputs:** the field notes;
+- **the inputs:** the supplied materials: the field notes, and the raw narratives made from them;
 - **the model:** the git repository, holding the coded notes and the full knowledge graph;
 - **the analysis:** derivative reports, such as notebooks and documents written with excerpts, data or figures.
+
+The docs present each class's rules as choices, each shown with 2 or 3 reasonable answers that demonstrate the choice
+matters without claiming to be exhaustive. No particular project's choices appear as such.
 
 ## Goals
 
@@ -203,7 +206,7 @@ kept, and how far it is released (Amendment 5):
 
 - Gen-AI aided authoring or coding in v0.1. Two spikes explore it (Amendment 5): the feasibility of AI-aided coding,
   with a tooling choice (tool calls, skills, or an MCP server that depends on `scat-kg`); and compatibility with
-  inference.coop, the only AI approved to touch the pilot's field notes. Their readouts feed later amendments.
+  a privacy-focused inference service, inference.coop. Their readouts feed later amendments.
 - The Obsidian plugin (Amendment 5). It stays on its feature branch (log D-054); v0.1 provides the stable interface it
   builds on (R-16).
 - Typed links between records of the same class, such as incompatible concerns, adversarial groups, complementary
