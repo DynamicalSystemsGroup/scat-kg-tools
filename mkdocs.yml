@@ -51,3 +51,4 @@ nav:
   - Reference:
       - Python API: reference/api.md
       - CLI: reference/cli.md
+      - Terms: reference/terms.md

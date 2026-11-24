@@ -164,3 +164,4 @@ Planned? Then facilitate. Both pages sit under "Facilitating" in the site menu; 
 - [Facilitating scenarios](facilitate-scenarios.md)
 - [Facilitating architectures](facilitate-architectures.md)
 - [Coding](coding.md), for after the session.
+- [Terms](reference/terms.md), for how the pieces relate.
