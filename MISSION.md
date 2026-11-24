@@ -42,6 +42,13 @@ When a choice isn't settled elsewhere, these decide it. Over-specifying is a fai
 and outcomes; how to achieve them is decided in the work packages, by evidence. Design guidance at the end of this
 document is advice, not requirement.
 
+**Syntax, semantics and pragmatics (Amendment 5).** The ontology's conformance rules are the syntax: they fix which
+structures can be expressed. The semantics attach those structures to meaning. The pragmatics are the software, the
+documentation and the user guidance. Syntax and semantics decide whether this is a system of representation in which
+correctly built models say meaningful things; pragmatics and semantics decide whether meaningful things get said in a
+real project. The syntax is packaged away: users get its benefits without seeing the full ontology. They work with the
+two kinds of narrative and the four kinds of vertex directly, and the three kinds of edge less directly.
+
 ## Scenarios and architectures
 
 The two record types look at the same graph from opposite sides. This is an important heuristic for facilitating,
@@ -192,15 +199,21 @@ matters without claiming to be exhaustive. No particular project's choices appea
   chief engineer supplies and which are read for principles only. The strategy covers the improvisational stance,
   eliciting scenarios and architectures, and holding disagreement without adjudicating it.
 - **G12. A template analysis notebook (Amendment 5).** The template carries a notebook that loads a vault bound to the
-  schema and gives a few named views. The first is the **narrative view**: one coded narrative's support (G1), the
-  vertices and edges it mentions, drawn as four columns in class order (group, concern, affordance, technology) with
-  the edges between neighbouring columns. The second is the **composed view**: the same drawing of the graph
-  that emerges from composing the supports of a set of narratives, up to the whole vault. A
-  narrative is a page type of its own (G1): the parent of scenario and architecture, so a field note may be neither.
-  The past/future mark is a property of the narrative.
-  Relationships (G1) stay out of the views. The three kinds of edge are bipartite, so each is also a table: the
-  **table views** export them as CSV and generate documents from them, which is how people navigating the data
-  already think of it.
+  schema and gives the network analysis the project needs, as named views:
+  - the **narrative view**: one coded narrative's support (G1), its fingerprint: the vertices and edges it mentions,
+    drawn as four columns in class order (group, concern, affordance, technology) with the edges between neighbouring
+    columns;
+  - the **table views**: each of the three kinds of edge is a bipartite subgraph and so a table, exported as CSV and
+    used to generate documents, which is how people navigating the data already think of it;
+  - the **composed view**: the four-layer graph that emerges from composing the supports of a set of narratives, up
+    to the whole vault, for reasoning about the big picture;
+  - **traces**: forward and backward traceability from any vertex through the layers. Tracing a concern goes one
+    layer up to the groups that hold it, one down to the affordances that address it, and two down to the
+    technologies that provide those affordances. A group traces three layers down to technologies, and a technology
+    three layers up to groups.
+
+  A narrative is a page type of its own (G1): the parent of scenario and architecture, so a field note may be neither.
+  The past/future mark is a property of the narrative. Relationships (G1) stay out of the views.
 - **G13. Ripple-aware change (Amendment 5).** A change to a term, a contract, a rule or the mission reaches every
   artifact that depends on it, in one package, and no two packages edit the same file in turn (see Governance).
 - **G14. Three coding paths (Amendment 5).** The tools support three ways to code, each with its own user experience;
@@ -286,7 +299,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-14 | The planning and facilitation guides carry the improvisational stance ("yes, and"; "from this perspective"). They contain no step that ranks, votes on or adjudicates between stories or architectures. | The ACE's review of the guides; UA-M |
 | R-15 | **A light musical reference, clarity first.** The package and its docs carry the music-note logo and one brief aside on improvisation, where the "yes, and" stance is introduced. Everywhere else, plain words win over any musical reference. | The chief engineer's judgement in UA-M (log D-052) |
 | R-16 | **A stable machine interface.** Every result the operations return is also available as versioned, machine-readable data, from the Python API and the CLI alike. Its schema lives with the contracts, and changing it follows a stated versioning rule. A fix is data a tool can apply (what kind of fix it is, the exact command, or the field to write), not only a sentence. This is the interface the Obsidian plugin and any later tool build on (log D-060). | Every operation's output validated against the schema in tests; a test that the text messages and the data agree |
-| R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault, and its narrative view gives, for each coded narrative, exactly its support, with no relationship. | The notebook executed in the template's CI, with a test on the view |
+| R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault. Its narrative view gives, for each coded narrative, exactly its support, with no relationship; its table views export the three edge tables; and a trace from a vertex of each class returns exactly the vertices reachable up and down the layers. | The notebook executed in the template's CI, with tests on the views and the traces |
 | R-18 | **Ripple-complete changes.** Before a package that changes a term, contract, rule or the mission is approved, its impact map lists every artifact that refers to what changes, each marked change, keep (with why) or historical. At acceptance, the same sweep finds no reference that is unmarked or still says the old thing. | The impact map in the scope; the sweep's output in the acceptance record |
 | R-19 | **Manual first.** Every step, from field notes to coded vault to analysis, can be done by a person by hand, in Obsidian and the CLI, with no LLM. The process stays consistent with ethnographic coding practice, so a project whose data rights rule out AI loses nothing but speed. Any AI assistance is optional, provider-agnostic, and does mechanical work only; the interpretive act stays with the human coder. | The UA-M walkthrough and the docs test, run with no LLM; the ACE's review of each spike readout against it |
 | R-20 | **The chat path works, at two test levels.** The MCP server's tools pass automated tests, and the chat path (G14, path 2) is run end to end in the inference.coop browser chat at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents. The field test comes after v0.1 and is not part of this repository. Other providers are not tested in v0.1. | The automated tests in CI; each end-to-end run recorded step by step with screenshots in the acceptance record |
