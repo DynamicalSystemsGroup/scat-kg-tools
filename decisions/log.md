@@ -873,3 +873,31 @@ ACE rulings:
 - **Test edits** take the additive route first (D-036). If a guard refuses, the unit is held, and the ACE is told.
 
 The PM's 19-unit split is approved, at about 100 estimated points. Round 3 (U16) runs only if needed.
+
+## D-042 | 2026-11-24 | Pages live (candidate); WP8-U1 held for the chief engineer
+
+**The candidate-stage step is done by the ACE,** after reviewing `.github/workflows/pages.yml`. It has minimal
+permissions, uses official actions only, and builds strictly. The ACE:
+- enabled Pages with a workflow build (`gh api POST …/pages build_type=workflow`);
+- added `dev` to the `github-pages` environment's branch policies, alongside `main`;
+- dispatched the workflow, which deployed successfully.
+
+https://dynamicalsystemsgroup.github.io/scat-kg-tools/ is live and shows "Pre-release candidate."
+
+**WP8-U1 is held.** Its D-039 fixes contradict two existing assertions in `tests/ops/test_ops_stub.py`. The
+permission guard refused the edit, because the authorisation came from an agent rather than from a user. Under D-036
+the ACE doesn't make the edit itself, which would only route around the refusal. U1 waits on the chief engineer, and
+it is on his morning list with the exact intended edits.
+
+**Plan meanwhile:**
+- the candidate pins today's tools (without U1);
+- U3 syncs the docs except statements that depend on U1;
+- UA-A round 1 runs;
+- when U1 lands, the pins move and the ACE decides on a UA-A rerun (WP8-R8).
+
+The default stands: `set-status done` exits 0 even when the page's new check has errors, as an existing test asserts.
+
+**Ruling on the Obsidian templates in the docs.** `scat stub` is the one way to create any page (R-11). Where the
+docs mention the page templates at all, it is only as optional body skeletons inserted into a page that `scat stub`
+already created, never as a way to create pages. U3 aligns `getting-started.md` (step 4) and `coding.md` (lines 514,
+570 and 590) with this.

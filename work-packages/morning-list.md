@@ -40,6 +40,15 @@ log entry and, where the ruling changed direction, the `divergence/` tag to reve
   can waive that. Either accept it as a known gap at acceptance, or permit one fresh tester to run uv's official
   installer, and a rerun closes the gap.
 
+- **WP8-U1 is held: a test edit only you can authorise (D-042).** D-039's fixes make `stub` on an existing page of the
+  same type a no-op, and `set-status done` report the page's check. Two existing assertions in
+  `tests/ops/test_ops_stub.py` assert the old behaviour, and the guard rightly refuses an agent's authorisation.
+  The intended edits are as strong as before:
+  - `not r.ok` becomes `r.ok and r.unchanged == ("concern/a.md",)`;
+  - the same-type refusal row becomes a different-type row (`affordance`).
+
+  Fixes are on `wp8/u1` (`3ed3163`, `9e6ca44`). Your "yes" lets it land as a pin move with a UA-A rerun.
+
 ## Coming up that will need you (WP8)
 
 - Whether AI testers may run the uv installer (`curl … | sh`) in a clean environment. Running a downloaded install
