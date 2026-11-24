@@ -12,7 +12,7 @@ A facilitated event: [groups](#stakeholder-group) tell stories and pitch designs
 - **Vault:** none. The notes become [raw records](#raw-and-coded-records).
 - **Stage:** plan.
 - **Check:** before a session, have a written plan, your
-  [stakeholder groups](#stakeholder-group), a note-taker per session, and a [clean check](#clean-check).
+  [stakeholder groups](#stakeholder-group), a note-taker per session, and a vault that passes its [clean check](#clean-check).
 
 ## Scenario
 
@@ -21,7 +21,6 @@ A story of people doing things over time.
 - **Vault:** `scenario-raw`, `scenario-coded`. [Coded](#raw-and-coded-records), it links [groups](#stakeholder-group),
   [concerns](#concern), [affordances](#affordance).
 - **Stage:** plan.
-- **Check:** the plan gives each [group](#stakeholder-group) a prompt.
 
 ## Architecture
 
@@ -30,7 +29,6 @@ An assembly of parts into tools that offer [affordances](#affordance).
 - **Vault:** `architecture-raw`, `architecture-coded`. [Coded](#raw-and-coded-records), it links [concerns](#concern), [affordances](#affordance),
   [technologies](#technology).
 - **Stage:** plan.
-- **Check:** the plan keeps scenario and architecture sessions apart.
 
 ## Stakeholder group
 
@@ -38,7 +36,7 @@ A group the notes come from, named by role, never a person.
 
 - **Vault:** `stakeholder-group`.
 - **Stage:** plan.
-- **Check:** the groups fit under the vault's cap.
+- **Check:** the groups fit under the vault's cap, the most groups it allows.
 
 ## Concern
 
@@ -96,9 +94,9 @@ A raw record is the notes as told. A coded record restates them in plain words a
 
 How finished a page is: `stub` (just started), `draft` (being written) or `done` (the sign-off).
 
-- **Vault:** the `status` field of every page except `class`.
+- **Vault:** the `status` field of every page except the index tables.
 - **Stage:** capture.
-- **Check:** the author sets `done` as the sign-off; the tool only checks that the fields and links the
+- **Check:** the person who wrote or coded the page sets `done`, not the tool, which only checks that the fields and links the
   page type requires are present: `description` always, [`timeframe`](#past-or-future-mark) on a raw page, `raw` and the lists of what it names
   on a coded page.
 
@@ -112,8 +110,8 @@ Whether an account is real (`past`), intended but not yet real (`future`), or bo
 
 ## Clean check
 
-A whole-vault read with zero errors. With nothing to report it prints "no problems". Warnings do not stop it.
+A whole-vault read with zero errors. Warnings do not stop it.
 
 - **Vault:** none.
-- **Stage:** code; a gate before analyse.
-- **Check:** analysis needs a clean check and `done` pages. The check tests structure, not content.
+- **Stage:** from the start, rechecked after coding; a gate before analyse.
+- **Check:** analysis needs a clean check and `done` pages. The check tests structure, not content. Run: uv run scat check.
