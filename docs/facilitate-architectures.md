@@ -67,7 +67,7 @@ Say these in this order. They are questions. Ask one at a time, then wait for th
 ```text
 How do the parts fit together, and what does the whole let people do?
 What worry or aim is this for?
-What does this not address?
+Yes, and is there a concern this was not aimed at? We will note it as not addressed.
 Yes, and who else might hold that concern?
 ```
 
@@ -86,7 +86,7 @@ for the scenario session.
 The note-taker writes the design on its own, and the story as a separate account. A proposed design is its own note,
 not a conclusion from a story.
 
-"What does this not address?" is asked as an addition, never as a test of the design:
+"Yes, and is there a concern this was not aimed at?" is asked as an addition, never as a test of the design:
 
 ```text
 Yes, and what else would you want it to cover?
