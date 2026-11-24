@@ -77,7 +77,7 @@ For an architecture, past is the baseline: what exists, or once existed. Future 
 
 The non-obvious ones are the present-tense line, the dropped spreadsheet, the app under way and the counterfactual.
 
-Use `mixed` when an account blurs the two and you cannot cleanly separate them, for example "it never worked, so we hope the new one will". It is the honest record, not a failure. For a scenario, lead people to one time first and use `mixed` only when the account itself still blurs them. For an architecture it is the normal mark when one account describes what exists and what is proposed, and they hang together. `scat stub` leaves the `timeframe:` line for the author to fill in on the raw page.
+Use `mixed` when an account blurs the two and you cannot cleanly separate them, for example "it never worked, so we hope the new one will". It is the honest record, not a failure. For a scenario, lead people to one time first and use `mixed` only when the account itself still blurs them. For an architecture it is the normal mark when one account describes what exists and what is proposed, and they hang together.
 
 ## The stages
 
@@ -259,10 +259,11 @@ The page is made, with status `stub`:
 type: scenario-raw
 status: stub
 title: "Lending desk saturday"
+timeframe: # past | future | mixed
 ---
 ```
 
-Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Then
+Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Set `timeframe:` to `past`, `future` or `mixed`. Then
 mark the page as a draft and check it:
 
 === "Python"

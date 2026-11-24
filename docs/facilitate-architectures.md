@@ -228,10 +228,11 @@ The page is made, with status `stub`:
 type: architecture-raw
 status: stub
 title: "Booking sheet pitch"
+timeframe: # past | future | mixed
 ---
 ```
 
-Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Then
+Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Set `timeframe:` too. Then
 mark the page as a draft and check it:
 
 === "Python"
