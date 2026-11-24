@@ -138,12 +138,12 @@ alone: `uv run pytest tests/bench -s -q` printed page 235 ms, neighborhood 239 m
 | R-4 | Checks never write; writes are explicit operations | `tests/test_r4_snapshots.py` | met |
 | R-5 | 500 pages: page under 1 s, neighborhood 2 s, vault 5 s | `tests/bench/test_r5_thresholds.py` | met; one laptop, plus Linux CI |
 | R-6 | Fresh template clone, one setup command, clean check | board rows WP8-U9, U12, U15, U15b, U15c, U15d; my rerun: clone of template `dev`, `uv sync`, `uv run scat check`: 0 errors, 1 warning (SCAT-CONFLICT-BOTH) | met with a caveat: uv was preinstalled and the uv installer, `gh` and website creation were never run by agents (D-040); no U9 or U12 report file exists, only board rows |
-| R-7 | Both repositories commit `uv.lock`; CI runs on every push | `gh run list --limit 3`: tools CI run 45331739831 success on `dev` (the D-049 re-pin); template CI run 45331630972 success; both repos hold `uv.lock` | met |
+| R-7 | Both repositories commit `uv.lock`; CI runs on every push | `gh run list --limit 3`: tools CI run 45331896247 success, the newest completed run on the `dev` head at the time of writing (`4c10525`); template CI run 45331630972 success; both repos hold `uv.lock` | met |
 | R-8 | REPL and CLI are equal paths with the same messages | `tests/test_paths.py` (same message, files, exit code; every operation covered); docs test runs both | met |
 | R-9 | Docs snippets run as shown; CLI reference matches `--help` | `uv run pytest tests/docs -q` | met with a caveat: only `bash` and `python` blocks run (D-043) |
 | R-10 | No broken links or dead ends | strict build clean; the 5 distinct external links I fetched returned 200; your sitting 2 | met with a caveat: the ACE's browser pass (D-039) predates the U11 to U14 edits, and I ran no browser |
 | R-11 | One obvious way to make each page | `acceptance/reports/r1-p1.md` to `acceptance/reports/r3-p1.md`: all reached a clean check; D-043 removed the page templates | met with a caveat: the coding guide is long (about 5,600 words), see 4b (k) |
-| R-12 | Template repos private; docs recommend it | `docs/getting-started.md` step 1; template `README.md` step 1; `gh api repos/DynamicalSystemsGroup/scat-kg-template --jq '{default_branch,is_template}'` gives `dev`, `true` | met with a caveat: the website path asks you to pick Private, it does not preset it; creation path run only by you (stage 2) |
+| R-12 | Template repos private; docs recommend it | `docs/getting-started.md` step 1; template `README.md` step 1; `gh api repos/DynamicalSystemsGroup/scat-kg-template --jq '{default_branch,is_template}'` gives `dev`, `true` | met with a caveat: the website path relies on you choosing Private (the page calls it a choice you confirm); only your stage 2 exercises either path |
 | R-13 | The TBox is the one schema source | `tests/test_r7_tbox_equality.py` (named for WP5-R7); tools read `ontology/scat.ttl` at load (D-033) | met |
 | R-14 | Guides hold the stance and never rank or adjudicate | `grep -n 'ranked, voted on' docs/planning.md docs/facilitate-*.md` (3 disclaimers); `research/facilitation/readout.md` | met with a caveat: grep and reading only, no test |
 | R-15 | Jazz is the style, never at the cost of clarity | `acceptance/reports/r3-cold-read.md`, `r4-cold-read.md`, `r5-cold-read.md`; log D-049 | met with two known-weak items: clause 1 (jazz named unprompted) met by every reader in rounds 3 to 5; clause 2 met after the D-049 wording, with T2 ("Yes, and") and T3 (CLI epigraph) left to you, see 4b (f) |
@@ -235,8 +235,7 @@ exists for them.
   with no home page seen, and left T1 to T3. Rules: placement (D-046), style elements only (D-047), stop rule (D-048).
   D-049 fixed T1 and accepted T2 and T3 as known-weak, for you to judge: T2 is the term "Yes, and", the mission's own
   stance, defined on the page; T3 is the CLI epigraph "The same tune at the command line". Every reader is Haiku and
-  has named something each round. No reader saw the final wording (U14d). Reports: `acceptance/reports/r4-cold-read.md`,
-  `r5-cold-read.md`.
+  has named something each round. No reader saw the final wording (U14d).
 - **(g) Clone history.** The template clone shows internal commit subjects (for example "WP8-U15 ...") to testers.
   Accepted in D-046 on the claim that a repository made from the template starts with fresh history. I did not
   verify that. Run `git log --oneline` in your new repository at stage 2.
@@ -255,11 +254,12 @@ exists for them.
     environment artefacts, internal commit subjects in the clone's history, "clear the example" coming after J5, no
     rule for a concern with no answering affordance). Fix item: none.
 - **(j) Found while verifying.**
-  - `docs/getting-started.md` says both creation paths "set it for you". The website path asks you to choose Private.
-  - The four class definitions (stakeholder group, concern, affordance, technology) are marked `unverified` in
-    `ontology/scat.ttl` (D-032).
+  - `docs/getting-started.md` says "Both paths below set it for you, and the website path shows it as a choice you
+    confirm". The `gh` command passes `--private`, but the website path relies on you choosing Private. Only your stage 2
+    exercises it.
+  - The four class definitions are marked `unverified` in `ontology/scat.ttl` (D-032).
   - The concern conflict is a relation plus a warning, not the disjointness axiom you named (D-028).
-  - My R-6 rerun used my own home directory and uv cache, so it is weaker than the UA-A setup.
+  - My R-6 rerun used my own home and uv cache, so it is weaker than UA-A.
 - **(k) Coding guide length.** The coding guide is long (about 5,600 words) and no ruling splits it. The Haiku
   testers in rounds 1 to 3 all finished it.
 - **(l) w3id.** `https://w3id.org/scat` is unregistered. `acceptance/w3id-registration.md` holds the pull request for you to
