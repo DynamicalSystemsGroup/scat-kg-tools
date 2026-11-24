@@ -50,7 +50,7 @@ are clustered into groups that fit under it.
 SCAT is an acronym for the four things above. It is also named for scat singing in improvised jazz, and it borrows
 the manner as well as the name.
 
-Two moves from improvisation carry through the whole method:
+Two habits from improvisation carry through the whole method:
 
 - **"Yes, and."** Whatever someone offers is written down as offered, then built on with a question that adds
   something. Nothing is turned away, and nothing is merged into someone else's line.

@@ -9,7 +9,7 @@
 This guide borrows the taking of turns from jazz: each proposer's design is heard in full, one at a time, and none is set against another.
 
 An architecture session is a round of designs, one proposer at a time. It hears how a proposed assembly of tools is put together, and which concerns it addresses. You
-run the session. You ask the questions, say whose turn it is, and listen. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. This page runs you through the session stage by stage, then turns the notes into a
+run the session. You ask the questions, say whose turn it is, and listen. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a
 raw architecture page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a design, and you never ask a
@@ -47,7 +47,7 @@ Anyone with a design to pitch is a technologist for this session. That is a role
 Do: say the Chatham House frame aloud. Say that today is for designs and the concerns they answer, and that several
 designs may answer one concern.
 
-The lines under "Say" show each move. Say them as written or in your own words, but when a line uses "Yes, and" or "from this perspective", keep those words and say them aloud.
+Say the lines under "Say" in the order given. Use your own words if you like, but say "Yes, and" exactly as written, and where a line names a group, use the name of your own group.
 
 ```text
 Whatever is said here can be used. Nobody is named; the

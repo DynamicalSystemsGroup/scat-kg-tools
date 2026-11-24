@@ -15,7 +15,7 @@ The tools do the bookkeeping. You say which things the notes name. The tools cre
 ## Before you start
 
 - A vault set up as in [Getting started](getting-started.md): the folder holds `scat.toml`, you are inside it in Terminal, and `uv sync` has run. While SCAT is a preview being tried before its first release, a fresh clone may need `git checkout dev` first.
-- The worked example removed, if you want your own vault clean. Do that before you add any page of your own: [Start your own content](getting-started.md#5-start-your-own-content). If you already added pages, the same step still works, and the check lists draft warnings for them and no errors.
+- Remove the worked example from your vault before you add any page of your own: see [Start your own content](getting-started.md#5-start-your-own-content). If you already added pages, the same step still works, and the check lists draft warnings for them and no errors.
 - Raw notes saved as raw pages, from [Facilitating scenarios](facilitate-scenarios.md) or [Facilitating architectures](facilitate-architectures.md). In hand, you need a few plain sentences of raw notes, written as they were told.
 - Your stakeholder groups, planned in the [planning guide](planning.md) and named by role. In hand, you need a short list of the groups, one name per group.
 

@@ -9,7 +9,7 @@
 This guide borrows "yes, and" from jazz improvisation: you accept what each group offers as it is, and add to it.
 
 A scenario session is a set of stories, one turn per group. It hears what people do in a situation, in time, and what comes of it. You run the session. You ask the questions, say whose turn it is, and listen. In each group's turn, you listen to its story, write it down as offered, then ask a question that adds to it. A note-taker
-writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.
+writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a story, and you never ask anyone to
 concede one.
@@ -40,7 +40,7 @@ them doing. That is an affordance. When a technology comes up, ask what the tool
 
 Do: say the Chatham House frame aloud. Say that today is for stories, and that accounts can differ.
 
-The lines under "Say" show each move. Say them as written or in your own words, but when a line uses "Yes, and" or "from this perspective", keep those words and say them aloud.
+Say the lines under "Say" in the order given. Use your own words if you like, but say "Yes, and" exactly as written, and where a line names a group, use the name of your own group.
 
 ```text
 Whatever is said here can be used. Nobody is named; the
