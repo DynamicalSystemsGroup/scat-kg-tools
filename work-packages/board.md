@@ -94,7 +94,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP8-U15 | re-pin and rerun, sonnet | 2 |  | `wp8/u15` | queued | U14 |  |  |
 | WP8-U16 | UA-A round 3 (conditional), haiku | 12 |  | `wp8/u16` | queued | U15 and a blocking finding in round 2 |  |  |
 | WP8-U17 | technical writer (reviewer's guide), sonnet | 8 |  | `wp8/u17` | queued | U16 or a clean round 2 |  |  |
-| WP8-U18 | technical writer (w3id registration file), sonnet | 2 |  | `wp8/u18` | queued | U10 |  |  |
+| WP8-U18 | technical writer (w3id registration file), sonnet | 2 |  | `wp8/u18` | in flight |  |  |  |
 | WP8-U19 | sweep checker, haiku | 1 |  | `wp8/u19` | queued | U17 |  |  |
 
 ## Iterations and velocity
