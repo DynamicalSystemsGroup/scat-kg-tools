@@ -17,6 +17,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP9 | v0.1 cleanup after the chief engineer's skim (D-052) | all units done and verified on fresh clones | `WP9.md` |
 | WP10 | Past or future on the captured narratives (D-057, D-058) | all units done; handed to the ACE for acceptance | `WP10.md` |
 | WP11 | A stable machine interface (R-16; D-060, D-062) | all units done and merged; handed to the ACE for acceptance | `WP11.md` |
+| WP12 | The terms reference (F-8; D-068) | in flight | `WP12.md` |
 | RS1 | Research spike: Obsidian plugin (outside v0.1; branch `spike/obsidian-plugin`, never merged into `dev`) | readout, installable plugin and tests done | `RS1-obsidian-plugin.md` |
 | RS2 | Research spike: graph analysis (outside v0.1; branch `spike/analysis`, never merged into `dev`) | readout, package, notebook and tests done | `RS2-analysis.md` |
 
@@ -146,6 +147,11 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP11-U9 | technical writer (references, JSON examples, transcript reruns), sonnet | 5 | 5 | `wp11/u9` | done |  | 2026-11-24T11:56:53-05:00 | 1 push-back (revert the seeded typo before later commands), 2 reviews, 18 JSON blocks rerun byte-identical on the pinned template; visual check unverified (screenshots unusable), DOM measured; 982 tests; merged 32150b0 |
 | WP11-U10 | Python developer (template re-pin), haiku | 2 | 1 | `wp11/u10` | done |  | 2026-11-24T11:58:11-05:00 | mechanical Haiku re-pin, first time, about 1 min; PM re-ran the fresh clone; template merged 5a7290f |
 | WP11-U11 | Python developer (docs test pin, walkthrough, reviewer's guide, Pages, fresh-clone trial), sonnet | 3 | 3 | `wp11/u11` | done |  | 2026-11-24T12:12:31-05:00 | first-time reviewer PASS (one wording nit left); trial on fresh clones all green, 9 JSON examples rerun on the new template; one existing-test line edited (docs test pin, scope G5); 982 tests; merged 5bc3f0f |
+| WP12-U1 | technical writer (terms page, nav, two link lines), sonnet | 3 |  | `wp12/u1` | queued |  |  |  |
+| WP12-U2 | test engineer (terms page cannot drift from the TBox), sonnet | 2 |  | `wp12/u2` | queued | U1 merged (the page exists) |  |  |
+| WP12-U3 | UA-A designer (project-manager persona and brief in the user's words), sonnet | 1 |  | `wp12/u3` | queued |  |  |  |
+| WP12-U4 | simulated user (R3 cold read of the terms page, one Haiku tester) and report filing, haiku | 2 |  | `wp12/u4` | queued | U1 and U3 merged |  |  |
+| WP12-U5 | technical writer (reviewer's guide line, acceptance README line), sonnet | 1 |  | `wp12/u5` | queued | U4 report filed and defects fixed |  |  |
 
 ## Iterations and velocity
 
