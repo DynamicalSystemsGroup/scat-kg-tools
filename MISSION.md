@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Approved by the chief engineer's merge of PR #1 into `main` of `DynamicalSystemsGroup/scat-kg-tools`. Each amendment is approved by the merge of its own PR; Amendment 1 is PR #2, Amendment 2 is PR #4, Amendment 3 is PR #5 and Amendment 4 is PR #6. |
+| **Status** | Approved by the chief engineer's merge of PR #1 into `main` of `DynamicalSystemsGroup/scat-kg-tools`. Each amendment is approved by the merge of its own PR; Amendment 1 is PR #2, Amendment 2 is PR #4, Amendment 3 is PR #5, Amendment 4 is PR #6 and Amendment 5 is PR #7. |
 | **Chief engineer (accountable)** | `mzargham`: final design authority. Approves this mission and its amendments, and accepts the v0.1 delivery. |
 | **Assistant to the chief engineer (ACE)** | The main Claude session. Manages the team, writes and approves work-package scopes inside this mission, accepts work packages, and escalates only intent gaps (see Governance). |
 | **Repositories** | `scat-kg-tools` (the tools, the TBox, the docs site; this document) and `scat-kg-template` (the vault to clone). |
@@ -140,7 +140,10 @@ under it (the chief engineer's initial brief).
   documentation example.
 - **G7. Documentation on GitHub Pages**, from `scat-kg-tools`, with a light musical reference (R-15). It has a page for each
   stage of the journey: getting started, a planning guide, a scenario facilitation guide, an architecture facilitation
-  guide and a coding guide. It also has a reference for the Python API and the CLI.
+  guide and a coding guide. It also has a reference for the Python API and the CLI, and a reference for the vault's
+  terms: a short glossary of the load-bearing terms and the links between them, for the project manager who coordinates
+  an event, supervises the capture of field notes, and is responsible for the data being coded and analysed
+  satisfactorily (log D-067).
 - **G8. Toolchain decided by evidence.** The candidates are tried on a small vault and measured before the
   implementation is locked in:
   - oxigraph;
@@ -396,6 +399,9 @@ recording why.
   told; a coded page is a reading of its raw page and inherits it. Working field name `timeframe`, with the chief
   engineer's values `past`, `future` and `mixed`. Like every required field (R-3), a missing value is an error on a
   `done` page and a warning before.
+- The terms reference (Amendment 5) is one docs page, like a glossary. It covers only the load-bearing terms
+  (elicitation, scenario, architecture, stakeholder group, concern, affordance, technology) and the links between them:
+  a little more than the coding ontology, not much more. It defines; the guides teach. It adds no field, rule or tool.
 
 ## Open decisions (for the chief engineer)
 
@@ -403,6 +409,8 @@ None. Every item was resolved through the decision loop and is recorded in `deci
 - 15 decided by the chief engineer: log D-001, D-003, D-005 to D-008, D-010 to D-014, D-017 to D-019, D-021;
 - 1 assigned to the ACE: log D-002;
 - 1 deferred by him: the target date, until velocity is known (log D-011, which also decided the timeline method);
+- Amendment 5: 1 decided by the chief engineer, log D-067 (a simple terms reference for the coordinating project
+  manager);
 - Amendment 4: 1 decided by the chief engineer, log D-060 (a stable machine interface before the first release);
 - Amendment 3: 3 decided by the chief engineer, log D-057 (into v0.1; required, with "mixed"; a past/future axis).
 
