@@ -1515,3 +1515,17 @@ is a new file, or a file WP11 itself added.
 
 **New finding.** F-7: the reserved-name refusal offers a concrete name, but its fix is typed `manual`. It goes to the
 fix package with F-1, F-3 and F-5.
+
+## D-067 | 2026-11-24 | A terms reference page for the coordinating project manager (Amendment 5)
+
+**Direction (the chief engineer's words, typed by the ACE):** "i am going to need to have page in the documentation
+thats just a reference schema". Asked which schema, he answered: "the vault schema. and to be clear this needs to be
+pretty simple. its almost like a glossary. it should only cover load bearing terms and in the coding. Elicitation,
+Scenario, Architecture, Stakeholder, Concern, Affordance, Technology. Plus connective tissue between them, its a bit
+more than the ontology for coding but not much more. it needs to be a reference for the project manager who is
+coordinating an event, supervising field note capture, and will be responsible for ensuring the data gets coded, and
+analyzed satisfactorily"
+
+**Outcome.** G7 lists the docs pages, and this one is new, for a reader the mission didn't name. So it goes in as
+Mission Amendment 5 (PR #7): one sentence in G7 and one Agent's default. The ACE wrote WP12 to build it. WP12 is
+approved when PR #7 merges.
