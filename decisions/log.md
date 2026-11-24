@@ -1378,3 +1378,23 @@ field added. lets just make sure we track that choice"
 checks are not exercised here, because the pinned tools don't know it yet; they are covered by WP10's tests and the
 refreshed candidate. Also noted for a later package: Material for MkDocs reaches end of life on 5 May 2027 (its build
 notice names Zensical as the successor); no effect on v0.1.
+
+## D-060 | 2026-11-24 | A stable machine interface before the first release (Amendment 4)
+
+**Raised by:** the chief engineer, in play-test sitting 3, step 4, on the messages (finding F-4): "seems fine. can be a
+bit hard to read but honestly that's mostly the REPL, not something we can change. the reason for building the
+obsidian plugin is so we can capture that information payload and use it. so the only thing i'd look out for is how
+ammenable the output is to use to develop the plugins features later. we want clean interfaces with stable interface
+contracts"
+
+**Direction (the chief engineer's words, typed by the ACE):** "i want you to make the output stable for plugin before
+first release since i am leaning towards potentially pushing toward obsidian plugin pretty directly"
+
+**Outcome.** Mission Amendment 4 (PR #6) adds R-16, a stable machine interface: versioned machine-readable data for
+every result, on both paths, with its schema in the contracts and fixes as applicable data. The build is WP11, drafted
+when the amendment is merged, and sequenced after WP10's code unit (both touch `src/` and `tests/`).
+
+**Process note (ACE).** While the amendment was drafted, the ACE switched the shared main checkout to the amendment
+branch, and a PM board/metrics commit (`5e9365a`, with an untracked `site/` build folder swept in) landed there. It was
+never pushed. The ACE undid it locally, removed the build folder, and checked that the PM's records are on `dev`
+(they are). From now on the ACE drafts in its own worktree and never switches the shared checkout's branch.
