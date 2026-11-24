@@ -95,6 +95,20 @@ also give an exponentially smoothed velocity that weights recent iterations most
 by the running ratio of realized to estimated points (`work-packages/board.md`). At each package
 acceptance the PM notes which kinds of unit ran over or under, so the next estimates improve.
 
+**Operational requirement: the estimation data (log D-061).** The chief engineer assesses delivered code partly
+through `work-packages/metrics.jsonl`, so keeping it is a requirement on the team, not a courtesy. Schema:
+`work-packages/metrics.md`. From WP10 on, `python3 work-packages/check_metrics.py` must pass, and CI runs it on every
+push. It holds that:
+- every unit is planned, with estimated points on the 1, 2, 3, 5, 8 scale, before it lands, and the estimate is never
+  changed (a grown scope uses `replanned_est_pts`);
+- every `done` unit has realized points, a one-line basis and the iteration it landed in;
+- every iteration record's points add up to its units' points, and its velocity is realized points over elapsed hours;
+- records are appended in time order, or carry `corrects`.
+
+A split unit keeps the original's estimate on the original unit, and the new unit is planned with its own estimate
+before it starts. **The ACE accepts a package only when `python3 work-packages/check_metrics.py --accept WPn` passes**:
+every unit is done and closed into an iteration record.
+
 ## Verification
 
 - **Tier 0, the author, before each commit:** `uv run ruff check`, `uv run ruff format --check` and `uv lock --check`
