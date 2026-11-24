@@ -116,6 +116,7 @@ Look for:
 - [ ] Every page has "Your next step" and "Where next".
 - [ ] I ran the strict build and the docs test.
 - [ ] I found no step that ranks or adjudicates (R-14).
+- [ ] I read `docs/reference/terms.md` ("Terms", under Reference) as a project manager who coordinates an event. It is the glossary added for field finding F-8 (log D-068), 600 words, and a drift test, `tests/docs/test_terms.py`, checks that every vault name it uses is in the TBox.
 - [ ] The style is light and nothing in it gets in the way of an instruction (R-15, your own judgement, D-052).
 - [ ] I wrote down my list of changes.
 
@@ -292,6 +293,11 @@ exists for them.
   `scat stub-pair <relation> <endpoint-a> <endpoint-b>` (and the pair refusal for the cap is manual too). The fix is
   `manual`, not a command a tool can run, because the contract allows one `author_slot` per command and this needs
   three values. A plugin shows the text and you type the command.
+- **(p) The Terms page (WP12).** Fresh Haiku testers cold-read it four times (`acceptance/reports/wp12-r3-round1.md` to
+  `wp12-r3-round4.md`). All five questions were answered correctly in each round. One page defect was fixed per round in
+  rounds 1 to 3. In round 4 the only blocking mark, the size of the stakeholder-group cap, which is set per vault in
+  `scat.toml`, is accepted as not a page defect, and the remaining findings ask for teaching the guides carry. The
+  page's `Stage` is one value per entry, so Status is placed at capture, which is the PM's judgement.
 
 **Checklist.**
 
