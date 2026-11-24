@@ -217,6 +217,11 @@ matters without claiming to be exhaustive. No particular project's choices appea
     - its developer API, which is OpenAI-compatible with tool calling: a local client calls the model, and the
       `scat-kg` tools run as ordinary tool calls on the coder's machine, with no MCP. The API key is the chief
       engineer's to create and hold.
+
+    The spike's output is a choice of path, kept small so scope does not spiral: one path to build next, and, if they
+    differ, another documented as the preferred long-term path. Whatever is built for AI assistance must work through
+    inference.coop. Because its API follows the OpenAI-compatible standard, working there means working with any
+    provider that follows the same standard.
 - The Obsidian plugin (Amendment 5). It stays on its feature branch (log D-054); v0.1 provides the stable interface it
   builds on (R-16).
 - Typed links between records of the same class, such as incompatible concerns, adversarial groups, complementary
