@@ -112,6 +112,11 @@ under it (the chief engineer's initial brief).
   - each record's required and optional fields;
   - the other page types: class pages, raw and coded narratives, with raw and coded scenarios and architectures as
     their subclasses (Amendment 5);
+  - two base classes, from the knowledge-complex pattern at its lowest dimensions (Amendment 5): **vertices** (the
+    four SCAT classes, 0-simplices) and **edges** (the three typed relations, 1-simplices). Narrative is a base class
+    of its own, outside that pattern. Each edge between a given pair appears once, and names the narratives that
+    refer to it. A narrative is coded by identifying its vertices and edges; its **support** is the subgraph of every
+    vertex and edge it mentions;
   - the past, future or mixed mark every scenario and architecture records (see "Scenarios and architectures");
   - the linking rules, reflecting how scenarios and architectures differ;
   - how the graph holds disagreement and margins of potential conflict. At minimum, the same concern can be held by
@@ -176,8 +181,8 @@ under it (the chief engineer's initial brief).
   chief engineer supplies and which are read for principles only. The strategy covers the improvisational stance,
   eliciting scenarios and architectures, and holding disagreement without adjudicating it.
 - **G12. A template analysis notebook (Amendment 5).** The template carries a notebook that loads a vault bound to the
-  schema and gives a few named views. The first is the **narrative view**: for one coded narrative, the stakeholder
-  groups, concerns, affordances and technologies it names, and the links among them that appear in that field note. A
+  schema and gives a few named views. The first is the **narrative view**: one coded narrative's support (G1), the
+  vertices and edges it mentions. A
   narrative is a page type of its own (G1): the parent of scenario and architecture, so a field note may be neither.
   The past/future mark is a property of the narrative.
   Relationships (G1) stay out of the views.
@@ -243,7 +248,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-14 | The planning and facilitation guides carry the improvisational stance ("yes, and"; "from this perspective"). They contain no step that ranks, votes on or adjudicates between stories or architectures. | The ACE's review of the guides; UA-M |
 | R-15 | **A light musical reference, clarity first.** The package and its docs carry the music-note logo and one brief aside on improvisation, where the "yes, and" stance is introduced. Everywhere else, plain words win over any musical reference. | The chief engineer's judgement in UA-M (log D-052) |
 | R-16 | **A stable machine interface.** Every result the operations return is also available as versioned, machine-readable data, from the Python API and the CLI alike. Its schema lives with the contracts, and changing it follows a stated versioning rule. A fix is data a tool can apply (what kind of fix it is, the exact command, or the field to write), not only a sentence. This is the interface the Obsidian plugin and any later tool build on (log D-060). | Every operation's output validated against the schema in tests; a test that the text messages and the data agree |
-| R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault, and its narrative view gives, for each coded narrative, exactly the records it names and the links among them, with no relationship. | The notebook executed in the template's CI, with a test on the view |
+| R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault, and its narrative view gives, for each coded narrative, exactly its support, with no relationship. | The notebook executed in the template's CI, with a test on the view |
 | R-18 | **Ripple-complete changes.** Before a package that changes a term, contract, rule or the mission is approved, its impact map lists every artifact that refers to what changes, each marked change, keep (with why) or historical. At acceptance, the same sweep finds no reference that is unmarked or still says the old thing. | The impact map in the scope; the sweep's output in the acceptance record |
 
 ## User acceptance
@@ -443,8 +448,9 @@ recording why.
 
 Amendment 5 (open, asked one at a time):
 1. **Narrative in the schema.** Decided: a page type of its own (PR #8 thread).
-2. **Which links "appear within" a field note.** Today a link page does not record where it came from. The view can
-   infer it (both ends named on that narrative's coded page), or each link page can name its source narrative.
+2. **Which links "appear within" a field note.** Decided: each edge appears once per pair and names the narratives
+   it came from; the view shows a narrative's support (PR #8 thread). The vertex and edge base classes come from the
+   same answer.
 3. **Chatham House in this mission** *(raised by the ripple sweep)*. The mission asserts the rule in four places
    (Scenarios and architectures, G6, J4, and the non-goal on attribution), while log D-070 makes it one example
    policy in the docs. Bring the mission in line, or keep it?
