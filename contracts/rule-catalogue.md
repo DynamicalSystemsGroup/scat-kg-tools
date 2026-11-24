@@ -59,6 +59,7 @@ it is shown.
 |---|---|---|---|
 | Required from `stub` (`status`, `title`, `indexes`, and a relation page's endpoint fields) | error | error | error |
 | Required from `done` (`description`, required link fields) | silent | warning | error |
+| Required from `done` and takes a value from a set (`timeframe`) | warning | warning | error |
 | Name, link shape, unlisted link, endpoint, dangling link (frontmatter and body) | error | error | error |
 | Discouraged field, discouraged body link, conflict, self-conflict, duplicate relation page, mention, backlink, index | warning | warning | warning |
 | SCAT-RAW-UNCODED | silent | silent | warning |
@@ -178,11 +179,12 @@ skeleton carries one slot *(author)*. The alternative `set-status draft` is alwa
 | SCAT-FM-REQUIRED-LINK | error | every status | a relation page's required endpoint field is missing or empty | slot |
 | SCAT-FM-STATUS | error | every status | `status` is not `stub`, `draft` or `done` | options |
 | SCAT-FM-INDEXES | error | every status | class page `indexes` is outside its value set | options |
+| SCAT-FM-TIMEFRAME | error | every status | `timeframe` on a raw page is outside its value set | options |
 | SCAT-FM-SHAPE | error | every status | a text field is not a single non-empty string | exact |
 | SCAT-NAME | error | every status | a page's file name is not a legal name, or is not unique, or is a class page with the wrong name | exact |
 | SCAT-DONE-FIELD | error | done (class pages: always) | required text field missing | slot |
 | SCAT-DONE-LINK | error | done | required link field missing or empty | slot |
-| SCAT-DRAFT-FIELD | warning | draft | required text field missing | slot |
+| SCAT-DRAFT-FIELD | warning | draft; stub for a field with a value set | required text field missing | slot |
 | SCAT-DRAFT-LINK | warning | draft | required link field missing or empty | slot |
 | SCAT-LINK-SHAPE | error | every status | link field is not a list of `"[[<page-name>]]"` (a single field: not exactly one) | exact |
 | SCAT-LINK-UNLISTED | error | every status | non-empty link field the page type does not list | exact |
@@ -282,6 +284,18 @@ error [SCAT-FM-INDEXES] <file> field `indexes`: `<value>` is not a class
 - **Fix kind:** options.
 - **Test:** `indexes: concerns` on a class page (near match `concern`).
 
+### SCAT-FM-TIMEFRAME
+- **Severity:** error. **Fires:** every status. Raw scenario and raw architecture pages only.
+- **Trigger:** `timeframe` is present and is not one of `past`, `future`, `mixed` (the TBox's value set). An empty `timeframe:` is missing, not invalid: see SCAT-DONE-FIELD and SCAT-DRAFT-FIELD.
+- **Message:**
+```
+error [SCAT-FM-TIMEFRAME] <file> field `timeframe`: `<value>` is not a timeframe
+  Fix: change it to `timeframe: <near match>`                                 (when a near match among the three values exists)
+  Fix, choose one: the three values, each as `timeframe: <value>`      (otherwise)
+```
+- **Fix kind:** options. Which value is true is the author's.
+- **Test:** `timeframe: Past` (near match `past`) and `timeframe: soon` (list), on both raw page types, at `stub`, `draft` and `done`.
+
 ### SCAT-FM-SHAPE
 - **Severity:** error. **Fires:** every status.
 - **Trigger:** `type`, `status`, `title`, `description`, `indexes` or `notes` is present and not empty, and is not a single string (a list, a mapping, a number, or a boolean such as an unquoted `yes` or `true`). An unquoted `null` or `~` is missing, by the Empty rule above.
@@ -308,7 +322,7 @@ error [SCAT-NAME] <file> frontmatter: the page name `<page-name>` <is not legal 
 
 ### SCAT-DONE-FIELD
 - **Severity:** error. **Fires:** status `done`; class pages always. **Needs status** (not on class pages).
-- **Trigger:** a text field required from `done` (`description`) is missing.
+- **Trigger:** a text field required from `done` (`description`, `timeframe`) is missing.
 - **Message:**
 ```
 error [SCAT-DONE-FIELD] <file> field `description`: missing on a page with status: done
@@ -316,9 +330,9 @@ error [SCAT-DONE-FIELD] <file> field `description`: missing on a page with statu
     1. <add the line | replace the line `description: <current>` with> `description: "<one sentence you write>"` (author)
     2. run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`) if the page is not finished
 ```
-On a class page the first line reads `... missing` and only option 1 is printed.
+On a class page the first line reads `... missing` and only option 1 is printed. For a field with a value set (`timeframe`) the options are one line per value, `<add the line | replace the line `timeframe: <current>` with> `timeframe: <value>`` (author), then the `set-status` option.
 - **Fix kind:** slot. Why not exact: the sentence is the author's reading (decision 1).
-- **Test:** `description` removed at `done` (two options), on a relation page at `done`, and on a class page (one option); at `stub` and `draft` the same page gives no SCAT-DONE-FIELD.
+- **Test:** `description` removed at `done` (two options), on a relation page at `done`, and on a class page (one option); at `stub` and `draft` the same page gives no SCAT-DONE-FIELD. `timeframe` removed or empty at `done`, on both raw page types (four options).
 
 ### SCAT-DONE-LINK
 - **Severity:** error. **Fires:** status `done`. **Needs status.**
@@ -337,19 +351,24 @@ Option 1 says "add this to the frontmatter" when the key is absent, and "replace
 - **Test:** each required link field removed in turn at `done`, once with suggestions and once without; one with the key present as `affordances: []` (the "replace" wording); the same page at `draft` gives SCAT-DRAFT-LINK, at `stub` nothing.
 
 ### SCAT-DRAFT-FIELD and SCAT-DRAFT-LINK
-- **Severity:** warning. **Fires:** status `draft`. **Needs status.**
-- **Trigger:** as SCAT-DONE-FIELD and SCAT-DONE-LINK, at status `draft`.
+- **Severity:** warning. **Fires:** status `draft`; and status `stub` for a field with a value set (`timeframe`), which `scat stub` writes empty so the author sees it. **Needs status.**
+- **Trigger:** as SCAT-DONE-FIELD and SCAT-DONE-LINK, at status `draft`; for a field with a value set, also at `stub`.
 - **Message:** the same problem and suggestions as the `done` rules, no `set-status` option, because nothing is blocked:
 ```
 warning [SCAT-DRAFT-FIELD] <file> field `description`: missing (required once the page is done)
   Fix: <add the line | replace the line `description: <current>` with> `description: "<one sentence you write>"` (author) before you set status: done
+warning [SCAT-DRAFT-FIELD] <file> field `timeframe`: missing (required once the page is done)
+  Fix, choose one before you set status: done:
+    1. <add the line | replace the line `timeframe: <current>` with> `timeframe: past` (author)
+    2. the same with `future`
+    3. the same with `mixed`
 warning [SCAT-DRAFT-LINK] <file> field `<field>`: required link field is missing or empty (required once the page is done)
   Fix: <add this to the frontmatter | replace the line `<field>: <current>` with this>, keeping the lines that fit (suggestions found from relation pages; you decide):
          <field>:
            - "[[<suggestion>]]"
 ```
 - **Fix kind:** slot. Why not exact: the same reasons as SCAT-DONE-FIELD and SCAT-DONE-LINK.
-- **Test:** the seeds of SCAT-DONE-FIELD and SCAT-DONE-LINK at `draft`: warnings only, exit status of the check unchanged by them.
+- **Test:** the seeds of SCAT-DONE-FIELD and SCAT-DONE-LINK at `draft`: warnings only, exit status of the check unchanged by them. `timeframe` removed or empty at `stub` and at `draft`, on both raw page types.
 
 ### SCAT-LINK-SHAPE
 - **Severity:** error. **Fires:** every status.
@@ -565,15 +584,16 @@ For a missing page `<file>` is the path the index operation would create (`class
 
 | Requirement | Rules |
 |---|---|
-| R-1 required fields and types | SCAT-FM-PARSE, SCAT-FM-REQUIRED, SCAT-FM-REQUIRED-LINK, SCAT-FM-TYPE, SCAT-FM-INDEXES, SCAT-FM-SHAPE, SCAT-DONE-FIELD, SCAT-DONE-LINK, SCAT-LINK-SHAPE |
+| R-1 required fields and types | SCAT-FM-PARSE, SCAT-FM-REQUIRED, SCAT-FM-REQUIRED-LINK, SCAT-FM-TYPE, SCAT-FM-INDEXES, SCAT-FM-TIMEFRAME, SCAT-FM-SHAPE, SCAT-DONE-FIELD, SCAT-DONE-LINK, SCAT-LINK-SHAPE |
 | R-1 page names (contract section 2) | SCAT-NAME |
 | R-1 relation endpoints | SCAT-LINK-ENDPOINT |
 | R-1 linking rules, error level | SCAT-LINK-UNLISTED |
 | R-1 linking rules, warning level (scenario to technology, architecture to stakeholder group; frontmatter and body) | SCAT-LINK-DISCOURAGED, SCAT-LINK-DISCOURAGED-BODY |
 | R-1 stakeholder-group cap | SCAT-CAP, SCAT-CAP-CONFIG |
 | R-1 valid status | SCAT-FM-STATUS |
+| R-1 valid timeframe on raw pages | SCAT-FM-TIMEFRAME |
 | R-1 links to pages that do not exist | SCAT-LINK-DANGLING, SCAT-LINK-DANGLING-BODY |
-| R-3 unfinished is never an error | SCAT-DRAFT-FIELD, SCAT-DRAFT-LINK (warnings at draft); nothing fires for `done` fields at stub |
+| R-3 unfinished is never an error | SCAT-DRAFT-FIELD, SCAT-DRAFT-LINK (warnings at draft; SCAT-DRAFT-FIELD also at stub for `timeframe`); nothing else fires for `done` fields at stub |
 | R-3 full contract at `done`; required-from-status | SCAT-DONE-FIELD, SCAT-DONE-LINK, SCAT-FM-REQUIRED |
 | R-3 links and endpoints at every status | SCAT-LINK-SHAPE, SCAT-LINK-UNLISTED, SCAT-LINK-ENDPOINT, SCAT-LINK-DANGLING, SCAT-LINK-DANGLING-BODY |
 | D3 conflict warning | SCAT-CONFLICT-SELF |
@@ -610,6 +630,7 @@ discouraged-field architecture-coded.groups -> SCAT-LINK-DISCOURAGED
 discouraged-body-link architecture-coded.stakeholder-group -> SCAT-LINK-DISCOURAGED-BODY
 required architecture-raw.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
 required architecture-raw.status -> SCAT-FM-REQUIRED
+required architecture-raw.timeframe -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD, SCAT-FM-TIMEFRAME
 required architecture-raw.title -> SCAT-FM-REQUIRED
 required architecture-raw.type -> SCAT-FM-TYPE, SCAT-LINK-DANGLING
 discouraged-body-link architecture-raw.stakeholder-group -> SCAT-LINK-DISCOURAGED-BODY
@@ -649,6 +670,7 @@ discouraged-field scenario-coded.technologies -> SCAT-LINK-DISCOURAGED
 discouraged-body-link scenario-coded.technology -> SCAT-LINK-DISCOURAGED-BODY
 required scenario-raw.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
 required scenario-raw.status -> SCAT-FM-REQUIRED
+required scenario-raw.timeframe -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD, SCAT-FM-TIMEFRAME
 required scenario-raw.title -> SCAT-FM-REQUIRED
 required scenario-raw.type -> SCAT-FM-TYPE, SCAT-LINK-DANGLING
 discouraged-body-link scenario-raw.technology -> SCAT-LINK-DISCOURAGED-BODY

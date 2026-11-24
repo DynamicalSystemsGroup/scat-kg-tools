@@ -151,6 +151,23 @@ def test__r7__the_class_page_indexes_value_set_equals_the_ttl(g):
     assert set(values) <= set(TBOX.page_types)
 
 
+def test__r7__the_timeframe_value_set_and_pages_equal_the_ttl(g):
+    (row,) = q(g, "SELECT ?l WHERE { scat:field-timeframe scat:valueSet ?l }")
+    values = tuple(str(v) for v in rdf_list(g, row.l))
+    assert values == ("past", "future", "mixed")
+    ttl_pages = {
+        str(r.k)
+        for r in q(
+            g, "SELECT ?k WHERE { ?c scat:requiredField scat:field-timeframe ; scat:key ?k }"
+        )
+    }
+    assert ttl_pages == {"scenario-raw", "architecture-raw"}
+    assert {s for s, t in TBOX.page_types.items() if t.field("timeframe")} == ttl_pages
+    for slug in ttl_pages:
+        field = TBOX.page_types[slug].field("timeframe")
+        assert field.value_set == values and field.required_from == "done"
+
+
 def test__r7__the_models_are_the_ttls_fields_and_value_sets(g):
     assert set(MODELS) == set(ttl_types(g))
     for slug, node in ttl_types(g).items():
@@ -169,5 +186,7 @@ def test__r7__the_models_are_the_ttls_fields_and_value_sets(g):
                     literal
                     and get_args(literal[0]) == TBOX.page_types["class"].field("indexes").value_set
                 )
+            elif key == "timeframe":
+                assert literal and get_args(literal[0]) == ("past", "future", "mixed")
             elif key != "type":
                 assert not literal, (slug, key)

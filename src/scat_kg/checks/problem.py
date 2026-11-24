@@ -11,6 +11,7 @@ SEVERITY = {
     "SCAT-FM-REQUIRED-LINK": "error",
     "SCAT-FM-STATUS": "error",
     "SCAT-FM-INDEXES": "error",
+    "SCAT-FM-TIMEFRAME": "error",
     "SCAT-FM-SHAPE": "error",
     "SCAT-NAME": "error",
     "SCAT-DONE-FIELD": "error",

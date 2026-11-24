@@ -146,8 +146,34 @@ def test_stub_raw_derives_coded_from_coded_pages_naming_it(make_vault):
     )  # fmt: skip
     stub("story", "scenario-raw", root=root)
     assert (root / "scenario-raw/story.md").read_text() == (
-        '---\ntype: scenario-raw\nstatus: stub\ntitle: "Story"\ncoded:\n  - "[[c1]]"\n  - "[[c2]]"\n---\n'
+        '---\ntype: scenario-raw\nstatus: stub\ntitle: "Story"\ntimeframe: # past | future | mixed\ncoded:\n  - "[[c1]]"\n  - "[[c2]]"\n---\n'
     )
+
+
+@pytest.mark.parametrize("slug", ["scenario-raw", "architecture-raw"])
+def test_stub_of_a_raw_page_has_the_timeframe_line_after_the_title(make_vault, slug):
+    root = make_vault({**CAP3})
+    stub("story", slug, root=root)
+    assert (root / f"{slug}/story.md").read_text() == (
+        f'---\ntype: {slug}\nstatus: stub\ntitle: "Story"\ntimeframe: # past | future | mixed\n---\n'
+    )
+
+
+@pytest.mark.parametrize(
+    "slug",
+    [
+        "scenario-coded",
+        "architecture-coded",
+        "concern",
+        "affordance",
+        "technology",
+        "stakeholder-group",
+    ],
+)
+def test_stub_of_any_other_page_has_no_timeframe_line(make_vault, slug):
+    root = make_vault({**CAP3})
+    stub("story", slug, root=root)
+    assert "timeframe" not in (root / f"{slug}/story.md").read_text()
 
 
 def test_stub_coded_derives_raw_from_raw_pages_naming_it(make_vault):

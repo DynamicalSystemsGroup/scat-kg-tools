@@ -3,6 +3,7 @@ type: architecture-raw
 status: done
 title: "Self-service kiosk pitch"
 description: "A pitch to let borrowers check tools out themselves."
+timeframe: future
 coded:
   - "[[kiosk-pitch-coded]]"
 ---

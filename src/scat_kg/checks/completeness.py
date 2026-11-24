@@ -1,4 +1,4 @@
-"""What `draft` and `done` require: SCAT-DONE-FIELD, SCAT-DONE-LINK, SCAT-DRAFT-FIELD, SCAT-DRAFT-LINK."""
+"""What `draft` and `done` require (and a stub, for a field with a value set): SCAT-DONE-FIELD, SCAT-DONE-LINK, SCAT-DRAFT-FIELD, SCAT-DRAFT-LINK."""
 
 from scat_kg.checks.ctx import Ctx, page_rule
 from scat_kg.checks.frontmatter import put_line
@@ -15,7 +15,7 @@ def done_and_draft(ctx: Ctx, page: Page):
     status = ctx.status_of(
         page
     )  # `done` for a class page; None when the status is missing or invalid
-    if status not in ("draft", "done"):
+    if status is None:
         return []
     t = TBOX.page_types[page.type_key]
     done = status == "done"
@@ -23,7 +23,35 @@ def done_and_draft(ctx: Ctx, page: Page):
     for f in t.required:
         if f.key == "type" or f.required_from != "done" or not is_missing(page.fields.get(f.key)):
             continue
+        if status == "stub" and f.value_set is None:
+            continue  # a stub is silent about a field it has not reached, except one with a value set
         pos = ctx.pos(page, f.key)
+        if f.value_set is not None:
+            picks = [put_line(ctx, page, f.key, f"{f.key}: {v}") + " (author)" for v in f.value_set]
+            if not done:
+                out.append(
+                    ctx.problem(
+                        "SCAT-DRAFT-FIELD",
+                        page.path,
+                        f"field `{f.key}`",
+                        "missing (required once the page is done)",
+                        choose(picks, head="Fix, choose one before you set status: done:"),
+                        pos=pos,
+                    )
+                )
+                continue
+            options = picks + [f"run {set_status_cmd(page.name)} if the page is not finished"]
+            out.append(
+                ctx.problem(
+                    "SCAT-DONE-FIELD",
+                    page.path,
+                    f"field `{f.key}`",
+                    "missing on a page with status: done",
+                    choose(options),
+                    pos=pos,
+                )
+            )
+            continue
         if not f.is_link:
             edit = put_line(ctx, page, f.key, f'{f.key}: "<one sentence you write>"') + " (author)"
             if not done:

@@ -100,7 +100,7 @@ The raw page lists its coded pages in `coded`, so a reader can walk both ways. T
 
 A raw page is the notes as told. Its body holds the plain-sentence notes, written as they were told, with no links. The [facilitation guides](facilitate-scenarios.md) teach how to write one, so this page does not repeat it. `scat stub` is the one way to create a raw or a coded page. Run `scat stub <name> --type scenario-raw` (or `scenario-coded`, `architecture-raw`, `architecture-coded`). Name a coded page after its raw page with `-coded` on the end.
 
-A stub starts at `status: stub`, with only `type`, `status` and `title`: no `description` and no `coded` or `raw` line.
+A stub starts at `status: stub`, with only `type`, `status` and `title`: no `description` and no `coded` or `raw` line. A raw stub also has an empty `timeframe:` line; see the [facilitation guides](facilitate-scenarios.md#past-or-future-one-at-a-time).
 
 For example, the stub of a raw page and of its coded page, as the tool makes them:
 
@@ -506,7 +506,7 @@ no problems
 
 ### 2. The raw page does not point back (`SCAT-RAW-BACKLINK`)
 
-Start: a fresh copy of the template, the raw page (made with `scat stub`, so `status: stub` with only `type`, `status` and `title`) and the coded page above, and the concern and affordance stub pages they link to (the result of message 1). The neighbourhood check of the coded page:
+Start: a fresh copy of the template, the raw page (made with `scat stub`, `timeframe: past` filled in) and the coded page above, and the concern and affordance stub pages they link to (the result of message 1). The neighbourhood check of the coded page:
 
 ```text
 $ uv run scat check saturday-at-the-tool-library-coded --neighborhood
@@ -529,7 +529,7 @@ $ uv run scat check saturday-at-the-tool-library
 no problems
 ```
 
-A stub gets no description warning, because an unfinished page is never faulted for being unfinished. The warning comes when you set the page to `draft`:
+This stub gets no description warning, because an unfinished page is never faulted for being unfinished. The warning comes when you set the page to `draft`:
 
 ```text
 $ uv run scat set-status saturday-at-the-tool-library draft
@@ -545,7 +545,7 @@ The warning is a to-do: the raw page is a draft and still wants its sentence.
 
 ### 3. A status the tools do not know (`SCAT-FM-STATUS`)
 
-Start: a fresh copy of the template and the raw page made with `scat stub`, with a typo in its status line, `status: dun`:
+Start: a fresh copy of the template and the raw page made with `scat stub` (`timeframe: past` filled in), with a typo in its status line, `status: dun`:
 
 ```text
 $ uv run scat check saturday-at-the-tool-library

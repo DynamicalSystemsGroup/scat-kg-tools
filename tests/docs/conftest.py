@@ -3,7 +3,7 @@ import subprocess
 import pytest
 
 TEMPLATE_URL = "https://github.com/DynamicalSystemsGroup/scat-kg-template"
-TEMPLATE_COMMIT = "256294932f226d862abb87fe225b455be62dbcb6"  # template dev, which pins the tools candidate commit e1701ab
+TEMPLATE_COMMIT = "cdc07078255321e0d6fef2e8c955af9127a93e79"  # template dev with the four raw pages tagged for WP10
 
 
 @pytest.fixture(scope="session")

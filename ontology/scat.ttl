@@ -284,7 +284,7 @@ scat:RawScenario a owl:Class ;
     scat:verification "authored" ;
     scat:key "scenario-raw" ;
     scat:pageDescription "A raw scenario: the told story in the page body, linked to the coded scenarios derived from it." ;
-    scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description ;
+    scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description, scat:field-timeframe ;
     scat:optionalField scat:field-coded-scenario ;
     scat:discouragedBodyLink scat:Technology .
 
@@ -307,7 +307,7 @@ scat:RawArchitecture a owl:Class ;
     scat:verification "authored" ;
     scat:key "architecture-raw" ;
     scat:pageDescription "A raw architecture: the pitch in the page body, linked to the coded architectures derived from it." ;
-    scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description ;
+    scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description, scat:field-timeframe ;
     scat:optionalField scat:field-coded-architecture ;
     scat:discouragedBodyLink scat:StakeholderGroup .
 
@@ -370,6 +370,13 @@ scat:field-description a scat:Field ;
     scat:authored "MISSION G2 (index table: name, short description, link)." ;
     scat:verification "authored" ;
     scat:key "description" ; scat:mapsTo dcterms:description ; scat:requiredFrom scat:done .
+
+scat:field-timeframe a scat:Field ;
+    rdfs:label "timeframe" ;
+    skos:definition "On a raw scenario or raw architecture: whether the narrative tells what happened (past), what would or will happen (future), or both (mixed)." ;
+    scat:authored "Mission Amendment 3; chief engineer's wording (log D-057). Tags the captured narrative only; coded pages do not carry it." ;
+    scat:verification "authored" ;
+    scat:key "timeframe" ; scat:valueSet ( "past" "future" "mixed" ) ; scat:requiredFrom scat:done .
 
 scat:field-indexes a scat:Field ;
     rdfs:label "indexes" ;

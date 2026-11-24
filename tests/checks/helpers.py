@@ -65,7 +65,9 @@ def base() -> dict[str, str]:
             extra='affordance: "[[self-checkout]]"\ntechnology: "[[booking-app]]"',
         ),
         "scenario-raw/desk-day.md": doc(
-            "scenario-raw", "Desk day", extra=links("coded", "desk-day-coded")
+            "scenario-raw",
+            "Desk day",
+            extra="timeframe: past\n" + links("coded", "desk-day-coded"),
         ),
         "scenario-coded/desk-day-coded.md": doc(
             "scenario-coded",
@@ -76,7 +78,9 @@ def base() -> dict[str, str]:
             + links("affordances", "self-checkout"),
         ),
         "architecture-raw/kiosk-pitch.md": doc(
-            "architecture-raw", "Kiosk pitch", extra=links("coded", "kiosk-pitch-coded")
+            "architecture-raw",
+            "Kiosk pitch",
+            extra="timeframe: future\n" + links("coded", "kiosk-pitch-coded"),
         ),
         "architecture-coded/kiosk-pitch-coded.md": doc(
             "architecture-coded",
