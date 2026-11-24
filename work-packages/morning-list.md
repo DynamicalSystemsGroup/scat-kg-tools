@@ -49,6 +49,11 @@ log entry and, where the ruling changed direction, the `divergence/` tag to reve
 - **D-045:** the round-1 fixes are merged. Confirmed: one raw page per story or pitch, holding every group's
   account, each labelled with its group.
 
+- **D-046: UA-A round 2.** All three testers reached a clean check, including the Haiku REPL tester, with nothing
+  blocking. But R-15 (jazz styling) failed: the cold reader said "improv theatre". The fix is a placement rule: jazz
+  lives only in framing (epigraphs, one plain sentence per guide naming jazz), and instructions are always plain. A
+  focused round 3 rechecks it.
+
 ## Held for you
 
 - **D-040 / D-041: UA-A ran with uv preinstalled,** whereas `MISSION.md` UA-A says "uv not installed". Only you
