@@ -18,7 +18,7 @@ A facilitated event: groups tell stories and pitch designs.
 
 A story of people doing things over time.
 
-- **Vault:** `scenario-raw`, `scenario-coded`. Coded, it links [groups](#stakeholder-group),
+- **Vault:** `scenario-raw`, `scenario-coded`. [Coded](#raw-and-coded-records), it links [groups](#stakeholder-group),
   [concerns](#concern), [affordances](#affordance).
 - **Stage:** plan.
 - **Check:** the plan gives each group a prompt.
@@ -27,7 +27,7 @@ A story of people doing things over time.
 
 An assembly of parts into tools that offer [affordances](#affordance).
 
-- **Vault:** `architecture-raw`, `architecture-coded`. Coded, it links [concerns](#concern), affordances,
+- **Vault:** `architecture-raw`, `architecture-coded`. [Coded](#raw-and-coded-records), it links [concerns](#concern), affordances,
   [technologies](#technology).
 - **Stage:** plan.
 - **Check:** the plan keeps scenario and architecture sessions apart.
@@ -98,8 +98,8 @@ How finished a page is: `stub` (just started), `draft` (being written) or `done`
 
 - **Vault:** the `status` field of every page except `class`.
 - **Stage:** capture.
-- **Check:** the author sets `done`; the tool does not check readiness. It needs every field and link the
-  page type requires: `description` always, `timeframe` on a raw page, `raw` and the lists of what it names
+- **Check:** the author sets `done` as the sign-off; the tool only checks that the fields and links the
+  page type requires are present: `description` always, `timeframe` on a raw page, `raw` and the lists of what it names
   on a coded page.
 
 ## Past or future mark
