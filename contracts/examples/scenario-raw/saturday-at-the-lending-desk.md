@@ -3,6 +3,7 @@ type: scenario-raw
 status: done
 title: "Saturday at the lending desk"
 description: "Notes from the volunteer session on a busy open day."
+timeframe: past
 coded:
   - "[[saturday-desk-coded]]"
 ---

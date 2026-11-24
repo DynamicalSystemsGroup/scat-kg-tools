@@ -250,7 +250,12 @@ def test__scat_mention__a_technology_on_a_scenario_gives_none(make_vault):
 
 def test__scat_mention__a_raw_page_is_exempt(make_vault):
     path = "scenario-raw/desk-day.md"
-    page = doc("scenario-raw", "D", extra=links("coded", "desk-day-coded"), body="quick checkout\n")
+    page = doc(
+        "scenario-raw",
+        "D",
+        extra="timeframe: past\n" + links("coded", "desk-day-coded"),
+        body="quick checkout\n",
+    )
     seeded(make_vault, {path: page})
 
 
@@ -265,7 +270,7 @@ CODED_LINE = '`- "[[desk-day-coded]]"`'
 
 
 def raw_page(extra="", **kw):
-    return doc("scenario-raw", "Desk day", extra=extra, **kw)
+    return doc("scenario-raw", "Desk day", extra="timeframe: past\n" + extra, **kw)
 
 
 def test__scat_raw_backlink__no_coded_field(make_vault):
@@ -315,7 +320,9 @@ def uncoded_files(raw_extra="", status="done"):
     return {
         RAW: raw_page(raw_extra, status=status),
         "scenario-raw/other-raw.md": doc(
-            "scenario-raw", "Other raw", extra=links("coded", "desk-day-coded")
+            "scenario-raw",
+            "Other raw",
+            extra="timeframe: past\n" + links("coded", "desk-day-coded"),
         ),
         SC: coded(raw=links("raw", "other-raw")),
     }
@@ -353,9 +360,11 @@ def test__scat_raw_uncoded__not_before_done(make_vault, status):
 def test__scat_raw_uncoded__architecture_raw_names_the_architecture_key(make_vault):
     path = "architecture-raw/kiosk-pitch.md"
     files = {
-        path: doc("architecture-raw", "Kiosk pitch"),
+        path: doc("architecture-raw", "Kiosk pitch", extra="timeframe: future\n"),
         "architecture-raw/other.md": doc(
-            "architecture-raw", "Other", extra=links("coded", "kiosk-pitch-coded")
+            "architecture-raw",
+            "Other",
+            extra="timeframe: future\n" + links("coded", "kiosk-pitch-coded"),
         ),
         "architecture-coded/kiosk-pitch-coded.md": doc(
             "architecture-coded",

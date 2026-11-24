@@ -214,7 +214,8 @@ For the two pairs raw and coded only, the operation derives the opposite link it
 creates a raw page that coded pages name in `raw`, it writes `coded` on the new page, listing every coded page of the
 matching kind that names it; when it creates a coded page that raw pages name in `coded`, it writes `raw` listing every
 raw page that names it. So a stub made to fix a dangling `raw` or `coded` link starts with the link back already
-there. Nothing else is pre-filled.
+there. Nothing else is pre-filled, except that a stub of `scenario-raw` or `architecture-raw` has the line
+`timeframe: # past | future | mixed` after `title`, with no value for the author to fill.
 
 **A coded record entails no relation page by itself** (ACE ruling, log D-031: the contracts define how an author names a
 pair, not which links entail relation pages). A coded scenario lists groups, concerns and affordances, but it
@@ -444,6 +445,7 @@ stay in the body. The body should not link a `technology` page.
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
 | `description` | short text | | done |
+| `timeframe` | `past`, `future` or `mixed` | | done |
 | `coded` | list of wikilinks | `scenario-coded` | optional |
 
 ```
@@ -452,6 +454,7 @@ type: scenario-raw
 status: done
 title: "Saturday at the lending desk"
 description: "Notes from the volunteer session on a busy open day."
+timeframe: past
 coded:
   - "[[saturday-desk-coded]]"
 ---
@@ -504,6 +507,7 @@ body should not link a `stakeholder-group` page.
 | `status` | `stub`, `draft` or `done` | | stub |
 | `title` | text | | stub |
 | `description` | short text | | done |
+| `timeframe` | `past`, `future` or `mixed` | | done |
 | `coded` | list of wikilinks | `architecture-coded` | optional |
 
 ```
@@ -511,6 +515,7 @@ body should not link a `stakeholder-group` page.
 type: architecture-raw
 status: draft
 title: "Self-service kiosk pitch"
+timeframe: future
 coded:
   - "[[kiosk-pitch-coded]]"
 ---

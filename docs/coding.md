@@ -100,7 +100,7 @@ The raw page lists its coded pages in `coded`, so a reader can walk both ways. T
 
 A raw page is the notes as told. Its body holds the plain-sentence notes, written as they were told, with no links. The [facilitation guides](facilitate-scenarios.md) teach how to write one, so this page does not repeat it. `scat stub` is the one way to create a raw or a coded page. Run `scat stub <name> --type scenario-raw` (or `scenario-coded`, `architecture-raw`, `architecture-coded`). Name a coded page after its raw page with `-coded` on the end.
 
-A stub starts at `status: stub`, with only `type`, `status` and `title`: no `description` and no `coded` or `raw` line.
+A stub starts at `status: stub`, with only `type`, `status` and `title`: no `description` and no `coded` or `raw` line. A raw page's stub also has an empty `timeframe:` line, which you fill from the [facilitation guides](facilitate-scenarios.md)' phrase list.
 
 For example, the stub of a raw page and of its coded page, as the tool makes them:
 
@@ -109,6 +109,15 @@ $ uv run scat stub saturday-at-the-tool-library --type scenario-raw
 created scenario-raw/saturday-at-the-tool-library.md
 $ uv run scat stub saturday-at-the-tool-library-coded --type scenario-coded
 created scenario-coded/saturday-at-the-tool-library-coded.md
+```
+
+```text
+---
+type: scenario-raw
+status: stub
+title: "Saturday at the tool library"
+timeframe: # past | future | mixed
+---
 ```
 
 ```text

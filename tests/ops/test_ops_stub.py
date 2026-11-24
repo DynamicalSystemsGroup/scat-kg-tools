@@ -146,7 +146,7 @@ def test_stub_raw_derives_coded_from_coded_pages_naming_it(make_vault):
     )  # fmt: skip
     stub("story", "scenario-raw", root=root)
     assert (root / "scenario-raw/story.md").read_text() == (
-        '---\ntype: scenario-raw\nstatus: stub\ntitle: "Story"\ncoded:\n  - "[[c1]]"\n  - "[[c2]]"\n---\n'
+        '---\ntype: scenario-raw\nstatus: stub\ntitle: "Story"\ntimeframe: # past | future | mixed\ncoded:\n  - "[[c1]]"\n  - "[[c2]]"\n---\n'
     )
 
 

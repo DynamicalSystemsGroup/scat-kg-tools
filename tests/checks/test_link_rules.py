@@ -389,7 +389,7 @@ def test__scat_link_discouraged_body__technology_in_a_raw_scenario_body(make_vau
     page = doc(
         "scenario-raw",
         "D",
-        extra=links("coded", "desk-day-coded"),
+        extra="timeframe: past\n" + links("coded", "desk-day-coded"),
         body="It runs on [[booking-app]].\n",
     )
     n = line_of(page, "It runs")
@@ -420,7 +420,7 @@ def test__scat_link_discouraged_body__technology_in_a_raw_scenario_body(make_vau
             doc(
                 "architecture-raw",
                 "K",
-                extra=links("coded", "kiosk-pitch-coded"),
+                extra="timeframe: future\n" + links("coded", "kiosk-pitch-coded"),
                 body="Staff like [[staff]].\n",
             ),
         ),

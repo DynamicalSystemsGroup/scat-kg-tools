@@ -27,6 +27,9 @@ def stub_text(slug: str, title: str, extra: tuple[tuple[str, list[str]], ...] = 
     """The skeleton of section 5. `extra` lists link fields to write after the title, in order:
     (key, names); one name on a single-link field is written as a scalar, otherwise as a list."""
     out = f"---\ntype: {slug}\nstatus: stub\ntitle: {quote(title)}\n"
+    for f in TBOX.page_types[slug].required:  # a value-set field: no value, the values as a comment
+        if f.value_set is not None and f.required_from == "done":
+            out += f"{f.key}: # {' | '.join(f.value_set)}\n"
     for key, names in extra:
         field = TBOX.page_types[slug].field(key)
         if field is not None and field.single:

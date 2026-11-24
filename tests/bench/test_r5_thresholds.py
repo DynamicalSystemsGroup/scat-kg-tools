@@ -55,7 +55,9 @@ def generate(root):
         pages[f"attributes/{n}.md"] = _page(
             "attributes", n, f'affordance: "[[{a[i]}]]"\ntechnology: "[[{t[i]}]]"\n'
         )
-    pages["scenario-raw/day.md"] = _page("scenario-raw", "day", _link("coded", "day-coded"))
+    pages["scenario-raw/day.md"] = _page(
+        "scenario-raw", "day", "timeframe: past\n" + _link("coded", "day-coded")
+    )
     pages["scenario-coded/day-coded.md"] = _page(
         "scenario-coded",
         "day-coded",
@@ -63,7 +65,7 @@ def generate(root):
         + _link("affordances", *a[:5]),
     )  # fmt: skip
     pages["architecture-raw/pitch.md"] = _page(
-        "architecture-raw", "pitch", _link("coded", "pitch-coded")
+        "architecture-raw", "pitch", "timeframe: future\n" + _link("coded", "pitch-coded")
     )
     pages["architecture-coded/pitch-coded.md"] = _page(
         "architecture-coded",

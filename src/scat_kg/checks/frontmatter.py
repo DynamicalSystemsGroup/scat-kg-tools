@@ -20,7 +20,7 @@ from scat_kg.checks.text import (
 from scat_kg.tbox import TBOX
 from scat_kg.vault import Page
 
-TEXT_KEYS = ("status", "title", "description", "indexes", "notes")
+TEXT_KEYS = ("status", "title", "description", "indexes", "timeframe", "notes")
 # Contract section 5: the title a relation page's stub gets.
 RELATION_TITLE = {
     r: (keys[0], TBOX.page_types[r].verb, keys[1]) for r, keys in TBOX.relations.items()
@@ -197,6 +197,32 @@ def fm_indexes(ctx: Ctx, page: Page):
             f"`{v}` is not a class",
             fix,
             pos=ctx.pos(page, "indexes"),
+        )
+    ]
+
+
+@page_rule
+def fm_timeframe(ctx: Ctx, page: Page):
+    if not ctx.typed(page):
+        return []
+    f = TBOX.page_types[page.type_key].field("timeframe")
+    v = page.fields.get("timeframe")
+    if f is None or not isinstance(v, str) or is_missing(v) or v in f.value_set:
+        return []
+    near = near_match(v, f.value_set)
+    fix = (
+        one(f"change it to `timeframe: {near}`")
+        if near
+        else choose([f"`timeframe: {k}`" for k in f.value_set])
+    )
+    return [
+        ctx.problem(
+            "SCAT-FM-TIMEFRAME",
+            page.path,
+            "field `timeframe`",
+            f"`{v}` is not a timeframe",
+            fix,
+            pos=ctx.pos(page, "timeframe"),
         )
     ]
 
