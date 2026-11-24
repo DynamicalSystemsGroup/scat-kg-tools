@@ -2,13 +2,13 @@
 // and run the plugin's own runCheck (real uv, real shim, real scat_kg). Skipped without uv or the template.
 import { execFileSync, spawnSync } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
-import { homedir } from "node:os";
+import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { commandLine, runCheck, spawnRunner } from "../src/runner";
 
 const template = process.env.SCAT_TEMPLATE ?? join(homedir(), "Documents/GitHub/scat-kg-template");
-const scratch = process.env.SCAT_SCRATCH ?? "/private/tmp/claude-501/scat-rs1";
+const scratch = process.env.SCAT_RS1_SCRATCH ?? join(tmpdir(), "scat-rs1");
 const haveUv = spawnSync("uv", ["--version"]).status === 0;
 const can = haveUv && existsSync(join(template, "scat.toml")) && existsSync(join(__dirname, "..", "main.js"));
 

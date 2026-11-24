@@ -31,6 +31,15 @@ const SHORT: Record<string, string> = {
   error: "SCAT: check failed",
 };
 
+/** Shown when there is no active Markdown note to check. */
+export const NO_NOTE_STATUS = "SCAT: no note";
+export const NO_NOTE_PANEL = "Open a Markdown note.";
+
+/** True when the active file is a Markdown note the plugin can check. */
+export function isCheckable(file: { extension: string } | null | undefined): boolean {
+  return !!file && file.extension === "md";
+}
+
 /** Status-bar text. `null` means no check has run for this note. */
 export function statusText(report: Report | null, failed = false): string {
   if (failed) return "SCAT: check failed";

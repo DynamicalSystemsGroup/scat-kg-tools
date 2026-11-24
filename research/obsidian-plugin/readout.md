@@ -1,6 +1,6 @@
 # RS1 readout: a SCAT linter inside Obsidian
 
-Sources are the official developer docs (repo `obsidianmd/obsidian-developer-docs`, which publishes docs.obsidian.md; several docs.obsidian.md URLs return "not found", so I read the repo files) and the sample plugin. Unverified items are listed last.
+Sources are the official developer docs (repo `obsidianmd/obsidian-developer-docs`; several docs.obsidian.md URLs return "not found", so I read the repo files) and the sample plugin. Unverified items are listed last.
 
 ## 1. What the plugin API offers a linter
 
@@ -39,35 +39,35 @@ Criteria: setup burden, single source (R-13), mobile, maintenance, store accepta
 
 ## 4. What the tools would need
 
-Today `scat check` prints `Report.render()` text and exits 0 or 1 (`src/scat_kg/cli.py`, `main`). There is no machine-readable output. Needed, smallest first:
+Today `scat check` prints `Report.render()` text and exits 0 or 1 (`src/scat_kg/cli.py`, `main`), with no machine-readable output. Needed, smallest first:
 
-1. **`scat check --json`.** `Problem` is already a frozen record with `rule`, `severity`, `file`, `where`, `what`, `fix`, `line`, `column`, `repeat` (`checks/problem.py`), so this is serialising `Report.problems` plus `ok`. Include a `schema_version`. Rule ids are already stable (the `SEVERITY` table).
-2. **A check of an unsaved buffer.** `read_vault(root)` reads from disk (`vault.py`). Needed: `scat check PAGE --stdin` that overlays the buffer text for that page on the on-disk vault. Without it, the plugin can only check on save (`vault.on('modify')`), which is a reasonable first delivery.
-3. **Structured fixes.** `fix` is prose ("add the line `X`"). A quick fix needs `edits: [{file, line, op, text}]` for rules whose fix is exact; the catalogue already says which rules are exact. Rules whose fix is a command (for example `scat stub`) can map to a plugin command that runs it.
+1. **`scat check --json`.** `Problem` is already a frozen record with `rule`, `severity`, `file`, `where`, `what`, `fix`, `line`, `column`, `repeat` (`checks/problem.py`): serialise `Report.problems` plus `ok`. Include a `schema_version`. Rule ids are already stable (`SEVERITY` table).
+2. **A check of an unsaved buffer.** `read_vault(root)` reads from disk (`vault.py`). Needed: `scat check PAGE --stdin` that overlays the buffer text for that page on the on-disk vault. Without it, the plugin checks only on save (`vault.on('modify')`), a reasonable first delivery.
+3. **Structured fixes.** `fix` is prose ("add the line `X`"). A quick fix needs `edits: [{file, line, op, text}]` for rules whose fix is exact; the catalogue says which. Rules whose fix is a command (for example `scat stub`) can map to a plugin command that runs it.
 4. **Line and column on every problem.** `line` and `column` are optional today.
-5. **A version handshake**, so the plugin can refuse an incompatible tools version.
+5. **A version handshake**, so the plugin can refuse an incompatible version.
 
 ## 5. Recommendation
 
-Choose **(d), starting as (a)**: a desktop-only plugin that is a thin client over `scat check --json`, with no rules in TypeScript. The audience is a macOS facilitator-analyst who already installs uv and the tools (MISSION), mobile is not a v0.1 goal, and (a) is the only option that keeps R-13 free. Revisit (b) only if mobile becomes a stated need, and only with the golden-equality harness; do not start (c) without a measured spike.
+Choose **(d), starting as (a)**: a desktop-only plugin that is a thin client over `scat check --json`, with no rules in TypeScript. The audience is a macOS facilitator-analyst who already installs uv and the tools (MISSION), mobile is not v0.1, and (a) is the only option that keeps R-13 free. Revisit (b) only if mobile becomes a stated need, with the golden-equality harness; do not start (c) without a measured spike.
 
 ## 6. First delivery package (sketch)
 
 1. Tools: `scat check --json` with stable schema, line and column, `--stdin` overlay (items 1 to 5 above).
-2. Plugin core loop: settings (path to `scat`, vault root); on `file-open` and on `vault.on('modify')` (debounced) run `scat check <page> --neighborhood --json`; an `ItemView` panel listing problems, click to jump to line; status bar count; a notice on failure to launch with the fix ("set the path to `scat`").
+2. Plugin core loop: settings (path to `scat`, vault root); on `file-open` and on `vault.on('modify')` (debounced) run `scat check <page> --neighborhood --json`; an `ItemView` panel listing problems, click to jump to line; status bar count; a launch-failure notice with the fix ("set the path to `scat`").
 3. Quick fix v1: for rules with an exact single-line edit, a panel button calling `Vault.process`; others show the fix text and a "copy command" button.
 4. README disclosures: runs a local program, no network.
 5. Release: GitHub release with the three assets, after a user test on a real vault. Not in it: inline decorations, mobile.
 
 ## 7. Prototype (`prototype/`)
 
-A desktop-only plugin in the sample-plugin layout: `main.ts` handles lifecycle, and `scat check PAGE --json` runs through an injectable spawn runner. Parsing, grouping and message text are pure modules with 14 unit tests. Output shows in a side panel, a notice and a status-bar count, on command, `file-open` and `modify`. `scat check --json` does not exist, so `prototype/JSON-CONTRACT.md` defines the shape, derived from `Problem`. Build: `npm install && npm run build && npm test`, on Node v26.13.1 LTS.
+A desktop-only plugin in the sample-plugin layout: `main.ts` handles lifecycle, and an injectable spawn runner runs `uv run --quiet --project <vault> python scat_json.py <note>`. `scat_json.py` is a small Python shim that uses only scat_kg's public `check`, because `scat check --json` does not exist yet (core is consumed as pinned); `prototype/JSON-CONTRACT.md` defines the shim's output, derived from `Problem`. Parsing, grouping and message text are pure modules; there are 31 JS tests plus 8 pytest tests. It shows output in a panel, notice and status bar, on command, `file-open` and `modify`. Build: `npm ci && npm run build && npm test`, on Node v26.13.1 LTS. Install from `dist/scat/`.
 
 It was never run inside Obsidian. Not shown:
 
 - that the plugin loads, or that panel rendering, click-to-jump, status bar and events work;
-- spawning `scat` from Obsidian (macOS GUI PATH; a path setting exists);
-- a real `--json` run, real-vault latency, store review of a subprocess plugin;
+- spawning uv from Obsidian (macOS GUI PATH; a path setting exists);
+- real-vault latency, store review of a subprocess plugin;
 - mobile, inline decorations, quick-fix writes.
 
 ## Claims I could not verify

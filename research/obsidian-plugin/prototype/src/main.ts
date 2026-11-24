@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import { homedir } from "node:os";
 import * as path from "node:path";
 import type { Problem, Report } from "./contract";
-import { noticeText, statusText } from "./format";
+import { NO_NOTE_STATUS, isCheckable, noticeText, statusText } from "./format";
 import { resolveUv, vaultPath } from "./paths";
 import { runCheck, spawnRunner } from "./runner";
 import { DEFAULT_SETTINGS, ScatSettingTab, type ScatSettings } from "./settings";
@@ -44,8 +44,16 @@ export default class ScatPlugin extends Plugin {
   async check(announce: boolean) {
     const file = this.app.workspace.getActiveFile();
     const base = this.vaultBase();
-    if (!file || file.extension !== "md") return;
-    const mine = ++this.seq;
+    const mine = ++this.seq; // also cancels a check still running for the previous note
+    if (!file || !isCheckable(file)) {
+      this.note = null;
+      this.report = null;
+      this.error = null;
+      this.statusEl.setText(NO_NOTE_STATUS);
+      if (announce) new Notice(NO_NOTE_STATUS, 8000);
+      this.panel()?.render(null, null, null);
+      return;
+    }
     let report: Report | null = null;
     let error: string | null = null;
     if (!base) {

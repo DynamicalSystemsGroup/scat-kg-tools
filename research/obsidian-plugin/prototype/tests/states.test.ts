@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { parseReport } from "../src/contract";
-import { noticeText, stateMessage, statusText } from "../src/format";
+import { NO_NOTE_PANEL, NO_NOTE_STATUS, isCheckable, noticeText, stateMessage, statusText } from "../src/format";
 import { resolveUv, uvCandidates, vaultPath } from "../src/paths";
 import { commandLine } from "../src/runner";
 
@@ -33,6 +33,19 @@ describe("states from the shim", () => {
     expect(stateMessage(report({ status: "refused", message: "refused x: no page" }))).toBe("refused x: no page");
     expect(statusText(report({ status: "no-scat-kg" }))).toBe("SCAT: scat_kg missing");
     expect(stateMessage(report({ status: "ok" }))).toBeNull();
+  });
+});
+
+describe("no note to check", () => {
+  it("accepts only a Markdown file", () => {
+    expect(isCheckable({ extension: "md" })).toBe(true);
+    expect(isCheckable({ extension: "png" })).toBe(false);
+    expect(isCheckable(null)).toBe(false);
+    expect(isCheckable(undefined)).toBe(false);
+  });
+  it("has its own neutral wording, not a previous result", () => {
+    expect(NO_NOTE_STATUS).toBe("SCAT: no note");
+    expect(NO_NOTE_PANEL).toBe("Open a Markdown note.");
   });
 });
 

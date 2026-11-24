@@ -83,6 +83,11 @@ var SHORT = {
   "no-scat-kg": "SCAT: scat_kg missing",
   error: "SCAT: check failed"
 };
+var NO_NOTE_STATUS = "SCAT: no note";
+var NO_NOTE_PANEL = "Open a Markdown note.";
+function isCheckable(file) {
+  return !!file && file.extension === "md";
+}
 function statusText(report, failed = false) {
   if (failed) return "SCAT: check failed";
   if (report === null) return "SCAT: -";
@@ -256,7 +261,7 @@ var ScatView = class extends import_obsidian2.ItemView {
   getIcon() {
     return "check-circle";
   }
-  /** report null and error null = nothing checked yet; error = the last run failed */
+  /** report null and error null = no note to show (none open, or not Markdown); error = the last run failed */
   render(note, report, error) {
     const el = this.contentEl;
     el.empty();
@@ -265,7 +270,7 @@ var ScatView = class extends import_obsidian2.ItemView {
       return;
     }
     if (report === null) {
-      el.createDiv({ text: 'Open a note, or run the command "SCAT: Check active note".' });
+      el.createDiv({ text: NO_NOTE_PANEL });
       return;
     }
     el.createDiv({ cls: "scat-panel-summary", text: `${note ?? ""}: ${statusText(report)}` });
@@ -321,8 +326,16 @@ var ScatPlugin = class extends import_obsidian3.Plugin {
   async check(announce) {
     const file = this.app.workspace.getActiveFile();
     const base = this.vaultBase();
-    if (!file || file.extension !== "md") return;
     const mine = ++this.seq;
+    if (!file || !isCheckable(file)) {
+      this.note = null;
+      this.report = null;
+      this.error = null;
+      this.statusEl.setText(NO_NOTE_STATUS);
+      if (announce) new import_obsidian3.Notice(NO_NOTE_STATUS, 8e3);
+      this.panel()?.render(null, null, null);
+      return;
+    }
     let report = null;
     let error = null;
     if (!base) {

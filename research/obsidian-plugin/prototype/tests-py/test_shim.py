@@ -9,6 +9,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -16,7 +17,7 @@ import pytest
 HERE = Path(__file__).resolve().parent
 SHIM = HERE.parent / "scat_json.py"
 TEMPLATE = Path(os.environ.get("SCAT_TEMPLATE", Path.home() / "Documents/GitHub/scat-kg-template"))
-SCRATCH = Path(os.environ.get("SCAT_SCRATCH", "/private/tmp/claude-501/scat-rs1"))
+SCRATCH = Path(os.environ.get("SCAT_RS1_SCRATCH", Path(tempfile.gettempdir()) / "scat-rs1"))
 
 pytestmark = pytest.mark.skipif(
     shutil.which("uv") is None or not (TEMPLATE / "scat.toml").is_file(),

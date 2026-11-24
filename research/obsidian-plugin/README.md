@@ -1,7 +1,7 @@
 # SCAT for Obsidian
 
 A plugin that checks the note you have open against the SCAT rules and lists the messages in a side panel, with a count in the
-status bar. It only reads your notes. It never changes them.
+status bar. It never writes to your notes. The first time, `uv run` may create a `.venv` folder and update `uv.lock` in the vault.
 
 Status: built and tested on a Mac without Obsidian. Read "Never exercised inside Obsidian" below before you rely on it.
 
@@ -13,11 +13,27 @@ Status: built and tested on a Mac without Obsidian. Read "Never exercised inside
    the network the first time. If it prints nothing and returns, the plugin can work.
 4. Obsidian on a desktop (macOS was the only system considered). Not for phones or tablets.
 
-## Install (5 steps)
+## Install
+
+0. **Get the folder** (if you do not already have the repository). The plugin lives on the branch `spike/obsidian-plugin` of the
+   scat-kg-tools repository, in `research/obsidian-plugin/dist/scat/`. In a terminal, from the folder that holds your clone of the
+   repository (or `git clone <repository address>` first, then `cd` into the clone):
+   ```
+   git fetch
+   git checkout spike/obsidian-plugin
+   cd research/obsidian-plugin
+   ```
+   `git fetch` and `git checkout` run from the top folder of the clone; `cd` then moves you to `research/obsidian-plugin`, and the two
+   commands after it run from there. Replace `<vault>` with your vault's full path, keeping the quotes (they handle spaces):
+   ```
+   mkdir -p "<vault>/.obsidian/plugins"
+   cp -R dist/scat "<vault>/.obsidian/plugins/scat"
+   ```
+
+Then the other steps:
 
 1. Find the folder `research/obsidian-plugin/dist/scat/` in the repository. It holds `main.js`, `manifest.json`, `styles.css` and `scat_json.py`.
-2. Copy that folder to `<your vault>/.obsidian/plugins/scat/`, so that `main.js` ends up at `<your vault>/.obsidian/plugins/scat/main.js`.
-   In a terminal: `mkdir -p "<your vault>/.obsidian/plugins" && cp -R dist/scat "<your vault>/.obsidian/plugins/"`.
+2. Check that `main.js` is at `<your vault>/.obsidian/plugins/scat/main.js` (step 0 put it there).
    (`.obsidian` is hidden in Finder; press Cmd+Shift+. to show it.)
 3. In Obsidian: Settings > Community plugins > turn off restricted mode ("Turn on community plugins").
 4. In the same screen, click the reload icon next to "Installed plugins".
@@ -61,7 +77,7 @@ knowing where that environment is. The cost is that uv has to be found, hence th
 
 ## Never exercised inside Obsidian
 
-Nobody could open Obsidian where this was built. What did run: the TypeScript build, 29 unit and end-to-end tests, and the shim
+Nobody could open Obsidian where this was built. What did run: the TypeScript build, 31 unit and end-to-end tests, and the shim
 (8 pytest tests) in a scratch copy of the template, using the same command line the plugin builds, from a copy of `dist/scat`
 placed at `.obsidian/plugins/scat/`. Never run:
 

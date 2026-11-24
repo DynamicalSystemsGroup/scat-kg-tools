@@ -16,5 +16,5 @@ npm run package     # build, then copy main.js, manifest.json, styles.css, scat_
   `src/view.ts`, `src/settings.ts` panel and settings. Only `main.ts`, `view.ts`, `settings.ts` import `obsidian`.
 - `scat_json.py` is the shim. `JSON-CONTRACT.md` is its output.
 - The end-to-end and shim tests read the template at `$SCAT_TEMPLATE` (default `~/Documents/GitHub/scat-kg-template`) and write
-  only under `$SCAT_SCRATCH` (default `/private/tmp/claude-501/scat-rs1`). They skip when uv or the template is missing.
+  only under `$SCAT_RS1_SCRATCH` (default `scat-rs1` in the system temp folder). They skip when uv or the template is missing.
 - Dev dependencies, npm registry only: `obsidian` (types), `typescript`, `esbuild`, `@types/node`, `vitest`.
