@@ -27,6 +27,12 @@
 | [`scat_kg.stub_links`](#scat_kgstub_links) | [`scat stub-links`](cli.md#scat-stub-links) | Create the pages that links name and the vault lacks. |
 | [`scat_kg.set_status`](#scat_kgset_status) | [`scat set-status`](cli.md#scat-set-status) | Set a page's status. |
 
+## Machine-readable output
+
+`result.to_dict()` returns the data of the result as plain Python: the same document that the matching `scat` command prints with `--json` (see the [CLI reference](cli.md#machine-readable-output)). `--json` prints exactly one JSON document and nothing else, and the exit code does not change. Print it with `json.dumps(result.to_dict(), indent=2)`. The fields, and the rule for when `schema_version` changes, are in the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md).
+
+The examples below show `to_dict()` once for each call, with the output a fresh copy of the template gives at that point in the page. These JSON blocks are for reading: they are not run by the docs test.
+
 ## scat_kg.check
 
 ```text
@@ -117,6 +123,84 @@ A page and every page one link away:
     no problems
     ```
 
+As data, on the unchanged template (`import json` first):
+
+```text
+>>> print(json.dumps(scat_kg.check().to_dict(), indent=2))
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "check",
+  "operation": "check",
+  "ok": true,
+  "problems": []
+}
+```
+
+To see a problem with a fix a program can apply, change `[[intent-without-drift]]` to `[[intent-without-drfit]]` on line 11 of `scenario-coded/false-start-and-clean-restart-coded.md`, a one-letter typo in a link. The fix has two options: a `set-field` edit that writes the closest existing page, and a `command` that creates the missing page.
+
+```text
+>>> print(json.dumps(scat_kg.check().to_dict(), indent=2))
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "check",
+  "operation": "check",
+  "ok": false,
+  "problems": [
+    {
+      "rule": "SCAT-LINK-DANGLING",
+      "severity": "error",
+      "file": "scenario-coded/false-start-and-clean-restart-coded.md",
+      "line": 11,
+      "column": null,
+      "field": "concerns",
+      "where": "field `concerns`",
+      "what": "[[intent-without-drfit]] does not reach a page (no page is named intent-without-drfit)",
+      "repeat": 1,
+      "fix": {
+        "kind": "options",
+        "options": [
+          {
+            "kind": "exact",
+            "text": "replace `- \"[[intent-without-drfit]]\"` with `- \"[[intent-without-drift]]\"` (the closest existing concern page)",
+            "edits": [
+              {
+                "action": "set-field",
+                "file": "scenario-coded/false-start-and-clean-restart-coded.md",
+                "field": "concerns",
+                "value": [
+                  "[[intent-without-drift]]"
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "exact",
+            "text": "run `scat stub intent-without-drfit --type concern` (REPL: `scat_kg.stub(\"intent-without-drfit\", type=\"concern\")`) to create it as a stub",
+            "command": {
+              "argv": [
+                "stub",
+                "intent-without-drfit",
+                "--type",
+                "concern"
+              ],
+              "repl": "scat_kg.stub(\"intent-without-drfit\", type=\"concern\")"
+            }
+          }
+        ],
+        "notes": []
+      },
+      "text": "error [SCAT-LINK-DANGLING] scenario-coded/false-start-and-clean-restart-coded.md:11 field `concerns`: [[intent-without-drfit]] does not reach a page (no page is named intent-without-drfit)\n  Fix, choose one:\n    1. replace `- \"[[intent-without-drfit]]\"` with `- \"[[intent-without-drift]]\"` (the closest existing concern page)\n    2. run `scat stub intent-without-drfit --type concern` (REPL: `scat_kg.stub(\"intent-without-drfit\", type=\"concern\")`) to create it as a stub"
+    }
+  ]
+}
+```
+
 ## scat_kg.status
 
 ```text
@@ -175,6 +259,38 @@ It prints one line per page: the status (`stub`, `draft`, `done`, `(missing)` or
 
 `scat_kg.status()` and `scat status` list every page in the vault, then the counts.
 
+As data:
+
+```text
+>>> print(json.dumps(scat_kg.status("anonymity").to_dict(), indent=2))
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "status",
+  "operation": "status",
+  "ok": true,
+  "scope": "page",
+  "rows": [
+    {
+      "path": "concern/anonymity.md",
+      "name": "anonymity",
+      "type": "concern",
+      "status": "done"
+    }
+  ],
+  "counts": {
+    "stub": 0,
+    "draft": 0,
+    "done": 1,
+    "other": 0,
+    "none": 0
+  },
+  "notes": []
+}
+```
+
 ## scat_kg.index
 
 ```text
@@ -227,6 +343,35 @@ Each tab below first makes a new page (a different type in each, so the two tabs
     unchanged class/technologies.md
     ```
 
+As data, in the Python tab's vault, which has just made `technology/reading-list.md`:
+
+```text
+>>> print(json.dumps(scat_kg.index().to_dict(), indent=2))
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "operation",
+  "operation": "index",
+  "ok": true,
+  "created": [],
+  "changed": [
+    "class/technologies.md"
+  ],
+  "unchanged": [
+    "class/addresses-pairs.md",
+    "class/affordances.md",
+    "class/attributes-pairs.md",
+    "class/concerns.md",
+    "class/heldby-pairs.md",
+    "class/stakeholder-groups.md"
+  ],
+  "refused": [],
+  "notes": []
+}
+```
+
 ## scat_kg.stub
 
 ```text
@@ -270,6 +415,28 @@ refused name `reading-group`: a Markdown file already has this name (concern/rea
   Fix: link to the existing page, or choose another name
 ```
 
+As data:
+
+```text
+>>> print(json.dumps(scat_kg.stub("reading-group", type="concern").to_dict(), indent=2))
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "operation",
+  "operation": "stub",
+  "ok": true,
+  "created": [
+    "concern/reading-group.md"
+  ],
+  "changed": [],
+  "unchanged": [],
+  "refused": [],
+  "notes": []
+}
+```
+
 ## scat_kg.stub_pair
 
 ```text
@@ -307,6 +474,30 @@ It prints `created <path>` for each page it made, then a note naming the relatio
     created heldby/project-leads-holds-study-circle.md
     note: write `description`, `notes` and the body in heldby/project-leads-holds-study-circle.md; the endpoints are filled
     ```
+
+As data:
+
+```text
+>>> print(json.dumps(scat_kg.stub_pair("heldby", "project-leads", "reading-group").to_dict(), indent=2))
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "operation",
+  "operation": "stub-pair",
+  "ok": true,
+  "created": [
+    "heldby/project-leads-holds-reading-group.md"
+  ],
+  "changed": [],
+  "unchanged": [],
+  "refused": [],
+  "notes": [
+    "write `description`, `notes` and the body in heldby/project-leads-holds-reading-group.md; the endpoints are filled"
+  ]
+}
+```
 
 ## scat_kg.stub_links
 
@@ -357,6 +548,26 @@ error [SCAT-LINK-DANGLING] scenario-coded/false-start-and-clean-restart-coded.md
 created concern/travel-time.md
 ```
 
+As data:
+
+```text
+>>> print(json.dumps(scat_kg.stub_links().to_dict(), indent=2))
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "operation",
+  "operation": "stub-links",
+  "ok": true,
+  "created": [],
+  "changed": [],
+  "unchanged": [],
+  "refused": [],
+  "notes": []
+}
+```
+
 ## scat_kg.set_status
 
 ```text
@@ -400,6 +611,65 @@ A status that does not exist refuses, and the CLI exits with 1:
 ```text
 refused status `finished`: this is not a status
   Fix: use one of: stub, draft, done (stub: just started, draft: being written, done: finished)
+```
+
+As data:
+
+```text
+>>> print(json.dumps(scat_kg.set_status("reading-group", "draft").to_dict(), indent=2))
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "operation",
+  "operation": "set-status",
+  "ok": true,
+  "created": [],
+  "changed": [
+    "concern/reading-group.md"
+  ],
+  "unchanged": [],
+  "refused": [],
+  "notes": [
+    "`status` set to draft (was stub)"
+  ]
+}
+```
+
+A refusal has the same shape, with `ok` false and the reason in `refused` (the CLI exits with 1):
+
+```text
+>>> print(json.dumps(scat_kg.set_status("reading-group", "finished").to_dict(), indent=2))
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "operation",
+  "operation": "set-status",
+  "ok": false,
+  "created": [],
+  "changed": [],
+  "unchanged": [],
+  "refused": [
+    {
+      "subject": "status `finished`",
+      "why": "this is not a status",
+      "fix": {
+        "kind": "manual",
+        "options": [
+          {
+            "kind": "manual",
+            "text": "use one of: stub, draft, done (stub: just started, draft: being written, done: finished)"
+          }
+        ],
+        "notes": []
+      }
+    }
+  ],
+  "notes": []
+}
 ```
 
 ## Results

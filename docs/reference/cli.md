@@ -11,6 +11,12 @@
 
 The blocks below hold the exact output of `--help`. If your window is narrower or wider than 80 columns, your own `--help` wraps the lines differently.
 
+## Machine-readable output
+
+Every command takes `--json`. It prints exactly one JSON document on stdout and nothing else, and the exit code is the same as without it. A program such as a plugin reads that document instead of the message. The Python twins return the same data from `to_dict()` (see the [Python API reference](api.md#machine-readable-output)). The fields, and the rule for when `schema_version` changes, are in the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md).
+
+The examples below show `--json` once for each command, with the output a fresh copy of the template gives at that point in the page. These JSON blocks are for reading: they are not run by the docs test.
+
 ## scat
 
 ```text
@@ -136,6 +142,84 @@ Exit codes: 0 when there are no errors (warnings are fine), 1 when there is an e
     no problems
     ```
 
+With `--json`, on the unchanged template:
+
+```text
+$ uv run scat check --json
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "check",
+  "operation": "check",
+  "ok": true,
+  "problems": []
+}
+```
+
+To see a problem with a fix a program can apply, change `[[intent-without-drift]]` to `[[intent-without-drfit]]` on line 11 of `scenario-coded/false-start-and-clean-restart-coded.md`, a one-letter typo in a link. The fix has two options: a `set-field` edit that writes the closest existing page, and a `command` that creates the missing page. `scat check` exits with 1.
+
+```text
+$ uv run scat check --json
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "check",
+  "operation": "check",
+  "ok": false,
+  "problems": [
+    {
+      "rule": "SCAT-LINK-DANGLING",
+      "severity": "error",
+      "file": "scenario-coded/false-start-and-clean-restart-coded.md",
+      "line": 11,
+      "column": null,
+      "field": "concerns",
+      "where": "field `concerns`",
+      "what": "[[intent-without-drfit]] does not reach a page (no page is named intent-without-drfit)",
+      "repeat": 1,
+      "fix": {
+        "kind": "options",
+        "options": [
+          {
+            "kind": "exact",
+            "text": "replace `- \"[[intent-without-drfit]]\"` with `- \"[[intent-without-drift]]\"` (the closest existing concern page)",
+            "edits": [
+              {
+                "action": "set-field",
+                "file": "scenario-coded/false-start-and-clean-restart-coded.md",
+                "field": "concerns",
+                "value": [
+                  "[[intent-without-drift]]"
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "exact",
+            "text": "run `scat stub intent-without-drfit --type concern` (REPL: `scat_kg.stub(\"intent-without-drfit\", type=\"concern\")`) to create it as a stub",
+            "command": {
+              "argv": [
+                "stub",
+                "intent-without-drfit",
+                "--type",
+                "concern"
+              ],
+              "repl": "scat_kg.stub(\"intent-without-drfit\", type=\"concern\")"
+            }
+          }
+        ],
+        "notes": []
+      },
+      "text": "error [SCAT-LINK-DANGLING] scenario-coded/false-start-and-clean-restart-coded.md:11 field `concerns`: [[intent-without-drfit]] does not reach a page (no page is named intent-without-drfit)\n  Fix, choose one:\n    1. replace `- \"[[intent-without-drfit]]\"` with `- \"[[intent-without-drift]]\"` (the closest existing concern page)\n    2. run `scat stub intent-without-drfit --type concern` (REPL: `scat_kg.stub(\"intent-without-drfit\", type=\"concern\")`) to create it as a stub"
+    }
+  ]
+}
+```
+
 ## scat status
 
 ```text
@@ -181,6 +265,38 @@ Exit codes: 0, or 1 for a refusal (a page that is not there, a vault folder that
     done         concern/anonymity.md
     1 done
     ```
+
+With `--json`:
+
+```text
+$ uv run scat status anonymity --json
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "status",
+  "operation": "status",
+  "ok": true,
+  "scope": "page",
+  "rows": [
+    {
+      "path": "concern/anonymity.md",
+      "name": "anonymity",
+      "type": "concern",
+      "status": "done"
+    }
+  ],
+  "counts": {
+    "stub": 0,
+    "draft": 0,
+    "done": 1,
+    "other": 0,
+    "none": 0
+  },
+  "notes": []
+}
+```
 
 ## scat set-status
 
@@ -229,6 +345,65 @@ Exit codes: 0 when the status was changed or already was that value, 1 for a ref
     ```
 
 The CLI example uses a different page from the Python one, so both can run in one vault. Running either again prints `unchanged` and a note that the status is already `draft`, and still exits with 0.
+
+With `--json`:
+
+```text
+$ uv run scat set-status attribution draft --json
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "operation",
+  "operation": "set-status",
+  "ok": true,
+  "created": [],
+  "changed": [
+    "concern/attribution.md"
+  ],
+  "unchanged": [],
+  "refused": [],
+  "notes": [
+    "`status` set to draft (was done)"
+  ]
+}
+```
+
+A refusal has the same shape, with `ok` false and the reason in `refused`; the exit code is 1:
+
+```text
+$ uv run scat set-status attribution finished --json
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "operation",
+  "operation": "set-status",
+  "ok": false,
+  "created": [],
+  "changed": [],
+  "unchanged": [],
+  "refused": [
+    {
+      "subject": "status `finished`",
+      "why": "this is not a status",
+      "fix": {
+        "kind": "manual",
+        "options": [
+          {
+            "kind": "manual",
+            "text": "use one of: stub, draft, done (stub: just started, draft: being written, done: finished)"
+          }
+        ],
+        "notes": []
+      }
+    }
+  ],
+  "notes": []
+}
+```
 
 ## scat index
 
@@ -282,6 +457,34 @@ Exit codes: 0, or 1 for a refusal (another file holds a class page's name, or a 
     unchanged class/technologies.md
     ```
 
+With `--json`:
+
+```text
+$ uv run scat index --json
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "operation",
+  "operation": "index",
+  "ok": true,
+  "created": [],
+  "changed": [],
+  "unchanged": [
+    "class/addresses-pairs.md",
+    "class/affordances.md",
+    "class/attributes-pairs.md",
+    "class/concerns.md",
+    "class/heldby-pairs.md",
+    "class/stakeholder-groups.md",
+    "class/technologies.md"
+  ],
+  "refused": [],
+  "notes": []
+}
+```
+
 ## scat stub
 
 ```text
@@ -329,6 +532,28 @@ The CLI example uses a different name from the Python one, so both can run in on
     ```text
     created concern/study-circle.md
     ```
+
+With `--json`:
+
+```text
+$ uv run scat stub study-circle --type concern --json
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "operation",
+  "operation": "stub",
+  "ok": true,
+  "created": [
+    "concern/study-circle.md"
+  ],
+  "changed": [],
+  "unchanged": [],
+  "refused": [],
+  "notes": []
+}
+```
 
 ## scat stub-pair
 
@@ -379,6 +604,30 @@ Exit codes: 0 when it created pages or found the pair already stated, 1 for a re
     note: write `description`, `notes` and the body in heldby/project-leads-holds-study-circle.md; the endpoints are filled
     ```
 
+With `--json`:
+
+```text
+$ uv run scat stub-pair heldby project-leads study-circle --json
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "operation",
+  "operation": "stub-pair",
+  "ok": true,
+  "created": [
+    "heldby/project-leads-holds-study-circle.md"
+  ],
+  "changed": [],
+  "unchanged": [],
+  "refused": [],
+  "notes": [
+    "write `description`, `notes` and the body in heldby/project-leads-holds-study-circle.md; the endpoints are filled"
+  ]
+}
+```
+
 ## scat stub-links
 
 ```text
@@ -421,6 +670,26 @@ Exit codes: 0 when it created pages or had nothing to do, 1 for a refusal (links
     ```text
     stub-links: nothing to do
     ```
+
+With `--json`:
+
+```text
+$ uv run scat stub-links --json
+```
+
+```json
+{
+  "schema_version": 1,
+  "kind": "operation",
+  "operation": "stub-links",
+  "ok": true,
+  "created": [],
+  "changed": [],
+  "unchanged": [],
+  "refused": [],
+  "notes": []
+}
+```
 
 ## Where next
 
