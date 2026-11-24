@@ -6,11 +6,11 @@
 *Playing it back: raw notes, read again as coded pages.*
 { .epigraph }
 
-Coding borrows one habit from jazz: play a phrase back as it was played.
+Coding borrows one habit from jazz: hear a phrase, then play its meaning back in your own voice.
 
 Coding is the step where your raw notes become part of the graph. You read each raw scenario or raw architecture and write each raw page again as a **coded page**. Restate each raw page in your own plain words. Keep its meaning, and add no judgement of your own. A coded page names the stakeholder groups, concerns, affordances and technologies the notes talk about. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. A **technology** is the thing that provides it. The [home page](index.md) defines all four. You do not summarise or judge. You name what is there, keeping the meaning of the raw wording. The raw page stays exactly as it was written; the coded page is a separate page that reads it.
 
-The tools do the bookkeeping. You say which things the notes name. The tools create the pages and links that follow, and the checker tells you in plain words what is still wrong. This page shows the whole loop, from start to finish: a raw page, a pushed commit and a look at the graph.
+You say which things the notes name. The tools create the pages and links that follow, and the checker tells you in plain words what is still wrong. Two links you write by hand: the `raw:` link on the coded page, which says which raw page it reads, and the `coded:` link on the raw page. The check names the `coded:` link when it is missing (`SCAT-RAW-BACKLINK`), and you add it. This page shows the whole loop, from start to finish: a raw page, a pushed commit and a look at the graph.
 
 ## Before you start
 
@@ -46,7 +46,7 @@ A **relation page** says one fact: a group holds a concern, an affordance addres
 | `addresses` | concern, then affordance |
 | `attributes` | affordance, then technology |
 
-Choose each pair from the notes. For `heldby`, take a group and one concern that group voiced in its own words. For `addresses`, take that concern and an affordance the notes show answering it. For `attributes`, take that affordance and the technology the notes name as providing it. The description of a relation page is one sentence saying that fact in plain words, for example `description: "Participants want borrowed tools returned in the state they left."`
+Choose each pair from the notes. For `heldby`, take a group and one concern that group voiced in its own words. For `addresses`, take that concern and an affordance the notes show answering it. For `attributes`, take that affordance and the technology the notes name as providing it. The description of a relation page is one sentence saying that fact in plain words, for example `description: "Participants want borrowed tools returned in the state they left."` If the notes name no group for a concern, use the group the session plan seated for that note. If that is not known, create no pair and leave the gap recorded.
 
 ### The linking rules
 
