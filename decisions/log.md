@@ -1417,3 +1417,15 @@ after approval and before work landed; realized points carry a basis; and a mid-
 U2's basis. It found one gap: the four `done` records (U1 to U4) lack `iteration`, which the schema requires. The PM
 appends corrected records. Also noted: U4 was split, with U4 at 5 estimated and 2 realized, and U4b planned at 3 when
 it started. The split is now ruled: the original unit keeps its estimate, and the new unit is planned before it starts.
+
+## D-062 | 2026-11-24 | Amendment 4 merged; WP11 approved and queued behind WP10
+
+**Approval.** The chief engineer merged Mission Amendment 4 (PR #6, merge `519ff5a`) and wrote "merged". `main` is
+merged into `dev` (`f014572`). The ACE approves WP11 (`work-packages/WP11.md`): JSON contract and versioning rule,
+fixes as data, `--json` on every command with a Python equivalent, no new runtime dependency, references, refresh.
+
+**Sequencing.** WP11 starts when WP10 is accepted, because both touch `src/`, `tests/` and the reference docs.
+`divergence/D-060` is tagged on `dev` then.
+
+**Held for the chief engineer, if it arises.** His D-058 authorisation covered WP10's test edits only. WP11 aims to
+keep every golden message identical. If an existing test must change, the unit is held and the question comes to him.
