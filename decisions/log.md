@@ -1613,14 +1613,14 @@ widening travels with it.
 ## D-072 | 2026-11-24 | WP13: release levels, licence, follow-through, and two readers
 
 The chief engineer's direction (chat, typed by the ACE):
-"\"Publishing the analysis and publishing the field notes are now two separate questions.\" there is also a level that
+"'Publishing the analysis and publishing the field notes are now two separate questions.' there is also a level that
 makes things non public release but release to contributors. and published itself is nebulous, under what license, eg
 creative commons? or what. i don't want you to litigate all possible answers instead we want pose the questions as
 open ended with 2 to 3 reasonable answers each to show these are genuine choice without overloading cognitively. we
 also need to thoughtful about how this documentation is written since its a different user who just wants to play
 with the modeling approach on their own work and data from one who is actually organizing a facilitated session with
 contributors. we're building this for analysis of data from a contributor group use case so we have these extra
-questions as sign posts for organizers to \"make the right way the easy way\" where the \"right way\" here includes
+questions as sign posts for organizers to 'make the right way the easy way' where the 'right way' here includes
 clear expectations setting, consents and following through on the commitments made to the people who choose to
 participate in the facilitated elicitation."
 
