@@ -36,7 +36,9 @@ log entry and, where the ruling changed direction, the `divergence/` tag to reve
 
 ## Held for you
 
-- None so far.
+- **D-040 / D-041: UA-A ran with uv preinstalled,** whereas `MISSION.md` UA-A says "uv not installed". Only you
+  can waive that. Either accept it as a known gap at acceptance, or permit one fresh tester to run uv's official
+  installer, and a rerun closes the gap.
 
 ## Coming up that will need you (WP8)
 

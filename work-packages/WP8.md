@@ -26,7 +26,9 @@ The package ends with the PRs open and the morning list current. His walkthrough
 - **WP8-G2. The candidate stage,** as `MISSION.md` Governance defines it:
   - the docs site deploys from `dev` to GitHub Pages, marked pre-release;
   - `scat-kg-template` is marked as a GitHub template, with `dev` as its default branch;
-  - the template pins the tools' candidate commit, and the docs test pins the template's candidate commit.
+  - the template pins the tools' candidate commit, and the docs test pins the template's candidate commit. The
+    tools' **candidate commit** is the last tools commit that changes `src/` or `docs/`; commits that only move the
+    test pin are excluded, which breaks the circularity (log D-041).
 - **WP8-G3. The acceptance kit (D-7):** personas, briefs, the report template, and the chief engineer's walkthrough
   script. The script splits J1–J7 into resumable stages, each with its entry point and what "done" looks like.
 - **WP8-G4. UA-A rounds** to the pass bar in `MISSION.md`:
@@ -69,10 +71,11 @@ The package ends with the PRs open and the morning list current. His walkthrough
 |---|---|---|
 | WP8-R1 | Each G1 fix has a test, and the suite and CI stay green. | CI |
 | WP8-R2 | The Pages site is live at `https://dynamicalsystemsgroup.github.io/scat-kg-tools/`, marked pre-release, and matches `dev`. | The ACE fetches it in a browser |
-| WP8-R3 | The template is a GitHub template with `dev` as its default branch, and pins the candidate tools commit. A fresh clone of the default branch, set up and checked, gives 0 errors and only the intended warning. | `gh api` output; a clean-clone trial |
+| WP8-R3 | The template is a GitHub template with `dev` as its default branch, and pins the candidate tools commit. A fresh clone of the default branch, set up and checked, gives 0 errors and only SCAT-CONFLICT-BOTH. R-12 is checked here as far as D-040 allows: the template flag (by `gh api`), and the docs and README text recommending private repositories. The real creation path is left to UA-M. | `gh api` output; a clean-clone trial; a grep of the docs and README |
 | WP8-R4 | UA-A meets the `MISSION.md` pass bar. Every report is in `acceptance/` with its dispositions, and the final round has no blocking finding. | The reports |
 | WP8-R5 | R-15: the final cold read names jazz unprompted and reports no instruction obscured by a metaphor. | The final cold-read report |
-| WP8-R6 | The walkthrough script and the reviewer's guide each read in under a sitting per section, list every ACE call with its log id and divergence tag, and contain nothing private. | The ACE's read; a grep for private strings |
+| WP8-R6 | Each sitting in the reviewer's guide and each stage of the walkthrough is no more than about 800 words, with a checklist and an entry point. The guide lists every ACE call with its log id and divergence tag. Sitting 3 has a table of R-1 to R-15, each with its evidence. Sitting 4 lists the known weaknesses, including D-040's departure from UA-A (uv preinstalled) as a gap for the chief engineer to disposition. Nothing private appears. | `wc -w` per section; checklists; a grep for private strings |
+| WP8-R8 | Every fix during user acceptance moves the pins and reruns CI, R-6 and R-9. The ACE logs whether UA-A reruns (Governance). | CI runs and log entries |
 | WP8-R7 | The release PRs are open, CI is green on both heads, and the PR bodies follow the attribution rules. | `gh pr view` |
 
 ## Definition of good
@@ -89,7 +92,11 @@ WP8-R1 to WP8-R7 are met.
 - **`scat-kg-tools`:** `src/**` and `tests/**` (the G1 fixes and pins), `docs/**` (plain-language fixes),
   `.github/workflows/` (the Pages deploy), `acceptance/**`, and the board and metrics (the PM's).
 - **`scat-kg-template`:** `README.md` and the pin files.
-- **Repository settings:** Pages, and the template's template flag and default branch.
+- `mkdocs.yml` (the banner) and `contracts/**` (the G1 message and catalogue wording; `divergence/D-041` is tagged
+  before any change).
+- **`scat-kg-template`:** additionally `pyproject.toml` and `uv.lock`, as pin files.
+- **Repository settings** (Pages enablement and deploy, the template flag, the default branch) are changed by the
+  ACE only. Units prepare and verify them.
 
 ## Agent's defaults
 

@@ -844,3 +844,32 @@ the chief engineer in UA-M. This is the additive route under D-036; it is on his
 
 Also confirmed for WP8: agents create no repositories from the template, because that is a new public GitHub action
 and is his in UA-M; and the w3id registration is prepared for him to submit, not submitted.
+
+## D-041 | 2026-11-24 | WP8 scope approved (ACE)
+
+Revert point: `divergence/D-041` is tagged on `dev` before WP8's contract-wording changes.
+
+All 8 of the PM's fixes are applied:
+- the blast radius gains `mkdocs.yml`, `contracts/**` and the template's pin files;
+- settings changes are the ACE's alone;
+- the candidate commit is defined;
+- WP8-R8 covers pin moves during user acceptance;
+- SCAT-CONFLICT-BOTH is named in R3;
+- the R-12 probe is bounded by D-040;
+- R6 has a word cap, checklists and an R-1 to R-15 evidence table;
+- D-040's departure is listed as known-weak.
+
+ACE rulings:
+- **Pin circularity.** The tools' candidate commit is the last commit that changes `src/` or `docs/`, and commits that
+  only move the test pin are excluded.
+- **D-040 is not treated as settled.** `MISSION.md` UA-A says testers start with "uv not installed", and changing
+  that is a mission matter, so it isn't the ACE's to waive. It is a gap for the chief engineer to disposition at
+  acceptance, and it is on his morning list. With his permission for uv's official installer, a single fresh tester
+  rerun closes it.
+- **Settings and publishing** (Pages enablement and the first deploy, the template flag, and the default branch) are
+  made by the ACE, as the candidate stage in Governance assigns. Units prepare and verify them.
+- **Testers' web access.** Testers use the Pages URL if they can fetch it. Otherwise they use a locally built site
+  from the same commit, recorded as known-weak.
+- **Test edits** take the additive route first (D-036). If a guard refuses, the unit is held, and the ACE is told.
+
+The PM's 19-unit split is approved, at about 100 estimated points. Round 3 (U16) runs only if needed.

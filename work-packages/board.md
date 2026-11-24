@@ -13,7 +13,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP5 | Conformance tools | accepted | `WP5.md` |
 | WP6 | Template and case study | accepted | `WP6.md` |
 | WP7 | Docs and Pages | accepted | `WP7.md` |
-| WP8 | Candidate and user acceptance | draft | `WP8.md` |
+| WP8 | Candidate and user acceptance | approved | `WP8.md` |
 
 ## Units
 
