@@ -17,16 +17,18 @@ the affected stage.
 - **Failing.** Where a stage fails, do not work around it. Note the page, the exact step, the exact text you typed,
   and the exact output. Say what you expected from the docs. Then either stop or carry on if you can. The fix is the
   team's job, not yours.
-- **Your own elicitation.** Choose a small topic of your own for stages 5 to 8: at least one scenario and one
+- **Your own elicitation.** Choose a small topic of your own for stages 5 to 9: at least one scenario and one
   architecture. Use your own words and group names, not the worked example's.
 
-## Two gaps held for you
+## Gaps held for you
 
-1. **uv install (D-040, D-041).** The agents did not run uv's downloaded installer script
+1. **Pages preview.** The walkthrough treats the Pages preview as live. That holds once the ACE has deployed it, and the
+   ACE confirms that before your sitting.
+2. **uv install (D-040, D-041).** The agents did not run uv's downloaded installer script
    (`curl -LsSf https://astral.sh/uv/install.sh | sh`). Running a downloaded installer needs your explicit
    permission, so the automated user tests started with `uv` already on the path. **Stage 3 is the first time that
    command is exercised for real.** It is your call to run it. The step is untested by the team.
-2. **Obsidian.** The automated tests checked the Obsidian steps only through the files. **Stages 4 and 9 are the
+3. **Obsidian.** The automated tests checked the Obsidian steps only through the files. **Stages 4 and 9 are the
    first time Obsidian opens the vault.**
 
 ## Stages at a glance
@@ -62,7 +64,8 @@ SCAT is for and how to start, without anyone telling them.
 
 **If it fails.** Note what you expected to find and where you looked. Note any dead link (page and link text), any
 broken image, and anything on the page that blocked an instruction. Note whether the style reminded you of anything,
-and if so what, before you read the page that explains the name.
+and if so what. Answer that before you read the "Why it is called SCAT" section, because the home page itself
+explains the name there; or stop reading at that section until you have answered.
 
 **Resume check.** None. Reopen the home page.
 
@@ -139,7 +142,7 @@ docs page.
 check". Start in Terminal, in a new window with no tools set up beforehand if you can. A clean user account is the
 best test.
 
-**Held gap.** This is where the uv installer runs (see "Two gaps held for you"). The command is the docs' command,
+**Held gap.** This is where the uv installer runs (see "Gaps held for you"). The command is the docs' command,
 unchanged. You decide whether to run it:
 
 ```text
@@ -196,6 +199,11 @@ matched it. Note if you needed to know anything the page did not say.
 
 **Entry point.** [Getting started](https://dynamicalsystemsgroup.github.io/scat-kg-tools/getting-started/), "4. Open the vault in Obsidian", then "5. Start your
 own content". This is the first real use of Obsidian in the acceptance.
+
+**Order.** The docs say to remove the example before you code your own notes, and that you may keep it open while you
+read the other guides and remove it at any time. This script follows the docs' step order, so you clear it here. You
+may instead do it after stage 5 and before stage 6; the docs allow either. Do not start stage 6 with the example still
+in the vault.
 
 **What you do.** Install Obsidian if you do not have it. Choose **Open folder as vault**, pick `my-vault`, and open a
 page in the `concern` folder. Click a link. Then, in Terminal in your vault folder, remove the example as the page
@@ -372,11 +380,11 @@ Fix each error from its `Fix:` line until the check ends `0 errors`. Warnings ma
 ```text
 git status
 git add .
-git commit -m "Code the Saturday notes"
+git commit -m "<short description of what you coded>"
 git push
 ```
 
-Use your own commit message. Read `git status` before you add anything. If git asks who you are, it prints the two
+Replace the placeholder with your own commit message. Read `git status` before you add anything. If git asks who you are, it prints the two
 lines to type.
 
 **Done looks like.**
