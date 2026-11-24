@@ -2,21 +2,50 @@
 
 import re
 
+from scat_kg.checks import fixes
 from scat_kg.checks.ctx import Ctx, page_rule
 from scat_kg.checks.suggest import offered_by, suggest_from_discouraged
 from scat_kg.checks.text import (
     LINK_ITEM,
     article,
     capped,
-    choose,
     is_missing,
-    one,
-    set_status_cmd,
 )
+from scat_kg.fix import Edit, Fix, FixOption
 from scat_kg.tbox import TBOX
-from scat_kg.vault import Page
+from scat_kg.vault import Link, Page
 
-PLACEHOLDER = '- "[[<one page you choose>]]"'
+SLOT = "<one page you choose>"  # the author's placeholder in a link value
+PLACEHOLDER = f'- "[[{SLOT}]]"'
+
+
+def offer(opts: list[FixOption], notes: tuple[str, ...] = ()) -> Fix:
+    """Alternatives (kind `options`), or one option told as `Fix: <text>`; the notes follow either way."""
+    if len(opts) == 1:
+        return Fix.choose(opts[0].kind, opts, None, notes)
+    return Fix.choose("options", opts, None, notes)
+
+
+def link_value(target: str) -> str:
+    return f"[[{target}]]"
+
+
+def list_with(page: Page, key: str, link: Link, replacement: str | None = None) -> list[str]:
+    """The link items of `key` as written back whole, `link` replaced by `replacement` or left out when None."""
+    out = []
+    for l in page.fm_links.get(key, ()):
+        if l is not link:
+            out.append(link_value(l.target))
+        elif replacement is not None:
+            out.append(link_value(replacement))
+    return out
+
+
+def set_or_delete(page: Page, key: str, items: list[str]) -> Edit:
+    """Write `items` as the whole field, or delete the field when nothing is left."""
+    if items:
+        return fixes.set_field(page.path, key, items)
+    return fixes.delete_field(page.path, key)
 
 
 def _name_of(item) -> str | None:
@@ -57,26 +86,45 @@ def link_shape(ctx: Ctx, page: Page):
             reason = "an item is not a quoted `[[page-name]]` link"
         else:
             reason = "the value is one line, not a list"
-        lines = [f'{f.key}: "[[{n or "<one page you choose>"}]]"' for n in names] or [
-            f'{f.key}: "[[<one page you choose>]]"'
-        ]
+        values = [link_value(n or SLOT) for n in names] or [link_value(SLOT)]
         if f.single and len(names) > 1:
             reason += (
                 "; a relation page holds one pair, to relate more pairs create more relation pages"
             )
-            fix = choose(
-                [f"keep this one: replace the whole field with the line `{ln}`" for ln in lines]
+            fix = fixes.alternatives(
+                [
+                    fixes.option(
+                        "exact" if n else "slot",
+                        f'keep this one: replace the whole field with the line `{f.key}: "{v}"`',
+                        fixes.set_field(page.path, f.key, v, author_slot=None if n else SLOT),
+                    )
+                    for n, v in zip(names, values, strict=True)
+                ]
             )
         elif f.single:
             tail = " (author)" if unreadable else ""
-            fix = one(f"replace the whole field with the line `{lines[0]}`{tail}")
+            fix = fixes.single(
+                fixes.option(
+                    "slot" if unreadable else "exact",
+                    f'replace the whole field with the line `{f.key}: "{values[0]}"`{tail}',
+                    fixes.set_field(
+                        page.path, f.key, values[0], author_slot=SLOT if unreadable else None
+                    ),
+                )
+            )
         else:
             rows = [f"{f.key}:"] + [
-                f'  - "[[{n}]]"' if n else f"  {PLACEHOLDER} (author)" for n in names
+                f"  {PLACEHOLDER} (author)" if SLOT in v else f'  - "{v}"' for v in values
             ]
-            if not names:
-                rows.append(f"  {PLACEHOLDER} (author)")
-            fix = one("replace the whole field with\n" + "\n".join("       " + r for r in rows))
+            fix = fixes.single(
+                fixes.option(
+                    "slot" if unreadable else "exact",
+                    "replace the whole field with\n" + "\n".join("       " + r for r in rows),
+                    fixes.set_field(
+                        page.path, f.key, values, author_slot=SLOT if unreadable else None
+                    ),
+                )
+            )
         if unreadable and names:
             reason += "; an item could not be read, so it is replaced by a placeholder"
         out.append(
@@ -88,9 +136,15 @@ def link_shape(ctx: Ctx, page: Page):
                 fix,
                 line=page.field_lines.get(f.key),
                 pos=ctx.pos(page, f.key),
+                on=f.key,
             )
         )
     return out
+
+
+def delete_option(page: Page, key: str) -> FixOption:
+    edit = fixes.delete_field(page.path, key)
+    return fixes.option("exact", f"delete `{edit.field}:` and its list items", edit)
 
 
 @page_rule
@@ -116,9 +170,10 @@ def link_unlisted(ctx: Ctx, page: Page):
                 page.path,
                 f"field `{key}`",
                 what,
-                one(f"delete `{key}:` and its list items"),
+                fixes.single(delete_option(page, key)),
                 line=page.field_lines.get(key),
                 pos=ctx.pos(page, key),
+                on=key,
             )
         )
     return out
@@ -193,11 +248,20 @@ def link_endpoint(ctx: Ctx, page: Page):
             f"but `{ka}` must link {ea} pages and `{kb}` {eb} pages"
         )
 
-        def rows(a: str, b: str) -> str:
-            return f'       {ka}: "[[{a}]]"\n       {kb}: "[[{b}]]"'
+        edits = (
+            fixes.set_field(page.path, ka, link_value(w2.name)),
+            fixes.set_field(page.path, kb, link_value(w1.name)),
+        )
 
-        fix = one(
-            f"replace the two lines\n{rows(w1.name, w2.name)}\n     with\n{rows(w2.name, w1.name)}"
+        def rows(a: str, b: str) -> str:
+            return f'       {ka}: "{link_value(a)}"\n       {kb}: "{link_value(b)}"'
+
+        fix = fixes.single(
+            fixes.option(
+                "exact",
+                f"replace the two lines\n{rows(w1.name, w2.name)}\n     with\n{rows(w2.name, w1.name)}",
+                *edits,
+            )
         )
         out.append(
             ctx.problem(
@@ -218,7 +282,7 @@ def link_endpoint(ctx: Ctx, page: Page):
             if w is None or w.type_key is None or w.type_key == f.target_type:
                 continue
             item = ctx.item(page, f.key, link.target)
-            opts = []
+            opts: list[FixOption] = []
             # Taking the only good item out of a field a `done` page requires would trade this error
             # for SCAT-DONE-LINK, so then no move or delete is offered.
             emptied = (
@@ -246,16 +310,39 @@ def link_endpoint(ctx: Ctx, page: Page):
                             if flow
                             else ""
                         )
+                        into = [link_value(x) for x in ctx.targets(page, g.key)]
                         opts.append(
-                            f"move the item line `{item}` from `{f.key}` to `{g.key}`: {gone}, "
-                            f"then {ctx.add_items(page, g.key, [link.target])}"
+                            fixes.option(
+                                "exact",
+                                f"move the item line `{item}` from `{f.key}` to `{g.key}`: {gone}, "
+                                f"then {ctx.add_items(page, g.key, [link.target])}",
+                                set_or_delete(page, f.key, list_with(page, f.key, link)),
+                                fixes.set_field(page.path, g.key, [*into, link_value(link.target)]),
+                            )
                         )
             cands = _candidates(ctx, page, f.key, w, f.target_type)
             shown, more = cands[:5], max(0, len(cands) - 5)
-            opts += [f"replace `{item}` with `{ctx.item(page, f.key, c)}`" for c in shown]
+            for c in shown:
+                new = link_value(c) if f.single else list_with(page, f.key, link, c)
+                opts.append(
+                    fixes.option(
+                        "exact",
+                        f"replace `{item}` with `{ctx.item(page, f.key, c)}`",
+                        fixes.set_field(page.path, f.key, new),
+                    )
+                )
             required = any(r.key == f.key and r.required_from == "stub" for r in t.required)
             if not required and not emptied:
-                opts.append(f"delete the item line `{item}` under `{f.key}`")
+                gone_edit = (
+                    fixes.delete_field(page.path, f.key)
+                    if f.single
+                    else set_or_delete(page, f.key, list_with(page, f.key, link))
+                )
+                opts.append(
+                    fixes.option(
+                        "exact", f"delete the item line `{item}` under `{f.key}`", gone_edit
+                    )
+                )
             notes = []
             if more:
                 notes.append(f"(+{more} more not shown)")
@@ -265,21 +352,27 @@ def link_endpoint(ctx: Ctx, page: Page):
                 notes.append(
                     f"(`{f.key}` is required on a page with status: done and this is its only good "
                     "item, so deleting or moving the item alone would trade this error for "
-                    f"SCAT-DONE-LINK; to delete or move it, run {set_status_cmd(page.name)} first, "
+                    f"SCAT-DONE-LINK; to delete or move it, run {fixes.phrase(fixes.set_status(page.name))} first, "
                     "or add a right-typed item first)"
                 )
             if opts:
-                fix = choose(opts, tuple(notes))
+                fix = offer(opts, tuple(notes))
             elif emptied:
-                fix = one(
-                    f"`{f.key}` is required on a page with status: done and this is its only good "
-                    f"item, and no existing {f.target_type} page was found to replace it with: run "
-                    f"{set_status_cmd(page.name)} first, then change the item by hand"
+                fix = fixes.single(
+                    FixOption(
+                        "manual",
+                        f"`{f.key}` is required on a page with status: done and this is its only good "
+                        f"item, and no existing {f.target_type} page was found to replace it with: run "
+                        f"{fixes.phrase(fixes.set_status(page.name))} first, then change the item by hand",
+                    )
                 )
             else:
-                fix = one(
-                    f"change the pair by hand: no existing {f.target_type} page was found, and "
-                    f"`{f.key}` is required at every status"
+                fix = fixes.single(
+                    FixOption(
+                        "manual",
+                        f"change the pair by hand: no existing {f.target_type} page was found, and "
+                        f"`{f.key}` is required at every status",
+                    )
                 )
             what = (
                 f"[[{link.target}]] is {article(w.type_key)} {w.type_key} page, but `{f.key}` must link "
@@ -295,6 +388,7 @@ def link_endpoint(ctx: Ctx, page: Page):
                     line=link.line,
                     pos=ctx.pos(page, f.key),
                     target=link.target,
+                    on=f.key,
                 )
             )
     return out
@@ -321,14 +415,19 @@ def link_discouraged(ctx: Ctx, page: Page):
             f"{DISCOURAGED_REASON.get(t.slug, 'a ' + t.slug + ' record')}, so linking "
             f"{f.target_type} pages here is discouraged: " + ", ".join(f"[[{x}]]" for x in targets)
         )
-        opts = [f"delete `{f.key}:` and its list items"]
+        opts = [delete_option(page, f.key)]
         notes = []
         names, more = capped(suggest_from_discouraged(ctx, page, f.key))
         into = DISCOURAGED_INTO[f.key]
         if names:
+            kept = [link_value(x) for x in [*ctx.targets(page, into), *names]]
             opts.append(
-                f"keep the point by linking what they offer, in `{into}` (suggestions you confirm): "
-                + ctx.add_items(page, into, names)
+                fixes.option(
+                    "exact",
+                    f"keep the point by linking what they offer, in `{into}` (suggestions you confirm): "
+                    + ctx.add_items(page, into, names),
+                    fixes.set_field(page.path, into, kept),
+                )
             )
             if more:
                 notes.append(f"(+{more} more)")
@@ -338,12 +437,41 @@ def link_discouraged(ctx: Ctx, page: Page):
                 page.path,
                 f"field `{f.key}`",
                 what,
-                choose(opts, tuple(notes)),
+                offer(opts, tuple(notes)),
                 line=page.field_lines.get(f.key),
                 pos=ctx.pos(page, f.key),
+                on=f.key,
             )
         )
     return out
+
+
+WIKILINK = re.compile(r"\[\[([^\[\]\n]*)\]\]")
+
+
+def body_occurrences(ctx: Ctx, page: Page, link: Link) -> list[tuple[int, str]]:
+    """(1-based column, literal text) of each `[[...]]` on the link's line that names its target."""
+    lines = ctx.lines(page)
+    text = lines[link.line - 1] if 0 < link.line <= len(lines) else ""
+    return [
+        (m.start() + 1, m.group(0))
+        for m in WIKILINK.finditer(text)
+        if re.split(r"[|#^]", m.group(1), maxsplit=1)[0].strip() == link.target
+    ]
+
+
+def body_swap(ctx: Ctx, page: Page, link: Link, replacement: str, tail: str = "") -> FixOption:
+    """On the link's line, replace the link by `replacement`: an exact `replace-text` of the literal written
+    there (alias, heading or anchor included), with its column when it is the only one on the line, and
+    without one when the same literal is repeated (every occurrence). Manual when it cannot be located."""
+    text = f"on line {link.line} replace `{link_value(link.target)}` with `{replacement}`{tail}"
+    found = body_occurrences(ctx, page, link)
+    literals = {lit for _, lit in found}
+    if len(literals) != 1:  # none found, or different spellings that one edit cannot all name
+        return FixOption("manual", text)
+    column = found[0][0] if len(found) == 1 else None
+    edit = fixes.replace_text(page.path, link.line, found[0][1], replacement, column=column)
+    return fixes.option("exact", text, edit)
 
 
 @page_rule
@@ -356,11 +484,9 @@ def link_discouraged_body(ctx: Ctx, page: Page):
         w = ctx.page(link.target)
         if w is None or w.type_key not in t.discouraged_body_links:
             continue
-        opts = [
-            f"on line {link.line} replace `[[{link.target}]]` with `{link.target}` to keep the words and drop the link"
-        ]
+        opts = [body_swap(ctx, page, link, link.target, " to keep the words and drop the link")]
         names, more = capped(offered_by(ctx, link.target, w.type_key))
-        opts += [f"on line {link.line} replace `[[{link.target}]]` with `[[{n}]]`" for n in names]
+        opts += [body_swap(ctx, page, link, link_value(n), "") for n in names]
         out.append(
             ctx.problem(
                 "SCAT-LINK-DISCOURAGED-BODY",
@@ -368,7 +494,7 @@ def link_discouraged_body(ctx: Ctx, page: Page):
                 f"link [[{link.target}]]",
                 f"the body of {article(t.slug)} {t.slug} page should not link to "
                 f"{article(w.type_key)} {w.type_key} page",
-                choose(opts, (f"(+{more} more)",) if more else ()),
+                offer(opts, (f"(+{more} more)",) if more else ()),
                 line=link.line,
                 target=link.target,
             )
