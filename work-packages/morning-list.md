@@ -64,6 +64,10 @@ log entry and, where the ruling changed direction, the `divergence/` tag to reve
   is now fixed. A stop rule applies: one last reader pair, then the ACE dispositions anything left directly, as
   known-weak in the guide.
 
+- **D-049: round 5, then the stop rule.** Every reader in rounds 3 to 5 named jazz. The ACE fixed the last coding
+  framing sentence ("play its meaning back in plain words") and folded in plain wording fixes. "Yes, and" and the CLI
+  epigraph are kept as known-weak for your judgement. There are no more reader rounds.
+
 ## Held for you
 
 - **D-040 / D-041: UA-A ran with uv preinstalled,** whereas `MISSION.md` UA-A says "uv not installed". Only you
