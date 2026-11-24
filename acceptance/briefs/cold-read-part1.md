@@ -1,5 +1,7 @@
 # Brief, part 1: cold read of the documentation (R-15 check)
 
+> **Retained for reference only.** The R-15 cold read is not part of this release's acceptance (D-052). Do not run this brief for the release. Nothing below is changed.
+
 You are a fresh reader. You have not seen this project, and you are not expected to know it. You are given the
 documentation pages, and a question.
 

@@ -3,9 +3,6 @@
 !!! tip "Your next step"
     Create your private repository from the template (step 1 below).
 
-*Tuning up: get everything ready before your first session.*
-{ .epigraph }
-
 ## Before you start
 
 - A Mac, and a GitHub account. If you have none, make one at <https://github.com>.
@@ -99,17 +96,20 @@ Run the check from inside your vault folder. It looks at every page and prints w
 uv run scat check
 ```
 
-The template ships with a worked example, so you can see what a vault looks like. A clean result for it is this. A clean check means **0 errors**; warnings may stay:
+The template ships with a worked example, so you can see what a vault looks like. A clean result for it is this:
 
 ```text
-warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-  Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[anonymity]]"` or `- "[[attribution]]"` under `concerns`.
-0 errors, 1 warning
+no problems
 ```
 
-That is a pass. **Errors** block you: a vault with errors is not clean. **Warnings** do not block you. This
-warning, `SCAT-CONFLICT-BOTH`, is the first one you meet. A clean vault may keep it. It marks a place where one record holds two concerns that pull
-against each other, and holding both is the point of SCAT, so you leave it in place.
+That is a pass. A **clean** check prints `no problems`. **Errors** block you: a vault with errors is not clean.
+**Warnings** do not block you. They are to-dos, such as a draft page that still needs a sentence.
+
+The check looks at structure only: that each page has what its type needs, that links point at pages that exist,
+and that names and counts follow the rules. It does not judge what your notes say. Where concerns pull against each
+other, or match, or leave a gap, that is for analysis later, after the check passes and a coder has signed off the
+content. You can record that two concerns pull apart with an explicit `conflicts` link; the check only makes sure
+the link has the right type and points at a page that exists.
 
 Run the check again after every change you make.
 
@@ -126,9 +126,7 @@ scat_kg.check()
 It prints the same text as `uv run scat check`:
 
 ```text
-warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-  Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[anonymity]]"` or `- "[[attribution]]"` under `concerns`.
-0 errors, 1 warning
+no problems
 ```
  Every `scat` command has a twin in the REPL; the
 [reference](reference/cli.md) lists them.

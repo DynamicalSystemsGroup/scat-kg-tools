@@ -166,10 +166,10 @@ uv run scat check
 - `uv run scat check` ends with:
 
 ```text
-0 errors, 1 warning
+no problems
 ```
 
-The one warning is `SCAT-CONFLICT-BOTH` on the worked example. The docs say it may stay.
+That is 0 errors and 0 warnings. The worked example is clean.
 
 - In the REPL, the same result. Start it, then type the two lines (`>>>` is the prompt; `exit()` leaves it):
 
@@ -183,13 +183,13 @@ scat_kg.check()
 `uv sync` took. If the installer changed your shell setup, note what its closing message said and whether the docs
 matched it. Note if you needed to know anything the page did not say.
 
-**Resume check.** In a new Terminal window: `cd my-vault`, then `uv run scat check`. It should end `0 errors, 1 warning`.
+**Resume check.** In a new Terminal window: `cd my-vault`, then `uv run scat check`. It should print `no problems`.
 
 **Checklist.**
 
 - [ ] I decided about the uv installer and ran it (or noted that I did not).
 - [ ] `uv sync` finished cleanly.
-- [ ] `uv run scat check` ended `0 errors, 1 warning`.
+- [ ] `uv run scat check` printed `no problems`.
 - [ ] The REPL gave the same result.
 - [ ] I did not need to read anything outside the docs.
 
@@ -375,7 +375,7 @@ uv run scat index
 uv run scat check
 ```
 
-Fix each error from its `Fix:` line until the check ends `0 errors`. Warnings may stay. Then:
+Fix each error from its `Fix:` line until the check ends `0 errors`. A warning left over is a draft page that still needs its sentence. Then:
 
 ```text
 git status
@@ -389,7 +389,7 @@ lines to type.
 
 **Done looks like.**
 
-- The final whole-vault `uv run scat check` ends `0 errors`. Warnings may remain.
+- The final whole-vault `uv run scat check` ends `0 errors`. A warning, if any, is a draft page still waiting for its sentence; there is no other warning to expect.
 - `git status` before `git add .` lists only changes you meant.
 - `git push` succeeds, and on GitHub your private repository shows the commit.
 

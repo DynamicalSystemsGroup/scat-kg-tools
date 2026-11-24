@@ -11,51 +11,6 @@ CODED = ("scenario-coded", "architecture-coded")
 RAW = ("scenario-raw", "architecture-raw")
 
 
-def _conflicts(ctx: Ctx) -> dict[frozenset, set[str]]:
-    """The conflict relation: pair -> names of the concern pages that declare it (self pairs left out)."""
-    if "conflicts" not in ctx.cache:
-        pairs: dict[frozenset, set[str]] = {}
-        for c in ctx.by_type["concern"]:
-            for other in ctx.targets(c, "conflicts"):
-                if other != c.name:
-                    pairs.setdefault(frozenset((c.name, other)), set()).add(c.name)
-        ctx.cache["conflicts"] = pairs
-    return ctx.cache["conflicts"]
-
-
-@page_rule
-def conflict_both(ctx: Ctx, page: Page):
-    if page.type_key not in CODED:
-        return []
-    held = sorted({n for n in ctx.targets(page, "concerns") if ctx.type_of(n) == "concern"})
-    pairs = _conflicts(ctx)
-    out = []
-    for i, a in enumerate(held):
-        for b in held[i + 1 :]:
-            declared = pairs.get(frozenset((a, b)))
-            if not declared:
-                continue
-            by = ", ".join(f"[[{n}]]" for n in sorted(declared))
-            fix = one(
-                "none needed if both belong in this record. Holding both sides is allowed and is what "
-                "the warning marks, a place where two concerns pull apart. If one was coded here by "
-                f'mistake, delete its line `- "[[{a}]]"` or `- "[[{b}]]"` under `concerns`.'
-            )
-            out.append(
-                ctx.problem(
-                    "SCAT-CONFLICT-BOTH",
-                    page.path,
-                    "field `concerns`",
-                    f"this record holds both [[{a}]] and [[{b}]], which conflict (declared on {by})",
-                    fix,
-                    line=page.field_lines.get("concerns"),
-                    pos=ctx.pos(page, "concerns"),
-                    target=a + " " + b,
-                )
-            )
-    return out
-
-
 @page_rule
 def conflict_self(ctx: Ctx, page: Page):
     if page.type_key != "concern":
@@ -65,7 +20,7 @@ def conflict_self(ctx: Ctx, page: Page):
             "SCAT-CONFLICT-SELF",
             page.path,
             "field `conflicts`",
-            f"[[{page.name}]] is this page; a concern cannot conflict with itself",
+            f"[[{page.name}]] is this page; a concern cannot list itself under `conflicts`",
             one(f'delete the line `- "[[{page.name}]]"` under `conflicts`'),
             line=link.line,
             pos=ctx.pos(page, "conflicts"),

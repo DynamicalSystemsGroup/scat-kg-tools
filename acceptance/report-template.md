@@ -14,6 +14,8 @@ Paste: `echo $HOME`, `which uv`, `uv --version`, `git remote -v` (empty).
 
 ## 0. Cold-read answer (R-15)
 
+*Retained for reference. The R-15 cold-read bar is not part of this release's acceptance (D-052); a missing answer here does not void a report.*
+
 First, before any stage. In your own words and without looking for an expected answer:
 
 > What style or reference do the pages evoke for you? Answer:
@@ -74,4 +76,4 @@ A report is **void** and is run again, with a fresh tester, if any of these hold
 2. It makes a claim with no pasted output.
 3. It says the tester read `src/` or `tests/`, or the output shows it did.
 4. It does not state that `uv` was preinstalled, or does not say which docs source it used.
-5. It has no cold-read answer, or the cold-read answer is given after the tester has seen any named expected answer.
+5. *(Not applied for this release, D-052.)* It has no cold-read answer, or the cold-read answer is given after the tester has seen any named expected answer.

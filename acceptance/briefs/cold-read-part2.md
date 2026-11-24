@@ -1,5 +1,7 @@
 # Brief, part 2: cold read of the documentation (R-15 check)
 
+> **Retained for reference only.** The R-15 cold read is not part of this release's acceptance (D-052). Do not run this brief for the release. Nothing below is changed.
+
 Your test lead sends this only after you have answered question 1 in your first reply. Your answer to question 1 stands as you gave it. Do not change it.
 
 ## What you answer now

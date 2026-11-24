@@ -3,9 +3,6 @@
 !!! tip "Your next step"
     In a terminal in your vault folder, type `uv run python`.
 
-*Sheet music for the REPL: every call, as written.*
-{ .epigraph }
-
 ## Before you start
 
 - A vault folder with a `scat.toml` file in it, for example a copy of the template. [Getting started](../getting-started.md) makes one.
@@ -44,7 +41,7 @@ Checks the vault against the rules and returns a `CheckResult` (see [Results](#r
 | `neighborhood` | `True` checks `page` and every page one link away, in either direction. It needs `page`. |
 | `root` | The vault folder. |
 
-It prints one block per problem, then a count line: `<n> errors, <n> warnings`. With no problems it prints `no problems`. Errors block, warnings do not. A rule id such as `SCAT-CONFLICT-BOTH` names the rule; the `Fix:` line says what to do. Asking for `neighborhood=True` without a page, or for a page that is not there, returns a refusal.
+It prints one block per problem, then a count line: `<n> errors, <n> warnings`. With no problems it prints `no problems`. Errors block, warnings do not. A rule id such as `SCAT-LINK-DANGLING` names the rule; the `Fix:` line says what to do. Asking for `neighborhood=True` without a page, or for a page that is not there, returns a refusal.
 
 The whole vault:
 
@@ -57,9 +54,7 @@ The whole vault:
     ```
 
     ```text
-    warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-      Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[anonymity]]"` or `- "[[attribution]]"` under `concerns`.
-    0 errors, 1 warning
+    no problems
     ```
 
 === "CLI"
@@ -69,12 +64,10 @@ The whole vault:
     ```
 
     ```text
-    warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-      Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[anonymity]]"` or `- "[[attribution]]"` under `concerns`.
-    0 errors, 1 warning
+    no problems
     ```
 
-`SCAT-CONFLICT-BOTH` is a warning. It marks a place where two concerns pull apart, and it may stay.
+The check looks at structure only. It does not judge what the notes say: where concerns pull apart, match or leave a gap is for analysis, after the check passes and a coder has signed off the content. `conflicts` is an explicit link between concerns, and the check only makes sure it has the right type and points at a page that exists.
 
 One page, by name or by path:
 
@@ -111,9 +104,7 @@ A page and every page one link away:
     ```
 
     ```text
-    warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-      Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[anonymity]]"` or `- "[[attribution]]"` under `concerns`.
-    0 errors, 1 warning
+    no problems
     ```
 
 === "CLI"
@@ -123,9 +114,7 @@ A page and every page one link away:
     ```
 
     ```text
-    warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-      Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[anonymity]]"` or `- "[[attribution]]"` under `concerns`.
-    0 errors, 1 warning
+    no problems
     ```
 
 ## scat_kg.status
@@ -359,9 +348,7 @@ When a page links to a page the vault lacks, `check` reports it and `stub_links`
 ```text
 error [SCAT-LINK-DANGLING] scenario-coded/false-start-and-clean-restart-coded.md:11 field `concerns`: [[travel-time]] does not reach a page (no page is named travel-time)
   Fix: run `scat stub travel-time --type concern` (REPL: `scat_kg.stub("travel-time", type="concern")`) to create it as a stub
-warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-  Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[anonymity]]"` or `- "[[attribution]]"` under `concerns`.
-1 error, 1 warning
+1 error, 0 warnings
 ```
 
 `scat_kg.stub_links()` and `scat stub-links` then both print:
@@ -433,14 +420,14 @@ A `Result` prints its lines in this order: `created`, `changed`, `unchanged`, `r
     result = scat_kg.check("anonymity", neighborhood=True)
     result.ok
     len(result.warnings)
-    result.problems[0].rule
+    result.problems
     scat_kg.status("anonymity").counts
     ```
 
     ```text
     True
-    1
-    'SCAT-CONFLICT-BOTH'
+    0
+    ()
     {'stub': 0, 'draft': 0, 'done': 1, 'other': 0, 'none': 0}
     ```
 
@@ -450,7 +437,7 @@ A `Result` prints its lines in this order: `created`, `changed`, `unchanged`, `r
     uv run scat check anonymity --neighborhood
     ```
 
-    The command prints the message that `str(result)` holds. Its exit code is `result.ok` as 0 or 1: here 0, because warnings alone are not errors.
+    The command prints the message that `str(result)` holds. Its exit code is `result.ok` as 0 or 1: here 0, because there are no errors.
 
 ## Where next
 

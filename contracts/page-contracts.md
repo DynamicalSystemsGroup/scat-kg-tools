@@ -173,7 +173,7 @@ the one place that fact is written: there is no field for it on the group, conce
   not permitted.
 
 **The conflict relation (D1) is the optional link field `conflicts` on concern pages**, a list of concern wikilinks.
-There is no conflict page. It shows a tension between two concerns and never ranks or resolves it.
+There is no conflict page. It shows a tension between two concerns and never ranks or resolves it. Checks concern structure only: tensions, matches and gaps are for analysis, after conformance passes and a coder signs off the content.
 - It is symmetric. A concern `a` listing `b` states the conflict for both: you do not also write it on `b`. A
   one-sided declaration is complete, and the tools read the pair `{a, b}` as the union of what `a` and `b` each list.
 - The tools never add the other side for you. Writing it on both is allowed and means the same thing.
