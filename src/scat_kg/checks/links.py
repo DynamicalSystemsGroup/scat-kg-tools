@@ -446,12 +446,32 @@ def link_discouraged(ctx: Ctx, page: Page):
     return out
 
 
-def body_swap(page: Page, link: Link, replacement: str, tail: str = "") -> FixOption:
-    """On the link's line, replace `[[target]]` by `replacement`: an exact `replace-text`."""
-    edit = fixes.replace_text(page.path, link.line, link_value(link.target), replacement)
-    return fixes.option(
-        "exact", f"on line {edit.line} replace `{edit.find}` with `{edit.replace}`{tail}", edit
-    )
+WIKILINK = re.compile(r"\[\[([^\[\]\n]*)\]\]")
+
+
+def body_occurrences(ctx: Ctx, page: Page, link: Link) -> list[tuple[int, str]]:
+    """(1-based column, literal text) of each `[[...]]` on the link's line that names its target."""
+    lines = ctx.lines(page)
+    text = lines[link.line - 1] if 0 < link.line <= len(lines) else ""
+    return [
+        (m.start() + 1, m.group(0))
+        for m in WIKILINK.finditer(text)
+        if re.split(r"[|#^]", m.group(1), maxsplit=1)[0].strip() == link.target
+    ]
+
+
+def body_swap(ctx: Ctx, page: Page, link: Link, replacement: str, tail: str = "") -> FixOption:
+    """On the link's line, replace the link by `replacement`: an exact `replace-text` of the literal written
+    there (alias, heading or anchor included), with its column when it is the only one on the line, and
+    without one when the same literal is repeated (every occurrence). Manual when it cannot be located."""
+    text = f"on line {link.line} replace `{link_value(link.target)}` with `{replacement}`{tail}"
+    found = body_occurrences(ctx, page, link)
+    literals = {lit for _, lit in found}
+    if len(literals) != 1:  # none found, or different spellings that one edit cannot all name
+        return FixOption("manual", text)
+    column = found[0][0] if len(found) == 1 else None
+    edit = fixes.replace_text(page.path, link.line, found[0][1], replacement, column=column)
+    return fixes.option("exact", text, edit)
 
 
 @page_rule
@@ -464,9 +484,9 @@ def link_discouraged_body(ctx: Ctx, page: Page):
         w = ctx.page(link.target)
         if w is None or w.type_key not in t.discouraged_body_links:
             continue
-        opts = [body_swap(page, link, link.target, " to keep the words and drop the link")]
+        opts = [body_swap(ctx, page, link, link.target, " to keep the words and drop the link")]
         names, more = capped(offered_by(ctx, link.target, w.type_key))
-        opts += [body_swap(page, link, link_value(n), "") for n in names]
+        opts += [body_swap(ctx, page, link, link_value(n), "") for n in names]
         out.append(
             ctx.problem(
                 "SCAT-LINK-DISCOURAGED-BODY",

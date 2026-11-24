@@ -104,6 +104,8 @@ def _fix(opts: list[FixOption], notes: list[str]) -> Fix:
 
 def then(first: FixOption, made: FixOption) -> FixOption:
     """Two things in one option, in order: `first`, then `made` (its edits follow, its command runs last)."""
+    if first.kind == "manual":  # the replacement cannot be placed, so neither can what follows it
+        return FixOption("manual", f"{first.text}, then {made.text}")
     return FixOption(
         "exact", f"{first.text}, then {made.text}", made.command, (*first.edits, *made.edits)
     )
@@ -238,7 +240,7 @@ def link_dangling_body(ctx: Ctx, page: Page):
         target, line = link.target, link.line
 
         def swap(name: str, link: Link = link) -> FixOption:
-            return body_swap(page, link, link_value(name))
+            return body_swap(ctx, page, link, link_value(name))
 
         opts: list[FixOption] = []
         notes: list[str] = []
@@ -260,7 +262,7 @@ def link_dangling_body(ctx: Ctx, page: Page):
                     made, more = _creations(ctx, page, n)
                     opts += [then(swap(n), m) for m in made]
                     notes += more
-        opts.append(body_swap(page, link, target, " to keep the words and drop the link"))
+        opts.append(body_swap(ctx, page, link, target, " to keep the words and drop the link"))
         notes.append(
             "(you can also name the page in the right link field of this page, which entails its "
             "stub with that type)"

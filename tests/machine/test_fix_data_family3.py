@@ -377,6 +377,33 @@ CASES = [
         DANG_BODY,
         {SC: coded(body="See [[ghost]] and [[ghost]].\n")},
     ),
+    (
+        "discouraged-body-alias",
+        DISC_BODY,
+        {SC: coded(body="It runs on [[booking-app|the app]].\n")},
+    ),
+    (
+        "dangling-body-alias",
+        DANG_BODY,
+        {SC: coded(body="See [[ghost|spooky]] now.\n")},
+    ),
+    ("dangling-body-heading", DANG_BODY, {SC: coded(body="See [[ghost#Part]] now.\n")}),
+    ("dangling-body-anchor", DANG_BODY, {SC: coded(body="See [[ghost^abc123]] now.\n")}),
+    (
+        "dangling-body-alias-twice-on-a-line",
+        DANG_BODY,
+        {SC: coded(body="See [[ghost|a]] and [[ghost|a]].\n")},
+    ),
+    (
+        "dangling-body-two-spellings-on-a-line",
+        DANG_BODY,
+        {SC: coded(body="See [[ghost]] and [[ghost|g]].\n")},
+    ),
+    (
+        "dangling-body-illegal-with-alias",
+        DANG_BODY,
+        {SC: coded(body="See [[Safety briefing|sb]].\n")},
+    ),
 ]
 IDS = [c[0] for c in CASES]
 
@@ -429,8 +456,12 @@ def apply_edit(root, e):
     if e["action"] == "replace-text":
         n = e["line"] - 1
         assert e["find"] in lines[n], (e, lines[n])
-        # no column: every occurrence on the line (one message stands for a repeated link, `repeat`)
-        lines[n] = lines[n].replace(e["find"], e["replace"])
+        if e.get("column"):  # one place: the literal must stand exactly there
+            c = e["column"] - 1
+            assert lines[n][c : c + len(e["find"])] == e["find"], (e, lines[n])
+            lines[n] = lines[n][:c] + e["replace"] + lines[n][c + len(e["find"]) :]
+        else:  # no column: every occurrence on the line (one message stands for a repeated link, `repeat`)
+            lines[n] = lines[n].replace(e["find"], e["replace"])
     else:
         if lines[0] != "---":
             lines = ["---", "---", *lines]
@@ -482,7 +513,8 @@ def assert_matches_text(opt, text):
         assert opt.command.repl in text
     for e in opt.edits:
         if e.action == "replace-text":
-            assert e.find in text and e.replace in text
+            # the text names the link as `[[target]]`; `find` is the literal written (alias, heading, anchor)
+            assert re.split(r"[|#^\]]", e.find[2:], maxsplit=1)[0] in text and e.replace in text
         if e.action == "delete-field":
             assert f"`{e.field}:`" in text
         if e.action != "set-field" or e.value is None:
@@ -672,6 +704,7 @@ def test_discouraged_branches(make_vault):
             "action": "replace-text",
             "file": SC,
             "line": 15,
+            "column": 12,
             "find": "[[booking-app]]",
             "replace": "booking-app",
         }
@@ -743,3 +776,31 @@ def test_dangling_body_branches(make_vault):
     assert [e["field"] for e in edit_dicts(fix.options[0])] == ["type", "status", "title"]
     _, found = seed(make_vault, next(c for c in CASES if c[0] == "dangling-body-twice-on-a-line"))
     assert found[0].repeat == 2
+
+
+def test_body_edits_name_the_literal_written_on_the_line(make_vault):
+    def edits(case_id):
+        return [e for o in only(make_vault, case_id).options for e in o.edits]
+
+    (e, *_) = edits("discouraged-body-alias")
+    assert (e.find, e.column) == ("[[booking-app|the app]]", 12) and e.line == 15
+    for case_id, literal in (
+        ("dangling-body-alias", "[[ghost|spooky]]"),
+        ("dangling-body-heading", "[[ghost#Part]]"),
+        ("dangling-body-anchor", "[[ghost^abc123]]"),
+    ):
+        es = edits(case_id)
+        assert es and all((e.find, e.column) == (literal, 5) for e in es), case_id
+    # the same literal twice: no column, so the edit replaces every occurrence on its line
+    for case_id, literal in (
+        ("dangling-body-twice-on-a-line", "[[ghost]]"),
+        ("dangling-body-alias-twice-on-a-line", "[[ghost|a]]"),
+    ):
+        es = edits(case_id)
+        assert es and all((e.find, e.column) == (literal, None) for e in es), case_id
+    es = edits("dangling-body-illegal-with-alias")
+    assert es and all(e.find == "[[Safety briefing|sb]]" and e.column == 5 for e in es)
+    # two spellings of one target on a line cannot be named by one edit: every option is manual
+    fix = only(make_vault, "dangling-body-two-spellings-on-a-line")
+    on_line = [o for o in fix.options if o.text.startswith("on line")]
+    assert on_line and all(o.kind == "manual" and not o.edits and not o.command for o in on_line)
