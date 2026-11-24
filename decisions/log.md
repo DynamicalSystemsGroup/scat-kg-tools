@@ -952,3 +952,17 @@ ACE dispositions:
 5. **Data quality.** The WP8 "done at" stamps on the board (`2026-11-24T10:00` and `11:30 -05:00`) are placeholders
    in the future. The PM appends corrected `unit` records with the real times, from git commit times. The log is
    append-only, the latest record per unit wins, and the board is corrected to match.
+
+## D-045 | 2026-11-24 | U11 merged; PM handover; two confirmations
+
+U11 is merged: the 12 round-1 docs fixes and the round-2 kit changes. One review push-back was resolved, and the PM
+verified the delta by re-running the reviewer's greps rather than commissioning a second full review. That is
+accepted for a small docs delta, and noted as known-weak. The suite has 520 passing tests, and ruff is clean. The PM
+handed over at its context limit (`work-packages/pm-handover.md`), and a fresh PM takes U12 onwards.
+
+ACE confirmations:
+1. **One raw page per story or pitch**, holding every group's account, each labelled with its group ("from this
+   perspective"). Raw stays raw, and separating the accounts is coding's job. Confirmed.
+2. **The epigraph tagline in `planning.md`** ("The chart… before anyone counts in") is style in framing, as D-039
+   allows. If the cold reader flags it, that is not an obscured instruction, so long as the instruction sentences stay
+   plain.
