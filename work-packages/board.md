@@ -129,7 +129,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP10-U3 | template editor (case-study tags), sonnet | 2 | 2 | `wp10/u3` (template) | done | | 2026-11-24T09:14:38-05:00 | first-time reviewer PASS, about 2 min; reviewer would tag both pitches `mixed` (worker: `future`), flagged to the ACE; template dev cdc0707 |
 | WP10-U1 | Python developer and ontology designer (TBox, contracts, rule, stub, tests), sonnet | 8 | 8 | `wp10/u1` | done | | 2026-11-24T09:44:22-05:00 | 2 push-backs, 3 reviews, 560 tests, test edits under D-058 listed in the report; merged f22c62e |
 | WP10-U2 | technical writer (facilitation and planning guides), sonnet | 5 | 8 | `wp10/u2` | done | | 2026-11-24T09:43:32-05:00 | 3 push-backs, R3 scope change mid-flight, 4 reviews; net 844 words with U1; merged ec5e75a |
-| WP10-U4 | Python developer (refresh: pins, walkthrough, reviewer's guide, Pages, fresh clone), sonnet | 5 | | `wp10/u4` | in flight | | | |
+| WP10-U4 | Python developer (template re-pin), haiku | 5 | 2 | `wp10/u4` (template) | done | | 2026-11-24T09:47:12-05:00 | split by the PM: template re-pin only, Haiku worker and reviewer, first-time PASS; template dev 6ebd305; the tools-side refresh moved to U4b |
+| WP10-U4b | Python developer (docs test pin, walkthrough, reviewer's guide, Pages, fresh-clone trial), sonnet | 3 | | `wp10/u4b` | in flight | | | added by the PM when U4 was split |
 
 ## Iterations and velocity
 
