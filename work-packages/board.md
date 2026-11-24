@@ -133,7 +133,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP10-U4 | Python developer (template re-pin), haiku | 5 | 2 | `wp10/u4` (template) | done | | 2026-11-24T09:47:12-05:00 | split by the PM: template re-pin only, Haiku worker and reviewer, first-time PASS; template dev 6ebd305; the tools-side refresh moved to U4b |
 | WP10-U4b | Python developer (docs test pin, walkthrough, reviewer's guide, Pages, fresh-clone trial), sonnet | 3 | | `wp10/u4b` | done | | 2026-11-24T09:54:18-05:00 | first-time reviewer PASS (5 nits), about 6 min worker; added by the PM when U4 was split; merged 6fe2507 |
 | WP11-U1 | API designer and technical writer (contract page, JSON Schema), sonnet | 5 | 5 | `wp11/u1` | done |  | 2026-11-24T10:16:18-05:00 | 1 push-back, 2 reviews, 616 tests; merged 9feb3cd |
-| WP11-U2 | Python developer (fix data model, check-result serialisation), sonnet | 5 |  | `wp11/u2` | in flight |  |  |  |
+| WP11-U2 | Python developer (fix data model, check-result serialisation), sonnet | 5 | 5 | `wp11/u2` | done |  | 2026-11-24T10:23:52-05:00 | first-time reviewer PASS (2 minor notes), 654 tests, about 3 min worker; merged 1c83e84 |
 | WP11-U3 | Python developer (operation results, `--json` on every command), sonnet | 5 |  | `wp11/u3` | queued | U2 merged (the model) |  |  |
 | WP11-U4 | test engineer (schema and fix-command harness over the check tests), sonnet | 3 |  | `wp11/u4` | queued | U2 merged (the model) |  |  |
 | WP11-U5 | Python developer (fixes as data: frontmatter, vault-wide and index rules), sonnet | 5 |  | `wp11/u5` | queued | U2 merged (the model) |  |  |
