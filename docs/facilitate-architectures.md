@@ -1,7 +1,7 @@
 # Facilitating architectures
 
 !!! tip "Your next step"
-    Open the session by reading the Chatham House lines aloud, then ask the first proposer how the parts fit together and what the whole lets people do. The Chatham House frame means that whatever is said here can be used, and nobody is named.
+    Open the session by reading the Chatham House lines aloud, then ask the first proposer how the parts fit together and what the whole lets people do.
 
 *Each proposer plays a design in turn, and you build on what you hear.*
 { .epigraph }
@@ -62,7 +62,7 @@ Note-taker writes: the date, the session, and "Chatham House: groups, not indivi
 
 Do: ask one question at a time. Ask about parts and wholes, not people.
 
-Say these in this order. They are questions. Ask one at a time, then wait for the answer, write it down, and only then ask the next. Do not ask two at once.
+Say these in this order. They are questions. Ask one at a time, then wait for the answer, accept it as offered, and only then ask the next. Do not ask two at once.
 
 ```text
 How do the parts fit together, and what does the whole let people do?
@@ -76,7 +76,7 @@ be matched with groups later. Each gap ("not addressed: ...") as a fact about th
 Who else might hold the concern, as an open question. The design cannot presume who will adopt it, and other groups'
 answers are welcome later.
 
-If someone begins telling the story that led to the design, write it down. Say:
+If someone begins telling the story that led to the design, accept it as offered and write it down. Say:
 
 ```text
 Yes, and thank you. We will note that story

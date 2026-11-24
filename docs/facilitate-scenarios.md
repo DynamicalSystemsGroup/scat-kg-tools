@@ -1,7 +1,7 @@
 # Facilitating scenarios
 
 !!! tip "Your next step"
-    Open the session by reading the Chatham House lines aloud, then ask the first group for a story that starts at a concrete moment. The Chatham House frame means that whatever is said here can be used, and nobody is named.
+    Open the session by reading the Chatham House lines aloud, then ask the first group for a story that starts at a concrete moment.
 
 *Each group takes a turn: you listen, then build on what it said.*
 { .epigraph }
@@ -55,7 +55,7 @@ Note-taker writes: the date, the session, and "Chatham House: groups, not indivi
 
 Do: ask one question at a time, from a concrete moment. Do not ask the teller to sort what comes up into types.
 
-Say these in this order. They are questions. Ask one at a time, then wait for the answer, write it down, and only then ask the next. Do not ask two at once.
+Say these in this order. They are questions. Ask one at a time, then wait for the answer, accept it as offered, and only then ask the next. Do not ask two at once.
 
 ```text
 Tell us about a time when ...
