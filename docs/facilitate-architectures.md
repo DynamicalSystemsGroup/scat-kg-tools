@@ -261,12 +261,10 @@ The check prints this, from either tab:
 ```text
 warning [SCAT-DRAFT-FIELD] architecture-raw/booking-sheet-pitch.md field `description`: missing (required once the page is done)
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
-warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-  Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[anonymity]]"` or `- "[[attribution]]"` under `concerns`.
-0 errors, 2 warnings
+0 errors, 1 warning
 ```
 
-These warnings are a nudge, not a fault. The page is a draft. It is finished when you code it.
+This warning is a nudge, not a fault. The page is a draft. It is finished when you code it.
 See [Coding](coding.md).
 
 `scat stub` is the one way to create a page, because it refuses a bad name and says why.

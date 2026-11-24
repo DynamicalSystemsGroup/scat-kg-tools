@@ -9,7 +9,7 @@ run by the tools or by CI. The kit is not in the docs site's navigation.
 | File | What it is |
 |---|---|
 | `personas/` | Three personas in the user's own words: p1 facilitator-analyst, Python session, Haiku; p2 newcomer, command line, Haiku; p3 facilitator-analyst, Python session, Sonnet, as control. |
-| `briefs/` | One self-contained brief per persona, which is all a tester is given, and `cold-read-part1.md` and `cold-read-part2.md`, the two halves of the R-15 check. |
+| `briefs/` | One self-contained brief per persona, which is all a tester is given, and `cold-read-part1.md` and `cold-read-part2.md`, the two halves of the R-15 cold read. The cold-read briefs are retained for reference only: the cold read is not part of this release's acceptance (D-052). |
 | `report-template.md` | What a tester returns: the cold-read answer first, then J1 to J7, findings, severity, dispositions, void rules. |
 
 Each persona has a coding domain of its own, none of them the worked example: p1 flood readiness in a river town, p2
@@ -22,7 +22,7 @@ codes at least one story and one design proposal, each raw and coded.
 1. Pick the candidate: the commit the Pages preview and the template pin. Record the hash.
 2. Run each persona in a fresh agent on the model its brief names. Give it its brief and the report template, and
    nothing else (no persona file, no README, no repository). The PM sets up its environment first (below).
-3. Run the cold read in a further fresh agent, with the home page left out, in two messages. First send `briefs/cold-read-part1.md` alone (question 1). Wait for the reader's answer to question 1. Only then send `briefs/cold-read-part2.md` as a second message (question 2). The reader never sees question 2 before answering question 1. The reader gets no report template. The PM assembles the two answers into the cold-read section of `report-template.md` afterwards, and records in the report that the two messages were sent in that order.
+3. *(Not part of this release's acceptance, D-052: the chief engineer's own judgement replaced the R-15 cold-read bar. The briefs are kept for reference. Skip this step.)* Run the cold read in a further fresh agent, with the home page left out, in two messages. First send `briefs/cold-read-part1.md` alone (question 1). Wait for the reader's answer to question 1. Only then send `briefs/cold-read-part2.md` as a second message (question 2). The reader never sees question 2 before answering question 1. The reader gets no report template. The PM assembles the two answers into the cold-read section of `report-template.md` afterwards, and records in the report that the two messages were sent in that order.
 4. Collect the reports unedited. Testers write in their own scratch folder and hand the report back as text; they never write into this repository. The PM saves each finished report as `acceptance/reports/<round>-<persona>.md` (for example `r1-p1.md`) and the cold read as `acceptance/reports/<round>-cold-read.md`. Check each against the void rules in `report-template.md` and the grep below. Rerun a
    void report with a fresh tester.
 5. The ACE reads each report, merges the findings, and dispositions each: fixed and re-tested by a fresh tester, or
@@ -95,7 +95,7 @@ example was removed, makes the report void.
 | Every claim has pasted output | each brief; `report-template.md`, section 1 and void rule 2 |
 | The report first answers what style the docs evoke (R-15) | `report-template.md`, section 0 |
 | Then stage by stage: stuck, guessed, nowhere to go | `report-template.md`, section 1 |
-| R-15 cold read: a fresh reader, home page excluded, asked openly; reports whether the metaphor obscured an instruction | `briefs/cold-read-part1.md` and `briefs/cold-read-part2.md`; `report-template.md`, section 0 |
+| *(Retained for reference only, D-052; not part of this release's acceptance.)* R-15 cold read: a fresh reader, home page excluded, asked openly; reports whether the metaphor obscured an instruction | `briefs/cold-read-part1.md` and `briefs/cold-read-part2.md`; `report-template.md`, section 0 |
 | Pass bar: everyone reaches J7 with a clean check | brief J7; `report-template.md`, section 3 |
 | Every guess is a finding | each brief; `report-template.md`, section 2 |
 | Blocking: stopped short of J7, or a docs command fails as shown | `report-template.md`, severity |
@@ -104,6 +104,8 @@ example was removed, makes the report void.
 | Void reports: reused names or claims with no pasted output; a report with no findings checked by the ACE for plausibility | `report-template.md`, "Void reports" and section 4; this README, "Checking a report mechanically" |
 
 ## Cold-read answers in persona reports do not count
+
+The whole cold read is retained for reference only (D-052). What follows is how it was run.
 
 Each persona report opens with a cold-read answer, but those testers read the home page, which explains the name. That
 answer does **not** count toward R-15. Only the cold read (`briefs/cold-read-part1.md` and `briefs/cold-read-part2.md`) counts, and the ACE judges it on the words the reader
