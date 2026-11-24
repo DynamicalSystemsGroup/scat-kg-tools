@@ -24,7 +24,7 @@ Read first: `ORG.md`, `MISSION.md`, `work-packages/WP8.md`, `decisions/log.md` D
 - Branches: only `main`, `dev` remain on both remotes, plus the held `wp8/u1` locally.
 
 ## UA-A round 2 (next after U12)
-Provision with `/private/tmp/claude-501/-Users-z-Documents-GitHub/b40c0a13-b60e-4132-b167-1824838bc4cf/scratchpad/provision.sh <name>`
+Provision with `<scratch>/provision.sh <name>`
 (fresh HOME, uv on PATH, clone of the local template with its remote removed; it prints the shell preamble; it sets
 `UV_PYTHON_INSTALL_DIR` to the existing Python store so no downloads). Copy the persona brief and
 `acceptance/report-template.md` into the tester's folder (not the repo); give the tester the preamble and the two file

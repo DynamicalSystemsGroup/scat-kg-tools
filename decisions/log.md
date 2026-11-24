@@ -141,7 +141,7 @@ Decided by the chief engineer (pop-ups, typed by the ACE):
   implementation or UX."
 
 Directed by the chief engineer (chat, typed by the ACE): "actually i think you may need this
-/Users/z/Documents/GitHub/concept-definition-stage as another reference repo. it may help fill in details i left out
+<local>/concept-definition-stage as another reference repo. it may help fill in details i left out
 in the ontology. I also want you to include research sprint on existing ontologies. if we have existing ontologies we
 can adopt (even if we have to thin it out) i've applied a doctrine of import don't mint for ontologies like we do with
 python packages. that also doesn't mean build a franken ontology. we can author ontologies instead of import them if
@@ -1112,3 +1112,8 @@ engineer judges them at acceptance.
 The repository is public, so they are replaced with `<scratch>` and `<local>`. Only paths change, never any
 substance. Earlier commits still hold them in git history; removing them from history would need a force-push, which
 is not done without the chief engineer's say-so. This is on his morning list.
+
+Correction to D-050 (the ACE's own error). The first redaction command failed silently: zsh doesn't word-split an
+unquoted variable, so `sed` received one long filename and changed nothing. The D-050 entry was committed in
+`b459458` claiming a redaction that hadn't happened. The redaction was then applied file by file. 9 files changed,
+16 lines each way, and a re-grep for `/Users/`, `/private/tmp` and `claude-501` across the public records returns 0.
