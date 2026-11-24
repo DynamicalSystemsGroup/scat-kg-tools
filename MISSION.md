@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Approved by the chief engineer's merge of PR #1 into `main` of `DynamicalSystemsGroup/scat-kg-tools`. Each amendment is approved by the merge of its own PR; Amendment 1 is PR #2, Amendment 2 is PR #4 and Amendment 3 is PR #5. |
+| **Status** | Approved by the chief engineer's merge of PR #1 into `main` of `DynamicalSystemsGroup/scat-kg-tools`. Each amendment is approved by the merge of its own PR; Amendment 1 is PR #2, Amendment 2 is PR #4, Amendment 3 is PR #5 and Amendment 4 is PR #6. |
 | **Chief engineer (accountable)** | `mzargham`: final design authority. Approves this mission and its amendments, and accepts the v0.1 delivery. |
 | **Assistant to the chief engineer (ACE)** | The main Claude session. Manages the team, writes and approves work-package scopes inside this mission, accepts work packages, and escalates only intent gaps (see Governance). |
 | **Repositories** | `scat-kg-tools` (the tools, the TBox, the docs site; this document) and `scat-kg-template` (the vault to clone). |
@@ -173,7 +173,7 @@ under it (the chief engineer's initial brief).
 
 ## Non-goals
 
-- Gen-AI aided authoring. An Obsidian plugin is explored on a feature branch (log D-054) and delivered, if at all, in a later package.
+- Gen-AI aided authoring. An Obsidian plugin is explored on a feature branch (log D-054) and delivered in a later package; v0.1 provides the stable interface it builds on (R-16).
 - Faces or triangles of any kind, including ones inferred from scenarios and architectures.
 - Letting instance repositories extend the TBox, and evolving the TBox after v0.1.
 - Enforcing links from raw records to their coded pages beyond a warning.
@@ -194,7 +194,7 @@ under it (the chief engineer's initial brief).
 | ID | Deliverable | Serves |
 |---|---|---|
 | D-1 | The TBox in Turtle, in `scat-kg-tools` | G1, G10 |
-| D-2 | The tools (parser, checks, the operations, the Python API and CLI) with their test suite, in `scat-kg-tools` | G2, G3, G4 |
+| D-2 | The tools (parser, checks, the operations, the Python API and CLI, and their machine-readable output with its schema) with their test suite, in `scat-kg-tools` | G2, G3, G4 |
 | D-3 | The template repository: vault skeleton, class pages, instance configuration (the stakeholder-group cap), the pinned tools, and the case study | G5, G6, G9 |
 | D-4 | The documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9, G11 |
 | D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, and the facilitation research | G8, G10, G11 |
@@ -222,6 +222,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-13 | The schema has one source. The TBox is authoritative; any other form the tools use is generated from it or held equal to it by a test. | The generator or the equality test, in CI |
 | R-14 | The planning and facilitation guides carry the improvisational stance ("yes, and"; "from this perspective"). They contain no step that ranks, votes on or adjudicates between stories or architectures. | The ACE's review of the guides; UA-M |
 | R-15 | **A light musical reference, clarity first.** The package and its docs carry the music-note logo and one brief aside on improvisation, where the "yes, and" stance is introduced. Everywhere else, plain words win over any musical reference. | The chief engineer's judgement in UA-M (log D-052) |
+| R-16 | **A stable machine interface.** Every result the operations return is also available as versioned, machine-readable data, from the Python API and the CLI alike. Its schema lives with the contracts, and changing it follows a stated versioning rule. A fix is data a tool can apply (what kind of fix it is, the exact command, or the field to write), not only a sentence. This is the interface the Obsidian plugin and any later tool build on (log D-060). | Every operation's output validated against the schema in tests; a test that the text messages and the data agree |
 
 ## User acceptance
 
@@ -386,6 +387,11 @@ recording why.
 - Branches: `main` holds approved missions and releases only, `dev` is the integration branch, and work happens on
   short-lived unit branches off `dev`.
 - The worked example sets the stakeholder-group cap to 3.
+- The machine interface (Amendment 4): JSON, from `--json` on every `scat` command and an equivalent method on every
+  result in Python. Its schema is a JSON Schema file in `contracts/`, with an integer `schema_version`. Adding a field
+  keeps the version, and removing or changing one bumps it. Schema validation runs in the test suite only, so it adds
+  no runtime dependency to `scat-kg` (log D-056). Not included: checking an unsaved editor buffer, and a public vault
+  loader for analysis. Both are left for the packages that need them.
 - The past/future mark (Amendment 3) is a field on the raw scenario and raw architecture pages, the record of what was
   told; a coded page is a reading of its raw page and inherits it. Working field name `timeframe`, with the chief
   engineer's values `past`, `future` and `mixed`. Like every required field (R-3), a missing value is an error on a
@@ -397,6 +403,7 @@ None. Every item was resolved through the decision loop and is recorded in `deci
 - 15 decided by the chief engineer: log D-001, D-003, D-005 to D-008, D-010 to D-014, D-017 to D-019, D-021;
 - 1 assigned to the ACE: log D-002;
 - 1 deferred by him: the target date, until velocity is known (log D-011, which also decided the timeline method);
+- Amendment 4: 1 decided by the chief engineer, log D-060 (a stable machine interface before the first release);
 - Amendment 3: 3 decided by the chief engineer, log D-057 (into v0.1; required, with "mixed"; a past/future axis).
 
 Log D-004, D-009, D-012, D-019 and D-020 also record consistency passes. Log D-015 and D-016 were rolled back with
