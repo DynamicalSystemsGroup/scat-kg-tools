@@ -386,6 +386,8 @@ error [SCAT-LINK-ENDPOINT] <file>:<line> field `<field>`: [[<target>]] is a <act
     2. replace `<item>` with `<item with candidate>`        (one numbered option per candidate)
     n. delete the item line `<item>` under `<field>`        (not in a field required from `stub`)
 ```
+Applying a fix must not leave the page with a new SCAT-DONE-LINK error. When the page has status `done`, the field is required from `done`, and every other item in the field is itself a wrong-typed page (so taking this item out leaves the field empty), the move option and the delete option are withheld and the message adds "(`<field>` is required on a page with status: done and this is its only good item, so deleting or moving the item alone would trade this error for SCAT-DONE-LINK; to delete or move it, run `scat set-status <page-name> draft` (REPL form) first, or add a right-typed item first)". With no replacement either, the message is the single line "Fix: `<field>` is required on a page with status: done and this is its only good item, and no existing <expected-key> page was found to replace it with: run `scat set-status <page-name> draft` (REPL form) first, then change the item by hand" (manual).
+
 Options follow the order of decision 2. With no replacement available the message says "no existing <expected-key> page was found"; in a field required from `stub` it then has no option at all, and says the pair must be changed by hand (manual).
 
 The swap case is one message, not two. When a relation page's two endpoint fields each hold a page of the other's type (a `heldby` page with a concern under `group` and a group under `concern`), the one message names both fields, is reported at the line of the first, and prints the result literally. `<field-a>` is the endpoint field that appears first in the file and `<field-b>` the other; `<w1>` is the value under `<field-a>`:
@@ -399,7 +401,7 @@ error [SCAT-LINK-ENDPOINT] <file>:<line> fields `<field-a>` and `<field-b>`: [[<
          <field-b>: "[[<w1>]]"
 ```
 - **Fix kind:** options (the swap message: exact). Every option is exact; which one is meant is the author's intent, so the rule never picks.
-- **Test:** an affordance under `concerns` of a coded scenario (move option 1 present); a relation page whose `affordance` holds a technology (replacements, tier 1 through the sharing `attributes` page, no delete); the swapped `heldby` page (exactly one message); a case with no candidates; a case with tier-1 and tier-2 candidates, to fix the order. At each status the same message appears.
+- **Test:** an affordance under `concerns` of a coded scenario (move option 1 present); a relation page whose `affordance` holds a technology (replacements, tier 1 through the sharing `attributes` page, no delete); the swapped `heldby` page (exactly one message); a case with no candidates; a case with tier-1 and tier-2 candidates, to fix the order; a sole wrong item in a required field at `done` (no move or delete; with and without a replacement), and the same page at `draft` (delete offered). Apart from that case the same message appears at each status.
 
 ### SCAT-LINK-DANGLING
 - **Severity:** error. **Fires:** every status.
@@ -467,10 +469,10 @@ warning [SCAT-LINK-DISCOURAGED-BODY] <file>:<line> link [[<target>]]: the body o
 ```
 error [SCAT-CAP] scat.toml field `stakeholder_group_cap`: the vault holds <n> stakeholder-group pages, over the cap of <cap>: <name>, <name>, ...
   Fix, choose one:
-    1. write `stakeholder_group_cap = <n>` in scat.toml (the cap protects against identifying individuals; raise it only if the plan allows)
-    2. fold <n minus cap> group(s) into the others (move their standpoints into another group's `description`) and delete those pages
+    1. cluster <n minus cap> group(s) into the others, by shared standpoint: move their standpoints into another group's `description`, change every link to them to point at that group, and delete those pages
+    2. or, only if the plan allows more groups, write `stakeholder_group_cap = <n>` in scat.toml (the cap protects against identifying individuals)
 ```
-- **Fix kind:** options. Option 2 is not exact: which groups merge is the facilitator's judgement, and the tools do not choose.
+- **Fix kind:** options. Clustering comes first because the facilitation strategy clusters standpoints before it raises a cap. Option 1 is not exact: which groups merge is the facilitator's judgement, and the tools do not choose.
 - **Test:** a fixture with cap 3 and 4 groups (one message, naming all four); with 3 groups (none); the fourth group as a stub still triggers.
 
 ### SCAT-CAP-CONFIG

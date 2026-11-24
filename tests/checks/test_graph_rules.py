@@ -436,10 +436,11 @@ GROUPS = {
 def test__scat_cap__four_groups_over_a_cap_of_three(make_vault):
     cap_fix = (
         "Fix, choose one:\n"
-        "  1. write `stakeholder_group_cap = 4` in scat.toml (the cap protects against identifying "
-        "individuals; raise it only if the plan allows)\n"
-        "  2. fold 1 group(s) into the others (move their standpoints into another group's "
-        "`description`) and delete those pages"
+        "  1. cluster 1 group(s) into the others, by shared standpoint: move their standpoints into "
+        "another group's `description`, change every link to them to point at that group, and "
+        "delete those pages\n"
+        "  2. or, only if the plan allows more groups, write `stakeholder_group_cap = 4` in "
+        "scat.toml (the cap protects against identifying individuals)"
     )
     r = seeded(make_vault, GROUPS, (CAP, "scat.toml", "field `stakeholder_group_cap`", cap_fix))
     assert r.problems[0].what == (

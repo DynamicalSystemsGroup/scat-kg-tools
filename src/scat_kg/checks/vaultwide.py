@@ -51,12 +51,13 @@ def cap(ctx: Ctx):
     fix = choose(
         [
             (
-                f"write `stakeholder_group_cap = {n}` in scat.toml (the cap protects against "
-                "identifying individuals; raise it only if the plan allows)"
+                f"cluster {n - cap_value} group(s) into the others, by shared standpoint: move their "
+                "standpoints into another group's `description`, change every link to them to point "
+                "at that group, and delete those pages"
             ),
             (
-                f"fold {n - cap_value} group(s) into the others (move their standpoints into "
-                "another group's `description`) and delete those pages"
+                f"or, only if the plan allows more groups, write `stakeholder_group_cap = {n}` in "
+                "scat.toml (the cap protects against identifying individuals)"
             ),
         ]
     )
