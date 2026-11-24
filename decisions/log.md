@@ -1197,3 +1197,22 @@ The WP9 audit covered all 28 rule ids. 22 are unambiguously structural. SCAT-CON
 - **B4** (RAW-UNCODED): kept. It is the same presence pattern as DONE-LINK.
 
 Nothing else is removed. The audit table and these rulings go into the reviewer's guide.
+
+## D-054 | 2026-11-24 | The spikes may continue into feature development on their branches
+
+Directed by the chief engineer (chat, typed by the ACE): "you can feel free to keep the analysis feature branch and the
+obsidian plugin feature branch out of the release but we have a pretty clean separation of concerns with core data
+model pinned. you can work through design, development and some testing on the those feature branches. i don't want
+to block the first release on them but i wouldn't be upset if they were also ready for me to test out".
+
+Outcome:
+- **Scope.** After their readouts, RS1 and RS2 continue on `spike/obsidian-plugin` and `spike/analysis` into design,
+  development and testing.
+- **Boundary.** They consume `scat_kg` and the TBox as pinned. A change they need in core goes to the ACE as a
+  finding, and is not made on the branch.
+- **Never blocking.** They are never merged into `dev` before v0.1, and WP9 keeps priority.
+- **Aim, for each feature branch:** something the chief engineer can try in the morning.
+  - **The plugin:** a built plugin he can drop into a vault's `.obsidian/plugins/`, with install steps.
+  - **The analysis:** a notebook and an importable module he can run with one documented `uv` command.
+
+  Each has its own tests, and a README stating what was and wasn't exercised.
