@@ -198,33 +198,35 @@ matters without claiming to be exhaustive. No particular project's choices appea
   that emerges from composing the supports of a set of narratives, up to the whole vault. A
   narrative is a page type of its own (G1): the parent of scenario and architecture, so a field note may be neither.
   The past/future mark is a property of the narrative.
-  Relationships (G1) stay out of the views.
+  Relationships (G1) stay out of the views. The three kinds of edge are bipartite, so each is also a table: the
+  **table views** export them as CSV and generate documents from them, which is how people navigating the data
+  already think of it.
 - **G13. Ripple-aware change (Amendment 5).** A change to a term, a contract, a rule or the mission reaches every
   artifact that depends on it, in one package, and no two packages edit the same file in turn (see Governance).
-- **G14. Optional private-LLM assistance (Amendment 5).** v0.1 is aimed at a first field deployment that may use one
-  private LLM service, inference.coop, which follows the OpenAI-compatible API standard. LLM use is never assumed
-  (R-19): the assistance is optional and does mechanical work only, such as transcribing supplied materials into
-  raw narratives and checking conformance; the interpretive act stays with the human coder. Two spikes come first:
-  - **Spike A:** whether AI-aided coding is feasible through interfaces that work with any LLM provider: standard tool
-    calls and skills, with an MCP server only if the spike shows it is needed.
-  - **Spike B, the interoperability test case:** the same work driven by inference.coop, a privacy-focused service
-    anyone can use. Testing with Claude would be cheating, since Claude is the development team; a different provider
-    forces the work through the cross-platform interfaces, and through Obsidian for coding and review. The spike
-    compares two routes, against the rules for the inputs and the model:
-    - its chat, which reaches outside tools only through MCP servers: an MCP server that depends on `scat-kg`, and
-      where it runs, how the chat reaches it and what data passes through it;
-    - its developer API, which is OpenAI-compatible with tool calling: a local client calls the model, and the
-      `scat-kg` tools run as ordinary tool calls on the coder's machine, with no MCP. The API key is the chief
-      engineer's to create and hold.
+- **G14. Three coding paths (Amendment 5).** The tools support three ways to code, each with its own user experience;
+  none is forced to look like another:
+  1. **By hand in Obsidian**, the original scope. LLM use is never assumed (R-19).
+  2. **A chat with an MCP server**, the priority for design and testing in v0.1. v0.1 is aimed at a first field
+     deployment that may use one private LLM service, inference.coop, through its browser chat, which reaches outside
+     tools only through MCP servers. The open-source service is built for it: the MCP server with its tools, prompts
+     and skills, depending on `scat-kg`. A workable chat workflow is a UX design problem in its own right: the input
+     material is uploaded to the chat as a collection, files are created and downloaded, kept in a private git
+     repository and edited in Obsidian, with copying and pasting where it can't be avoided. It is kept simple.
+  3. **An IDE with agents**, such as Cursor, or VS Code with an agent. Supported, not the priority.
 
-    The spike's output is a choice of path, kept small so scope does not spiral: one path to build in v0.1, and, if they
-    differ, another documented as the preferred long-term path. Whatever is built for AI assistance must work through
-    inference.coop. Because its API follows the OpenAI-compatible standard, working there means working with any
-    provider that follows the same standard.
+  Whatever path is used, the assistance does mechanical work only; the interpretive act stays with the human coder.
+  inference.coop is the interoperability test case: testing with Claude would be cheating, since Claude is the
+  development team. A spike designs and tries the chat path with lab material before it is built (R-20).
 - **G15. A usable Obsidian projection (Amendment 5).** The vault as Obsidian shows it is where the human coder codes
   and checks that meaning is preserved. It is reshaped in v0.1 so that raw and coded material are not duplicated and
   the layout uses what Obsidian offers, rather than folders of near-empty pages. The redesign is checked in Obsidian
   itself, not reasoned about from the files.
+- **G16. A shared architecture (Amendment 5).** The system is model, view and control. The **model** is the
+  knowledge graph: the TBox and a conformant vault. The **views** are purposeful views built from a conformant model:
+  the Obsidian projection, the notebook views and the table views. The **control plane** is how people and LLMs act on
+  the model: Obsidian, git and GitHub, the CLI and REPL, the MCP server and the agents in an IDE. One architecture
+  document gives this common picture, with the modules, their interface contracts and who is responsible for what. It
+  is planned and reviewed before detailed design starts.
 
 ## Non-goals
 
@@ -255,10 +257,10 @@ matters without claiming to be exhaustive. No particular project's choices appea
 | ID | Deliverable | Serves |
 |---|---|---|
 | D-1 | The TBox in Turtle, in `scat-kg-tools` | G1, G10 |
-| D-2 | The tools (parser, checks, the operations, the Python API and CLI, their machine-readable output with its schema, and the optional private-LLM assistance path) with their test suite, in `scat-kg-tools` | G2, G3, G4, G14 |
+| D-2 | The tools (parser, checks, the operations, the Python API and CLI, their machine-readable output with its schema, the table views, and the MCP server with its prompts and skills) with their test suite, in `scat-kg-tools`, and the architecture document (G16) | G2, G3, G4, G12, G14, G16 |
 | D-3 | The template repository: vault skeleton, class pages, instance configuration (the stakeholder-group cap), the pinned tools, the case study, and the analysis notebook | G5, G6, G9, G12 |
 | D-4 | The documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9, G11 |
-| D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, the facilitation research, and the two AI spikes (Amendment 5) | G8, G10, G11 |
+| D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, the facilitation research, and the chat-path spike (Amendment 5) | G8, G10, G11 |
 | D-6 | The reviewer's guide for the chief engineer, in the `scat-kg-tools` release PR. It is sized for a person and split into sittings: (1) the end-to-end walkthrough (UA-M); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
 | D-7 | The user-acceptance kit, in `scat-kg-tools/acceptance/`: the AI tester personas and briefs, the report template, every AI test report with its dispositions, and the walkthrough script | G9 |
 
@@ -287,8 +289,9 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault, and its narrative view gives, for each coded narrative, exactly its support, with no relationship. | The notebook executed in the template's CI, with a test on the view |
 | R-18 | **Ripple-complete changes.** Before a package that changes a term, contract, rule or the mission is approved, its impact map lists every artifact that refers to what changes, each marked change, keep (with why) or historical. At acceptance, the same sweep finds no reference that is unmarked or still says the old thing. | The impact map in the scope; the sweep's output in the acceptance record |
 | R-19 | **Manual first.** Every step, from field notes to coded vault to analysis, can be done by a person by hand, in Obsidian and the CLI, with no LLM. The process stays consistent with ethnographic coding practice, so a project whose data rights rule out AI loses nothing but speed. Any AI assistance is optional, provider-agnostic, and does mechanical work only; the interpretive act stays with the human coder. | The UA-M walkthrough and the docs test, run with no LLM; the ACE's review of each spike readout against it |
-| R-20 | **Private-LLM integration, at two test levels.** The assistance path G14 builds passes its integration tests against inference.coop at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents. The field test comes after v0.1 and is not part of this repository. Other providers are not tested in v0.1. | The lab and range tests, run against inference.coop with the chief engineer's key, their output in the acceptance record |
+| R-20 | **The chat path works, at two test levels.** The MCP server's tools pass automated tests, and the chat path (G14, path 2) is run end to end in the inference.coop browser chat at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents. The field test comes after v0.1 and is not part of this repository. Other providers are not tested in v0.1. | The automated tests in CI; each end-to-end run recorded step by step with screenshots in the acceptance record |
 | R-21 | **Coding happens in Obsidian.** A coder can code a narrative and review its support in Obsidian alone, without the same content held on two pages, and without opening pages that carry no content of their own. | A review in Obsidian with screenshots in the record; UA-M |
+| R-22 | **Architecture before detailed design.** The architecture document names the model, the views and the control plane, each module's interface contract and responsibilities, and is reviewed by architecture reviewers before any package of this amendment starts detailed design. | The review record; the ACE's approval, logged |
 
 ## User acceptance
 
@@ -468,8 +471,11 @@ recording why.
   `done` page and a warning before.
 - Amendment 5 *(default)*:
   - **Relationship's form.** Its only rule is the same-class check; it is never entailed, never required and never in
-    an index's required links. Whether it is a page or a field is decided inside G15's redesign. The `conflicts` field, its rule `SCAT-CONFLICT-SELF` and every mention of
-    them leave the release; existing `conflicts` values migrate to relationship pages.
+    an index's required links. Whether it is a page or a field is decided inside G15's redesign. The `conflicts`
+    field, its rule `SCAT-CONFLICT-SELF` and every mention of them leave the release; existing `conflicts` values
+    migrate to relationships.
+  - **Test edits.** Tests that encode `conflicts`, the old page types or the old layout may change under this
+    amendment, each change listed in the review record.
   - **The parked branch.** `feature/same-type-edges` holds the withdrawn `conflicts` material and the chief engineer's
     notes on the four typed links. It is a parked design, not work to build.
   - **The notebook** reads the vault through the tools' public data (R-16) where it can, which needs the public vault
@@ -477,11 +483,14 @@ recording why.
   - **The consultant** runs on Sonnet as a role in `.claude/agents/`. Its sweep is a written list of search terms per
     change, run with `git grep` over both repositories and the live branches, so the same sweep runs at scoping and
     at acceptance.
-  - **The spikes** run on side branches with readouts in `research/`. In spike B the chief engineer signs in; the
-    agent never enters credentials, and only lab and range material (R-20) goes to inference.coop.
-  - **Order.** WP12 is accepted, then one schema-and-projection package (G1, G15), which absorbs WP13's pages so the
-    shared docs are edited once, then the notebook. The spikes run alongside, since they touch no release file; the assistance path
-    spike B chooses is built after them (G14, R-20). R-20's integration tests run on demand, not on every push.
+  - **The chat-path spike** runs on a side branch with its readout in `research/`. The ACE drives the inference.coop
+    browser chat after the chief engineer signs in; the agent never enters credentials, and only lab and range
+    material (R-20) goes to it.
+  - **Architecture reviewers** are fresh agents, on Sonnet with one on Opus for a named reason (the cross-cutting
+    contracts), that review the architecture document before detailed design (R-22).
+  - **Order.** WP12 is accepted. Then the architecture document (G16) and the chat-path spike, side by side. Then one
+    schema-and-projection package (G1, G15), which absorbs WP13's pages so the shared docs are edited once. Then the
+    views (G12) and the chat path (G14), in the order the architecture sets.
 
 ## Open decisions (for the chief engineer)
 
