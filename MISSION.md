@@ -110,7 +110,8 @@ under it (the chief engineer's initial brief).
     them: Heldby (stakeholder group × concern), Addresses (concern × affordance) and Attributes (affordance ×
     technology). Names may follow an adopted ontology;
   - each record's required and optional fields;
-  - the other page types: class pages, raw and coded scenarios, raw and coded architectures;
+  - the other page types: class pages, raw and coded narratives, with raw and coded scenarios and architectures as
+    their subclasses (Amendment 5);
   - the past, future or mixed mark every scenario and architecture records (see "Scenarios and architectures");
   - the linking rules, reflecting how scenarios and architectures differ;
   - how the graph holds disagreement and margins of potential conflict. At minimum, the same concern can be held by
@@ -177,7 +178,8 @@ under it (the chief engineer's initial brief).
 - **G12. A template analysis notebook (Amendment 5).** The template carries a notebook that loads a vault bound to the
   schema and gives a few named views. The first is the **narrative view**: for one coded narrative, the stakeholder
   groups, concerns, affordances and technologies it names, and the links among them that appear in that field note. A
-  narrative is the parent of scenario and architecture, and the past/future mark is a property of the narrative.
+  narrative is a page type of its own (G1): the parent of scenario and architecture, so a field note may be neither.
+  The past/future mark is a property of the narrative.
   Relationships (G1) stay out of the views.
 - **G13. Ripple-aware change (Amendment 5).** A change to a term, a contract, a rule or the mission reaches every
   artifact that depends on it, in one package, and no two packages edit the same file in turn (see Governance).
@@ -440,8 +442,7 @@ recording why.
 ## Open decisions (for the chief engineer)
 
 Amendment 5 (open, asked one at a time):
-1. **Narrative in the schema.** Is "narrative" a page type of its own, so a field note can be neither scenario nor
-   architecture, or only a grouping the notebook uses over scenarios and architectures?
+1. **Narrative in the schema.** Decided: a page type of its own (PR #8 thread).
 2. **Which links "appear within" a field note.** Today a link page does not record where it came from. The view can
    infer it (both ends named on that narrative's coded page), or each link page can name its source narrative.
 3. **Chatham House in this mission** *(raised by the ripple sweep)*. The mission asserts the rule in four places
