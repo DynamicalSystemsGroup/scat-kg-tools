@@ -494,7 +494,7 @@ recording why.
 
 ## Open decisions (for the chief engineer)
 
-Amendment 5 (open, asked one at a time):
+Amendment 5:
 1. **Narrative in the schema.** Decided: a page type of its own (PR #8 thread).
 2. **Which links "appear within" a field note.** Decided: each edge appears once per pair and names the narratives
    it came from; the view shows a narrative's support (PR #8 thread). The vertex and edge base classes come from the
@@ -506,9 +506,12 @@ Amendment 5 (open, asked one at a time):
 5. **The Obsidian projection** *(raised by the chief engineer's play test, 24 Nov)*. The vault as Obsidian shows it
    is hard to use: raw and coded pages duplicate each other, and the layout makes little use of what Obsidian offers.
    Decided: in v0.1 (G15, R-21; PR #8 thread).
-6. **A prior-art readout** *(raised with 5)*. Revisit the INCOSE paper's split between AI assistant and human operator,
-   the AICC loops and MVC architecture in `ant-rdf` and the eBike prototypes, and the Obsidian-and-git vaults
-   delivered to clients, before the projection is redesigned?
+6. **A prior-art readout** *(raised with 5)*. Decided: yes, as input to the architecture document and the projection
+   redesign, in `research/`. Private sources, such as client vaults, are read for principles only and the readout
+   cites only published work (PR #8 thread).
+
+None open. Every item was resolved through the decision loop: 6 decided (items 1 to 6), 0 deferred, 2 raised (items
+5 and 6), plus the chief engineer's directions recorded in the PR #8 thread.
 
 Earlier amendments: none open. Every item was resolved through the decision loop and is recorded in
 `decisions/log.md`:
