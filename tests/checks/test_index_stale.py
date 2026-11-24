@@ -134,3 +134,31 @@ def test__scat_index_stale__one_message_per_class_page_when_every_class_page_is_
     assert got == [(RULE, f"class/{n}.md", "index table", FIX) for n in sorted(CLASS_PAGES)]
     assert {p.what for p in report.problems} == {"the page is missing"}
     assert report.ok  # a warning never blocks
+
+
+def test__scat_index_stale__missing_class_pages_are_reported_only_at_whole_vault_scope(make_vault):
+    root = make_vault(base())  # no class pages at all
+    v = read_vault(root)
+    assert len(check_vault(v).problems) == 7
+    for page in v.pages:  # a local check of any page is a fast linter for that page (D-035)
+        assert check_page(v, page).problems == ()
+        assert check_neighborhood(v, page).problems == ()
+
+
+def test__scat_index_stale__a_lone_stakeholder_group_page_check_does_not_report_missing_class_pages(
+    make_vault,
+):
+    # vault-level rules (the cap) do run for a group page; INDEX-STALE's missing-page message must not
+    v = read_vault(make_vault(base()))
+    assert check_page(v, "staff").problems == ()
+    assert check_neighborhood(v, "staff").problems == ()
+
+
+def test__scat_index_stale__a_class_page_check_of_that_page_reports_it(root):
+    (root / "concern/new-one.md").write_text(doc("concern", "New one"), encoding="utf-8")
+    (root / "class/technologies.md").unlink()
+    assert stale(root, "page", "concerns")[1] == golden(CONCERNS, True)
+    assert stale(root, "neighborhood", "concerns")[1] == golden(CONCERNS, True)
+    assert stale(root, "page", "quick-checkout")[1] == []  # another page: no INDEX-STALE at all
+    assert stale(root, "neighborhood", "quick-checkout")[1] == []
+    assert stale(root, "page", "staff")[1] == []

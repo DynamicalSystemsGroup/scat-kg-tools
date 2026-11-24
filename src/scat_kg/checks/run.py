@@ -24,8 +24,9 @@ def _resolve(vault: Vault, page: Page | str) -> Page:
     return found.page
 
 
-def _run(vault: Vault, pages: list[Page], whole: bool) -> Report:
+def _run(vault: Vault, pages: list[Page], whole: bool, focus: Page | None = None) -> Report:
     ctx = Ctx(vault)
+    ctx.whole, ctx.focus = whole, focus
     problems: list[Problem] = []
     for p in pages:
         for rule in PAGE_RULES:
@@ -39,7 +40,8 @@ def _run(vault: Vault, pages: list[Page], whole: bool) -> Report:
 
 def check_page(vault: Vault, page: Page | str) -> Report:
     """Every rule that reports on this page (reading other pages where a rule needs them)."""
-    return _run(vault, [_resolve(vault, page)], False)
+    found = _resolve(vault, page)
+    return _run(vault, [found], False, found)
 
 
 def neighborhood(vault: Vault, page: Page | str) -> list[Page]:
@@ -55,7 +57,7 @@ def neighborhood(vault: Vault, page: Page | str) -> list[Page]:
 
 def check_neighborhood(vault: Vault, page: Page | str) -> Report:
     """The page and everything one link away, in either direction (G4)."""
-    return _run(vault, neighborhood(vault, page), False)
+    return _run(vault, neighborhood(vault, page), False, _resolve(vault, page))
 
 
 def check_vault(vault: Vault) -> Report:

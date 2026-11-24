@@ -33,6 +33,8 @@ def vault_rule(fn):
 class Ctx:
     def __init__(self, vault: Vault):
         self.vault = vault
+        self.whole = False  # True when the whole vault is being checked
+        self.focus: Page | None = None  # the page a page or neighborhood check is of
         self._lines: dict[str, list[str]] = {}
         self._relations: dict[str, list[dict[str, str]]] = {}
         self.cache: dict[str, object] = {}  # per-check scratch for the rules

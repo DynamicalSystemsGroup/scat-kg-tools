@@ -12,6 +12,7 @@ from helpers import (
     line_of,
     lines,
     links,
+    region_for,
     report_of,
     seeded,
 )
@@ -261,10 +262,16 @@ def test__scat_link_endpoint__same_message_at_each_status(make_vault, status):
 
 def test__scat_link_endpoint__class_page_is_a_page_of_type_class(make_vault):
     files = {
-        "class/concerns.md": doc("class", "Concerns", status=None, extra="indexes: concern"),
+        "class/concerns.md": doc("class", "Concerns", status=None, extra="indexes: concern")
+        + region_for(make_vault, "concerns"),
         SC: coded(concerns=links("concerns", "safe-handling", "concerns")),
     }
-    fix = 'Fix: delete the item line `- "[[concerns]]"` under `concerns`\n(no existing concern page was found to replace it with)'
+    # the class page now carries its table, so the replacements the rule collects are no longer empty
+    fix = choose(
+        'replace `- "[[concerns]]"` with `- "[[careful-keeping]]"`',
+        'replace `- "[[concerns]]"` with `- "[[quick-checkout]]"`',
+        'delete the item line `- "[[concerns]]"` under `concerns`',
+    )
     r = seeded(make_vault, files, (ENDPOINT, SC, FIELD, fix))
     assert "is a class page" in r.problems[0].what
 

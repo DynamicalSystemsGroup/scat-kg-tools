@@ -9,6 +9,8 @@ import re
 from pathlib import Path
 
 from scat_kg.checks import check_neighborhood, check_page, check_vault
+from scat_kg.ops.index import class_page_text, index_region
+from scat_kg.ops.names import CLASS_PAGES
 from scat_kg.vault import read_vault
 
 ROOT = Path(__file__).parents[2]
@@ -88,15 +90,32 @@ def base() -> dict[str, str]:
 
 
 def vault(make_vault, overrides=None, remove=()):
+    """The fixture vault with the overrides applied, plus the class pages `index` would write.
+
+    A class page the test supplies (or removes with `remove`, then it stays missing) is left as given.
+    """
     files = base()
     files.update(overrides or {})
     for r in remove:
         files.pop(r)
-    return read_vault(make_vault(files))
+    root = make_vault(files)
+    v = read_vault(root)
+    for name in CLASS_PAGES:
+        path = f"class/{name}.md"
+        if path not in files and path not in remove:
+            (root / "class").mkdir(exist_ok=True)
+            (root / path).write_text(class_page_text(name, index_region(v, name)), encoding="utf-8")
+    return read_vault(root)
 
 
 def report_of(make_vault, overrides=None, remove=(), scope="vault", page=None):
     return run(vault(make_vault, overrides, remove), scope, page)
+
+
+def region_for(make_vault, name):
+    """The generated region of class page `name` for the fixture vault: a seeded class page that is
+    meant to be current (so SCAT-INDEX-STALE has nothing to say about it) ends with this."""
+    return index_region(vault(make_vault), name)
 
 
 def catalogue_severities() -> dict[str, str]:
