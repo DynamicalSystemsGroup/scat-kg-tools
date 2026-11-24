@@ -1,0 +1,20 @@
+[project]
+name = "scat-analysis-spike"
+version = "0.0.0"
+description = "RS2 research spike: graph analysis of SCAT vaults (not part of the scat_kg package)"
+requires-python = ">=3.12"
+dependencies = [
+    "scat-kg",
+    "networkx",
+    "pandas",
+    "matplotlib",
+    "jupyter",
+    "nbconvert",
+    "ipykernel",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+scat-kg = { path = "../..", editable = true }
