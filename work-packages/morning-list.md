@@ -8,6 +8,10 @@
   the epigraphs and framing go.
 - **Spikes, outside v0.1, on side branches:** RS1, an Obsidian plugin (`spike/obsidian-plugin`); RS2, graph analysis
   in Jupyter (`spike/analysis`).
+- **Your Node install is broken.** `/usr/local/bin/node` (21.2.0) aborts with "Library not loaded:
+  icu4c/lib/libicui18n.73.dylib", because Homebrew has icu4c 78. The likely fix is `brew upgrade node` or
+  `brew reinstall node`, which is yours to run. Until then, RS1's prototype source exists but isn't built or tested.
+  The ACE declined the workaround of a third-party Node binary from PyPI.
 - This section is updated with results as they land.
 
 ## Start here
