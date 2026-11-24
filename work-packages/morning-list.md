@@ -41,6 +41,11 @@ log entry and, where the ruling changed direction, the `divergence/` tag to reve
     so they couldn't serve as body skeletons, and the docs had to tell people not to use them. `scat stub` is the one
     way to create pages.
 
+- **D-044: UA-A round 1 passed with nothing blocking** (3 testers to a clean check; the cold read named jazz). For
+  agents, J7 is a clean check plus a local commit, because UA-A clones have no remote by design; the push is in your
+  walkthrough. 12 docs fixes are going into U11, and round 2 adds a mandatory Haiku REPL tester. The WP8 metrics
+  timestamps were placeholders and are being corrected by appended records.
+
 ## Held for you
 
 - **D-040 / D-041: UA-A ran with uv preinstalled,** whereas `MISSION.md` UA-A says "uv not installed". Only you
