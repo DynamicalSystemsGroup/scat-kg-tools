@@ -5,17 +5,9 @@ import unicodedata
 
 from scat_kg.tbox import TBOX
 
-# Section 8: the seven class pages, name -> (indexes value, default title). The default
-# descriptions are the TBox's `pageDescription` of the `indexes` type, never copied here.
-CLASS_PAGES = {
-    "stakeholder-groups": ("stakeholder-group", "Stakeholder groups"),
-    "concerns": ("concern", "Concerns"),
-    "affordances": ("affordance", "Affordances"),
-    "technologies": ("technology", "Technologies"),
-    "heldby-pairs": ("heldby", "Heldby"),
-    "addresses-pairs": ("addresses", "Addresses"),
-    "attributes-pairs": ("attributes", "Attributes"),
-}
+# Section 8: the seven class pages, name -> (indexes value, default title), read from the TBox. The
+# default descriptions are the TBox's `pageDescription` of the `indexes` type.
+CLASS_PAGES = {n: (c.indexes, c.title) for n, c in TBOX.class_pages.items()}
 
 RESERVED = frozenset(
     {"con", "prn", "aux", "nul"}

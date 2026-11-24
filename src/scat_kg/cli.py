@@ -9,6 +9,8 @@ import sys
 from collections.abc import Sequence
 
 import scat_kg
+from scat_kg.ops.names import STUBBABLE
+from scat_kg.tbox import TBOX
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -74,13 +76,22 @@ def _parser() -> argparse.ArgumentParser:
         '`scat_kg.stub("<page-name>", type="<type-key>")`',
     )
     p.add_argument("name", metavar="NAME", help="the new page's name: a-z, 0-9 and hyphens")
-    p.add_argument("--type", required=True, metavar="TYPE", help="the page type key")
+    p.add_argument(
+        "--type",
+        required=True,
+        metavar="TYPE",
+        help="the page type key, one of: " + ", ".join(STUBBABLE),
+    )
     p = command(
         "stub-pair",
         "Create the relation page for a pair, stubbing an endpoint that does not exist.",
         '`scat_kg.stub_pair("<relation>", "<endpoint-a>", "<endpoint-b>")`',
     )
-    p.add_argument("relation", metavar="RELATION", help="heldby, addresses or attributes")
+    p.add_argument(
+        "relation",
+        metavar="RELATION",
+        help="one of: " + ", ".join(f"{r} ({a} then {b})" for r, (a, b) in TBOX.relations.items()),
+    )
     p.add_argument("endpoint_a", metavar="ENDPOINT-A")
     p.add_argument("endpoint_b", metavar="ENDPOINT-B")
     p = command(

@@ -23,9 +23,7 @@ from scat_kg.vault import Page
 TEXT_KEYS = ("status", "title", "description", "indexes", "notes")
 # Contract section 5: the title a relation page's stub gets.
 RELATION_TITLE = {
-    "heldby": ("group", "holds", "concern"),
-    "addresses": ("affordance", "addresses", "concern"),
-    "attributes": ("affordance", "attributed to", "technology"),
+    r: (keys[0], TBOX.page_types[r].verb, keys[1]) for r, keys in TBOX.relations.items()
 }
 
 
@@ -105,9 +103,12 @@ def fm_required(ctx: Ctx, page: Page):
 @page_rule
 def fm_type(ctx: Ctx, page: Page):
     v = page.type
-    if page.frontmatter_error or not isinstance(v, str) or v in TBOX.page_types:
+    empty = "type" in page.fields and is_missing(
+        v
+    )  # present but null or blank (log D-035 ruling 3)
+    if page.frontmatter_error or not (empty or isinstance(v, str)) or v in TBOX.page_types:
         return []
-    near = near_match(v, TBOX.page_types)
+    near = None if empty else near_match(v, TBOX.page_types)
     if near:
         fix = one(f"change it to `type: {near}`")
     else:
@@ -115,7 +116,7 @@ def fm_type(ctx: Ctx, page: Page):
             [f"`type: {k}` ({t.description})" for k, t in sorted(TBOX.page_types.items())],
             head="Fix, choose the one that describes this page:",
         )
-    what = f"`{v}` is not a page type"
+    what = "the value is empty, which is not a page type" if empty else f"`{v}` is not a page type"
     return [
         ctx.problem("SCAT-FM-TYPE", page.path, "field `type`", what, fix, pos=ctx.pos(page, "type"))
     ]

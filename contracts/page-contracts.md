@@ -609,10 +609,10 @@ A class page is the frontmatter in 7, then a body that is free text and optional
 - **Markers.** The two lines `<!-- scat:index:start -->` and `<!-- scat:index:end -->` are exact, each on a line of its
   own. The index operation replaces everything between them, header included, and nothing outside them. Do not edit
   between them: the next run overwrites it. With no instances the region holds the header and separator rows only. The
-  first well-formed pair (a start marker followed by an end marker) is the region. If there is none (both markers
-  missing, an end marker missing, or the markers out of order), the operation writes a fresh region, start and end
-  markers included, at the end of the body, and leaves every stray marker line and all author text untouched. Marker
-  lines beyond the first well-formed pair are likewise left alone.
+  region is the first end marker that has a start marker before it, paired with the nearest start marker before it. If
+  there is none (both markers missing, an end marker missing, or the markers out of order), the operation writes a
+  fresh region, start and end markers included, at the end of the body, and leaves every stray marker line and all
+  author text untouched. Marker lines outside that pair are likewise left alone.
 - **When missing.** If a class page does not exist, the stub or index operation creates it with the default title, the
   `indexes` value, the default description from the table above, an empty body and the region.
 

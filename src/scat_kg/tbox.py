@@ -42,6 +42,7 @@ class PageType:
     discouraged: tuple[Field, ...]
     discouraged_body_links: tuple[str, ...]  # slugs of page types the body should not link to
     endpoint_order: tuple[str, ...] | None  # relation pages: endpoint field keys, first then second
+    verb: str | None = None  # relation pages: joins the endpoint titles in a stub's title
 
     @property
     def fields(self) -> tuple[Field, ...]:
@@ -52,8 +53,16 @@ class PageType:
 
 
 @dataclass(frozen=True)
+class ClassPageName:
+    name: str  # the reserved page name
+    indexes: str  # slug of the page type its table lists
+    title: str  # the default title
+
+
+@dataclass(frozen=True)
 class TBox:
     page_types: dict[str, PageType]  # by slug
+    class_pages: dict[str, ClassPageName]  # the seven class pages, by name (contract section 8)
     statuses: tuple[str, ...]  # in lifecycle order
     unlisted_link_level: str
     wrong_target_level: str
@@ -120,13 +129,23 @@ def parse(g: Graph) -> TBox:
             endpoint_order=None
             if order is None
             else tuple(_text(g, f, SCAT.key) for f in Collection(g, order)),
+            verb=_text(g, cls, SCAT.verb),
         )
+    class_pages = {
+        str(g.value(c, RDFS.label)): ClassPageName(
+            name=str(g.value(c, RDFS.label)),
+            indexes=_text(g, c, SCAT.indexesKey),
+            title=_text(g, c, SCAT.defaultTitle),
+        )
+        for c in g.subjects(RDF.type, SCAT.ClassPageName)
+    }
     status_set = g.value(SCAT.status, SCAT.valueSet) or g.value(SCAT["field-status"], SCAT.valueSet)
     statuses = tuple(
         str(g.value(m, SKOS.notation)) for m in Collection(g, g.value(status_set, SKOS.memberList))
     )
     return TBox(
         page_types=dict(sorted(page_types.items())),
+        class_pages=dict(sorted(class_pages.items())),
         statuses=statuses,
         unlisted_link_level=_text(g, ONTOLOGY, SCAT.unlistedLinkLevel),
         wrong_target_level=_text(g, ONTOLOGY, SCAT.wrongTargetLevel),
