@@ -1281,3 +1281,21 @@ imports the plots; the default environment passes 22 tests and executes the note
 **For the delivery packages:** the analysis package still reaches into `scat_kg.vault.read_vault` (internal), and the
 plugin uses a Python shim for JSON output. Both point to the same small public surface in `scat-kg` (a vault loader,
 `scat check --json`), which adds no dependencies to it.
+
+## D-057 | 2026-11-24 | A second axis, grounding, goes into v0.1; the play test is paused
+
+**Raised by:** the chief engineer, during play-test sitting 1 (stage 1 issued, not yet reported). In summary: SCAT should
+record whether a story is historical or demonstrative, and whether an architecture is as-is or to-be (other terms are
+acceptable). With behavioural vs structural, this gives a 2×2 lens: grounded in observation of what exists, or
+imagining or projecting what could be. The narrator's normative posture (good, bad, a mix) stays out of the schema and
+in the story's own text; problematization belongs to a richer ontology such as ANT, applied afterwards. SCAT is
+pragmatic and thin, and does not compete with ANT-RDF; the same case can be coded in both with different tools.
+
+**Question (typed by the ACE):** "Should the grounding axis (historical/demonstrative, as-is/to-be) go into the v0.1
+release, or come after it?"
+**Answer (the chief engineer's choice, typed by the ACE):** "Into v0.1".
+
+**Consequence.** The play test is paused at stage 1 against candidate `e1701ab`. The change is a mission amendment
+(Amendment 3: the TBox is fixed per release), then a package, then a refreshed candidate, then the play test restarts.
+Tag `divergence/D-057` marks `dev` before this direction. Open questions for the amendment are being put to the chief
+engineer one at a time and recorded here.
