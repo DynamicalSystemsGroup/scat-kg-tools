@@ -46,7 +46,8 @@ document is advice, not requirement.
 structures can be expressed. The semantics attach those structures to meaning. The pragmatics are the software, the
 documentation and the user guidance. Syntax and semantics decide whether this is a system of representation in which
 correctly built models say meaningful things; pragmatics and semantics decide whether meaningful things get said in a
-real project. The syntax is packaged away: users get its benefits without seeing the full ontology. They work with the
+real project. The syntax is packaged away: it is what lets the views (G12) be defined in advance, and users get that benefit
+without seeing the full ontology. They just need it to work; the documentation is there if they want more. They work with the
 two kinds of narrative and the four kinds of vertex directly, and the three kinds of edge less directly.
 
 ## Scenarios and architectures
