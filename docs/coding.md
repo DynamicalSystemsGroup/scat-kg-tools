@@ -3,20 +3,20 @@
 !!! tip "Your next step"
     In your vault folder, run `uv run scat check` and read what it says.
 
-*The take you keep: raw notes played back as coded pages.*
+*Playing it back: raw notes, read again as coded pages.*
 { .epigraph }
 
-Coding is the step where your raw notes become part of the graph. You read a raw scenario or a raw architecture and write it again as a **coded page**. A coded page names the stakeholder groups, concerns, affordances and technologies the notes talk about. You do not summarise or judge. You name what is there, much as a player in a jazz combo improvises on what the others played without rewriting the tune.
+Coding is the step where your raw notes become part of the graph. You read a raw scenario or a raw architecture and write it again as a **coded page**. A coded page names the stakeholder groups, concerns, affordances and technologies the notes talk about. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. A **technology** is the thing that provides it. The [home page](index.md) defines all four. You do not summarise or judge. You name what is there, keeping the meaning of the raw wording. The raw page stays exactly as it was written; the coded page is a separate page that reads it.
 
 The tools do the bookkeeping. You say which things the notes name. The tools create the pages and links that follow, and the checker tells you in plain words what is still wrong. This page shows the whole loop, from start to finish: a raw page, a pushed commit and a look at the graph.
 
 ## Before you start
 
-- A vault set up as in [Getting started](getting-started.md): the folder holds `scat.toml`, you are inside it in Terminal, and `uv sync` has run. While the template is in its candidate stage, a fresh clone may need `git checkout dev` first.
-- Raw notes saved as raw pages, from [Facilitating scenarios](facilitate-scenarios.md) or [Facilitating architectures](facilitate-architectures.md). Plan your groups first with the [planning guide](planning.md).
-- Your stakeholder groups, planned in the [planning guide](planning.md) and named by role.
+- A vault set up as in [Getting started](getting-started.md): the folder holds `scat.toml`, you are inside it in Terminal, and `uv sync` has run. While SCAT is a preview being tried before its first release, a fresh clone may need `git checkout dev` first.
+- Raw notes saved as raw pages, from [Facilitating scenarios](facilitate-scenarios.md) or [Facilitating architectures](facilitate-architectures.md). In hand, you need a few plain sentences of raw notes, written as they were told.
+- Your stakeholder groups, planned in the [planning guide](planning.md) and named by role. In hand, you need a short list of the groups, one name per group.
 
-Every operation below has two spellings that give the same messages. The Python REPL leads. The CLI line sits beside it. To open the REPL, type `uv run python`, then `import scat_kg` once. The commands on this page can all be typed in a copy of the template vault, so you can follow along and lose nothing. The worked example is a small community tool library.
+Every operation below has two spellings that give the same messages. Each step shows the Python REPL way first and the command-line way beside it. To open the REPL, type `uv run python`, then `import scat_kg` once. The commands on this page can all be typed in a copy of the template vault, so you can follow along and lose nothing. The worked example is a small community tool library.
 
 ## What the pages are
 
@@ -96,7 +96,7 @@ The raw page lists its coded pages in `coded`, so a reader can walk both ways. T
 
 ## Where raw and coded pages come from
 
-A raw page is the notes as told. The [facilitation guides](facilitate-scenarios.md) teach how to write one, so this page does not repeat it. There are two ways to create a raw or a coded page, and either gives the same kind of page:
+A raw page is the notes as told. Its body holds the plain-sentence notes, written as they were told, with no links. The [facilitation guides](facilitate-scenarios.md) teach how to write one, so this page does not repeat it. There are two ways to create a raw or a coded page, and either gives the same kind of page:
 
 - Run `scat stub <name> --type scenario-raw` (or `scenario-coded`, `architecture-raw`, `architecture-coded`). Name a coded page after its raw page with `-coded` on the end.
 - Or make the page in Obsidian from the page templates in the vault's `templates/` folder.
@@ -258,7 +258,7 @@ concern: "[[tools-come-back-in-good-order]]"
 ---
 ```
 
-You add a description and, if you have one, a one-line note on how this group holds this concern. In Obsidian the page then reads:
+Nothing in the body is required. You add a `description` and, if you have one, an optional one-line `notes` on how this group holds this concern. In Obsidian the page then reads:
 
 ```text
 ---
@@ -361,7 +361,7 @@ stub         technology/shared-spreadsheet.md
 
 That is the count after one spelling of the steps above. If you typed both the REPL and the CLI `stub` line, you made one more concern, and the count reads `8 stub, 28 done, 7 none`.
 
-`set-status` moves a page along: `stub`, `draft` or `done`. Setting the status a page already has changes nothing, so you can repeat it.
+`set-status` moves a page along: `stub`, `draft` or `done`. A stub becomes a draft when you start filling it in: set it with `scat set-status <page> draft` (REPL: `scat_kg.set_status("<page>", "draft")`), or edit the `status` line by hand. When the page is finished, set `done`, then run `check` on that page. Setting the status a page already has changes nothing, so you can repeat it.
 
 === "Python (REPL)"
 
@@ -717,7 +717,7 @@ note: write `description`, `notes` and the body in heldby/workshop-participants-
 
 ## A warning that may stay: `SCAT-CONFLICT-BOTH`
 
-The template's whole-vault check always shows this one:
+The template's whole-vault check always shows this one, and you first met it in [Getting started](getting-started.md#3-run-your-first-check). A clean check means 0 errors. This warning may stay. It marks two concerns that pull apart:
 
 ```text
 warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
@@ -754,7 +754,7 @@ git commit -m "Code the Saturday notes"
 git push
 ```
 
-`git status` lists what changed. `git add .` stages every change. `git commit` saves it with a message you write. `git push` sends it to GitHub. If git asks who you are the first time, it prints the two lines to type. Commit when the whole-vault check ends with zero errors.
+Run `git status` first and read the list: it shows what the commit will hold. `git add .` stages every change in the folder, so if the list holds a change you did not mean to make, stop and sort that out before you go on. `git commit` saves it with a message you write. `git push` sends it to GitHub. If git asks who you are the first time, it prints the two lines to type. Commit when the whole-vault check ends with zero errors.
 
 ## Look at it in Obsidian
 

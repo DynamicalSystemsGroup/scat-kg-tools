@@ -6,8 +6,10 @@
 *The chart: who plays, and in what order, before anyone counts in.*
 { .epigraph }
 
-You are planning a facilitation event; think of it as writing the chart before the gig. By the end you will have a short plan: which sessions hear stories, which hear
+You are planning a facilitation event; think of it as writing the chart before the gig. The chart is your written plan: who takes part, in which session, in what order. It is a page of notes, nothing to file. By the end you will have a short plan: which sessions hear stories, which hear
 architectures, which groups are in the room, and how the notes will be kept.
+
+Two words come up below. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. The [home page](index.md) defines these and the other two kinds of thing, groups and technologies.
 
 Nothing here is ranked, voted on or adjudicated. Your plan adds topics and voices; it never trades one off against
 another.
@@ -52,7 +54,7 @@ Cluster the people you expect into groups that fit under the cap:
 1. List who is likely to come, by role. Never by name.
 2. Group them by shared standpoint: what they look at the world from. Do not group by size or by who is loudest.
 3. If more standpoints appear than the cap allows, widen a group's description so it holds them. Do not drop a
-   standpoint.
+   standpoint. If widening still leaves more standpoints than the cap, your plan decides: you may raise `stakeholder_group_cap` in `scat.toml` if the plan allows it. See [a new group over the cap](coding.md#8-a-new-group-over-the-cap-scat-cap) for the exact steps.
 4. If a role is filled by one identifiable person, widen the group around it. A group of one is a person.
 5. Where it is unclear which group someone belongs to, ask them. A person may speak from more than one group.
 
@@ -90,7 +92,9 @@ refused scat.toml field `stakeholder_group_cap`: the vault is at its cap of 3 st
 The example vault ships with three example groups, which fill a cap of 3. Clear the example pages before you add
 your own groups. See [Start your own content](getting-started.md#5-start-your-own-content).
 
-## Seat every group in every session
+## Give every group room in every session
+
+Invite every group, and give each one room to speak in every session.
 
 - In scenario sessions, every group has a way to tell what it does. Plan a prompt for each group, worded from its own
   standpoint: "from where trustees and funders sit, ...". No group's wording is the neutral default.
@@ -154,7 +158,7 @@ Raw notes are kept apart from any later reading of them. Capture comes first, an
 
 ## Where next
 
-Chart in hand, you are ready to play:
+Planned? Then facilitate:
 
 - [Facilitating scenarios](facilitate-scenarios.md)
 - [Facilitating architectures](facilitate-architectures.md)

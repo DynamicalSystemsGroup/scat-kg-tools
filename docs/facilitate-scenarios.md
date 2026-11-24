@@ -3,10 +3,10 @@
 !!! tip "Your next step"
     Open the session by reading the Chatham House lines aloud, then ask the first group for a story that starts at a concrete moment.
 
-*A group's turn is its chorus: you listen, then build on it.*
+*Each group takes a turn: you listen, then build on what it said.*
 { .epigraph }
 
-A scenario session is a set of stories, one turn per group. It hears what people do in a situation, in time, and what comes of it. You hold the room, much as a player in a jazz combo improvises on what the others play. A note-taker
+A scenario session is a set of stories, one turn per group. It hears what people do in a situation, in time, and what comes of it. You run the session. You ask the questions, say whose turn it is, and listen, much as a player in a jazz combo builds on what the others play. In each group's turn, you listen to its story, write it down as offered, then ask a question that adds to it. A note-taker
 writes. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a story, and you never ask anyone to
@@ -22,7 +22,10 @@ concede one.
 Two moves keep the whole session in time.
 
 - **Yes, and.** Whatever someone offers is taken up and built on. You write it down as offered, then ask a question
-  that adds to it. You never ask a question that tests it.
+  that adds to it. You never ask a question that tests it. "Yes, and" is both the stance and words you say aloud: in
+  several stages below you start a question with "Yes, and".
+  If something offered seems wrong to you, do not correct it or rank it. Write it down as offered, ask what it adds,
+  and set another perspective beside it: "from this perspective, ...".
 - **From this perspective.** Every contribution is placed in the group it comes from, and said that way: "from where
   the operators sit, ...".
 
@@ -35,7 +38,7 @@ them doing. That is an affordance.
 
 Do: say the Chatham House frame aloud. Say that today is for stories, and that accounts can differ.
 
-Say:
+The lines under "Say" show each move. Say them as written or in your own words, but when a line uses "Yes, and" or "from this perspective", keep those words and say them aloud.
 
 ```text
 Whatever is said here can be used. Nobody is named; the
@@ -51,7 +54,7 @@ Note-taker writes: the date, the session, and "Chatham House: groups, not indivi
 
 Do: ask one question at a time, from a concrete moment. Do not ask the teller to sort what comes up into types.
 
-Say, in this order, one per turn:
+Say these in this order. Each line is its own turn: ask one, wait for the answer, take it up, then ask the next.
 
 ```text
 Tell us about a time when ...
@@ -91,7 +94,7 @@ From where the borrowers sit, what did that morning look
 like?
 ```
 
-Note-taker writes: "From the point of view of <group> (about 10:20)" at the head of each account. Every affordance, outcome and concern
+Note-taker writes: `From the point of view of GROUP NAME (about 10:20)` at the head of each account. Every affordance, outcome and concern
 is written under that group. When someone retells a story, it becomes their story from their perspective, and the
 original stays as told.
 
