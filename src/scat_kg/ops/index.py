@@ -8,6 +8,7 @@ it, appends a fresh region when there is no well-formed marker pair, and creates
 import re
 from pathlib import Path
 
+from scat_kg.fix import FixOption
 from scat_kg.ops.common import open_vault
 from scat_kg.ops.files import (
     NotUtf8,
@@ -18,7 +19,9 @@ from scat_kg.ops.files import (
     replace_file,
 )
 from scat_kg.ops.names import CLASS_PAGES, quote
-from scat_kg.ops.result import Refusal, Result
+from scat_kg.ops.result import Refusal, Result, refusal, run_option
+
+_INDEX = run_option("run `scat index` again", ("index",), "scat_kg.index()")
 from scat_kg.tbox import TBOX
 from scat_kg.vault import Page, Vault
 
@@ -134,11 +137,16 @@ def index(*, root: str | Path = ".") -> Result:
         page, clash = _class_pages(vault, name)
         if clash:
             refusals.append(
-                Refusal(
+                refusal(
                     f"class/{name}.md",
                     clash,
                     "rename or move that file (Obsidian rewrites the links to it), then run "
                     "`scat index` (REPL: `scat_kg.index()`) again",
+                    FixOption(
+                        "manual", "rename or move that file (Obsidian rewrites the links to it)"
+                    ),
+                    _INDEX,
+                    sequence=True,
                 )
             )
         elif page is None:
@@ -178,14 +186,28 @@ def _rewrite(vault: Vault, page: Page, name: str, region: str) -> bool | Refusal
     try:
         lines, bom = read_lines(path)
     except NotUtf8 as e:
-        return Refusal(page.path, str(e), "save the file as UTF-8, then run `scat index` again")
+        return refusal(
+            page.path,
+            str(e),
+            "save the file as UTF-8, then run `scat index` again",
+            FixOption("manual", "save the file as UTF-8"),
+            _INDEX,
+            sequence=True,
+        )
     close = _frontmatter_close(lines)
     if close is None or page.frontmatter_error:
-        return Refusal(
+        return refusal(
             page.path,
             "its frontmatter cannot be read, so the body cannot be told from it",
             "repair the frontmatter (a block of `key: value` lines between two `---` lines at the "
             "top), then run `scat index` (REPL: `scat_kg.index()`) again",
+            FixOption(
+                "manual",
+                "repair the frontmatter (a block of `key: value` lines between two `---` lines at "
+                "the top)",
+            ),
+            _INDEX,
+            sequence=True,
         )
     eol = line_ending(lines)
     new_rows = region.split("\n")

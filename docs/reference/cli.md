@@ -91,7 +91,7 @@ Every command takes `--root ROOT`, the vault folder (default: the current folder
 ## scat check
 
 ```text
-usage: scat check [-h] [--root ROOT] [--neighborhood] [PAGE]
+usage: scat check [-h] [--root ROOT] [--json] [--neighborhood] [PAGE]
 
 Check the vault against the rules. PAGE is a page name or its path from the vault folder; without it, the whole vault. Writes nothing.
 
@@ -101,6 +101,8 @@ positional arguments:
 options:
   -h, --help      show this help message and exit
   --root ROOT     the vault folder, the one with scat.toml (default: here)
+  --json          print the result as one JSON document (machine-interface
+                  contract), nothing else
   --neighborhood  check PAGE and every page one link away, in either direction
 
 REPL: `scat_kg.check()`, `scat_kg.check("<page>")`, `scat_kg.check("<page>", neighborhood=True)`
@@ -137,7 +139,7 @@ Exit codes: 0 when there are no errors (warnings are fine), 1 when there is an e
 ## scat status
 
 ```text
-usage: scat status [-h] [--root ROOT] [--neighborhood] [PAGE]
+usage: scat status [-h] [--root ROOT] [--json] [--neighborhood] [PAGE]
 
 Show each page's status and the counts. PAGE is a page name or its path from the vault folder; without it, the whole vault.
 
@@ -147,6 +149,8 @@ positional arguments:
 options:
   -h, --help      show this help message and exit
   --root ROOT     the vault folder, the one with scat.toml (default: here)
+  --json          print the result as one JSON document (machine-interface
+                  contract), nothing else
   --neighborhood  show PAGE and every page one link away, in either direction
 
 REPL: `scat_kg.status()`, `scat_kg.status("<page>")`, `scat_kg.status("<page>", neighborhood=True)`
@@ -181,7 +185,7 @@ Exit codes: 0, or 1 for a refusal (a page that is not there, a vault folder that
 ## scat set-status
 
 ```text
-usage: scat set-status [-h] [--root ROOT] PAGE STATUS
+usage: scat set-status [-h] [--root ROOT] [--json] PAGE STATUS
 
 Set a page's status to stub, draft or done.
 
@@ -192,6 +196,8 @@ positional arguments:
 options:
   -h, --help   show this help message and exit
   --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
 
 REPL: `scat_kg.set_status("<page-name>", "<status>")`
 ```
@@ -227,13 +233,15 @@ The CLI example uses a different page from the Python one, so both can run in on
 ## scat index
 
 ```text
-usage: scat index [-h] [--root ROOT]
+usage: scat index [-h] [--root ROOT] [--json]
 
 Rewrite the generated table of every class page, creating a missing class page.
 
 options:
   -h, --help   show this help message and exit
   --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
 
 REPL: `scat_kg.index()`
 ```
@@ -277,7 +285,7 @@ Exit codes: 0, or 1 for a refusal (another file holds a class page's name, or a 
 ## scat stub
 
 ```text
-usage: scat stub [-h] [--root ROOT] --type TYPE NAME
+usage: scat stub [-h] [--root ROOT] [--json] --type TYPE NAME
 
 Create a stub page (a concern, affordance, technology, stakeholder-group or record page).
 
@@ -287,6 +295,8 @@ positional arguments:
 options:
   -h, --help   show this help message and exit
   --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
   --type TYPE  the page type key, one of: affordance, architecture-coded,
                architecture-raw, concern, scenario-coded, scenario-raw,
                stakeholder-group, technology
@@ -323,7 +333,8 @@ The CLI example uses a different name from the Python one, so both can run in on
 ## scat stub-pair
 
 ```text
-usage: scat stub-pair [-h] [--root ROOT] RELATION ENDPOINT-A ENDPOINT-B
+usage: scat stub-pair [-h] [--root ROOT] [--json]
+                      RELATION ENDPOINT-A ENDPOINT-B
 
 Create the relation page for a pair, stubbing an endpoint that does not exist.
 
@@ -336,6 +347,8 @@ positional arguments:
 options:
   -h, --help   show this help message and exit
   --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
 
 REPL: `scat_kg.stub_pair("<relation>", "<endpoint-a>", "<endpoint-b>")`
 ```
@@ -369,7 +382,7 @@ Exit codes: 0 when it created pages or found the pair already stated, 1 for a re
 ## scat stub-links
 
 ```text
-usage: scat stub-links [-h] [--root ROOT] [PAGE]
+usage: scat stub-links [-h] [--root ROOT] [--json] [PAGE]
 
 Create the pages that link fields name and the vault lacks. PAGE limits it to one page.
 
@@ -379,6 +392,8 @@ positional arguments:
 options:
   -h, --help   show this help message and exit
   --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
 
 REPL: `scat_kg.stub_links()`, `scat_kg.stub_links("<page>")`
 ```

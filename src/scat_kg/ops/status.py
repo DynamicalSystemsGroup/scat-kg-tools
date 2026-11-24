@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from scat_kg.contract import SCHEMA_VERSION
 from scat_kg.ops.common import find_page, open_vault
 from scat_kg.ops.files import NotUtf8, join_lines, line_ending, read_lines, replace_file
 from scat_kg.ops.result import Refusal, Result, refused
@@ -28,6 +29,17 @@ class StatusRow:
     type: Any  # as written; None when the page has no readable type
     status: Any  # as written; None when missing, or on a class page, which carries none
 
+    def to_dict(self) -> dict:
+        """A type or status that is not a string is null; a class page carries no status."""
+        return {
+            "path": self.path,
+            "name": self.name,
+            "type": self.type if isinstance(self.type, str) else None,
+            "status": self.status
+            if isinstance(self.status, str) and self.type != "class"
+            else None,
+        }
+
 
 @dataclass(frozen=True)
 class StatusReport(Result):
@@ -46,6 +58,20 @@ class StatusReport(Result):
             else:
                 counts["other"] += 1
         return counts
+
+    def to_dict(self) -> dict:
+        if self.refused:
+            return super().to_dict()
+        return {
+            "schema_version": SCHEMA_VERSION,
+            "kind": "status",
+            "operation": "status",
+            "ok": True,
+            "scope": self.scope,
+            "rows": [r.to_dict() for r in self.rows],
+            "counts": self.counts,
+            "notes": list(self.notes),
+        }
 
     def lines(self) -> list[str]:
         if self.refused:

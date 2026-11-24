@@ -6,6 +6,7 @@ refuses creates nothing. Relation pages are made only for a pair the author name
 
 from pathlib import Path
 
+from scat_kg.fix import FixOption
 from scat_kg.ops.common import find_page, open_vault, taken_names
 from scat_kg.ops.files import create_files
 from scat_kg.ops.names import (
@@ -15,7 +16,7 @@ from scat_kg.ops.names import (
     quote,
     title_from_name,
 )
-from scat_kg.ops.result import Refusal, Result, refused
+from scat_kg.ops.result import Refusal, Result, refusal, refused, run_option
 from scat_kg.tbox import TBOX
 from scat_kg.vault import Vault
 
@@ -123,6 +124,15 @@ def stub(name: str, type: str, *, root: str | Path = ".") -> Result:
             if type == "class"
             else f"use one of: {', '.join(STUBBABLE)}"
         )
+        if type == "class":
+            return Result(
+                op,
+                refused=(
+                    refusal(
+                        f"type `{type}`", why, fix, run_option(fix, ("index",), "scat_kg.index()")
+                    ),
+                ),
+            )
         return refused(op, f"type `{type}`", why, fix)
     if problem := name_problem(name):
         hint = derive_name(name, taken_names(vault))
@@ -192,11 +202,18 @@ def stub_links(ref: str | None = None, *, root: str | Path = ".") -> Result:
         types = wants[target]
         if len(types) > 1:
             refusals.append(
-                Refusal(
+                refusal(
                     f"name `{target}`",
                     "links name it as different types: "
                     + "; ".join(f"{t} ({', '.join(w)})" for t, w in sorted(types.items())),
                     f"fix the links so that one type remains, or run `scat stub {target} --type <type-key>`",
+                    FixOption("manual", "fix the links so that one type remains"),
+                    run_option(
+                        f"run `scat stub {target} --type <type-key>`",
+                        ("stub", target, "--type", "<type-key>"),
+                        f'scat_kg.stub("{target}", type="<type-key>")',
+                        "<type-key>",
+                    ),
                 )
             )
             continue
@@ -266,10 +283,17 @@ def stub_pair(relation: str, endpoint_a: str, endpoint_b: str, *, root: str | Pa
             title = page.fields.get("title")
             if page.type != want:
                 refusals.append(
-                    Refusal(
+                    refusal(
                         subject,
                         f"{page.path} is a `{page.type}` page, and `{key}` needs a `{want}`",
                         f"give a {want} page here (order: {order}), or run `scat stub <page-name> --type {want}` for a new one",
+                        FixOption("manual", f"give a {want} page here (order: {order})"),
+                        run_option(
+                            f"run `scat stub <page-name> --type {want}` for a new one",
+                            ("stub", "<page-name>", "--type", want),
+                            f'scat_kg.stub("<page-name>", type="{want}")',
+                            "<page-name>",
+                        ),
                     )
                 )
             elif not isinstance(title, str) or not title.strip():
