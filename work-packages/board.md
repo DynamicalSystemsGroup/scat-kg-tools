@@ -51,18 +51,19 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP5-U2 | Python developer (vault reader), sonnet | 5 | 5 | `wp5/u2` | done |  | 2026-11-23T17:53:23-05:00 | 1 push-back (non-string type crashed the reader), 2 reviews; about 8 min worker plus rework; matches estimate |
 | WP5-U3 | Python developer (checks), sonnet | 8 | 8 | `wp5/u3` | done |  | 2026-11-23T17:53:23-05:00 | 27 rules, 244 tests, first-time review PASS; about 18 min worker; matches estimate |
 | WP5-U4 | Python developer (operations), sonnet | 8 | 8 | `wp5/u4` | done |  | 2026-11-23T17:53:23-05:00 | 90 tests, first-time review PASS; about 7 min worker; 12 contract gaps flagged; matches estimate |
-| WP5-U5 | Python developer (CLI and API), sonnet | 3 |  | `wp5/u5` | blocked | edit to tests/checks/helpers.py denied by the permission classifier; ACE decision needed |  |  |
-| WP5-U6 | test engineer, sonnet | 3 |  | `wp5/u6` | queued | WP5-U5 merged |  |  |
-| WP5-U7 | clean-install tester, haiku | 2 |  | none (scratch) | queued | WP5-U5 merged |  |  |
+| WP5-U5 | Python developer (CLI and API), sonnet | 3 | 8 | `wp5/u5` | done |  | 2026-11-23T20:10:59-05:00 | blocked by the permission guard, then D-035 authorisation and D-036 scope change; fixture edits to 10 assertions, 2 reviews; absorbed the INDEX-STALE rule and an integration fix (U10); ran over |
+| WP5-U6 | test engineer, sonnet | 3 | 3 | `wp5/u6` | done |  | 2026-11-23T20:10:59-05:00 | first-time review PASS; reviewer caught 5 of 5 mutations; matches estimate |
+| WP5-U7 | clean-install tester, haiku | 2 | 2 | none (scratch) | done |  | 2026-11-23T20:10:59-05:00 | two Haiku runs (before and after fixes); first run found 2 findings fed to U8; second run clean with no fix steps; matches estimate |
+| WP5-U10 | Python developer (integration fix), sonnet | 1 | 1 | `wp5/u10` | done |  | 2026-11-23T20:10:59-05:00 | unplanned: one test assertion adjusted after SCAT-INDEX-STALE landed; PM re-ran the suite (no separate review for a three-line change) |
 | WP5-U9 | Python developer (reader exclusion, D-034), sonnet | 1 | 1 | `wp5/u9` | done |  | 2026-11-23T17:53:23-05:00 | unplanned unit added by PM after ruling D-034; first-time PASS; small |
-| WP5-U8 | fixer, sonnet | 3 |  | `wp5/u8` | queued | WP5-U6 and WP5-U7 |  |  |
+| WP5-U8 | fixer, sonnet | 3 | 5 | `wp5/u8` | done |  | 2026-11-23T20:10:59-05:00 | planned fix unit; scope grew by D-035 items 1 to 3 (TBox labels, marker wording, empty type) plus help text; first-time review PASS; replanned estimate 5 |
 | WP6-U1 | template designer, sonnet | 5 | 5 | `wp6/u1` | done |  | 2026-11-23T17:53:23-05:00 | 1 amendment for D-034 (templates_folder key); first-time review PASS; about 3 min worker; matches estimate |
-| WP6-U2 | case-study writer, sonnet | 8 |  | `wp6/u2` | queued | ready; held at hand-back |  |  |
-| WP6-U3 | technical writer, sonnet | 2 |  | `wp6/u3` | queued | ready; held at hand-back |  |  |
-| WP6-U4 | Python developer (pin and CI), sonnet | 3 |  | `wp6/u4` | queued | WP5-U5 merged on dev |  |  |
-| WP6-U5 | mechanical checker, haiku | 2 |  | none (scratch) | queued | WP6-U2 and WP6-U4 merged |  |  |
-| WP6-U6 | fixer, sonnet | 3 |  | `wp6/u6` | queued | WP6-U5 review |  |  |
-| WP6-U7 | clean-environment tester, haiku | 2 |  | none (scratch) | queued | WP6-U6 merged |  |  |
+| WP6-U2 | case-study writer, sonnet | 8 | 8 | `wp6/u2` | done |  | 2026-11-23T20:10:59-05:00 | 28 pages, 12 quotes traced verbatim, first-time review PASS; 5 items flagged for the ACE; matches estimate |
+| WP6-U3 | technical writer, sonnet | 2 | 3 | `wp6/u3` | done |  | 2026-11-23T20:10:59-05:00 | 1 push-back (7 README items), 2 reviews; ran over by one |
+| WP6-U4 | Python developer (pin and CI), sonnet | 3 | 2 | `wp6/u4` | done |  | 2026-11-23T20:10:59-05:00 | first-time review PASS; small config; under estimate |
+| WP6-U5 | mechanical checker, haiku | 2 | 2 | none (scratch) | done |  | 2026-11-23T20:10:59-05:00 | first-time review PASS; matches estimate |
+| WP6-U6 | fixer, sonnet | 3 | 2 | `wp6/u6` | done |  | 2026-11-23T20:10:59-05:00 | planned fix unit; the re-pin needed no page fixes; verified by the clean-environment unit; under estimate |
+| WP6-U7 | clean-environment tester, haiku | 2 | 2 | none (scratch) | done |  | 2026-11-23T20:10:59-05:00 | README path ran as written from 'uv installed' on; install, gh and web paths not exercised (no download permission); matches estimate |
 
 ## Iterations and velocity
 
@@ -72,6 +73,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 2 | WP2-U2, WP2-U3, WP2-U4, WP2-U5 | 11 | 10 | 0.91 | 0.41 h | 24.4 |
 | 3 | WP1-U4, WP1-U5, WP2-U6, WP3-U4 | 12 | 15 | 1.25 | 0.16 h | 93.8 |
 | 4 | WP4-U1 to WP4-U8 | 29 | 38 | 1.31 | 1.09 h | 34.9 |
+| 5 | WP5-U1 to WP5-U10 (U9, U10 unplanned), WP6-U1 to WP6-U7 | 64 | 70 | 1.09 | 2.94 h | 23.8 |
 
 ## Velocity and forecast
 
@@ -83,6 +85,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
 
-Current: 138 est. pts proposed (WP1 to WP6: 76 + WP5 37 + WP6 25; WP7 and WP8 not yet scoped); 76 est. pts completed; 90 realized pts completed. 4 iterations closed; running realized/estimated ratio 1.18; raw velocities [40.9, 24.4, 93.8, 34.9]; smoothed velocity v-hat 49.0 realized pts/hour. Forecast: still not stated as a number, because the remaining estimated points do not exist yet (WP5 to WP8 have no scopes). Iteration 4 is one package (WP4) with its units overlapping, and its 1.09 h includes the waits for the ACE's rulings D-030 and D-031, so its velocity is the first one that reflects a gated pace.
+Current: 140 est. pts proposed (WP1 to WP6, including the unplanned WP5-U9 and WP5-U10 at 1 point each; WP7 and WP8 not yet scoped); 140 est. pts completed; 160 realized pts completed. 5 iterations closed; running realized/estimated ratio 1.14; raw velocities [40.9, 24.4, 93.8, 34.9, 23.8]; smoothed velocity v-hat 36.4 realized pts/hour. Forecast: still not stated as a number, because the remaining estimated points do not exist yet (WP7 and WP8 have no scopes). Iteration 5 is two packages overlapping in time (WP5 and WP6 ran in parallel), so its 2.94 h of wall clock includes waits for the permission guard and the ACE (D-034, D-035); its velocity is the lowest so far.
+
+Over and under, WP5 and WP6: WP5-U5 ran at 8 against an estimate of 3 (a new rule changed the shared test fixture, a permission guard blocked the edit, and an ACE ruling changed its scope); WP5-U8, the planned fix unit, ran at 5 against 3 (D-035 added three items; its replanned estimate was 5, logged in metrics, original unchanged); WP6-U3 (README) ran at 3 against 2 after a push-back. Under: WP6-U4 and WP6-U6 (pin work, 2 against 3). At estimate: the checks and operations units (8 and 8), the case study (8), the reader (5) and the verification tests (3). Lesson: a unit that adds a rule or changes a shared fixture should be planned for the tests it disturbs, and any unit that edits existing tests needs the guard's authorisation arranged before it starts.
 
 Over and under, WP4: the three specification units (TBox, page contracts, rule catalogue) ran at 8 against an estimate of 5 each, because two ACE rulings arrived mid-flight and each unit took three or four review rounds. The examples, cold-write, cross-check and rerun units landed at their estimates. Spec-heavy units that other units must align with should be estimated at 8, and an unplanned fix unit should be planned for after any cold-write test.

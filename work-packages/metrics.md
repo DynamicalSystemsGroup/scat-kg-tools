@@ -40,6 +40,7 @@ overlapping iterations overstate throughput. Treat early velocities as noisy.
 | `basis` | str or null | One line on how the realized points were scored |
 | `waiting_on` | str or null | For `queued` or `blocked` units: what they wait on |
 | `iteration` | int or null | The iteration the unit landed in (set when `done`) |
+| `replanned_est_pts` | int, optional | A new planned estimate when a unit's scope grew by a ruling; `est_pts` is never changed |
 
 **`iteration`**: an iteration closed.
 
