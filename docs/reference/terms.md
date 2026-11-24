@@ -96,8 +96,8 @@ How finished a page is: `stub` (just started), `draft` (being written) or `done`
 
 - **Vault:** the `status` field of every page except the index tables.
 - **Stage:** capture.
-- **Check:** the person who wrote or coded the page sets `done`, not the tool, which only checks that the fields and links the
-  page type requires are present: `description` always, [`timeframe`](#past-or-future-mark) on a raw page, `raw` and the lists of what it names
+- **Check:** the person who wrote or coded the page sets `done`, not the tool, which only checks that the
+  page type's required fields and links are present: `description` always, [`timeframe`](#past-or-future-mark) on a raw page, `raw` and the lists of what it names
   on a coded page.
 
 ## Past or future mark
@@ -114,4 +114,4 @@ A whole-vault read with zero errors. Warnings do not stop it.
 
 - **Vault:** none.
 - **Stage:** from the start, rechecked after coding; a gate before analyse.
-- **Check:** analysis needs a clean check and every page `done`. The check tests structure, not content. Run: uv run scat check.
+- **Check:** analysis needs a clean check and every page you made `done`. It tests structure, not content. Run: uv run scat check.
