@@ -1,6 +1,6 @@
 # RS2 readout: graph analysis of a SCAT vault
 
-Spike RS2, unit U2. Everything below is backed by `notebook/scat-graph-analysis.ipynb` (executed copy: `notebook/executed.ipynb`), run on the template's case study (3 groups, 3 concerns) and the synthetic water-cooperative vault (7 groups, 18 concerns, 13 affordances, 10 technologies, 5 conflicts, 7 coded records).
+Spike RS2, units U2 and U3 (package `src/scat_analysis`, described in `README.md`). Everything below is backed by `notebook/scat-graph-analysis.ipynb` (executed copy: `notebook/executed.ipynb`), run on the template's case study (3 groups, 3 concerns) and the synthetic water-cooperative vault (7 groups, 18 concerns, 13 affordances, 10 technologies, 5 conflicts, 7 coded records).
 
 ## 1. The graph model
 
@@ -8,7 +8,7 @@ A directed, typed `networkx.DiGraph`: nodes carry `layer` (stakeholder group, co
 
 - **Conflicts** as a separate undirected graph over concerns. The vault declares each on one concern page only; the loader takes the symmetric closure and records `declared_by`. In the synthetic vault all 5 pairs are one-sided, so without the closure the answer to "which groups sit opposite?" would depend on which end is asked.
 - **Provenance** as a table, one row per coded scenario or architecture record, listing the nodes it names. These are hyperedges (one record, many nodes); projecting them into graph edges would invent pairwise links nobody wrote.
-- **Status** as a node attribute, so any analysis can be restricted to signed-off pages (`STATUSES` in the notebook).
+- **Status** as a node attribute, so any analysis can be restricted to signed-off pages (`load_graph(root, status="done")`).
 
 A layered (4-partite) graph was enough. A full multilayer model adds nothing until there is a fifth kind of thing to relate.
 
@@ -63,4 +63,4 @@ scat_kg.graph.to_networkx(vault) -> (DiGraph, Graph, DataFrame)
 scat_kg.graph.traceability / tension / carriage / projection / communities   # the notebook's functions
 ```
 
-**Delivery.** Split at the dependency line. The loader and flattened tables belong in `scat_kg` itself (plain dataclasses or lists; no heavy dependency). The graph functions need networkx (and pandas for tables) and should ship as an optional extra (`scat-kg[analysis]`) or a sibling package, so `scat check` stays light. The notebook ships as a template beside that package, with a path variable and the case study copied in so it runs offline. A later package should first make the loader public, then move `scat_graph.py` over with its checks, and keep the "Reads as / Does not mean" blocks as part of the product, not as decoration.
+**Delivery.** Split at the dependency line. The loader and flattened tables belong in `scat_kg` itself (plain dataclasses or lists; no heavy dependency). The graph functions need networkx (and pandas for tables) and should ship as an optional extra (`scat-kg[analysis]`) or a sibling package, so `scat check` stays light. The notebook ships as a template beside that package, with a path variable and the case study copied in so it runs offline. A later package should first make the loader public, then move the `scat_analysis` package over with its tests, and keep the "Reads as / Does not mean" blocks as part of the product, not as decoration.
