@@ -275,9 +275,7 @@ warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-cod
 These warnings are a nudge, not a fault. The page is a draft. It is finished when you code it.
 See [Coding](coding.md).
 
-Obsidian's own page template for a raw architecture also exists, but it takes its name from whatever you type as the
-file name. A name with capitals or spaces fails the check. `scat stub` is the one way, because it refuses a bad name
-and says why.
+`scat stub` is the one way to create a page, because it refuses a bad name and says why.
 
 ## Where next
 

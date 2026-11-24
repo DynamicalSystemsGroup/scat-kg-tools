@@ -98,7 +98,7 @@ The raw page lists its coded pages in `coded`, so a reader can walk both ways. T
 
 A raw page is the notes as told. Its body holds the plain-sentence notes, written as they were told, with no links. The [facilitation guides](facilitate-scenarios.md) teach how to write one, so this page does not repeat it. `scat stub` is the one way to create a raw or a coded page. Run `scat stub <name> --type scenario-raw` (or `scenario-coded`, `architecture-raw`, `architecture-coded`). Name a coded page after its raw page with `-coded` on the end.
 
-A stub starts at `status: stub`, with only `type`, `status` and `title`: no `description` and no `coded` or `raw` line. Do not create the page in Obsidian from the page templates in the vault's `templates/` folder. A template takes its name from whatever you type as the file name, and a bad name fails the check, while `scat stub` refuses a bad name and says why. You do not need the templates.
+A stub starts at `status: stub`, with only `type`, `status` and `title`: no `description` and no `coded` or `raw` line.
 
 For example, the stub of a raw page and of its coded page, as the tool makes them:
 
