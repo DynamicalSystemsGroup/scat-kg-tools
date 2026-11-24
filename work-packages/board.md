@@ -15,6 +15,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP7 | Docs and Pages | accepted | `WP7.md` |
 | WP8 | Candidate and user acceptance | all units done except WP8-U1 (held for the chief engineer); handed back to the ACE for the release PRs | `WP8.md` |
 | WP9 | v0.1 cleanup after the chief engineer's skim (D-052) | all units done and verified on fresh clones | `WP9.md` |
+| WP10 | Past or future on the captured narratives (D-057, D-058) | in flight | `WP10.md` |
 | RS1 | Research spike: Obsidian plugin (outside v0.1; branch `spike/obsidian-plugin`, never merged into `dev`) | readout, installable plugin and tests done | `RS1-obsidian-plugin.md` |
 | RS2 | Research spike: graph analysis (outside v0.1; branch `spike/analysis`, never merged into `dev`) | readout, package, notebook and tests done | `RS2-analysis.md` |
 
@@ -125,6 +126,10 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | RS2-U3 | research software engineer (package, tests, README), sonnet | 5 | 5 | `spike/analysis` | done |  | 2026-11-24T01:10:16-05:00 | D-054 target: scat_analysis package, 22 tests, README; reviewer PASS with 3 should-fix; at estimate |
 | RS2-U5 | research software engineer (review fixes), sonnet | 2 | 2 | `spike/analysis` | done |  | 2026-11-24T01:25:14-05:00 | unplanned: pair count wording, node labels, README layout line; at estimate |
 | RS2-U4 | research software engineer (sync with dev), sonnet | 2 | 2 | `spike/analysis` | done |  | 2026-11-24T01:33:08-05:00 | dev merged into the spike; case-study copy refreshed; at estimate |
+| WP10-U3 | template editor (case-study tags), sonnet | 2 | | `wp10/u3` (template) | in flight | | | |
+| WP10-U1 | Python developer and ontology designer (TBox, contracts, rule, stub, tests), sonnet | 8 | | `wp10/u1` | queued | U3 merged (the docs test pin needs the tagged template) | | |
+| WP10-U2 | technical writer (facilitation and planning guides), sonnet | 5 | | `wp10/u2` | queued | U3 merged (then runs in parallel with U1) | | |
+| WP10-U4 | Python developer (refresh: pins, walkthrough, reviewer's guide, Pages, fresh clone), sonnet | 5 | | `wp10/u4` | queued | U1, U2, U3 merged | | |
 
 ## Iterations and velocity
 
