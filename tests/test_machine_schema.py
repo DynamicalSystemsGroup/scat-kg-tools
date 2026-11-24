@@ -535,11 +535,11 @@ def test_page_states_that_edits_are_computed_from_the_file_as_checked():
 def test_page_states_that_a_slot_fix_may_choose_among_exact_values():
     flat = " ".join(PAGE.split())
     for phrase in (
-        "choose among exact values (no `author_slot`)",
+        "chooses among exact values (no `author_slot`)",
         "`timeframe`",
-        "without clearing the problem alone",
-        "additive suggestion",
-        "its `text` says so",
+        "e.g. the missing `timeframe` of a page (SCAT-DONE-FIELD)",
+        "An option may only add (a suggestion you confirm) without clearing the problem on its own",
+        "read its `text`",
     ):
         assert phrase in flat, phrase
 
@@ -549,4 +549,16 @@ def test_schema_descriptions_restate_the_clarifications():
     assert "literal text as written in the file" in defs["ReplaceText"]["description"]
     assert "everywhere on the line" in defs["ReplaceText"]["description"]
     assert "do not compose" in defs["SetField"]["description"]
-    assert "additive suggestion" in defs["FixOption"]["properties"]["text"]["description"]
+    assert "suggestion you confirm" in defs["FixOption"]["properties"]["text"]["description"]
+
+
+def test_page_keeps_the_definitions_the_compression_must_not_drop():
+    flat = " ".join(PAGE.split())
+    for phrase in (
+        "`neighborhood`, a page and its linked pages",
+        "already right, nothing written",
+        "sentences for a person",
+        "the message as `scat check` prints it",
+        "exactly one JSON document",
+    ):
+        assert phrase in flat, phrase
