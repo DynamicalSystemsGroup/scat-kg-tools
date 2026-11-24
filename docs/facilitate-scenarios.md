@@ -30,6 +30,55 @@ Use two habits in every turn of the session: "Yes, and" and "From this perspecti
 Scenarios are behavioural. Technology stays out of view. What you hear of a tool is what it let people do, or stopped
 them doing. That is an affordance. When a technology comes up, ask what the tool let people do or stopped them doing, and write that down, not what the tool is.
 
+## Past or future, one at a time
+
+Each raw page carries a `timeframe:` line: `past`, `future` or `mixed`. The rule: anything real that can be narrated is past, and anything being done with intention but not yet realized is future. The present is not a separate value; it folds into one of these. The mark is about whether what is told is real, not the verb tense.
+
+| | Past | Future |
+|---|---|---|
+| Behavioural (scenarios) | what people did | what people could do or will do |
+| Structural (architectures) | a system that exists (baseline) | a system that is proposed (target) |
+
+People mix the two freely, so lead them to one at a time: take stories of what has happened in one block, and what could or will happen in another. If the other time comes up early, jot it on a scrap or the board, carry it into that block's own page, and return to it then.
+
+### Scenario phrases
+
+| Phrase | Mark | Why |
+|---|---|---|
+| "Last Saturday three people asked for one drill." | past | It happened. |
+| "We always check the sheet on Mondays." | past | A habit is real. |
+| "We usually run out of drills by noon." | past | Usual means it has happened. |
+| "When someone would bring a drill back late, we chase it." | past | A habit, though it says "would". |
+| "People can see who has what on the sheet." | past | Present tense, but it really exists. |
+| "What would happen if we lent drills overnight?" | future | A counterfactual is not yet real. |
+| "If we had a second desk, queues would shrink." | future | A counterfactual, though it says "had". |
+| "We are trialling weekly checks." | future | Under way, but not yet realized. What already happened in it is a separate past account. |
+| "We are moving to a new sheet this month." | future | Being done with intention, not yet realized. |
+| "Next time we should add a shelf label." | future | "Next time" and "should" look ahead. |
+| "The trustees will decide in spring." | future | "Will" looks ahead. |
+| "Imagine an app that texts borrowers." | future | Imagined, not real. |
+
+The non-obvious ones are the habit with "would", the present-tense line, the counterfactual with "had", the pilot and the move under way.
+
+### Architecture phrases
+
+For an architecture, past is the baseline: what exists, or once existed. Future is the target: what is proposed, to be.
+
+| Phrase | Mark | Why |
+|---|---|---|
+| "The desk uses a paper sheet and a shelf label." | past | It exists: baseline. |
+| "The sheet records who has what." | past | Present tense, but it exists: baseline. |
+| "We tried a spreadsheet once and dropped it." | past | Past: it really happened, though it is no longer in use. |
+| "We want an app that texts borrowers." | future | Proposed: target. |
+| "The new app will replace the sheet." | future | Proposed: target. |
+| "We are building the app, but it is not live." | future | Under way, not yet real. |
+| "If the sheet had a phone link, borrowers could check it." | future | A counterfactual, not yet real. |
+| "The sheet stays, and an app will sit on top of it." | mixed | Part exists, part is proposed, and they hang together. |
+
+The non-obvious ones are the present-tense line, the dropped spreadsheet, the app under way and the counterfactual.
+
+Use `mixed` when an account blurs the two and you cannot cleanly separate them, for example "it never worked, so we hope the new one will". It is the honest record, not a failure. For a scenario, lead people to one time first and use `mixed` only when the account itself still blurs them. For an architecture it is the normal mark when one account describes what exists and what is proposed, and they hang together.
+
 ## The stages
 
 ### 1. Opening
@@ -210,10 +259,11 @@ The page is made, with status `stub`:
 type: scenario-raw
 status: stub
 title: "Lending desk saturday"
+timeframe: # past | future | mixed
 ---
 ```
 
-Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Then
+Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Set `timeframe:` to `past`, `future` or `mixed`. Then
 mark the page as a draft and check it:
 
 === "Python"

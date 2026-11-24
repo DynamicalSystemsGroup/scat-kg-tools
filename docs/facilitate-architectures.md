@@ -34,6 +34,8 @@ Architectures are structural. They are parts and wholes: tools assembled to give
 concerns. People are largely set aside. The same concern may come from several groups, and a design cannot say who
 will adopt it. The session is about the concerns a design answers, and those are what you write down.
 
+Take the baseline (what exists, as is) and the target (what is proposed, to be) in separate blocks. The baseline is past and the target is future. Hold a proposal for its own block if it comes up early. A design that mixes things that exist with things that could exist may be marked `mixed`. The [architecture phrases](facilitate-scenarios.md#architecture-phrases) show how to tell them apart.
+
 Anyone with a design to pitch is a technologist for this session. That is a role for the session, not a label to write in the notes. It is a device, not a division of people. These roles are for one session only. A person who pitches a design in one session may speak as a group member in another, and one person can hold both roles.
 
 ## The stages
@@ -226,10 +228,11 @@ The page is made, with status `stub`:
 type: architecture-raw
 status: stub
 title: "Booking sheet pitch"
+timeframe: # past | future | mixed
 ---
 ```
 
-Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Then
+Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Set `timeframe:` too. Then
 mark the page as a draft and check it:
 
 === "Python"
