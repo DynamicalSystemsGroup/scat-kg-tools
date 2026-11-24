@@ -501,7 +501,8 @@ Amendment 5 (open, asked one at a time):
    same answer.
 3. **Chatham House in this mission** *(raised by the ripple sweep)*. Decided: aligned with log D-070 in all four
    places (PR #8 thread).
-4. **The Agent's defaults** for Amendment 5, as one item.
+4. **The Agent's defaults** for Amendment 5, as one item. Decided: they stand, as revised after his direction on the
+   coding paths (PR #8 thread).
 5. **The Obsidian projection** *(raised by the chief engineer's play test, 24 Nov)*. The vault as Obsidian shows it
    is hard to use: raw and coded pages duplicate each other, and the layout makes little use of what Obsidian offers.
    Decided: in v0.1 (G15, R-21; PR #8 thread).
