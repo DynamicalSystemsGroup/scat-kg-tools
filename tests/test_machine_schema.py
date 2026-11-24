@@ -509,3 +509,56 @@ def test_page_states_the_rules_of_the_interface():
         name = action["$ref"].rsplit("/", 1)[1]
         const = SCHEMA["$defs"][name]["properties"]["action"]["const"]
         assert f"`{const}`" in PAGE
+
+
+def test_page_states_the_replace_text_promise():
+    flat = " ".join(PAGE.split())
+    for phrase in (
+        "the literal text as written in the file at that line",
+        "Without `column`, `find` is replaced everywhere on `line`",
+        "only the occurrence at that column",
+    ):
+        assert phrase in flat, phrase
+
+
+def test_page_states_that_edits_are_computed_from_the_file_as_checked():
+    flat = " ".join(PAGE.split())
+    for phrase in (
+        "Edits are computed from the file as checked",
+        "`set-field` carries the whole new value",
+        "two fixes for one field do not compose",
+        "apply one, then re-check",
+    ):
+        assert phrase in flat, phrase
+
+
+def test_page_states_that_a_slot_fix_may_choose_among_exact_values():
+    flat = " ".join(PAGE.split())
+    for phrase in (
+        "chooses among exact values (no `author_slot`)",
+        "`timeframe`",
+        "e.g. the missing `timeframe` of a page (SCAT-DONE-FIELD)",
+        "An option may only add (a suggestion you confirm) without clearing the problem on its own",
+        "read its `text`",
+    ):
+        assert phrase in flat, phrase
+
+
+def test_schema_descriptions_restate_the_clarifications():
+    defs = SCHEMA["$defs"]
+    assert "literal text as written in the file" in defs["ReplaceText"]["description"]
+    assert "everywhere on the line" in defs["ReplaceText"]["description"]
+    assert "do not compose" in defs["SetField"]["description"]
+    assert "suggestion you confirm" in defs["FixOption"]["properties"]["text"]["description"]
+
+
+def test_page_keeps_the_definitions_the_compression_must_not_drop():
+    flat = " ".join(PAGE.split())
+    for phrase in (
+        "`neighborhood`, a page and its linked pages",
+        "already right, nothing written",
+        "sentences for a person",
+        "the message as `scat check` prints it",
+        "exactly one JSON document",
+    ):
+        assert phrase in flat, phrase
