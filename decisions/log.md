@@ -717,3 +717,20 @@ ACE rulings on the gaps the PM raised:
 4. **U5's API and CLI spellings** are accepted; the docs (WP7) document them. Vault-wide `SCAT-INDEX-STALE` messages
    are reported only at whole-vault scope (and on a class page itself), not on a local or neighborhood check of
    another page, because the local scope is a fast linter for that page.
+
+## D-036 | 2026-11-23 | Append-only posture; autonomous overnight operation
+
+Directed by the chief engineer (chat, typed by the ACE): "in general if you have issues take an append only posture so
+that the changes are logged, detectable and if strictly necessary we can revert to the point of divergence if i am
+hard against the decision made. i need you to be able to continue working through the night as i am off the clock".
+Outcome: ORG.md has a new section, "Append-only posture", covering:
+- additive changes over rewrites;
+- every call logged;
+- `divergence/D-nnn` tags pushed before direction-changing rulings;
+- no waiting on the chief engineer for anything the ACE can decide;
+- no working around a guard or permission refusal: take the additive route, or hold that unit, carry on with the
+  rest, and add it to his morning list.
+
+Applied now: the WP5-U5 fixture change, which he authorised in D-035, should first be tried additively (a new shared
+fixture with class pages beside the old one). It falls back to the authorised edit only if the additive route
+doesn't work.

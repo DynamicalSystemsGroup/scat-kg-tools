@@ -108,6 +108,21 @@ acceptance the PM notes which kinds of unit ran over or under, so the next estim
 in the review record. Reading the code or the Markdown is not a review. A reviewer without a browser says so and
 does not sign off the rendered part.
 
+## Append-only posture (the chief engineer's standing direction)
+
+When an issue comes up, the response leaves a trail rather than rewriting history:
+- **Add beside, don't rewrite.** Prefer additive changes: a new fixture beside an existing one, a new test, a new
+  record. Existing tests and records are edited only when a recorded decision requires it, and the edit lists what
+  changed.
+- **Log every call.** Each ruling goes in `decisions/log.md` with its evidence. The board and `metrics.jsonl` stay
+  append-true.
+- **Mark points of divergence.** Before a ruling that changes direction (overrules a unit, changes a contract or the
+  TBox, departs from a scope), the ACE pushes a tag `divergence/D-nnn` on the commit before the change, so the chief
+  engineer can revert to it if he is hard against the decision.
+- **Keep moving while he is away.** The team doesn't wait on the chief engineer for anything the ACE can decide and
+  log. A guard or permission refusal is never worked around. The team takes the additive route if there is one;
+  otherwise the affected unit waits, the rest of the work continues, and the item goes on his morning list.
+
 ## Limits
 
 - Nothing outside the two repositories and the session scratchpad is changed.
