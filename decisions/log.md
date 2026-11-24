@@ -1429,3 +1429,32 @@ fixes as data, `--json` on every command with a Python equivalent, no new runtim
 
 **Held for the chief engineer, if it arises.** His D-058 authorisation covered WP10's test edits only. WP11 aims to
 keep every golden message identical. If an existing test must change, the unit is held and the question comes to him.
+
+## D-063 | 2026-11-24 | WP10 accepted
+
+**Evidence, run by the ACE.**
+- `python3 work-packages/check_metrics.py --accept WP10`: `metrics ok: 269 records (18 under the practice); WP10 is
+  ready for acceptance`.
+- Iteration 10: 23 points estimated and 23 realized, 0.72 h.
+- 560 tests passed on `dev`.
+- CI and Pages are green on `9a9b58e`. The red CI on `7a0c61f` was the ACE's metrics check failing ruff; it was fixed,
+  and the check now runs in CI.
+- The ACE read the phrase list against the chief engineer's words (D-057), and every mark follows them: the
+  counterfactual is future, the habit with "would" is past, under way but not realized is future, past is baseline and
+  future is target. The PM's report gives the evidence for R1 to R6.
+
+**Rulings on the PM's flags.**
+1. Red CI: fixed (above).
+2. The stray commit: resolved (D-060).
+3. `SCAT-DRAFT-FIELD` warns on a raw stub without `timeframe`. Accepted: it is Amendment 3's default, a warning
+   before `done`.
+4. Case-study tags. Accepted as they are. Both pitches are `future`: when told, each proposed what was not yet
+   realized, which is the rule's test. The Chatham House scenario is `mixed`: it blends how sessions run with the
+   design being set up.
+5. The stale `scat:valueSet` annotation: play-test finding F-5, for the fix package.
+6. The docs test doesn't run the transcripts: a known weakness since D-043. The PM checked them by hand.
+7. Nobody has seen the rendered tables: F-6, which falls to the chief engineer's docs sitting.
+8 and 9. Wording nits: accepted as they are.
+
+**Lessons recorded.** A unit that changes tool output plans the transcript reruns of the units that show it. A pin
+that another unit's test depends on is its own unit, planned up front.
