@@ -4,10 +4,11 @@
 
 Read one sitting, tick its boxes, stop. Each sitting has one entry point. Nothing here asks you to trust a claim: every
 claim names a command to run or a file to open. Paths are from the root of `scat-kg-tools`. Facts were checked on `dev`
-at `PIN-PENDING`. The tools' candidate commit (the last commit that changed `src/` or `docs/`) is `PIN-PENDING`, and
-the template's `dev` is `PIN-PENDING`, which pins it. Check both before you start:
-`git log --first-parent -1 --format=%h -- src docs` prints `PIN-PENDING`, `git diff PIN-PENDING dev -- src docs` prints
-nothing, and `git ls-remote https://github.com/DynamicalSystemsGroup/scat-kg-template refs/heads/dev` shows `PIN-PENDING`.
+at `e1701ab`; later commits change only this guide, the pin test and `work-packages/`. The tools' candidate commit (the
+last commit that changed `src/` or `docs/`) is `e1701ab`, and the template's `dev` is `2562949`, which pins it. Check
+both before you start: `git log --first-parent -1 --format=%h -- src docs` prints `e1701ab`,
+`git diff e1701ab dev -- src docs` prints nothing, and
+`git ls-remote https://github.com/DynamicalSystemsGroup/scat-kg-template refs/heads/dev` shows `2562949`.
 
 Terms: J1 to J7 (the user journey), UA-A and UA-M (the AI tests and your walkthrough) are in `MISSION.md`, "User
 acceptance". R-1 to R-15 are in `MISSION.md`, "Requirements". The ACE and your sign-offs are in `MISSION.md`,
@@ -140,8 +141,8 @@ alone: `uv run pytest tests/bench -s -q` printed page 359 ms, neighborhood 248 m
 | R-3 | Unfinished pages are never errors; links checked always | `tests/checks/test_status_rules.py`, `tests/checks/test_link_rules.py` | met |
 | R-4 | Checks never write; writes are explicit operations | `tests/test_r4_snapshots.py` | met |
 | R-5 | 500 pages: page under 1 s, neighborhood 2 s, vault 5 s | `tests/bench/test_r5_thresholds.py` | met; one laptop, plus Linux CI |
-| R-6 | Fresh template clone, one setup command, clean check | board rows WP8-U9, U12, U15, U15b, U15c, U15d; my rerun: clone of the template at `PIN-PENDING`, `uv run scat check`: `no problems` | met with a caveat: uv was preinstalled and the uv installer, `gh` and website creation were never run by agents (D-040); no U9 or U12 report file exists, only board rows |
-| R-7 | Both repositories commit `uv.lock`; CI runs on every push | `gh run list --limit 3`: tools CI run `PIN-PENDING` on the `dev` head `PIN-PENDING`; template CI run `PIN-PENDING`; both repos hold `uv.lock` | met |
+| R-6 | Fresh template clone, one setup command, clean check | board rows WP8-U9, U12, U15, U15b, U15c, U15d; my rerun: clone of the template at `2562949`, `uv run scat check`: `no problems` | met with a caveat: uv was preinstalled and the uv installer, `gh` and website creation were never run by agents (D-040); no U9 or U12 report file exists, only board rows |
+| R-7 | Both repositories commit `uv.lock`; CI runs on every push | `gh run list --limit 3`: tools CI run `45340585806` on the candidate commit `e1701ab`; template CI run `45340711178` on `2562949`; both repos hold `uv.lock` | met |
 | R-8 | REPL and CLI are equal paths with the same messages | `tests/test_paths.py` (same message, files, exit code; every operation covered); docs test runs both | met |
 | R-9 | Docs snippets run as shown; CLI reference matches `--help` | `uv run pytest tests/docs -q` | met with a caveat: only `bash` and `python` blocks run (D-043) |
 | R-10 | No broken links or dead ends | strict build clean; the 5 distinct external links I fetched returned 200; your sitting 2 | met with a caveat: the ACE's browser pass (D-039) predates the U11 to U14 edits, and I ran no browser |
