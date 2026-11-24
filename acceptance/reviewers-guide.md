@@ -4,7 +4,7 @@
 
 Read one sitting, tick its boxes, stop. Each sitting has one entry point. Nothing here asks you to trust a claim: every
 claim names a command to run or a file to open. Paths are from the root of `scat-kg-tools`. Facts were checked on `dev`
-at `93dea14`. The tools' candidate commit (the last commit that changed `src/` or `docs/`) was `01d9231`, and the
+at `d49aa7b`. The tools' candidate commit (the last commit that changed `src/` or `docs/`) was `01d9231`, and the
 template's `dev` was `3bd5d5b`, which pins it. Both move if a fix lands, so check the pins before you start:
 `git log -1 --format=%h -- src docs`, and `grep rev pyproject.toml` in the template.
 
@@ -13,7 +13,10 @@ template's `dev` was `3bd5d5b`, which pins it. Both move if a fix lands, so chec
 | 1. The end-to-end walkthrough | `acceptance/walkthrough.md` |
 | 2. The docs site | https://dynamicalsystemsgroup.github.io/scat-kg-tools/ |
 | 3. The tools and checks | the command block at the head of sitting 3 |
-| 4. The ACE's calls and what is weak | the table in sitting 4 |
+| 4a. The ACE's calls | the table in sitting 4a |
+| 4b. What is known to be weak | the list in sitting 4b |
+
+Sittings 4a and 4b are one sitting in two halves.
 
 ---
 
@@ -130,7 +133,7 @@ alone: `uv run pytest tests/bench -s -q` printed page 230 ms, neighborhood 237 m
 | R-8 | REPL and CLI are equal paths with the same messages | `tests/test_paths.py` (same message, files, exit code; every operation covered); docs test runs both | met |
 | R-9 | Docs snippets run as shown; CLI reference matches `--help` | `uv run pytest tests/docs -q` | met with a caveat: only `bash` and `python` blocks run (D-043) |
 | R-10 | No broken links or dead ends | strict build clean; the 5 distinct external links I fetched returned 200; your sitting 2 | met with a caveat: the ACE's browser pass (D-039) predates the U11 to U14 edits, and I ran no browser |
-| R-11 | One obvious way to make each page | `acceptance/reports/r1-p1.md` to `acceptance/reports/r3-p1.md`: all reached a clean check; D-043 removed the page templates | met with a caveat: coding guide is 5,540 words (D-039 item 3 left open) |
+| R-11 | One obvious way to make each page | `acceptance/reports/r1-p1.md` to `acceptance/reports/r3-p1.md`: all reached a clean check; D-043 removed the page templates | met with a caveat: the coding guide is long (about 5,500 words), see 4b (k) |
 | R-12 | Template repos private; docs recommend it | `docs/getting-started.md` step 1; template `README.md` step 1; `gh api repos/DynamicalSystemsGroup/scat-kg-template --jq '{default_branch,is_template}'` gives `dev`, `true` | met with a caveat: the website path asks you to pick Private, it does not preset it; creation path run only by you (stage 2) |
 | R-13 | The TBox is the one schema source | `tests/test_r7_tbox_equality.py` (named for WP5-R7); tools read `ontology/scat.ttl` at load (D-033) | met |
 | R-14 | Guides hold the stance and never rank or adjudicate | `grep -n 'ranked, voted on' docs/planning.md docs/facilitate-*.md` (3 disclaimers); `research/facilitation/readout.md` | met with a caveat: grep and reading only, no test |
@@ -147,7 +150,7 @@ alone: `uv run pytest tests/bench -s -q` printed page 230 ms, neighborhood 237 m
 
 ---
 
-## Sitting 4. The ACE's calls, and what is weak
+## Sitting 4a. The ACE's calls
 
 **Entry point.** The table. Each call is a log entry in `decisions/log.md`. To revert one, check out its tag, for
 example `git checkout divergence/D-030`. The tags exist: tools has D-030, D-031, D-034, D-035, D-041; the template has
@@ -184,11 +187,22 @@ D-037 and D-043 (`git ls-remote --tags <repo> | grep divergence`).
 | D-046 | R-15 unmet in round 2; style only in framing | `acceptance/reports/r2-findings.md` | none |
 | D-047 | Keep framing sentences; read R-15 as about style elements | `acceptance/reports/r3-findings.md` | none |
 
-Not ACE calls, recorded and applied by the ACE: D-001, D-003, D-006, D-007, D-008, D-011, D-013, D-018, D-021, D-022
-and D-036 are your decisions or directions. D-015 and D-016 were rolled back with `dev` (see D-017), so no entry
+Your own decisions or directions, which the ACE only recorded and applied: D-001, D-003, D-006, D-007, D-008, D-011,
+D-013, D-018, D-021, D-022, D-036. D-015 and D-016 were rolled back with `dev` (see D-017), so no entry
 exists for them.
 
-### Known weaknesses
+**Checklist.**
+
+- [ ] I read every row, and I name the calls I reverse.
+- [ ] I checked one revert tag with `git ls-remote`.
+
+**Done looks like.** Every call is kept or reverted.
+
+---
+
+## Sitting 4b. What is known to be weak
+
+**Entry point.** The list below, items (a) to (k). Each names the file or log entry that backs it.
 
 - **(a) uv.** UA-A testers had uv preinstalled. No agent ran uv's installer (D-040, D-041). `MISSION.md` UA-A says "uv
   not installed". This departure is yours to disposition. Close it with one fresh tester rerun after you permit the
@@ -202,11 +216,11 @@ exists for them.
   assertions in `tests/ops/test_ops_stub.py` (`not r.ok` becomes `r.ok and r.unchanged == ("concern/a.md",)`, and the
   same-type refusal row becomes a different-type row). Until it lands, `set-status done` exits 0 even when the page
   fails its check. When it lands, `src/` changes, the pins move, UA-A's rerun is the ACE's call (WP8-R8), and these
-  docs spots change: `docs/coding.md` near lines 389 and 665 to 695 (message 7) and `docs/reference/api.md`, the
-  `set_status` and `stub` sections.
+  docs spots change: `docs/coding.md`, the section "Status, and set-status" and message 7, and `docs/reference/api.md`, the `set_status` and `stub`
+  sections.
 - **(f) Cold-read variance.** Round 1 named jazz, round 2 did not (it named "improv theatre"), round 3 did, and each
   round listed instruction-clarity places (2, 7 and 5). D-046 set the placement rule: style only in framing. D-047
-  reads R-15's second clause as about style elements, which is your call to reverse. At `dev` `93dea14` the D-047 fix
+  reads R-15's second clause as about style elements, which is your call to reverse. At `dev` `d49aa7b` the D-047 fix
   (U14b) had not landed.
 - **(g) Clone history.** The template clone shows internal commit subjects (for example "WP8-U15 ...") to testers.
   Accepted in D-046 on the claim that a repository made from the template starts with fresh history. I did not
@@ -222,21 +236,23 @@ exists for them.
   - r2 P6: judgement left to the facilitator: story or concern line, pair choice, relation text (R-14).
   - r2 P7: relation file names cut at 64 characters, documented in `docs/coding.md`.
   - r3 C3, C4, C5: planning epigraph fragment, minor wording, "belong" in SCAT-CONFLICT-BOTH (D-047).
-  - r3 F-10, F-14: ordering of "clear the example" against J5, and no rule for a concern with no affordance. The log
-    records no disposition for the other 14 round 3 findings in `acceptance/reports/r3-p1.md`.
+  - r3 persona findings (16, in `acceptance/reports/r3-p1.md`): dispositioned by the ACE at hand-back. Proposed by the
+    PM, not yet decided: accept all, with the reasons D-046 gives for the same kinds (judgement calls in coding,
+    environment artefacts, internal commit subjects in the clone's history, "clear the example" coming after J5, no
+    rule for a concern with no answering affordance). Fix item: none.
 - **(j) Found while verifying.**
   - `docs/getting-started.md` says both creation paths "set it for you". The website path asks you to choose Private.
-  - The coding guide is 5,540 words, and no ruling records whether to split it.
   - The four class definitions (stakeholder group, concern, affordance, technology) are marked `unverified` in
     `ontology/scat.ttl` (D-032).
   - The concern conflict is a relation plus a warning, not the disjointness axiom you named (D-028).
   - My R-6 rerun used my own home directory and uv cache, so it is weaker than the UA-A setup.
+- **(k) Coding guide length.** The coding guide is long (about 5,500 words) and no ruling splits it. The Haiku
+  testers in rounds 1 to 3 all finished it.
 
 **Checklist.**
 
-- [ ] I read every row of the table, and I name the calls I reverse.
-- [ ] I checked one revert tag with `git ls-remote`.
-- [ ] I dispositioned (a), and (e).
-- [ ] I read (b) to (j) and accept each, or I note it.
+- [ ] I gave (a) my answer.
+- [ ] I gave (e) my answer.
+- [ ] I read (b) to (d) and (f) to (k) and accept each, or I note it.
 
-**Done looks like.** Every call is kept or reverted, and (a) and (e) each have your answer.
+**Done looks like.** (a) and (e) each have your answer, and every other item is accepted or noted.
