@@ -54,6 +54,11 @@ log entry and, where the ruling changed direction, the `divergence/` tag to reve
   lives only in framing (epigraphs, one plain sentence per guide naming jazz), and instructions are always plain. A
   focused round 3 rechecks it.
 
+- **D-047: round 3.** Both cold readers named jazz from the new framing sentences, and the Haiku REPL tester was clean.
+  The ACE reviewed the four framing sentences and kept them. Two plain instruction defects get the ACE's wording,
+  including a clearer "Yes, and" rule: "ask a question that adds to it; do not ask whether it is true, right or
+  complete". R-15 is now read as concerning style elements only, which ends the round loop.
+
 ## Held for you
 
 - **D-040 / D-041: UA-A ran with uv preinstalled,** whereas `MISSION.md` UA-A says "uv not installed". Only you
