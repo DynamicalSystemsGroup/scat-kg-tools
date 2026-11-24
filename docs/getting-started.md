@@ -166,9 +166,8 @@ unchanged class/technologies.md
 ## 4. Open the vault in Obsidian
 
 Open Obsidian, choose **Open folder as vault**, and pick your folder (`my-vault`). Open a page in the `concern`
-folder and click its links: you are walking the graph. You create pages with `scat stub`, never from the Obsidian
-page templates. The templates are only optional skeletons you may insert into a page that `scat stub` already made.
-[Coding](coding.md#where-raw-and-coded-pages-come-from) says more.
+folder and click its links: you are walking the graph. Create pages with `scat stub`, not from the Obsidian page
+templates; you do not need them. [Coding](coding.md#where-raw-and-coded-pages-come-from) says more.
 
 ## 5. Start your own content
 
