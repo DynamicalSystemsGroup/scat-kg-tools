@@ -89,7 +89,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP8-U10 | UA-A round 1 testers, haiku | 12 | 12 | `wp8/u10` | done |  | 2026-11-23T22:40:28-05:00 | round 1: three persona runs and one cold read, no void reports; findings digest in acceptance/reports/r1-findings.md; ACE to disposition |
 | WP8-U11 | fixer (planned, after round 1), sonnet | 8 | 8 | `wp8/u11` | done |  | 2026-11-23T22:50:45-05:00 | applies all 12 accepted round-1 fixes plus the round-2 kit changes (cold-read split in two parts, mandatory REPL tester, J7 bar); 1 push-back from the fresh review (a cold-read pointer that exposed question 2, one wording tension, one tagline); the push-back delta was verified by the PM re-running the reviewer's greps, no second full review; ran over the estimate of 8 by 0 |
 | WP8-U12 | re-pin and rerun, sonnet | 2 | 2 | `wp8/u12` | done |  | 2026-11-23T22:55:09-05:00 | template pinned to 2a9cc07 (merge 81940e1), docs test pinned to it; CI and Pages green; Haiku rerun of U9 passed 6 of 7, the one red (pin rule read literally) is the known merge-commit false flag; at estimate |
-| WP8-U13 | UA-A round 2 testers, haiku | 12 |  | `wp8/u13` | queued | U12 |  |  |
+| WP8-U13 | UA-A round 2 testers, haiku | 12 |  | `wp8/u13` | in flight |  |  |  |
 | WP8-U14 | fixer (planned, after round 2), sonnet | 5 |  | `wp8/u14` | queued | U13 |  |  |
 | WP8-U15 | re-pin and rerun, sonnet | 2 |  | `wp8/u15` | queued | U14 |  |  |
 | WP8-U16 | UA-A round 3 (conditional), haiku | 12 |  | `wp8/u16` | queued | U15 and a blocking finding in round 2 |  |  |
