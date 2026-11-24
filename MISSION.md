@@ -210,10 +210,13 @@ matters without claiming to be exhaustive. No particular project's choices appea
     calls and skills, with an MCP server only if the spike shows it is needed.
   - **Spike B, the interoperability test case:** the same work driven by inference.coop, a privacy-focused service
     anyone can use. Testing with Claude would be cheating, since Claude is the development team; a different provider
-    forces the work through the cross-platform interfaces, and through Obsidian for coding and review. Its chat
-    reaches outside tools through MCP servers, so an MCP server that depends on `scat-kg` is the expected route. The
-    spike settles where that server runs and how the chat reaches it, and what data passes through it, against the
-    rules for the inputs and the model.
+    forces the work through the cross-platform interfaces, and through Obsidian for coding and review. The spike
+    compares two routes, against the rules for the inputs and the model:
+    - its chat, which reaches outside tools only through MCP servers: an MCP server that depends on `scat-kg`, and
+      where it runs, how the chat reaches it and what data passes through it;
+    - its developer API, which is OpenAI-compatible with tool calling: a local client calls the model, and the
+      `scat-kg` tools run as ordinary tool calls on the coder's machine, with no MCP. The API key is the chief
+      engineer's to create and hold.
 - The Obsidian plugin (Amendment 5). It stays on its feature branch (log D-054); v0.1 provides the stable interface it
   builds on (R-16).
 - Typed links between records of the same class, such as incompatible concerns, adversarial groups, complementary
