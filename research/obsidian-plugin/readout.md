@@ -1,6 +1,6 @@
 # RS1 readout: a SCAT linter inside Obsidian
 
-Sources are the official developer docs (repo `obsidianmd/obsidian-developer-docs`, which publishes docs.obsidian.md; several docs.obsidian.md URLs return "not found", so I read the repo files) and the sample plugin. Items I could not verify are in the last section.
+Sources are the official developer docs (repo `obsidianmd/obsidian-developer-docs`, which publishes docs.obsidian.md; several docs.obsidian.md URLs return "not found", so I read the repo files) and the sample plugin. Unverified items are listed last.
 
 ## 1. What the plugin API offers a linter
 
@@ -22,7 +22,7 @@ There is no built-in "diagnostics" or "code action" API as in an LSP. A quick fi
 - Policies: no obfuscation, no client-side telemetry, **no installing or updating themselves or their dependencies**; network use, access to files outside the vault, and closed source must be disclosed in the README ([Developer policies](https://github.com/obsidianmd/obsidian-developer-docs/blob/main/en/Community%20directory/Developer%20policies.md)).
 - Mobile: Node and Electron APIs "aren't available on mobile devices", and calls made by your plugin or its dependencies "can cause your plugin to crash". `isDesktopOnly: true` stops installation on mobile ([Mobile development](https://github.com/obsidianmd/obsidian-developer-docs/blob/main/en/Plugins/Getting%20started/Mobile%20development.md)).
 - **Shelling out is not named anywhere** in the policies or requirements I read. It falls under the Node API rule, so a subprocess plugin is permitted if desktop-only. Whether review accepts a plugin that needs a user-installed binary is undocumented. A plugin that *downloads* a runtime on first run would hit "install or update themselves or their dependencies".
-- Release assets are three files. Any bundled binary or Wasm runtime must be inlined in `main.js` or fetched at run time. Fetching means network disclosure, and probably the self-install rule. I found no stated size limit (unverified).
+- Release assets are three files. A bundled binary or Wasm runtime must be inlined in `main.js` or fetched at run time (network disclosure, probably the self-install rule). No size limit found.
 
 ## 3. Trade study
 
@@ -59,15 +59,16 @@ Choose **(d), starting as (a)**: a desktop-only plugin that is a thin client ove
 4. README disclosures: runs a local program, no network.
 5. Release: GitHub release with the three assets, after a user test on a real vault. Not in it: inline decorations, mobile.
 
-## 7. What the prototype has not shown
+## 7. Prototype (`prototype/`)
 
-Nobody can open Obsidian here, and the prototype will never have run inside it. It will show only that the logic (invoke, parse JSON, map problems to messages) is unit-tested and the bundle builds. It will not show:
+A desktop-only plugin in the sample-plugin layout: `main.ts` handles lifecycle, and `scat check PAGE --json` runs through an injectable spawn runner. Parsing, grouping and message text are pure modules with 14 unit tests. Output shows in a side panel, a notice and a status-bar count, on command, `file-open` and `modify`. `scat check --json` does not exist, so `prototype/JSON-CONTRACT.md` defines the shape, derived from `Problem`. Build: `npm install && npm run build && npm test`, on Node v26.13.1 LTS.
 
-- that the plugin loads, or that the view, status bar and events behave as documented;
-- that spawning `scat` works from Obsidian's process (PATH on macOS GUI launch, the working directory, the vault's base path API);
-- the latency of a real check from inside Obsidian, or on a real 500-page vault;
-- that the store's automated review accepts a subprocess plugin;
-- any mobile behavior, any inline decoration, any quick-fix write.
+It was never run inside Obsidian. Not shown:
+
+- that the plugin loads, or that panel rendering, click-to-jump, status bar and events work;
+- spawning `scat` from Obsidian (macOS GUI PATH; a path setting exists);
+- a real `--json` run, real-vault latency, store review of a subprocess plugin;
+- mobile, inline decorations, quick-fix writes.
 
 ## Claims I could not verify
 
