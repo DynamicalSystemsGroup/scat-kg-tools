@@ -72,7 +72,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP7-U5 | technical writer (API and CLI reference), sonnet | 5 | 5 | `wp7/u5` | done |  | 2026-11-23T20:56:20-05:00 | 1 push-back (tab outputs not true in page order, reserved-name row), 2 reviews, help diff byte-exact; matches estimate |
 | WP7-U6 | test engineer (docs test), sonnet | 5 | 5 | `wp7/u6` | done |  | 2026-11-23T20:56:20-05:00 | 1 push-back (3 pinning tests accepted from review), mutation-checked by two reviewers, red on the placeholder reference until U5 merged by design; matches estimate |
 | WP7-U7 | technical writer (jazz style and visual assets), sonnet | 3 | 3 | `wp7/u7` | done |  | 2026-11-23T21:24:28-05:00 | 1 push-back (illegible bandstand at 375 px, opaque musical terms, 'score' near a no-scoring disclaimer, jazz cue), 2 reviews; byte-exact proof that no code block, heading or tip changed; ran at estimate |
-| WP7-U8 | fixer (planned fix unit), sonnet | 5 |  | `wp7/u8` | queued | WP7-U7 and the two Haiku reads |  |  |
+| WP7-U8 | fixer (planned fix unit), sonnet | 5 |  | `wp7/u8` | in flight |  |  |  |
+| WP7-R6 | clarity-read tester, haiku | 2 | 2 | none (scratch) | done |  | 2026-11-23T21:29:16-05:00 | first read: reached a clean whole-vault check, no blocking findings, 6 non-blocking guesses: findings go to WP7-U8 and a fresh rerun |
+| WP7-R5 | cold-read tester, haiku | 2 | 2 | none (scratch) | done |  | 2026-11-23T21:29:16-05:00 | first read: named jazz and improvisation unprompted but listed 7 places where a figure of speech left an instruction unclear: R5 not met, goes to WP7-U8 and a fresh rerun |
 
 ## Iterations and velocity
 
