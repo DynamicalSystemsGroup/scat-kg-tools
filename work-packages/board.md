@@ -12,7 +12,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP4 | Ontology and page contracts | accepted | `WP4.md` |
 | WP5 | Conformance tools | accepted | `WP5.md` |
 | WP6 | Template and case study | accepted | `WP6.md` |
-| WP7 | Docs and Pages | approved | `WP7.md` |
+| WP7 | Docs and Pages | delivered, awaiting ACE acceptance | `WP7.md` |
 | WP8 | Candidate and user acceptance | not yet scoped | — |
 
 ## Units
@@ -72,9 +72,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP7-U5 | technical writer (API and CLI reference), sonnet | 5 | 5 | `wp7/u5` | done |  | 2026-11-23T20:56:20-05:00 | 1 push-back (tab outputs not true in page order, reserved-name row), 2 reviews, help diff byte-exact; matches estimate |
 | WP7-U6 | test engineer (docs test), sonnet | 5 | 5 | `wp7/u6` | done |  | 2026-11-23T20:56:20-05:00 | 1 push-back (3 pinning tests accepted from review), mutation-checked by two reviewers, red on the placeholder reference until U5 merged by design; matches estimate |
 | WP7-U7 | technical writer (jazz style and visual assets), sonnet | 3 | 3 | `wp7/u7` | done |  | 2026-11-23T21:24:28-05:00 | 1 push-back (illegible bandstand at 375 px, opaque musical terms, 'score' near a no-scoring disclaimer, jazz cue), 2 reviews; byte-exact proof that no code block, heading or tip changed; ran at estimate |
-| WP7-U8 | fixer (planned fix unit), sonnet | 5 |  | `wp7/u8` | in flight |  |  |  |
-| WP7-R6 | clarity-read tester, haiku | 2 | 2 | none (scratch) | done |  | 2026-11-23T21:29:16-05:00 | first read: reached a clean whole-vault check, no blocking findings, 6 non-blocking guesses: findings go to WP7-U8 and a fresh rerun |
-| WP7-R5 | cold-read tester, haiku | 2 | 2 | none (scratch) | done |  | 2026-11-23T21:29:16-05:00 | first read: named jazz and improvisation unprompted but listed 7 places where a figure of speech left an instruction unclear: R5 not met, goes to WP7-U8 and a fresh rerun |
+| WP7-U8 | fixer (planned fix unit), sonnet | 5 | 8 | `wp7/u8` | done |  | 2026-11-23T21:44:56-05:00 | planned fix unit for the two Haiku reads; 3 rounds (round 1 from the reads, round 2 from the reruns incl. a real defect: <group> swallowed as an HTML tag, round 3 residuals), 2 fresh reviews; ran over by 3 |
+| WP7-R6 | clarity-read tester, haiku, haiku | 2 | 3 | none (scratch) | done |  | 2026-11-23T21:44:56-05:00 | 2 reads (first plus a fresh rerun on the fixed pages): both reached a clean whole-vault check with no blocking finding; first run 6 non-blocking guesses (fixed or accepted), second run 6 (mostly test-setup artefacts: the scratch pin change staged by 'git add .', and having only two of the pages); install, gh and website paths and Obsidian not exercised |
+| WP7-R5 | cold-read tester, haiku, haiku | 2 | 5 | none (scratch) | done |  | 2026-11-23T21:44:56-05:00 | 4 reads in all (first read plus 3 fresh reruns): every read named jazz or improvisation unprompted (the text carries the word jazz in one plain sentence per guide); each read still listed 5 to 7 minor places where a phrase left an instruction less than plain, fewer each time (7, 7, 5); no blocking item; ACE to judge whether R5's 'no place' is met |
 
 ## Iterations and velocity
 
@@ -86,6 +86,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 4 | WP4-U1 to WP4-U8 | 29 | 38 | 1.31 | 1.09 h | 34.9 |
 | 5 | WP5-U1 to WP5-U10 (U9, U10 unplanned), WP6-U1 to WP6-U7 | 64 | 70 | 1.09 | 2.94 h | 23.8 |
 | 6 | WP6-U8 | 3 | 5 | 1.67 | 0.11 h | 45.5 |
+| 7 | WP7-U1 to WP7-U8, WP7-R5, WP7-R6 | 43 | 53 | 1.23 | 1.38 h | 38.4 |
 
 ## Velocity and forecast
 
@@ -97,7 +98,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
 
-Current: 143 est. pts proposed (WP1 to WP6, including the unplanned WP5-U9, WP5-U10 and WP6-U8; WP7 and WP8 not yet scoped); 143 est. pts completed; 165 realized pts completed. 6 iterations closed; running realized/estimated ratio 1.15; raw velocities [40.9, 24.4, 93.8, 34.9, 23.8, 45.5]; smoothed velocity v-hat 41.0 realized pts/hour (iteration 6 is one small unit, so noisy). Forecast: still not stated as a number, because the remaining estimated points do not exist yet (WP7 and WP8 have no scopes). Iteration 5 is two packages overlapping in time (WP5 and WP6 ran in parallel), so its 2.94 h of wall clock includes waits for the permission guard and the ACE (D-034, D-035); its velocity is the lowest so far.
+Current: 186 est. pts proposed (WP1 to WP7, including the unplanned WP5-U9, WP5-U10 and WP6-U8, and the two WP7 reads; WP8 not yet scoped); 186 est. pts completed; 218 realized pts completed. 7 iterations closed; running realized/estimated ratio 1.17; raw velocities [40.9, 24.4, 93.8, 34.9, 23.8, 45.5, 38.4]; smoothed velocity v-hat 39.7 realized pts/hour. Forecast: still not stated as a number, because the remaining estimated points do not exist yet (WP8 has no scope). WP7 landed at 43 estimated and 53 realized (ratio 1.23). Iteration 7 is five units in parallel, so its 1.38 h of wall clock counts overlapping workers once and its velocity is noisy.
+
+Over and under, WP7: on estimate: the skeleton (3), home and getting started (5), planning and facilitation guides (8), the reference (5), the docs test (5) and the style pass (3). Over: the coding guide, 8 against 5, because a guide that shows provoked messages must give each one a stated start state (three push-backs, four reviews; a PM ruling settled it); and the planned fix unit, 8 against 5, because the reruns found a real defect (a placeholder swallowed as an HTML tag) and each read still turned up minor phrases. Lessons: a guide that shows real tool output should be planned with a start state per example; plan Haiku reads with their reruns (3 each, not 2); a style pass should state in its brief where a metaphor may not stand in for an instruction.
 
 Over and under, WP6-U8: ran at 5 against 3. A privacy rewrite has no mechanical check for 'close paraphrase', so review rounds, not the edit, were the cost; plan a paraphrase unit with the review standard stated up front (no 3-word runs and no clause-order echo).
 
