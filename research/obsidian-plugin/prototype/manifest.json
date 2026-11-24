@@ -1,9 +1,9 @@
 {
-  "id": "scat-check",
-  "name": "SCAT Check",
-  "version": "0.0.1",
+  "id": "scat",
+  "name": "SCAT",
+  "version": "0.1.0",
   "minAppVersion": "1.5.0",
-  "description": "Shows the messages of the scat check command for the active note in a side panel and the status bar.",
+  "description": "Checks the active note against the SCAT rules and lists the messages in a side panel and the status bar.",
   "author": "SCAT",
   "isDesktopOnly": true
 }

@@ -1,0 +1,8 @@
+.scat-panel-summary { margin-bottom: 8px; color: var(--text-muted); }
+.scat-group-title { font-weight: 600; margin-top: 8px; }
+.scat-problem { padding: 4px 0; border-bottom: 1px solid var(--background-modifier-border); cursor: pointer; }
+.scat-problem-head { font-size: var(--font-ui-small); }
+.scat-problem-fix { white-space: pre-wrap; color: var(--text-muted); font-size: var(--font-ui-smaller); }
+.scat-error { color: var(--text-error); }
+.scat-warning { color: var(--text-warning); }
+.scat-state { color: var(--text-muted); white-space: pre-wrap; }

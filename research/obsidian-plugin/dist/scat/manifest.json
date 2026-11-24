@@ -1,0 +1,9 @@
+{
+  "id": "scat",
+  "name": "SCAT",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Checks the active note against the SCAT rules and lists the messages in a side panel and the status bar.",
+  "author": "SCAT",
+  "isDesktopOnly": true
+}

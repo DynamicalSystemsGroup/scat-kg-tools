@@ -58,8 +58,8 @@ describe("grouping and formatting", () => {
     expect(counts(ps)).toEqual({ errors: 1, warnings: 1 });
   });
   it("makes status-bar text", () => {
-    expect(statusText(ps)).toBe("SCAT: 1 error, 1 warning");
-    expect(statusText([])).toBe("SCAT: clean");
+    expect(statusText(parsed(good))).toBe("SCAT: 1 error, 1 warning");
+    expect(statusText(parsed('{"problems":[]}'))).toBe("SCAT: clean");
     expect(statusText(null)).toBe("SCAT: -");
     expect(statusText(null, true)).toBe("SCAT: check failed");
   });
@@ -68,14 +68,17 @@ describe("grouping and formatting", () => {
     expect(formatHead(ps[1])).toBe("warning [SCAT-MENTION] a.md:9 text `x`: plain");
   });
   it("truncates notice text", () => {
-    expect(noticeText(ps, 1).split("\n")).toHaveLength(3);
+    expect(noticeText(parsed(good), 1).split("\n")).toHaveLength(3);
   });
 });
 
 describe("runCheck with an injected runner", () => {
-  const opts = { exe: "scat", vaultRoot: "/v", page: "a.md" };
+  const opts = { uv: "uv", vaultRoot: "/v", shim: "/v/.obsidian/plugins/scat/scat_json.py", page: "/v/a.md" };
   it("builds args without a shell", () => {
-    expect(buildArgs({ ...opts, neighborhood: true })).toEqual(["check", "a.md", "--root", "/v", "--json", "--neighborhood"]);
+    expect(buildArgs({ ...opts, neighborhood: true })).toEqual([
+      "run", "--quiet", "--project", "/v", "python", "/v/.obsidian/plugins/scat/scat_json.py", "/v/a.md", "--neighborhood",
+    ]);
+    expect(buildArgs(opts)).not.toContain("--neighborhood");
   });
   it("treats exit 1 with JSON as a normal result", async () => {
     const run: Runner = async () => ({ stdout: good, stderr: "", exitCode: 1 });
@@ -85,11 +88,16 @@ describe("runCheck with an injected runner", () => {
   it("reports a missing executable with the fix", async () => {
     const run: Runner = async () => ({ stdout: "", stderr: "", exitCode: null, spawnError: "spawn scat ENOENT" });
     const r = await runCheck(run, opts);
-    expect(!r.ok && r.error).toContain("Set the path to scat");
+    expect(!r.ok && r.error).toContain("Path to uv");
+  });
+  it("reports a timeout", async () => {
+    const run: Runner = async () => ({ stdout: "", stderr: "", exitCode: null, timedOut: true });
+    const r = await runCheck(run, opts);
+    expect(!r.ok && r.error).toContain("too long");
   });
   it("reports non-JSON output with stderr", async () => {
-    const run: Runner = async () => ({ stdout: "usage: scat", stderr: "unrecognized arguments: --json", exitCode: 2 });
+    const run: Runner = async () => ({ stdout: "usage: scat", stderr: "error: Failed to resolve scat-kg", exitCode: 2 });
     const r = await runCheck(run, opts);
-    expect(!r.ok && r.error).toContain("unrecognized arguments");
+    expect(!r.ok && r.error).toContain("Failed to resolve");
   });
 });

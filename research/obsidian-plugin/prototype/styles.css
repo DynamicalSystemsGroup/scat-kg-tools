@@ -5,3 +5,4 @@
 .scat-problem-fix { white-space: pre-wrap; color: var(--text-muted); font-size: var(--font-ui-smaller); }
 .scat-error { color: var(--text-error); }
 .scat-warning { color: var(--text-warning); }
+.scat-state { color: var(--text-muted); white-space: pre-wrap; }

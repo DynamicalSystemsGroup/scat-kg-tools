@@ -1,7 +1,9 @@
 # JSON contract: `scat check --json`
 
-`scat check --json` does not exist yet. This is the shape the plugin expects. It is derived from `Problem` in
-`src/scat_kg/checks/problem.py`. The plugin calls `scat check PAGE --root VAULT --json [--neighborhood]`.
+`scat check --json` does not exist. This is the shape the plugin expects. It is derived from `Problem` in
+`src/scat_kg/checks/problem.py`. Since D-054 the plugin does not call `scat`: it runs the shim `scat_json.py`
+(public `scat_kg.check` only) with `uv run --project VAULT python scat_json.py NOTE.md [--neighborhood]`, and the shim
+prints this JSON. The shim's extra fields are in the section at the end.
 
 ```json
 {
@@ -44,3 +46,14 @@ Rules for the tool side:
 - `order` is internal and is not emitted. Problems arrive in the catalogue's sort order and the plugin keeps it.
 - Unknown extra fields are ignored. Removing or retyping a field bumps `schema_version`.
 - Not in this version: structured edits for quick fixes, an unsaved-buffer overlay (see the readout, section 4).
+
+## Fields the shim adds (`scat_json.py`)
+
+| Field | Meaning |
+|---|---|
+| `status` | `ok` (checked), `not-a-vault` (no `scat.toml` in the note's folder or above), `not-a-page` (no `type:` in the frontmatter), `refused` (scat_kg declined; `message` has its words), `no-scat-kg` (this Python cannot import it), `error`. Absent means `ok`. |
+| `message` | Words for a human when `status` is not `ok`; empty otherwise. |
+| `root` | Absolute path of the SCAT vault (the folder with `scat.toml`). `file` of each problem is relative to it, so the plugin joins the two to find the note. |
+| `page` | The checked note, relative to `root`. |
+
+Differences from the list above: the shim's exit code is 0 whenever it printed JSON (errors in the note do not change it), and it takes an absolute note path instead of `--root`.

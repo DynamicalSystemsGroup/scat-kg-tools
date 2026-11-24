@@ -14,10 +14,19 @@ export interface Problem {
   repeat: number;
 }
 
+/** What the shim says happened. `ok` means the note was checked; the others are states, not failures of the plugin. */
+export type Status = "ok" | "not-a-vault" | "not-a-page" | "refused" | "no-scat-kg" | "error";
+const STATUSES: Status[] = ["ok", "not-a-vault", "not-a-page", "refused", "no-scat-kg", "error"];
+
 export interface Report {
   schemaVersion: number;
   ok: boolean;
   problems: Problem[];
+  /** absent from a payload that has no `status`: treated as `ok` */
+  status: Status;
+  message: string;
+  /** absolute path of the SCAT vault root (the folder with scat.toml); `file` of each problem is relative to it */
+  root: string | null;
 }
 
 export type ParseResult = { ok: true; report: Report } | { ok: false; error: string };
@@ -65,5 +74,9 @@ export function parseReport(raw: string): ParseResult {
   }
   const problems = data.problems.map(parseProblem).filter((p): p is Problem => p !== null);
   const ok = typeof data.ok === "boolean" ? data.ok : !problems.some((p) => p.severity === "error");
-  return { ok: true, report: { schemaVersion, ok, problems } };
+  const status = STATUSES.includes(data.status as Status) ? (data.status as Status) : "ok";
+  return {
+    ok: true,
+    report: { schemaVersion, ok, problems, status, message: str(data.message), root: str(data.root) || null },
+  };
 }

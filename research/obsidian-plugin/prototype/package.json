@@ -1,14 +1,16 @@
 {
-  "name": "scat-check-obsidian",
-  "version": "0.0.1",
-  "description": "Prototype Obsidian plugin that shows `scat check` messages.",
+  "name": "scat-obsidian",
+  "version": "0.1.0",
+  "description": "Obsidian plugin that shows SCAT check messages for the active note.",
   "main": "main.js",
   "private": true,
   "scripts": {
     "typecheck": "tsc -noEmit -skipLibCheck",
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "dev": "node esbuild.config.mjs",
-    "test": "vitest run"
+    "test": "vitest run",
+    "package": "npm run build && node package.mjs",
+    "test:py": "python3 -m pytest tests-py -q"
   },
   "license": "MIT",
   "devDependencies": {
