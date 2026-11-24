@@ -3,14 +3,14 @@
 The comparison is the index operation's own (`index_problem`), so the check and the fix cannot disagree.
 """
 
+from scat_kg.checks import fixes
 from scat_kg.checks.ctx import Ctx, page_rule, vault_rule
-from scat_kg.checks.text import one
 from scat_kg.ops.index import index_problem
 from scat_kg.ops.names import CLASS_PAGES
 from scat_kg.vault import Page
 
 WHERE = "index table"
-FIX = one("run `scat index` (REPL: `scat_kg.index()`)")
+FIX = fixes.single(fixes.run_option(fixes.index()))
 MISSING = "the page is missing"
 
 
