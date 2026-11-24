@@ -734,3 +734,37 @@ Outcome: ORG.md has a new section, "Append-only posture", covering:
 Applied now: the WP5-U5 fixture change, which he authorised in D-035, should first be tried additively (a new shared
 fixture with class pages beside the old one). It falls back to the authorised edit only if the additive route
 doesn't work.
+
+## D-037 | 2026-11-23 | WP5 accepted; WP6 needs one fix (case-study attribution)
+
+The ACE re-ran the checks:
+- **scat-kg-tools at `f555258`:** 490 tests pass, ruff and the lock check are clean, and GitHub Actions CI is green
+  on `dev`. The PM had believed CI hadn't run.
+- **The template:** a fresh clone of `dev`, then `uv sync` and `uv run scat check`, gives 0 errors and the single
+  SCAT-CONFLICT-BOTH warning. Template CI is green, and the Obsidian JSON is valid.
+- **Repo state:** only `main` and `dev` remain in either repo, and the `dev` history has no attribution trailers.
+
+**WP5 is accepted.** It came in at 39 estimated and 46 realized points. Rulings on the PM's items:
+- (2) A list- or number-valued `type:` reports SCAT-FM-SHAPE, as the catalogue's trigger says. Accepted.
+- (3) WP5-U8's catalogue wording for the empty-`type` case and the SCAT-INDEX-STALE trigger is confirmed.
+- (4) The heldby stub pair with an existing group, covered by the U7 rerun, is accepted.
+- (5) The caveats for the guides (`scat.toml` required, "unchanged" output, the docs URL, `cd my-vault`, the
+  template's `main` checkout) are inputs to WP7, and the branch item goes to WP8.
+
+**WP6 is not accepted yet. One fix is needed.**
+- **The problem:** the case study's raw pages quote the chief engineer verbatim, typos included, attributed to "a
+  project lead". The same words appear in this public decision log, so the quotes identify one person.
+- **Why that breaks the mission:** it breaks G6 ("no group stands for one identifiable person") and the Chatham House
+  rule the tool is built for. It also publishes his unedited chat as the showcase example.
+- **The ruling:** paraphrase in the facilitator's neutral voice ("the leads asked for…"), with no verbatim quotes and
+  no "a project lead said" attributions. The trace to log ids stays in the worker's report.
+- **Revert point:** this edits pages already merged on the template's `dev`, so `divergence/D-037` is tagged on the
+  template before the fix.
+
+Also accepted as delivered, and on the morning list:
+- the merged concern "Intent without drift";
+- the Attribution concern having no sourced holder (a recorded gap, which is capability 6).
+
+Not yet exercised, and assigned:
+- running the uv installer in a clean environment, and creating a repository from the template (both WP8);
+- Obsidian opened for real (UA-M).
