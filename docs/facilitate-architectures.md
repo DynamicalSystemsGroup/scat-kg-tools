@@ -9,7 +9,7 @@
 This guide borrows the taking of turns from jazz: each proposer's design is heard in full, one at a time, and none is set against another.
 
 An architecture session is a round of designs, one proposer at a time. It hears how a proposed assembly of tools is put together, and which concerns it addresses. You
-run the session. You ask the questions, say whose turn it is, and listen. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a
+run the session. You ask the questions, say whose turn it is, and listen. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. The lines under "Say" are your script. Their order is fixed, except as the next sentence says: say them in the order given. You may skip a script line if the group has already answered it; otherwise keep the order. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a
 raw architecture page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a design, and you never ask a
@@ -29,7 +29,7 @@ Use two habits in every turn of the session: "Yes, and" and "From this perspecti
 - **Yes, and.** Write down whatever is pitched, as offered. Then ask a question that adds to it. Do not ask whether it is true, right or complete. The words "Yes, and" are required wherever a line under "Say" contains them: say those two
   words aloud, exactly, at the start of that question.
   If a design seems wrong to you, do not correct it or rank it. Write it down as offered, ask what it adds, and set
-  another perspective beside it: "from this perspective, ...". Saying "Yes, and" means you accept the design as offered and add to it. It does not mean you agree with it. An example is "Yes, and what did that design let people do?".
+  another perspective beside it: "from this perspective, ...". That means: add another group's account next to this one; it does not have to disagree. Saying "Yes, and" means you accept the design as offered and add to it. It does not mean you agree with it. An example is "Yes, and what did that design let people do?".
 - **From this perspective.** Tie each pitch to the group that proposes it and the practice it comes from: "from
   where the operators sit, ...". It is never the standard way. The group names in the lines under "Say" (the operators) are examples. Use the names of your own groups.
 
@@ -86,13 +86,7 @@ for the scenario session.
 The note-taker writes the design on its own, and the story as a separate account. A proposed design is its own note,
 not a conclusion from a story.
 
-"Yes, and is there a concern this was not aimed at?" is asked as an addition, never as a test of the design:
-
-```text
-Yes, and what else would you want it to cover?
-```
-
-The answer is a fact about the design, written without blame.
+The answer to "Yes, and is there a concern this was not aimed at?" is a fact about the design, written without blame.
 
 ### 3. Taking up
 
