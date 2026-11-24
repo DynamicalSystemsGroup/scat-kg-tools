@@ -449,6 +449,14 @@ Amendment 5 (open, asked one at a time):
    (Scenarios and architectures, G6, J4, and the non-goal on attribution), while log D-070 makes it one example
    policy in the docs. Bring the mission in line, or keep it?
 4. **The Agent's defaults** for Amendment 5, as one item.
+5. **The Obsidian projection** *(raised by the chief engineer's play test, 24 Nov)*. The vault as Obsidian shows it
+   is hard to use: raw and coded pages duplicate each other, and the layout makes little use of what Obsidian offers.
+   Is reshaping the projection in v0.1's scope? The division of labour it serves, in his words: the human coder does
+   the interpretive act and validates that meaning is preserved, in Obsidian; the machine does mechanical
+   transcription and conformance checking.
+6. **A prior-art readout** *(raised with 5)*. Revisit the INCOSE paper's split between AI assistant and human operator,
+   the AICC loops and MVC architecture in `ant-rdf` and the eBike prototypes, and the Obsidian-and-git vaults
+   delivered to clients, before the projection is redesigned?
 
 Earlier amendments: none open. Every item was resolved through the decision loop and is recorded in
 `decisions/log.md`:
