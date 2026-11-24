@@ -1133,3 +1133,54 @@ paths, and submitting the w3id registration after the merge.
 Points for v0.1, from the board: about 300 estimated and about 340 realized, a ratio of about 1.13, across 8
 iterations. The largest unplanned cost was the R-15 cold-read chain (rounds 2 to 5), which a stop rule set from the
 start would have cut.
+
+## D-052 | 2026-11-24 | Checkpoint rc1; the chief engineer's feedback; WP9 cleanup and two research spikes
+
+**Checkpoint.** `checkpoint/v0.1-rc1` is tagged on tools `169061b` and template `9e9bad8`, as the chief engineer
+asked, in case a revert is needed.
+
+The chief engineer's feedback (chat, typed by the ACE):
+- "the jazz references are a little heavy handed, the could be toned down a bit further. using music not logo and brief
+  aside about improvisation is good. but i think there still few place we could err toward clarity over jazz
+  references. you were already exploring that margin so this is just nudge, not a major refactor"
+- And: "music note logo is good. sorry if that's unclear".
+- "i think you were blending conformance checks with content checks. we should not be getting warnings about
+  conflicting concerns. the knowledge graph mode does not and should not try to block conflicting concerns we simply
+  note that stakeholders can and do hold concerns that can be in opposition to each other. its natural and desired to
+  capture that as long as its explicit. this is not a warning because its related to the content not the structure.
+  we have not build any analysis tools yet. given a correctly constructed model (with conformance checks passing) and
+  a human "facilitator/coder" reviewing the data and signing off that the content is done, validating it reflects the
+  discussioms and interviews with technologists and actors. THEN analysis can be performed to see where the tensions
+  are sharpest or where there are matches or gaps. this becomes a network science problem of sorts and it can borrow
+  concepts from requirements traceability but that its own research spike."
+- "another research spike, would be toward building a community plugin for obsidian that we can install in obsidian
+  so the tooling we build works directly with obsidian, which would allow most users to work within obsidian proper
+  and github rather than use a cli or REPL. this would make our tool something like an opinionated linter for
+  obsidian vault as an IDE for organizing notes according to this ontology."
+- "id tag what you gave me tonight a first checkpoint ... you can take that feedback and work ahead. focus on cleaning
+  up what we have and getting it ready for me to play test in the morning (ideally able to approve the 0.1 release in
+  the morning and if the research spikes go well, you also have done work on the obsidian plugin and the the analysis
+  tools. assume the analysis tools are used by a data scientist or network scientist working in a jupyter notebook,
+  its focused graph analysis to identify and interpret patterns in the data that help us understand the "big
+  picture"."
+
+ACE outcomes:
+1. **Principle: conformance checks structure, never content.** D-028's D3 (the SCAT-CONFLICT-BOTH warning) was the
+   ACE's error. It blended a content observation into conformance. Reverted: the `conflicts` relation stays as an
+   explicit, structurally checked link, and the warning is removed everywhere. Every remaining rule is audited for any
+   other content judgement. Seeing tensions, matches and gaps is analysis, done after conformance passes and the
+   coder signs off the content.
+2. **Jazz, toned down.** Keep the music-note logo and one brief aside on improvisation (the "yes, and" stance). Remove
+   the remaining page epigraphs and jazz framing in favour of plain words. R-15's cold-read bar gives way to the chief
+   engineer's own judgement, and the reviewer's guide says so.
+3. **WP9 (v0.1 cleanup)** carries 1 and 2 and refreshes the candidate, so that he can play-test and approve in the
+   morning. It is release scope, on `dev`.
+4. **Two research spikes, outside v0.1:**
+   - RS1: an Obsidian community plugin, an opinionated linter that makes the vault an IDE for the ontology;
+   - RS2: graph analysis for a data or network scientist in Jupyter.
+
+   Both run on side branches (`spike/obsidian-plugin` and `spike/analysis`). They are not merged into `dev` before the
+   release. They lift the mission's non-goals only as exploration the chief engineer directed. Any delivery is a later
+   package under a mission amendment.
+
+WP8-U1 stays held. His feedback did not address it.
