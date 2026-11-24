@@ -1184,3 +1184,16 @@ ACE outcomes:
    package under a mission amendment.
 
 WP8-U1 stays held. His feedback did not address it.
+
+## D-053 | 2026-11-24 | WP9-G2: rule audit rulings
+
+The WP9 audit covered all 28 rule ids. 22 are unambiguously structural. SCAT-CONFLICT-BOTH is content, and is removed
+(D-052). The ACE ruled on the four borderline rules:
+- **B1** (LINK-DISCOURAGED and LINK-DISCOURAGED-BODY): kept. A type-pair check from the TBox is structure.
+- **B2** (CONFLICT-SELF): kept. Its message is trimmed to the structural fact (a concern can't list itself under
+  `conflicts`), with no interpretive sentence.
+- **B3** (MENTION): kept, as link hygiene (`MISSION.md` names it). Its message says only that the text names an
+  existing page without linking it, and how to link it.
+- **B4** (RAW-UNCODED): kept. It is the same presence pattern as DONE-LINK.
+
+Nothing else is removed. The audit table and these rulings go into the reviewer's guide.
