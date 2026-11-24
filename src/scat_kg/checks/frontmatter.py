@@ -1,22 +1,23 @@
 """The rules about a page's own frontmatter and file name: SCAT-FM-* and SCAT-NAME."""
 
 import datetime
+import posixpath
 
+from scat_kg.checks import fixes
 from scat_kg.checks.ctx import Ctx, page_rule
+from scat_kg.checks.fixes import put_line as put_line  # noqa: PLC0414  (completeness.py imports it from here)
 from scat_kg.checks.text import (
     CLASS_PAGES,
     CLASS_TITLES,
     article,
-    choose,
     free_name,
     is_missing,
     name_problem,
     near_match,
-    one,
     quote,
-    set_status_cmd,
     title_from_name,
 )
+from scat_kg.fix import FixOption
 from scat_kg.tbox import TBOX
 from scat_kg.vault import Page
 
@@ -27,21 +28,17 @@ RELATION_TITLE = {
 }
 
 
-def put_line(ctx: Ctx, page: Page, key: str, line: str) -> str:
-    """The catalogue's add-or-replace: add the line when the key is absent, replace it when empty."""
-    if key not in page.fields:
-        return f"add the line `{line}`"
-    return f"replace the line `{f'{key}: {ctx.current(page, key)}'.rstrip()}` with `{line}`"
-
-
 @page_rule
 def fm_parse(ctx: Ctx, page: Page):
     e = page.frontmatter_error
     if e is None:
         return []
-    fix = one(
-        "make the frontmatter a block of `key: value` lines between two lines containing only `---`, "
-        "at the very top of the file; start from the first line the parser rejected"
+    fix = fixes.single(
+        FixOption(
+            "manual",
+            "make the frontmatter a block of `key: value` lines between two lines containing only "
+            "`---`, at the very top of the file; start from the first line the parser rejected",
+        )
     )
     return [ctx.problem("SCAT-FM-PARSE", page.path, "frontmatter", e.reason, fix, line=e.line)]
 
@@ -82,20 +79,34 @@ def fm_required(ctx: Ctx, page: Page):
             continue
         key, pos = f.key, ctx.pos(page, f.key)
         if key == "status":
-            fix = one(
-                f"run {set_status_cmd(page.name)}; use `stub` or `done` instead of `draft` "
-                "if that is the truth"
+            fix = fixes.single(
+                fixes.run_option(
+                    fixes.set_status(page.name),
+                    suffix="; use `stub` or `done` instead of `draft` if that is the truth",
+                )
             )
         elif key == "title":
             title, why = default_title(ctx, page)
-            fix = one(f"{put_line(ctx, page, 'title', f'title: {quote(title)}')} ({why})")
+            line = f"title: {quote(title)}"
+            fix = fixes.single(fixes.put_field(ctx, page, "title", title, line, tail=f" ({why})"))
         else:  # indexes
             if page.name in CLASS_PAGES:
-                fix = one(put_line(ctx, page, key, f"indexes: {CLASS_PAGES[page.name]}"))
+                value = CLASS_PAGES[page.name]
+                fix = fixes.single(fixes.put_field(ctx, page, key, value, f"indexes: {value}"))
             else:
-                fix = choose([put_line(ctx, page, key, f"indexes: {k}") for k in f.value_set])
+                fix = fixes.alternatives(
+                    [fixes.put_field(ctx, page, key, k, f"indexes: {k}") for k in f.value_set]
+                )
         out.append(
-            ctx.problem("SCAT-FM-REQUIRED", page.path, f"field `{key}`", "missing", fix, pos=pos)
+            ctx.problem(
+                "SCAT-FM-REQUIRED",
+                page.path,
+                f"field `{key}`",
+                "missing",
+                fix,
+                pos=pos,
+                on=key,
+            )
         )
     return out
 
@@ -110,15 +121,30 @@ def fm_type(ctx: Ctx, page: Page):
         return []
     near = None if empty else near_match(v, TBOX.page_types)
     if near:
-        fix = one(f"change it to `type: {near}`")
+        fix = fixes.single(_change_to(page, "type", near))
     else:
-        fix = choose(
-            [f"`type: {k}` ({t.description})" for k, t in sorted(TBOX.page_types.items())],
+        fix = fixes.alternatives(
+            [
+                fixes.option(
+                    "exact",
+                    f"`type: {k}` ({t.description})",
+                    fixes.set_field(page.path, "type", k),
+                )
+                for k, t in sorted(TBOX.page_types.items())
+            ],
             head="Fix, choose the one that describes this page:",
         )
     what = "the value is empty, which is not a page type" if empty else f"`{v}` is not a page type"
     return [
-        ctx.problem("SCAT-FM-TYPE", page.path, "field `type`", what, fix, pos=ctx.pos(page, "type"))
+        ctx.problem(
+            "SCAT-FM-TYPE",
+            page.path,
+            "field `type`",
+            what,
+            fix,
+            pos=ctx.pos(page, "type"),
+            on="type",
+        )
     ]
 
 
@@ -134,7 +160,10 @@ def fm_required_link(ctx: Ctx, page: Page):
         expected = t.field(key).target_type
         what = f"missing; {article(t.slug)} {t.slug} page names exactly one {expected} page here, at every status"
         line = f'{key}: "[[<one {expected} page you choose>]]"'
-        fix = one(f"{put_line(ctx, page, key, line)} (author)")
+        slot = f"<one {expected} page you choose>"
+        fix = fixes.single(
+            fixes.put_field(ctx, page, key, f"[[{slot}]]", line, tail=" (author)", slot=slot)
+        )
         out.append(
             ctx.problem(
                 "SCAT-FM-REQUIRED-LINK",
@@ -143,6 +172,7 @@ def fm_required_link(ctx: Ctx, page: Page):
                 what,
                 fix,
                 pos=ctx.pos(page, key),
+                on=key,
             )
         )
     return out
@@ -157,11 +187,19 @@ def fm_status(ctx: Ctx, page: Page):
         return []
     near = near_match(v, TBOX.statuses)
     if near:
-        fix = one(f"change it to `status: {near}`")
+        fix = fixes.single(_change_to(page, "status", near))
     else:
-        fix = (
-            "Fix, choose one: `status: stub` (just started), `status: draft` (being written), "
-            "`status: done` (finished)"
+        fix = fixes.inline(
+            [
+                fixes.option(
+                    "exact", f"`status: {s}` ({why})", fixes.set_field(page.path, "status", s)
+                )
+                for s, why in (
+                    ("stub", "just started"),
+                    ("draft", "being written"),
+                    ("done", "finished"),
+                )
+            ]
         )
     return [
         ctx.problem(
@@ -171,6 +209,7 @@ def fm_status(ctx: Ctx, page: Page):
             f"`{v}` is not a status",
             fix,
             pos=ctx.pos(page, "status"),
+            on="status",
         )
     ]
 
@@ -185,9 +224,9 @@ def fm_indexes(ctx: Ctx, page: Page):
         return []
     near = near_match(v, keys)
     fix = (
-        one(f"change it to `indexes: {near}`")
+        fixes.single(_change_to(page, "indexes", near))
         if near
-        else choose([f"`indexes: {k}`" for k in keys])
+        else fixes.alternatives([_pick(page, "indexes", k) for k in keys])
     )
     return [
         ctx.problem(
@@ -197,6 +236,7 @@ def fm_indexes(ctx: Ctx, page: Page):
             f"`{v}` is not a class",
             fix,
             pos=ctx.pos(page, "indexes"),
+            on="indexes",
         )
     ]
 
@@ -211,9 +251,9 @@ def fm_timeframe(ctx: Ctx, page: Page):
         return []
     near = near_match(v, f.value_set)
     fix = (
-        one(f"change it to `timeframe: {near}`")
+        fixes.single(_change_to(page, "timeframe", near))
         if near
-        else choose([f"`timeframe: {k}`" for k in f.value_set])
+        else fixes.alternatives([_pick(page, "timeframe", k) for k in f.value_set])
     )
     return [
         ctx.problem(
@@ -223,8 +263,19 @@ def fm_timeframe(ctx: Ctx, page: Page):
             f"`{v}` is not a timeframe",
             fix,
             pos=ctx.pos(page, "timeframe"),
+            on="timeframe",
         )
     ]
+
+
+def _change_to(page: Page, key: str, value: str) -> FixOption:
+    return fixes.option(
+        "exact", f"change it to `{key}: {value}`", fixes.set_field(page.path, key, value)
+    )
+
+
+def _pick(page: Page, key: str, value: str) -> FixOption:
+    return fixes.option("exact", f"`{key}: {value}`", fixes.set_field(page.path, key, value))
 
 
 def _kind(v) -> str:
@@ -239,6 +290,14 @@ def _kind(v) -> str:
     if isinstance(v, datetime.date):
         return "a date"
     return "a value that is not text"
+
+
+def _one_line(page: Page, key: str, text: str) -> FixOption:
+    return fixes.option(
+        "exact",
+        f"replace the field with the line `{key}: {quote(text)}`",
+        fixes.set_field(page.path, key, text),
+    )
 
 
 @page_rule
@@ -256,15 +315,23 @@ def fm_shape(ctx: Ctx, page: Page):
             continue
         kind = _kind(v)
         if isinstance(v, list) and len(v) == 1 and isinstance(v[0], str):
-            fix = one(f"replace the field with the line `{key}: {quote(v[0])}`")
+            fix = fixes.single(_one_line(page, key, v[0]))
         elif not isinstance(v, list | dict):
-            fix = one(f"replace the field with the line `{key}: {quote(ctx.current(page, key))}`")
+            fix = fixes.single(_one_line(page, key, ctx.current(page, key)))
         else:
-            fix = one("replace the field with one line of text you write")
+            fix = fixes.single(
+                FixOption("manual", "replace the field with one line of text you write")
+            )
         what = f"expected one line of text, found {kind}"
         out.append(
             ctx.problem(
-                "SCAT-FM-SHAPE", page.path, f"field `{key}`", what, fix, pos=ctx.pos(page, key)
+                "SCAT-FM-SHAPE",
+                page.path,
+                f"field `{key}`",
+                what,
+                fix,
+                pos=ctx.pos(page, key),
+                on=key,
             )
         )
     return out
@@ -297,7 +364,7 @@ def name_rule(ctx: Ctx, page: Page):
             taken.discard(name.lower())  # renaming this file only frees its own name
         new = free_name(title, taken) if isinstance(title, str) else None
     if new is None:
-        fix = one("choose a legal name by hand (contract section 2)")
+        fix = fixes.single(FixOption("manual", "choose a legal name by hand (contract section 2)"))
     else:
         text = (
             f"change the file name to `{new}.md`, then change the links that meant this page "
@@ -308,5 +375,6 @@ def name_rule(ctx: Ctx, page: Page):
                 f" (two pages share the name: change only the links that meant this page; "
                 f"the links meant for the other page keep `[[{name}]]`)"
             )
-        fix = one(text)
+        to = posixpath.join(posixpath.dirname(page.path), f"{new}.md")
+        fix = fixes.single(fixes.option("exact", text, fixes.rename_file(page.path, to)))
     return [ctx.problem("SCAT-NAME", page.path, "frontmatter", what, fix)]

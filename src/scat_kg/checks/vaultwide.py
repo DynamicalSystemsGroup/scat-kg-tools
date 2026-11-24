@@ -2,11 +2,13 @@
 
 import re
 
+from scat_kg.checks import fixes
 from scat_kg.checks.ctx import Ctx, vault_rule
-from scat_kg.checks.text import choose, one
+from scat_kg.fix import FixOption
 
 FILE = "scat.toml"
-WHERE = "field `stakeholder_group_cap`"
+KEY = "stakeholder_group_cap"
+WHERE = f"field `{KEY}`"
 
 
 def _written(ctx: Ctx) -> str:
@@ -35,11 +37,16 @@ def cap_config(ctx: Ctx):
         else "add the line"
     )
     least = f", so choose at least {n}" if n >= 1 else ""
-    fix = one(
-        f"{verb} `stakeholder_group_cap = <number you choose>` (author) in scat.toml; choose a whole "
-        f"number of 1 or more (the vault has {n} stakeholder-group pages now{least})"
+    slot = "<number you choose>"
+    fix = fixes.single(
+        fixes.option(
+            "slot",
+            f"{verb} `stakeholder_group_cap = {slot}` (author) in scat.toml; choose a whole "
+            f"number of 1 or more (the vault has {n} stakeholder-group pages now{least})",
+            fixes.set_field(FILE, KEY, slot, author_slot=slot),
+        )
     )
-    return [ctx.problem("SCAT-CAP-CONFIG", FILE, WHERE, what, fix)]
+    return [ctx.problem("SCAT-CAP-CONFIG", FILE, WHERE, what, fix, on=KEY)]
 
 
 @vault_rule
@@ -48,18 +55,21 @@ def cap(ctx: Ctx):
     if cap_value is None or n <= cap_value:
         return []
     names = ", ".join(sorted(p.name for p in ctx.groups))
-    fix = choose(
+    fix = fixes.alternatives(
         [
-            (
+            FixOption(
+                "manual",
                 f"cluster {n - cap_value} group(s) into the others, by shared standpoint: move their "
                 "standpoints into another group's `description`, change every link to them to point "
-                "at that group, and delete those pages"
+                "at that group, and delete those pages",
             ),
-            (
+            fixes.option(
+                "exact",
                 f"or, only if the plan allows more groups, write `stakeholder_group_cap = {n}` in "
-                "scat.toml (the cap protects against identifying individuals)"
+                "scat.toml (the cap protects against identifying individuals)",
+                fixes.set_field(FILE, KEY, n),
             ),
         ]
     )
     what = f"the vault holds {n} stakeholder-group pages, over the cap of {cap_value}: {names}"
-    return [ctx.problem("SCAT-CAP", FILE, WHERE, what, fix)]
+    return [ctx.problem("SCAT-CAP", FILE, WHERE, what, fix, on=KEY)]
