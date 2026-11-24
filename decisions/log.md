@@ -1308,3 +1308,7 @@ should be minimal its only for scenarios and architectures. required but allow "
 **Outcome.** Grounding is required on scenario and architecture pages, with three values (observed, projected, mixed);
 the four SCAT classes and three relations are unchanged. Placement, names and severity on unfinished pages are the
 ACE's defaults in Amendment 3, approved with it.
+
+**Clarification (the chief engineer's words, typed by the ACE):** "by doesn't go into the coded ontology i mean the
+stakeholders, concerns, affordances and technologies are not marked with this axis."
+**Outcome.** Amendment 3 now says so in plain words: grounding marks scenario and architecture records only.
