@@ -6,8 +6,10 @@
 *Each group takes a turn: you listen, then build on what it said.*
 { .epigraph }
 
+This guide borrows "yes, and" from jazz improvisation: you accept what each group offers as it is, and add to it.
+
 A scenario session is a set of stories, one turn per group. It hears what people do in a situation, in time, and what comes of it. You run the session. You ask the questions, say whose turn it is, and listen. In each group's turn, you listen to its story, write it down as offered, then ask a question that adds to it. A note-taker
-writes. The lines under "Say" are your script: say them in the order given, as written, or in your own words, except that the words "Yes, and" stay as written. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.
+writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a story, and you never ask anyone to
 concede one.
@@ -19,18 +21,18 @@ concede one.
 
 ## The stance
 
-Two moves keep the whole session in time.
+Use two habits in every turn of the session: "Yes, and" and "From this perspective".
 
 - **Yes, and.** Write down whatever someone offers, as offered. Then ask a question that adds to it. Never ask a
   question that tests it. The words "Yes, and" are required wherever a line under "Say" contains them: say those two
   words aloud, exactly, at the start of that question.
   If something offered seems wrong to you, do not correct it or rank it. Write it down as offered, ask what it adds,
-  and set another perspective beside it: "from this perspective, ...".
+  and set another perspective beside it: "from this perspective, ...". Saying "Yes, and" means you accept what was offered and add to it. It does not mean you agree with it. If you think a story is wrong, you can still say: "Yes, and what did that look like from where the other group sits?"
 - **From this perspective.** Place every contribution in the group it comes from, and say it that way: "from where
   the operators sit, ...". The group names in the lines under "Say" (the operators, the borrowers) are examples. Use the names of your own groups.
 
 Scenarios are behavioural. Technology stays out of view. What you hear of a tool is what it let people do, or stopped
-them doing. That is an affordance.
+them doing. That is an affordance. When a technology comes up, ask what the tool let people do or stopped them doing, and write that down, not what the tool is.
 
 ## The stages
 
@@ -38,7 +40,7 @@ them doing. That is an affordance.
 
 Do: say the Chatham House frame aloud. Say that today is for stories, and that accounts can differ.
 
-The lines under "Say" show each move. Say them as written or in your own words, but when a line uses "Yes, and" or "from this perspective", keep those words and say them aloud.
+Say the lines under "Say" in the order given. Use your own words if you like, but say "Yes, and" exactly as written, and where a line names a group, use the name of your own group.
 
 ```text
 Whatever is said here can be used. Nobody is named; the
@@ -54,7 +56,7 @@ Note-taker writes: the date, the session, and "Chatham House: groups, not indivi
 
 Do: ask one question at a time, from a concrete moment. Do not ask the teller to sort what comes up into types.
 
-Say these in this order. Each line is its own turn: ask one, wait for the answer, take it up, then ask the next.
+Say these in this order. They are questions. Ask one at a time, then wait for the answer, take it up, and only then ask the next. Do not ask two at once.
 
 ```text
 Tell us about a time when ...

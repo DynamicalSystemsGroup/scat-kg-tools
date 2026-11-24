@@ -6,7 +6,9 @@
 *The chart: who plays, and in what order, before anyone counts in.*
 { .epigraph }
 
-You are planning a facilitation event. Write down a plan: who takes part, in which session, in what order. Keep the plan in a text file anywhere outside the vault's page folders, for example `plan.txt` in your vault folder. It is not a SCAT page, and the check does not read it. By the end you will have a short plan: which sessions hear stories, which hear
+Planning borrows one habit from jazz: settle who plays, and in what order, before the music starts, so that every group gets a turn.
+
+You are planning a facilitation event. Write your event plan: who takes part, in which session, in what order. Save it as a plain text file named `plan.txt` in your vault folder, outside the page folders. It is not a SCAT page, and the check does not read it. By the end you will have a short plan: which sessions hear stories, which hear
 architectures, which groups are in the room, and how the notes will be kept.
 
 Two words come up below. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. The [home page](index.md) defines these and the other two kinds of thing, groups and technologies.
@@ -91,7 +93,7 @@ refused scat.toml field `stakeholder_group_cap`: the vault is at its cap of 3 st
   Fix: either link an existing group, or write `stakeholder_group_cap = 4` in scat.toml (the cap protects against identifying individuals; raise it only if the plan allows)
 ```
 
-The example vault ships with three example groups, which fill a cap of 3. Keep the example while you plan, as a model. When the plan is done, and before you code your own notes, clear the example pages: that is step 5 of Getting started, [Start your own content](getting-started.md#5-start-your-own-content).
+The example vault ships with three example groups, which fill a cap of 3. Keep the example while you plan, as a model. When the plan is done, clear the example pages: that is step 5 of Getting started, [Start your own content](getting-started.md#5-start-your-own-content). Do it before you add any page of your own, and before you code your own notes.
 
 ## Give every group room in every session
 
