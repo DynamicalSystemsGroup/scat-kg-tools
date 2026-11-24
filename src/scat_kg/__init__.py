@@ -20,6 +20,7 @@ there is an error or a refusal (warnings alone leave it True): it is what the co
 from pathlib import Path
 
 from scat_kg.checks import Report, check_neighborhood, check_page, check_vault
+from scat_kg.contract import SCHEMA_VERSION
 from scat_kg.ops import StatusReport, index, set_status, stub, stub_links, stub_pair
 from scat_kg.ops import read_status as _read_status
 from scat_kg.ops.common import find_page, open_vault
@@ -51,6 +52,15 @@ class CheckResult:
     @property
     def ok(self) -> bool:
         return self.report.ok
+
+    def to_dict(self) -> dict:
+        return {
+            "schema_version": SCHEMA_VERSION,
+            "kind": "check",
+            "operation": "check",
+            "ok": self.ok,
+            "problems": [p.to_dict() for p in self.problems],
+        }
 
     def __str__(self) -> str:
         e, w = len(self.errors), len(self.warnings)
