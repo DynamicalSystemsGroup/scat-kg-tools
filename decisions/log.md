@@ -923,3 +923,32 @@ The template pin in the docs test moves afterwards.
 
 **Known-weak, for the reviewer's guide:** the docs test runs only `bash` and `python` blocks, so the message-output
 blocks in `coding.md` are pinned by reviewers' real runs, not by CI.
+
+## D-044 | 2026-11-24 | UA-A round 1 dispositions
+
+UA-A round 1 ran against the live Pages URL. uv was preinstalled, as every report states (D-040/D-041). The three
+testers (p1 and p2 on Haiku, p3 as the Sonnet control) all reached a clean check. The Haiku cold read named jazz
+unprompted and flagged two places where a phrase obscured an instruction. No finding was blocking.
+
+ACE dispositions:
+1. **Commit and push at J7: option (a).**
+   - UA-A clones have their remote removed by design (`MISSION.md` UA-A), so a push could never happen in UA-A.
+   - The tester sessions' guard also refused `git commit` once, which is environmental.
+   - For agents, J7 is a clean check plus a local commit. Pushing is covered by UA-M, and the guide lists it as
+     known-weak (sitting 4).
+   - p1's refused commit is retried with a fresh tester in round 2.
+2. **All 12 proposed docs fixes in `acceptance/reports/r1-findings.md` are accepted for U11.**
+   - On finishing: the bar is a clean check (0 errors). The guide says every page *should* reach `done`, that `draft`
+     only warns, and states it as the contracts do, with no new rule.
+   - The three cold-read places get plain wording in the instruction: style in headings and framing, never in
+     instructions (D-039).
+3. **Round 2 is approved as the PM proposed:**
+   - fresh testers;
+   - a mandatory Haiku tester on the REPL (closing the round 1 gap against `MISSION.md`);
+   - the cold-read questions asked in sequence;
+   - piping into `python -i` is allowed where there is no interactive terminal.
+4. **The PM's own push.** A worker's push of a unit branch was refused, and the PM merged locally and pushed `dev`.
+   That is the PM's normal merge role, not a workaround, because unit branches don't need to reach the remote.
+5. **Data quality.** The WP8 "done at" stamps on the board (`2026-11-24T10:00` and `11:30 -05:00`) are placeholders
+   in the future. The PM appends corrected `unit` records with the real times, from git commit times. The log is
+   append-only, the latest record per unit wins, and the board is corrected to match.
