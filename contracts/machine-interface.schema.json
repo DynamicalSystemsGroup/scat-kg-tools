@@ -16,10 +16,10 @@
       "pattern": "^[a-z][a-z0-9-]*$"
     },
     "VaultPath": {
-      "description": "Vault-relative, / separators, no leading slash.",
+      "description": "Vault-relative, / separators: no leading slash, no backslash, no .. segment.",
       "type": "string",
       "minLength": 1,
-      "pattern": "^[^/\\\\][^\\\\]*$"
+      "pattern": "^(?!/)(?!(.*/)?\\.\\.(/|$))[^\\\\]+$"
     },
     "RuleId": {
       "description": "Stable: never renamed, only retired. The set grows without a version bump.",
@@ -160,7 +160,7 @@
         "kind": { "enum": ["exact", "slot", "advisory", "manual"] },
         "text": { "type": "string", "description": "The sentence shown today." },
         "command": { "$ref": "#/$defs/Command" },
-        "edits": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/Edit" }, "description": "Apply in order, then run command if there is one." }
+        "edits": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/Edit" }, "description": "Apply in order, then run command if there is one. In a fix with sequence true, each option is one step." }
       },
       "allOf": [
         {
@@ -174,8 +174,16 @@
         {
           "if": { "properties": { "kind": { "const": "slot" } }, "required": ["kind"] },
           "then": {
-            "required": ["edits"],
-            "properties": { "edits": { "contains": { "required": ["author_slot"] } } }
+            "anyOf": [
+              {
+                "required": ["edits"],
+                "properties": { "edits": { "contains": { "required": ["author_slot"] } } }
+              },
+              {
+                "required": ["command"],
+                "properties": { "command": { "required": ["author_slot"] } }
+              }
+            ]
           }
         }
       ]
@@ -185,7 +193,8 @@
       "required": ["argv", "repl"],
       "properties": {
         "argv": { "$ref": "#/$defs/StringList", "minItems": 1, "description": "The scat command line as an argument list, without the leading scat." },
-        "repl": { "type": "string", "description": "The same call in the Python REPL." }
+        "repl": { "type": "string", "description": "The same call in the Python REPL." },
+        "author_slot": { "type": "string", "minLength": 1, "description": "Present when argv holds a placeholder the author must replace: this is that placeholder's exact text. Never run it as is." }
       }
     },
 

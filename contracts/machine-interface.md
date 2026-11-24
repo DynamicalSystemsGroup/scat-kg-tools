@@ -1,26 +1,24 @@
 # Machine interface (schema version 1)
 
-Every `scat` command takes `--json` and prints one document. Its shape is
-[`machine-interface.schema.json`](machine-interface.schema.json) (JSON Schema 2020-12). A plugin needs this page and
-that file, not the source.
+Every `scat` command takes `--json` and prints one document, shaped by
+[`machine-interface.schema.json`](machine-interface.schema.json) (JSON Schema 2020-12).
 
 ## Rules of the interface
 
 - **Versioning.** Every document has an integer `schema_version`, now 1. Adding a field keeps the version.
-  Removing, renaming or changing the meaning of a field bumps it. Ignore fields you do not know. The closed lists
+  Removing, renaming or changing the meaning of a field bumps it. Ignore unknown fields. The closed lists
   (severities, fix kinds, option kinds, edit actions) are part of the meaning: a new value bumps the version.
-- **Rule ids** are stable. A rule is never renamed, only retired. New ids may appear without a version bump, so match
-  the pattern `SCAT-[A-Z0-9-]+`, not a list.
+- **Rule ids** are stable: never renamed, only retired. New ids may appear without a version bump, so match the
+  pattern `^SCAT-[A-Z0-9]+(-[A-Z0-9]+)*$`, not a list.
 - **Streams and exit code.** Stdout holds exactly one JSON document. Text for humans goes to stderr. The exit code is
-  unchanged: 0 when `ok`, 1 otherwise, 2 for a command line that cannot be read (then there is no document).
+  unchanged: 0 when `ok`, 1 otherwise, 2 for a command line that cannot be read.
 - **Python twin.** Every result has `to_dict()`, which returns exactly the data the CLI prints.
-- **Paths** are vault-relative, with `/`.
+- **Paths** are vault-relative, with `/`, no leading `/`, no `..`.
 
 ## Three kinds of document
 
-`kind` says which. `check` and `status` give their own kind when they run. When any command refuses (not a vault, page
-not found, ...), including `check` and `status`, it gives kind `operation` with `ok` false. `ok` is false when there
-is an error or a refusal; warnings alone keep it true.
+`kind` is `check`, `status` or `operation`. When any command refuses, `check` and `status` included, it gives kind `operation` with `ok` false. `ok` is false when there is an error or a
+refusal; warnings alone keep it true.
 
 ## Fields you may rely on
 
@@ -28,34 +26,38 @@ Anything not in this table is not promised.
 
 | Object | Fields |
 |---|---|
-| every document | `schema_version`, `kind`, `operation` (the command name), `ok` |
+| every document | `schema_version`, `kind`, `operation`, `ok` |
 | check | `problems` |
-| problem | `rule`, `severity` (`error` or `warning`), `file`, `line`, `column` (integer from 1, or null), `field` (null when the problem is about a link, a name or the whole front matter), `where`, `what`, `repeat`, `fix`, `text` (the message exactly as `scat check` prints it) |
-| status | `scope`, `rows`, `counts` (per status, with `other` and `none`), `notes` |
+| problem | `rule`, `severity` (`error` or `warning`), `file`, `line`, `column`, `field` (null when the problem is about a link, a name or the whole front matter), `where`, `what`, `repeat` (how many identical messages this one stands for), `fix`, `text` (the message as `scat check` prints it) |
+| status | `scope` (`page`; `neighborhood`, a page and its linked pages; `vault`), `rows`, `counts` (per status, with `other`, `none`), `notes` |
 | status row | `path`, `name`, `type`, `status` (as written, or null) |
-| operation | `created`, `changed`, `unchanged`, `refused`, `notes` |
+| operation | `created`, `changed`, `unchanged` (already right, nothing written), `refused`, `notes` (sentences for a person) |
 | refusal | `subject`, `why`, `fix` |
 | fix | `kind`, `head`, `sequence`, `options`, `notes` |
 | option | `kind`, `text`, `command`, `edits` |
-| command | `argv` (arguments after `scat`), `repl` |
+| command | `argv` (arguments after `scat`), `repl`, `author_slot` |
 | edit | `action`, `file`, `field`, `value`, `author_slot`, `line`, `column`, `find`, `replace`, `to` |
+
+`line` and `column` are integers from 1, or null. `line` counts the file's own lines, front matter included;
+`column` counts characters.
 
 ## Fixes are data
 
-A fix has a `kind` (exact, options, slot, advisory or manual, as in the rule catalogue), an optional `head`, and
-`options`. The `options` are alternatives to choose from, unless `sequence` is true: then do all, in order. An option
-has its own `kind` and the `text` shown to a person.
+A fix's `kind` is the rule's kind in the catalogue (exact, options, slot, advisory, manual); each option carries
+its own kind (not `options`) and the `text` shown to a person. The `options` are alternatives, unless `sequence` is
+true: then they are steps, applied in order, one option per step. An option's own order is its `edits`, then its
+`command`.
 
-- `exact` carries a `command`, `edits`, or both (apply the edits, then run the command).
-- `slot` carries `edits`, one of which has `author_slot`: the placeholder text in `value` that the author must
-  replace. Never write it as is.
+- `exact` carries a `command`, `edits`, or both.
+- `slot` has an `author_slot` on an edit or on its `command`: the placeholder text the author must replace, never
+  written as is. In an array `value` it is the text inside one string element.
 - `advisory` and `manual` carry neither.
 
-An edit is one of five `action` values:
+An edit has one `action`:
 
 | `action` | Fields used |
 |---|---|
-| `set-field` | `file`, `field`, `value` (the whole new value; adds the field or replaces it; a key of `scat.toml` too) |
+| `set-field` | `file`, `field`, `value` (the whole new value; you choose the YAML or TOML spelling; a file with no front matter gets a block between two `---` lines; a key of `scat.toml` too) |
 | `delete-field` | `file`, `field` |
 | `replace-text` | `file`, `line`, `find`, `replace`, optional `column` |
 | `rename-file` | `file`, `to` |

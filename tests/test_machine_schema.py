@@ -18,8 +18,8 @@ def valid(doc) -> bool:
     return VALIDATOR.is_valid(doc)
 
 
-def cmd(argv, repl):
-    return {"argv": argv, "repl": repl}
+def cmd(argv, repl, **more):
+    return {"argv": argv, "repl": repl, **more}
 
 
 def option(kind, text, **more):
@@ -130,6 +130,75 @@ STEPS = fix(
     sequence=True,
 )
 
+# SCAT-REL-DUPLICATE: the notes merge (author), then delete the file, then run index, then fix the links
+REL_DUPLICATE = fix(
+    "exact",
+    [
+        option(
+            "slot",
+            "put the text of `notes` into the kept page",
+            edits=[
+                {
+                    "action": "set-field",
+                    "file": "heldby/kept.md",
+                    "field": "notes",
+                    "value": "<the two notes, joined>",
+                    "author_slot": "<the two notes, joined>",
+                }
+            ],
+        ),
+        option(
+            "exact", "delete the page", edits=[{"action": "delete-file", "file": "heldby/dup.md"}]
+        ),
+        option("exact", "run `scat index`", command=cmd(["index"], "scat_kg.index()")),
+        option(
+            "exact",
+            "change the link",
+            edits=[
+                {
+                    "action": "replace-text",
+                    "file": "concern/a.md",
+                    "line": 12,
+                    "find": "[[dup]]",
+                    "replace": "[[kept]]",
+                }
+            ],
+        ),
+    ],
+    head="Fix, steps in this order:",
+    sequence=True,
+)
+# SCAT-RAW-UNCODED: the author chooses the name that appears in the command
+RAW_UNCODED = fix(
+    "slot",
+    [
+        option(
+            "slot",
+            "add the coded link (author: choose the name)",
+            edits=[
+                {
+                    "action": "set-field",
+                    "file": "raw/r.md",
+                    "field": "coded",
+                    "value": ["[[<coded-page-name>]]"],
+                    "author_slot": "<coded-page-name>",
+                }
+            ],
+        ),
+        option(
+            "slot",
+            "run `scat stub <coded-page-name> --type concern`",
+            command=cmd(
+                ["stub", "<coded-page-name>", "--type", "concern"],
+                'scat_kg.stub("<coded-page-name>", type="concern")',
+                author_slot="<coded-page-name>",
+            ),
+        ),
+    ],
+    head="Fix, two steps, in this order:",
+    sequence=True,
+)
+
 CHECK = doc(
     "check",
     "check",
@@ -141,6 +210,8 @@ CHECK = doc(
         problem("SCAT-NOTE-X", "warning", ADVISORY, line=None, column=None, field=None),
         problem("SCAT-FM-PARSE", "error", MANUAL, repeat=2),
         problem("SCAT-REL-DUPLICATE", "warning", STEPS),
+        problem("SCAT-REL-DUPLICATE", "warning", REL_DUPLICATE, file="heldby/dup.md"),
+        problem("SCAT-RAW-UNCODED", "warning", RAW_UNCODED, file="raw/r.md"),
     ],
 )
 CLEAN = doc("check", "check", True, problems=[])
@@ -286,6 +357,14 @@ MALFORMED = {
     "set-field without value": mutated(
         CHECK, lambda d: d["problems"][0]["fix"]["options"][0]["edits"][0].pop("value")
     ),
+    "slot with no author slot anywhere": mutated(
+        CHECK,
+        lambda d: d["problems"][-1]["fix"]["options"][1]["command"].pop("author_slot"),
+    ),
+    "empty command author slot": mutated(
+        CHECK,
+        lambda d: d["problems"][-1]["fix"]["options"][1]["command"].update(author_slot=""),
+    ),
     "refusal without fix": mutated(REFUSED_STUB, lambda d: d["refused"][0].pop("fix")),
 }
 
@@ -293,6 +372,29 @@ MALFORMED = {
 @pytest.mark.parametrize("name", MALFORMED)
 def test_malformed_is_rejected(name):
     assert not valid(MALFORMED[name])
+
+
+@pytest.mark.parametrize(
+    "path,ok",
+    [
+        ("a.md", True),
+        ("concern/a.md", True),
+        ("scat.toml", True),
+        ("my..notes.md", True),
+        ("a/..b/c.md", True),
+        ("/a.md", False),
+        ("../a.md", False),
+        ("a/../b.md", False),
+        ("a/..", False),
+        ("..", False),
+        ("a\\b.md", False),
+        ("", False),
+    ],
+)
+def test_vault_paths(path, ok):
+    d = copy.deepcopy(OPERATION)
+    d["changed"] = [path]
+    assert valid(d) is ok
 
 
 def test_unknown_extra_fields_are_allowed_everywhere():
@@ -322,37 +424,71 @@ def test_contract_page_is_at_most_600_words():
     assert len(PAGE.split()) <= 600
 
 
-def schema_property_names(node) -> set[str]:
-    names: set[str] = set()
-    if isinstance(node, dict):
-        for key, value in node.items():
-            if key == "properties" and isinstance(value, dict):
-                names.update(value)
-            names |= schema_property_names(value)
-    elif isinstance(node, list):
-        for item in node:
-            names |= schema_property_names(item)
-    return names
-
-
-def promised_fields() -> set[str]:
-    section = PAGE.split("## Fields you may rely on", 1)[1].split("\n## ", 1)[0]
+def def_properties(*names: str) -> set[str]:
     out: set[str] = set()
-    for row in section.splitlines():
-        cells = [c.strip() for c in row.strip().strip("|").split("|")]
-        if row.startswith("|") and len(cells) == 2 and not set(cells[0]) <= {"-", " "}:
-            out |= set(re.findall(r"`([^`]+)`", re.sub(r"\([^)]*\)", "", cells[1])))
-    out.discard("Fields")
+    for name in names:
+        out |= set(SCHEMA["$defs"][name].get("properties", {}))
     return out
 
 
-def test_every_promised_field_is_named_on_the_page_and_exists_in_the_schema():
-    fields = promised_fields()
-    assert len(fields) >= 40
-    known = schema_property_names(SCHEMA)
-    assert fields <= known, sorted(fields - known)
-    for name in fields:
-        assert f"`{name}`" in PAGE
+EDITS = ("SetField", "DeleteField", "ReplaceText", "RenameFile", "DeleteFile")
+# the table's first column -> the schema objects whose properties its fields must be among
+OBJECTS = {
+    "every document": ["CheckResult", "StatusResult", "OperationResult"],
+    "check": ["CheckResult"],
+    "problem": ["Problem"],
+    "status": ["StatusResult"],
+    "status row": ["StatusRow"],
+    "operation": ["OperationResult"],
+    "refusal": ["Refusal"],
+    "fix": ["Fix"],
+    "option": ["FixOption"],
+    "command": ["Command"],
+    "edit": list(EDITS),
+}
+
+
+def promised() -> dict[str, set[str]]:
+    section = PAGE.split("## Fields you may rely on", 1)[1].split("\n## ", 1)[0]
+    out: dict[str, set[str]] = {}
+    for row in section.splitlines():
+        cells = [c.strip() for c in row.strip().strip("|").split("|")]
+        is_row = row.startswith("|") and len(cells) == 2 and not set(cells[0]) <= {"-", " "}
+        if is_row and cells[0] != "Object":
+            out[cells[0]] = set(re.findall(r"`([^`]+)`", re.sub(r"\([^)]*\)", "", cells[1])))
+    return out
+
+
+def test_every_promised_field_exists_under_its_own_object():
+    table = promised()
+    assert set(table) == set(OBJECTS)
+    for obj, fields in table.items():
+        assert fields, obj
+        if obj == "every document":  # each of the three result kinds has all of them
+            for name in OBJECTS[obj]:
+                assert fields <= def_properties(name), (name, fields - def_properties(name))
+        elif obj == "edit":  # an edit uses some of them; every field belongs to one action
+            assert fields == def_properties(*EDITS)
+        else:
+            assert fields <= def_properties(*OBJECTS[obj]), (obj, fields)
+        for name in fields:
+            assert f"`{name}`" in PAGE
+
+
+def test_page_rule_id_pattern_is_the_schemas():
+    assert f"`{SCHEMA['$defs']['RuleId']['pattern']}`" in PAGE
+
+
+def test_promised_fields_the_schema_requires_are_all_promised():
+    """The required properties of each object are a subset of what the page promises for it."""
+    table = promised()
+    for obj, names in OBJECTS.items():
+        if obj in ("every document", "edit"):
+            continue
+        required = set()
+        for name in names:
+            required |= set(SCHEMA["$defs"][name].get("required", []))
+        assert required <= table[obj] | table["every document"], (obj, required - table[obj])
 
 
 def test_page_states_the_rules_of_the_interface():
