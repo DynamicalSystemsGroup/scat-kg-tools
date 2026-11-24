@@ -52,7 +52,7 @@ People mix the two freely, so lead them to one at a time: take stories of what h
 | "People can see who has what on the sheet." | past | Present tense, but it really exists. |
 | "What would happen if we lent drills overnight?" | future | A counterfactual is not yet real. |
 | "If we had a second desk, queues would shrink." | future | A counterfactual, though it says "had". |
-| "We are trialling weekly checks." | future | Under way, but not yet realized. What already happened in it is a separate past account. |
+| "We are trialling weekly checks in order to stop drills going missing." | future | The checks are under way, but that they stop the losses is still a hypothesis: the intended outcome is not yet realized. What already happened in the trial is a separate past account. |
 | "We are moving to a new sheet this month." | future | Being done with intention, not yet realized. |
 | "Next time we should add a shelf label." | future | "Next time" and "should" look ahead. |
 | "The trustees will decide in spring." | future | "Will" looks ahead. |

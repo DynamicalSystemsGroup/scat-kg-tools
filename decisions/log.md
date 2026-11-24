@@ -1458,3 +1458,13 @@ keep every golden message identical. If an existing test must change, the unit i
 
 **Lessons recorded.** A unit that changes tool output plans the transcript reruns of the units that show it. A pin
 that another unit's test depends on is its own unit, planned up front.
+
+## D-064 | 2026-11-24 | The trial example names its intended outcome
+
+**Direction (the chief engineer's words, typed by the ACE):** on the phrase "We are trialling weekly checks" (future,
+under way but not yet realized): "this needs an "in order to clause" to make it clear that the outcome that the
+intended behavior is produced by the intervention is still hypothetical"
+
+**Outcome.** One table row in `docs/facilitate-scenarios.md` now reads "We are trialling weekly checks in order to stop
+drills going missing." Its reason: the checks are under way, but that they stop the losses is still a hypothesis. The
+ACE made the edit directly: one row, outside WP11's blast radius, with the strict build clean.
