@@ -9,6 +9,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
+from matplotlib.ticker import MaxNLocator
 
 from .analyses import CHAIN_STATES, centrality, communities, conflict_records, group_coverage, projection, provenance_matrix
 from .graph import LAYER_LABEL, LAYERS
@@ -33,6 +34,9 @@ def draw_layered(sg, ax=None, title=""):
     for layer in LAYERS:
         ns = sg.nodes(layer)
         ax.scatter([pos[n][0] for n in ns], [pos[n][1] for n in ns], s=45, color=COLORS[layer], zorder=2)
+        for n in ns:   # page name beside each dot; small so ~50 nodes stay readable
+            ax.text(pos[n][0] + 0.04, pos[n][1] + 0.08, n, fontsize=6, ha="left", va="bottom", zorder=3,
+                    bbox=dict(boxstyle="round,pad=0.05", fc="white", ec="none", alpha=0.7))
     ax.set_title(title); ax.set_xticks(range(4)); ax.set_xticklabels([LAYER_LABEL[l] for l in LAYERS]); ax.set_yticks([])
     ax.spines["left"].set_visible(False)
     return ax
@@ -42,7 +46,7 @@ def plot_coverage(sg, ax=None, title=""):
     """Stacked bars: each group's concerns by how far the chain reaches (green, yellow, grey)."""
     ax = _ax(ax)
     group_coverage(sg)[CHAIN_STATES].plot.barh(stacked=True, ax=ax, color=[CHAIN_COLORS[k] for k in CHAIN_STATES], width=0.7)
-    ax.set_title(title); ax.set_ylabel(""); ax.set_xlabel("concerns held"); ax.legend(fontsize=8, loc="lower right")
+    ax.set_title(title); ax.set_ylabel(""); ax.set_xlabel("concerns held"); ax.xaxis.set_major_locator(MaxNLocator(integer=True)); ax.legend(fontsize=8, loc="lower right")
     return ax
 
 
@@ -87,6 +91,7 @@ def plot_carriage(sg, layer, ax=None, title=""):
     ax = _ax(ax)
     d = centrality(sg).query("layer == @layer").sort_index(ascending=False)
     ax.barh(d.index, d["concerns_carried"], color=COLORS[layer]); ax.tick_params(axis="y", labelsize=7); ax.set_title(title)
+    ax.set_xlabel("concerns carried"); ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     return ax
 
 
@@ -95,14 +100,17 @@ def draw_communities(sg, ax=None, title="", algorithm="greedy_modularity", seed=
     ax = _ax(ax)
     comm = communities(sg, seed=seed).set_index("node")
     U = sg.G.to_undirected(); U = U.subgraph(comm.index)
-    pos = nx.spring_layout(U, seed=5, k=0.7)
+    pos = nx.spring_layout(U, seed=5, k=1.1, iterations=200)
     cmap = matplotlib.colormaps["tab10"]
     nx.draw_networkx_edges(U, pos, ax=ax, edge_color="#cccccc", width=0.8)
     for layer, shape in zip(LAYERS, "so^D"):
         ns = [n for n in U if U.nodes[n]["layer"] == layer]
         nx.draw_networkx_nodes(U, pos, nodelist=ns, ax=ax, node_shape=shape, node_size=90,
                                node_color=[cmap(int(comm.loc[n, algorithm]) % 10) for n in ns], edgecolors="k", linewidths=0.4)
-    ax.set_title(textwrap.fill(title + " (colour: cluster; shape: square group, circle concern, triangle affordance, diamond technology)", 60), fontsize=8)
+    nx.draw_networkx_labels(U, pos, ax=ax, font_size=6, verticalalignment="bottom",
+                            bbox=dict(boxstyle="round,pad=0.05", fc="white", ec="none", alpha=0.7))
+    ax.set_title(textwrap.fill(title + " (colour: cluster; shape: square group, circle concern, triangle affordance, diamond technology; "
+                               "positions carry no meaning)", 60), fontsize=8)
     ax.axis("off")
     return ax
 

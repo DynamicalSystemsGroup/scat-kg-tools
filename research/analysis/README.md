@@ -12,6 +12,8 @@ One command, from the repo checkout:
 cd research/analysis && uv run jupyter lab notebook/scat-graph-analysis.ipynb
 ```
 
+This works from a checkout of the repository: `research/analysis` must stay two directories below the scat_kg project root (the spike depends on it by relative path).
+
 Headless (what CI would do), and the tests:
 
 ```
@@ -62,7 +64,7 @@ For each: the question, how to read it, what it does not mean, and what to do fi
 
 ### 3. Tension: `tension`
 - **Question.** Which concern pairs are declared to conflict, which groups hold both sides, and which groups hold opposite sides?
-- **Read.** `pairs` (one row per pair, the symmetric closure of the declared links), `both_sides` (a group carrying a trade-off), `opposite_sides`.
+- **Read.** `pairs` (one row per pair, the symmetric closure of the declared links), `both_sides` (a group carrying a trade-off), `opposite_sides` (one row per group, concern, group, concern; the same two groups can recur across conflicts, so distinct unordered group pairs are fewer than rows: synthetic vault, 14 rows, 8 distinct pairs).
 - **Not.** A disagreement that happened, a flaw, or adversaries. No declared conflict does not mean harmony; two concerns may simply not have been compared.
 - **First.** Confirm with the coder that the declared conflicts are the ones the interviews support.
 
@@ -95,7 +97,7 @@ For each: the question, how to read it, what it does not mean, and what to do fi
 ```
 src/scat_analysis/   graph.py (load_graph, ScatGraph), analyses.py, plots.py
 tests/               facts on both vaults; no rank/score columns; deterministic communities
-notebook/            scat-graph-analysis.ipynb, executed.ipynb (re-run output), case-study/
+notebook/            scat-graph-analysis.ipynb, executed.ipynb (regenerated output of the headless command; do not edit), case-study/
 synth/               generate.py and the generated vault (do not edit by hand)
 readout.md           the spike's findings, library choice and what core could provide
 ```

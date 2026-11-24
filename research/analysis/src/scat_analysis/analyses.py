@@ -122,6 +122,8 @@ def tension(sg: ScatGraph) -> dict:
     - `pairs`: concern_a, concern_b, declared_by, n_declarations, holders_a, holders_b (the symmetric closure: one row per pair).
     - `both_sides`: group, concern_a, concern_b (the group holds both ends of a pair).
     - `opposite_sides`: group_x, concern_x, group_y, concern_y (the groups hold opposite ends).
+      One row per (group, concern, group, concern); the same two groups can recur across several conflicts,
+      so count distinct unordered group pairs separately (synthetic vault: 14 rows, 8 distinct unordered group pairs).
 
     Reads as: where the vault says concerns pull against each other, and which groups sit at which end.
     Does NOT mean: a disagreement that has occurred, or a flaw. A group holding both sides carries a trade-off.

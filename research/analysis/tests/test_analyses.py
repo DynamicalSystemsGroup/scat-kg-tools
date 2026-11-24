@@ -102,7 +102,8 @@ def test_groups_holding_both_sides(synth):
 
 def test_groups_on_opposite_sides(synth):
     opp = sa.tension(synth)["opposite_sides"]
-    assert len(opp) == 14
+    assert len(opp) == 14                                                         # 14 rows of (group, concern, group, concern)
+    assert len({frozenset((r.group_x, r.group_y)) for r in opp.itertuples()}) == 8   # covering 8 distinct unordered group pairs
     assert (opp.group_x != opp.group_y).all()
     pairs = {(r.group_x, r.group_y) for r in opp.itertuples()}
     assert ("farm-irrigators", "household-members") in pairs                      # detailed visibility vs privacy
