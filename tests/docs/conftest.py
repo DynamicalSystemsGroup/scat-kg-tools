@@ -3,7 +3,7 @@ import subprocess
 import pytest
 
 TEMPLATE_URL = "https://github.com/DynamicalSystemsGroup/scat-kg-template"
-TEMPLATE_COMMIT = "f446a023cacb9a628bab0354c6a7d9b69ff9f701"  # the template's `dev`; WP8 re-pins it
+TEMPLATE_COMMIT = "0e9ef0728e9ca09a966b5dc3cc21e4fd8a748751"  # the template at the candidate pin (merge of the tools-pin update)
 
 
 @pytest.fixture(scope="session")
