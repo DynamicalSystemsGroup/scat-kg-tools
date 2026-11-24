@@ -14,7 +14,7 @@ DSG needs, for an upcoming project, a first usable release of a toolkit for turn
 conformant knowledge graph. Participants tell stories (scenarios) and propose architectures. Their raw notes are coded
 into pages of an Obsidian vault in git. Coding decompiles each scenario and architecture into four concepts:
 **s**takeholders, **c**oncerns, **a**ffordances and **t**echnologies. The acronym is SCAT, named for scat singing in
-jazz. Coding relates the four concepts through explicit relationships, layered as bipartite graphs:
+jazz. Coding relates the four concepts through explicit, typed edges, layered as bipartite graphs:
 stakeholders–concerns, concerns–affordances, and affordances–technologies.
 
 The result is a navigable, interpretable dataset, and that dataset is the data product. Its conformance to a fixed
@@ -68,7 +68,7 @@ A second lens cuts across the first: **past or future**. A story may tell what h
 architecture may describe a system that exists or one that is proposed. The rule is simple, because the present is
 nebulous: anything real that can be narrated is past, and anything being done with intention but not yet realized is
 future. Behavioural or structural, past or future: the docs show this as a 2×2 for unbundling narratives. Every
-scenario and architecture records which it is (log D-057). Only these records are marked: stakeholder groups,
+narrative records which it is (log D-057; Amendment 5 moves the mark to the narrative). Only narratives are marked: stakeholder groups,
 concerns, affordances and technologies are not, and the three relations don't change.
 
 People mix past and future freely when they talk. The facilitation guides lead participants to the past and the
@@ -136,8 +136,9 @@ matters without claiming to be exhaustive. No particular project's choices appea
     of its own, outside that pattern. Each edge between a given pair appears once, and names the narratives that
     refer to it. A narrative is coded by identifying its vertices and edges; its **support** is the subgraph of every
     vertex and edge it mentions;
-  - the past, future or mixed mark every scenario and architecture records (see "Scenarios and architectures");
-  - the linking rules, reflecting how scenarios and architectures differ;
+  - the past, future or mixed mark every narrative records (see "Scenarios and architectures");
+  - the linking rules, reflecting how scenarios and architectures differ; a narrative that is neither carries only
+    the narrative's own rules;
   - how the graph holds disagreement and margins of potential conflict. At minimum, the same concern can be held by
     different stakeholder groups;
   - one generic **relationship** between two records of the same class: a note with a place in the graph, whose only
@@ -233,8 +234,9 @@ matters without claiming to be exhaustive. No particular project's choices appea
   development team. A spike designs and tries the chat path with lab material before it is built (R-20).
 - **G15. A usable Obsidian projection (Amendment 5).** The vault as Obsidian shows it is where the human coder codes
   and checks that meaning is preserved. It is reshaped in v0.1 so that raw and coded material are not duplicated and
-  the layout uses what Obsidian offers, rather than folders of near-empty pages. The redesign is checked in Obsidian
-  itself, not reasoned about from the files.
+  the layout uses what Obsidian offers, rather than folders of near-empty pages. It may change which records are pages
+  and which are fields, and so how G2's class pages and G3's stubs are realised, but not what the graph means. The
+  redesign is checked in Obsidian itself, not reasoned about from the files.
 - **G16. A shared architecture (Amendment 5).** The system is model, view and control. The **model** is the
   knowledge graph: the TBox and a conformant vault. The **views** are purposeful views built from a conformant model:
   the Obsidian projection, the notebook views and the table views. The **control plane** is how people and LLMs act on
@@ -371,10 +373,11 @@ Acceptance is judged by people using the product, not only by tests. The journey
 
 ## Definition of good enough
 
-- R-1 to R-15 met, with evidence.
+- R-1 to R-22 met, with evidence.
 - UA-A passes on the candidate.
 - The candidate is staged for UA-M, with the reviewer's guide ready.
-- The ontology, toolchain and facilitation research readouts exist. Every TBox term traces to an adopted ontology or
+- The ontology, toolchain, facilitation, prior-art and chat-path readouts exist, and the architecture document is
+  reviewed (R-22). Every TBox term traces to an adopted ontology or
   is recorded as authored, with the trade study's reason.
 
 ## Definition of done
@@ -398,6 +401,8 @@ The chief engineer has accepted by merging the release PRs.
   - the TBox and page contracts come before implementation;
   - the toolchain is chosen by its spike before implementation;
   - the facilitation research comes before the facilitation guides;
+  - the prior-art readout comes before the architecture document, and the reviewed architecture document comes before
+    detailed design of Amendment 5's packages (R-22);
   - the user tests come last.
 - **TBox changes before release.** Once the TBox and page contracts are accepted, a change to them during v0.1 is the
   ACE's logged call if it serves the mission as written. It is an intent gap if it would change what the graph means.
@@ -479,8 +484,8 @@ recording why.
   keeps the version, and removing or changing one bumps it. Schema validation runs in the test suite only, so it adds
   no runtime dependency to `scat-kg` (log D-056). Not included: checking an unsaved editor buffer, and a public vault
   loader for analysis. Both are left for the packages that need them.
-- The past/future mark (Amendment 3) is a field on the raw scenario and raw architecture pages, the record of what was
-  told; a coded page is a reading of its raw page and inherits it. Working field name `timeframe`, with the chief
+- The past/future mark (Amendment 3) is a field on the raw narrative, the record of what was told (Amendment 5 widens
+  it from raw scenarios and architectures to every narrative); a coded reading inherits it. Working field name `timeframe`, with the chief
   engineer's values `past`, `future` and `mixed`. Like every required field (R-3), a missing value is an error on a
   `done` page and a warning before.
 - Amendment 5 *(default)*:
