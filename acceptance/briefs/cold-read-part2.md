@@ -7,7 +7,7 @@ Your test lead sends this only after you have answered question 1 in your first 
 **Question 2.** Was there any place where an image, a phrase or a metaphor made an instruction harder to follow or to
 understand? For each place, give the page, quote the words (a short quote), say what you thought it asked you to do,
 and say what you think it meant. If there was no such place, say so, and name the instruction you found hardest
-instead.
+instead. For each place you list, also say whether a figure of speech or a musical term (an epigraph, a framing sentence or a music word) caused the difficulty, or whether the cause was something else (an unclear instruction, a missing step, a word that was not defined).
 
 ## Rules
 

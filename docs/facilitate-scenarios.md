@@ -23,11 +23,10 @@ concede one.
 
 Use two habits in every turn of the session: "Yes, and" and "From this perspective".
 
-- **Yes, and.** Write down whatever someone offers, as offered. Then ask a question that adds to it. Never ask a
-  question that tests it. The words "Yes, and" are required wherever a line under "Say" contains them: say those two
+- **Yes, and.** Write down whatever someone offers, as offered. Then ask a question that adds to it. Do not ask whether it is true, right or complete. The words "Yes, and" are required wherever a line under "Say" contains them: say those two
   words aloud, exactly, at the start of that question.
   If something offered seems wrong to you, do not correct it or rank it. Write it down as offered, ask what it adds,
-  and set another perspective beside it: "from this perspective, ...". Saying "Yes, and" means you accept what was offered and add to it. It does not mean you agree with it. If you think a story is wrong, you can still say: "Yes, and what did that look like from where the other group sits?"
+  and set another perspective beside it: "from this perspective, ...". Saying "Yes, and" means you accept what was offered and add to it. It does not mean you agree with it. An example is "Yes, and what happened next?", which is in the script.
 - **From this perspective.** Place every contribution in the group it comes from, and say it that way: "from where
   the operators sit, ...". The group names in the lines under "Say" (the operators, the borrowers) are examples. Use the names of your own groups.
 

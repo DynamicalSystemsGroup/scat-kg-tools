@@ -6,9 +6,9 @@
 *Playing it back: raw notes, read again as coded pages.*
 { .epigraph }
 
-Coding borrows one habit from jazz: play a phrase back as it was played. Each coded page keeps the meaning of the raw wording and adds no judgement of your own.
+Coding borrows one habit from jazz: play a phrase back as it was played.
 
-Coding is the step where your raw notes become part of the graph. You read each raw scenario or raw architecture and write each raw page again as a **coded page**. A coded page names the stakeholder groups, concerns, affordances and technologies the notes talk about. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. A **technology** is the thing that provides it. The [home page](index.md) defines all four. You do not summarise or judge. You name what is there, keeping the meaning of the raw wording. The raw page stays exactly as it was written; the coded page is a separate page that reads it.
+Coding is the step where your raw notes become part of the graph. You read each raw scenario or raw architecture and write each raw page again as a **coded page**. Restate each raw page in your own plain words. Keep its meaning, and add no judgement of your own. A coded page names the stakeholder groups, concerns, affordances and technologies the notes talk about. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. A **technology** is the thing that provides it. The [home page](index.md) defines all four. You do not summarise or judge. You name what is there, keeping the meaning of the raw wording. The raw page stays exactly as it was written; the coded page is a separate page that reads it.
 
 The tools do the bookkeeping. You say which things the notes name. The tools create the pages and links that follow, and the checker tells you in plain words what is still wrong. This page shows the whole loop, from start to finish: a raw page, a pushed commit and a look at the graph.
 
