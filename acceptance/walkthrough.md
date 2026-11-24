@@ -255,7 +255,8 @@ and raw notes of your own:
 - From Planning: the sessions (one that elicits scenarios, one that elicits architectures), the groups in each,
   named by role and within the cap, and the Chatham House framing.
 - From the two facilitation guides: write one raw scenario and one raw architecture in plain sentences, as they
-  would have been told, with groups and no individuals' names.
+  would have been told, with groups and no individuals' names. Mark each one past, future or mixed, using the phrase
+  list in the facilitation guides.
 - Keep the groups to a short list. You will name them again in stages 6 and 7.
 
 You are checking that the pages say what to do, that nothing is ranked, voted on or adjudicated, and that the
@@ -274,7 +275,7 @@ architectures, because the guides must not.
 **Checklist.**
 
 - [ ] I made a plan with groups within the cap.
-- [ ] I have raw notes for one scenario and one architecture.
+- [ ] I have raw notes for one scenario and one architecture, each marked past, future or mixed.
 - [ ] No page asked me to rank, vote or adjudicate.
 - [ ] No metaphor hid an instruction.
 
@@ -293,7 +294,7 @@ uv run python
 
 Then `import scat_kg` once. In the REPL, with your own page and group names, do what the page shows: create the raw
 page (`scat_kg.stub`, type `scenario-raw`) and its coded page (type `scenario-coded`), write your notes into the raw
-page and the links into the coded page, then `scat_kg.stub_pair(...)` for each pair you find (the pair order is group
+page (and fill its `timeframe:`: past, future or mixed, from the facilitation guides' phrase list) and the links into the coded page, then `scat_kg.stub_pair(...)` for each pair you find (the pair order is group
 then concern, concern then affordance, affordance then technology), or `scat_kg.stub_links()` after you write the
 coded page. Move pages from stub through draft to done with `scat_kg.set_status("<page>", "draft")` and so on. After
 each step, `scat_kg.check(...)` the page, then its neighbourhood (`neighborhood=True`). Fix each problem from its
@@ -340,6 +341,7 @@ uv run scat set-status <page> draft
 uv run scat check <page> --neighborhood
 ```
 
+Fill `timeframe:` in the architecture's raw page (past, future or mixed, from the facilitation guides' phrase list).
 Use `addresses` and `attributes` for the relations in an architecture (a coded architecture relates concerns,
 affordances and technologies).
 

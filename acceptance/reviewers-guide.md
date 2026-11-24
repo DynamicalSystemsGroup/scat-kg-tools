@@ -4,11 +4,11 @@
 
 Read one sitting, tick its boxes, stop. Each sitting has one entry point. Nothing here asks you to trust a claim: every
 claim names a command to run or a file to open. Paths are from the root of `scat-kg-tools`. Facts were checked on `dev`
-at `e1701ab`; later commits change only this guide, the pin test and `work-packages/`. The tools' candidate commit (the
-last commit that changed `src/` or `docs/`) is `e1701ab`, and the template's `dev` is `2562949`, which pins it. Check
-both before you start: `git log --first-parent -1 --format=%h -- src docs` prints `e1701ab`,
-`git diff e1701ab dev -- src docs` prints nothing, and
-`git ls-remote https://github.com/DynamicalSystemsGroup/scat-kg-template refs/heads/dev` shows `2562949`.
+at `f22c62e`; later commits change only this guide, the pin test, the log and `work-packages/`. The tools' candidate
+commit (the last commit that changed `src/` or `docs/`) is `f22c62e`, and the template's `dev` is `6ebd305`, which pins
+it. Check both before you start: `git log --first-parent -1 --format=%h -- src docs` prints `f22c62e`,
+`git diff f22c62e dev -- src docs` prints nothing, and
+`git ls-remote https://github.com/DynamicalSystemsGroup/scat-kg-template refs/heads/dev` shows `6ebd305`.
 
 Terms: J1 to J7 (the user journey), UA-A and UA-M (the AI tests and your walkthrough) are in `MISSION.md`, "User
 acceptance". R-1 to R-15 are in `MISSION.md`, "Requirements". The ACE and your sign-offs are in `MISSION.md`,
@@ -131,18 +131,18 @@ Look for:
 uv run pytest -q && uv lock --check && uv run ruff check && uv run ruff format --check && uv run --group docs mkdocs build --strict
 ```
 
-Result when written: 522 passed in 76 s; lock check clean; ruff clean on 60 files; strict build clean. The benchmark
+Result when written: 560 passed in 48 s; lock check clean; ruff clean on 61 files; strict build clean. The benchmark
 alone: `uv run pytest tests/bench -s -q` printed page 359 ms, neighborhood 248 ms, vault 289 ms, against 1, 2 and 5 s.
 
 | Req | Requirement | Evidence you can run or open | Status |
 |---|---|---|---|
-| R-1 | Errors block, warnings don't; every rule has id and severity | `uv run python tests/scripts/rules_without_tests.py` lists none (exit 0); 27 rule ids in `contracts/rule-catalogue.md`, audited in sitting 4c; `tests/checks/` | met |
+| R-1 | Errors block, warnings don't; every rule has id and severity | `uv run python tests/scripts/rules_without_tests.py` lists none (exit 0); 28 rule ids in `contracts/rule-catalogue.md`, audited in sitting 4c; `tests/checks/` | met |
 | R-2 | Messages name file, field, rule id and an exact fix | `tests/checks/test_wp8_u2_messages.py`; `tests/test_paths.py` | met; golden tests pin id, file, field and fix, not full prose (D-032) |
 | R-3 | Unfinished pages are never errors; links checked always | `tests/checks/test_status_rules.py`, `tests/checks/test_link_rules.py` | met |
 | R-4 | Checks never write; writes are explicit operations | `tests/test_r4_snapshots.py` | met |
 | R-5 | 500 pages: page under 1 s, neighborhood 2 s, vault 5 s | `tests/bench/test_r5_thresholds.py` | met; one laptop, plus Linux CI |
-| R-6 | Fresh template clone, one setup command, clean check | board rows WP8-U9, U12, U15, U15b, U15c, U15d; my rerun: clone of the template at `2562949`, `uv run scat check`: `no problems` | met with a caveat: uv was preinstalled and the uv installer, `gh` and website creation were never run by agents (D-040); no U9 or U12 report file exists, only board rows |
-| R-7 | Both repositories commit `uv.lock`; CI runs on every push | `gh run list --limit 3`: tools CI run `45340585806` on the candidate commit `e1701ab`; template CI run `45340711178` on `2562949`; both repos hold `uv.lock` | met |
+| R-6 | Fresh template clone, one setup command, clean check | board rows WP8-U9, U12, U15, U15b, U15c, U15d; my rerun: clone of the template at `6ebd305`, `uv run scat check`: `no problems` | met with a caveat: uv was preinstalled and the uv installer, `gh` and website creation were never run by agents (D-040); no U9 or U12 report file exists, only board rows |
+| R-7 | Both repositories commit `uv.lock`; CI runs on every push | `gh run list --commit <sha>`: tools CI run `45417623350` on the candidate commit `f22c62e`; template CI run `45417994907` on `6ebd305`; both repos hold `uv.lock` | met |
 | R-8 | REPL and CLI are equal paths with the same messages | `tests/test_paths.py` (same message, files, exit code; every operation covered); docs test runs both | met |
 | R-9 | Docs snippets run as shown; CLI reference matches `--help` | `uv run pytest tests/docs -q` | met with a caveat: only `bash` and `python` blocks run (D-043) |
 | R-10 | No broken links or dead ends | strict build clean; the 5 distinct external links I fetched returned 200; your sitting 2 | met with a caveat: the ACE's browser pass (D-039) predates the U11 to U14 edits, and I ran no browser |
@@ -205,6 +205,9 @@ D-037 and D-043 (`git ls-remote --tags <repo> | grep divergence`).
 | D-052 | Checkpoint rc1; conformance checks structure, never content; jazz toned down; WP9; two research spikes | your two corrections, quoted in sitting 4c | `checkpoint/v0.1-rc1` on both repositories |
 | D-053 | Rule audit: 22 rules clearly structural, four borderline rules kept, one removed | the table in sitting 4c | none |
 | D-054 | The spikes may continue into feature development on their branches, outside v0.1 | your typed direction | none |
+| D-057 | Grounding axis (past, future, mixed) goes into v0.1; the play test pauses | your typed "Into v0.1" | `divergence/D-057` |
+| D-058 | Amendment 3 merged; WP10 approved; test edits authorised | your typed "Yes, authorise" | `divergence/D-057` |
+| WP10 default | `SCAT-DRAFT-FIELD` also fires at `stub` for a field with a value set, so a fresh stub warns until `timeframe` is filled. An ACE default, for you to confirm | `contracts/rule-catalogue.md`, rule `SCAT-DRAFT-FIELD` | none |
 
 Your own decisions or directions, which the ACE only recorded and applied: D-001, D-003, D-006, D-007, D-008, D-011,
 D-013, D-018, D-021, D-022, D-036. D-015 and D-016 were rolled back with `dev` (see D-017), so no entry
@@ -221,7 +224,7 @@ exists for them.
 
 ## Sitting 4b. What is known to be weak
 
-**Entry point.** The list below, items (a) to (l). Each names the file or log entry that backs it.
+**Entry point.** The list below, items (a) to (m). Each names the file or log entry that backs it.
 
 - **(a) uv.** UA-A testers had uv preinstalled. No agent ran uv's installer (D-040, D-041). `MISSION.md` UA-A says "uv
   not installed". This departure is yours to disposition. Close it with one fresh tester rerun after you permit the
@@ -271,12 +274,14 @@ exists for them.
   testers in rounds 1 to 3 all finished it.
 - **(l) w3id.** `https://w3id.org/scat` is unregistered. `acceptance/w3id-registration.md` holds the pull request for you to
   submit after the release merge. `ontology/scat.ttl` still says the IRI base is unregistered until release.
+- **(m) The `timeframe` tags (WP10).** The tag is an author's judgement; nothing checks it against the text. The two
+  architecture pitches in the case study are tagged `future`, and a fresh reviewer would have tagged them `mixed`.
 
 **Checklist.**
 
 - [ ] I gave (a) my answer.
 - [ ] I gave (e) my answer.
-- [ ] I read (b) to (d) and (f) to (l) and accept each, or I note it.
+- [ ] I read (b) to (d) and (f) to (m) and accept each, or I note it.
 
 **Done looks like.** (a) and (e) each have your answer, and every other item is accepted or noted.
 
@@ -306,10 +311,10 @@ names no `divergence` tags, so there are none for it.
 cold read is run for this release. The cold-read briefs (`acceptance/briefs/cold-read-part1.md` and `part2.md`) are
 kept, marked as retained for reference only. The old reports in `acceptance/reports/` are history and are untouched.
 
-**The rule audit (D-053).** All 27 rule ids in `contracts/rule-catalogue.md` were checked for any content judgement. A
-verdict STRUCTURE means the rule looks at pages, fields, names, counts or links, and never at what a note says. The
-ids below are the same 27 that the catalogue lists (`grep -o 'SCAT-[A-Z-]*' contracts/rule-catalogue.md | sort -u |
-wc -l` prints 27).
+**The rule audit (D-053).** The 27 rule ids then in `contracts/rule-catalogue.md` were checked for any content judgement. A
+verdict STRUCTURE means the rule looks at pages, fields, names, counts or links, and never at what a note says. WP10 added
+one rule (row 28), so the ids below are the 28 that the catalogue lists (`grep -o 'SCAT-[A-Z-]*'
+contracts/rule-catalogue.md | sort -u | wc -l` prints 28).
 
 | # | Rule id | Severity | What it looks at | Verdict |
 |---|---|---|---|---|
@@ -340,9 +345,10 @@ wc -l` prints 27).
 | 25 | SCAT-CONFLICT-SELF | warning | a concern lists itself under `conflicts`; the message states only that fact | STRUCTURE (ACE ruling B2, kept, message trimmed) |
 | 26 | SCAT-MENTION | warning | text names an existing page without linking it | STRUCTURE (ACE ruling B3, kept) |
 | 27 | SCAT-RAW-UNCODED | warning | a done raw page has no coded page and no coded page lists it | STRUCTURE (ACE ruling B4, kept) |
+| 28 | SCAT-FM-TIMEFRAME | error | `timeframe` on a raw page is not `past`, `future` or `mixed` | STRUCTURE (added in WP10, after the D-053 audit; my reading) |
 
 Rows 1 to 22 are the ones D-053 calls unambiguously structural. Rows 23 to 27 are the borderline rules the ACE ruled
-on (B1 covers two rules). All are kept. The 28th rule, the warning about a record that holds two conflicting concerns, was content and is removed (D-052, D-053).
+on (B1 covers two rules). All are kept. A further rule, the warning about a record that holds two conflicting concerns, was content and is removed (D-052, D-053).
 
 **Checklist.**
 
