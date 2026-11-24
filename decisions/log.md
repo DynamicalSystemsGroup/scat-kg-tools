@@ -1545,3 +1545,27 @@ real user who can't see how the pieces relate is a user-acceptance finding again
 with a reference page is an implementation detail inside D-4, so it's the ACE's call. Amendment 5 (PR #7) is withdrawn,
 and D-067's outcome is superseded. WP12 is approved now. Its scope gains one thing from her words: each term says where
 it enters the work (plan, capture, code, analyse).
+
+## D-069 | 2026-11-24 | Two more pages for F-8: the end-to-end flow, and data, rights and consent (WP13)
+
+**Direction (the chief engineer's words, typed by the ACE):** "yes close it. let's also keep in mind that her feedback
+amounted to not seeing how to use this. my concern is that our current documentation also lacks a summary of the flow.
+my gut is we need 2 additional pages. one which summarizes the end to end flow (essentially a user journey like flow
+that is intuitive and is really just a simple lifecycle model from identifying a fieldsite and participants (getting
+and documenting their consents to participate and being clear about what their contributions will and will not be
+used for). then we have facilitation planning and which may involve structured, semi-structured and unstructured
+interactions (which may or may not be recorded, stored, published, etc - see explicit data rights/consents). this is
+an important dimension that is often neglected. we do not need to go into the level of detail covering how we studied
+these topics [...]. my feeling is that we need need to have a page covering making data storage, data rights and
+consents explicit so that people who choose to use scat are at least adequately informed about these operational
+details but we shouldn't go into great length nor should we make normative judgements about what data rights and data
+use commitments etc should or should not be offerred. our documentation should continue with the pattern of naming the
+activity as a dependency and offerring "for example" to help the user understand what we mean."
+
+(The elision drops the names of the research projects and people he mentioned as background. He said the docs need
+not cover them.)
+
+**Outcome.** PR #7 is closed, with its branch kept as the tag `archive/amendment-5-glossary`. Following D-068, the two
+pages are fixes for F-8 inside G7 and D-4, not a mission change. The ACE approved WP13 (`work-packages/WP13.md`). It is
+queued behind WP12, because both touch the nav and the home page. Its bar: no page prescribes a policy, every activity
+is named as a dependency with a "for example", and a cold project-manager reader can find her way.
