@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Check work-packages/metrics.jsonl against the estimation practice (ORG.md, "Estimation data"; log D-061).
 
 Usage:
@@ -16,7 +15,9 @@ from datetime import datetime
 from pathlib import Path
 
 LOG = Path(__file__).with_name("metrics.jsonl")
-HISTORY_LINES = 251  # the log's length when WP10 was approved (log D-058); D-061 applies to every later line
+HISTORY_LINES = (
+    251  # the log's length when WP10 was approved (log D-058); D-061 applies to every later line
+)
 SCALE = {1, 2, 3, 5, 8}
 STATES = {"queued", "in flight", "in review", "done", "blocked"}
 MODELS = {"sonnet", "haiku", "opus"}
@@ -58,9 +59,13 @@ def main(argv):
             if not first.get(key):
                 problems.append(f"{where}: `{key}` is missing")
         if first.get("state") not in ("queued", "in flight"):
-            problems.append(f"{where}: first record is `{first.get('state')}`; a unit is planned before it lands")
+            problems.append(
+                f"{where}: first record is `{first.get('state')}`; a unit is planned before it lands"
+            )
         if first.get("est_pts") not in SCALE:
-            problems.append(f"{where}: `est_pts` {first.get('est_pts')!r} is not on the scale 1, 2, 3, 5, 8")
+            problems.append(
+                f"{where}: `est_pts` {first.get('est_pts')!r} is not on the scale 1, 2, 3, 5, 8"
+            )
         for n, r in recs:
             if r.get("est_pts") != first.get("est_pts"):
                 problems.append(f"{unit} (line {n}): `est_pts` changed; use `replanned_est_pts`")
@@ -92,13 +97,17 @@ def main(argv):
             est += last.get("est_pts") or 0
             real += last.get("realized_pts") or 0
         if names and (it.get("est_pts") != est or it.get("realized_pts") != real):
-            problems.append(f"iteration record line {n}: points {it.get('est_pts')}/{it.get('realized_pts')} "
-                            f"differ from its units' {est}/{real}")
+            problems.append(
+                f"iteration record line {n}: points {it.get('est_pts')}/{it.get('realized_pts')} "
+                f"differ from its units' {est}/{real}"
+            )
         h = it.get("elapsed_h")
         if not isinstance(h, (int, float)) or h <= 0:
             problems.append(f"iteration record line {n}: `elapsed_h` must be positive")
         elif abs((it.get("velocity") or 0) - real / h) > 0.01 * max(1, real / h):
-            problems.append(f"iteration record line {n}: `velocity` is not realized_pts / elapsed_h")
+            problems.append(
+                f"iteration record line {n}: `velocity` is not realized_pts / elapsed_h"
+            )
     for u, lines in in_iteration.items():
         if len(lines) > 1:
             problems.append(f"{u}: in more than one iteration record (lines {lines})")
@@ -117,7 +126,9 @@ def main(argv):
         print(p)
     if problems:
         verdict = f"; {accept} is not ready for acceptance" if accept else ""
-        print(f"{len(problems)} problems in {len(records)} records ({len(current)} under the practice){verdict}")
+        print(
+            f"{len(problems)} problems in {len(records)} records ({len(current)} under the practice){verdict}"
+        )
     else:
         verdict = f"; {accept} is ready for acceptance" if accept else ""
         print(f"metrics ok: {len(records)} records ({len(current)} under the practice){verdict}")
