@@ -1,7 +1,7 @@
 # Facilitating architectures
 
 !!! tip "Your next step"
-    Open the session by reading the Chatham House lines aloud, then ask the first proposer how the parts fit together and what the whole lets people do.
+    Open the session by reading the Chatham House lines aloud, then ask the first proposer how the parts fit together and what the whole lets people do. The Chatham House frame means that whatever is said here can be used, and nobody is named.
 
 *Each proposer plays a design in turn, and you build on what you hear.*
 { .epigraph }
@@ -43,7 +43,7 @@ Anyone with a design to pitch is a technologist for this session. That is a role
 
 ### 1. Opening
 
-Do: say the Chatham House frame aloud. Say that today is for designs and the concerns they answer, and that several
+Do: say the Chatham House frame aloud. The Chatham House frame means that whatever is said here can be used, and nobody is named. Say that today is for designs and the concerns they answer, and that several
 designs may answer one concern.
 
 Say the lines under "Say" in the order given. Use your own words if you like, but say "Yes, and" exactly as written, and where a line names a group, use the name of your own group.
@@ -62,7 +62,7 @@ Note-taker writes: the date, the session, and "Chatham House: groups, not indivi
 
 Do: ask one question at a time. Ask about parts and wholes, not people.
 
-Say these in this order. They are questions. Ask one at a time, then wait for the answer, take it up, and only then ask the next. Do not ask two at once.
+Say these in this order. They are questions. Ask one at a time, then wait for the answer, write it down, and only then ask the next. Do not ask two at once.
 
 ```text
 How do the parts fit together, and what does the whole let people do?
@@ -76,7 +76,7 @@ be matched with groups later. Each gap ("not addressed: ...") as a fact about th
 Who else might hold the concern, as an open question. The design cannot presume who will adopt it, and other groups'
 answers are welcome later.
 
-If someone begins telling the story that led to the design, take it up and write it down. Say:
+If someone begins telling the story that led to the design, write it down. Say:
 
 ```text
 Yes, and thank you. We will note that story
@@ -96,7 +96,7 @@ The answer is a fact about the design, written without blame.
 
 ### 3. Taking up
 
-Do: when a second design is pitched for the same concern, take it up as a companion. It is not a challenger.
+Do: when a second design is pitched for the same concern, write it down as a second design beside the first, and do not treat it as a rival.
 
 Say:
 

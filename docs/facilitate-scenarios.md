@@ -1,7 +1,7 @@
 # Facilitating scenarios
 
 !!! tip "Your next step"
-    Open the session by reading the Chatham House lines aloud, then ask the first group for a story that starts at a concrete moment.
+    Open the session by reading the Chatham House lines aloud, then ask the first group for a story that starts at a concrete moment. The Chatham House frame means that whatever is said here can be used, and nobody is named.
 
 *Each group takes a turn: you listen, then build on what it said.*
 { .epigraph }
@@ -37,7 +37,7 @@ them doing. That is an affordance. When a technology comes up, ask what the tool
 
 ### 1. Opening
 
-Do: say the Chatham House frame aloud. Say that today is for stories, and that accounts can differ.
+Do: say the Chatham House frame aloud. The Chatham House frame means that whatever is said here can be used, and nobody is named. Say that today is for stories, and that accounts can differ.
 
 Say the lines under "Say" in the order given. Use your own words if you like, but say "Yes, and" exactly as written, and where a line names a group, use the name of your own group.
 
@@ -46,7 +46,7 @@ Whatever is said here can be used. Nobody is named; the
 notes say which group an account comes from, never who
 gave it. Today is for stories about what people do.
 Where two stories differ, we write both. Yes, and:
-whatever you tell us will be taken up and added to.
+whatever you tell us will be written down and added to.
 ```
 
 Note-taker writes: the date, the session, and "Chatham House: groups, not individuals."
@@ -55,7 +55,7 @@ Note-taker writes: the date, the session, and "Chatham House: groups, not indivi
 
 Do: ask one question at a time, from a concrete moment. Do not ask the teller to sort what comes up into types.
 
-Say these in this order. They are questions. Ask one at a time, then wait for the answer, take it up, and only then ask the next. Do not ask two at once.
+Say these in this order. They are questions. Ask one at a time, then wait for the answer, write it down, and only then ask the next. Do not ask two at once.
 
 ```text
 Tell us about a time when ...
@@ -72,7 +72,7 @@ in the teller's words, on a line of its own. What was contested.
 
 ### 3. Taking up
 
-Do: when a second story comes from the same moment, take it up as a companion. It is not a rival to the first.
+Do: when a second story comes from the same moment, write it down as a second account beside the first, and do not treat it as a rival.
 
 Say:
 
@@ -131,7 +131,7 @@ content.
 ## Holding disagreement, silence and interruption
 
 
-Do: if two groups tell stories that cannot both go well, write both and name the tension aloud as a margin. Do not ask
+Do: if two groups tell stories that cannot both go well, say aloud that the accounts differ, and write both. Do not ask
 which should win.
 
 Say:
