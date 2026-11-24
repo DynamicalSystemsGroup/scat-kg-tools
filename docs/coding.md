@@ -96,12 +96,9 @@ The raw page lists its coded pages in `coded`, so a reader can walk both ways. T
 
 ## Where raw and coded pages come from
 
-A raw page is the notes as told. Its body holds the plain-sentence notes, written as they were told, with no links. The [facilitation guides](facilitate-scenarios.md) teach how to write one, so this page does not repeat it. There are two ways to create a raw or a coded page, and either gives the same kind of page:
+A raw page is the notes as told. Its body holds the plain-sentence notes, written as they were told, with no links. The [facilitation guides](facilitate-scenarios.md) teach how to write one, so this page does not repeat it. `scat stub` is the one way to create a raw or a coded page. Run `scat stub <name> --type scenario-raw` (or `scenario-coded`, `architecture-raw`, `architecture-coded`). Name a coded page after its raw page with `-coded` on the end.
 
-- Run `scat stub <name> --type scenario-raw` (or `scenario-coded`, `architecture-raw`, `architecture-coded`). Name a coded page after its raw page with `-coded` on the end.
-- Or make the page in Obsidian from the page templates in the vault's `templates/` folder.
-
-The two routes start differently. A stub starts at `status: stub`, with no `description` and no `coded` or `raw` line. A page from the Obsidian template starts at `status: draft`, with `description: ""` and `coded: []` (a raw page) or `raw: []` (a coded page).
+A stub starts at `status: stub`, with only `type`, `status` and `title`: no `description` and no `coded` or `raw` line. Do not create the page in Obsidian from the page templates in the vault's `templates/` folder. A template takes its name from whatever you type as the file name, and a bad name fails the check, while `scat stub` refuses a bad name and says why. You do not need the templates.
 
 For example, the stub of a raw page and of its coded page, as the tool makes them:
 
@@ -488,7 +485,7 @@ Do what the fix says, then check again. Each message below starts from a fresh c
 
 ### 1. A link to a page that does not exist (`SCAT-LINK-DANGLING`)
 
-Start: a fresh copy of the template, a raw page `saturday-at-the-tool-library`, and the coded page above, still a draft, with nothing else made yet. Checking the coded page:
+Start: a fresh copy of the template, a raw page `saturday-at-the-tool-library` made with `scat stub`, and the coded page above, still a draft, with nothing else made yet. Checking the coded page:
 
 ```text
 $ uv run scat check saturday-at-the-tool-library-coded
@@ -511,40 +508,7 @@ no problems
 
 ### 2. The raw page does not point back (`SCAT-RAW-BACKLINK`)
 
-Start: a fresh copy of the template, the raw page and the coded page above, and the concern and affordance stub pages they link to (the result of message 1). The raw page came from the Obsidian template, so it starts as the template leaves it: `status: draft`, `description: ""` and `coded: []`. The neighbourhood check of the coded page:
-
-```text
-$ uv run scat check saturday-at-the-tool-library-coded --neighborhood
-warning [SCAT-DRAFT-FIELD] scenario-raw/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
-  Fix: replace the line `description: ""` with `description: "<one sentence you write>"` (author) before you set status: done
-warning [SCAT-RAW-BACKLINK] scenario-raw/saturday-at-the-tool-library.md field `coded`: [[saturday-at-the-tool-library-coded]] lists this page in `raw`, but this page does not list it
-  Fix: in scenario-raw/saturday-at-the-tool-library.md replace the line `coded: []` with `coded:` and under it the line `- "[[saturday-at-the-tool-library-coded]]"`
-0 errors, 2 warnings
-```
-
-The first warning is a to-do: the raw page is a draft and still wants its sentence. The second is the backlink. Its fix is a hand edit, in the raw page. The frontmatter line before:
-
-```text
-coded: []
-```
-
-and after:
-
-```text
-coded:
-  - "[[saturday-at-the-tool-library-coded]]"
-```
-
-Check the raw page again. The backlink warning is gone, and the to-do stays until you write the description:
-
-```text
-$ uv run scat check saturday-at-the-tool-library
-warning [SCAT-DRAFT-FIELD] scenario-raw/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
-  Fix: replace the line `description: ""` with `description: "<one sentence you write>"` (author) before you set status: done
-0 errors, 1 warning
-```
-
-**If the raw page came from `scat stub`** it starts at `status: stub`, with only `type`, `status` and `title`. The same neighbourhood check then gives one warning, and its fix reads differently:
+Start: a fresh copy of the template, the raw page (made with `scat stub`, so `status: stub` with only `type`, `status` and `title`) and the coded page above, and the concern and affordance stub pages they link to (the result of message 1). The neighbourhood check of the coded page:
 
 ```text
 $ uv run scat check saturday-at-the-tool-library-coded --neighborhood
@@ -553,7 +517,21 @@ warning [SCAT-RAW-BACKLINK] scenario-raw/saturday-at-the-tool-library.md field `
 0 errors, 1 warning
 ```
 
-Add the two lines to the frontmatter, for example straight after `title`, and the check of the raw page reads `no problems`. A stub gets no description warning, because an unfinished page is never faulted for being unfinished. The warning comes when you set the page to `draft`:
+Its fix is a hand edit, in the raw page. Add the two lines to the frontmatter, for example straight after `title`:
+
+```text
+coded:
+  - "[[saturday-at-the-tool-library-coded]]"
+```
+
+Check the raw page again. The warning is gone:
+
+```text
+$ uv run scat check saturday-at-the-tool-library
+no problems
+```
+
+A stub gets no description warning, because an unfinished page is never faulted for being unfinished. The warning comes when you set the page to `draft`:
 
 ```text
 $ uv run scat set-status saturday-at-the-tool-library draft
@@ -565,9 +543,11 @@ warning [SCAT-DRAFT-FIELD] scenario-raw/saturday-at-the-tool-library.md field `d
 0 errors, 1 warning
 ```
 
+The warning is a to-do: the raw page is a draft and still wants its sentence.
+
 ### 3. A status the tools do not know (`SCAT-FM-STATUS`)
 
-Start: a fresh copy of the template and the raw page from the Obsidian template (`status: draft`, `description: ""`, `coded: []`), with a typo in its status line, `status: dun`:
+Start: a fresh copy of the template and the raw page made with `scat stub`, with a typo in its status line, `status: dun`:
 
 ```text
 $ uv run scat check saturday-at-the-tool-library
@@ -581,7 +561,7 @@ Write `status: draft` in its place. The error is gone, and the check shows the t
 ```text
 $ uv run scat check saturday-at-the-tool-library
 warning [SCAT-DRAFT-FIELD] scenario-raw/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
-  Fix: replace the line `description: ""` with `description: "<one sentence you write>"` (author) before you set status: done
+  Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
 0 errors, 1 warning
 ```
 
@@ -597,16 +577,33 @@ affordances:
 ```text
 $ uv run scat check saturday-at-the-tool-library-coded
 error [SCAT-LINK-ENDPOINT] scenario-coded/saturday-at-the-tool-library-coded.md:13 field `affordances`: [[shared-spreadsheet]] is a technology page, but `affordances` must link affordance pages
+  Fix: `affordances` is required on a page with status: done and this is its only good item, and no existing affordance page was found to replace it with: run `scat set-status saturday-at-the-tool-library-coded draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library-coded", "draft")`) first, then change the item by hand
+1 error, 0 warnings
+```
+
+The page is `done` and this is its only item, so deleting it alone would only trade this error for a missing-link error. The fix says to set the page back to `draft` first, then change the item by hand:
+
+```text
+$ uv run scat set-status saturday-at-the-tool-library-coded draft
+changed scenario-coded/saturday-at-the-tool-library-coded.md
+note: `status` set to draft (was done)
+```
+
+The check now offers the plain fix:
+
+```text
+$ uv run scat check saturday-at-the-tool-library-coded
+error [SCAT-LINK-ENDPOINT] scenario-coded/saturday-at-the-tool-library-coded.md:13 field `affordances`: [[shared-spreadsheet]] is a technology page, but `affordances` must link affordance pages
   Fix: delete the item line `- "[[shared-spreadsheet]]"` under `affordances`
   (no existing affordance page was found to replace it with)
 1 error, 0 warnings
 ```
 
-Delete the line, as it says. That leaves `affordances:` empty, and a `done` page needs one. The next message is the next check.
+The notes name the sign-out sheet, so write that item in its place, then set the page to `done` again. The next message is what the check says if you delete the item and leave `affordances:` empty.
 
 ### 5. A finished page that is missing a link (`SCAT-DONE-LINK`)
 
-Start: the state at the end of message 4, with the coded page set to `done` and `affordances:` empty, and the stub page `sign-out-sheet` made.
+Start: a fresh copy of the template, the raw page, the stub pages `tools-come-back-in-good-order` (concern) and `sign-out-sheet` (affordance), and the coded page set to `done` with `affordances:` empty (the page of message 4 with its wrong item deleted).
 
 ```text
 $ uv run scat check saturday-at-the-tool-library-coded
