@@ -11,8 +11,8 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP3 | Facilitation research spike | accepted | `WP3.md` |
 | WP4 | Ontology and page contracts | accepted | `WP4.md` |
 | WP5 | Conformance tools | accepted | `WP5.md` |
-| WP6 | Template and case study | fix merged (WP6-U8); awaiting ACE acceptance | `WP6.md` |
-| WP7 | Docs and Pages | draft | `WP7.md` |
+| WP6 | Template and case study | accepted | `WP6.md` |
+| WP7 | Docs and Pages | approved | `WP7.md` |
 | WP8 | Candidate and user acceptance | not yet scoped | — |
 
 ## Units

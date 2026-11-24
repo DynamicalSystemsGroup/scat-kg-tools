@@ -768,3 +768,33 @@ Also accepted as delivered, and on the morning list:
 Not yet exercised, and assigned:
 - running the uv installer in a clean environment, and creating a repository from the template (both WP8);
 - Obsidian opened for real (UA-M).
+
+## D-038 | 2026-11-24 | WP6 accepted; WP7 scope approved
+
+**WP6 is accepted.** The ACE verified WP6-U8 at template `f446a02`:
+- no quotation marks in the bodies of the raw case-study pages;
+- none of the chief engineer's distinctive phrases or typos remain;
+- no "a project lead" attribution;
+- `scat check` gives 0 errors and the single SCAT-CONFLICT-BOTH warning;
+- `scat index` produces no diff.
+
+The PM's four borderline lines (a plural "the project leads"; two lines close in gist to a chat sentence; frontmatter
+that matches the public mission wording) are accepted. They paraphrase public intent and identify no person. WP6
+came in at 28 estimated and 29 realized points, counting U8 (estimated 3, realized 5).
+
+**The WP7 scope is approved** with the PM's 6 fixes:
+- R-12 is added: getting started gives the private creation path;
+- the D-037 caveats are made checkable (new WP7-R8);
+- "in a tab" becomes "alongside", to avoid over-specifying;
+- the link check is the strict build, with external links followed by hand;
+- the home page explains the name, and the R-15 cold read excludes it;
+- grep hits must be justified or removed.
+
+ACE rulings:
+- **The docs test's vault:** CI clones `scat-kg-template` at a commit pinned in the test. A vendored copy would drift
+  from the template, against R-13's single-source spirit. WP8 re-pins it with the candidate.
+- **The docs' address** is `https://dynamicalsystemsgroup.github.io/scat-kg-tools/`, GitHub Pages' address for this
+  repository. The docs state it, and the template README is updated to match in WP8.
+
+The PM's unit split is approved: 7 units (about 34 estimated points), a planned fix unit U8 (estimated 5), and two
+Haiku reads plus their reruns.
