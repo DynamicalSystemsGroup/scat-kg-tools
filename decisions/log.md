@@ -1299,3 +1299,12 @@ release, or come after it?"
 (Amendment 3: the TBox is fixed per release), then a package, then a refreshed candidate, then the play test restarts.
 Tag `divergence/D-057` marks `dev` before this direction. Open questions for the amendment are being put to the chief
 engineer one at a time and recorded here.
+
+**Question (typed by the ACE):** "Must every scenario and architecture state its grounding (observed or projected),
+so a missing value fails the check?"
+**Answer (the chief engineer's words, typed by the ACE):** "these additions don't go into the coded ontology so impact
+should be minimal its only for scenarios and architectures. required but allow "mixed" as an option."
+
+**Outcome.** Grounding is required on scenario and architecture pages, with three values (observed, projected, mixed);
+the four SCAT classes and three relations are unchanged. Placement, names and severity on unfinished pages are the
+ACE's defaults in Amendment 3, approved with it.
