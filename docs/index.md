@@ -52,8 +52,8 @@ the others offer and adds to it. Two habits from that carry through the whole me
 - **"From this perspective."** Each contribution is placed in the group it comes from and worded that way. Every
   contribution is taken up and set in its own perspective.
 
-So when two groups want opposite things, SCAT does not settle it. It holds both. The tool can show you a place where
-two concerns pull apart and it lets you leave it there. Nobody has to be argued into agreement.
+So when two groups want opposite things, SCAT does not settle it. It holds both. Conflicting concerns are recorded as
+explicit links, and the tools do not pick between them. Nobody has to be argued into agreement.
 
 ## What you end up with
 

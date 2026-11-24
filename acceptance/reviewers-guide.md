@@ -312,33 +312,33 @@ wc -l` prints 27).
 
 | # | Rule id | Severity | What it looks at | Verdict |
 |---|---|---|---|---|
-| 1 | SCAT-FM-PARSE | error | frontmatter is a readable mapping | STRUCTURE |
-| 2 | SCAT-FM-REQUIRED | error | a required text field is present | STRUCTURE |
-| 3 | SCAT-FM-TYPE | error | `type` is one of the twelve keys | STRUCTURE |
-| 4 | SCAT-FM-REQUIRED-LINK | error | a relation page has its endpoint fields | STRUCTURE |
-| 5 | SCAT-FM-STATUS | error | `status` is `stub`, `draft` or `done` | STRUCTURE |
-| 6 | SCAT-FM-INDEXES | error | a class page's `indexes` value is in its set | STRUCTURE |
-| 7 | SCAT-FM-SHAPE | error | a text field is one non-empty string | STRUCTURE |
-| 8 | SCAT-NAME | error | file names are legal and unique | STRUCTURE |
-| 9 | SCAT-DONE-FIELD | error | a done page has its text fields | STRUCTURE |
-| 10 | SCAT-DONE-LINK | error | a done page has its link fields | STRUCTURE |
+| 1 | SCAT-FM-PARSE | error | frontmatter is not a readable mapping | STRUCTURE |
+| 2 | SCAT-FM-REQUIRED | error | a required text field is missing | STRUCTURE |
+| 3 | SCAT-FM-TYPE | error | `type` is not one of the twelve keys | STRUCTURE |
+| 4 | SCAT-FM-REQUIRED-LINK | error | a relation page lacks an endpoint field | STRUCTURE |
+| 5 | SCAT-FM-STATUS | error | `status` is not `stub`, `draft` or `done` | STRUCTURE |
+| 6 | SCAT-FM-INDEXES | error | a class page's `indexes` value is outside its set | STRUCTURE |
+| 7 | SCAT-FM-SHAPE | error | a text field is not one non-empty string | STRUCTURE |
+| 8 | SCAT-NAME | error | a file name is illegal or not unique | STRUCTURE |
+| 9 | SCAT-DONE-FIELD | error | a done page lacks a text field | STRUCTURE |
+| 10 | SCAT-DONE-LINK | error | a done page lacks a link field | STRUCTURE |
 | 11 | SCAT-DRAFT-FIELD | warning | a draft page lacks a text field it needs by done | STRUCTURE |
 | 12 | SCAT-DRAFT-LINK | warning | a draft page lacks a link field it needs by done | STRUCTURE |
-| 13 | SCAT-LINK-SHAPE | error | a link field is a list of well-formed links | STRUCTURE |
-| 14 | SCAT-LINK-UNLISTED | error | a link field the page type does not list | STRUCTURE |
-| 15 | SCAT-LINK-ENDPOINT | error | a link target is the right page type | STRUCTURE |
-| 16 | SCAT-LINK-DANGLING | error | a frontmatter link target exists | STRUCTURE |
-| 17 | SCAT-LINK-DANGLING-BODY | error | a body link target exists | STRUCTURE |
-| 18 | SCAT-CAP | error | the number of stakeholder-group pages is within the cap | STRUCTURE |
-| 19 | SCAT-CAP-CONFIG | error | `scat.toml` and its cap are present and well-formed | STRUCTURE |
-| 20 | SCAT-REL-DUPLICATE | warning | two relation pages do not state the same pair | STRUCTURE |
-| 21 | SCAT-RAW-BACKLINK | warning | a raw page lists the coded page that lists it | STRUCTURE |
-| 22 | SCAT-INDEX-STALE | warning | a class page's table equals what `index` writes | STRUCTURE |
-| 23 | SCAT-LINK-DISCOURAGED | warning | a link field the TBox discourages for this page type (a type-pair check) | STRUCTURE (ACE ruling B1, kept) |
-| 24 | SCAT-LINK-DISCOURAGED-BODY | warning | a body link to a class the TBox discourages for this page type | STRUCTURE (ACE ruling B1, kept) |
+| 13 | SCAT-LINK-SHAPE | error | a link field is not a list of well-formed links | STRUCTURE |
+| 14 | SCAT-LINK-UNLISTED | error | a page has a non-empty link field its type does not list | STRUCTURE |
+| 15 | SCAT-LINK-ENDPOINT | error | a link target is the wrong page type | STRUCTURE |
+| 16 | SCAT-LINK-DANGLING | error | a frontmatter link target does not exist | STRUCTURE |
+| 17 | SCAT-LINK-DANGLING-BODY | error | a body link target does not exist | STRUCTURE |
+| 18 | SCAT-CAP | error | stakeholder-group pages exceed the cap | STRUCTURE |
+| 19 | SCAT-CAP-CONFIG | error | `scat.toml` or its cap is missing or malformed | STRUCTURE |
+| 20 | SCAT-REL-DUPLICATE | warning | two relation pages state the same pair | STRUCTURE |
+| 21 | SCAT-RAW-BACKLINK | warning | a coded page lists a raw page that does not list it back | STRUCTURE |
+| 22 | SCAT-INDEX-STALE | warning | a class page's table is missing or differs from what `index` writes | STRUCTURE |
+| 23 | SCAT-LINK-DISCOURAGED | warning | a link field the TBox discourages for this page type is non-empty | STRUCTURE (ACE ruling B1, kept) |
+| 24 | SCAT-LINK-DISCOURAGED-BODY | warning | a body link goes to a class the TBox discourages for this page type | STRUCTURE (ACE ruling B1, kept) |
 | 25 | SCAT-CONFLICT-SELF | warning | a concern lists itself under `conflicts`; the message states only that fact | STRUCTURE (ACE ruling B2, kept, message trimmed) |
-| 26 | SCAT-MENTION | warning | text names an existing page without linking it; link hygiene | STRUCTURE (ACE ruling B3, kept) |
-| 27 | SCAT-RAW-UNCODED | warning | a done raw page has a coded page; the same presence pattern as DONE-LINK | STRUCTURE (ACE ruling B4, kept) |
+| 26 | SCAT-MENTION | warning | text names an existing page without linking it | STRUCTURE (ACE ruling B3, kept) |
+| 27 | SCAT-RAW-UNCODED | warning | a done raw page has no coded page and no coded page lists it | STRUCTURE (ACE ruling B4, kept) |
 
 Rows 1 to 22 are the ones D-053 calls unambiguously structural. Rows 23 to 27 are the borderline rules the ACE ruled
 on (B1 covers two rules). All are kept. The 28th rule, the warning about a record that holds two conflicting concerns, was content and is removed (D-052, D-053).
