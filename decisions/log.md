@@ -1216,3 +1216,41 @@ Outcome:
   - **The analysis:** a notebook and an importable module he can run with one documented `uv` command.
 
   Each has its own tests, and a README stating what was and wasn't exercised.
+
+## D-055 | 2026-11-24 | WP9 accepted; feature branches tried; Mission Amendment 2 drafted
+
+**WP9 is accepted.** The ACE verified it at `45be728` (candidate `e1701ab`):
+- 522 tests pass, ruff and the strict docs build are clean, and CI and Pages are green;
+- `git grep` finds no SCAT-CONFLICT-BOTH outside the historical records;
+- the docs keep only the logo and one improvisation aside (`docs/index.md`);
+- a fresh template clone (`2562949`) checks with "no problems", with no index diff.
+
+The rule audit and its rulings are in D-053.
+
+**Feature branches, tried by the ACE from clean checkouts:**
+- **`spike/analysis`:** 22 tests pass, and the executed notebook has 11 code cells, 0 errors and 7 plots.
+- **`spike/obsidian-plugin`:**
+  - It builds with Node v26.13.1 and passes 31 of 31 tests, including 5 end-to-end tests. Those install the built
+    plugin into a scratch vault and run real uv and `scat_kg`: the case study comes back clean, and the seeded defects
+    are reported as errors.
+  - The PM reported 31 passing without saying that the end-to-end tests skip unless the plugin is built and a
+    template clone is present.
+
+  Both features are ready for the chief engineer to try, and neither is merged into `dev`.
+
+**Findings for later packages, not v0.1:**
+- `scat check --json` and `--stdin` would remove the plugin's Python shim.
+- A public vault loader would replace the analysis package's import of the internal `scat_kg.vault.read_vault`.
+
+**Mission Amendment 2** is drafted as PR #4 on `amendment/2-structure-and-style`:
+- R-1 states structure-only conformance;
+- R-15 and G7 become "a light musical reference, clarity first";
+- the non-goals note that the plugin and analysis are explored on feature branches.
+
+This reconciles the mission's text with D-052. Approval is by the chief engineer's merge of PR #4. The log is not
+edited on that branch, so `main` and `dev` won't conflict at release.
+
+**Small items, left as they are:**
+- the `advisory` fix kind in the catalogue is now unused;
+- the logo shows only in the drawer below about 1,220 px (Material's behaviour, which predates WP9);
+- the RS unit estimates were recorded after the fact.
