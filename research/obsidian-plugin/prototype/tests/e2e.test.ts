@@ -34,13 +34,11 @@ describe.skipIf(!can)("plugin folder copied into a vault", () => {
     writeFileSync(join(vault, "concern", "seeded.md"), seeded);
   });
 
-  it("reports the case study's warning with line and exact fix", async () => {
+  it("reports the case study as clean", async () => {
     const r = await check("scenario-coded/notes-at-a-chatham-house-session-coded.md");
     expect(r.status).toBe("ok");
     expect(r.ok).toBe(true);
-    expect(r.problems).toHaveLength(1);
-    expect(r.problems[0]).toMatchObject({ rule: "SCAT-CONFLICT-BOTH", severity: "warning", line: 11 });
-    expect(r.problems[0].fix.startsWith("Fix: none needed")).toBe(true);
+    expect(r.problems).toEqual([]);
   });
 
   it("reports the seeded defects as errors", async () => {

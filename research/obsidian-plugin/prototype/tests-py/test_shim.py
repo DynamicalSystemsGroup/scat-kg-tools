@@ -69,16 +69,9 @@ def test_clean_page(vault):
     assert d["schema_version"] == 1 and d["root"] == str(vault)
 
 
-def test_case_study_warning(vault):
+def test_case_study_clean(vault):
     d = run(vault, "scenario-coded/notes-at-a-chatham-house-session-coded.md")
-    assert d["ok"] is True  # warnings do not block
-    [p] = d["problems"]
-    assert p["rule"] == "SCAT-CONFLICT-BOTH" and p["severity"] == "warning"
-    assert p["file"] == "scenario-coded/notes-at-a-chatham-house-session-coded.md"
-    assert p["line"] == 11 and p["column"] is None and p["repeat"] == 1
-    assert p["where"] == "field `concerns`"
-    assert p["fix"].startswith("Fix: none needed if both belong in this record.")
-    assert "order" not in p
+    assert (d["status"], d["ok"], d["problems"]) == ("ok", True, [])
 
 
 def test_seeded_defects(vault):
@@ -96,10 +89,12 @@ def test_seeded_defects(vault):
 
 
 def test_neighborhood_reaches_other_files(vault):
+    # a seeded page that links to the checked page: its defect shows only with --neighborhood
+    (vault / "concern" / "seeded-neighbor.md").write_text(SEEDED.replace("Seeded", "Seeded neighbor").replace("Mentions", "Mentions [[anonymity]] and"))
+    assert run(vault, "concern/anonymity.md")["problems"] == []
     d = run(vault, "concern/anonymity.md", "--neighborhood")
     assert d["status"] == "ok"
-    files = {p["file"] for p in d["problems"]}
-    assert "scenario-coded/notes-at-a-chatham-house-session-coded.md" in files
+    assert "concern/seeded-neighbor.md" in {p["file"] for p in d["problems"]}
 
 
 def test_note_without_type_is_not_a_page(vault):
