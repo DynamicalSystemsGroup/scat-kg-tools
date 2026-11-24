@@ -75,6 +75,25 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP7-U8 | fixer (planned fix unit), sonnet | 5 | 8 | `wp7/u8` | done |  | 2026-11-23T21:44:56-05:00 | planned fix unit for the two Haiku reads; 3 rounds (round 1 from the reads, round 2 from the reruns incl. a real defect: <group> swallowed as an HTML tag, round 3 residuals), 2 fresh reviews; ran over by 3 |
 | WP7-R6 | clarity-read tester, haiku, haiku | 2 | 3 | none (scratch) | done |  | 2026-11-23T21:44:56-05:00 | 2 reads (first plus a fresh rerun on the fixed pages): both reached a clean whole-vault check with no blocking finding; first run 6 non-blocking guesses (fixed or accepted), second run 6 (mostly test-setup artefacts: the scratch pin change staged by 'git add .', and having only two of the pages); install, gh and website paths and Obsidian not exercised |
 | WP7-R5 | cold-read tester, haiku, haiku | 2 | 5 | none (scratch) | done |  | 2026-11-23T21:44:56-05:00 | 4 reads in all (first read plus 3 fresh reruns): every read named jazz or improvisation unprompted (the text carries the word jazz in one plain sentence per guide); each read still listed 5 to 7 minor places where a phrase left an instruction less than plain, fewer each time (7, 7, 5); no blocking item; ACE to judge whether R5's 'no place' is met |
+| WP8-U1 | Python developer (operations fixes), sonnet | 5 |  | `wp8/u1` | in flight |  |  |  |
+| WP8-U2 | Python developer (message fixes), sonnet | 5 |  | `wp8/u2` | in flight |  |  |  |
+| WP8-U3 | technical writer (docs sync), sonnet | 3 |  | `wp8/u3` | queued | U1 and U2 |  |  |
+| WP8-U4 | technical writer (template README), sonnet | 2 |  | `wp8/u4` | in flight |  |  |  |
+| WP8-U5 | Python developer (Pages workflow and banner), sonnet | 3 |  | `wp8/u5` | in flight |  |  |  |
+| WP8-U6 | test engineer and technical writer (UA-A kit), sonnet | 8 |  | `wp8/u6` | in flight |  |  |  |
+| WP8-U7 | technical writer (walkthrough script), sonnet | 5 |  | `wp8/u7` | in flight |  |  |  |
+| WP8-U8 | Python developer (candidate pins), sonnet | 3 |  | `wp8/u8` | queued | U1 to U5 merged |  |  |
+| WP8-U9 | mechanical checker (clean clone), haiku | 2 |  | `wp8/u9` | queued | U8 and the ACE's settings |  |  |
+| WP8-U10 | UA-A round 1 testers, haiku | 12 |  | `wp8/u10` | queued | U6, U9 |  |  |
+| WP8-U11 | fixer (planned, after round 1), sonnet | 8 |  | `wp8/u11` | queued | U10 |  |  |
+| WP8-U12 | re-pin and rerun, sonnet | 2 |  | `wp8/u12` | queued | U11 |  |  |
+| WP8-U13 | UA-A round 2 testers, haiku | 12 |  | `wp8/u13` | queued | U12 |  |  |
+| WP8-U14 | fixer (planned, after round 2), sonnet | 5 |  | `wp8/u14` | queued | U13 |  |  |
+| WP8-U15 | re-pin and rerun, sonnet | 2 |  | `wp8/u15` | queued | U14 |  |  |
+| WP8-U16 | UA-A round 3 (conditional), haiku | 12 |  | `wp8/u16` | queued | U15 and a blocking finding in round 2 |  |  |
+| WP8-U17 | technical writer (reviewer's guide), sonnet | 8 |  | `wp8/u17` | queued | U16 or a clean round 2 |  |  |
+| WP8-U18 | technical writer (w3id registration file), sonnet | 2 |  | `wp8/u18` | queued | U10 |  |  |
+| WP8-U19 | sweep checker, haiku | 1 |  | `wp8/u19` | queued | U17 |  |  |
 
 ## Iterations and velocity
 
@@ -98,7 +117,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
 
-Current: 186 est. pts proposed (WP1 to WP7, including the unplanned WP5-U9, WP5-U10 and WP6-U8, and the two WP7 reads; WP8 not yet scoped); 186 est. pts completed; 218 realized pts completed. 7 iterations closed; running realized/estimated ratio 1.17; raw velocities [40.9, 24.4, 93.8, 34.9, 23.8, 45.5, 38.4]; smoothed velocity v-hat 39.7 realized pts/hour. Forecast: still not stated as a number, because the remaining estimated points do not exist yet (WP8 has no scope). WP7 landed at 43 estimated and 53 realized (ratio 1.23). Iteration 7 is five units in parallel, so its 1.38 h of wall clock counts overlapping workers once and its velocity is noisy.
+Current: WP8 approved (D-041): 19 units, 100 est. pts planned (U16 conditional); wave 1 (U1, U2, U4, U5, U6, U7) in flight, iteration 8 open. Before WP8: 186 est. pts proposed (WP1 to WP7, including the unplanned WP5-U9, WP5-U10 and WP6-U8, and the two WP7 reads; WP8 not yet scoped); 186 est. pts completed; 218 realized pts completed. 7 iterations closed; running realized/estimated ratio 1.17; raw velocities [40.9, 24.4, 93.8, 34.9, 23.8, 45.5, 38.4]; smoothed velocity v-hat 39.7 realized pts/hour. Forecast: still not stated as a number, because the remaining estimated points do not exist yet (WP8 has no scope). WP7 landed at 43 estimated and 53 realized (ratio 1.23). Iteration 7 is five units in parallel, so its 1.38 h of wall clock counts overlapping workers once and its velocity is noisy.
 
 Over and under, WP7: on estimate: the skeleton (3), home and getting started (5), planning and facilitation guides (8), the reference (5), the docs test (5) and the style pass (3). Over: the coding guide, 8 against 5, because a guide that shows provoked messages must give each one a stated start state (three push-backs, four reviews; a PM ruling settled it); and the planned fix unit, 8 against 5, because the reruns found a real defect (a placeholder swallowed as an HTML tag) and each read still turned up minor phrases. Lessons: a guide that shows real tool output should be planned with a start state per example; plan Haiku reads with their reruns (3 each, not 2); a style pass should state in its brief where a metaphor may not stand in for an instruction.
 
