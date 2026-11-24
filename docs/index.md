@@ -89,3 +89,4 @@ This documentation lives at <https://dynamicalsystemsgroup.github.io/scat-kg-too
 Take it from the top:
 
 - [Getting started](getting-started.md): create your private repository and run your first check.
+- [Terms](reference/terms.md): how the pieces relate, in one place.
