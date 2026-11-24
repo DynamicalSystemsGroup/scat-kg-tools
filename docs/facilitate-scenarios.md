@@ -3,10 +3,7 @@
 !!! tip "Your next step"
     Open the session by reading the Chatham House lines aloud, then ask the first group for a story that starts at a concrete moment.
 
-*Each group takes a turn: you listen, then build on what it said.*
-{ .epigraph }
-
-This guide borrows "yes, and" from jazz improvisation: you accept what each group offers as it is, and add to it.
+The stance is "yes, and": you accept what each group offers as it is, and add to it.
 
 A scenario session is a set of stories, one turn per group. It hears what people do in a situation, in time, and what comes of it. You run the session. You ask the questions, say whose turn it is, and listen. In each group's turn, you listen to its story, write it down as offered, then ask a question that adds to it. A note-taker
 writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. You may skip a script line if the group has already answered it; otherwise keep the order. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.

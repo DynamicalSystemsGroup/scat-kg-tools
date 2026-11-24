@@ -43,7 +43,7 @@ code, kbd, pre {
   --md-code-bg-color: #1b1e42;
 }
 
-/* Tip admonition ("Your next step") in brass, like a downbeat. */
+/* Tip admonition ("Your next step") in brass. */
 .md-typeset .admonition.tip,
 .md-typeset details.tip {
   border-color: #b9810f;

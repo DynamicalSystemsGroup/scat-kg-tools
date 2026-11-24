@@ -3,9 +3,6 @@
 !!! tip "Your next step"
     In a terminal in your vault folder, type `uv run python`.
 
-*Sheet music for the REPL: every call, as written.*
-{ .epigraph }
-
 ## Before you start
 
 - A vault folder with a `scat.toml` file in it, for example a copy of the template. [Getting started](../getting-started.md) makes one.

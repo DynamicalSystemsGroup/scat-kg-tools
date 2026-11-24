@@ -3,10 +3,7 @@
 !!! tip "Your next step"
     In your vault folder, run `uv run scat check` and read what it says.
 
-*Playing it back: raw notes, read again as coded pages.*
-{ .epigraph }
-
-Coding borrows one habit from jazz: hear a phrase, then play its meaning back in plain words.
+Coding means reading a raw page, then restating its meaning in plain words.
 
 Coding is the step where your raw notes become part of the graph. You read each raw scenario or raw architecture and write each raw page again as a **coded page**. Restate each raw page in your own plain words. Keep its meaning, and add no judgement of your own. A coded page names the stakeholder groups, concerns, affordances and technologies the notes talk about. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. A **technology** is the thing that provides it. The [home page](index.md) defines all four. You do not summarise or judge. You name what is there, keeping the meaning of the raw wording. The raw page stays exactly as it was written; the coded page is a separate page that reads it.
 

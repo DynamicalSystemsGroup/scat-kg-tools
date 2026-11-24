@@ -3,10 +3,7 @@
 !!! tip "Your next step"
     Open the session by reading the Chatham House lines aloud, then ask the first proposer how the parts fit together and what the whole lets people do.
 
-*Each proposer plays a design in turn, and you build on what you hear.*
-{ .epigraph }
-
-This guide borrows the taking of turns from jazz: each proposer's design is heard in full, one at a time, and none is set against another.
+Each proposer's design is heard in full, one at a time, and none is set against another.
 
 An architecture session is a round of designs, one proposer at a time. It hears how a proposed assembly of tools is put together, and which concerns it addresses. You
 run the session. You ask the questions, say whose turn it is, and listen. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. You may skip a script line if the group has already answered it; otherwise keep the order. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a
