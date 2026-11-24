@@ -325,6 +325,12 @@ Acceptance is judged by people using the product, not only by tests. The journey
 | J6 Code | afterwards, in an interactive session (the Python REPL or the `scat` CLI), decompiles the raw notes into SCAT pages and relations, moving pages from stub through draft to done and fixing each problem from its message | coding guide; API and CLI reference |
 | J7 Finish | reaches a clean whole-vault check, commits and pushes, and navigates the resulting graph in Obsidian | coding guide |
 
+**Two paths under test (Amendment 5).** Acceptance covers the manual path above and the chat path (G14, path 2). The
+chat path has its own journey, written with it: from the input material uploaded to the chat, through coding in the
+chat and in Obsidian, to a clean check of a private repository, with no terminal. UA-A and UA-M each cover both
+paths. The IDE path is tested by the team only. *(default)* Chat-path UA-A testers drive the inference.coop browser
+chat after the chief engineer signs in, with lab material only.
+
 **UA-A, the AI user tests**, run by the team on the candidate before the chief engineer's walkthrough:
 
 - **Personas.** At least three, each written in the user's own words and never the tool's vocabulary. **Most run on
@@ -354,7 +360,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
 
 **UA-M, the chief engineer's walkthrough** (the first sitting of the reviewer's guide, and the core of acceptance):
 
-- He runs J1 to J7 himself on the candidate. He starts from the Pages preview, makes a real repository through the
+- He runs J1 to J7 himself on the candidate, and the chat path's journey as he would use it. He starts from the Pages preview, makes a real repository through the
   documented creation path, clones it, sets up, and works through an interactive session with the REPL and the CLI,
   coding a small elicitation of his own choosing.
 - The walkthrough script gives each stage's entry point and what "done" looks like, so the session can be split and
