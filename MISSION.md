@@ -105,6 +105,12 @@ contributions are used is the event's own agreed policy: for example, the Chatha
 Each vault sets a cap on how many stakeholder groups it holds, and participants are clustered into groups that fit
 under it (the chief engineer's initial brief).
 
+A SCAT project holds three classes of material, each with its own rules for who and what may touch it, where it is
+kept, and how far it is released (Amendment 5):
+- **the inputs:** the field notes;
+- **the model:** the git repository, holding the coded notes and the full knowledge graph;
+- **the analysis:** derivative reports, such as notebooks and documents written with excerpts, data or figures.
+
 ## Goals
 
 - **G1. Fixed TBox.** Designed through G10's research, then fixed for v0.1. Turtle files define:
