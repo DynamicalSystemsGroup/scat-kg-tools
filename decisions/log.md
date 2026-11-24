@@ -1254,3 +1254,30 @@ edited on that branch, so `main` and `dev` won't conflict at release.
 - the `advisory` fix kind in the catalogue is now unused;
 - the logo shows only in the drawer below about 1,220 px (Material's behaviour, which predates WP9);
 - the RS unit estimates were recorded after the fact.
+
+## D-056 — Dependency factoring: each layer brings only what it needs (24 November)
+
+**Asked by:** the chief engineer, after merging Amendment 2: confirm that analysis dependencies are separate from the
+conformance tools', and keep dependency tracking and factoring careful so a user installs only what they need.
+
+**Confirmed (checked, not assumed):**
+- The `scat-kg` wheel built from `dev` declares only `pydantic`, `PyYAML` and `rdflib`. Installed alone into a fresh
+  venv it brings 9 packages, none of networkx, pandas, matplotlib or Jupyter. `dev`'s `uv.lock` names none of them.
+- The analysis spike is its own uv project (`research/analysis/pyproject.toml`, own lock) and depends on `scat-kg`; it
+  adds nothing to it. The plugin prototype's npm dependencies are all dev-time (bundled into `main.js`); on the
+  Python side it needs only the `scat` CLI.
+
+**Ruling (ACE):** dependencies are layered by use, and a direct import is a declared dependency of the layer that
+makes it. Applied on `spike/analysis` (`448a012`):
+- core `scat-analysis`: `scat-kg`, `networkx`, `pandas` (load a vault, run the analyses, DataFrames out);
+- extra `plot`: `matplotlib`, `numpy` (`scat_analysis.plots`; importing it without the extra raises an error that
+  says how to add it);
+- dependency group `notebook`: Jupyter, nbconvert, ipykernel, never a runtime dependency; installed by default in a
+  checkout so the one-command notebook run is unchanged.
+
+Each layer was installed on its own and exercised: core runs the analyses with no matplotlib present; core + `plot`
+imports the plots; the default environment passes 22 tests and executes the notebook headless.
+
+**For the delivery packages:** the analysis package still reaches into `scat_kg.vault.read_vault` (internal), and the
+plugin uses a Python shim for JSON output. Both point to the same small public surface in `scat-kg` (a vault loader,
+`scat check --json`), which adds no dependencies to it.
