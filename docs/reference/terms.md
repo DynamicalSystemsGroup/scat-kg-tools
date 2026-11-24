@@ -114,4 +114,4 @@ A whole-vault read with zero errors. Warnings do not stop it.
 
 - **Vault:** none.
 - **Stage:** from the start, rechecked after coding; a gate before analyse.
-- **Check:** analysis needs a clean check and `done` pages. The check tests structure, not content. Run: uv run scat check.
+- **Check:** analysis needs a clean check and every page `done`. The check tests structure, not content. Run: uv run scat check.
