@@ -182,7 +182,8 @@ under it (the chief engineer's initial brief).
   eliciting scenarios and architectures, and holding disagreement without adjudicating it.
 - **G12. A template analysis notebook (Amendment 5).** The template carries a notebook that loads a vault bound to the
   schema and gives a few named views. The first is the **narrative view**: one coded narrative's support (G1), the
-  vertices and edges it mentions. A
+  vertices and edges it mentions, drawn as four columns in class order (group, concern, affordance, technology) with
+  the edges between neighbouring columns. The same drawing over the whole vault is the union of every support. A
   narrative is a page type of its own (G1): the parent of scenario and architecture, so a field note may be neither.
   The past/future mark is a property of the narrative.
   Relationships (G1) stay out of the views.
