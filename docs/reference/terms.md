@@ -27,7 +27,7 @@ A story of people doing things over time.
 
 An assembly of parts into tools that offer [affordances](#affordance).
 
-- **Vault:** `architecture-raw`, `architecture-coded`. [Coded](#raw-and-coded-records), it links [concerns](#concern), affordances,
+- **Vault:** `architecture-raw`, `architecture-coded`. [Coded](#raw-and-coded-records), it links [concerns](#concern), [affordances](#affordance),
   [technologies](#technology).
 - **Stage:** plan.
 - **Check:** the plan keeps scenario and architecture sessions apart.
@@ -72,7 +72,7 @@ Each is one fact, on its own page.
 So a concern reaches a technology only through an affordance: addressed by it, then attributed to the technology.
 
 - **Stage:** code.
-- **Check:** one page per pair; a coded page's lists do not make them.
+- **Check:** one page per pair; a [coded page](#raw-and-coded-records)'s lists do not make them.
 
 ## Conflict between concerns
 
@@ -99,7 +99,7 @@ How finished a page is: `stub` (just started), `draft` (being written) or `done`
 - **Vault:** the `status` field of every page except `class`.
 - **Stage:** capture.
 - **Check:** the author sets `done` as the sign-off; the tool only checks that the fields and links the
-  page type requires are present: `description` always, `timeframe` on a raw page, `raw` and the lists of what it names
+  page type requires are present: `description` always, [`timeframe`](#past-or-future-mark) on a raw page, `raw` and the lists of what it names
   on a coded page.
 
 ## Past or future mark
