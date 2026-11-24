@@ -8,10 +8,13 @@
   the epigraphs and framing go.
 - **Spikes, outside v0.1, on side branches:** RS1, an Obsidian plugin (`spike/obsidian-plugin`); RS2, graph analysis
   in Jupyter (`spike/analysis`).
-- **Your Node install is broken.** `/usr/local/bin/node` (21.2.0) aborts with "Library not loaded:
-  icu4c/lib/libicui18n.73.dylib", because Homebrew has icu4c 78. The likely fix is `brew upgrade node` or
-  `brew reinstall node`, which is yours to run. Until then, RS1's prototype source exists but isn't built or tested.
-  The ACE declined the workaround of a third-party Node binary from PyPI.
+- **Node, as you asked.** Homebrew refused to upgrade it: your `/Applications/Xcode.app` is 15.2, and Homebrew won't
+  install anything until it is updated or deleted, even though your Command Line Tools are current (26.2). Two steps:
+  - **Done tonight:** the official Node LTS v26.13.1 from nodejs.org, SHA256-verified, installed at
+    `~/.local/opt/node-v26.13.1-darwin-x64`. Nothing in Homebrew or `/usr/local` was changed. RS1 builds with it.
+  - **Yours, in the morning:** update Xcode in the App Store (or delete `Xcode.app` if you don't use it), then run
+    `brew upgrade node && brew cleanup` for the clean Homebrew build. After that you can delete
+    `~/.local/opt/node-v26.13.1-darwin-x64`.
 - This section is updated with results as they land.
 
 ## Start here
