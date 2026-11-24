@@ -1468,3 +1468,50 @@ intended behavior is produced by the intervention is still hypothetical"
 **Outcome.** One table row in `docs/facilitate-scenarios.md` now reads "We are trialling weekly checks in order to stop
 drills going missing." Its reason: the checks are under way, but that they stop the losses is still a hypothesis. The
 ACE made the edit directly: one row, outside WP11's blast radius, with the strict build clean.
+
+## D-065 | 2026-11-24 | The template pin edit authorised for WP11
+
+**Direction (the chief engineer's words, typed by the ACE):** "yes, authorise the pin edit and accept WP11."
+
+**Outcome.** WP11-U11's one edit to an existing test file, the `TEMPLATE_COMMIT` line in `tests/docs/conftest.py`
+(and its comment), from `6ebd305` to `5a7290f`, is authorised. The ACE checked that it is the only pre-WP11 test line
+WP11 changed: `git diff a3edae4 origin/dev -- tests/` shows one deletion in total, that line. Every other test change
+is a new file, or a file WP11 itself added.
+
+## D-066 | 2026-11-24 | WP11 accepted
+
+**Direction:** the chief engineer's words in D-065.
+
+**The ACE's own verification, on `dev` at `30ddc6f`.**
+- `python3 work-packages/check_metrics.py --accept WP11`: `metrics ok: 311 records (60 under the practice); WP11 is
+  ready for acceptance`. Iteration 11: 52 points estimated, 51 realized, 2.14 h.
+- `uv run pytest -q`: 982 passed. Ruff, the format check and `uv lock --check` are clean. CI and Pages are green on
+  `30ddc6f`.
+- R3: the wheel built from `30ddc6f` lists `Requires-Dist: pydantic`, `pyyaml`, `rdflib` and nothing else.
+- On a fresh clone of the template at `5a7290f`, with a one-letter link typo seeded: `scat check --json` exits 1 and
+  prints one document (`schema_version` 1, `SCAT-LINK-DANGLING` with file, line and field, and a fix of two exact
+  options, one an edit and one a command). `scat_kg.check().to_dict()` equals it. The `con` refusal with `--json` gives
+  one `operation` document with `ok` false and exit 1.
+- The ACE read `contracts/machine-interface.md` as a plugin developer would, without opening `src/`: the versioning
+  rule, the rule-id policy, the streams and exit codes, the stable fields and the edit actions are each stated once and
+  are enough to build on.
+- The template checkout the chief engineer will show was pulled to `5a7290f`; `scat check` prints `no problems`.
+
+**Rulings on the PM's flags.**
+1. The pin edit: authorised (D-065).
+2. The relation-type refusal stays `manual`: accepted for v0.1. A multi-placeholder command rule is a later-package
+   candidate.
+3. "Every": restored by the ACE ("Every `scat` command takes `--json`"). The page is now at its 600-word cap, and the
+   machine and docs tests pass.
+4. The edit-vocabulary limits (`rename-file` doesn't rewrite links, an add-only exact option, whole-list `set-field`):
+   accepted. The contract states each one.
+5. Harness gaps: accepted. The golden tests cover what the guards don't. Later-package candidate.
+6. The JSON blocks were seen by DOM measurement only: joined to F-6, for the chief engineer's docs sitting.
+7. The reviewer's guide: the ACE fixed the wording nit and added D-064 to D-066 to the table of the ACE's calls.
+8. U11's own run of the nine CLI examples (9 of 9 equal) stands. The ACE's fresh-clone run above confirms the first.
+9. U5b merged before its review: a process slip, recorded. The later review passed. The rule stands: review, then
+   merge.
+10. Estimation lessons: as on the board.
+
+**New finding.** F-7: the reserved-name refusal offers a concrete name, but its fix is typed `manual`. It goes to the
+fix package with F-1, F-3 and F-5.

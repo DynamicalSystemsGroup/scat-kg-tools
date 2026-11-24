@@ -1,6 +1,6 @@
 # Machine interface (schema version 1)
 
-`scat` commands take `--json` and print one document shaped by
+Every `scat` command takes `--json` and print one document shaped by
 [`machine-interface.schema.json`](machine-interface.schema.json) (JSON Schema 2020-12).
 
 - **Versioning.** `schema_version` is an integer, now 1. Adding a field keeps the version.
