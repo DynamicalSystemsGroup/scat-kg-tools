@@ -1632,3 +1632,16 @@ ACE outcome (WP13 not yet started; widened in place):
 - New G6: two readers, the solo modeller and the organiser of a facilitated elicitation. SCAT is built for the
   organiser; the flow page signposts both, and makes the organiser's commitments the easy path.
 - R2: seven items, the checklist's answer format, the two-reader signpost; cap 800 words.
+
+## D-073 | 2026-11-24 | WP13: the consent page is organised by three classes of material
+
+The chief engineer's direction (chat, typed by the ACE): "3 separate classes need to be have different rules: * the
+'inputs': field notes * the 'model': the git repo (coded notes + full knowledge graph) * the 'analysis': derivative
+reports (jupyter notebooks and/or documents written using excerpts, data or figures)". On where raw narratives sit:
+"that is the inputs. the inputs are the supplied materials [...] i do no want the details of my pilot project in the
+open soure repo so you need to keep the options we are chosing for that project as examples in the choice set but
+they are one of 2 to 3 reasonable alternatives and our alternatives are not presented as exhaustive just demonstrative
+of the fact the choice matters". The cut [...] holds project-specific details, removed at his instruction.
+
+ACE outcome: Mission Amendment 5 (PR #8) names the three classes. WP13's consent page is organised by them, asks each
+item per class where the answer can differ, and shows no project's choices as such.
