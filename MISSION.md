@@ -201,11 +201,10 @@ matters without claiming to be exhaustive. No particular project's choices appea
   Relationships (G1) stay out of the views.
 - **G13. Ripple-aware change (Amendment 5).** A change to a term, a contract, a rule or the mission reaches every
   artifact that depends on it, in one package, and no two packages edit the same file in turn (see Governance).
-
-## Non-goals
-
-- Gen-AI aided authoring or coding in v0.1. LLM use is never assumed (R-19). Two spikes explore optional AI
-  assistance (Amendment 5), and their readouts feed later amendments:
+- **G14. Optional private-LLM assistance (Amendment 5).** v0.1 is aimed at a first field deployment that may use one
+  private LLM service, inference.coop, which follows the OpenAI-compatible API standard. LLM use is never assumed
+  (R-19): the assistance is optional and does mechanical work only, such as transcribing supplied materials into
+  raw narratives and checking conformance; the interpretive act stays with the human coder. Two spikes come first:
   - **Spike A:** whether AI-aided coding is feasible through interfaces that work with any LLM provider: standard tool
     calls and skills, with an MCP server only if the spike shows it is needed.
   - **Spike B, the interoperability test case:** the same work driven by inference.coop, a privacy-focused service
@@ -218,10 +217,14 @@ matters without claiming to be exhaustive. No particular project's choices appea
       `scat-kg` tools run as ordinary tool calls on the coder's machine, with no MCP. The API key is the chief
       engineer's to create and hold.
 
-    The spike's output is a choice of path, kept small so scope does not spiral: one path to build next, and, if they
+    The spike's output is a choice of path, kept small so scope does not spiral: one path to build in v0.1, and, if they
     differ, another documented as the preferred long-term path. Whatever is built for AI assistance must work through
     inference.coop. Because its API follows the OpenAI-compatible standard, working there means working with any
     provider that follows the same standard.
+
+## Non-goals
+
+- Testing AI assistance against any provider other than inference.coop in v0.1. Broader testing comes later.
 - The Obsidian plugin (Amendment 5). It stays on its feature branch (log D-054); v0.1 provides the stable interface it
   builds on (R-16).
 - Typed links between records of the same class, such as incompatible concerns, adversarial groups, complementary
@@ -248,7 +251,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
 | ID | Deliverable | Serves |
 |---|---|---|
 | D-1 | The TBox in Turtle, in `scat-kg-tools` | G1, G10 |
-| D-2 | The tools (parser, checks, the operations, the Python API and CLI, and their machine-readable output with its schema) with their test suite, in `scat-kg-tools` | G2, G3, G4 |
+| D-2 | The tools (parser, checks, the operations, the Python API and CLI, their machine-readable output with its schema, and the optional private-LLM assistance path) with their test suite, in `scat-kg-tools` | G2, G3, G4, G14 |
 | D-3 | The template repository: vault skeleton, class pages, instance configuration (the stakeholder-group cap), the pinned tools, the case study, and the analysis notebook | G5, G6, G9, G12 |
 | D-4 | The documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9, G11 |
 | D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, the facilitation research, and the two AI spikes (Amendment 5) | G8, G10, G11 |
@@ -280,6 +283,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault, and its narrative view gives, for each coded narrative, exactly its support, with no relationship. | The notebook executed in the template's CI, with a test on the view |
 | R-18 | **Ripple-complete changes.** Before a package that changes a term, contract, rule or the mission is approved, its impact map lists every artifact that refers to what changes, each marked change, keep (with why) or historical. At acceptance, the same sweep finds no reference that is unmarked or still says the old thing. | The impact map in the scope; the sweep's output in the acceptance record |
 | R-19 | **Manual first.** Every step, from field notes to coded vault to analysis, can be done by a person by hand, in Obsidian and the CLI, with no LLM. The process stays consistent with ethnographic coding practice, so a project whose data rights rule out AI loses nothing but speed. Any AI assistance is optional, provider-agnostic, and does mechanical work only; the interpretive act stays with the human coder. | The UA-M walkthrough and the docs test, run with no LLM; the ACE's review of each spike readout against it |
+| R-20 | **Private-LLM integration.** The assistance path G14 builds passes its integration tests against inference.coop, on synthetic data only. Passing there is the v0.1 bar for private LLM use; other providers are not tested in v0.1. | The integration tests, run against inference.coop with the chief engineer's key, their output in the acceptance record |
 
 ## User acceptance
 
@@ -472,7 +476,8 @@ recording why.
   - **The spikes** run on side branches with readouts in `research/`. In spike B the chief engineer signs in; the
     agent never enters credentials, and only synthetic data goes to inference.coop.
   - **Order.** WP12 is accepted, then the relationship change, which absorbs WP13's pages so the shared docs are
-    edited once, then the notebook. The spikes run alongside, since they touch no release file.
+    edited once, then the notebook. The spikes run alongside, since they touch no release file; the assistance path
+    spike B chooses is built after them (G14, R-20). R-20's integration tests run on demand, not on every push.
 
 ## Open decisions (for the chief engineer)
 
