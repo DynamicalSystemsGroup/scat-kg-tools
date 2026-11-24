@@ -140,6 +140,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP11-U5b | Python developer (inline fix rendering flag in fix.py), sonnet | 2 |  | `wp11/u5b` | in flight |  |  |  |
 | WP11-U6 | Python developer (fixes as data: completeness and graph rules), sonnet | 5 |  | `wp11/u6` | in flight |  |  |  |
 | WP11-U7 | Python developer (fixes as data: link and dangling rules), sonnet | 8 |  | `wp11/u7` | in flight |  |  |  |
+| WP11-U7b | test engineer (harness and U2-test follow-ups from the U6 and U7 findings), sonnet | 1 |  | `wp11/u7b` | queued | U5b merged; added by the PM from the U6 and U7 reports |  |  |
 | WP11-U8 | test engineer (closing guards: kinds, no legacy fixes, text and data agree), sonnet | 2 |  | `wp11/u8` | queued | U4, U5, U6, U7 merged |  |  |
 | WP11-U9 | technical writer (references, JSON examples, transcript reruns), sonnet | 5 |  | `wp11/u9` | queued | U3, U8 merged (output final) |  |  |
 | WP11-U10 | Python developer (template re-pin), haiku | 2 |  | `wp11/u10` | queued | U9 merged (the candidate commit) |  |  |
