@@ -32,14 +32,14 @@ them doing. That is an affordance. When a technology comes up, ask what the tool
 
 ## Past or future, one at a time
 
-Each raw page carries a `timeframe:` line: `past`, `future` or `mixed`. The rule: anything real that can be narrated is past, and anything being done with intention but not yet realized is future. The present is not a separate value; it folds into one of these.
+Each raw page carries a `timeframe:` line: `past`, `future` or `mixed`. The rule: anything real that can be narrated is past, and anything being done with intention but not yet realized is future. The present is not a separate value; it folds into one of these. The mark is about whether what is told is real, not the verb tense.
 
 | | Past | Future |
 |---|---|---|
 | Behavioural (scenarios) | what people did | what people could do or will do |
 | Structural (architectures) | a system that exists (baseline) | a system that is proposed (target) |
 
-People mix the two freely, so lead them to one at a time: take stories of what has happened in one block, and what could or will happen in another. If the other time comes up early, write it down, say "let's hold that for its block", and return to it then.
+People mix the two freely, so lead them to one at a time: take stories of what has happened in one block, and what could or will happen in another. If the other time comes up early, write it down on the page for its own block, say "let's hold that for its block", and return to it then.
 
 ### Scenario phrases
 
@@ -52,7 +52,7 @@ People mix the two freely, so lead them to one at a time: take stories of what h
 | "The sheet shows who has what." | past | Present tense, but it really exists. |
 | "What would happen if we lent drills overnight?" | future | A counterfactual is not yet real. |
 | "If we had a second desk, queues would shrink." | future | A counterfactual, though it says "had". |
-| "We are trialling weekly checks." | future | A pilot under way is intention not yet realized. What has already happened in it is past. |
+| "We are trialling weekly checks." | future | Under way, but not yet realized. What already happened in it is a separate past account. |
 | "We are moving to a new sheet this month." | future | Being done with intention, not yet realized. |
 | "Next time we should add a shelf label." | future | "Next time" and "should" look ahead. |
 | "The trustees will decide in spring." | future | "Will" looks ahead. |
@@ -68,7 +68,7 @@ For an architecture, past is the baseline: what exists, as is. Future is the tar
 |---|---|---|
 | "The desk uses a paper sheet and a shelf label." | past | It exists: baseline. |
 | "The sheet records who has what." | past | Present tense, but it exists: baseline. |
-| "We tried a spreadsheet once and dropped it." | past | It existed, so it is real, though gone. |
+| "We tried a spreadsheet once and dropped it." | past | Past, but not part of today's baseline. |
 | "We want an app that texts borrowers." | future | Proposed: target. |
 | "The new app will replace the sheet." | future | Proposed: target. |
 | "We are building the app, but it is not live." | future | Under way, not yet real. |
@@ -77,7 +77,7 @@ For an architecture, past is the baseline: what exists, as is. Future is the tar
 
 The non-obvious ones are the present-tense line, the dropped spreadsheet, the app under way and the counterfactual.
 
-Use `mixed` for a scenario or an architecture when an account blurs the two and you cannot cleanly separate them, for example "it never worked, so we hope the new one will". It is the honest record, not a failure. Do not split a story to avoid it. `scat stub` leaves the `timeframe:` line for the author to fill in on the raw page.
+Use `mixed` for a scenario or an architecture when an account blurs the two and you cannot cleanly separate them, for example "it never worked, so we hope the new one will". It is the honest record, not a failure. Lead people to one time first; use `mixed` only when the account itself still blurs them. `scat stub` leaves the `timeframe:` line for the author to fill in on the raw page.
 
 ## The stages
 
