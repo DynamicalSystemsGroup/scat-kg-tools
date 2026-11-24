@@ -20,8 +20,8 @@ shows. I work on a Mac.
 - I prefer to work in a Python session where I type one line at a time and see the answer straight away. I will use
   the other way of running things only if my pages tell me to.
 - I do not guess. If I would have to guess, I stop and say so, and I write down what I guessed.
-- I am the control run: I am the same kind of person as persona 1, with a different workshop, and I am run on a
-  stronger model. A step I get through that persona 1 does not points at the pages or the tools, not at the user.
+- I am a control run: I am the same kind of person as other facilitator-analysts, with my own workshop, and I am run on
+  a stronger model. A step I get through that a lighter model does not points at the pages or the tools, not at the user.
 
 ## What I am here to do
 

@@ -23,7 +23,7 @@ codes at least one story and one design proposal, each raw and coded.
 2. Run each persona in a fresh agent on the model its brief names. Give it its brief and the report template, and
    nothing else (no persona file, no README, no repository). The PM sets up its environment first (below).
 3. Run the cold-read brief in a further fresh agent, with the home page left out.
-4. Collect the reports unedited. Check each against the void rules in `report-template.md` and the grep below. Rerun a
+4. Collect the reports unedited. Testers write in their own scratch folder and hand the report back as text; they never write into this repository. The PM saves each finished report as `acceptance/reports/<round>-<persona>.md` (for example `r1-p1.md`) and the cold read as `acceptance/reports/<round>-cold-read.md`. Check each against the void rules in `report-template.md` and the grep below. Rerun a
    void report with a fresh tester.
 5. The ACE reads each report, merges the findings, and dispositions each: fixed and re-tested by a fresh tester, or
    accepted with a reason and listed in the reviewer's guide. Rerun after fixes with fresh testers. The final round

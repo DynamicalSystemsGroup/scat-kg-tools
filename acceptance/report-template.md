@@ -1,5 +1,7 @@
 # User-test report
 
+Write this report in your own scratch folder and hand it back as text; never write into the tools repository. The PM saves each finished report as `acceptance/reports/<round>-<persona>.md` (e.g. `r1-p1.md`), and the cold read as `acceptance/reports/<round>-cold-read.md`.
+
 Fill in every section. Paste real output; a claim with none does not count (see "Void reports" at the end).
 
 **Persona and model:** (persona file, model name)

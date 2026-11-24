@@ -104,7 +104,7 @@ Make up only what a stage requires, such as names for your pages. Choose them fr
 
 ## What you report
 
-Use `report-template.md`, which your test lead gives you. Write the cold-read answer first, then each stage.
+Use `report-template.md`, which your test lead gives you. Write your report in your own scratch folder, never in the project's repository, and hand it back to your test lead as text. Write the cold-read answer first, then each stage.
 
 The first question is the cold-read answer. Answer it after J1, before you start J2: **What style or
 reference do these pages evoke for you? Answer in your own words.** Write it down when you first form it, then
