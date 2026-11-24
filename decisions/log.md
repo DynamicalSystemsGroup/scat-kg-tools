@@ -901,3 +901,25 @@ The default stands: `set-status done` exits 0 even when the page's new check has
 docs mention the page templates at all, it is only as optional body skeletons inserted into a page that `scat stub`
 already created, never as a way to create pages. U3 aligns `getting-started.md` (step 4) and `coding.md` (lines 514,
 570 and 590) with this.
+
+## D-043 | 2026-11-24 | Template flag set; the Obsidian page templates removed (corrects D-042)
+
+**The candidate-stage step is done by the ACE.** One PATCH on `scat-kg-template` set `is_template=true` and
+`default_branch=dev`. The read-back showed `{"default_branch":"dev","is_template":true,"visibility":"public"}`, and
+HEAD now points at `refs/heads/dev`.
+
+**Correction to D-042.** The page templates in the template repo carry frontmatter only, so inserting one into a
+`scat stub` page would duplicate its frontmatter. D-042's "optional body skeleton" premise was wrong. The PM applied
+the intent of R-11 ("one obvious way"), and the docs now say the templates aren't needed. Accepted.
+
+**Ruling: remove the templates** (the folder and its Obsidian template-plugin settings) before UA-A.
+- **Why:** a folder the docs tell users not to use is cruft, and it would confuse the literal readers UA-A tests
+  with. Negative edits are welcome.
+- **What else goes:** any docs mention of the templates is dropped.
+- **What stays:** the tools' D-034 exclusion is harmless and stays.
+- **Revert point:** `divergence/D-043` is tagged on the template's `dev` before the removal.
+
+The template pin in the docs test moves afterwards.
+
+**Known-weak, for the reviewer's guide:** the docs test runs only `bash` and `python` blocks, so the message-output
+blocks in `coding.md` are pinned by reviewers' real runs, not by CI.
