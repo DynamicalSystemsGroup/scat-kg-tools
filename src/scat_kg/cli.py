@@ -5,6 +5,7 @@ line that cannot be read. Every command takes `--root` (the vault folder; defaul
 """
 
 import argparse
+import json
 import sys
 from collections.abc import Sequence
 
@@ -32,6 +33,11 @@ def _parser() -> argparse.ArgumentParser:
         )
         p.add_argument(
             "--root", default=".", help="the vault folder, the one with scat.toml (default: here)"
+        )
+        p.add_argument(
+            "--json",
+            action="store_true",
+            help="print the result as one JSON document (machine-interface contract), nothing else",
         )
         return p
 
@@ -124,8 +130,12 @@ def run(args: argparse.Namespace):
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    result = run(_parser().parse_args(argv))
-    print(result)
+    args = _parser().parse_args(argv)
+    result = run(args)
+    if args.json:
+        print(json.dumps(result.to_dict(), indent=2, ensure_ascii=False))
+    else:
+        print(result)
     return 0 if result.ok else 1
 
 
