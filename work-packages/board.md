@@ -12,7 +12,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP4 | Ontology and page contracts | accepted | `WP4.md` |
 | WP5 | Conformance tools | accepted | `WP5.md` |
 | WP6 | Template and case study | fix before acceptance (D-037) | `WP6.md` |
-| WP7 | Docs and Pages | not yet scoped | — |
+| WP7 | Docs and Pages | draft | `WP7.md` |
 | WP8 | Candidate and user acceptance | not yet scoped | — |
 
 ## Units
