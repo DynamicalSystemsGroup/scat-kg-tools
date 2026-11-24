@@ -15,7 +15,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP7 | Docs and Pages | accepted | `WP7.md` |
 | WP8 | Candidate and user acceptance | all units done except WP8-U1 (held for the chief engineer); handed back to the ACE for the release PRs | `WP8.md` |
 | WP9 | v0.1 cleanup after the chief engineer's skim (D-052) | all units done and verified on fresh clones | `WP9.md` |
-| WP10 | Past or future on the captured narratives (D-057, D-058) | in flight | `WP10.md` |
+| WP10 | Past or future on the captured narratives (D-057, D-058) | all units done; handed to the ACE for acceptance | `WP10.md` |
 | RS1 | Research spike: Obsidian plugin (outside v0.1; branch `spike/obsidian-plugin`, never merged into `dev`) | readout, installable plugin and tests done | `RS1-obsidian-plugin.md` |
 | RS2 | Research spike: graph analysis (outside v0.1; branch `spike/analysis`, never merged into `dev`) | readout, package, notebook and tests done | `RS2-analysis.md` |
 
@@ -130,7 +130,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP10-U1 | Python developer and ontology designer (TBox, contracts, rule, stub, tests), sonnet | 8 | 8 | `wp10/u1` | done | | 2026-11-24T09:44:22-05:00 | 2 push-backs, 3 reviews, 560 tests, test edits under D-058 listed in the report; merged f22c62e |
 | WP10-U2 | technical writer (facilitation and planning guides), sonnet | 5 | 8 | `wp10/u2` | done | | 2026-11-24T09:43:32-05:00 | 3 push-backs, R3 scope change mid-flight, 4 reviews; net 844 words with U1; merged ec5e75a |
 | WP10-U4 | Python developer (template re-pin), haiku | 5 | 2 | `wp10/u4` (template) | done | | 2026-11-24T09:47:12-05:00 | split by the PM: template re-pin only, Haiku worker and reviewer, first-time PASS; template dev 6ebd305; the tools-side refresh moved to U4b |
-| WP10-U4b | Python developer (docs test pin, walkthrough, reviewer's guide, Pages, fresh-clone trial), sonnet | 3 | | `wp10/u4b` | in flight | | | added by the PM when U4 was split |
+| WP10-U4b | Python developer (docs test pin, walkthrough, reviewer's guide, Pages, fresh-clone trial), sonnet | 3 | | `wp10/u4b` | done | | 2026-11-24T09:54:18-05:00 | first-time reviewer PASS (5 nits), about 6 min worker; added by the PM when U4 was split; merged 6fe2507 |
 
 ## Iterations and velocity
 
@@ -145,6 +145,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 7 | WP7-U1 to WP7-U8, WP7-R5, WP7-R6 | 43 | 53 | 1.23 | 1.38 h | 38.4 |
 | 8 | WP8-U2 to WP8-U19 (28 units, WP8-U8b, U8c, U14b to U14d, U15b to U15d, U16b and U16c added by the PM; WP8-U1 held) | 120 | 128 | 1.07 | 2.64 h | 48.5 |
 | 9 | WP9-U1 to U7 (U1b unplanned), RS1-U1 to U5, RS2-U1 to U5 (RS1-U4, RS1-U5, RS2-U4, RS2-U5 added by the PM; WP8-U1 held) | 71 | 71 | 1.00 | 0.79 h | 89.9 |
+| 10 | WP10-U1 to U4, U4b (U4b added by the PM) | 23 | 23 | 1.00 | 0.72 h | 31.9 |
 
 ## Velocity and forecast
 
