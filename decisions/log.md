@@ -1342,3 +1342,13 @@ tightening the facilitation -> recorded raw narratives so we get a cleaner data 
 **Outcome.** Amendment 3 states the counterfactual and habitual cases and that the guidance lives in the facilitation
 guides alone. The build is WP10, a scoped package with a named blast radius (`work-packages/WP10.md`), approved by the
 ACE once Amendment 3 is merged; nothing is edited in place before then.
+
+## D-058 | 2026-11-24 | Amendment 3 merged; WP10 approved; test edits authorised
+
+**Approval.** The chief engineer merged Mission Amendment 3 (PR #5, merge `023c5f4`) and wrote "Merged, go". `main` is
+merged into `dev`. The ACE approves WP10 (`work-packages/WP10.md`). Revert point: `divergence/D-057`.
+
+**Question (typed by the ACE):** "WP10 makes `timeframe` required on raw pages, so existing test fixtures and the
+assertions on them must gain the field (additions only, no weakened checks). The test-edit guard only accepts that on
+your direct word. Do you authorise WP10 units to edit existing tests for this?"
+**Answer (the chief engineer's choice, typed by the ACE):** "Yes, authorise".
