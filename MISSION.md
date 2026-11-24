@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Approved by the chief engineer's merge of PR #1 into `main` of `DynamicalSystemsGroup/scat-kg-tools`. Each amendment is approved by the merge of its own PR; Amendment 1 is PR #2. |
+| **Status** | Approved by the chief engineer's merge of PR #1 into `main` of `DynamicalSystemsGroup/scat-kg-tools`. Each amendment is approved by the merge of its own PR; Amendment 1 is PR #2, Amendment 2 is PR #4 and Amendment 3 is PR #5. |
 | **Chief engineer (accountable)** | `mzargham`: final design authority. Approves this mission and its amendments, and accepts the v0.1 delivery. |
 | **Assistant to the chief engineer (ACE)** | The main Claude session. Manages the team, writes and approves work-package scopes inside this mission, accepts work packages, and escalates only intent gaps (see Governance). |
 | **Repositories** | `scat-kg-tools` (the tools, the TBox, the docs site; this document) and `scat-kg-template` (the vault to clone). |
@@ -56,6 +56,24 @@ capturing and coding.
   is concerns, and the same concern can arise from different stakeholders; an architecture can't presume which
   stakeholders will adopt it. A coded architecture relates concerns, affordances and technologies.
 
+A second lens cuts across the first: **past or future**. A story may tell what happened or what could happen. An
+architecture may describe a system that exists or one that is proposed. The rule is simple, because the present is
+nebulous: anything real that can be narrated is past, and anything being done with intention but not yet realized is
+future. Behavioural or structural, past or future: the docs show this as a 2×2 for unbundling narratives. Every
+scenario and architecture records which it is (log D-057). Only these records are marked: stakeholder groups,
+concerns, affordances and technologies are not, and the three relations don't change.
+
+People mix past and future freely when they talk. The facilitation guides lead participants to the past and the
+future at separate times in a workshop, and explain the mark with example phrases, including ones that mislead: a
+counterfactual "what would happen if" is future, and a habitual "when someone would do x, y happens" is past. A
+record may be marked **mixed**, the honest record of an account that blurs the two. The mark only tags the captured
+narratives, and the guidance on it lives in the facilitation guides alone.
+
+Whether the narrator sees what is told as good, bad or a mix is not recorded in the schema. For anything real a mix is
+expected, and it stays in the story's own words. SCAT is pragmatic and thin. It doesn't compete with richer ontologies
+such as `ant-rdf`, which cost more and do more analytically: problematization belongs there, and nothing stops the same
+case from being coded in both, with different tools.
+
 Calling participants "actors" (users, sponsors and other stakeholders, who tell scenarios) or "technologists"
 (researchers, developers and operators, who pitch architectures) is a facilitation device, not a division of people.
 Many people are both.
@@ -93,6 +111,7 @@ under it (the chief engineer's initial brief).
     technology). Names may follow an adopted ontology;
   - each record's required and optional fields;
   - the other page types: class pages, raw and coded scenarios, raw and coded architectures;
+  - the past, future or mixed mark every scenario and architecture records (see "Scenarios and architectures");
   - the linking rules, reflecting how scenarios and architectures differ;
   - how the graph holds disagreement and margins of potential conflict. At minimum, the same concern can be held by
     different stakeholder groups.
@@ -162,6 +181,8 @@ under it (the chief engineer's initial brief).
 - The verification, validation and human-signature assurance framework of the INCOSE paper.
 - Attributing statements to individuals. v0.1 is built for Chatham House settings, and attribution is a possible
   extension. How raw notes are taken is the facilitator's call, and the guides explain the rule.
+- Recording the narrator's normative posture (good, bad or mixed) in the schema. It stays in the story's text;
+  problematization is for a richer ontology such as `ant-rdf`, applied afterwards (log D-057).
 - Adjudicating between stories or architectures. Neither the tools nor the guides judge which architecture is correct
   or which stories should be focal.
 - Analysis tooling over the graph, which is explored on a feature branch (log D-054) and delivered, if at all, in a later package.
@@ -365,13 +386,18 @@ recording why.
 - Branches: `main` holds approved missions and releases only, `dev` is the integration branch, and work happens on
   short-lived unit branches off `dev`.
 - The worked example sets the stakeholder-group cap to 3.
+- The past/future mark (Amendment 3) is a field on the raw scenario and raw architecture pages, the record of what was
+  told; a coded page is a reading of its raw page and inherits it. Working field name `timeframe`, with the chief
+  engineer's values `past`, `future` and `mixed`. Like every required field (R-3), a missing value is an error on a
+  `done` page and a warning before.
 
 ## Open decisions (for the chief engineer)
 
 None. Every item was resolved through the decision loop and is recorded in `decisions/log.md`:
 - 15 decided by the chief engineer: log D-001, D-003, D-005 to D-008, D-010 to D-014, D-017 to D-019, D-021;
 - 1 assigned to the ACE: log D-002;
-- 1 deferred by him: the target date, until velocity is known (log D-011, which also decided the timeline method).
+- 1 deferred by him: the target date, until velocity is known (log D-011, which also decided the timeline method);
+- Amendment 3: 3 decided by the chief engineer, log D-057 (into v0.1; required, with "mixed"; a past/future axis).
 
 Log D-004, D-009, D-012, D-019 and D-020 also record consistency passes. Log D-015 and D-016 were rolled back with
 `dev`.
