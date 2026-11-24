@@ -16,7 +16,7 @@ You say which things the notes name. The tools create the pages and links that f
 - Raw notes saved as raw pages, from [Facilitating scenarios](facilitate-scenarios.md) or [Facilitating architectures](facilitate-architectures.md). In hand, you need a few plain sentences of raw notes, written as they were told.
 - Your stakeholder groups, planned in the [planning guide](planning.md) and named by role. In hand, you need a short list of the groups, one name per group.
 
-Every operation below has two spellings that give the same messages. Each step shows the Python REPL way first and the command-line way beside it. To open the REPL, type `uv run python`, then `import scat_kg` once. The commands on this page can all be typed in a copy of the template vault, so you can follow along and lose nothing. The worked example is a small community tool library.
+Every operation below has two spellings that give the same messages. Each step shows the Python REPL way first and the command-line way beside it. To open the REPL, type `uv run python`, then `import scat_kg` once. The commands on this page can all be typed in a copy of the template vault, so you can follow along and lose nothing. The worked example is a small community tool library. A plugin or any other tool reads the same results as data: `--json` and `to_dict()` give the same data ([Machine-readable output](reference/api.md#machine-readable-output)).
 
 ## What the pages are
 
