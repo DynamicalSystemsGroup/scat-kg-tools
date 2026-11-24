@@ -166,14 +166,13 @@ unchanged class/technologies.md
 ## 4. Open the vault in Obsidian
 
 Open Obsidian, choose **Open folder as vault**, and pick your folder (`my-vault`). Open a page in the `concern`
-folder and click its links: you are walking the graph. Create pages with `scat stub`, not from the Obsidian page
-templates; you do not need them. [Coding](coding.md#where-raw-and-coded-pages-come-from) says more.
+folder and click its links: you are walking the graph. Create pages with `scat stub`. [Coding](coding.md#where-raw-and-coded-pages-come-from) says more.
 
 ## 5. Start your own content
 
 The example is only there to show you the shape. You will use it as a model while you plan, then remove it from your
 own vault before you code your own notes. When you are ready, type these commands in your vault folder. The first
-deletes the example page folders and keeps `class` and `templates`. The second rebuilds the class tables. The third
+deletes the example page folders and keeps `class`. The second rebuilds the class tables. The third
 checks:
 
 ```text
