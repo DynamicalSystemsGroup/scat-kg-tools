@@ -7,7 +7,7 @@
 { .epigraph }
 
 A scenario session is a set of stories, one turn per group. It hears what people do in a situation, in time, and what comes of it. You run the session. You ask the questions, say whose turn it is, and listen. In each group's turn, you listen to its story, write it down as offered, then ask a question that adds to it. A note-taker
-writes. The lines under "Say" are your script: say them in the order given, as written or in your own words. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.
+writes. The lines under "Say" are your script: say them in the order given, as written, or in your own words, except that the words "Yes, and" stay as written. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a story, and you never ask anyone to
 concede one.

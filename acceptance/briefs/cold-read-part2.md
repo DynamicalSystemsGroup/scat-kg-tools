@@ -17,4 +17,4 @@ instead.
 
 ## What you report
 
-Answer 2 only, for the cold-read section of `report-template.md`. Your test lead joins it to your answer 1.
+Answer 2 only, as plain text. Your test lead joins it to your answer 1.

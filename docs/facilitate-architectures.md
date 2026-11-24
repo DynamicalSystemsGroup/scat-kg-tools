@@ -7,7 +7,7 @@
 { .epigraph }
 
 An architecture session is a round of designs, one proposer at a time. It hears how a proposed assembly of tools is put together, and which concerns it addresses. You
-run the session. You ask the questions, say whose turn it is, and listen. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. The lines under "Say" are your script: say them in the order given, as written or in your own words. This page runs you through the session stage by stage, then turns the notes into a
+run the session. You ask the questions, say whose turn it is, and listen. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. The lines under "Say" are your script: say them in the order given, as written, or in your own words, except that the words "Yes, and" stay as written. This page runs you through the session stage by stage, then turns the notes into a
 raw architecture page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a design, and you never ask a

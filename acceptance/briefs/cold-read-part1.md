@@ -25,8 +25,8 @@ you say so. If nothing comes to mind, say so. Do not guess to please anyone.
 - No pasted output is needed, since you run nothing, but every claim names the page it came from and quotes a few
   words from it.
 - Say whether you came to the pages with any prior idea of what the project is, and what it was.
-- Never ask anyone what the right answer is. Use the report template's cold-read section, and nothing else.
+- Never ask anyone what the right answer is.
 
 ## What you report
 
-Answer 1, which pages you read, and whether you read any page not on the list. Use the cold-read section of `report-template.md`.
+Answer 1, which pages you read, and whether you read any page not on the list.  Write them as plain text. Do not use any template.
