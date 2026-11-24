@@ -1609,3 +1609,26 @@ ACE outcome: WP13 stays a docs package inside G7 and D-4, and is not yet started
 Mission Amendment 5 (PR #8, decision 3) aligns the mission with log D-070, so WP13's note "the mission is unchanged"
 is superseded once it merges. Amendment 5's ordering default folds WP13 into the schema-change package; this
 widening travels with it.
+
+## D-072 | 2026-11-24 | WP13: release levels, licence, follow-through, and two readers
+
+The chief engineer's direction (chat, typed by the ACE):
+"\"Publishing the analysis and publishing the field notes are now two separate questions.\" there is also a level that
+makes things non public release but release to contributors. and published itself is nebulous, under what license, eg
+creative commons? or what. i don't want you to litigate all possible answers instead we want pose the questions as
+open ended with 2 to 3 reasonable answers each to show these are genuine choice without overloading cognitively. we
+also need to thoughtful about how this documentation is written since its a different user who just wants to play
+with the modeling approach on their own work and data from one who is actually organizing a facilitated session with
+contributors. we're building this for analysis of data from a contributor group use case so we have these extra
+questions as sign posts for organizers to \"make the right way the easy way\" where the \"right way\" here includes
+clear expectations setting, consents and following through on the commitments made to the people who choose to
+participate in the facilitated elicitation."
+
+ACE outcome (WP13 not yet started; widened in place):
+- G2's release item names levels between private and public (for example, contributors only), keeps analysis and
+  field notes separate, and asks under what licence anything is published. A seventh item: how commitments to
+  participants are followed through.
+- G5: each checklist question is open-ended and shows 2 or 3 reasonable answers; none is argued or chosen.
+- New G6: two readers, the solo modeller and the organiser of a facilitated elicitation. SCAT is built for the
+  organiser; the flow page signposts both, and makes the organiser's commitments the easy path.
+- R2: seven items, the checklist's answer format, the two-reader signpost; cap 800 words.
