@@ -1,5 +1,14 @@
 # Morning list for the chief engineer
 
+## Start here
+
+**The v0.1 candidate is ready for your acceptance.** The release PRs are open:
+- https://github.com/DynamicalSystemsGroup/scat-kg-tools/pull/3
+- https://github.com/DynamicalSystemsGroup/scat-kg-template/pull/1
+
+Read `acceptance/reviewers-guide.md` (four sittings; sitting 1 is your walkthrough), then merge both with a merge
+commit to accept. The four items under "Held for you" are yours, and none blocks reading or walking through.
+
 Items the ACE decided overnight that you may want to look at, and anything held for you. Each one names its decision
 log entry and, where the ruling changed direction, the `divergence/` tag to revert to. Appended through the night.
 

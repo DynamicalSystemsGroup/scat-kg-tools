@@ -1117,3 +1117,19 @@ Correction to D-050 (the ACE's own error). The first redaction command failed si
 unquoted variable, so `sed` received one long filename and changed nothing. The D-050 entry was committed in
 `b459458` claiming a redaction that hadn't happened. The redaction was then applied file by file. 9 files changed,
 16 lines each way, and a re-grep for `/Users/`, `/private/tmp` and `claude-501` across the public records returns 0.
+
+## D-051 | 2026-11-24 | Release PRs opened
+
+The ACE opened the release PRs, as Governance assigns:
+- DynamicalSystemsGroup/scat-kg-tools#3 (`dev` → `main`, with the reviewer's guide);
+- DynamicalSystemsGroup/scat-kg-template#1.
+
+CI is green on both heads. The chief engineer's walkthrough (UA-M) runs against them, and his merges are the
+acceptance. After the merge, the ACE carries out the release steps.
+
+Held for him: WP8-U1 (a test-assertion edit), the D-040 uv departure, the optional history rewrite for the redacted
+paths, and submitting the w3id registration after the merge.
+
+Points for v0.1, from the board: about 300 estimated and about 340 realized, a ratio of about 1.13, across 8
+iterations. The largest unplanned cost was the R-15 cold-read chain (rounds 2 to 5), which a stop rule set from the
+start would have cut.
