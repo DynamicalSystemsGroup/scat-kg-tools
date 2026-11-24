@@ -17,7 +17,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP9 | v0.1 cleanup after the chief engineer's skim (D-052) | all units done and verified on fresh clones | `WP9.md` |
 | WP10 | Past or future on the captured narratives (D-057, D-058) | all units done; handed to the ACE for acceptance | `WP10.md` |
 | WP11 | A stable machine interface (R-16; D-060, D-062) | all units done and merged; handed to the ACE for acceptance | `WP11.md` |
-| WP12 | The terms reference (F-8; D-068) | in flight | `WP12.md` |
+| WP12 | The terms reference (F-8; D-068) | all units done but WP12-U5 (blocked: a guard refused the worker's fix commit); handed to the ACE | `WP12.md` |
 | RS1 | Research spike: Obsidian plugin (outside v0.1; branch `spike/obsidian-plugin`, never merged into `dev`) | readout, installable plugin and tests done | `RS1-obsidian-plugin.md` |
 | RS2 | Research spike: graph analysis (outside v0.1; branch `spike/analysis`, never merged into `dev`) | readout, package, notebook and tests done | `RS2-analysis.md` |
 
@@ -147,11 +147,17 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP11-U9 | technical writer (references, JSON examples, transcript reruns), sonnet | 5 | 5 | `wp11/u9` | done |  | 2026-11-24T11:56:53-05:00 | 1 push-back (revert the seeded typo before later commands), 2 reviews, 18 JSON blocks rerun byte-identical on the pinned template; visual check unverified (screenshots unusable), DOM measured; 982 tests; merged 32150b0 |
 | WP11-U10 | Python developer (template re-pin), haiku | 2 | 1 | `wp11/u10` | done |  | 2026-11-24T11:58:11-05:00 | mechanical Haiku re-pin, first time, about 1 min; PM re-ran the fresh clone; template merged 5a7290f |
 | WP11-U11 | Python developer (docs test pin, walkthrough, reviewer's guide, Pages, fresh-clone trial), sonnet | 3 | 3 | `wp11/u11` | done |  | 2026-11-24T12:12:31-05:00 | first-time reviewer PASS (one wording nit left); trial on fresh clones all green, 9 JSON examples rerun on the new template; one existing-test line edited (docs test pin, scope G5); 982 tests; merged 5bc3f0f |
-| WP12-U1 | technical writer (terms page, nav, two link lines), sonnet | 3 |  | `wp12/u1` | queued |  |  |  |
-| WP12-U2 | test engineer (terms page cannot drift from the TBox), sonnet | 2 |  | `wp12/u2` | queued | U1 merged (the page exists) |  |  |
-| WP12-U3 | UA-A designer (project-manager persona and brief in the user's words), sonnet | 1 |  | `wp12/u3` | queued |  |  |  |
-| WP12-U4 | simulated user (R3 cold read of the terms page, one Haiku tester) and report filing, haiku | 2 |  | `wp12/u4` | queued | U1 and U3 merged |  |  |
-| WP12-U5 | technical writer (reviewer's guide line, acceptance README line), sonnet | 1 |  | `wp12/u5` | queued | U4 report filed and defects fixed |  |  |
+| WP12-U1 | technical writer (terms page, nav, two link lines), sonnet | 3 | 5 | `wp12/u1` | done |  | 2026-11-24T14:49:11-05:00 | 3 push-backs (forward uses of defined terms, worded each time more fully; PM then fixed the standard), 4 reviews, page at the 600-word cap; merged aaf7bca |
+| WP12-U2 | test engineer (terms page cannot drift from the TBox), sonnet | 2 | 2 | `wp12/u2` | done |  | 2026-11-24T15:19:41-05:00 | first-time reviewer PASS (7 mutations all caught, prose edits survived); 990 tests; merged 672b41b |
+| WP12-U3 | UA-A designer (project-manager persona and brief in the user's words), sonnet | 1 | 1 | `wp12/u3` | done |  | 2026-11-24T14:49:11-05:00 | first-time worker pass; reviewer FAIL on a strict jargon reading ruled not a defect (stage words are the brief's own method vocabulary); merged 6cfce43 |
+| WP12-U4 | simulated user (R3 cold read of the terms page, one Haiku tester) and report filing, haiku | 2 | 2 | `wp12/u4` | done |  | 2026-11-24T15:19:41-05:00 | one Haiku cold reader, no tools; report filed unedited (13 findings, 2 blocking); merged 11f5e31 |
+| WP12-U5 | technical writer (reviewer's guide line, acceptance README line), sonnet | 1 |  | `wp12/u5` | blocked | the ACE: the worker's edit commit to fix false counts in acceptance/README.md and acceptance/reviewers-guide.md was refused by the guard; the PM did not work around it; reviewer FAIL on b1fce7f stands |  |  |
+| WP12-U6 | technical writer (fixes to the terms page from the R3 round 1 findings; added by the PM), sonnet | 2 | 2 | `wp12/u6` | done |  | 2026-11-24T15:19:41-05:00 | fix unit added by the PM from round 1; first-time reviewer PASS (cuts paid for 5 added fixes at 599 words); merged e6977f6 |
+| WP12-U7 | simulated user (R3 round 2, fresh Haiku tester) and report filing; added by the PM, haiku | 2 | 2 | `wp12/u7` | done |  | 2026-11-24T15:19:41-05:00 | round 2 fresh Haiku tester, report filed; one blocking mark (F8) fixed by U8; merged 3d549f6 |
+| WP12-U8 | technical writer (one-phrase fix from the R3 round 2 finding F8; added by the PM), haiku | 1 | 1 | `wp12/u8` | done |  | 2026-11-24T15:19:41-05:00 | one-phrase Haiku fix, reviewer PASS first time; merged 6e4cc02 |
+| WP12-U9 | simulated user (R3 round 3, fresh Haiku tester) and report filing; added by the PM, haiku | 2 | 2 | `wp12/u9` | done |  | 2026-11-24T15:19:41-05:00 | round 3 fresh Haiku tester, report filed; one self-inflicted defect (F3) fixed by U10; merged 5e7b7c1 |
+| WP12-U10 | technical writer (fix from the R3 round 3 finding F3: every page versus the index tables; added by the PM), sonnet | 1 | 1 | `wp12/u10` | done |  | 2026-11-24T15:19:41-05:00 | small fix, reviewer FAIL on a hairsplit ruled not a defect (index tables are not pages you made); merged bb7e4c9 |
+| WP12-U11 | simulated user (R3 round 4, fresh Haiku tester) and report filing; added by the PM, haiku | 2 | 2 | `wp12/u11` | done |  | 2026-11-24T15:19:41-05:00 | round 4 fresh Haiku tester, report filed; no new page defect; the loop stopped here; merged 917d815 |
 
 ## Iterations and velocity
 
@@ -168,6 +174,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 9 | WP9-U1 to U7 (U1b unplanned), RS1-U1 to U5, RS2-U1 to U5 (RS1-U4, RS1-U5, RS2-U4, RS2-U5 added by the PM; WP8-U1 held) | 71 | 71 | 1.00 | 0.79 h | 89.9 |
 | 10 | WP10-U1 to U4, U4b (U4b added by the PM) | 23 | 23 | 1.00 | 0.72 h | 31.9 |
 | 11 | WP11-U1 to U11, U5b, U7b, U7c (U5b, U7b, U7c added by the PM) | 52 | 51 | 0.98 | 2.14 h | 23.8 |
+| 12 | WP12-U1 to U4, U6 to U11 (U6 to U11 added by the PM; U5 blocked) | 18 | 20 | 1.11 | 0.84 h | 23.8 |
 
 ## Velocity and forecast
 
@@ -178,6 +185,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP12 is done except WP12-U5 (blocked, waiting on the ACE). Iteration 12 closed: 18 est. pts, 20 realized (ratio 1.11), 0.84 h, raw velocity 23.8 realized pts/hour. `python3 work-packages/check_metrics.py --accept WP12` fails only on U5 being `blocked`. Over: U1 (5 against 3: three push-backs for forward uses of defined terms; the 600-word cap left no room), and the page needed four fresh cold readers because each Haiku round adds new guesses. Lesson: for a 600-word glossary, state the "no term before its definition" standard in the brief (every prose use above its entry links; intro guide labels and code-span names exempt), and plan the cold-reader rounds as a loop of two to four units, not one.
 
 Current: WP11 is done: 14 units merged into `dev` (tools candidate commit 32150b0, template `dev` 5a7290f). Iteration 11 closed: 52 est. pts, 51 realized (ratio 0.98), 2.14 h, raw velocity 23.8 realized pts/hour. `python3 work-packages/check_metrics.py --accept WP11` passes. Over and under, WP11: on estimate; the largest rule family and the contract page each took a push-back round; U10 under (Haiku, mechanical). Lessons: a unit that converts rules can break a test of an earlier unit that assumed the placeholder, so plan the first typed conversion with its test fallout; a worker cannot edit a file outside its brief even when told by message, so put every file in the brief or plan a follow-up unit; keep a contract page's word budget with headroom, because late clarifications cost a trim round.
 
