@@ -798,3 +798,37 @@ ACE rulings:
 
 The PM's unit split is approved: 7 units (about 34 estimated points), a planned fix unit U8 (estimated 5), and two
 Haiku reads plus their reruns.
+
+## D-039 | 2026-11-24 | WP7 accepted (ACE); fixes routed to WP8
+
+The ACE's own verification at `947f987`:
+- 513 tests pass, `mkdocs build --strict` is clean, and CI, including the docs job, is green.
+- Only `main` and `dev` remain, with no worktrees.
+- A browser pass over all 8 pages of the built site, served locally:
+  - each page opens with a "Your next step" box and ends with "Where next";
+  - REPL and CLI sit side by side on 12 tab sets;
+  - placeholders render as visible text, which confirms the swallowed-`<group>` fix;
+  - at 375 px there is no page-level horizontal overflow, and long code lines scroll inside their blocks;
+  - no console errors.
+
+**WP7 is accepted.** It came in at 43 estimated and 53 realized points. Rulings:
+1. **U4's contract** is settled by the PM's ruling: each shown message starts from a fresh template copy and states its
+   start state. Accepted. Three push-backs for the same cause were the right trigger for it.
+2. **R-15's cold read is only partly met.** Four Haiku reads all named jazz unprompted, but each listed 5–7 phrases
+   that left an instruction less than plain, none of them blocking. Disposition: carried into WP8. The UA-A rounds
+   rerun R-15's cold read, and every phrase they flag in an instruction is made plain. Style stays in headings and
+   framing, never in instructions.
+3. **The coding guide is long** (about 5,000 words). The UA-A Haiku testers will show whether that hurts. If it
+   does, WP8 splits it.
+4. **Tool gaps the workers found** go into WP8's pre-candidate fixes:
+   - `set-status done` reports the page's own check result;
+   - `stub` on an existing page of the same type is a no-op with a message, consistent with `stub-pair`;
+   - the SCAT-LINK-ENDPOINT fix must not chain into SCAT-DONE-LINK;
+   - the cap refusal's fix first suggests clustering into an existing group, per the facilitation strategy, before
+     raising the cap.
+
+   These are message and behaviour fixes within the contracts' intent, not new rules.
+5. **The Obsidian templates** pass a typed name through, which can fail SCAT-NAME, so the guides make `scat stub` the
+   one way to create pages (R-11). WP8 reconciles the template README with this.
+6. **WP8 must also handle the candidate re-pins** (the template's tools pin, and `TEMPLATE_COMMIT` in
+   `tests/docs/conftest.py`), the template-repo settings, and the README's docs address.
