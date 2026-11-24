@@ -144,7 +144,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP11-U7c | API designer and technical writer (contract clarifications from the U6 and U7 reviews), sonnet | 1 | 1 | `wp11/u7c` | done |  | 2026-11-24T11:41:25-05:00 | 1 push-back (additive wording, dropped definitions restored), 2 reviews, page 599 words; added by the PM from the U6 and U7 reviews; merged 8e5c125 |
 | WP11-U8 | test engineer (closing guards: kinds, no legacy fixes, text and data agree), sonnet | 2 | 2 | `wp11/u8` | done |  | 2026-11-24T11:40:05-05:00 | first-time reviewer PASS with gaps (G5 command-word check weak, list edits unchecked), mutations by reviewer fired the guards; 977 tests; merged 0487be3 |
 | WP11-U9 | technical writer (references, JSON examples, transcript reruns), sonnet | 5 | 5 | `wp11/u9` | done |  | 2026-11-24T11:56:53-05:00 | 1 push-back (revert the seeded typo before later commands), 2 reviews, 18 JSON blocks rerun byte-identical on the pinned template; visual check unverified (screenshots unusable), DOM measured; 982 tests; merged 32150b0 |
-| WP11-U10 | Python developer (template re-pin), haiku | 2 |  | `wp11/u10` | in flight |  |  |  |
+| WP11-U10 | Python developer (template re-pin), haiku | 2 | 1 | `wp11/u10` | done |  | 2026-11-24T11:58:11-05:00 | mechanical Haiku re-pin, first time, about 1 min; PM re-ran the fresh clone; template merged 5a7290f |
 | WP11-U11 | Python developer (docs test pin, walkthrough, reviewer's guide, Pages, fresh-clone trial), sonnet | 3 |  | `wp11/u11` | queued | U10 merged (the tagged template) |  |  |
 
 ## Iterations and velocity
