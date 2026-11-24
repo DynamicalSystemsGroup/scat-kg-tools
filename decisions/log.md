@@ -1585,3 +1585,27 @@ What the tools record stays stated as fact: coded pages name groups, never indiv
 to individuals remains a v0.1 non-goal (MISSION.md). The mission is unchanged. Its line "How raw notes are taken is
 the facilitator's call" already leaves the policy open. `divergence/D-070` is tagged on the commit before this ruling.
 WP12's terms page is held to the same stance.
+
+## D-071 | 2026-11-24 | WP13 widened: AI use, publication split, and a pre-start checklist
+
+The chief engineer's direction (chat, typed by the ACE):
+"LLM use allow or disallow, and if allowed which tools and which data they are allowed to touch is also part of the
+explicit user choice dimension but it needs to be matched up with expectations set at the time consents are secured,
+and the consents should be demonstrably informed consent to the extent possible. people participating in exercises
+from which the data for these coded scenarios and architectures need to know this what their inputs are being used
+for, the attribution vs chatham house is a good example because it really could go either way but all participants
+have to work within the same paradigm so the organizers need to decide and communicate clearly up front. whether the
+resulting analysis can be published is also a different quest than whether the field notes can be published. i think
+a really good addition to this would a be a short bang list of questions that need to be answer and documented before
+starting a scat project."
+
+ACE outcome: WP13 stays a docs package inside G7 and D-4, and is not yet started, so its scope is widened in place:
+- G2 gains AI use (allowed or not, which tools, which data), matched to the consents; the publication item splits the
+  analysis from the field notes; consent is described as informed, decided up front, one set of terms for everyone.
+- New G5: a "Before you start" checklist of questions, one per G2 item, answered and documented by the organisers.
+  The page still makes no choice for them.
+- R2 now covers six items and the checklist, with the cap raised from 600 to 750 words.
+
+Mission Amendment 5 (PR #8, decision 3) aligns the mission with log D-070, so WP13's note "the mission is unchanged"
+is superseded once it merges. Amendment 5's ordering default folds WP13 into the schema-change package; this
+widening travels with it.
