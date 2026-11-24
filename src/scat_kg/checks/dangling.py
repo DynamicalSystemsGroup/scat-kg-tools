@@ -7,19 +7,19 @@ name for which a Markdown file exists that has no `type`; (c) a name that is not
 import re
 from dataclasses import dataclass
 
+from scat_kg.checks import fixes
 from scat_kg.checks.ctx import Ctx, page_rule
+from scat_kg.checks.links import body_swap, link_value, list_with, offer
 from scat_kg.checks.text import (
     article,
-    choose,
     derived_name,
     free_name,
     name_problem,
     near_match,
-    one,
     quote,
-    stub_cmd,
     title_from_name,
 )
+from scat_kg.fix import Fix, FixOption
 from scat_kg.tbox import TBOX
 from scat_kg.vault import Link, Page
 
@@ -59,34 +59,54 @@ def cap_note(ctx: Ctx) -> str:
     )
 
 
-def typeless_edit(ctx: Ctx, path: str, type_key: str, name: str) -> str:
-    """Variant (b): the lines that turn a file with no `type` into a stub page."""
-    want = {"type": type_key, "status": "stub", "title": quote(title_from_name(name))}
+def typeless_edit(ctx: Ctx, path: str, type_key: str, name: str) -> FixOption:
+    """Variant (b): the lines that turn a file with no `type` into a stub page, as `set-field` edits."""
+    want = {"type": type_key, "status": "stub", "title": title_from_name(name)}
+
+    def line(k: str) -> str:
+        return f"`{k}: {quote(want[k]) if k == 'title' else want[k]}`"
+
     lines = ctx.file_lines(path)
     close = next((i for i in range(1, len(lines)) if lines[i] == "---"), None)
     if lines[0] != "---" or close is None:
-        rows = ", ".join(f"`{k}: {v}`" for k, v in want.items())
-        return (
+        rows = ", ".join(line(k) for k in want)
+        text = (
             f"put these lines in a block between two `---` lines at the very top of {path}: {rows}"
         )
+        return fixes.option("exact", text, *(fixes.set_field(path, k, v) for k, v in want.items()))
     present = {}
     for ln in lines[1:close]:
         m = re.match(r"^([A-Za-z0-9_-]+):\s*(.*)$", ln)
         if m:
             present[m.group(1)] = m.group(2).strip()
     parts = []
-    adds = [f"`{k}: {v}`" for k, v in want.items() if k not in present]
+    adds = [k for k in want if k not in present]
     if adds:
-        parts.append(f"add these lines to the frontmatter of {path}: " + ", ".join(adds))
-    for k, v in want.items():
-        if present.get(k) == "":
-            parts.append(f"replace the line `{k}:` in {path} with `{k}: {v}`")
-    return "; ".join(parts)
+        parts.append(
+            f"add these lines to the frontmatter of {path}: " + ", ".join(line(k) for k in adds)
+        )
+    empties = [k for k in want if present.get(k) == ""]
+    for k in empties:
+        parts.append(f"replace the line `{k}:` in {path} with {line(k)}")
+    return fixes.option(
+        "exact",
+        "; ".join(parts),
+        *(fixes.set_field(path, k, want[k]) for k in [*adds, *empties]),
+    )
 
 
-def _fix(opts: list[str], notes: list[str]) -> str:
+def _fix(opts: list[FixOption], notes: list[str]) -> Fix:
     notes = list(dict.fromkeys(notes))
-    return choose(opts, tuple(notes)) if opts else one(" ".join(notes) or HAND)
+    if opts:
+        return offer(opts, tuple(notes))
+    return fixes.single(FixOption("manual", " ".join(notes) or HAND))
+
+
+def then(first: FixOption, made: FixOption) -> FixOption:
+    """Two things in one option, in order: `first`, then `made` (its edits follow, its command runs last)."""
+    return FixOption(
+        "exact", f"{first.text}, then {made.text}", made.command, (*first.edits, *made.edits)
+    )
 
 
 def derive(ctx: Ctx, target: str) -> str | None:
@@ -115,26 +135,32 @@ def link_dangling(ctx: Ctx, page: Page):
 def _front_problem(ctx: Ctx, page: Page, key: str, expected: str, link: Link, d: Dangle):
     target = link.target
     item = ctx.item(page, key, target)
+    single = TBOX.page_types[page.type_key].field(key).single
     group_capped = expected == "stakeholder-group" and ctx.at_cap
-    opts: list[str] = []
+    opts: list[FixOption] = []
     notes: list[str] = []
     near = near_match(target, ctx.names_of_type(expected))
 
-    def swap(name: str) -> str:
-        return f"replace `{item}` with `{ctx.item(page, key, name)}`"
+    def swap(name: str, tail: str = "") -> FixOption:
+        value = link_value(name) if single else list_with(page, key, link, name)
+        return fixes.option(
+            "exact",
+            f"replace `{item}` with `{ctx.item(page, key, name)}`{tail}",
+            fixes.set_field(page.path, key, value),
+        )
 
-    def create(name: str) -> str | None:
+    def create(name: str) -> FixOption | None:
         """What creates a page `name` of the expected type; None when the cap withholds it."""
         if group_capped:
             notes.append(cap_note(ctx))
             return None
         if name in ctx.typeless:
             return typeless_edit(ctx, ctx.typeless[name], expected, name)
-        return f"run {stub_cmd(name, expected)} to create it as a stub"
+        return fixes.run_option(fixes.stub(name, expected), suffix=" to create it as a stub")
 
     if d.kind in ("a", "b"):
         if near:
-            opts.append(f"{swap(near)} (the closest existing {expected} page)")
+            opts.append(swap(near, f" (the closest existing {expected} page)"))
         made = create(target)
         if made:
             opts.append(made)
@@ -156,7 +182,7 @@ def _front_problem(ctx: Ctx, page: Page, key: str, expected: str, link: Link, d:
             elif n in ctx.typeless or n.lower() not in ctx.taken:
                 made = create(n)
                 if made:
-                    opts.append(f"{swap(n)}, then {made}")
+                    opts.append(then(swap(n), made))
     return ctx.problem(
         "SCAT-LINK-DANGLING",
         page.path,
@@ -166,6 +192,7 @@ def _front_problem(ctx: Ctx, page: Page, key: str, expected: str, link: Link, d:
         line=link.line,
         pos=ctx.pos(page, key),
         target=target,
+        on=key,
     )
 
 
@@ -184,7 +211,7 @@ def inferred_types(ctx: Ctx, page: Page, name: str) -> tuple[list[str], list[str
     return [k for k in types if k not in discouraged], [k for k in types if k in discouraged]
 
 
-def _creations(ctx: Ctx, page: Page, name: str) -> tuple[list[str], list[str]]:
+def _creations(ctx: Ctx, page: Page, name: str) -> tuple[list[FixOption], list[str]]:
     """What creates a page `name` from a body link: one option per inferred type, and the notes."""
     types, left = inferred_types(ctx, page, name)
     ptype = page.type_key
@@ -194,7 +221,10 @@ def _creations(ctx: Ctx, page: Page, name: str) -> tuple[list[str], list[str]]:
         notes.append(cap_note(ctx))
     if name in ctx.typeless:
         return [typeless_edit(ctx, ctx.typeless[name], k, name) for k in types], notes
-    return [f"run {stub_cmd(name, k)} to create {article(k)} {k} page" for k in types], notes
+    return [
+        fixes.run_option(fixes.stub(name, k), suffix=f" to create {article(k)} {k} page")
+        for k in types
+    ], notes
 
 
 @page_rule
@@ -207,10 +237,10 @@ def link_dangling_body(ctx: Ctx, page: Page):
             continue
         target, line = link.target, link.line
 
-        def swap(name: str) -> str:
-            return f"on line {line} replace `[[{target}]]` with `[[{name}]]`"  # noqa: B023
+        def swap(name: str, link: Link = link) -> FixOption:
+            return body_swap(page, link, link_value(name))
 
-        opts: list[str] = []
+        opts: list[FixOption] = []
         notes: list[str] = []
         near = near_match(target, pool)
         if d.kind in ("a", "b"):
@@ -228,11 +258,9 @@ def link_dangling_body(ctx: Ctx, page: Page):
                     opts.append(swap(n))
                 elif n in ctx.typeless or n.lower() not in ctx.taken:
                     made, more = _creations(ctx, page, n)
-                    opts += [f"{swap(n)}, then {m}" for m in made]
+                    opts += [then(swap(n), m) for m in made]
                     notes += more
-        opts.append(
-            f"on line {line} replace `[[{target}]]` with `{target}` to keep the words and drop the link"
-        )
+        opts.append(body_swap(page, link, target, " to keep the words and drop the link"))
         notes.append(
             "(you can also name the page in the right link field of this page, which entails its "
             "stub with that type)"
