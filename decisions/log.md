@@ -832,3 +832,15 @@ The ACE's own verification at `947f987`:
    one way to create pages (R-11). WP8 reconciles the template README with this.
 6. **WP8 must also handle the candidate re-pins** (the template's tools pin, and `TEMPLATE_COMMIT` in
    `tests/docs/conftest.py`), the template-repo settings, and the README's docs address.
+
+## D-040 | 2026-11-24 | WP8 drafted; uv installer not run by agents
+
+The ACE drafted WP8 (the candidate and user acceptance).
+
+ACE ruling: UA-A testers start from a clean home directory with the existing uv binary on PATH, which stands in for
+"after installing uv". They don't run uv's downloaded installer script (`curl … | sh`): running a downloaded
+installer needs the chief engineer's explicit permission, and he is away. The install step itself is exercised by
+the chief engineer in UA-M. This is the additive route under D-036; it is on his morning list, and he can reverse it.
+
+Also confirmed for WP8: agents create no repositories from the template, because that is a new public GitHub action
+and is his in UA-M; and the w3id registration is prepared for him to submit, not submitted.
