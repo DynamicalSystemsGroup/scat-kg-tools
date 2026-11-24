@@ -127,9 +127,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | RS2-U5 | research software engineer (review fixes), sonnet | 2 | 2 | `spike/analysis` | done |  | 2026-11-24T01:25:14-05:00 | unplanned: pair count wording, node labels, README layout line; at estimate |
 | RS2-U4 | research software engineer (sync with dev), sonnet | 2 | 2 | `spike/analysis` | done |  | 2026-11-24T01:33:08-05:00 | dev merged into the spike; case-study copy refreshed; at estimate |
 | WP10-U3 | template editor (case-study tags), sonnet | 2 | 2 | `wp10/u3` (template) | done | | 2026-11-24T09:14:38-05:00 | first-time reviewer PASS, about 2 min; reviewer would tag both pitches `mixed` (worker: `future`), flagged to the ACE; template dev cdc0707 |
-| WP10-U1 | Python developer and ontology designer (TBox, contracts, rule, stub, tests), sonnet | 8 | | `wp10/u1` | in flight | | | |
-| WP10-U2 | technical writer (facilitation and planning guides), sonnet | 5 | | `wp10/u2` | in flight | | | |
-| WP10-U4 | Python developer (refresh: pins, walkthrough, reviewer's guide, Pages, fresh clone), sonnet | 5 | | `wp10/u4` | queued | U1, U2, U3 merged | | |
+| WP10-U1 | Python developer and ontology designer (TBox, contracts, rule, stub, tests), sonnet | 8 | 8 | `wp10/u1` | done | | 2026-11-24T09:44:22-05:00 | 2 push-backs, 3 reviews, 560 tests, test edits under D-058 listed in the report; merged f22c62e |
+| WP10-U2 | technical writer (facilitation and planning guides), sonnet | 5 | 8 | `wp10/u2` | done | | 2026-11-24T09:43:32-05:00 | 3 push-backs, R3 scope change mid-flight, 4 reviews; net 844 words with U1; merged ec5e75a |
+| WP10-U4 | Python developer (refresh: pins, walkthrough, reviewer's guide, Pages, fresh clone), sonnet | 5 | | `wp10/u4` | in flight | | | |
 
 ## Iterations and velocity
 
