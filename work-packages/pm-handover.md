@@ -29,9 +29,7 @@ Provision with `/private/tmp/claude-501/-Users-z-Documents-GitHub/b40c0a13-b60e-
 `UV_PYTHON_INSTALL_DIR` to the existing Python store so no downloads). Copy the persona brief and
 `acceptance/report-template.md` into the tester's folder (not the repo); give the tester the preamble and the two file
 paths (the prompt used in round 1 is in the scratchpad `tester-prompt.txt`, and the round-1 agent prompts follow the
-same shape). Fresh testers, new domains if the old ones are reused would be a void risk: write three NEW event notes?
-No: the briefs carry fixed domains (flood readiness, farmers' market, bicycle co-op); fresh testers on the same domains
-are allowed because no tester remembers a round. Models: p1 Haiku (Python REPL is mandatory for J5 to J7, piped into
+same shape). Use fresh testers; the briefs carry fixed domains (flood readiness, farmers' market, bicycle co-op) and reusing them is fine because no tester remembers a round. Models: p1 Haiku (Python REPL is mandatory for J5 to J7, piped into
 `python -i`), p2 Haiku (CLI), p3 Sonnet control. The cold read is two messages: send `briefs/cold-read-part1.md`
 alone, and only after it is answered send `cold-read-part2.md`; assemble answers 1 and 2 into the report. Save reports
 as `acceptance/reports/r2-<persona>.md` (extract the report from the agent's final message). Void check with the grep in
