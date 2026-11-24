@@ -142,7 +142,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP11-U7 | Python developer (fixes as data: link and dangling rules), sonnet | 8 | 8 | `wp11/u7` | done |  | 2026-11-24T11:21:59-05:00 | 1 push-back (body replace-text find not on the line for alias/heading/anchor links), 3 reviews, 56+7 cases, 965 tests; largest family, ran at estimate; merged 6438636 |
 | WP11-U7b | test engineer (harness and U2-test follow-ups from the U6 and U7 findings), sonnet | 1 | 1 | `wp11/u7b` | done |  | 2026-11-24T11:10:19-05:00 | two follow-up findings fixed in WP11-added tests (U2 test legacy assumption, harness edits+command options); first-time worker pass, tier 1 green 791 tests; merged 2c11e7d |
 | WP11-U7c | API designer and technical writer (contract clarifications from the U6 and U7 reviews), sonnet | 1 |  | `wp11/u7c` | in flight |  |  |  |
-| WP11-U8 | test engineer (closing guards: kinds, no legacy fixes, text and data agree), sonnet | 2 |  | `wp11/u8` | queued | U4, U5, U6, U7 merged |  |  |
+| WP11-U8 | test engineer (closing guards: kinds, no legacy fixes, text and data agree), sonnet | 2 |  | `wp11/u8` | in flight |  |  |  |
 | WP11-U9 | technical writer (references, JSON examples, transcript reruns), sonnet | 5 |  | `wp11/u9` | queued | U3, U8 merged (output final) |  |  |
 | WP11-U10 | Python developer (template re-pin), haiku | 2 |  | `wp11/u10` | queued | U9 merged (the candidate commit) |  |  |
 | WP11-U11 | Python developer (docs test pin, walkthrough, reviewer's guide, Pages, fresh-clone trial), sonnet | 3 |  | `wp11/u11` | queued | U10 merged (the tagged template) |  |  |
