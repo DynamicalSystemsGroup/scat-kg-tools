@@ -46,13 +46,17 @@ Start from `acceptance/reviewers-guide.md`. Sitting 1 is your walkthrough.
   the epigraphs and framing go.
 - **Spikes, outside v0.1, on side branches:** RS1, an Obsidian plugin (`spike/obsidian-plugin`); RS2, graph analysis
   in Jupyter (`spike/analysis`).
-- **Node, as you asked.** Homebrew refused to upgrade it: your `/Applications/Xcode.app` is 15.2, and Homebrew won't
-  install anything until it is updated or deleted, even though your Command Line Tools are current (26.2). Two steps:
-  - **Done tonight:** the official Node LTS v26.13.1 from nodejs.org, SHA256-verified, installed at
-    `~/.local/opt/node-v26.13.1-darwin-x64`. Nothing in Homebrew or `/usr/local` was changed. RS1 builds with it.
-  - **Yours, in the morning:** update Xcode in the App Store (or delete `Xcode.app` if you don't use it), then run
-    `brew upgrade node && brew cleanup` for the clean Homebrew build. After that you can delete
-    `~/.local/opt/node-v26.13.1-darwin-x64`.
+- **Node is fixed: v26.13.1 LTS, with npm 11.20.0, on your normal PATH.** Root cause: this is an Intel Mac, and
+  Homebrew dropped Intel macOS support in September 2026. There are no prebuilt packages, so `brew upgrade node` tried
+  to compile everything from source (LLVM included, about an hour) and failed on a dependency. What the ACE did:
+  - uninstalled the broken Homebrew Node 21.2.0 (nothing depended on it, and the only global package was npm itself);
+    Homebrew also removed two dependencies only it used;
+  - placed the official nodejs.org binary, SHA256-verified, at `/usr/local/lib/nodejs/node-v26.13.1-darwin-x64`;
+  - linked `node`, `npm`, `npx` and `corepack` into `/usr/local/bin`, as the official installer does.
+
+  The plugin builds and its 31 tests pass with it. **Your call later:** Homebrew on this Intel Mac will keep building
+  from source. The overnight attempt left from-source builds installed (Rust, LLVM and others). `brew autoremove &&
+  brew cleanup` reclaims what nothing needs, and Homebrew itself suggests MacPorts for Intel binaries.
 - This section is updated with results as they land.
 
 ## Rulings you may want to reverse
