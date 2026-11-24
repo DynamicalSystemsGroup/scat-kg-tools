@@ -6,13 +6,16 @@
 *Playing it back: raw notes, read again as coded pages.*
 { .epigraph }
 
-Coding is the step where your raw notes become part of the graph. You read a raw scenario or a raw architecture and write it again as a **coded page**. A coded page names the stakeholder groups, concerns, affordances and technologies the notes talk about. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. A **technology** is the thing that provides it. The [home page](index.md) defines all four. You do not summarise or judge. You name what is there, keeping the meaning of the raw wording. The raw page stays exactly as it was written; the coded page is a separate page that reads it.
+Coding borrows one habit from jazz: play a phrase back as it was played. Each coded page keeps the meaning of the raw wording and adds no judgement of your own.
+
+Coding is the step where your raw notes become part of the graph. You read each raw scenario or raw architecture and write each raw page again as a **coded page**. A coded page names the stakeholder groups, concerns, affordances and technologies the notes talk about. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. A **technology** is the thing that provides it. The [home page](index.md) defines all four. You do not summarise or judge. You name what is there, keeping the meaning of the raw wording. The raw page stays exactly as it was written; the coded page is a separate page that reads it.
 
 The tools do the bookkeeping. You say which things the notes name. The tools create the pages and links that follow, and the checker tells you in plain words what is still wrong. This page shows the whole loop, from start to finish: a raw page, a pushed commit and a look at the graph.
 
 ## Before you start
 
 - A vault set up as in [Getting started](getting-started.md): the folder holds `scat.toml`, you are inside it in Terminal, and `uv sync` has run. While SCAT is a preview being tried before its first release, a fresh clone may need `git checkout dev` first.
+- The worked example removed, if you want your own vault clean. Do that before you add any page of your own: [Start your own content](getting-started.md#5-start-your-own-content). If you already added pages, the same step still works, and the check lists draft warnings for them and no errors.
 - Raw notes saved as raw pages, from [Facilitating scenarios](facilitate-scenarios.md) or [Facilitating architectures](facilitate-architectures.md). In hand, you need a few plain sentences of raw notes, written as they were told.
 - Your stakeholder groups, planned in the [planning guide](planning.md) and named by role. In hand, you need a short list of the groups, one name per group.
 

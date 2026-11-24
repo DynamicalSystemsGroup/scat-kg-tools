@@ -171,9 +171,11 @@ folder and click its links: you are walking the graph. Create pages with `scat s
 ## 5. Start your own content
 
 The example is only there to show you the shape. You will use it as a model while you plan, then remove it from your
-own vault before you code your own notes. When you are ready, type these commands in your vault folder. The first
-deletes the example page folders and keeps `class`. The second rebuilds the class tables. The third
-checks:
+own vault before you code your own notes. Do this step **before you add any page of your own**. Do not do it yet if
+you want the example open while you read the other guides. You can remove it at any time.
+
+When you are ready, type these commands in your vault folder. The first deletes the example page folders and keeps
+`class`. The second rebuilds the class tables. The third checks:
 
 ```text
 git rm -r addresses affordance architecture-coded architecture-raw attributes concern heldby scenario-coded scenario-raw stakeholder-group technology
@@ -187,18 +189,18 @@ uv run scat check
 no problems
 ```
 
-`git rm` only stages the removal. Save it as a commit, so your vault keeps the change and the removal is not lost.
-`git add .` also stages the rebuilt class tables:
+If you already added raw pages of your own, `git rm` leaves them where they are, and `scat check` prints a
+`SCAT-DRAFT-FIELD` warning for each of those pages that is still a draft, then `0 errors` and the number of warnings. That is correct: warnings do not block you.
+
+`git rm` has already staged the removal of the example pages. Stage the rebuilt class tables as well, then save it all as a commit, so your vault keeps the change. `git add -u` stages changes to files git already tracks, and nothing else, so pages and files of your own are not swept in:
 
 ```text
-git add .
+git add -u
 git commit -m "Remove the example"
 ```
 
-Your vault is now empty and clean. You do not write the folders or pages for your own content by hand. The tools
+Your vault now holds no example pages. You do not write the folders or pages for your own content by hand. The tools
 create each one, as you will see in the [coding guide](coding.md).
-
-Do not do this yet if you want the example open while you read the other guides. You can remove it at any time.
 
 ## Where next
 
