@@ -1028,3 +1028,33 @@ kept the loop going. C1 and C2 are plain instruction defects, which U14b fixes.
 **Then:** U14b is re-pinned, and two fresh cold readers run. R-15 passes if both name jazz unprompted and neither
 names a place where a style element (an epigraph, a framing sentence or a musical term) obscured an instruction.
 Other findings are dispositioned normally.
+
+## D-048 | 2026-11-24 | Round 4: the last style fixes (U14c) and a stop rule for R-15
+
+**Round 4 (U16b)** ran against candidate tools `e1faae3` and template `ad502ed`. Both fresh readers named jazz
+unprompted, from the four framing sentences. Reader D's glimpse of a home-page fragment in the search index doesn't
+invalidate this: its evidence was the framing sentences, as the report says. But both readers named style elements
+that obscured instructions.
+
+ACE rulings:
+- **S1.** The coding framing sentence "play a phrase back as it was played" contradicts the instruction to restate
+  in your own words. The ACE approved that sentence in D-047, so this is partly the ACE's error, and two rounds of
+  readers have flagged it. It becomes: "Coding borrows one habit from jazz: hear a phrase, then play its meaning back
+  in your own voice."
+- **S3.** "Take it up as a companion" (scenarios line 75, architectures line 99) and "name the tension aloud as a
+  margin" (scenarios line 134) are style inside `Do:` instructions, which breaks the D-046 placement rule. They become
+  "write it down as a second account beside the first, and do not treat it as a rival" and "say aloud that the
+  accounts differ, and write both".
+- **S2** (the planning epigraph, D-045 item 2) and **S4** ("Yes, and", which the page defines) are accepted.
+- **The non-style findings are folded in as plain sentences:**
+  - each facilitation page defines the Chatham House frame in one sentence;
+  - the coding page's "the tools do the bookkeeping" claim is corrected to say which edit is by hand (the
+    SCAT-RAW-BACKLINK link);
+  - "choose each pair" says what to do when the notes name no group: use the group the session plan seated for that
+    note, and if that isn't known, create no pair and leave the gap recorded.
+
+**Stop rule.** The next pair of fresh readers is the last cold-read round for v0.1.
+- If both name jazz and neither names a style element obscuring an instruction, R-15 is met.
+- If anything style-related remains, the ACE dispositions it directly by editing to the placement rule, with no
+  further round. Every remaining item goes into the reviewer's guide as known-weak, for the chief engineer's judgement
+  at acceptance.
