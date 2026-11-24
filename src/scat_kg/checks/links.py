@@ -11,6 +11,7 @@ from scat_kg.checks.text import (
     choose,
     is_missing,
     one,
+    set_status_cmd,
 )
 from scat_kg.tbox import TBOX
 from scat_kg.vault import Page
@@ -170,6 +171,11 @@ def _swap(ctx: Ctx, page: Page, t) -> tuple | None:
     return None
 
 
+def _wrong_type(ctx: Ctx, target: str, expected: str) -> bool:
+    w = ctx.page(target)
+    return w is not None and w.type_key is not None and w.type_key != expected
+
+
 @page_rule
 def link_endpoint(ctx: Ctx, page: Page):
     if not ctx.typed(page):
@@ -213,7 +219,17 @@ def link_endpoint(ctx: Ctx, page: Page):
                 continue
             item = ctx.item(page, f.key, link.target)
             opts = []
-            if not f.single:
+            # Taking the only good item out of a field a `done` page requires would trade this error
+            # for SCAT-DONE-LINK, so then no move or delete is offered.
+            emptied = (
+                f.required_from == "done"
+                and ctx.status_of(page) == "done"
+                and all(
+                    o is link or _wrong_type(ctx, o.target, f.target_type)
+                    for o in page.fm_links.get(f.key, ())
+                )
+            )
+            if not f.single and not emptied:
                 flow = ctx.current(page, f.key) != ""
                 for g in t.required + t.optional:
                     if (
@@ -238,15 +254,28 @@ def link_endpoint(ctx: Ctx, page: Page):
             shown, more = cands[:5], max(0, len(cands) - 5)
             opts += [f"replace `{item}` with `{ctx.item(page, f.key, c)}`" for c in shown]
             required = any(r.key == f.key and r.required_from == "stub" for r in t.required)
-            if not required:
+            if not required and not emptied:
                 opts.append(f"delete the item line `{item}` under `{f.key}`")
             notes = []
             if more:
                 notes.append(f"(+{more} more not shown)")
             if not cands:
                 notes.append(f"(no existing {f.target_type} page was found to replace it with)")
+            if emptied:
+                notes.append(
+                    f"(`{f.key}` is required on a page with status: done and this is its only good "
+                    "item, so deleting or moving the item alone would trade this error for "
+                    f"SCAT-DONE-LINK; to delete or move it, run {set_status_cmd(page.name)} first, "
+                    "or add a right-typed item first)"
+                )
             if opts:
                 fix = choose(opts, tuple(notes))
+            elif emptied:
+                fix = one(
+                    f"`{f.key}` is required on a page with status: done and this is its only good "
+                    f"item, and no existing {f.target_type} page was found to replace it with: run "
+                    f"{set_status_cmd(page.name)} first, then change the item by hand"
+                )
             else:
                 fix = one(
                     f"change the pair by hand: no existing {f.target_type} page was found, and "
