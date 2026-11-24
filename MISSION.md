@@ -537,8 +537,12 @@ Amendment 5:
    redesign, in `research/`. Private sources, such as client vaults, are read for principles only and the readout
    cites only published work (PR #8 thread).
 
-None open. Every item was resolved through the decision loop: 6 decided (items 1 to 6), 0 deferred, 2 raised (items
-5 and 6), plus the chief engineer's directions recorded in the PR #8 thread.
+7. **Users with no terminal** *(raised in the pre-merge review)*. Decided: the non-goal is dropped (G14, path 2).
+8. **Which paths acceptance covers** *(raised in the pre-merge review)*. Decided: manual and chat (User acceptance).
+9. **A date** *(raised in the pre-merge review)*. Decided: still no date; log D-011 stands.
+
+None open. Every item was resolved through the decision loop: 9 decided (items 1 to 9), 0 deferred, 5 raised (items
+5 to 9), plus the chief engineer's directions recorded in the PR #8 thread.
 
 Earlier amendments: none open. Every item was resolved through the decision loop and is recorded in
 `decisions/log.md`:
