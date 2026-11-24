@@ -88,7 +88,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP8-U9 | mechanical checker (clean clone), haiku | 2 | 2 | `wp8/u9` | done |  | 2026-11-23T22:40:28-05:00 | Haiku clean-clone check all PASS; one false flag on the pin rule (a branch commit and its merge have the same tree), noted; at estimate |
 | WP8-U10 | UA-A round 1 testers, haiku | 12 | 12 | `wp8/u10` | done |  | 2026-11-23T22:40:28-05:00 | round 1: three persona runs and one cold read, no void reports; findings digest in acceptance/reports/r1-findings.md; ACE to disposition |
 | WP8-U11 | fixer (planned, after round 1), sonnet | 8 | 8 | `wp8/u11` | done |  | 2026-11-23T22:50:45-05:00 | applies all 12 accepted round-1 fixes plus the round-2 kit changes (cold-read split in two parts, mandatory REPL tester, J7 bar); 1 push-back from the fresh review (a cold-read pointer that exposed question 2, one wording tension, one tagline); the push-back delta was verified by the PM re-running the reviewer's greps, no second full review; ran over the estimate of 8 by 0 |
-| WP8-U12 | re-pin and rerun, sonnet | 2 |  | `wp8/u12` | queued | U11 |  |  |
+| WP8-U12 | re-pin and rerun, sonnet | 2 |  | `wp8/u12` | in flight |  |  |  |
 | WP8-U13 | UA-A round 2 testers, haiku | 12 |  | `wp8/u13` | queued | U12 |  |  |
 | WP8-U14 | fixer (planned, after round 2), sonnet | 5 |  | `wp8/u14` | queued | U13 |  |  |
 | WP8-U15 | re-pin and rerun, sonnet | 2 |  | `wp8/u15` | queued | U14 |  |  |
