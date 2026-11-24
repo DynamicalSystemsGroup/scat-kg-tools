@@ -1312,3 +1312,19 @@ ACE's defaults in Amendment 3, approved with it.
 **Clarification (the chief engineer's words, typed by the ACE):** "by doesn't go into the coded ontology i mean the
 stakeholders, concerns, affordances and technologies are not marked with this axis."
 **Outcome.** Amendment 3 now says so in plain words: grounding marks scenario and architecture records only.
+
+**Direction (the chief engineer's words, typed by the ACE):** "to avoid complexity i want this to be essentially a past
+future axis. present is nebulous and thing real that can be narrated is past. any thing being done with intention in
+the present but not yet realized is future."
+
+**Question (typed by the ACE):** "With grounding as a past/future axis, does "mixed" stay as a third value (past,
+future, mixed), or is it now just past or future?"
+**Answer (the chief engineer's words, typed by the ACE):** "(past, future) for the 2 x2 grid in the documentation.
+however past our future applies to the scenario or architecture narrated and most people mix them together freely.
+ideally facilitation would guide the participants to focus on past and future at seperate times in the workshop so that
+its easier to sort. allowing mixed is just being honest that sometimes the accounts people give blur the two together
+and its an honest ability to record that"
+
+**Outcome.** The axis is past/future, with values `past`, `future`, `mixed`; the docs' 2×2 shows past and future; the
+facilitation guides separate past and future in time. The import-don't-mint naming check is dropped: the chief engineer
+set the values. Working field name `timeframe` (ACE default, in Amendment 3).
