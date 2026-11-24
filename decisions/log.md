@@ -999,3 +999,32 @@ judgement calls, and the "Tuning up" epigraph) are accepted with their reasons.
 
 **After U14:** U15 re-pins. Then U16 runs two fresh cold readers plus one fresh Haiku REPL tester on the changed
 pages. If R-15 fails again, the ACE reviews the framing sentences directly before another round.
+
+## D-047 | 2026-11-24 | Round 3: the ACE's review of the framing sentences; U14b; how R-15 is read
+
+**Round 3 (U16)** ran against candidate tools `01d9231` and template `3bd5d5b`.
+- A fresh Haiku REPL tester reached J7 with "no problems" and a local commit. It made 16 findings, none blocking.
+- Both fresh cold readers named jazz unprompted, from the new framing sentences.
+
+**The ACE's review** of the four framing sentences (line 9 of `planning.md`, `facilitate-scenarios.md`,
+`facilitate-architectures.md` and `coding.md`), as D-046 committed:
+- Each names jazz once, plainly, and says what the guide borrows from it. They work, and they stay.
+- Exception: `coding.md`'s second sentence carries an instruction inside the framing (C2).
+
+**How R-15 is read.** R-15's second clause ("no place where the metaphor obscured an instruction") concerns style
+elements. Unclear instructions that have nothing to do with the metaphor are ordinary UA-A findings, dispositioned
+in the usual way. They are not R-15 failures. The rounds had been counting every hard instruction against R-15, which
+kept the loop going. C1 and C2 are plain instruction defects, which U14b fixes.
+
+**U14b is approved** (estimate 3), with the ACE's wording:
+1. **C1.** The "Yes, and" rule on both facilitation pages becomes: "Then ask a question that adds to it. Do not ask
+   whether it is true, right or complete." The example on the scenarios page is "Yes, and what happened next?"
+   (already in the script), and on the architectures page "Yes, and what did that design let people do?". The
+   probe-shaped example is removed.
+2. **C2.** `coding.md` line 9 keeps only its framing sentence. The steps gain: "Restate each raw page in your own
+   plain words. Keep its meaning, and add no judgement of your own."
+3. **C3** and the minor items are accepted (D-045 item 2).
+
+**Then:** U14b is re-pinned, and two fresh cold readers run. R-15 passes if both name jazz unprompted and neither
+names a place where a style element (an epigraph, a framing sentence or a musical term) obscured an instruction.
+Other findings are dispositioned normally.
