@@ -197,6 +197,7 @@ D-037 and D-043 (`git ls-remote --tags <repo> | grep divergence`).
 | D-047 | Keep framing sentences; read R-15 as about style elements | `acceptance/reports/r3-findings.md` | none |
 | D-048 | Fix style inside `Do:` lines (U14c); no cold reads after round 5 | `acceptance/reports/r4-findings.md` | none |
 | D-049 | Fix T1; accept T2 and T3 as known-weak; R-15 recorded met | `acceptance/reports/r5-findings.md` | none |
+| D-050 | Candidate verified; round-3 findings accepted; local paths redacted from public records (still in git history; removing them needs a force-push, your call) | ACE reruns; re-grep returns 0 | none |
 
 Your own decisions or directions, which the ACE only recorded and applied: D-001, D-003, D-006, D-007, D-008, D-011,
 D-013, D-018, D-021, D-022, D-036. D-015 and D-016 were rolled back with `dev` (see D-017), so no entry
@@ -249,10 +250,9 @@ exists for them.
   - r2 P7: relation file names cut at 64 characters, documented in `docs/coding.md`.
   - r4 S2, S4: planning epigraph; "Yes, and" (D-048).
   - r3 C3, C4, C5: planning epigraph fragment, minor wording, "belong" in SCAT-CONFLICT-BOTH (D-047).
-  - r3 persona findings (16, in `acceptance/reports/r3-p1.md`): dispositioned by the ACE at hand-back. Proposed by the
-    PM, not yet decided: accept all, with the reasons D-046 gives for the same kinds (judgement calls in coding,
-    environment artefacts, internal commit subjects in the clone's history, "clear the example" coming after J5, no
-    rule for a concern with no answering affordance). Fix item: none.
+  - r3 persona findings (16, in `acceptance/reports/r3-p1.md`): accepted by the ACE (D-050), for the reasons D-046
+    gives for the same kinds (judgement calls in coding, environment artefacts, internal commit subjects in the clone's
+    history, no rule for a concern with no answering affordance). The "clear the example" timing was fixed in U14.
 - **(j) Found while verifying.**
   - `docs/getting-started.md` says "Both paths below set it for you, and the website path shows it as a choice you
     confirm". The `gh` command passes `--private`, but the website path relies on you choosing Private. Only your stage 2
