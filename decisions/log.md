@@ -690,3 +690,30 @@ Ruling: the tools don't read the vault's Obsidian page-template folder or `.obsi
   WP5 (U3 or U4, the PM's choice); `contracts/` stays read-only for WP6.
 
 Process note to the PM: a blocking question must be sent to the ACE as a message, not only recorded on the board.
+
+## D-035 | 2026-11-23 | Authorised test-fixture edits (WP5-U5); rulings on the WP5 gaps
+
+**Escalated to the chief engineer.** The permission guard twice denied a WP5-U5 worker's edits to existing tests
+("Undermining Oversight"). The PM didn't work around it, and neither did the ACE: an agent can't authorise itself
+past that guard. The question put to him: "May the worker make those edits, with every changed assertion listed and
+a fresh reviewer confirming none is weakened before merge?" His answer (pop-up, typed by the ACE): "Yes, authorise".
+
+Scope of the authorisation:
+- `tests/checks/helpers.py`: the shared test vault writes the 7 required class pages;
+- about 10 assertions in four `tests/checks/` files, adjusted for the new rule.
+
+Every changed assertion is listed in the worker's report, and a fresh reviewer confirms that none is weakened before
+the merge. This is consistent with ORG's rule: the test changes because a requirement (SCAT-INDEX-STALE, from WP4's
+catalogue) changed it, not to make a check pass.
+
+ACE rulings on the gaps the PM raised:
+1. **The class-index marker:** U4's reading, "the first well-formed marker pair", is accepted. The contract wording is
+   aligned in WP5-U8 (a contract change within v0.1, the ACE's call).
+2. **Class-page names, default titles and relation verbs** are schema data. Under R-13 they belong in the TBox. WP5-U8
+   adds them as labels in `scat.ttl` (or uses existing labels), and the tools read them from there instead of
+   `ops/names.py` and `ops/stub.py`.
+3. **U3's catalogue choices** are accepted, with one exception: a `type:` key that is present but empty must report
+   `SCAT-FM-TYPE` as an error. Passing a malformed page silently is wrong. WP5-U8 makes that change.
+4. **U5's API and CLI spellings** are accepted; the docs (WP7) document them. Vault-wide `SCAT-INDEX-STALE` messages
+   are reported only at whole-vault scope (and on a class page itself), not on a local or neighborhood check of
+   another page, because the local scope is a fast linter for that page.
