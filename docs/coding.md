@@ -3,10 +3,7 @@
 !!! tip "Your next step"
     In your vault folder, run `uv run scat check` and read what it says.
 
-*Playing it back: raw notes, read again as coded pages.*
-{ .epigraph }
-
-Coding borrows one habit from jazz: hear a phrase, then play its meaning back in plain words.
+Coding means reading a raw page, then restating its meaning in plain words.
 
 Coding is the step where your raw notes become part of the graph. You read each raw scenario or raw architecture and write each raw page again as a **coded page**. Restate each raw page in your own plain words. Keep its meaning, and add no judgement of your own. A coded page names the stakeholder groups, concerns, affordances and technologies the notes talk about. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. A **technology** is the thing that provides it. The [home page](index.md) defines all four. You do not summarise or judge. You name what is there, keeping the meaning of the raw wording. The raw page stays exactly as it was written; the coded page is a separate page that reads it.
 
@@ -162,12 +159,10 @@ A page is named by its name (`gated-approval`) or by its path from the vault fol
     ```
 
 ```text
-warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-  Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[anonymity]]"` or `- "[[attribution]]"` under `concerns`.
-0 errors, 1 warning
+no problems
 ```
 
-The template's own example holds one warning. Warnings do not block. A command exits with 0 unless there is an error, so "0 errors" is a pass. Now one page, then its neighbourhood:
+The template's own example is clean. Warnings, when there are any, do not block. A command exits with 0 unless there is an error, so "0 errors" is a pass. Now one page, then its neighbourhood:
 
 === "Python (REPL)"
 
@@ -419,9 +414,7 @@ warning [SCAT-INDEX-STALE] class/heldby-pairs.md index table: the table differs 
   Fix: run `scat index` (REPL: `scat_kg.index()`)
 warning [SCAT-INDEX-STALE] class/technologies.md index table: the table differs from the technology pages
   Fix: run `scat index` (REPL: `scat_kg.index()`)
-warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-  Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[anonymity]]"` or `- "[[attribution]]"` under `concerns`.
-0 errors, 8 warnings
+0 errors, 7 warnings
 ```
 
 The `Fix:` line is the exact command. Run it:
@@ -465,9 +458,7 @@ unchanged class/stakeholder-groups.md
 ```text
 warning [SCAT-DRAFT-FIELD] affordance/sign-out-sheet.md field `description`: missing (required once the page is done)
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
-warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-  Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[anonymity]]"` or `- "[[attribution]]"` under `concerns`.
-0 errors, 2 warnings
+0 errors, 1 warning
 ```
 
 Zero errors. The draft warning says the affordance still needs a description before it can be `done`. That is a to-do, not a fault.
@@ -719,26 +710,25 @@ note: write `description`, `notes` and the body in heldby/workshop-participants-
 
 `SCAT-INDEX-STALE` (a warning) means a class page's table is out of date. Run `scat index`. `SCAT-DRAFT-FIELD` (a warning) means a draft page lacks a field it needs by `done`.
 
-## A warning that may stay: `SCAT-CONFLICT-BOTH`
+## What the check does not judge
 
-The template's whole-vault check always shows this one, and you first met it in [Getting started](getting-started.md#3-run-your-first-check). A clean check means 0 errors. This warning may stay. It marks two concerns that pull apart:
-
-```text
-warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-```
-
-A concern can declare that it pulls against another, in its `conflicts` field:
+The check looks at structure: that a page has the fields its type needs, that every link points at a page that
+exists, that names and counts follow the rules. It does not judge what your notes say. Concerns that pull against
+each other are normal, and recording them is the point of SCAT. A concern can say so, in its `conflicts` field:
 
 ```text
 conflicts:
   - "[[attribution]]"
 ```
 
-When one coded page holds both concerns, the checker marks the place with this warning. It is a marker, not a fault. Two concerns pulling apart is what the model is for. It holds both and does not pick between them. If both belong in the record, leave the warning in place. A vault ready to commit may carry it. Only if you coded one of the two there by mistake, delete that line, as the `Fix:` says.
+`conflicts` is an explicit link between concerns. The check makes sure the link has the right type and points at a
+page that exists, and that a concern does not list itself. That is all. A coded record may hold two concerns that
+pull apart, and the check says nothing about it. Seeing where tensions are sharpest, or where concerns match or leave
+a gap, is analysis. It comes after the check passes and a coder has signed off the content.
 
 ## Reaching a clean whole-vault check
 
-"Clean" means **zero errors**. Warnings may stay. Work in this order:
+"Clean" means **zero errors**. A check with nothing to report prints `no problems`. Work in this order:
 
 1. Run `uv run scat check`. Read the errors first.
 2. Fix an error the way its `Fix:` line says. Check the page, then its neighbourhood, then the whole vault.
@@ -747,7 +737,7 @@ When one coded page holds both concerns, the checker marks the place with this w
 
 Aim to bring every page you made to `done`: the raw pages, the coded pages, the relation pages, and the stubs the tools made for you. A page left at `stub` or `draft` does not stop a clean check, because the bar is 0 errors; a `draft` that lacks a field `done` needs gets a warning. To finish a page, write its description and links, run `set-status <page> done`, then run `check`.
 
-Then look at the warnings. Each is a to-do (a draft that still needs a sentence), a rule you can satisfy with a command, or a marker that may stay (`SCAT-CONFLICT-BOTH`).
+Then look at the warnings. Each is a to-do (a draft that still needs a sentence) or a rule you can satisfy with a command.
 
 ## Commit and push
 

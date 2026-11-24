@@ -3,14 +3,8 @@
 import pytest
 from helpers import SC, coded, doc, line_of, links, report_of, seeded, stub
 
-BOTH = "SCAT-CONFLICT-BOTH"
 CAREFUL = "concern/careful-keeping.md"
 QUICK = "concern/quick-checkout.md"
-CONFLICT_FIX = (
-    "Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning "
-    "marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line "
-    '`- "[[careful-keeping]]"` or `- "[[quick-checkout]]"` under `concerns`.'
-)
 
 
 def holds_both(status="done"):
@@ -33,55 +27,34 @@ def declared(a_declares=False, b_declares=False):
     }
 
 
-@pytest.mark.parametrize(
-    ("a", "b", "on"),
-    [
-        (True, False, "[[careful-keeping]]"),
-        (False, True, "[[quick-checkout]]"),
-        (True, True, "[[careful-keeping]], [[quick-checkout]]"),
-    ],
-)
-def test__scat_conflict_both__one_or_both_sides_declared(make_vault, a, b, on):
-    page = holds_both()
-    r = seeded(
-        make_vault,
-        declared(a, b) | {SC: page},
-        (BOTH, SC, "field `concerns`", CONFLICT_FIX),
-    )
-    assert r.ok and r.problems[0].severity == "warning"
-    assert r.problems[0].what.endswith(f"(declared on {on})")
-    assert r.problems[0].line == line_of(page, "concerns:")
-
-
+@pytest.mark.parametrize("sides", [(True, False), (False, True), (True, True)])
 @pytest.mark.parametrize("status", ["stub", "draft", "done"])
-def test__scat_conflict_both__same_message_at_every_status(make_vault, status):
-    seeded(
-        make_vault,
-        declared(True) | {SC: holds_both(status)},
-        (BOTH, SC, "field `concerns`", CONFLICT_FIX),
-    )
+def test__conflicts__a_record_holding_both_sides_gives_no_message(make_vault, sides, status):
+    """Content is not checked: a record may hold both ends of a declared conflict."""
+    seeded(make_vault, declared(*sides) | {SC: holds_both(status)})
 
 
-def test__scat_conflict_both__one_concern_only_gives_none(make_vault):
-    seeded(make_vault, declared(True))
+def test__conflicts__a_target_of_the_wrong_type_is_an_endpoint_error(make_vault):
+    files = declared() | {
+        CAREFUL: doc("concern", "Careful keeping", extra=links("conflicts", "booking-app")),
+        "technology/booking-app.md": doc("technology", "Booking app"),
+    }
+    r = report_of(make_vault, files)
+    assert [(p.rule, p.severity, p.file) for p in r.problems] == [
+        ("SCAT-LINK-ENDPOINT", "error", CAREFUL)
+    ]
+    assert "field `conflicts`" in r.problems[0].where
 
 
-def test__scat_conflict_both__no_declaration_gives_none(make_vault):
-    seeded(make_vault, declared() | {SC: holds_both()})
-
-
-def test__scat_conflict_both__coded_architecture_too(make_vault):
-    path = "architecture-coded/kiosk-pitch-coded.md"
-    page = doc(
-        "architecture-coded",
-        "K",
-        extra=links("raw", "kiosk-pitch")
-        + links("concerns", "careful-keeping", "quick-checkout")
-        + links("affordances", "self-checkout")
-        + links("technologies", "booking-app"),
-    )
-    r = report_of(make_vault, declared(True) | {path: page})
-    assert [(p.rule, p.file) for p in r.problems] == [(BOTH, path)]
+def test__conflicts__a_target_that_does_not_exist_is_a_dangling_error(make_vault):
+    files = declared() | {
+        CAREFUL: doc("concern", "Careful keeping", extra=links("conflicts", "ghost-concern"))
+    }
+    r = report_of(make_vault, files)
+    assert [(p.rule, p.severity, p.file) for p in r.problems] == [
+        ("SCAT-LINK-DANGLING", "error", CAREFUL)
+    ]
+    assert "field `conflicts`" in r.problems[0].where
 
 
 SELF = "SCAT-CONFLICT-SELF"
@@ -95,7 +68,7 @@ def test__scat_conflict_self__a_concern_lists_itself(make_vault):
     assert r.problems[0].line == line_of(page, "safe-handling]]")
 
 
-def test__scat_conflict_self__the_other_pair_still_counts_for_conflict_both(make_vault):
+def test__scat_conflict_self__the_other_pair_gives_no_message(make_vault):
     path = QUICK
     files = {
         path: doc(
@@ -110,7 +83,6 @@ def test__scat_conflict_self__the_other_pair_still_counts_for_conflict_both(make
         make_vault,
         files | {CAREFUL: doc("concern", "Careful keeping")},
         (SELF, path, "field `conflicts`", fix),
-        (BOTH, SC, "field `concerns`", CONFLICT_FIX),
     )
 
 

@@ -3,10 +3,7 @@
 !!! tip "Your next step"
     Cluster the people you expect into stakeholder groups that fit under your cap.
 
-*The chart: who plays, and in what order, before anyone counts in.*
-{ .epigraph }
-
-Planning borrows one habit from jazz: settle who plays, and in what order, before the music starts, so that every group gets a turn.
+Planning settles who takes part, and in what order, before the sessions start, so that every group gets a turn.
 
 You are planning a facilitation event. Write your event plan: who takes part, in which session, in what order. Save it as a plain text file named `plan.txt` in your vault folder, outside the page folders. It is not a SCAT page, and the check does not read it. By the end you will have a short plan: which sessions hear stories, which hear
 architectures, which groups are in the room, and how the notes will be kept.
@@ -149,8 +146,7 @@ Raw notes are kept apart from any later reading of them. Capture comes first, an
         uv run scat check
         ```
 
-  Both end with `0 errors`. The one warning about two conflicting concerns (`SCAT-CONFLICT-BOTH`) belongs to the
-  example vault and is allowed to stay. A warning marks a place where two concerns pull apart; it does not block you.
+  Both end with `no problems`.
 
 - **A note-taker for each session.** Someone other than the facilitator, so the facilitator can listen. They write
   what was offered, in the speaker's words, headed by the group, with a rough time. Never a name. Both facilitation

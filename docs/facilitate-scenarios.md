@@ -3,10 +3,7 @@
 !!! tip "Your next step"
     Open the session by reading the Chatham House lines aloud, then ask the first group for a story that starts at a concrete moment.
 
-*Each group takes a turn: you listen, then build on what it said.*
-{ .epigraph }
-
-This guide borrows "yes, and" from jazz improvisation: you accept what each group offers as it is, and add to it.
+The stance is "yes, and": you accept what each group offers as it is, and add to it.
 
 A scenario session is a set of stories, one turn per group. It hears what people do in a situation, in time, and what comes of it. You run the session. You ask the questions, say whose turn it is, and listen. In each group's turn, you listen to its story, write it down as offered, then ask a question that adds to it. A note-taker
 writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. You may skip a script line if the group has already answered it; otherwise keep the order. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.
@@ -246,14 +243,12 @@ note: `status` set to draft (was stub)
 The check prints this, from either tab:
 
 ```text
-warning [SCAT-CONFLICT-BOTH] scenario-coded/notes-at-a-chatham-house-session-coded.md:11 field `concerns`: this record holds both [[anonymity]] and [[attribution]], which conflict (declared on [[anonymity]])
-  Fix: none needed if both belong in this record. Holding both sides is allowed and is what the warning marks, a place where two concerns pull apart. If one was coded here by mistake, delete its line `- "[[anonymity]]"` or `- "[[attribution]]"` under `concerns`.
 warning [SCAT-DRAFT-FIELD] scenario-raw/lending-desk-saturday.md field `description`: missing (required once the page is done)
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
-0 errors, 2 warnings
+0 errors, 1 warning
 ```
 
-These warnings are a nudge, not a fault. The page is a draft. It is finished when you code it.
+This warning is a nudge, not a fault. The page is a draft. It is finished when you code it.
 See [Coding](coding.md).
 
 `scat stub` is the one way to create a page, because it refuses a bad name and says why.
