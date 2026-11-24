@@ -99,7 +99,9 @@ They:
   the same operations and messages. The docs lead with the REPL, because CLI commands get long when run through uv;
 - follow documentation literally, step by step.
 
-The people in the data are stakeholder **groups**, under the Chatham House rule, so no individual is identifiable.
+The people in the data are stakeholder **groups**, never individuals. What participants are told about how their
+contributions are used is the event's own agreed policy: for example, the Chatham House rule or personal attribution
+(Amendment 5).
 Each vault sets a cap on how many stakeholder groups it holds, and participants are clustered into groups that fit
 under it (the chief engineer's initial brief).
 
@@ -144,7 +146,7 @@ under it (the chief engineer's initial brief).
 - **G6. The worked example is this project, as its own case study.** The template's example content is the
   elicitation of scat-kg itself, drawn from the chief engineer's recorded statements and the decision log. It is small,
   because users overwrite it, but every class has 2–3 instances, and there are two scenarios and two architectures,
-  each raw and coded. Its stakeholder groups follow the Chatham House rule like any others: no group stands for one
+  each raw and coded. Like any others, its stakeholder groups are groups: none stands for one
   identifiable person. It avoids politically loaded illustrations. It doubles as the test fixture and the
   documentation example.
 - **G7. Documentation on GitHub Pages**, from `scat-kg-tools`, with a light musical reference (R-15). It has a page for each
@@ -206,8 +208,9 @@ under it (the chief engineer's initial brief).
 - Enforcing links from raw records to their coded pages beyond a warning.
 - Checking that named entities are linked, beyond a basic warning.
 - The verification, validation and human-signature assurance framework of the INCOSE paper.
-- Attributing statements to individuals. v0.1 is built for Chatham House settings, and attribution is a possible
-  extension. How raw notes are taken is the facilitator's call, and the guides explain the rule.
+- Attributing statements to individuals in the schema. The data records groups; an event's participation terms (for
+  example, the Chatham House rule or personal attribution) are its own policy, which the docs name without choosing
+  one (Amendment 5). How raw notes are taken is the facilitator's call.
 - Recording the narrator's normative posture (good, bad or mixed) in the schema. It stays in the story's text;
   problematization is for a richer ontology such as `ant-rdf`, applied afterwards (log D-057).
 - Adjudicating between stories or architectures. Neither the tools nor the guides judge which architecture is correct
@@ -262,7 +265,7 @@ Acceptance is judged by people using the product, not only by tests. The journey
 | J1 Find | lands on the docs site and understands what it is for and how to start | home |
 | J2 Create | on GitHub's web interface, makes a new **private** repository from `scat-kg-template`, then clones it | getting started |
 | J3 Set up | installs the prerequisites from exact commands, runs one setup command, gets a working `scat_kg`, and opens the folder as an Obsidian vault | getting started |
-| J4 Plan | plans a facilitation event: which sessions elicit scenarios and which elicit architectures, who takes part in each, the Chatham House framing, and stakeholder groups within the cap | planning guide |
+| J4 Plan | plans a facilitation event: which sessions elicit scenarios and which elicit architectures, who takes part in each, the participation terms agreed for the event, and stakeholder groups within the cap | planning guide |
 | J5 Capture | during the event, records raw scenarios and raw architectures | the two facilitation guides |
 | J6 Code | afterwards, in an interactive session (the Python REPL or the `scat` CLI), decompiles the raw notes into SCAT pages and relations, moving pages from stub through draft to done and fixing each problem from its message | coding guide; API and CLI reference |
 | J7 Finish | reaches a clean whole-vault check, commits and pushes, and navigates the resulting graph in Obsidian | coding guide |
@@ -453,9 +456,8 @@ Amendment 5 (open, asked one at a time):
 2. **Which links "appear within" a field note.** Decided: each edge appears once per pair and names the narratives
    it came from; the view shows a narrative's support (PR #8 thread). The vertex and edge base classes come from the
    same answer.
-3. **Chatham House in this mission** *(raised by the ripple sweep)*. The mission asserts the rule in four places
-   (Scenarios and architectures, G6, J4, and the non-goal on attribution), while log D-070 makes it one example
-   policy in the docs. Bring the mission in line, or keep it?
+3. **Chatham House in this mission** *(raised by the ripple sweep)*. Decided: aligned with log D-070 in all four
+   places (PR #8 thread).
 4. **The Agent's defaults** for Amendment 5, as one item.
 5. **The Obsidian projection** *(raised by the chief engineer's play test, 24 Nov)*. The vault as Obsidian shows it
    is hard to use: raw and coded pages duplicate each other, and the layout makes little use of what Obsidian offers.
