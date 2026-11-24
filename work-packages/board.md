@@ -11,7 +11,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP3 | Facilitation research spike | accepted | `WP3.md` |
 | WP4 | Ontology and page contracts | accepted | `WP4.md` |
 | WP5 | Conformance tools | accepted | `WP5.md` |
-| WP6 | Template and case study | fix before acceptance (D-037) | `WP6.md` |
+| WP6 | Template and case study | fix merged (WP6-U8); awaiting ACE acceptance | `WP6.md` |
 | WP7 | Docs and Pages | draft | `WP7.md` |
 | WP8 | Candidate and user acceptance | not yet scoped | — |
 
@@ -64,6 +64,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP6-U5 | mechanical checker, haiku | 2 | 2 | none (scratch) | done |  | 2026-11-23T20:10:59-05:00 | first-time review PASS; matches estimate |
 | WP6-U6 | fixer, sonnet | 3 | 2 | `wp6/u6` | done |  | 2026-11-23T20:10:59-05:00 | planned fix unit; the re-pin needed no page fixes; verified by the clean-environment unit; under estimate |
 | WP6-U7 | clean-environment tester, haiku | 2 | 2 | none (scratch) | done |  | 2026-11-23T20:10:59-05:00 | README path ran as written from 'uv installed' on; install, gh and web paths not exercised (no download permission); matches estimate |
+| WP6-U8 | case-study editor, sonnet | 3 | | `wp6/u8` | done | | 2026-11-23T20:21:00-05:00 | fix unit for D-037; 2 push-backs (near-verbatim echoes, then clause-structure echoes), 3 fresh reviews; merged to template `dev` at f446a02; about 7 min |
 
 ## Iterations and velocity
 
@@ -74,6 +75,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 3 | WP1-U4, WP1-U5, WP2-U6, WP3-U4 | 12 | 15 | 1.25 | 0.16 h | 93.8 |
 | 4 | WP4-U1 to WP4-U8 | 29 | 38 | 1.31 | 1.09 h | 34.9 |
 | 5 | WP5-U1 to WP5-U10 (U9, U10 unplanned), WP6-U1 to WP6-U7 | 64 | 70 | 1.09 | 2.94 h | 23.8 |
+| 6 | WP6-U8 | 3 | 5 | 1.67 | 0.11 h | 45.5 |
 
 ## Velocity and forecast
 
@@ -85,7 +87,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
 
-Current: 140 est. pts proposed (WP1 to WP6, including the unplanned WP5-U9 and WP5-U10 at 1 point each; WP7 and WP8 not yet scoped); 140 est. pts completed; 160 realized pts completed. 5 iterations closed; running realized/estimated ratio 1.14; raw velocities [40.9, 24.4, 93.8, 34.9, 23.8]; smoothed velocity v-hat 36.4 realized pts/hour. Forecast: still not stated as a number, because the remaining estimated points do not exist yet (WP7 and WP8 have no scopes). Iteration 5 is two packages overlapping in time (WP5 and WP6 ran in parallel), so its 2.94 h of wall clock includes waits for the permission guard and the ACE (D-034, D-035); its velocity is the lowest so far.
+Current: 143 est. pts proposed (WP1 to WP6, including the unplanned WP5-U9, WP5-U10 and WP6-U8; WP7 and WP8 not yet scoped); 143 est. pts completed; 165 realized pts completed. 6 iterations closed; running realized/estimated ratio 1.15; raw velocities [40.9, 24.4, 93.8, 34.9, 23.8, 45.5]; smoothed velocity v-hat 41.0 realized pts/hour (iteration 6 is one small unit, so noisy). Forecast: still not stated as a number, because the remaining estimated points do not exist yet (WP7 and WP8 have no scopes). Iteration 5 is two packages overlapping in time (WP5 and WP6 ran in parallel), so its 2.94 h of wall clock includes waits for the permission guard and the ACE (D-034, D-035); its velocity is the lowest so far.
+
+Over and under, WP6-U8: ran at 5 against 3. A privacy rewrite has no mechanical check for 'close paraphrase', so review rounds, not the edit, were the cost; plan a paraphrase unit with the review standard stated up front (no 3-word runs and no clause-order echo).
 
 Over and under, WP5 and WP6: WP5-U5 ran at 8 against an estimate of 3 (a new rule changed the shared test fixture, a permission guard blocked the edit, and an ACE ruling changed its scope); WP5-U8, the planned fix unit, ran at 5 against 3 (D-035 added three items; its replanned estimate was 5, logged in metrics, original unchanged); WP6-U3 (README) ran at 3 against 2 after a push-back. Under: WP6-U4 and WP6-U6 (pin work, 2 against 3). At estimate: the checks and operations units (8 and 8), the case study (8), the reader (5) and the verification tests (3). Lesson: a unit that adds a rule or changes a shared fixture should be planned for the tests it disturbs, and any unit that edits existing tests needs the guard's authorisation arranged before it starts.
 
