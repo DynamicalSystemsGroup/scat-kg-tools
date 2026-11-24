@@ -34,6 +34,7 @@ _PROBLEM = Draft202012Validator({"$ref": "#/$defs/Problem", "$defs": SCHEMA["$de
 # What the session saw (read by tests/machine/test_harness_coverage.py).
 tests_seen: set[str] = set()  # node ids of the check tests that ran
 rules_validated: set[str] = set()
+severities_seen: dict[str, str] = {}  # rule id -> severity of the problems validated
 problems_validated = 0
 commands_run = 0
 commands_parsed = 0
@@ -53,6 +54,9 @@ def validate_report(report: Report) -> None:
                 f"schema: {p.rule} in {p.file}: {e.message} at /{'/'.join(map(str, e.path))}"
             )
         rules_validated.add(p.rule)
+        severities_seen.setdefault(p.rule, p.severity)
+        if severities_seen[p.rule] != p.severity:
+            severities_seen[p.rule] = f"{p.severity} (and {severities_seen[p.rule]})"
         problems_validated += 1
     errors = sorted(
         _DOC.iter_errors(scat_kg.CheckResult(report).to_dict()), key=lambda e: list(e.path)
