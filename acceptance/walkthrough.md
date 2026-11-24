@@ -14,6 +14,7 @@ the affected stage.
   own links from there. Do not open `src/`, `tests/` or this script's source to find an answer.
 - **Stop and resume.** Each stage ends in a state you can stop in. To resume, run the stage's "Resume check" and read
   what it says.
+- **Your notes.** Send your notes on each stage as plain text. There is no required format.
 - **Failing.** Where a stage fails, do not work around it. Note the page, the exact step, the exact text you typed,
   and the exact output. Say what you expected from the docs. Then either stop or carry on if you can. The fix is the
   team's job, not yours.
@@ -22,8 +23,7 @@ the affected stage.
 
 ## Gaps held for you
 
-1. **Pages preview.** The walkthrough treats the Pages preview as live. That holds once the ACE has deployed it, and the
-   ACE confirms that before your sitting.
+1. **Pages preview.** The preview is live (deployed by the ACE). The ACE rechecks it before your sitting.
 2. **uv install (D-040, D-041).** The agents did not run uv's downloaded installer script
    (`curl -LsSf https://astral.sh/uv/install.sh | sh`). Running a downloaded installer needs your explicit
    permission, so the automated user tests started with `uv` already on the path. **Stage 3 is the first time that
@@ -52,7 +52,9 @@ the affected stage.
 **Entry point.** Open <https://dynamicalsystemsgroup.github.io/scat-kg-tools/> in a browser. This is the home page.
 
 **What you do.** Read the home page. Look at the navigation. You are checking that a newcomer would understand what
-SCAT is for and how to start, without anyone telling them.
+SCAT is for and how to start, without anyone telling them. Before you read the "Why it is called SCAT" section, say what style or reference the
+page evokes, and note it; the section explains the name, so answer first, or stop reading at it until you have. The
+opening of the page already uses band language. That is fine and part of what you should notice.
 
 **Done looks like.**
 
@@ -63,9 +65,7 @@ SCAT is for and how to start, without anyone telling them.
   Reference (Python API, CLI).
 
 **If it fails.** Note what you expected to find and where you looked. Note any dead link (page and link text), any
-broken image, and anything on the page that blocked an instruction. Note whether the style reminded you of anything,
-and if so what. Answer that before you read the "Why it is called SCAT" section, because the home page itself
-explains the name there; or stop reading at that section until you have answered.
+broken image, and anything on the page that blocked an instruction.
 
 **Resume check.** None. Reopen the home page.
 
