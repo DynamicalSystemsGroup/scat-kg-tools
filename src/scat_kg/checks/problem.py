@@ -26,7 +26,6 @@ SEVERITY = {
     "SCAT-LINK-DISCOURAGED-BODY": "warning",
     "SCAT-CAP": "error",
     "SCAT-CAP-CONFIG": "error",
-    "SCAT-CONFLICT-BOTH": "warning",
     "SCAT-CONFLICT-SELF": "warning",
     "SCAT-REL-DUPLICATE": "warning",
     "SCAT-MENTION": "warning",
