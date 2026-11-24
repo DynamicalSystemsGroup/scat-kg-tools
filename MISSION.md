@@ -63,9 +63,11 @@ future. Behavioural or structural, past or future: the docs show this as a 2×2 
 scenario and architecture records which it is (log D-057). Only these records are marked: stakeholder groups,
 concerns, affordances and technologies are not, and the three relations don't change.
 
-People mix past and future freely when they talk. The facilitation guides therefore lead participants to the past and
-the future at separate times in a workshop, so that the accounts are easier to sort. A record may also be marked
-**mixed**: that is the honest record of an account that blurs the two.
+People mix past and future freely when they talk. The facilitation guides lead participants to the past and the
+future at separate times in a workshop, and explain the mark with example phrases, including ones that mislead: a
+counterfactual "what would happen if" is future, and a habitual "when someone would do x, y happens" is past. A
+record may be marked **mixed**, the honest record of an account that blurs the two. The mark only tags the captured
+narratives, and the guidance on it lives in the facilitation guides alone.
 
 Whether the narrator sees what is told as good, bad or a mix is not recorded in the schema. For anything real a mix is
 expected, and it stays in the story's own words. SCAT is pragmatic and thin. It doesn't compete with richer ontologies
