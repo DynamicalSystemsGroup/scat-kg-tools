@@ -44,7 +44,7 @@ These results are only as good as the vault:
 1. `uv run scat check --root <vault>` must pass (conformance: structure).
 2. The facilitator/coder must have signed off the content as reflecting the interviews and discussions (content). Filter with `status="done"`.
 
-Conformance checks structure and never content. Conflicts, for example, are never flagged by `scat check`; they are surfaced here, after sign-off. Every gap or tension below is a statement about what was coded, not about the real system.
+Conformance checks structure and never content. Conflicts, for example, are never flagged by `scat check`; they are surfaced here, after sign-off. The template's case study checks with `no problems`; its coded scenario still names two conflicting concerns, which the tension analysis sees (analysis of content, not a conformance warning). Every gap or tension below is a statement about what was coded, not about the real system.
 
 ## What each analysis tells you
 

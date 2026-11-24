@@ -15,4 +15,4 @@ affordances:
   - "[[groups-clustered-under-a-cap]]"
 ---
 
-Read from [[notes-at-a-chatham-house-session]]. This record lists both [[anonymity]] and [[attribution]], which the concern pages declare in conflict. The check shows that as a warning and leaves it standing.
+Read from [[notes-at-a-chatham-house-session]]. This record lists both [[anonymity]] and [[attribution]], which the concern pages declare in conflict. The `conflicts` link between them stands as recorded, and the check has nothing to say about it.
