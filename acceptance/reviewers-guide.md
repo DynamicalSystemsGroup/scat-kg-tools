@@ -4,14 +4,14 @@
 
 Read one sitting, tick its boxes, stop. Each sitting has one entry point. Nothing here asks you to trust a claim: every
 claim names a command to run or a file to open. Paths are from the root of `scat-kg-tools`. Facts were checked on `dev`
-at `f22c62e`; later commits change only this guide, the pin test, the log and `work-packages/`. The tools' candidate
-commit (the last commit that changed `src/` or `docs/`) is `f22c62e`, and the template's `dev` is `6ebd305`, which pins
-it. Check both before you start: `git log --first-parent -1 --format=%h -- src docs` prints `f22c62e`,
-`git diff f22c62e dev -- src docs` prints nothing, and
-`git ls-remote https://github.com/DynamicalSystemsGroup/scat-kg-template refs/heads/dev` shows `6ebd305`.
+at `32150b0`; later commits change only this guide, the pin test, the log and `work-packages/`. The tools' candidate
+commit (the last commit that changed `src/` or `docs/`) is `32150b0`, and the template's `dev` is `5a7290f`, which pins
+it. Check both before you start: `git log --first-parent -1 --format=%h -- src docs` prints `32150b0`,
+`git diff 32150b0 dev -- src docs` prints nothing, and
+`git ls-remote https://github.com/DynamicalSystemsGroup/scat-kg-template refs/heads/dev` shows `5a7290f`.
 
 Terms: J1 to J7 (the user journey), UA-A and UA-M (the AI tests and your walkthrough) are in `MISSION.md`, "User
-acceptance". R-1 to R-15 are in `MISSION.md`, "Requirements". The ACE and your sign-offs are in `MISSION.md`,
+acceptance". R-1 to R-16 are in `MISSION.md`, "Requirements". The ACE and your sign-offs are in `MISSION.md`,
 "Governance". The PM (project manager agent) is in `ORG.md`.
 
 | Sitting | Entry point |
@@ -131,8 +131,8 @@ Look for:
 uv run pytest -q && uv lock --check && uv run ruff check && uv run ruff format --check && uv run --group docs mkdocs build --strict
 ```
 
-Result when written: 560 passed in 48 s; lock check clean; ruff clean on 61 files; strict build clean. The benchmark
-alone: `uv run pytest tests/bench -s -q` printed page 359 ms, neighborhood 248 ms, vault 289 ms, against 1, 2 and 5 s.
+Result when written: 982 passed in 78 s; lock check clean; ruff clean on 79 files; strict build clean. The benchmark
+alone: `uv run pytest tests/bench -s -q` printed page 245 ms, neighborhood 249 ms, vault 293 ms, against 1, 2 and 5 s.
 
 | Req | Requirement | Evidence you can run or open | Status |
 |---|---|---|---|
@@ -141,16 +141,17 @@ alone: `uv run pytest tests/bench -s -q` printed page 359 ms, neighborhood 248 m
 | R-3 | Unfinished pages are never errors; links checked always | `tests/checks/test_status_rules.py`, `tests/checks/test_link_rules.py` | met |
 | R-4 | Checks never write; writes are explicit operations | `tests/test_r4_snapshots.py` | met |
 | R-5 | 500 pages: page under 1 s, neighborhood 2 s, vault 5 s | `tests/bench/test_r5_thresholds.py` | met; one laptop, plus Linux CI |
-| R-6 | Fresh template clone, one setup command, clean check | board rows WP8-U9, U12, U15, U15b, U15c, U15d; my rerun: clone of the template at `6ebd305`, `uv run scat check`: `no problems` | met with a caveat: uv was preinstalled and the uv installer, `gh` and website creation were never run by agents (D-040); no U9 or U12 report file exists, only board rows |
-| R-7 | Both repositories commit `uv.lock`; CI runs on every push | `gh run list --commit <sha>`: tools CI run `45417623350` on the candidate commit `f22c62e`; template CI run `45417994907` on `6ebd305`; both repos hold `uv.lock` | met |
+| R-6 | Fresh template clone, one setup command, clean check | board rows WP8-U9, U12, U15, U15b, U15c, U15d; my rerun: clone of the template at `5a7290f`, `uv run scat check`: `no problems` | met with a caveat: uv was preinstalled and the uv installer, `gh` and website creation were never run by agents (D-040); no U9 or U12 report file exists, only board rows |
+| R-7 | Both repositories commit `uv.lock`; CI runs on every push | `gh run list --commit <sha>`: tools CI run `45443000810` on the candidate commit `32150b0`; template CI run `45443217957` on `5a7290f`; both repos hold `uv.lock` | met |
 | R-8 | REPL and CLI are equal paths with the same messages | `tests/test_paths.py` (same message, files, exit code; every operation covered); docs test runs both | met |
-| R-9 | Docs snippets run as shown; CLI reference matches `--help` | `uv run pytest tests/docs -q` | met with a caveat: only `bash` and `python` blocks run (D-043) |
+| R-9 | Docs snippets run as shown; CLI reference matches `--help` | `uv run pytest tests/docs -q` | met with a caveat: only `bash` and `python` blocks run (D-043), and the `json` blocks do not (4b (n)) |
 | R-10 | No broken links or dead ends | strict build clean; the 5 distinct external links I fetched returned 200; your sitting 2 | met with a caveat: the ACE's browser pass (D-039) predates the U11 to U14 edits, and I ran no browser |
 | R-11 | One obvious way to make each page | `acceptance/reports/r1-p1.md` to `acceptance/reports/r3-p1.md`: all reached a clean check; D-043 removed the page templates | met with a caveat: the coding guide is long (about 5,600 words), see 4b (k) |
 | R-12 | Template repos private; docs recommend it | `docs/getting-started.md` step 1; template `README.md` step 1; `gh api repos/DynamicalSystemsGroup/scat-kg-template --jq '{default_branch,is_template}'` gives `dev`, `true` | met with a caveat: the website path relies on you choosing Private (the page calls it a choice you confirm); only your stage 2 exercises either path |
 | R-13 | The TBox is the one schema source | `tests/test_r7_tbox_equality.py` (named for WP5-R7); tools read `ontology/scat.ttl` at load (D-033) | met |
 | R-14 | Guides hold the stance and never rank or adjudicate | `grep -n 'ranked, voted on' docs/planning.md docs/facilitate-*.md` (3 disclaimers); `research/facilitation/readout.md` | met with a caveat: grep and reading only, no test |
 | R-15 | The style is music and improvisation, never at the cost of clarity | log D-052; the docs after WP9-U3 (logo, one aside, plain words); earlier cold reads `acceptance/reports/r3-cold-read.md`, `r4-cold-read.md`, `r5-cold-read.md`, kept as history | the cold-read bar gave way to your own judgement (D-052), so there is no bar to meet here: the judgement is yours, in sitting 2; the cold-read briefs are retained for reference only |
+| R-16 | A stable machine interface: every result is versioned data on the CLI and in Python, with a written contract and versioning rule, and a fix is data | contract `contracts/machine-interface.md` and schema `contracts/machine-interface.schema.json` (`schema_version` is an integer, now 1; adding a field keeps it); on a seeded defect (the one-letter link typo on `docs/reference/cli.md`, "scat check") `uv run scat check --json` exits 1 and prints one document with `SCAT-LINK-DANGLING` and a `fix` of two options, one a `set-field` edit and one a `command`; `uv run pytest tests/machine -q` (R1: `test_ops_json.py` validates every operation, refusals included, against the schema, and `test_harness_coverage.py::test__every_catalogue_rule_was_validated` covers every rule id; R2: `test_harness_r2.py` runs each fix command and checks it clears its problem, and `test_fix_data*.py` pins the fixes); the built wheel (`uv build --wheel`, then `*.dist-info/METADATA`) lists `Requires-Dist: pydantic`, `pyyaml`, `rdflib` and nothing else; the pages `docs/reference/cli.md` and `docs/reference/api.md` show each form; log D-060 to D-063 | met with caveats: 4b (n) and (o); `tests/machine` alone skips one coverage test, `uv run pytest -q` runs it |
 
 **Checklist.**
 
@@ -166,7 +167,7 @@ alone: `uv run pytest tests/bench -s -q` printed page 359 ms, neighborhood 248 m
 ## Sitting 4a. The ACE's calls
 
 **Entry point.** The table. Each call is a log entry in `decisions/log.md`. To revert one, check out its tag, for
-example `git checkout divergence/D-030`. The checkpoint tag `checkpoint/v0.1-rc1` is the revert point for D-052 (sitting 4c). The tags exist: tools has D-030, D-031, D-034, D-035, D-041; the template has
+example `git checkout divergence/D-030`. The checkpoint tag `checkpoint/v0.1-rc1` is the revert point for D-052 (sitting 4c). The tags exist: tools has D-030, D-031, D-034, D-035, D-041, D-057, D-060; the template has
 D-037 and D-043 (`git ls-remote --tags <repo> | grep divergence`).
 
 | Log | The call | Evidence | Revert tag |
@@ -207,6 +208,10 @@ D-037 and D-043 (`git ls-remote --tags <repo> | grep divergence`).
 | D-054 | The spikes may continue into feature development on their branches, outside v0.1 | your typed direction | none |
 | D-057 | Grounding axis (past, future, mixed) goes into v0.1; the play test pauses | your typed "Into v0.1" | `divergence/D-057` |
 | D-058 | Amendment 3 merged; WP10 approved; test edits authorised | your typed "Yes, authorise" | `divergence/D-057` |
+| D-060 | A stable machine interface before the first release (Amendment 4, R-16) | your typed words in the log entry | `divergence/D-060` |
+| D-061 | The estimation data is an operational requirement, checked in CI | your typed words in the log entry; `python3 work-packages/check_metrics.py` | none |
+| D-062 | Amendment 4 merged; WP11 approved and queued behind WP10 | PR #6, merge `519ff5a` | none |
+| D-063 | WP10 accepted; the ACE's rulings on the PM's flags | `check_metrics.py --accept WP10`; 560 tests | none |
 | WP10 default | `SCAT-DRAFT-FIELD` also fires at `stub` for a field with a value set, so a fresh stub warns until `timeframe` is filled. An ACE default, for you to confirm | `contracts/rule-catalogue.md`, rule `SCAT-DRAFT-FIELD` | none |
 
 Your own decisions or directions, which the ACE only recorded and applied: D-001, D-003, D-006, D-007, D-008, D-011,
@@ -224,7 +229,7 @@ exists for them.
 
 ## Sitting 4b. What is known to be weak
 
-**Entry point.** The list below, items (a) to (m). Each names the file or log entry that backs it.
+**Entry point.** The list below, items (a) to (o). Each names the file or log entry that backs it.
 
 - **(a) uv.** UA-A testers had uv preinstalled. No agent ran uv's installer (D-040, D-041). `MISSION.md` UA-A says "uv
   not installed". This departure is yours to disposition. Close it with one fresh tester rerun after you permit the
@@ -276,12 +281,20 @@ exists for them.
   submit after the release merge. `ontology/scat.ttl` still says the IRI base is unregistered until release.
 - **(m) The `timeframe` tags (WP10).** The tag is an author's judgement; nothing checks it against the text. The two
   architecture pitches in the case study are tagged `future`, and a fresh reviewer would have tagged them `mixed`.
+- **(n) The JSON blocks (WP11).** The docs test does not run the `json` blocks on `docs/reference/cli.md` and
+  `docs/reference/api.md`: they are output only, so a change to the data would not fail it. I re-ran the nine CLI
+  examples in order on a fresh clone of the template at `5a7290f`, and all nine equal their blocks. The visual check of the
+  two new reference pages was measured by DOM only, not by eye.
+- **(o) A relation-type refusal stays a manual fix (WP11).** `scat stub --type heldby` refuses and names
+  `scat stub-pair <relation> <endpoint-a> <endpoint-b>` (and the pair refusal for the cap is manual too). The fix is
+  `manual`, not a command a tool can run, because the contract allows one `author_slot` per command and this needs
+  three values. A plugin shows the text and you type the command.
 
 **Checklist.**
 
 - [ ] I gave (a) my answer.
 - [ ] I gave (e) my answer.
-- [ ] I read (b) to (d) and (f) to (m) and accept each, or I note it.
+- [ ] I read (b) to (d) and (f) to (o) and accept each, or I note it.
 
 **Done looks like.** (a) and (e) each have your answer, and every other item is accepted or noted.
 
