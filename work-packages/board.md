@@ -178,7 +178,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | RS3-U3 | research engineer (tunnel options and terminal-free git), sonnet | 3 | 3 | `spike/chat-path` | done |  | 2026-11-24T22:43:02-05:00 | about 3 min, 46 tool calls, docs only; note 1,111 words against 900 target; no separate fresh reviewer; Funnel on the Mac apps unverified |
 | WP16-U1 | layout designer (information designer, Obsidian), sonnet | 5 | 5 | `spike/layout` | done |  | 2026-11-24T22:51:32-05:00 | about 5 min plus one push-back round (8 defects); three variants; not opened in Obsidian |
 | WP16-U2 | fresh reviewer (opens each variant against R-21), sonnet | 3 | 3 | `spike/layout` | done |  | 2026-11-24T22:52:32-05:00 | about 3 min; checks run, Obsidian not available to it |
-| WP16-U3 | ontology designer (TBox, page contracts, example vault), sonnet | 8 |  | `wp16/u3` | queued |  |  |  |
+| WP16-U3 | ontology designer (TBox, page contracts, example vault), sonnet | 8 |  | `wp16/u3` | in flight |  |  |  |
 | WP16-U4 | rule-catalogue and machine-interface author, sonnet | 5 |  | `wp16/u4` | queued | WP16-U3 |  |  |
 | WP16-U5 | Python developer (loader, graph, table reader, read-layer tests), sonnet | 8 |  | `wp16/u5` | queued | WP16-U4 |  |  |
 | WP16-U6 | Python developer (checks, mismatch rules, done grading), sonnet | 8 |  | `wp16/u6` | queued | WP16-U5 |  |  |
