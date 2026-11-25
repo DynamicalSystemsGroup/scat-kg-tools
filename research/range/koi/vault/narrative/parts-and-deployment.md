@@ -21,8 +21,8 @@ Thin spots: the implementation team and research collaborators are named by the 
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[technical-team]] | [[protocol-design-integrity]] | The chief engineer is accountable for the protocol's coherence as a whole. |
-| holds | [[technical-team]] | [[requisite-variety]] | Reading: the worker's reading, standing in for the coder. No sentence names who holds this; the chief engineer's push for the paradigm and not any one substrate is read as the technical team holding it. |
-| is addressed by | [[requisite-variety]] | [[koi-doctrine]] | Reading: the worker's reading, standing in for the coder. The doctrine holds the value and separates paradigm from instances; the source does not say it answers the concern. |
+| [[technical-team]] | holds | [[protocol-design-integrity]] | The chief engineer is accountable for the protocol's coherence as a whole. |
+| [[technical-team]] | holds | [[requisite-variety]] | Reading: the worker's reading, standing in for the coder. No sentence names who holds this; the chief engineer's push for the paradigm and not any one substrate is read as the technical team holding it. |
+| [[requisite-variety]] | is addressed by | [[koi-doctrine]] | Reading: the worker's reading, standing in for the coder. The doctrine holds the value and separates paradigm from instances; the source does not say it answers the concern. |

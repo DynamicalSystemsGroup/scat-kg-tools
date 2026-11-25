@@ -19,11 +19,11 @@ Thin spots: this comes from the ethnographers' side. The committee's own view is
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[ethnographers]] | [[legitimate-consent-at-forum-scale]] | The binding problem for the working group. |
-| holds | [[ethics-committees]] | [[legitimate-consent-at-forum-scale]] | What the committee required; its own view is not recorded. |
-| holds | [[ethnographers]] | [[attention-limit-on-participation]] | A quiet limit nobody had spoken of. |
-| is addressed by | [[legitimate-consent-at-forum-scale]] | [[participatory-consent-feature]] | |
-| is addressed by | [[attention-limit-on-participation]] | [[participatory-consent-feature]] | |
-| is provided by | [[participatory-consent-feature]] | [[telescope]] | |
+| [[ethnographers]] | holds | [[legitimate-consent-at-forum-scale]] | The binding problem for the working group. |
+| [[ethics-committees]] | holds | [[legitimate-consent-at-forum-scale]] | What the committee required; its own view is not recorded. |
+| [[ethnographers]] | holds | [[attention-limit-on-participation]] | A quiet limit nobody had spoken of. |
+| [[legitimate-consent-at-forum-scale]] | is addressed by | [[participatory-consent-feature]] | |
+| [[attention-limit-on-participation]] | is addressed by | [[participatory-consent-feature]] | |
+| [[participatory-consent-feature]] | is provided by | [[telescope]] | |

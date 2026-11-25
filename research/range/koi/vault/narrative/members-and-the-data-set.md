@@ -19,8 +19,8 @@ Thin spots: the input tells no sequence of events, so scenario is the nearest ty
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[technical-team]] | [[how-members-figure-in-koi]] | Architectural view: members are endpoints of the protocol. |
-| holds | [[ethnographers]] | [[how-members-figure-in-koi]] | Ethnographic view: members' situated practice makes the loop happen or fails to. |
-| holds | [[community-members]] | [[shared-data-set-integrity]] | A club good: integrity and completeness matter to every participant together. |
+| [[technical-team]] | holds | [[how-members-figure-in-koi]] | Architectural view: members are endpoints of the protocol. |
+| [[ethnographers]] | holds | [[how-members-figure-in-koi]] | Ethnographic view: members' situated practice makes the loop happen or fails to. |
+| [[community-members]] | holds | [[shared-data-set-integrity]] | A club good: integrity and completeness matter to every participant together. |

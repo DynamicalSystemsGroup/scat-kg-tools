@@ -21,11 +21,11 @@ Thin spots: the input gives no sequence of dated events, so scenario is the near
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[technical-team]] | [[vendor-lock-in]] | Tools that do not interoperate; vendors controlling data and its governance; egress. |
-| is addressed by | [[vendor-lock-in]] | [[koi-doctrine]] | Applying the doctrine to vendor tools allowed migrations that would have been very hard otherwise. |
-| holds | [[community-members]] | [[self-provided-platforms]] | At Metagov: sensemaking, decision-making and identity-formation platforms provided for itself. |
-| is addressed by | [[self-provided-platforms]] | [[ask-metagov]] | Looks more successful but is new; people outside the team have not yet used its features. |
-| holds | [[community-members]] | [[it-that-just-works]] | People wanted the technical team invisible, as vendor tools are. |
-| is addressed by | [[it-that-just-works]] | [[koi-pond-chatbot]] | Decayed for lack of participation in maintenance and curation; decommissioned. |
+| [[technical-team]] | holds | [[vendor-lock-in]] | Tools that do not interoperate; vendors controlling data and its governance; egress. |
+| [[vendor-lock-in]] | is addressed by | [[koi-doctrine]] | Applying the doctrine to vendor tools allowed migrations that would have been very hard otherwise. |
+| [[community-members]] | holds | [[self-provided-platforms]] | At Metagov: sensemaking, decision-making and identity-formation platforms provided for itself. |
+| [[self-provided-platforms]] | is addressed by | [[ask-metagov]] | Looks more successful but is new; people outside the team have not yet used its features. |
+| [[community-members]] | holds | [[it-that-just-works]] | People wanted the technical team invisible, as vendor tools are. |
+| [[it-that-just-works]] | is addressed by | [[koi-pond-chatbot]] | Decayed for lack of participation in maintenance and curation; decommissioned. |

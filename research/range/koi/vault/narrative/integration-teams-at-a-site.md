@@ -21,7 +21,7 @@ Thin spots: the input tells no sequence of events for any site, so scenario is t
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[technical-team]] | [[what-integration-does-to-the-protocol]] | Reads adapting KOI to a site as changing it. |
-| holds | [[ethnographers]] | [[what-integration-does-to-the-protocol]] | Reads integration teams as carrying KOI's logic faithfully, unchanged. |
+| [[technical-team]] | holds | [[what-integration-does-to-the-protocol]] | Reads adapting KOI to a site as changing it. |
+| [[ethnographers]] | holds | [[what-integration-does-to-the-protocol]] | Reads integration teams as carrying KOI's logic faithfully, unchanged. |
