@@ -27,6 +27,13 @@
 | [`scat_kg.remove_edge`](#scat_kgremove_edge) | [`scat remove-edge`](cli.md#scat-remove-edge) | Remove an edge: delete its rows. |
 | [`scat_kg.stub_links`](#scat_kgstub_links) | [`scat stub-links`](cli.md#scat-stub-links) | Create the node pages that the ends of rows link and the vault lacks. |
 | [`scat_kg.set_status`](#scat_kgset_status) | [`scat set-status`](cli.md#scat-set-status) | Set a page's status. |
+| [`scat_kg.load`](#scat_kgload) | none | Read the vault into its knowledge graph. Writes nothing. |
+| [`scat_kg.fingerprint`](#scat_kgfingerprint) | [`scat fingerprint`](cli.md#scat-fingerprint) | View: a narrative's nodes, edges and candidates. |
+| [`scat_kg.edge_table`](#scat_kgedge_table) | [`scat edges`](cli.md#scat-edges) | View: every edge of one type. |
+| [`scat_kg.layered`](#scat_kglayered) | [`scat layered`](cli.md#scat-layered) | View: the union of fingerprints, in four layers. |
+| [`scat_kg.trace`](#scat_kgtrace) | [`scat trace`](cli.md#scat-trace) | View: what a node reaches, up or down the layers. |
+| [`scat_kg.export_edges`](#scat_kgexport_edges) | [`scat export-edges`](cli.md#scat-export-edges) | Write the edge tables as CSV and Markdown. |
+| [`scat_kg.draw.fingerprint`](#scat_kgdrawfingerprint), [`scat_kg.draw.layered`](#scat_kgdrawlayered) | [`scat draw`](cli.md#scat-draw) | Draw a view as an image (needs the extra `draw`). |
 
 ## Machine-readable output
 
@@ -759,6 +766,323 @@ A refusal has the same shape, with `ok` false and the reason in `refused` (the C
 }
 ```
 
+## scat_kg.load
+
+```text
+load(root=".")
+```
+
+Reads the vault into its knowledge graph and returns a `Graph`. It writes nothing and does not check: the views and the other calls check for themselves.
+
+| Parameter | Meaning |
+|---|---|
+| `root` | The vault folder. |
+
+A `Graph` holds `nodes` (by layer, in layer order), `edges`, `narratives`, `candidates` and `links`. `graph.summary()` counts them. A vault folder that is not there does not raise: `graph.ok` is `False` and `graph.refusal` says what to do. It has no CLI twin: every `scat` command reads the same graph.
+
+```python
+scat_kg.load().summary()
+```
+
+```text
+{'nodes': {'group': 3, 'concern': 5, 'affordance': 3, 'technology': 3}, 'narratives': 6, 'edges': 8, 'edge_status': {'stub': 0, 'draft': 0, 'done': 8}, 'candidates': 7, 'links': 43}
+```
+
+## Views
+
+A view is a purposeful picture or table made from a conformant vault, and the four calls below make the four views. Each returns a `View`, or a refusal. Each takes `root=`, writes nothing, and gives the same output for the same vault.
+
+- `str(view)` is a short text, one line per node or edge. At the REPL the view prints as that text.
+- `view.ok` is `True`. `view.to_dict()` is the document.
+- A view refuses, with the problems and their fixes, on a name that is not there or is ambiguous, an edge type or direction that does not exist, a vault folder that is missing, and any error in the pages it draws. Warnings do not refuse. Relationship annotations appear in no view.
+
+The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `layered` or `trace`. This is an excerpt of `scat_kg.edge_table("holds").to_dict()`; the full documents are in the [CLI reference](cli.md#scat-fingerprint) and the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md):
+
+```text
+{
+  "schema_version": 2,
+  "kind": "view",
+  "operation": "edges",
+  "ok": true,
+  "edge_type": "holds",
+  "from_layer": "group",
+  "to_layer": "concern",
+  "rows": [
+    {
+      "type": "holds",
+      "from": "facilitator-analysts",
+      "to": "anonymity",
+      "narratives": ["notes-at-a-chatham-house-session"],
+      "status": "done"
+    }
+  ]
+}
+```
+
+## scat_kg.fingerprint
+
+```text
+fingerprint(narrative=None, *, root=".")
+```
+
+Shows the fingerprint of a narrative: the nodes it links, the edges its rows tell, and its candidates (links between two nodes that an edge type fits and that have no row). CLI twin: [`scat fingerprint`](cli.md#scat-fingerprint).
+
+| Parameter | Meaning |
+|---|---|
+| `narrative` | A narrative name. Without it, every narrative, in path order. |
+| `root` | The vault folder. |
+
+It refuses when the name is not a narrative, when two pages share it, and on an error in a page it draws.
+
+=== "Python"
+
+    ```python
+    scat_kg.fingerprint("groups-under-a-cap-pitch")
+    ```
+
+    ```text
+    fingerprint groups-under-a-cap-pitch (architecture, done)
+      concern
+        anonymity [done]
+      affordance
+        groups-clustered-under-a-cap [done]
+      technology
+        cap-setting [done]
+      edges
+        addressed-by: anonymity -> groups-clustered-under-a-cap [done; told by groups-under-a-cap-pitch, notes-at-a-chatham-house-session]
+        provided-by: groups-clustered-under-a-cap -> cap-setting [done; told by groups-under-a-cap-pitch]
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat fingerprint groups-under-a-cap-pitch
+    ```
+
+    The same text.
+
+## scat_kg.edge_table
+
+```text
+edge_table(type, *, root=".")
+```
+
+Shows every edge of one type, in graph order, with the narratives that tell it and its status. CLI twin: [`scat edges`](cli.md#scat-edges).
+
+| Parameter | Meaning |
+|---|---|
+| `type` | `holds`, `addressed-by` or `provided-by`. |
+| `root` | The vault folder. |
+
+It refuses on any other type, and on an error in a page it draws.
+
+=== "Python"
+
+    ```python
+    scat_kg.edge_table("holds")
+    ```
+
+    ```text
+    edges holds (group -> concern): 2
+        holds: facilitator-analysts -> anonymity [done; told by notes-at-a-chatham-house-session]
+        holds: project-leads -> intent-without-drift [done; told by false-start-and-clean-restart]
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat edges holds
+    ```
+
+    The same text.
+
+## scat_kg.layered
+
+```text
+layered(narratives=None, *, root=".")
+```
+
+Shows the layered view: the union of the fingerprints of the narratives you name, as four layers. Without `narratives`, every narrative. CLI twin: [`scat layered`](cli.md#scat-layered), with one `--narrative` for each name.
+
+| Parameter | Meaning |
+|---|---|
+| `narratives` | A list of narrative names. |
+| `root` | The vault folder. |
+
+It refuses on a name that is not a narrative, on a value that is not a list of names, and on an error in a page it draws. It shows no candidates.
+
+=== "Python"
+
+    ```python
+    scat_kg.layered(["groups-under-a-cap-pitch"])
+    ```
+
+    ```text
+    layered view of groups-under-a-cap-pitch
+      concern
+        anonymity [done]
+      affordance
+        groups-clustered-under-a-cap [done]
+      technology
+        cap-setting [done]
+      edges
+        addressed-by: anonymity -> groups-clustered-under-a-cap [done; told by groups-under-a-cap-pitch, notes-at-a-chatham-house-session]
+        provided-by: groups-clustered-under-a-cap -> cap-setting [done; told by groups-under-a-cap-pitch]
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat layered --narrative groups-under-a-cap-pitch
+    ```
+
+    The same text.
+
+## scat_kg.trace
+
+```text
+trace(node, direction="both", *, root=".")
+```
+
+Follows edges from a node: `up` toward the groups, `down` toward the technologies, or `both`. The node itself is left out. CLI twin: [`scat trace`](cli.md#scat-trace), with `--direction`.
+
+| Parameter | Meaning |
+|---|---|
+| `node` | The name of a group, concern, affordance or technology. |
+| `direction` | `up`, `down` or `both`. |
+| `root` | The vault folder. |
+
+It refuses when the name is not a node, when the direction is not one of the three, and on an error in a page it draws.
+
+=== "Python"
+
+    ```python
+    scat_kg.trace("anonymity", "up")
+    ```
+
+    ```text
+    trace anonymity (up)
+     up
+      group
+        facilitator-analysts [done]
+      edges
+        holds: facilitator-analysts -> anonymity [done; told by notes-at-a-chatham-house-session]
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat trace anonymity --direction up
+    ```
+
+    The same text.
+
+A refusal prints what to do next, and nothing is written:
+
+```python
+scat_kg.trace("anonymity", "sideways")
+```
+
+```text
+refused sideways: this is not a direction
+  Fix: use one of: up, down, both
+```
+
+## scat_kg.export_edges
+
+```text
+export_edges(out, *, root=".")
+```
+
+Writes each edge table to `<out>/<type>.csv` and `<out>/<type>.md`, and returns a `Result`. `out` is required. CLI twin: [`scat export-edges --out`](cli.md#scat-export-edges).
+
+| Parameter | Meaning |
+|---|---|
+| `out` | The folder to write in; made if it is not there. |
+| `root` | The vault folder. |
+
+The CSV has the columns `from`, `to`, `narratives` (joined by `;`) and `status`. A file that is there is rewritten only when its content differs, so a second call prints `unchanged`. It refuses where `edge_table` would, and when `out` is a file; it then writes nothing.
+
+=== "Python"
+
+    ```python
+    scat_kg.export_edges("tables")
+    ```
+
+    ```text
+    created tables/holds.csv
+    created tables/holds.md
+    created tables/addressed-by.csv
+    created tables/addressed-by.md
+    created tables/provided-by.csv
+    created tables/provided-by.md
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat export-edges --out edge-tables
+    ```
+
+    The same lines, with `edge-tables/` in place of `tables/`.
+
+## Drawings
+
+A drawing shows a view as four columns, one for each layer, in layer order, with the edges as lines between them. It needs the extra `draw`: `pip install "scat-kg[draw]"`. Without it, the call returns a refusal that says so. In the vault template it is already installed. Import the module with `from scat_kg import draw`. Where a view refuses, the drawing refuses with the same refusal.
+
+### scat_kg.draw.fingerprint
+
+```text
+draw.fingerprint(narrative, *, root=".")
+```
+
+Draws a narrative's fingerprint, with its candidates as dashed lines. Returns a `Drawing`. `narrative` is required: one name. CLI twin: [`scat draw fingerprint`](cli.md#scat-draw-fingerprint).
+
+### scat_kg.draw.layered
+
+```text
+draw.layered(narratives=None, *, root=".")
+```
+
+Draws the layered view of the named narratives, or of every narrative. Returns a `Drawing`. CLI twin: [`scat draw layered`](cli.md#scat-draw-layered).
+
+### Drawing
+
+| Member | What it does |
+|---|---|
+| `.png()` | The image, as bytes. |
+| `.svg()` | The image, as text. |
+| `.save(path)` | Writes the image to `path` and returns a `Result`. It is the only call here that writes a drawing. |
+
+In Jupyter, a drawing shows itself. `.save` makes the folder if needed, rewrites a file only when its content differs, and refuses a name that does not end in `.png` or `.svg`, or that is a folder. The same view gives the same bytes.
+
+=== "Python"
+
+    ```python
+    from scat_kg import draw
+
+    draw.layered(["groups-under-a-cap-pitch"]).save("layered.png")
+    draw.fingerprint("groups-under-a-cap-pitch").save("fingerprint.svg")
+    draw.layered().save("layered.gif")
+    ```
+
+    ```text
+    created layered.png
+    created fingerprint.svg
+    refused layered.gif: `.gif` is not an image type this draws
+      Fix: end the file name with .png or .svg, for example `layered.png`
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat draw layered --narrative groups-under-a-cap-pitch --out drawn.png
+    ```
+
+    ```text
+    created drawn.png
+    ```
+
 ## Results
 
 Each call returns one of three kinds of result. All print as their message.
@@ -769,6 +1093,8 @@ Each call returns one of three kinds of result. All print as their message.
 | `StatusReport` | `status`, when it ran | `scope` (`"page"`, `"neighborhood"` or `"vault"`), `rows` (each with `path`, `name`, `type`, `status`), `counts` (pages per status; `other` is a missing or invalid status), `ok`. |
 | `Result` | `stub`, `stub_links`, `set_status`, `index`, and any refusal | `created`, `changed`, `unchanged`, `notes` (tuples of text), `refused` (each with `subject`, `why`, `fix`), `ok`. |
 | `EdgeResult` | `record_edge`, `remove_edge` | everything a `Result` holds, and `edge`, `rows_added`, `rows_removed`. |
+
+The views return a `View` (see [Views](#views)) and the drawings a `Drawing` (see [Drawings](#drawings)).
 
 A `Result` prints its lines in this order: `created`, `changed`, `unchanged`, `refused`, then `note:` lines. When it holds nothing, it prints `<operation>: nothing to do`.
 
@@ -803,4 +1129,5 @@ Keep the reference close:
 
 - [CLI reference](cli.md): the same operations as `scat` commands, with their `--help` text.
 - [Coding guide](../coding.md): how to use them while you code your notes.
+- [Analysis guide](../analysis.md): the views, and how to read them.
 - [Home](../index.md)
