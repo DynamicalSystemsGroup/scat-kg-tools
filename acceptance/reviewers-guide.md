@@ -447,6 +447,16 @@ live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
     internal commit subjects (D-046; the check is your stage 2 `git log --oneline` in the new repository), and the
     round 1 to 5 findings in `acceptance/reports/r1-findings.md` to `r5-findings.md` were accepted in D-044 to D-050.
     The PM's WP12 cold reads of the Terms page are in `acceptance/reports/wp12-r3-round1.md` to `round4.md`.
+22. **No documented way to rename or delete a node page (UA-A round 1, W11; D-100).** Accepted for v0.1: a real
+    organiser edits files and uses git. Evidence: `acceptance/reports/wp20-r1-findings.md`.
+23. **Small accepted findings from UA-A round 1 (D-100).** W8: `scat_kg.check(neighborhood=False)` works but the API page
+    does not show it. W12: a concern with no addressing row is not named by the Analysis page; the views show it by
+    absence. W13: the layered drawing has lines through other nodes' boxes. W14: testers' own wording for prompts, plan
+    files and link text, Obsidian checked through files, a candidate pair left without a row as the page says. W16:
+    `uv sync` reaches GitHub for the tools dependency, though a tester's clone has no remote, because the dependency is a
+    git URL.
+24. **A clone of the template shows work-package commits and `divergence/` tags (W15; D-100).** Accepted: the
+    documented path ("Use this template") starts with fresh history; the UA-A testers cloned directly.
 
 **The note on the rule audit (D-052, D-053).** The audit covered the v0.1 catalogue as it stood then. The rules in
 force, with their ids and severities, are in `contracts/rule-catalogue.md`; `SCAT-NOEDGES` (G1, added in WP18-U6) and
@@ -455,7 +465,7 @@ the table rules came after the audit.
 **Checklist.**
 
 - [ ] I gave items 1, 3, 4, 5 and 11 my answer.
-- [ ] I read items 2 and 6 to 21 and accept each, or I note it.
+- [ ] I read items 2 and 6 to 24 and accept each, or I note it.
 
 **Your decision.** Items 1, 3, 4, 5 and 11 each have your answer, and every other item is accepted or noted.
 
