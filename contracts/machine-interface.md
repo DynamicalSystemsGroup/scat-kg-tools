@@ -1,6 +1,6 @@
 # Machine interface (schema version 2)
 
-Every `scat` command takes `--json` and print one document shaped by
+Every `scat` command takes `--json` and prints one document shaped by
 [`machine-interface.schema.json`](machine-interface.schema.json) (JSON Schema 2020-12).
 
 - **Versioning.** `schema_version` is an integer, now 2 (what changed from 1 is under CHANGES, below). Adding a field keeps the version.
@@ -23,7 +23,7 @@ Nothing outside it is promised.
 |---|---|
 | every document | `schema_version`, `kind`, `operation`, `ok` |
 | check | `problems` |
-| problem | `rule`, `severity` (`error` or `warning`), `file`, `line`, `column`, `field` (null for a link, name or all front matter), `where`, `what`, `repeat` (identical messages it stands for), `fix`, `text` (the message as `scat check` prints it) |
+| problem | `rule`, `severity` (`error` or `warning`), `file`, `line`, `column`, `field` (a front-matter field or a key of `scat.toml`; null for a link, a table or row, a name or all front matter), `where`, `what`, `repeat` (identical messages it stands for), `fix`, `text` (the message as `scat check` prints it) |
 | status | `scope` (`page`; `neighborhood`, a page and its linked pages; `vault`), `rows`, `counts` (per status, and `other`), `notes` |
 | status row | `path`, `name`, `type`, `status` (as written, or null) |
 | operation | `created`, `changed`, `unchanged` (already right, nothing written), `refused`, `notes` (sentences for a person); optional `problems` (what the write leaves, one link away) |
@@ -95,7 +95,7 @@ A problem about a table or a row of it has `field` null, `line` the line of the 
 ``row 2 cell `to` ``. A row is removed by a `delete-line` edit; a cell is corrected by a `replace-text` edit with a `column`.
 
 A refusal to set a page to `done` (`set-status`) has `rule` `SCAT-DONE-REFUSED` and `problems`: the errors the page would
-have at status `done`, each with its own fix. Its own `fix` is two advisory options.
+have at status `done`, each with its own fix. Its own `fix` is two options: an advisory one, and `set-status <page> draft` as an exact command.
 
 ## CHANGES
 

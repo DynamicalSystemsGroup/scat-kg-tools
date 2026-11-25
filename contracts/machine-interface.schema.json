@@ -171,7 +171,7 @@
         "file": { "$ref": "#/$defs/VaultPath" },
         "line": { "$ref": "#/$defs/PositiveIntOrNull" },
         "column": { "$ref": "#/$defs/PositiveIntOrNull" },
-        "field": { "type": ["string", "null"], "description": "The front-matter field the problem is about; null when it is about a link, a table or one of its rows, the whole front matter, a name, and so on." },
+        "field": { "type": ["string", "null"], "description": "The field the problem is about: a front-matter field of the page, or a key of scat.toml (then file is scat.toml); null when it is about a link, a table or one of its rows, the whole front matter, a name, and so on." },
         "where": { "type": "string" },
         "what": { "type": "string" },
         "repeat": { "type": "integer", "minimum": 1 },

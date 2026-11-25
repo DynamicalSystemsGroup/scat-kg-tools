@@ -56,8 +56,8 @@ Free text in Markdown. Nothing in it is required.
   author's to-do list, and how a tool grades their absence on a draft is the catalogue's call.
 - `done`: the author judges the page complete. Every required field in the type's table must be present and
   non-empty, and the page is judged as it would stand at `done`: setting `done` is refused while it would fail.
-- At every status, every link is checked: it must reach a page that exists. Being unfinished is never a fault in
-  itself.
+- At every status, every link is checked: it must reach a page that exists, except that the link at a row's end (4)
+  is graded as a mismatch (a warning until the narrative is `done`). Being unfinished is never a fault in itself.
 
 **What each type needs at each status.** "Needs" means required and graded as the catalogue says.
 
@@ -131,7 +131,7 @@ below, what is and is not a link:
   `[[#Heading]]`.
 
 **A link says "see also" and nothing more**, except in a narrative's table (4), where a link at a row's end names one
-end of an edge. A link is never an edge by itself. One check looks at every link: it must reach a page that exists.
+end of an edge. A link is never an edge by itself. One check looks at every link: it must reach a page that exists (a link at a row's end is graded as a mismatch, 4).
 
 **In a table cell**, a bar inside a link is written `\|` (`[[page-name\|text to show]]`), as Obsidian writes it; the
 tools read that and the unescaped form alike (4).
@@ -167,7 +167,7 @@ given (the fingerprint view lists the candidate pair).
 - *Where.* The table is the first table under a heading named `Edges told` at any heading level (`#` to `######`),
   the name compared without regard to case and ignoring spaces at its ends. "Under" means after the heading and
   before the next heading of the same or a higher level. No such heading, or no table under it, means the narrative
-  tells no edge. A second table, or a second such heading, is not read.
+  tells no edge. A second table, or a second such heading, is not read: its rows tell no edge, and the catalogue grades it. A heading spelled otherwise, and a table on a page that is not a narrative, are not read and nothing is reported.
 - *Columns.* The header row has the four column names of the TBox, in its order: `type`, `from`, `to`, `note`, each
   compared without regard to case. The next line is the separator row (`|---|`, with or without alignment colons).
   The table is the contiguous lines whose first non-space character is `|`, from the header row to the first line that
@@ -209,7 +209,9 @@ The other disagreement, a link at both ends of a pair with no row for it, is the
   written in the wrong direction and a pair between layers that are not neighbours (a group and an affordance);
 - an unknown type in the `type` cell;
 - two rows of one narrative with the same type, `from` and `to`;
-- a table whose header is not the four columns, or a row whose number of cells is not four.
+- a table whose header is not the four columns, or a header with no separator row after it (a table of a header row alone is such a table); the rows under a malformed header are not read, and the table tells no edge;
+- a row whose number of cells is not four, or that does not end with a `|`;
+- a second `Edges told` table, or a second such heading, on one narrative.
 
 **`kind`.** `scenario` is a narrative about people doing things over time: it tells groups, concerns and affordances.
 `architecture` is a narrative about how parts are put together into tools that offer affordances: it tells concerns,
@@ -475,7 +477,7 @@ the form of the Base files, the cap file, what a link entails, how an edge's sta
 **Needs from the rule catalogue.** The contract names these conditions; the catalogue grades them:
 - Name validity: a name that is not a slug (2); a name over 64 characters; a reserved name; two pages with the same
   name in different folders; two names that differ only by case.
-- A link that reaches no page (3, 6).
+- A link that reaches no page (3, 6); at a row's end it is a mismatch, graded by status.
 - The mismatches and other problems of 4, and a narrative that is `done` while one is left; setting `done` is judged as the page would stand
   at `done`.
 - A missing or invalid `scat.toml` (10); a group stub that would exceed the cap (6, 10), for which the stub option is

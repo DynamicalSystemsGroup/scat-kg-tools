@@ -33,7 +33,7 @@ leaves nothing); its *free derived name* is what step 4 gives. A derived name is
 
 **Scopes.** A check runs at *page*, *one link away* or *vault* scope (G4): the page; the page and every page it links
 or that links it; every page. A rule reports on one file, and a check of that file runs every rule that reports on it,
-reading other pages when the rule needs them. The same page gives the same messages at every scope. Rules that are not
+reading other pages when the rule needs them. The one exception is SCAT-CAP, which reports on `scat.toml` though it is anchored on a page check (it runs when a `group` page is in the set). The same page gives the same messages at every scope. Rules that are not
 about one page (SCAT-CAP, SCAT-CAP-CONFIG) run at vault scope, and at the other two when a `group` page is in the
 checked set. For a narrative, the nodes at its row ends are one link away, so a check one link away reads them and
 reports on each page it reaches by that page's own rules. Checks never write (R-4). Each rule below says which pages it
@@ -41,11 +41,11 @@ reads besides its own.
 
 **Cascade guard.** A file that starts with a `---` line but fails SCAT-FM-PARSE is checked by no other rule as a
 source. A page whose `type` is invalid is checked by no rule that needs its type, and a link whose target page has an
-invalid `type` is not judged as a node or as a narrative (the target has its own error). A page whose `status` is
+invalid `type` is not judged for its page type (the target has its own error), except at a row end, where a page that is not a valid node is judged by SCAT-*-END-NOTNODE. A page whose `status` is
 missing or invalid is checked by no rule marked "needs status"; the status error is reported once, on the page. A
 table is read only on a page of type `narrative`. A table whose header or separator row is malformed (the
 SCAT-DRAFT-TABLE-HEADER and SCAT-DONE-TABLE-HEADER condition) is reported once and its rows are checked by no row rule:
-which cell is which is not known until the header is right, and it tells no edge until then.
+which cell is which is not known until the header is right, and it tells no edge until then (a table of a header row alone is such a table). A second table or heading is not read at all (SCAT-*-TABLE-SECOND).
 
 **Empty.** A field is *missing* when the key is absent or its value is null, an empty or blank string, or an empty
 list. A cell is *empty* when it holds nothing but whitespace.
@@ -84,9 +84,9 @@ or, when the fix is a choice between alternatives, or steps:
     1. <fix>
     2. <fix>
 ```
-`<severity>` is `error` or `warning`. `<line>` is the 1-based line of the link, field key, header or row; `<column>`
+`<severity>` is `error` or `warning`, and `refused` in the refusal of section 5. `<line>` is the 1-based line of the link, field key, header or row; `<column>`
 (characters, 1-based) is given for a table cell (its first character), a row (its first `|`), the header (its first
-`|`) and a mention (the first character of the text). `<where>` is ``field `<name>` ``, ``link [[<target>]]``,
+`|`) and a mention (the first character of the text). `<where>` is ``field `<name>` `` (a front-matter field, or a key of `scat.toml`, whose file is then `scat.toml`), ``link [[<target>]]``,
 `frontmatter`, `table header`, ``row <n>`` or ``row <n> cell `<type|from|to>` ``. Angle-bracket words are filled in by
 the tool, except a slot marked *(author)*, which stays in the message literally because only the author can fill it.
 A fix says exactly which line to write, replace or delete. A command fix names the command and its REPL twin on one
@@ -148,6 +148,7 @@ because the model it checked is gone (D-088).
 | SCAT-DRAFT-TABLE-ROW, SCAT-DONE-TABLE-ROW | new | pair |
 | SCAT-DRAFT-TABLE-TYPE, SCAT-DONE-TABLE-TYPE | new | pair |
 | SCAT-DRAFT-TABLE-LAYERS, SCAT-DONE-TABLE-LAYERS | new | pair |
+| SCAT-DRAFT-TABLE-SECOND, SCAT-DONE-TABLE-SECOND | new | pair |
 | SCAT-DRAFT-TABLE-DUPLICATE, SCAT-DONE-TABLE-DUPLICATE | new | pair |
 | SCAT-DRAFT-END-NOLINK, SCAT-DONE-END-NOLINK | new | pair; a mismatch (R-23) |
 | SCAT-DRAFT-END-NOPAGE, SCAT-DONE-END-NOPAGE | new | pair; a mismatch |
@@ -176,7 +177,7 @@ because the model it checked is gone (D-088).
 | SCAT-FM-STATUS | error | every status | all | `status` is not `stub`, `draft` or `done` | options |
 | SCAT-FM-TIMEFRAME | error | every status | all | `timeframe` on a narrative is outside its value set | options |
 | SCAT-FM-KIND | error | every status | all | `kind` on a narrative is outside its value set | options |
-| SCAT-FM-SHAPE | error | every status | all | a text field is not a single non-empty string | exact |
+| SCAT-FM-SHAPE | error | every status | all | a text field is not a single non-empty string | manual |
 | SCAT-NAME | error | every status | all | a page's file name is not a legal name, or is not unique | exact |
 | SCAT-DONE-FIELD | error | done | all | a field required from `done` is missing | slot |
 | SCAT-DRAFT-FIELD | warning | draft; stub for `timeframe` | all | a field required from `done` is missing | slot |
@@ -184,14 +185,16 @@ because the model it checked is gone (D-088).
 | SCAT-CAP | error | vault | vault | more `group` pages than the cap | options |
 | SCAT-CAP-CONFIG | error | vault | vault | `scat.toml` or its cap missing, malformed or not a whole number of at least 1 | slot |
 | SCAT-MENTION | warning | every status | all | body names an existing node page in plain text | exact |
-| SCAT-DRAFT-TABLE-HEADER | warning | stub, draft | all | the table's header or separator row is malformed | exact |
-| SCAT-DONE-TABLE-HEADER | error | done | all | the table's header or separator row is malformed | exact |
-| SCAT-DRAFT-TABLE-ROW | warning | stub, draft | all | a row does not have four cells and its closing `\|` | exact |
-| SCAT-DONE-TABLE-ROW | error | done | all | a row does not have four cells and its closing `\|` | exact |
+| SCAT-DRAFT-TABLE-HEADER | warning | stub, draft | all | the table's header or separator row is malformed | advisory |
+| SCAT-DONE-TABLE-HEADER | error | done | all | the table's header or separator row is malformed | advisory |
+| SCAT-DRAFT-TABLE-ROW | warning | stub, draft | all | a row does not have four cells and its closing `\|` | options |
+| SCAT-DONE-TABLE-ROW | error | done | all | a row does not have four cells and its closing `\|` | options |
 | SCAT-DRAFT-TABLE-TYPE | warning | stub, draft | all | a `type` cell is not the verb or slug of an edge type | options |
 | SCAT-DONE-TABLE-TYPE | error | done | all | a `type` cell is not the verb or slug of an edge type | options |
 | SCAT-DRAFT-TABLE-LAYERS | warning | stub, draft | all | a row end is a node of a layer the type does not allow there | options |
 | SCAT-DONE-TABLE-LAYERS | error | done | all | a row end is a node of a layer the type does not allow there | options |
+| SCAT-DRAFT-TABLE-SECOND | warning | stub, draft | all | a second `Edges told` table or heading on a narrative | options |
+| SCAT-DONE-TABLE-SECOND | error | done | all | a second `Edges told` table or heading on a narrative | options |
 | SCAT-DRAFT-TABLE-DUPLICATE | warning | stub, draft | all | a row repeats the type, `from` and `to` of an earlier row of the same narrative | exact |
 | SCAT-DONE-TABLE-DUPLICATE | error | done | all | a row repeats the type, `from` and `to` of an earlier row of the same narrative | exact |
 | SCAT-DRAFT-END-NOLINK | warning | stub, draft | all | a row end is not exactly one link | options |
@@ -200,6 +203,22 @@ because the model it checked is gone (D-088).
 | SCAT-DONE-END-NOPAGE | error | done | all | a row end links a name that is no page | options |
 | SCAT-DRAFT-END-NOTNODE | warning | stub, draft | all | a row end links a page that is not a node | options |
 | SCAT-DONE-END-NOTNODE | error | done | all | a row end links a page that is not a node | options |
+
+The Fix kind column is the least exact kind any variant of the rule has, in the order exact, slot, options, advisory,
+manual. The variants, where they differ:
+
+| Rule | Variants and their kinds |
+|---|---|
+| SCAT-FM-REQUIRED | `status`: options; `title`: exact |
+| SCAT-FM-TYPE, SCAT-FM-TIMEFRAME | with a near match: exact; without: options |
+| SCAT-FM-SHAPE | one-item list, boolean, number: exact; otherwise manual |
+| SCAT-DONE-FIELD, SCAT-DRAFT-FIELD | `description`: slot; `timeframe`: slot (a choice among exact values) |
+| SCAT-NAME | exact; a hand choice (no title to derive from): manual |
+| SCAT-LINK-DANGLING-BODY | options in every variant |
+| SCAT-*-TABLE-HEADER | name wrong or separator missing: exact; the four names in another order: advisory |
+| SCAT-*-TABLE-ROW | (a), (b), (c): exact; (d), (e): options |
+| SCAT-*-TABLE-TYPE, -LAYERS, -NOLINK, -NOPAGE, -NOTNODE, -SECOND | options in every variant |
+| SCAT-CAP | options; SCAT-CAP-CONFIG: slot |
 
 "all" is page, one link away and vault. The pair rules are *needs status*: a narrative whose `status` is missing or
 invalid gets the status error and none of them. They report only on narratives. Tests: every test starts from a clean
@@ -284,7 +303,7 @@ error [SCAT-FM-KIND] <file> field `kind`: `<value>` is not a kind
 
 ### SCAT-FM-SHAPE
 - **Severity:** error. **Fires:** every status. **Runs at:** all; reads only its page.
-- **Trigger:** `type`, `status`, `title`, `description`, `timeframe` or `kind` is present and not empty, and is not a single string (a list, a mapping, a number, or a boolean such as an unquoted `yes` or `true`). An unquoted `null` or `~` is missing, by the Empty rule.
+- **Trigger:** `type`, `status`, `title` or `description` (on any page), or `timeframe` or `kind` (on a narrative only), is present and not empty, and is not a single string (a list, a mapping, a number, or a boolean such as an unquoted `yes` or `true`). An unquoted `null` or `~` is missing, by the Empty rule.
 - **Message:**
 ```
 error [SCAT-FM-SHAPE] <file> field `<field>`: expected one line of text, found <a list | a mapping | a number | a boolean>
@@ -379,23 +398,23 @@ error [SCAT-CAP-CONFIG] scat.toml field `stakeholder_group_cap`: <the file is mi
 
 ### SCAT-MENTION
 - **Severity:** warning. **Fires:** every status. **Runs at:** all; reads the vault (the titles and names of node pages).
-- **Trigger:** the body of a page (narrative or node, table cells that are not links included) contains, as plain text, the `title` or the page name of an existing node page, matched case-insensitively at word boundaries, for a title or name of at least 4 characters, outside code, outside any wikilink, and when the body has no link to that page. Not the page itself. Reported once per page and target, at the first occurrence. No stemming, no plurals.
+- **Trigger:** the body of a page (narrative or node; a table's `note` cells are included, its `from` and `to` cells are not: those are row ends, judged by SCAT-*-END-NOLINK) contains, as plain text, the `title` or the page name of an existing node page, matched case-insensitively at word boundaries, for a title or name of at least 4 characters, outside code, outside any wikilink, and when the body has no link to that page. Not the page itself. Reported once per page and target, at the first occurrence. No stemming, no plurals.
 - **Message:**
 ```
 warning [SCAT-MENTION] <file>:<line>:<column> text `<as written>`: names the <type-key> page [[<page-name>]] but does not link it
   Fix: on line <line> replace `<as written>` with `[[<page-name>|<as written>]]`          (`[[<page-name>]]` when the text is the page name)
 ```
 - **Fix kind:** exact. Edits: `replace-text{line, column, find "<as written>", replace "[[<page-name>|<as written>]]"}`. Linking where a name appears is the coding the narrative needs, and a link adds no edge: only a row does.
-- **Seed:** a narrative mentioning a concern's title once in plain text (one message); once plain and once linked (none); inside a code span (none); in a `note` cell (one message); a node page mentioning another node's title (one message); the page's own title (none).
+- **Seed:** a narrative mentioning a concern's title once in plain text (one message); once plain and once linked (none); inside a code span (none); in a `note` cell (one message); plain text in a `from` cell (none from this rule); a node page mentioning another node's title (one message); the page's own title (none).
 
 ### Pairs: the table (SCAT-DRAFT-TABLE-* and SCAT-DONE-TABLE-*)
 
-These five conditions are conformance problems of a narrative's table (page contracts 4, "Other problems of the table").
+These six conditions are conformance problems of a narrative's table (page contracts 4, "Other problems of the table").
 Each has a warning id and an error id (section 1, status behaviour); the message is the same but for the id and
 severity. In the sections below `[SCAT-*-X]` stands for both. **Runs at:** all. **Needs status**, narratives only.
 
 #### SCAT-*-TABLE-HEADER
-- **Reads:** its page. **Trigger:** under the heading `Edges told` (page contracts 4 rules for where) the first table's header row does not have the cells `type`, `from`, `to`, `note`, in that order, compared without regard to case and ignoring spaces at their ends; or the line after the header row is not a separator row (`|---|` with or without alignment colons). One message per table. The rows of such a table are checked by no row rule.
+- **Reads:** its page. **Trigger:** under the heading `Edges told` (page contracts 4 rules for where) the first table's header row does not have the cells `type`, `from`, `to`, `note`, in that order, compared without regard to case and ignoring spaces at their ends; or the line after the header row is not a separator row (`|---|` with or without alignment colons), including when the table is a header row alone. One message per table. The rows of such a table are checked by no row rule.
 - **Message:**
 ```
 <severity> [SCAT-*-TABLE-HEADER] <file>:<line>:<column> table header: the header row is `<header as written>`, not `| type | from | to | note |`
@@ -404,9 +423,9 @@ severity. In the sections below `[SCAT-*-X]` stands for both. **Runs at:** all. 
   Fix: replace the line `<line as written>` with `|---|---|---|---|`
   Fix: replace the line `<header as written>` with those two lines, header then `|---|---|---|---|`           (no separator row: the second line is a row)
 ```
-When the header and the separator are both wrong, the first and the second fix are two edits of one fix, in line order. When the columns were in another order, the note adds "the rows' cells are read in the new order: move them by hand".
-- **Fix kind:** exact. Edits: `replace-text{line, find <the line as written>, replace}`; the third form's `replace` holds a line break.
-- **Seed:** header `| from | to | type | note |`; header `| type | from | to |`; separator `| a | b |`; separator missing (the second line a row).
+When the header and the separator are both wrong, the first and the second fix are two edits of one fix, in line order. When the header has the four names but in another order, the fix is **advisory** and has no edit: "the columns must be `type`, `from`, `to`, `note`, in this order: move the cells of the header and of every row; the tool never moves cells" (rewriting only the header would make every row misread).
+- **Fix kind:** exact when a name is wrong or missing, or the separator is missing or wrong; advisory for the order. Edits: `replace-text{line, find <the line as written>, replace}`; the third form's `replace` holds a line break.
+- **Seed:** header `| from | to | type | note |` (advisory); header `| kind | from | to | note |` (exact); header `| type | from | to |`; separator `| a | b |`; separator missing (the second line a row); a header row alone with nothing after it.
 
 #### SCAT-*-TABLE-ROW
 - **Reads:** its page. **Trigger:** a row of a well-formed table does not have four cells (page contracts 4, Cells), or does not end with a `|`. A cell is the text between two unescaped `|`, `\|` and a bar inside `[[ ]]` not counting.
@@ -416,9 +435,9 @@ When the header and the separator are both wrong, the first and the second fix a
 <severity> [SCAT-*-TABLE-ROW] <file>:<line>:<column> row <n>: the row does not end with `|`
   Fix: <exact fix of the variant>
 ```
-Variants: (a) three cells, the last `|` present (the note is missing): add an empty note: replace the final `|` with `| |`; (b) four cells and no final `|`: write ` |` after the last cell; (c) more than four cells: "a `|` inside the note is written `\|`", choose one: replace the `|` that opens cell 5 and the ones after it with `\|` (options one per way the extra cells are read: only as the note), or delete the row; (d) fewer than three cells: choose one: delete the row, or write the row again (advisory).
-- **Fix kind:** exact for (a) and (b); options for (c) and (d). Edits: `replace-text{line, column, find "|", replace "| |"}`; `replace-text{... find <last cell>, replace "<last cell> |"}`; `delete-line{line, find}`.
-- **Seed:** `| holds | [[a]] | [[b]] |` (a); `| holds | [[a]] | [[b]] | n` (b); `| holds | [[a]] | [[b]] | x | y |` (c); `| holds | [[a]] |` (d).
+Variants: (a) three cells, the closing `|` present (the note is missing): add an empty note: replace the final `|` with `| |`; (b) four cells and no closing `|`: write ` |` after the last cell; (c) three cells and no closing `|` (`| holds | [[a]] | [[b]]`): write ` | |` after the last cell, which adds the empty note and the closing bar; (d) more than four cells: "a `|` inside the note is written `\|`", choose one: replace the `|` that opens cell 5 and the ones after it with `\|` (options one per way the extra cells are read: only as the note), or delete the row; (e) fewer than three cells, with or without the closing `|`: choose one: delete the row, or write the row again (advisory).
+- **Fix kind:** exact for (a), (b) and (c); options for (d) and (e). Edits: `replace-text{line, column, find "|", replace "| |"}`; `replace-text{... find <last cell>, replace "<last cell> |"}`; `delete-line{line, find}`.
+- **Seed:** `| holds | [[a]] | [[b]] |` (a); `| holds | [[a]] | [[b]] | n` (b); `| holds | [[a]] | [[b]]` (c); `| holds | [[a]] | [[b]] | x | y |` (d); `| holds | [[a]] |` (e).
 
 #### SCAT-*-TABLE-TYPE
 - **Reads:** its page, and the pages at its ends (to fix the type from their layers). **Trigger:** the `type` cell of a well-formed row is empty, or is not the verb or the slug of one of the three edge types (`holds`, `is addressed by`, `is provided by`; `holds`, `addressed-by`, `provided-by`), compared without regard to case. The row's ends are still checked by the end rules; its layers are not judged.
@@ -448,6 +467,19 @@ Variants: (a) three cells, the last `|` present (the note is missing): add an em
 Options 1 and 2 cannot both apply. The swap's `find` is the text from the first character of the `from` cell's content to the last of the `to` cell's content, as written (the padding and the bar between them included, kept in place).
 - **Fix kind:** options. Edits: `replace-text{line, column of the from cell, find, replace}`; `replace-text` on the `type` cell; `delete-line{line, find}`.
 - **Seed:** `holds` with a concern and a group (swap); `holds` with a concern and an affordance (retype to `is addressed by`); `holds` with a group and an affordance (option 3); one end resolved and wrong, the other unresolved (only the wrong end named).
+
+#### SCAT-*-TABLE-SECOND
+- **Reads:** its page. **Trigger:** a narrative has a second heading named `Edges told` (any level, compared as page contracts 4 says), or a second table under the heading whose first table is read. Only the first table under the first such heading is read; the rows of any other tell no edge, which the author may not have meant. One message for each such heading or table, anchored on the heading line (a second heading) or on the header row of the table (a second table).
+- **Deliberately unreported:** a heading spelled in any other way (`Edges`, `Edge told`) and a table on a page that is not a narrative are not read and nothing is reported: the tool cannot tell a misspelled heading from other text, and a table elsewhere is the author's own text.
+- **Message:**
+```
+<severity> [SCAT-*-TABLE-SECOND] <file>:<line>:<column> table: a second <heading `Edges told` | table> on this narrative; only the first table under the first `Edges told` is read, so its rows tell no edge
+  Fix, choose one:
+    1. move the rows you want into the first table (line <m>), then delete this <heading and> table           (advisory)
+    2. replace the heading `<heading as written>` with `<heading you choose>` (author), so it is no longer an `Edges told` heading           (a second heading only)
+```
+- **Fix kind:** options. Edits: option 2 `replace-text{line, find <heading as written>, replace "<heading you choose>", author_slot}`; option 1 none.
+- **Seed:** a narrative with two `## Edges told` headings and a table under each (one message, on the second heading); two tables under one heading (one message, on the second header row); a heading `## Edges tolds` and a table on a concern page (none).
 
 #### SCAT-*-TABLE-DUPLICATE
 - **Reads:** its page. **Trigger:** a well-formed row has the same edge type (verb and slug compared as one), the same `from` target and the same `to` target as an earlier row of the same narrative. Each later row is reported once, against the first. Rows whose ends are not links are not compared. The same pair in two narratives is not a duplicate: it is two tellings of one edge.
@@ -499,17 +531,17 @@ Variant (b) replaces option 2 by the lines that make the typeless file a page of
 - **Seed:** `| holds | [[ghost]] | [[c]] | |` (options 1 only if a near match, 2, delete); a near match (`[[borrower]]` for `borrowers`); `[[Safety briefing]]` (variant c); a link to a typeless file (variant b); a group stub at the cap (no group option).
 
 #### SCAT-*-END-NOTNODE
-- **Reads:** its page and the vault. **Trigger:** a row end is one link whose target is a page with a valid `type` that is not a node type (a `narrative`). A node page of the wrong layer is SCAT-*-TABLE-LAYERS.
+- **Reads:** its page, the vault and the target's page. **Trigger:** a row end is one link whose target is a page that is not a valid node: a page of type `narrative`, or a page whose `type` is missing from the five or invalid (that page has its own SCAT-FM-TYPE error as well; this is the mismatch, at the row). A node page of the wrong layer is SCAT-*-TABLE-LAYERS.
 - **Message:**
 ```
-<severity> [SCAT-*-END-NOTNODE] <file>:<line>:<column> row <n> cell `<from|to>`: [[<target>]] is a narrative page, not a node; a row joins two nodes
+<severity> [SCAT-*-END-NOTNODE] <file>:<line>:<column> row <n> cell `<from|to>`: [[<target>]] is <a narrative page | a page with the invalid type `<value>`>, not a node; a row joins two nodes
   Fix, choose one:
     1. replace `[[<target>]]` with `[[<candidate>]]`        (one option per candidate for the end's layer; withheld when the layer is unknown)
     2. replace `[[<target>]]` with `[[<node you choose>]]` (author)        (when there is no candidate)
     n. delete the row
 ```
 - **Fix kind:** options. Edits: `replace-text{line, column, find "[[<target>]]", replace}`; `delete-line{line, find}`.
-- **Seed:** `| holds | [[a-narrative]] | [[c]] | |` with and without candidate groups the narrative links elsewhere.
+- **Seed:** `| holds | [[a-narrative]] | [[c]] | |` with and without candidate groups the narrative links elsewhere; a link to a page with `type: gadget` (this message, and the page's own SCAT-FM-TYPE).
 
 ## 4. Rule 4 has no rule
 
@@ -546,7 +578,8 @@ refused [SCAT-DONE-REFUSED] <file>: <n> error(s) would stand at status done; sta
     1. fix the problems above, then run `scat set-status <page-name> done` again
     2. leave the page at `draft`: run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`)
 ```
-- **Fix kind:** options, both advisory (the fixes that matter are each listed problem's own). Data: a `Refusal` with `subject` the file, `why`, `rule` `SCAT-DONE-REFUSED`, `problems` the list, and `fix` of two advisory options.
+- **Fix kind:** options: option 1 advisory (the fixes that matter are each listed problem's own), option 2 exact (`command{set-status <page-name> draft}`, with its REPL twin). Data: a `Refusal` with `subject` the file, `why`, `rule` `SCAT-DONE-REFUSED`, `problems` the list, and `fix` of those two options.
+- **Vault-wide errors are not listed:** an error of SCAT-CAP or SCAT-CAP-CONFIG, though it runs at page scope when the page is a `group`, does not depend on this page's status and is not in the refusal's `problems`; a `group` page with no other error is set to `done` in a vault over its cap, and `scat check` reports the cap.
 - **Seed:** a narrative at `draft` with a row end that is not a link and no `description` (set `done`: refused, listing SCAT-DONE-FIELD and SCAT-DONE-END-NOLINK, and the file unchanged); the same narrative with both fixed (set: done); a node page with no `description` (refused); a narrative with only warnings at `done` (a SCAT-MENTION, set); a page with an invalid `status` (refused, the status error listed).
 
 `record-edge` and `remove-edge` have their own refusals (a narrative they would change is `done`; an unknown type; ends
@@ -559,7 +592,7 @@ in the wrong layers), carried as operation refusals with no rule id; they list n
 | R-1 required fields and types | SCAT-FM-PARSE, SCAT-FM-REQUIRED, SCAT-FM-TYPE, SCAT-FM-STATUS, SCAT-FM-TIMEFRAME, SCAT-FM-KIND, SCAT-FM-SHAPE, SCAT-DONE-FIELD |
 | R-1 page names (page contracts 2) | SCAT-NAME |
 | R-1 links to pages that do not exist | SCAT-LINK-DANGLING-BODY; at a table end SCAT-DRAFT-END-NOPAGE, SCAT-DONE-END-NOPAGE |
-| R-1 the table of edges (page contracts 4) | SCAT-*-TABLE-HEADER, -ROW, -TYPE, -LAYERS, -DUPLICATE |
+| R-1 the table of edges (page contracts 4) | SCAT-*-TABLE-HEADER, -ROW, -TYPE, -LAYERS, -DUPLICATE, -SECOND |
 | R-1 the group cap | SCAT-CAP, SCAT-CAP-CONFIG |
 | R-3 unfinished is never an error | SCAT-DRAFT-FIELD, and every SCAT-DRAFT- pair id, as warnings; nothing else fires for `done` fields at `stub` or `draft` |
 | R-3 full contract at `done`; the `done` check | SCAT-DONE-FIELD, every SCAT-DONE- pair id, SCAT-DONE-REFUSED |
@@ -575,10 +608,10 @@ disagree with the rows, so the graph holds one edge per (type, from, to) by cons
 
 | Pair | What disagrees, in the row model | Rule, or why it cannot occur |
 |---|---|---|
-| **L-N** | An edge's end and the narrative's link to it: a row end that is not a link, or whose link reaches no page or a page that is not a node | SCAT-DRAFT-END-NOLINK / SCAT-DONE-END-NOLINK, SCAT-DRAFT-END-NOPAGE / SCAT-DONE-END-NOPAGE, SCAT-DRAFT-END-NOTNODE / SCAT-DONE-END-NOTNODE: warning until the narrative is `done`, then an error, anchored on the cell. A narrative that has a row cannot fail to link an end that is a link: the end cell is the link |
+| **L-N** | An edge's end and the narrative's link to it: a row end that is not a link, or whose link reaches no page or a page that is not a valid node (a narrative, or a page with an invalid `type`) | SCAT-DRAFT-END-NOLINK / SCAT-DONE-END-NOLINK, SCAT-DRAFT-END-NOPAGE / SCAT-DONE-END-NOPAGE, SCAT-DRAFT-END-NOTNODE / SCAT-DONE-END-NOTNODE: warning until the narrative is `done`, then an error, anchored on the cell. A narrative that has a row cannot fail to link an end that is a link: the end cell is the link |
 | **L-T** | An edge names a narrative that links neither end | Cannot occur in this layout, because T is the page the row sits on and the row's ends are links on that same page. Its nearest case, a row whose two ends are not links, is two messages of SCAT-*-END-NOLINK, one per cell |
 | **L-E** | A narrative links both ends of an edge and has no row for it | No rule and no message (D-085, section 4). The fingerprint view lists the pair as a candidate |
-| **E-N** | An end is missing, or in the wrong layer, or two entries join one pair | Missing end: SCAT-*-END-NOPAGE (no page), SCAT-*-END-NOLINK (no link), SCAT-*-END-NOTNODE (not a node). Wrong layer or direction, or layers not neighbouring: SCAT-*-TABLE-LAYERS. Unknown type: SCAT-*-TABLE-TYPE. Two rows joining one pair in one narrative: SCAT-*-TABLE-DUPLICATE. Two entries joining one pair across narratives cannot occur, because the graph keeps one edge per (type, from, to) and names the narratives |
+| **E-N** | An end is missing, or in the wrong layer, or two entries join one pair | Missing end: SCAT-*-END-NOPAGE (no page), SCAT-*-END-NOLINK (no link), SCAT-*-END-NOTNODE (not a valid node: a narrative, or a page with an invalid `type`). Wrong layer or direction, or layers not neighbouring: SCAT-*-TABLE-LAYERS. Unknown type: SCAT-*-TABLE-TYPE. Two rows joining one pair in one narrative: SCAT-*-TABLE-DUPLICATE. Two entries joining one pair across narratives cannot occur, because the graph keeps one edge per (type, from, to) and names the narratives |
 | **E-T** | An edge names no narrative, or one that is absent or not a narrative | Cannot occur in this layout, because an edge exists only as a row on a narrative's page; no row, no edge, so no edge is left naming nothing, and the narrative it names is the page it is read from. A table on a page that is not a narrative is not read |
 | **N-T** | The edge is `done` but a narrative it names lacks a link | Cannot occur as a separate problem, because an edge has no file to anchor it. The problem is the narrative's mismatch (the L-N rules), an error on the narrative once it is `done`; an edge is `done` only when every narrative telling it is `done`, so each such mismatch is already an error there; and the refusal to set `done` (section 5) holds it back first |
 
@@ -609,7 +642,7 @@ required narrative.title -> SCAT-FM-REQUIRED
 required narrative.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
 required narrative.timeframe -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD, SCAT-FM-TIMEFRAME
 optional narrative.kind -> SCAT-FM-KIND
-table-heading narrative.Edges-told -> SCAT-*-TABLE-HEADER
+table-heading narrative.Edges-told -> SCAT-*-TABLE-HEADER, SCAT-*-TABLE-SECOND
 table-column narrative.type -> SCAT-*-TABLE-TYPE, SCAT-*-TABLE-LAYERS, SCAT-*-TABLE-DUPLICATE
 table-column narrative.from -> SCAT-*-END-NOLINK, SCAT-*-END-NOPAGE, SCAT-*-END-NOTNODE, SCAT-*-TABLE-LAYERS, SCAT-*-TABLE-DUPLICATE
 table-column narrative.to -> SCAT-*-END-NOLINK, SCAT-*-END-NOPAGE, SCAT-*-END-NOTNODE, SCAT-*-TABLE-LAYERS, SCAT-*-TABLE-DUPLICATE
