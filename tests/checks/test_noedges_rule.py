@@ -21,7 +21,7 @@ TWO = (
 )
 GOLDEN = "\n".join(
     [
-        f"warning [SCAT-NOEDGES] {DESK} table: the narrative is `done` and tells no edge: its fingerprint is empty",
+        f"warning [SCAT-NOEDGES] {DESK} table: the narrative is `done` and tells no edge: its fingerprint has no edges",
         "  Fix, choose one:",
         ONE,
         TWO,

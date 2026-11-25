@@ -163,6 +163,15 @@ is fixed):
 without a row for the pair is a *candidate*: the narrative has not said whether it tells the edge, and no message is
 given (the fingerprint view lists the candidate pair).
 
+**Coded and uncoded.** A narrative is *coded* when it links at least one node page anywhere in its body (a row end of
+its table, or a link in its account or its list); it is *uncoded* when it links none. An uncoded narrative is
+*excluded*: the knowledge graph and every view (fingerprints, edge tables, the layered view, traces, exports, drawings)
+leave it out, and `scat check` (SCAT-UNCODED) and each view that draws every narrative report it by name, with how to
+include it: link one node page. It is included as soon as it is coded. A link in the account to a node page is the
+place for a node the narrative names with no edge (a lone node): it codes the narrative and the node is in its
+fingerprint. A row can tell an edge only through links to node pages, so an uncoded narrative tells no edge and no edge
+waits on one.
+
 **Reading the table.** The rules, all of which a person can follow by hand:
 - *Where.* The table is the first table under a heading named `Edges told` at any heading level (`#` to `######`),
   the name compared without regard to case and ignoring spaces at its ends. "Under" means after the heading and

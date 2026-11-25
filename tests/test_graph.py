@@ -45,8 +45,11 @@ NODES = {
 HEAD = "| from | type | to | note |\n|---|---|---|---|\n"
 
 
+CODED = "\n[[c]]\n"  # a narrative that links no node page is excluded (WP21-G2): code it, after the body
+
+
 def vault(make_vault, body, **more):
-    return make_vault({**NODES, "narrative/n.md": narrative(body), **more})
+    return make_vault({**NODES, "narrative/n.md": narrative(body + CODED), **more})
 
 
 def table_of(make_vault, body):
@@ -175,6 +178,7 @@ def test_example_vault_links_are_kept_apart_from_edges():
     assert g.summary() == {
         "nodes": {"group": 3, "concern": 3, "affordance": 2, "technology": 2},
         "narratives": 3,
+        "excluded": 0,
         "edges": 9,
         "edge_status": {"stub": 0, "draft": 1, "done": 8},
         "candidates": 15,

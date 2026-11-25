@@ -33,6 +33,7 @@ SEVERITY = {
     "SCAT-CAP-CONFIG": "error",
     "SCAT-MENTION": "warning",
     "SCAT-NOEDGES": "warning",
+    "SCAT-UNCODED": "warning",
     **{f"SCAT-DRAFT-{p}": "warning" for p in _PAIRS},
     **{f"SCAT-DONE-{p}": "error" for p in _PAIRS},
 }

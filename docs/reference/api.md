@@ -778,14 +778,14 @@ Reads the vault into its knowledge graph and returns a `Graph`. It writes nothin
 |---|---|
 | `root` | The vault folder. |
 
-A `Graph` holds `nodes` (by layer, in layer order), `edges`, `narratives`, `candidates` and `links`. `graph.summary()` counts them. A vault folder that is not there does not raise: `graph.ok` is `False` and `graph.refusal` says what to do. It has no CLI twin: every `scat` command reads the same graph.
+A `Graph` holds `nodes` (by layer, in layer order), `edges`, `narratives` (the coded ones), `excluded` (the uncoded ones, left out), `candidates` and `links`. `graph.summary()` counts them. A vault folder that is not there does not raise: `graph.ok` is `False` and `graph.refusal` says what to do. It has no CLI twin: every `scat` command reads the same graph.
 
 ```python
 scat_kg.load().summary()
 ```
 
 ```text
-{'nodes': {'group': 3, 'concern': 5, 'affordance': 3, 'technology': 3}, 'narratives': 6, 'edges': 8, 'edge_status': {'stub': 0, 'draft': 0, 'done': 8}, 'candidates': 7, 'links': 43}
+{'nodes': {'group': 3, 'concern': 5, 'affordance': 3, 'technology': 3}, 'narratives': 6, 'excluded': 0, 'edges': 8, 'edge_status': {'stub': 0, 'draft': 0, 'done': 8}, 'candidates': 7, 'links': 43}
 ```
 
 ## Views
@@ -794,7 +794,7 @@ A view is a purposeful picture or table made from a conformant vault, and the fo
 
 - `str(view)` is a short text, one line per node or edge. At the REPL the view prints as that text.
 - `view.ok` is `True`. `view.to_dict()` is the document.
-- A view refuses, with the problems and their fixes, on a name that is not there or is ambiguous, an edge type or direction that does not exist, a vault folder that is missing, any error in the pages it draws, and a row of a narrative it draws that tells no edge (the file and the row are named; the edge table and the trace draw every narrative). Warnings do not refuse. Relationship annotations appear in no view.
+- A view refuses, with the problems and their fixes, on a name that is not there or is ambiguous, an edge type or direction that does not exist, a vault folder that is missing, any error in the pages it draws, and a row of a narrative it draws that tells no edge (the file and the row are named; the edge table and the trace draw every narrative). Warnings do not refuse. A narrative that links no node page is excluded: left out of every view, listed under `excluded` (name, file and how to include it) by each view that draws every narrative, and refused when you name it. Relationship annotations appear in no view.
 
 The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `layered` or `trace`. This is an excerpt of `scat_kg.edge_table("holds").to_dict()`; the full documents are in the [CLI reference](cli.md#scat-fingerprint) and the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md):
 
@@ -815,7 +815,8 @@ The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `la
       "narratives": ["notes-at-a-chatham-house-session"],
       "status": "done"
     }
-  ]
+  ],
+  "excluded": []
 }
 ```
 

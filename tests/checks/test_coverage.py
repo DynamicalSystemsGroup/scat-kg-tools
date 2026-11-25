@@ -19,7 +19,7 @@ def catalogue_ids() -> list[str]:
 
 def test__the_registry_knows_every_rule_in_the_catalogue():
     ids = catalogue_ids()
-    assert len(ids) == len(set(ids)) == 33
+    assert len(ids) == len(set(ids)) == 34
     assert set(ids) == set(SEVERITY)
     assert catalogue_severities() == SEVERITY
 

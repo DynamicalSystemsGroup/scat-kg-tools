@@ -73,6 +73,7 @@ fires on a `stub` or `draft` narrative; the `SCAT-DONE-` id is the same conditio
 | Pairs: table and row problems, mismatches (narratives only) | warning | warning | error |
 | Mention | warning | warning | warning |
 | No edges (SCAT-NOEDGES) | silent | silent | warning |
+| Uncoded (SCAT-UNCODED) | warning | warning | warning |
 
 An unfinished page is never an error for being unfinished: nothing in the `done` column is an error before `done`.
 Setting `done` is judged as the page would stand at `done` (section 5).
@@ -153,7 +154,8 @@ because the model it checked is gone (D-088).
 | SCAT-CAP | adapted | counts `group` pages |
 | SCAT-CAP-CONFIG | kept | |
 | SCAT-MENTION | adapted | on every page, narratives included |
-| SCAT-NOEDGES | new | a `done` narrative with no row (MISSION G1); a warning, never an error |
+| SCAT-NOEDGES | new | a `done` coded narrative with no row (MISSION G1); a warning, never an error |
+| SCAT-UNCODED | new | a narrative that links no node page, so it is excluded (WP21-G2); a warning, never an error |
 | SCAT-DRAFT-TABLE-HEADER, SCAT-DONE-TABLE-HEADER | new | pair |
 | SCAT-DRAFT-TABLE-ROW, SCAT-DONE-TABLE-ROW | new | pair |
 | SCAT-DRAFT-TABLE-TYPE, SCAT-DONE-TABLE-TYPE | new | pair |
@@ -195,7 +197,8 @@ because the model it checked is gone (D-088).
 | SCAT-CAP | error | vault | vault; all when a `group` page is in the set | more `group` pages than the cap | options |
 | SCAT-CAP-CONFIG | error | vault | vault; all when a `group` page is in the set | `scat.toml` or its cap missing, malformed or not a whole number of at least 1 | slot |
 | SCAT-MENTION | warning | every status | all | body names an existing node page in plain text | exact |
-| SCAT-NOEDGES | warning | done | all | a `done` narrative has a well-formed table with no rows, or no table | options |
+| SCAT-NOEDGES | warning | done | all | a `done` coded narrative has a well-formed table with no rows, or no table | options |
+| SCAT-UNCODED | warning | every status | all | a narrative links no node page anywhere in its body | options |
 | SCAT-DRAFT-TABLE-HEADER | warning | stub, draft | all | the table's header or separator row is malformed | advisory |
 | SCAT-DONE-TABLE-HEADER | error | done | all | the table's header or separator row is malformed | advisory |
 | SCAT-DRAFT-TABLE-ROW | warning | stub, draft | all | a row does not have four cells and its closing `\|` | options |
@@ -428,16 +431,29 @@ In a table cell the bar of an alias link is written `\|`: the replacement is `[[
 
 ### SCAT-NOEDGES
 - **Severity:** warning. **Fires:** `done` only (MISSION G1: a `done` narrative whose fingerprint has no edges gets a warning, not an error). **Runs at:** all; reads its page.
-- **Trigger:** a narrative at `done` has no `Edges told` table, or a well-formed one with no rows, so its fingerprint has no edges. A table with a malformed header, and a narrative with any row, give nothing from this rule (the table's own rules judge what is there). A narrative may tell no edge on purpose, so the rule never blocks: the coder decides.
+- **Trigger:** a coded narrative (page contracts 4) at `done` has no `Edges told` table, or a well-formed one with no rows, so its fingerprint has no edges (it may still have nodes: a node linked in the account with no edge is conformant). A table with a malformed header, a narrative with any row, and an uncoded narrative (SCAT-UNCODED reports it, once) give nothing from this rule (the table's own rules judge what is there). A narrative may tell no edge on purpose, so the rule never blocks: the coder decides.
 - **Message:**
 ```
-warning [SCAT-NOEDGES] <file> table: the narrative is `done` and tells no edge: its fingerprint is empty
+warning [SCAT-NOEDGES] <file> table: the narrative is `done` and tells no edge: its fingerprint has no edges
   Fix, choose one:
     1. record its edges: run `scat set-status <page-name> draft` (REPL: ...), then `scat record-edge <type> <from> <to> --told-by <page-name>` (REPL: `scat_kg.record_edge("<type>", "<from>", "<to>", ["<page-name>"])`) for each edge the account tells, then `scat set-status <page-name> done` (REPL: ...)
     2. or leave it as intended: a narrative may tell no edge, and this warning does not block; nothing to change
 ```
 - **Fix kind:** options; both options advisory and without edits: which edges the account tells is the coder's reading, and `record-edge` refuses a `done` narrative, so the first option goes through `draft`.
-- **Seed:** a `done` narrative with no table; with a header and separator and no rows; with one row (none); at `stub` and `draft` with no rows (none); with a malformed header (none from this rule); the page judged as it would stand at `done` (the warning shows, and `set-status done` is not refused for it).
+- **Seed:** a `done` coded narrative with no table; with a header and separator and no rows; with one row (none); at `stub` and `draft` with no rows (none); with a malformed header (none from this rule); an uncoded `done` narrative (none from this rule); the page judged as it would stand at `done` (the warning shows, and `set-status done` is not refused for it).
+
+### SCAT-UNCODED
+- **Severity:** warning. **Fires:** every status (WP21-G2). **Runs at:** all; reads its page and the pages its links name (to know which are node pages).
+- **Trigger:** a narrative has no link, anywhere in its body (the account, a list, a row end, a note), whose target is the name of exactly one node page. It is *uncoded* (page contracts 4): the knowledge graph and every view leave it out, and the views list it as excluded. A narrative with a link to a node page is *coded*, and the rule is silent on it, whether the link is a row end or sits in the account with no row (a lone node). The rule never blocks: the coder decides.
+- **Message:**
+```
+warning [SCAT-UNCODED] <file> body: the narrative links no node page, so it is excluded from the knowledge graph and every view
+  Fix, choose one:
+    1. link a node page where the account names one, as `[[<node-name>]]` (or list it under a heading such as `Linked beyond the text`); a node the account names with no edge needs only this link
+    2. or tell an edge: a row of the table whose ends are links to node pages; if the node has no page, `scat stub <name> --type <type>` makes one
+```
+- **Fix kind:** options; both options advisory and without edits: which node the account names is the coder's reading.
+- **Seed:** a narrative at each status with no link (one message); with one account link to a node page (none); with a link to a node page only in a list beyond the text (none); with a link only at a row end (none); with a link only to a page that is not a node, or to a page that does not exist (one message); a link inside a code span (one message); a `done` narrative with no link (this warning only, `set-status done` is not refused for it).
 
 ### Pairs: the table (SCAT-DRAFT-TABLE-* and SCAT-DONE-TABLE-*)
 
@@ -626,6 +642,7 @@ in the wrong layers), carried as operation refusals with no rule id; they list n
 | Requirement | Rules |
 |---|---|
 | G1 a `done` narrative whose fingerprint has no edges: a warning | SCAT-NOEDGES |
+| WP21-G2 an uncoded narrative is excluded, and says so | SCAT-UNCODED |
 | R-2 every message names the file, the place and the rule, and gives the fix | every rule: the message format and fix of section 1, checked by the golden tests of section 3 |
 | R-1 required fields and types | SCAT-FM-PARSE, SCAT-FM-REQUIRED, SCAT-FM-TYPE, SCAT-FM-STATUS, SCAT-FM-TIMEFRAME, SCAT-FM-KIND, SCAT-FM-SHAPE, SCAT-DONE-FIELD |
 | R-1 page names (page contracts 2) | SCAT-NAME |

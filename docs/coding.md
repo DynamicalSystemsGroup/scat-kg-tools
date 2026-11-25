@@ -59,6 +59,8 @@ On the chat path, the server never moves a page into or out of `done`, so the as
 
 Everything starts in the field notes, and only you read them. You turn what a session told into one narrative page, with `scat stub` making the empty page and you writing the account. The narrative is where each edge comes from: a row of its `Edges told` table says "this account tells that a group holds that concern". There is no other place an edge is written, and no page to open for one.
 
+A narrative is **coded** when it links at least one node page, in a row of its table or in its account; until then it is **excluded**. The knowledge graph and every view leave an excluded narrative out, and `scat check` and the views name it and say how to include it: link one node page. A link in the account is also the place for a node the narrative names with no edge. A new stub is excluded until you link a node.
+
 Two narratives can tell the same edge. Each has its own row and its own note, and the knowledge graph has one edge naming both. A narrative that mentions two nodes without a row for the pair has not told an edge, even if the notes would support one: the row is your statement that the account tells it.
 
 ## A narrative, start to finish
@@ -92,7 +94,11 @@ warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `time
     1. replace the line `timeframe: # past | future | mixed` with `timeframe: past` (author)
     2. replace the line `timeframe: # past | future | mixed` with `timeframe: future` (author)
     3. replace the line `timeframe: # past | future | mixed` with `timeframe: mixed` (author)
-0 errors, 1 warning
+warning [SCAT-UNCODED] narrative/saturday-at-the-tool-library.md body: the narrative links no node page, so it is excluded from the knowledge graph and every view
+  Fix, choose one:
+    1. link a node page where the account names one, as `[[<node-name>]]` (or list it under a heading such as `Linked beyond the text`); a node the account names with no edge needs only this link
+    2. or tell an edge: a row of the table whose ends are links to node pages; if the node has no page, `scat stub <name> --type <type>` makes one
+0 errors, 2 warnings
 ```
 
 ### 2. Write the account
@@ -115,15 +121,19 @@ From the point of view of Workshop participants (about 10:20)
 - The sign-out sheet lets us see who has what. It stops us seeing tools that are late.
 ```
 
-The check shows the to-do for the `description`, and notices that the account names a group the vault already has and asks you to link it:
+The check shows the to-do for the `description`, says the page is still excluded (it links no node page), and notices that the account names a group the vault already has and asks you to link it:
 
 ```text
 $ uv run scat check saturday-at-the-tool-library
 warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
+warning [SCAT-UNCODED] narrative/saturday-at-the-tool-library.md body: the narrative links no node page, so it is excluded from the knowledge graph and every view
+  Fix, choose one:
+    1. link a node page where the account names one, as `[[<node-name>]]` (or list it under a heading such as `Linked beyond the text`); a node the account names with no edge needs only this link
+    2. or tell an edge: a row of the table whose ends are links to node pages; if the node has no page, `scat stub <name> --type <type>` makes one
 warning [SCAT-MENTION] narrative/saturday-at-the-tool-library.md:9:27 text `Workshop participants`: names the group page [[workshop-participants]] but does not link it
   Fix: on line 9 replace `Workshop participants` with `[[workshop-participants|Workshop participants]]`
-0 errors, 2 warnings
+0 errors, 3 warnings
 ```
 
 ### 3. Record the edges

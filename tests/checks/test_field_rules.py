@@ -1,7 +1,18 @@
 """SCAT-DONE-FIELD and SCAT-DRAFT-FIELD, and how every status behaves (R-3). Test names carry the rule id."""
 
 import pytest
-from helpers import DESK, choose, doc, msg, narrative, report_of, rules_of, seeded, set_status
+from helpers import (
+    DESK,
+    choose,
+    doc,
+    msg,
+    narrative,
+    report_of,
+    rules_of,
+    seeded,
+    set_status,
+    uncoded,
+)
 
 C = "concern/safe-handling.md"
 DESC = 'add the line `description: "<one sentence you write>"` (author)'
@@ -128,6 +139,7 @@ def test__scat_draft_field__a_freshly_stubbed_narrative_gives_exactly_the_timefr
                 head="Fix, choose one before you set status: done:",
             ),
         ),
+        uncoded(DESK),  # a fresh stub links no node page (WP21-G2)
     )
 
 

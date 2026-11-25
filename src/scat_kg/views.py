@@ -11,7 +11,8 @@ or edge. The knowledge graph is derived on every call (`load`) and nothing is wr
 `Result` that carries the problems, on a name that is unknown or ambiguous, an unknown edge type or direction, a
 missing vault folder, on any error in the pages it draws, and on a row of a narrative it draws that tells no edge
 (one refusal for each, naming the file and the row; the edge table and the trace draw every narrative); warnings do
-not refuse. Relationship annotations
+not refuse. An uncoded narrative (it links no node page) is excluded: left out of every view and listed under
+`excluded`, with how to include it, by each view that draws every narrative; naming one is refused. Relationship annotations
 appear in no view. Names are plain text, never `[[links]]`.
 
 Order is deterministic: layer order, then name; edges in graph order; narratives in path order.
@@ -97,6 +98,14 @@ def _edge(e: Edge) -> dict:
         "narratives": list(e.narratives),
         "status": e.status,
     }
+
+
+INCLUDE = "link one node page in the narrative (a row end or its account), then run this again"
+
+
+def _excluded(g: Graph) -> list[dict]:
+    """The uncoded narratives, which every view leaves out: what a view that draws every narrative reports."""
+    return [{"name": x.narrative, "file": x.path, "fix": INCLUDE} for x in g.excluded]
 
 
 def _nodes(g: Graph, names) -> list[Node]:
@@ -189,6 +198,13 @@ def _page_named(op: str, g: Graph, name: str, kind: str) -> Refused | None:
             f"more than one page has this name: {paths}",
             "rename one of the pages, then run this again",
         )
+    if kind == "narrative" and any(x.narrative == name for x in g.excluded):
+        return _refuse(
+            op,
+            name,
+            "the narrative is excluded: it links no node page, so it is in no view",
+            INCLUDE,
+        )
     found = g.narrative(name) is not None if kind == "narrative" else g.node(name) is not None
     if not found:
         return _refuse(
@@ -253,7 +269,9 @@ def fingerprint(
         edges += es
     names = [n.name for n in chosen]
     bad = _drawn(op, g, names, _nodes(g, nodes), edges, names, narrative is None)
-    return bad or View(op, {"narratives": items})
+    return bad or View(
+        op, {"narratives": items, "excluded": _excluded(g) if narrative is None else []}
+    )
 
 
 def edge_table(type: str, *, root: str | Path = ".") -> View | Result:
@@ -282,6 +300,7 @@ def edge_table(type: str, *, root: str | Path = ".") -> View | Result:
             "from_layer": et.from_type,
             "to_layer": et.to_type,
             "rows": [_edge(e) for e in rows],
+            "excluded": _excluded(g),
         },
     )
 
@@ -320,6 +339,7 @@ def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> V
             "narratives": names,
             "nodes": {layer: [_node(n) for n in nodes if n.type == layer] for layer in TBOX.layers},
             "edges": [_edge(e) for e in edges],
+            "excluded": _excluded(g) if narratives is None else [],
         },
     )
 
@@ -367,6 +387,7 @@ def trace(node: str, direction: str = "both", *, root: str | Path = ".") -> View
             "up": [_node(n) for n in _nodes(g, ups)],
             "down": [_node(n) for n in _nodes(g, downs)],
             "edges": [_edge(e) for e in edges],
+            "excluded": _excluded(g),
         },
     )
 
@@ -394,6 +415,13 @@ def _layer_lines(nodes: list[dict]) -> list[str]:
     return out
 
 
+def _excluded_lines(d: dict) -> list[str]:
+    if not d.get("excluded"):
+        return []
+    out = ["excluded (no node page linked; link one node page to include it)"]
+    return out + [f"    {x['name']} ({x['file']})" for x in d["excluded"]]
+
+
 def _text_fingerprint(d: dict) -> list[str]:
     out = []
     for n in d["narratives"]:
@@ -405,12 +433,12 @@ def _text_fingerprint(d: dict) -> list[str]:
         if n.get("candidates"):
             out.append("  candidates (linked, no row)")
             out += [f"    {c['type']}: {c['from']} -> {c['to']}" for c in n["candidates"]]
-    return out or ["fingerprint: no narratives"]
+    return (out or ["fingerprint: no narratives"]) + _excluded_lines(d)
 
 
 def _text_edges(d: dict) -> list[str]:
     out = [f"edges {d['edge_type']} ({d['from_layer']} -> {d['to_layer']}): {len(d['rows'])}"]
-    return out + [_edge_line(e) for e in d["rows"]]
+    return out + [_edge_line(e) for e in d["rows"]] + _excluded_lines(d)
 
 
 def _text_layered(d: dict) -> list[str]:
@@ -420,7 +448,7 @@ def _text_layered(d: dict) -> list[str]:
             out += [f"  {layer}", *map(_node_line, d["nodes"][layer])]
     if d["edges"]:
         out += ["  edges", *map(_edge_line, d["edges"])]
-    return out
+    return out + _excluded_lines(d)
 
 
 def _text_trace(d: dict) -> list[str]:
@@ -430,7 +458,7 @@ def _text_trace(d: dict) -> list[str]:
             out += [f" {side}", *_layer_lines(d[side])]
     if d["edges"]:
         out += ["  edges", *map(_edge_line, d["edges"])]
-    return out
+    return out + _excluded_lines(d)
 
 
 _TEXT = {

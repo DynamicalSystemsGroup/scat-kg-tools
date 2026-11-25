@@ -981,7 +981,8 @@ $ uv run scat fingerprint groups-under-a-cap-pitch --json
         }
       ]
     }
-  ]
+  ],
+  "excluded": []
 }
 ```
 
@@ -1069,7 +1070,8 @@ $ uv run scat edges holds --json
       ],
       "status": "done"
     }
-  ]
+  ],
+  "excluded": []
 }
 ```
 
@@ -1193,7 +1195,8 @@ $ uv run scat layered --narrative groups-under-a-cap-pitch --json
       ],
       "status": "done"
     }
-  ]
+  ],
+  "excluded": []
 }
 ```
 
@@ -1285,7 +1288,8 @@ $ uv run scat trace anonymity --direction up --json
       ],
       "status": "done"
     }
-  ]
+  ],
+  "excluded": []
 }
 ```
 
