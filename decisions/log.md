@@ -2279,3 +2279,15 @@ accepted with these calls by the ACE:
 - **Uses brought in line:** "session key" in `deploy/README.md`; "saved agent" in the chat-path guide (WP21-U10).
 The application (glossary rows, `docs/reference/terms.md` bullets, the cap) is one unit, WP21-U3h, so the glossary
 and its test land together.
+
+## D-118 | 2026-11-25 | MISSION.md:74 stays; done means adequately coded, as the coder judges
+
+Asked whether `MISSION.md:74` should say a narrative is done "when it is fully coded". The chief engineer, quoted as
+typed and recorded by the ACE:
+
+> "no not "fully", "adequately" coded as judged by the coder. it can continue to be iterated (or even reverted to
+> draft) if need be. i think you can leave it."
+
+Outcome: the mission line is unchanged. The glossary's **coded, uncoded** row (WP21-U3h) says that `done` means the
+narrative is adequately coded as the coder judges, not fully coded, and that a done narrative can still be iterated or
+moved back to `draft`. It does not say "fully coded". D-117's proposal is withdrawn.

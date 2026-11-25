@@ -18,10 +18,7 @@ Before the release PRs: WP21 built and accepted, WP18 accepted, the chat-path si
 
 1. **A chat-path sitting (after WP21):** the three chat-path user tests (D-098), the "leave no trace" walkthrough run,
    and loading the skill package. You sign in and paste each key; I drive.
-2. **A one-word mission edit (D-117):** `MISSION.md:74` says a narrative is done "when it is coded: every node ... is
-   identified and linked". The new glossary term "coded" means at least one node link (your D-102 rule), so I propose
-   "when it is fully coded". Yes or no.
-3. **After the release:** the w3id namespace registration PR from your fork, citing the release (D-116).
+2. **After the release:** the w3id namespace registration PR from your fork, citing the release (D-116).
 
 Settled today: D-102 to D-108, D-110, D-116 (release scope C1 to C8; U3b; Colima default; the published image and
 the mission edits; leave no trace; the uv test; WP8-U1; history rewrites dropped; no further chat clean-up; your
