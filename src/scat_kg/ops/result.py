@@ -5,6 +5,7 @@ Paths are vault-relative with `/` separators, as the catalogue's `<file>`.
 """
 
 from dataclasses import dataclass
+from typing import Any
 
 from scat_kg.contract import SCHEMA_VERSION
 from scat_kg.fix import Command, Fix, FixOption
@@ -50,6 +51,10 @@ class Result:
     unchanged: tuple[str, ...] = ()  # looked at and already right: nothing written
     refused: tuple[Refusal, ...] = ()
     notes: tuple[str, ...] = ()
+    checked: str | None = (
+        None  # a page whose own check ran as part of this operation (set-status done)
+    )
+    problems: tuple[Any, ...] = ()  # that check's problems, in the catalogue's order
 
     @property
     def ok(self) -> bool:
@@ -74,6 +79,18 @@ class Result:
         out += [f"unchanged {p}" for p in self.unchanged]
         out += [str(r) for r in self.refused]
         out += [f"note: {n}" for n in self.notes]
+        if self.checked is not None:
+            out += [p.render() for p in self.problems]
+            e = sum(p.severity == "error" for p in self.problems)
+            w = len(self.problems) - e
+            out.append(
+                f"check of {self.checked}: "
+                + (
+                    f"{e} error{'' if e == 1 else 's'}, {w} warning{'' if w == 1 else 's'}"
+                    if self.problems
+                    else "no problems"
+                )
+            )
         if not (self.created or self.changed or self.unchanged or self.refused):
             out.append(f"{self.operation}: nothing to do")
         return out

@@ -5,18 +5,18 @@ and nothing else in the file; line endings stay as they were.
 """
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
-from scat_kg.checks import check_page_at_done, fixes
+from scat_kg.checks import check_page, check_page_at_done, fixes
 from scat_kg.contract import SCHEMA_VERSION
 from scat_kg.fix import FixOption
 from scat_kg.ops.common import find_page, open_vault
 from scat_kg.ops.files import NotUtf8, join_lines, line_ending, read_lines, replace_file
 from scat_kg.ops.result import Refusal, Result, refused
 from scat_kg.tbox import TBOX
-from scat_kg.vault import Page, Vault
+from scat_kg.vault import Page, Vault, read_vault
 
 SCOPES = ("page", "neighborhood", "vault")
 
@@ -150,6 +150,15 @@ def _done_refusal(page: Page, errors) -> Refusal:
     )
 
 
+def _with_check(result: Result, status: str, root: Path, path: str) -> Result:
+    """At `done`, add the page's own check outcome (page scope, read after the write; nothing is written)."""
+    if status != "done":
+        return result
+    vault = read_vault(root)
+    page = next(p for p in vault.pages if p.path == path)
+    return replace(result, checked=path, problems=check_page(vault, page).problems)
+
+
 def set_status(name: str, status: str, *, root: str | Path = ".") -> Result:
     op = "set-status"
     if status not in TBOX.statuses:
@@ -226,7 +235,8 @@ def set_status(name: str, status: str, *, root: str | Path = ".") -> Result:
             comment = " " + comment
         was = f"was {page.status}" if isinstance(page.status, str) else "was empty"
         if page.status == status and isinstance(page.status, str):
-            return Result(op, unchanged=(page.path,), notes=(f"status is already {status}",))
+            same = Result(op, unchanged=(page.path,), notes=(f"status is already {status}",))
+            return _with_check(same, status, vault.root, page.path)
         lines[at - 1] = (f"{m['key']}: {status}{comment}", eol)
     try:
         replace_file(path, join_lines(lines, bom))
@@ -235,4 +245,5 @@ def set_status(name: str, status: str, *, root: str | Path = ".") -> Result:
             op,
             refused=(Refusal(page.path, f"could not write: {e}", "check the file's permissions"),),
         )
-    return Result(op, changed=(page.path,), notes=(f"`status` set to {status} ({was})",))
+    done = Result(op, changed=(page.path,), notes=(f"`status` set to {status} ({was})",))
+    return _with_check(done, status, vault.root, page.path)

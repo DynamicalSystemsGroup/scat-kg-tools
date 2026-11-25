@@ -63,7 +63,7 @@ def test_stub_twice_changes_nothing_the_second_time(make_vault, snap):
     stub("a", "concern", root=root)
     before = snap(root)
     r = stub("a", "concern", root=root)
-    assert not r.ok and "already" in str(r) and not r.created
+    assert r.ok and r.unchanged == ("concern/a.md",) and "already" in str(r) and not r.created
     assert snap(root) == before
 
 
@@ -78,7 +78,7 @@ def test_stub_twice_changes_nothing_the_second_time(make_vault, snap):
         # retired on purpose: the removed relation type is refused
         ("a", "heldby", "use one of"),
         ("a", "nonsense", "use one of"),
-        ("taken", "concern", "already"),
+        ("taken", "affordance", "already"),
         ("TAKEN", "concern", "a-z"),  # not a slug: the fix offers the derived name
         ("notes", "concern", "already"),  # a Markdown file that is not a page still blocks the name
     ],
