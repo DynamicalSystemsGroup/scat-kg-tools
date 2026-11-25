@@ -7,7 +7,7 @@ description: "Ethnographers in online forums feed their analysis back to the com
 timeframe: past
 ---
 
-Source: inputs/koi-01-the-ethnographic-loop.md
+Source: research/range/koi/inputs/koi-01-the-ethnographic-loop.md
 
 From the point of view of the [[ethnographers|ethnographers]], who work in online forum communities that use KOI. Their method is participatory: they do not observe from outside, the [[community-members|community]] takes part in collecting, and the ethnographers respond to what it says. They call the result building the loop, [[closing-the-loop|closing the loop]]: the study is fed back into the community it studies.
 

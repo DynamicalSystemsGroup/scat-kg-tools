@@ -7,7 +7,7 @@ description: "Consent at forum scale was the binding problem for the ethnographe
 timeframe: past
 ---
 
-Source: inputs/koi-02-consent-and-the-ethics-committee-gate.md
+Source: research/range/koi/inputs/koi-02-consent-and-the-ethics-committee-gate.md
 
 From the point of view of the [[ethnographers|ethnography working group]], including its principal investigator. They found ethnographic research in online forums hard. The binding problem was [[legitimate-consent-at-forum-scale|consent]]: a large forum is pseudonymous, and the principal investigator had to show a university human-research [[ethics-committees|ethics committee]] that consent could be captured legitimately at that scale. There was also a quiet limit nobody had spoken of, [[attention-limit-on-participation|how many people could take part]], since one ethnographer's attention bounds what can be collected.
 
