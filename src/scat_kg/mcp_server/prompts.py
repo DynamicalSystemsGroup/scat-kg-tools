@@ -1,8 +1,8 @@
-"""The prompts and the rules text of the MCP server. Each cites `contracts/assistant.md`, which rules."""
+"""The prompts and the rules text of the MCP server. Each cites `contracts/assistant.md`."""
 
 CITE = "contracts/assistant.md"
 
-RULES = f"""The assistant's rules (`{CITE}`; where this differs from that file, the file rules).
+RULES = f"""The assistant's rules (`{CITE}`).
 Three actors: the coder owns interpretation; the tool owns conformance; you, the assistant, help and hold no authority.
 You may: draft narrative text for the coder to read and edit, as text in your reply; propose which nodes and links an
 account names, for the coder to confirm; call the tool's operations and views and report what they return; explain a

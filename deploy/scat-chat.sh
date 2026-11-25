@@ -283,7 +283,7 @@ teardown() {
     if [ -z "$bad" ]; then
         RESULT="Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was replaced, and your clipboard holds no key."
     else
-        RESULT="Stopped, but I could not confirm:$bad Click SCAT Chat again, then Stop, or restart your Mac, to be sure."
+        RESULT="Stopped, but I could not confirm:$bad click SCAT Chat again, then Stop, or restart your Mac, to be sure."
     fi
 }
 

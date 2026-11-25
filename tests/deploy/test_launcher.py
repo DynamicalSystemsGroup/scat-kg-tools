@@ -177,7 +177,7 @@ def test_stop_that_cannot_confirm_says_what_to_click(rig):
     rig.run("start")
     r = rig.run("stop", SCAT_CHAT_TAILSCALE=str(rig.bin / "nope"))
     assert "could not confirm" in r.stdout
-    assert "Click SCAT Chat again, then Stop, or restart your Mac" in r.stdout
+    assert "click SCAT Chat again, then Stop, or restart your Mac" in r.stdout
 
 
 def test_missing_tailscale(rig):

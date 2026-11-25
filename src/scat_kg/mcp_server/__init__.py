@@ -4,5 +4,5 @@
     scat-mcp --vault PATH --stdio                                               # stdio
 
 Needs the extra `mcp`: `pip install "scat-kg[mcp]"`. `import scat_kg` never imports this package.
-The assistant's file, `contracts/assistant.md`, rules what the assistant may and may not do.
+The assistant's file, `contracts/assistant.md`, states what the assistant may and may not do.
 """
