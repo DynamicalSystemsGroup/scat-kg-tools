@@ -1,0 +1,20 @@
+[project]
+name = "scat-chat-path-server"
+version = "0.0.0"
+description = "Throwaway spike: MCP server with two scat-kg checks"
+requires-python = ">=3.12"
+dependencies = ["scat-kg", "mcp>=1.2,<2"]
+
+[dependency-groups]
+dev = ["pytest", "pytest-asyncio"]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+scat-kg = { path = "../..", editable = true }
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "module"
+testpaths = ["tests"]
