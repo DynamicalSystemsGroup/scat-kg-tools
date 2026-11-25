@@ -254,7 +254,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP19-U4r | reviewer (fresh; checks the note against the vault and the word cap), haiku | 1 | 2 | `-` | done |  | 2026-11-25T04:23:25-05:00 | every claim in the note tabulated against the tool and the public source; 4 wording fixes |
 | WP20-U9 | technical writer (docs W1 to W7), sonnet | 3 | 3 | `wp20c/u1` | done |  | 2026-11-25 | first-time reviewer PASS; PM rendered check at 375 px |
 | WP20-U10 | Python developer (W9 candidates off by default, W10a, W10b), sonnet | 5 | 5 | `wp20c/u10` | done |  | 2026-11-25 | 1 push-back, 2 review rounds; 2289 tests |
-| WP20-UA2 | UA-A round 2, manual path (4 fresh testers: 3 Haiku, 1 Sonnet), haiku | 8 |  | none | in review | ACE dispositions of X1 to X10 |  |  |
+| WP20-UA2 | UA-A round 2, manual path (4 fresh testers: 3 Haiku, 1 Sonnet), haiku | 8 | 8 | none | done |  | 2026-11-25T06:49:12-05:00 | all four reached J10, no blocking finding; dispositions in D-101 |
+| WP20-U11 | technical writer (docs X1, X5, X3), sonnet | 2 | 2 | `wp20c/u11` | done |  | 2026-11-25T06:49:12-05:00 | first-time reviewer PASS, two minor fixes; 48 docs tests; no UA-A round 3 (D-101) |
 
 ## Iterations and velocity
 
@@ -287,6 +288,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 25 | WP18-U1 to U5 and their reviews, WP19-U1 to U4 and their reviews (WP18-R4 queued, the ACE's) | 64 | 78 | 1.22 | 1.26 h | 61.9 |
 | 26 | WP18-U6, U6r, U7, U7r (added by the ACE: the zero-edge warning of G1, and the Docker Desktop path) | 7 | 10 | 1.43 | 0.25 h | 40.0 |
 | 27 | WP18-U7f, U7fr (CI fix: the launcher's missing-docker test made hermetic) | 2 | 2 | 1.00 | 0.1 h | 20.0 |
+| 28 | WP20-U2 to U8 | 26 | 26 | 1.00 | 0.4 h | 65.0 |
+| 29 | WP20-U9, U10 | 8 | 8 | 1.00 | 1.0 h | 8.0 |
+| 30 | WP20-U11, WP20-UA2 | 10 | 10 | 1.00 | 0.1 h | 100.0 |
 
 ## Velocity and forecast
 
@@ -297,6 +301,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP20 manual path passed UA-A round 2 (D-101; no round 3). U11 (X1, X5, X3 docs sentences) merged: tools `dev` 585630c, template `dev` 31667fc pinning it, docs-test pin set to 31667fc. Iteration 30 closed: 10 est, 10 realized, 0.1 h (overlapping, noisy). On estimate. `check_metrics.py --accept WP20` still lists other WP20 units not done.
 
 Current: WP20 manual-path candidate on `dev` (tools 7d17534 plus the docs-test pin f6b79b8; template 826bc99 pinning 7d17534; CI green in both; R-6 passed on a fresh clone, uv preinstalled, declared). D-100's fixes are merged (U9 docs W1 to W7, U10 candidates on request and the mention rule), each reviewed by a fresh reviewer. UA-A round 2 run: p1 and p1b (Haiku, Python session through J10), p2 (Haiku, command line), p3 (Sonnet); all reached J10 with a clean check, tag, commit and recipient; no blocking finding; findings X1 to X10 with proposed dispositions in `acceptance/reports/wp20-r2-findings.md`, waiting on the ACE. Chat-path rounds and WP18-R4 wait for the chief engineer's sittings. Pending ruling: uv preinstalled vs MISSION 'uv not installed'.
 
