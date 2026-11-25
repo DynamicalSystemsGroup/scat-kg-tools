@@ -27,34 +27,50 @@ Check and work on a SCAT knowledge-graph vault. Every command has a REPL twin
 
 positional arguments:
   <command>
-    check        Check the vault against the rules. PAGE is a page name or its
-                 path from the vault folder; without it, the whole vault.
-                 Writes nothing.
-    status       Show each page's status and the counts. PAGE is a page name
-                 or its path from the vault folder; without it, the whole
-                 vault.
-    set-status   Set a page's status to stub, draft or done.
-    index        Write the index page `index/<type>.base` of each type that
-                 has none. Never rewrites one.
-    stub         Create a stub page: a node (group, concern, affordance or
-                 technology) or a narrative.
-    stub-links   Create the node pages that the ends of rows link and the
-                 vault lacks. PAGE limits it to one page.
-    record-edge  Record an edge: add its row to each narrative named by
-                 --told-by that has none, stubbing a missing node or
-                 narrative. Leaves the links as they are. Refuses a narrative
-                 that is done.
-    remove-edge  Remove an edge: delete its rows, from the narratives named by
-                 --told-by or, without it, from every narrative that tells it.
-                 Leaves the links. Refuses a narrative that is done.
+    check         Check the vault against the rules. PAGE is a page name or
+                  its path from the vault folder; without it, the whole vault.
+                  Writes nothing.
+    status        Show each page's status and the counts. PAGE is a page name
+                  or its path from the vault folder; without it, the whole
+                  vault.
+    set-status    Set a page's status to stub, draft or done.
+    index         Write the index page `index/<type>.base` of each type that
+                  has none. Never rewrites one.
+    stub          Create a stub page: a node (group, concern, affordance or
+                  technology) or a narrative.
+    stub-links    Create the node pages that the ends of rows link and the
+                  vault lacks. PAGE limits it to one page.
+    record-edge   Record an edge: add its row to each narrative named by
+                  --told-by that has none, stubbing a missing node or
+                  narrative. Leaves the links as they are. Refuses a narrative
+                  that is done.
+    remove-edge   Remove an edge: delete its rows, from the narratives named
+                  by --told-by or, without it, from every narrative that tells
+                  it. Leaves the links. Refuses a narrative that is done.
+    fingerprint   Show a narrative's fingerprint: its nodes by layer, the
+                  edges its rows tell, and the links that have no row
+                  (candidates). NARRATIVE is a name; without it, every
+                  narrative. Writes nothing.
+    edges         Show every edge of one type, with the narratives that tell
+                  it and its status. Writes nothing.
+    layered       Show the layered view: the union of the fingerprints of the
+                  narratives named by --narrative, or, without it, of every
+                  narrative. Writes nothing.
+    trace         Follow edges from a node: up toward the groups, down toward
+                  the technologies, or both. The node itself is left out.
+                  Writes nothing.
+    export-edges  Write each edge table to DIR as `<type>.csv` and
+                  `<type>.md`. Overwrites a file only when its content
+                  differs; makes DIR if it is not there. Refuses where `scat
+                  edges` would, and then writes nothing.
 
 options:
-  -h, --help     show this help message and exit
+  -h, --help      show this help message and exit
 
 Run `scat <command> --help` for a command.
 ```
 
-`scat` has eight commands. Each prints a message and exits with a code:
+`scat` has thirteen commands. Each prints a message and exits with a code:
 
 | Exit code | Meaning |
 |---|---|
@@ -87,6 +103,9 @@ Every command takes `--root ROOT`, the vault folder (default: the current folder
         scat_kg.stub_links()                # or stub_links("x")
         scat_kg.record_edge("holds", "a", "b", ["narrative-name"], note="")
         scat_kg.remove_edge("a", "b")       # or remove_edge("a", "b", ["narrative-name"])
+    scat_kg.load()                      # the knowledge graph, derived from the pages
+    scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
+    scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
 
     Each call takes `root=` (the vault folder; default: the current directory) and returns an object whose
     `str()` is the message the `scat` command prints, and which prints as that message. `.ok` is False when
@@ -834,6 +853,512 @@ $ uv run scat remove-edge study-circle reading-shelf --json
       "note": ""
     }
   ]
+}
+```
+
+## scat fingerprint
+
+```text
+usage: scat fingerprint [-h] [--root ROOT] [--json] [NARRATIVE]
+
+Show a narrative's fingerprint: its nodes by layer, the edges its rows tell, and the links that have no row (candidates). NARRATIVE is a name; without it, every narrative. Writes nothing.
+
+positional arguments:
+  NARRATIVE    show this narrative only
+
+options:
+  -h, --help   show this help message and exit
+  --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
+
+REPL: `scat_kg.fingerprint()`, `scat_kg.fingerprint("<narrative>")`
+```
+
+Shows what one narrative tells: its nodes by layer, the edges its rows tell (each with its status and every narrative that tells it), and the candidates, which are links between two nodes that an edge type fits and that have no row. Without `NARRATIVE` it shows every narrative, in path order. It writes nothing and never shows a relationship annotation.
+
+It refuses, writing nothing, when the name is not a narrative, when two pages share the name, and when a page it draws has an error: the refusal carries those problems with their fixes.
+
+Exit codes: 0, or 1 for a refusal.
+
+=== "Python"
+
+    ```python
+    scat_kg.fingerprint("groups-under-a-cap-pitch")
+    ```
+
+    ```text
+    fingerprint groups-under-a-cap-pitch (architecture, done)
+      concern
+        anonymity [draft]
+      affordance
+        groups-clustered-under-a-cap [done]
+      technology
+        cap-setting [done]
+      edges
+        addressed-by: anonymity -> groups-clustered-under-a-cap [done; told by groups-under-a-cap-pitch, notes-at-a-chatham-house-session]
+        provided-by: groups-clustered-under-a-cap -> cap-setting [done; told by groups-under-a-cap-pitch]
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat fingerprint groups-under-a-cap-pitch
+    ```
+
+    ```text
+    fingerprint groups-under-a-cap-pitch (architecture, done)
+      concern
+        anonymity [draft]
+      affordance
+        groups-clustered-under-a-cap [done]
+      technology
+        cap-setting [done]
+      edges
+        addressed-by: anonymity -> groups-clustered-under-a-cap [done; told by groups-under-a-cap-pitch, notes-at-a-chatham-house-session]
+        provided-by: groups-clustered-under-a-cap -> cap-setting [done; told by groups-under-a-cap-pitch]
+    ```
+
+With `--json`:
+
+```text
+$ uv run scat fingerprint groups-under-a-cap-pitch --json
+```
+
+```json
+{
+  "schema_version": 2,
+  "kind": "view",
+  "operation": "fingerprint",
+  "ok": true,
+  "narratives": [
+    {
+      "name": "groups-under-a-cap-pitch",
+      "kind": "architecture",
+      "status": "done",
+      "nodes": [
+        {
+          "name": "anonymity",
+          "type": "concern",
+          "status": "draft"
+        },
+        {
+          "name": "groups-clustered-under-a-cap",
+          "type": "affordance",
+          "status": "done"
+        },
+        {
+          "name": "cap-setting",
+          "type": "technology",
+          "status": "done"
+        }
+      ],
+      "edges": [
+        {
+          "type": "addressed-by",
+          "from": "anonymity",
+          "to": "groups-clustered-under-a-cap",
+          "narratives": [
+            "groups-under-a-cap-pitch",
+            "notes-at-a-chatham-house-session"
+          ],
+          "status": "done"
+        },
+        {
+          "type": "provided-by",
+          "from": "groups-clustered-under-a-cap",
+          "to": "cap-setting",
+          "narratives": [
+            "groups-under-a-cap-pitch"
+          ],
+          "status": "done"
+        }
+      ],
+      "candidates": []
+    }
+  ]
+}
+```
+
+## scat edges
+
+```text
+usage: scat edges [-h] [--root ROOT] [--json] TYPE
+
+Show every edge of one type, with the narratives that tell it and its status. Writes nothing.
+
+positional arguments:
+  TYPE         one of: holds (group then concern), addressed-by (concern then
+               affordance), provided-by (affordance then technology)
+
+options:
+  -h, --help   show this help message and exit
+  --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
+
+REPL: `scat_kg.edge_table("<type>")`
+```
+
+Shows every edge of one type, in the order of the graph: the two ends, the narratives that tell it and its status. It writes nothing.
+
+Exit codes: 0, or 1 for a refusal (a type that is not one of the three, a page it draws that has an error).
+
+=== "Python"
+
+    ```python
+    scat_kg.edge_table("holds")
+    ```
+
+    ```text
+    edges holds (group -> concern): 2
+        holds: facilitator-analysts -> anonymity [done; told by notes-at-a-chatham-house-session]
+        holds: project-leads -> intent-without-drift [done; told by false-start-and-clean-restart]
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat edges holds
+    ```
+
+    ```text
+    edges holds (group -> concern): 2
+        holds: facilitator-analysts -> anonymity [done; told by notes-at-a-chatham-house-session]
+        holds: project-leads -> intent-without-drift [done; told by false-start-and-clean-restart]
+    ```
+
+With `--json`:
+
+```text
+$ uv run scat edges holds --json
+```
+
+```json
+{
+  "schema_version": 2,
+  "kind": "view",
+  "operation": "edges",
+  "ok": true,
+  "edge_type": "holds",
+  "from_layer": "group",
+  "to_layer": "concern",
+  "rows": [
+    {
+      "type": "holds",
+      "from": "facilitator-analysts",
+      "to": "anonymity",
+      "narratives": [
+        "notes-at-a-chatham-house-session"
+      ],
+      "status": "done"
+    },
+    {
+      "type": "holds",
+      "from": "project-leads",
+      "to": "intent-without-drift",
+      "narratives": [
+        "false-start-and-clean-restart"
+      ],
+      "status": "done"
+    }
+  ]
+}
+```
+
+## scat layered
+
+```text
+usage: scat layered [-h] [--root ROOT] [--json] [--narrative NARRATIVE]
+
+Show the layered view: the union of the fingerprints of the narratives named by --narrative, or, without it, of every narrative. Writes nothing.
+
+options:
+  -h, --help            show this help message and exit
+  --root ROOT           the vault folder, the one with scat.toml (default:
+                        here)
+  --json                print the result as one JSON document (machine-
+                        interface contract), nothing else
+  --narrative NARRATIVE
+                        include this narrative; repeat it for each narrative
+
+REPL: `scat_kg.layered()`, `scat_kg.layered(["<narrative>"])`
+```
+
+Shows the layered view: the union of the fingerprints of the narratives you name, or of every narrative when you name none. The nodes are grouped by layer, in layer order, and the edges are the rows those narratives tell; there are no candidates. It writes nothing.
+
+Exit codes: 0, or 1 for a refusal (a name that is not a narrative, a page it draws that has an error).
+
+=== "Python"
+
+    ```python
+    scat_kg.layered(["groups-under-a-cap-pitch"])
+    ```
+
+    ```text
+    layered view of groups-under-a-cap-pitch
+      concern
+        anonymity [draft]
+      affordance
+        groups-clustered-under-a-cap [done]
+      technology
+        cap-setting [done]
+      edges
+        addressed-by: anonymity -> groups-clustered-under-a-cap [done; told by groups-under-a-cap-pitch, notes-at-a-chatham-house-session]
+        provided-by: groups-clustered-under-a-cap -> cap-setting [done; told by groups-under-a-cap-pitch]
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat layered --narrative groups-under-a-cap-pitch
+    ```
+
+    ```text
+    layered view of groups-under-a-cap-pitch
+      concern
+        anonymity [draft]
+      affordance
+        groups-clustered-under-a-cap [done]
+      technology
+        cap-setting [done]
+      edges
+        addressed-by: anonymity -> groups-clustered-under-a-cap [done; told by groups-under-a-cap-pitch, notes-at-a-chatham-house-session]
+        provided-by: groups-clustered-under-a-cap -> cap-setting [done; told by groups-under-a-cap-pitch]
+    ```
+
+With `--json`:
+
+```text
+$ uv run scat layered --narrative groups-under-a-cap-pitch --json
+```
+
+```json
+{
+  "schema_version": 2,
+  "kind": "view",
+  "operation": "layered",
+  "ok": true,
+  "narratives": [
+    "groups-under-a-cap-pitch"
+  ],
+  "nodes": {
+    "group": [],
+    "concern": [
+      {
+        "name": "anonymity",
+        "type": "concern",
+        "status": "draft"
+      }
+    ],
+    "affordance": [
+      {
+        "name": "groups-clustered-under-a-cap",
+        "type": "affordance",
+        "status": "done"
+      }
+    ],
+    "technology": [
+      {
+        "name": "cap-setting",
+        "type": "technology",
+        "status": "done"
+      }
+    ]
+  },
+  "edges": [
+    {
+      "type": "addressed-by",
+      "from": "anonymity",
+      "to": "groups-clustered-under-a-cap",
+      "narratives": [
+        "groups-under-a-cap-pitch",
+        "notes-at-a-chatham-house-session"
+      ],
+      "status": "done"
+    },
+    {
+      "type": "provided-by",
+      "from": "groups-clustered-under-a-cap",
+      "to": "cap-setting",
+      "narratives": [
+        "groups-under-a-cap-pitch"
+      ],
+      "status": "done"
+    }
+  ]
+}
+```
+
+## scat trace
+
+```text
+usage: scat trace [-h] [--root ROOT] [--json] [--direction DIRECTION] NODE
+
+Follow edges from a node: up toward the groups, down toward the technologies, or both. The node itself is left out. Writes nothing.
+
+positional arguments:
+  NODE                  the name of a group, concern, affordance or technology
+
+options:
+  -h, --help            show this help message and exit
+  --root ROOT           the vault folder, the one with scat.toml (default:
+                        here)
+  --json                print the result as one JSON document (machine-
+                        interface contract), nothing else
+  --direction DIRECTION
+                        up, down or both (default: both)
+
+REPL: `scat_kg.trace("<node>")`, `scat_kg.trace("<node>", "<direction>")`
+```
+
+Follows edges from a node, and shows the nodes it reaches in layer order and the edges it walked. `up` goes toward the groups, `down` toward the technologies, `both` (the default) does both. It writes nothing.
+
+Exit codes: 0, or 1 for a refusal (a name that is not a node, a direction that is not one of the three, a page it draws that has an error).
+
+=== "Python"
+
+    ```python
+    scat_kg.trace("anonymity", "up")
+    ```
+
+    ```text
+    trace anonymity (up)
+     up
+      group
+        facilitator-analysts [done]
+      edges
+        holds: facilitator-analysts -> anonymity [done; told by notes-at-a-chatham-house-session]
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat trace anonymity --direction up
+    ```
+
+    ```text
+    trace anonymity (up)
+     up
+      group
+        facilitator-analysts [done]
+      edges
+        holds: facilitator-analysts -> anonymity [done; told by notes-at-a-chatham-house-session]
+    ```
+
+With `--json`:
+
+```text
+$ uv run scat trace anonymity --direction up --json
+```
+
+```json
+{
+  "schema_version": 2,
+  "kind": "view",
+  "operation": "trace",
+  "ok": true,
+  "node": "anonymity",
+  "direction": "up",
+  "up": [
+    {
+      "name": "facilitator-analysts",
+      "type": "group",
+      "status": "done"
+    }
+  ],
+  "down": [],
+  "edges": [
+    {
+      "type": "holds",
+      "from": "facilitator-analysts",
+      "to": "anonymity",
+      "narratives": [
+        "notes-at-a-chatham-house-session"
+      ],
+      "status": "done"
+    }
+  ]
+}
+```
+
+## scat export-edges
+
+```text
+usage: scat export-edges [-h] [--root ROOT] [--json] --out DIR
+
+Write each edge table to DIR as `<type>.csv` and `<type>.md`. Overwrites a file only when its content differs; makes DIR if it is not there. Refuses where `scat edges` would, and then writes nothing.
+
+options:
+  -h, --help   show this help message and exit
+  --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
+  --out DIR    the folder the tables go in (no default)
+
+REPL: `scat_kg.export_edges("<dir>")`
+```
+
+Writes the three edge tables, one CSV and one Markdown file each, into `DIR`. The CSV file has the columns `from`, `to`, `narratives` (joined by `;`) and `status`. The Markdown file is a generated heading, one sentence and a table. Names are plain text, so the files add no page, link or row to a vault, even when `DIR` is inside it. Of the five commands here, it is the only one that writes.
+
+A file that is there is rewritten only when its content differs, so running it again changes nothing. It refuses, writing nothing, where `scat edges` would, and when `DIR` is a file. Paths inside the vault folder are shown from it; a folder outside it is shown as you gave it.
+
+Exit codes: 0, or 1 for a refusal.
+
+=== "Python"
+
+    ```python
+    scat_kg.export_edges("tables")
+    ```
+
+    ```text
+    created tables/holds.csv
+    created tables/holds.md
+    created tables/addressed-by.csv
+    created tables/addressed-by.md
+    created tables/provided-by.csv
+    created tables/provided-by.md
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat export-edges --out edge-tables
+    ```
+
+    ```text
+    created edge-tables/holds.csv
+    created edge-tables/holds.md
+    created edge-tables/addressed-by.csv
+    created edge-tables/addressed-by.md
+    created edge-tables/provided-by.csv
+    created edge-tables/provided-by.md
+    ```
+
+With `--json`, a second time:
+
+```text
+$ uv run scat export-edges --out edge-tables --json
+```
+
+```json
+{
+  "schema_version": 2,
+  "kind": "operation",
+  "operation": "export-edges",
+  "ok": true,
+  "created": [],
+  "changed": [],
+  "unchanged": [
+    "edge-tables/holds.csv",
+    "edge-tables/holds.md",
+    "edge-tables/addressed-by.csv",
+    "edge-tables/addressed-by.md",
+    "edge-tables/provided-by.csv",
+    "edge-tables/provided-by.md"
+  ],
+  "refused": [],
+  "notes": []
 }
 ```
 

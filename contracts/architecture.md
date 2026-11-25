@@ -145,8 +145,10 @@ interface, GitHub Desktop, an Obsidian git plugin), not M8.
   (R-8): `record_edge(type, from_, to, told_by, note="")`, `remove_edge(from_, to, told_by=None)`; CLI `scat
   record-edge` and `scat remove-edge`; recording adds a row only where none exists. A relationship annotation is a body
   line with a link, no meaning to the tool (the old field leaves). Bases need Obsidian 1.9 or later. `schema_version` is 2.
-- **[OPEN: WP17] The graph document's shape and each view's parameters.** Constraints: R-17; notebook and M8 return equal
-  view data (R-20).
+- **Decided (WP17): the view document.** Kind `view`; `operation` is `fingerprint`, `edges`, `layered` or `trace`, each a
+  `scat` command with a REPL twin; `schema_version` stays 2. Nodes are `{name, type, status}`; an edge names every
+  narrative that tells it; the fingerprint adds rule-4 candidates. A view refuses, as an operation with `problems`, on an
+  error in a page it draws. `export-edges --out DIR` is the only writer (R-4). Shape: `machine-interface.schema.json`.
 - **[OPEN: WP18] Tool, prompt and skill names; the assistant's file; the view folder.**
 - **Decided (D-084): the chat route.** v0.1: M8 on the coder's machine, behind a tunnel with an API key. Later:
   governed compute. RS3 picks the tunnel and terminal-free git; M8's contract is unchanged.
