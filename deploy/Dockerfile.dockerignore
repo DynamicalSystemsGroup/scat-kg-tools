@@ -1,0 +1,7 @@
+# Keep the build context to what the Dockerfile copies.
+*
+!pyproject.toml
+!src
+!ontology/scat.ttl
+**/__pycache__
+**/*.pyc
