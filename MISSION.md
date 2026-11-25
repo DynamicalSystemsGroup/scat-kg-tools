@@ -124,9 +124,12 @@ follow links in Obsidian; and follow documentation literally, step by step. They
 each has its own user experience:
 1. **By hand in Obsidian**, with the tools in an **interactive session**: the Python REPL (`import scat_kg`), with the
    `scat` CLI as an equal path to the same operations and messages. The docs lead with the REPL, because CLI commands
-   get long when run through uv.
-2. **Through a chat with an MCP server**, editing in Obsidian. This user must not be required to open a terminal.
-3. **Through an IDE with agents**, such as Cursor, or VS Code with an agent.
+   get long when run through uv. Its future state is an Obsidian community plugin, which is out of scope for v0.1
+   (see Non-goals).
+2. **Through a chat with an MCP server**, editing in Obsidian. This user must not be required to open a terminal. The docs explain how to
+   configure inference.coop, as an example of an OpenAI-API-compatible interface, to use the MCP server.
+3. **Through an IDE with agents**, such as Cursor, or VS Code with an agent. The docs point to the skills that help the
+   AI coding assistant set itself up.
 
 Whatever the path, the machine does mechanical work only, such as transcription and conformance checking. The interpretive
 act, and the check that meaning is preserved, stay with the human coder, in Obsidian.
