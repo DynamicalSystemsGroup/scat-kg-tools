@@ -22,7 +22,7 @@ def vault(make_vault):
             "concern/b.md": fm("concern", "B", "done"),
             "concern/c.md": fm("concern", "C", "draft"),
             "concern/d.md": fm("concern", "D", "stub"),
-            "narrative/h.md": narrative("H", ["| holds | [[g]] | [[a]] | |"], "draft"),
+            "narrative/h.md": narrative("H", ["| [[g]] | holds | [[a]] | |"], "draft"),
             "group/g.md": fm("group", "G", "done"),
             "concern/far.md": fm("concern", "Far", "done", "", "Pulls against [[d]]\n"),
         }

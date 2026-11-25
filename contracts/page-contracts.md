@@ -152,10 +152,10 @@ is fixed):
 ```
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[borrowers]] | [[quick-checkout]] | Said twice in the first hour. |
-| is addressed by | [[quick-checkout]] | [[self-checkout]] | Covers part of the concern. |
+| [[borrowers]] | holds | [[quick-checkout]] | Said twice in the first hour. |
+| [[quick-checkout]] | is addressed by | [[self-checkout]] | Covers part of the concern. |
 ```
 
 **What a narrative's links are.** Every link on the page: the account, the list, the table's ends and its notes. Its
@@ -168,7 +168,7 @@ given (the fingerprint view lists the candidate pair).
   the name compared without regard to case and ignoring spaces at its ends. "Under" means after the heading and
   before the next heading of the same or a higher level. No such heading, or no table under it, means the narrative
   tells no edge. A second table, or a second such heading, is not read: its rows tell no edge, and the catalogue grades it. A heading spelled otherwise, and a table on a page that is not a narrative, are not read and nothing is reported.
-- *Columns.* The header row has the four column names of the TBox, in its order: `type`, `from`, `to`, `note`, each
+- *Columns.* The header row has the four column names of the TBox, in its order: `from`, `type`, `to`, `note`, each
   compared without regard to case. The next line is the separator row (`|---|`, with or without alignment colons).
   The table is the contiguous lines whose first non-space character is `|`, from the header row to the first line that
   is not such a line; each line after the separator row is a row. A heading or a table inside a fenced code block is not
@@ -193,6 +193,8 @@ given (the fingerprint view lists the candidate pair).
   is one link; the name is read; an embed `![[name]]` is accepted as an end).
 - *The `note` cell* is free text on one line, and it may be empty. A `|` in it is written `\|`. It has no meaning to
   the tool; a link in it is a link of the narrative like any other.
+
+**Skimmable.** A row reads as a sentence, subject, predicate, object: `from`, `type`, `to` ("borrowers holds quick-checkout"), with the `note` after it, so each edge name (the verb of its type) reads from the `from` node to the `to` node. A table in any other order is refused (SCAT-*-TABLE-HEADER).
 
 **One row, one edge told.** The row is the narrative's telling of the pair (type, from, to). If a second narrative
 tells the same pair it has its own row with its own note; nothing is copied between them.
@@ -247,7 +249,7 @@ title: "<the name with each - replaced by a space, first letter upper case>"
 ---
 ```
 
-and an empty body. For example, the row `| is provided by | [[safety-briefing]] | [[booking-app]] | |` creates
+and an empty body. For example, the row `| [[safety-briefing]] | is provided by | [[booking-app]] | |` creates
 `affordance/safety-briefing.md` with type `affordance` and title "Safety briefing", and `technology/booking-app.md`.
 The author edits the title after. A row whose type cell is unknown entails nothing, and neither does an end that
 already reaches a page of another type: that is a problem of the table (4) and the author decides whether the row or the page's
@@ -380,7 +382,7 @@ One account on one page: the account, an optional list of links, and the table o
 | `timeframe` | `past`, `future` or `mixed` | done |
 | `kind` | `scenario` or `architecture` | optional |
 
-The page's heading of the table is `Edges told`; its columns are `type`, `from`, `to`, `note`.
+The page's heading of the table is `Edges told`; its columns are `from`, `type`, `to`, `note`.
 
 ```
 ---
@@ -396,9 +398,9 @@ The queue was out of the door by ten. A [[borrowers|borrower]] wanted [[quick-ch
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[borrowers]] | [[quick-checkout]] | Said twice in the first hour. |
+| [[borrowers]] | holds | [[quick-checkout]] | Said twice in the first hour. |
 ```
 
 ### `index`
@@ -466,7 +468,7 @@ The types are the TBox's six `scat:key` values: `group`, `concern`, `affordance`
 `index`. The statuses are the TBox's `StatusValues`: `stub`, `draft`, `done`. `timeframe` takes `past`, `future`,
 `mixed` and `kind` takes `scenario`, `architecture`, as the TBox's value sets. The edge types, with their slugs, verbs
 and the node types of their two ends, are the table in 4, and the TBox's three `scat:EdgeType` properties
-(`scat:Heldby`, `scat:Addresses`, `scat:Attributes`). The heading `Edges told` and the columns `type`, `from`, `to`,
+(`scat:Heldby`, `scat:Addresses`, `scat:Attributes`). The heading `Edges told` and the columns `from`, `type`, `to`,
 `note`, in that order, with the cell each holds, are the TBox's `scat:tableHeading`, `scat:tableColumns` and
 `scat:cellHolds`. Things in this document that the TBox does not state (names, folders, how the table's cells are read,
 the form of the Base files, the cap file, what a link entails, how an edge's status is derived) are the contract's own.

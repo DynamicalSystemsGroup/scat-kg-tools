@@ -37,7 +37,7 @@ def seed(name, statuses=("draft",), allow=()):
 ALL = STATUSES
 E_ = "error"
 W_ = "warning"
-HEADER = "| type | from | to | note |"
+HEADER = "| from | type | to | note |"
 SEP = "|---|---|---|---|"
 NOTE_FIX = "any text beside it belongs in the `note` cell by hand"
 
@@ -783,7 +783,7 @@ def _(v, st):
         + HEADER
         + "\n"
         + SEP
-        + "\n| holds | [[ghost-row]] | [[quick-checkout]] | |\n",
+        + "\n| [[ghost-row]] | holds | [[quick-checkout]] | |\n",
     )
     _body(v, "See [[ghost-row]].")
     e = _dang("ghost-row")
@@ -800,7 +800,7 @@ def _(v, st):
         + HEADER
         + "\n"
         + SEP
-        + "\n| holds | [[ghost-row]] | [[quick-checkout]] | |\n",
+        + "\n| [[ghost-row]] | holds | [[quick-checkout]] | |\n",
     )
     _body(v, "See [[ghost-row]].")
     e = _dang("ghost-row")
@@ -885,7 +885,7 @@ def _(v, st):
 
 @seed("DANGLING-note-cell", ("draft",))
 def _(v, st):
-    set_row(v, 1, "| holds | [[borrowers]] | [[quick-checkout]] | see [[ghost-note]] |")
+    set_row(v, 1, "| [[borrowers]] | holds | [[quick-checkout]] | see [[ghost-note]] |")
     return [_dang("ghost-note", row_line(1))]
 
 
@@ -898,7 +898,7 @@ def _(v, st):
 
 @seed("DANGLING-row-end-is-not-this-rule", ALL)
 def _(v, st):
-    set_row(v, 1, "| holds | [[ghost]] | [[quick-checkout]] | |")
+    set_row(v, 1, "| [[ghost]] | holds | [[quick-checkout]] | |")
     rule, sev = pair("END-NOPAGE", st)
     return [
         Exp(
@@ -1066,7 +1066,7 @@ def _(v, st):
 
 @seed("MENTION-note-cell", ALL)
 def _(v, st):
-    set_row(v, 1, "| holds | [[borrowers]] | [[quick-checkout]] | Raised safe handling here |")
+    set_row(v, 1, "| [[borrowers]] | holds | [[quick-checkout]] | Raised safe handling here |")
     line = v.line(NF, row_line(1))
     col = line.index("safe handling") + 1
     return [
@@ -1133,7 +1133,7 @@ def _(v, st):
 
 @seed("MENTION-from-cell-is-not-mention", ("draft",))
 def _(v, st):
-    set_row(v, 1, "| holds | borrowers | [[quick-checkout]] | |")
+    set_row(v, 1, "| borrowers | holds | [[quick-checkout]] | |")
     return [Exp("SCAT-DRAFT-END-NOLINK", W_, NF, "row 1 cell `from`")]
 
 
@@ -1175,15 +1175,15 @@ def _(v, st):
             where="table header",
             line=13,
             col=1,
-            what="the header row is `| from | to | type | note |`, not `| type | from | to | note |`",
-            fix="the columns must be `type`, `from`, `to`, `note`, in this order: move the cells of the header and of every row; the tool never moves cells",
+            what="the header row is `| from | to | type | note |`, not `| from | type | to | note |`",
+            fix="reorder the columns to `from`, `type`, `to`, `note`: in the header and in every row, move the cells into this order; the tool never moves cells",
         )
     ]
 
 
 @seed("TABLE-HEADER-wrong-name", ALL)
 def _(v, st):
-    _hdr(v, "| kind | from | to | note |")
+    _hdr(v, "| from | kind | to | note |")
     return [
         _tbl(
             "TABLE-HEADER",
@@ -1191,15 +1191,15 @@ def _(v, st):
             where="table header",
             line=13,
             col=1,
-            what="the header row is `| kind | from | to | note |`, not `| type | from | to | note |`",
-            fix="replace the line `| kind | from | to | note |` with `| type | from | to | note |`",
+            what="the header row is `| from | kind | to | note |`, not `| from | type | to | note |`",
+            fix="replace the line `| from | kind | to | note |` with `| from | type | to | note |`",
         )
     ]
 
 
 @seed("TABLE-HEADER-three-columns", ("draft",))
 def _(v, st):
-    _hdr(v, "| type | from | to |")
+    _hdr(v, "| from | type | to |")
     return [
         _tbl(
             "TABLE-HEADER",
@@ -1207,8 +1207,8 @@ def _(v, st):
             where="table header",
             line=13,
             col=1,
-            what="the header row is `| type | from | to |`, not `| type | from | to | note |`",
-            fix="replace the line `| type | from | to |` with `| type | from | to | note |`",
+            what="the header row is `| from | type | to |`, not `| from | type | to | note |`",
+            fix="replace the line `| from | type | to |` with `| from | type | to | note |`",
         )
     ]
 
@@ -1240,12 +1240,12 @@ def _(v, st):
             line=13,
             col=1,
             what=f"the line after the header row is `{ROW1_}`, not a separator row",
-            fix="replace the line `| type | from | to | note |` with two lines, `| type | from | to | note |` then `|---|---|---|---|`",
+            fix="replace the line `| from | type | to | note |` with two lines, `| from | type | to | note |` then `|---|---|---|---|`",
         )
     ]
 
 
-ROW1_ = "| holds | [[borrowers]] | [[quick-checkout]] | Said twice. |"
+ROW1_ = "| [[borrowers]] | holds | [[quick-checkout]] | Said twice. |"
 
 
 @seed("TABLE-HEADER-header-alone", ("draft",))
@@ -1254,7 +1254,7 @@ def _(v, st):
         NF,
         "|---|---|---|---|\n"
         + ROW1_
-        + "\n| is addressed by | [[quick-checkout]] | [[self-checkout]] | |\n",
+        + "\n| [[quick-checkout]] | is addressed by | [[self-checkout]] | |\n",
         "",
     )
     return [
@@ -1265,7 +1265,7 @@ def _(v, st):
             line=13,
             col=1,
             what="there is no separator row after the header row",
-            fix="replace the line `| type | from | to | note |` with two lines, `| type | from | to | note |` then `|---|---|---|---|`",
+            fix="replace the line `| from | type | to | note |` with two lines, `| from | type | to | note |` then `|---|---|---|---|`",
         )
     ]
 
@@ -1276,7 +1276,7 @@ def _row(v, text, n=1):
 
 @seed("TABLE-ROW-a-three-cells", ALL)
 def _(v, st):
-    _row(v, "| holds | [[borrowers]] | [[quick-checkout]] |")
+    _row(v, "| [[borrowers]] | holds | [[quick-checkout]] |")
     return [
         _tbl(
             "TABLE-ROW",
@@ -1284,7 +1284,7 @@ def _(v, st):
             where="row 1",
             line=15,
             col=1,
-            what="the row has 3 cells, not 4 (type, from, to, note)",
+            what="the row has 3 cells, not 4 (from, type, to, note)",
             fix="add an empty note: replace the final `|` with `| |`",
         )
     ]
@@ -1292,7 +1292,7 @@ def _(v, st):
 
 @seed("TABLE-ROW-b-no-closing-bar", ALL)
 def _(v, st):
-    _row(v, "| holds | [[borrowers]] | [[quick-checkout]] | n")
+    _row(v, "| [[borrowers]] | holds | [[quick-checkout]] | n")
     return [
         _tbl(
             "TABLE-ROW",
@@ -1308,7 +1308,7 @@ def _(v, st):
 
 @seed("TABLE-ROW-c-three-cells-no-bar", ("draft",))
 def _(v, st):
-    _row(v, "| holds | [[borrowers]] | [[quick-checkout]]")
+    _row(v, "| [[borrowers]] | holds | [[quick-checkout]]")
     return [
         _tbl(
             "TABLE-ROW",
@@ -1316,7 +1316,7 @@ def _(v, st):
             where="row 1",
             line=15,
             col=1,
-            what="the row has 3 cells, not 4 (type, from, to, note)",
+            what="the row has 3 cells, not 4 (from, type, to, note)",
             fix="write ` | |` after the last cell, which adds the empty note and the closing bar: replace `[[quick-checkout]]` with `[[quick-checkout]] | |`",
         )
     ]
@@ -1324,7 +1324,7 @@ def _(v, st):
 
 @seed("TABLE-ROW-d-five-cells", ("draft",))
 def _(v, st):
-    _row(v, "| holds | [[borrowers]] | [[quick-checkout]] | x | y |")
+    _row(v, "| [[borrowers]] | holds | [[quick-checkout]] | x | y |")
     return [
         _tbl(
             "TABLE-ROW",
@@ -1332,7 +1332,7 @@ def _(v, st):
             where="row 1",
             line=15,
             col=1,
-            what="the row has 5 cells, not 4 (type, from, to, note)",
+            what="the row has 5 cells, not 4 (from, type, to, note)",
             fix_has=("Fix, choose one:", "`\\|`", "delete the row"),
         )
     ]
@@ -1340,7 +1340,7 @@ def _(v, st):
 
 @seed("TABLE-ROW-e-two-cells", ("draft",))
 def _(v, st):
-    _row(v, "| holds | [[borrowers]] |")
+    _row(v, "| [[borrowers]] | holds |")
     return [
         _tbl(
             "TABLE-ROW",
@@ -1348,28 +1348,28 @@ def _(v, st):
             where="row 1",
             line=15,
             col=1,
-            what="the row has 2 cells, not 4 (type, from, to, note)",
-            fix_has=("Fix, choose one:", "delete the row", "`| type | from | to | note |`"),
+            what="the row has 2 cells, not 4 (from, type, to, note)",
+            fix_has=("Fix, choose one:", "delete the row", "`| from | type | to | note |`"),
         )
     ]
 
 
 @seed("TABLE-ROW-escaped-bar-in-note-is-fine", ALL)
 def _(v, st):
-    _row(v, "| holds | [[borrowers]] | [[quick-checkout]] | a \\| b |")
+    _row(v, "| [[borrowers]] | holds | [[quick-checkout]] | a \\| b |")
     return []
 
 
 @seed("TABLE-TYPE-option-1", ALL)
 def _(v, st):
-    _row(v, "| owns | [[borrowers]] | [[quick-checkout]] | |")
+    _row(v, "| [[borrowers]] | owns | [[quick-checkout]] | |")
     return [
         _tbl(
             "TABLE-TYPE",
             st,
             where="row 1 cell `type`",
             line=15,
-            col=3,
+            col=19,
             what="`owns` is not an edge type (holds, is addressed by, is provided by)",
             fix=("Fix, choose one:", ["replace `owns` with `holds`", "delete the row"]),
         )
@@ -1378,14 +1378,14 @@ def _(v, st):
 
 @seed("TABLE-TYPE-near-match", ("draft",))
 def _(v, st):
-    _row(v, "| holdz | [[quick-checkout]] | [[borrowers]] | |")
+    _row(v, "| [[quick-checkout]] | holdz | [[borrowers]] | |")
     return [
         _tbl(
             "TABLE-TYPE",
             st,
             where="row 1 cell `type`",
             line=15,
-            col=3,
+            col=24,
             what="`holdz` is not an edge type (holds, is addressed by, is provided by)",
             fix=("Fix, choose one:", ["replace `holdz` with `holds`", "delete the row"]),
         )
@@ -1394,7 +1394,7 @@ def _(v, st):
 
 @seed("TABLE-TYPE-empty", ("draft",))
 def _(v, st):
-    _row(v, "|  | [[borrowers]] | [[quick-checkout]] | |")
+    _row(v, "| [[borrowers]] |  | [[quick-checkout]] | |")
     return [
         _tbl(
             "TABLE-TYPE",
@@ -1409,7 +1409,7 @@ def _(v, st):
 
 @seed("TABLE-TYPE-unresolved-ends", ("draft",), allow=("SCAT-DRAFT-END-NOPAGE",))
 def _(v, st):
-    _row(v, "| owns | [[ghost-a]] | [[ghost-b]] | |")
+    _row(v, "| [[ghost-a]] | owns | [[ghost-b]] | |")
     return [
         _tbl(
             "TABLE-TYPE",
@@ -1434,8 +1434,8 @@ def _(v, st):
 
 @seed("TABLE-TYPE-slug-and-case-are-fine", ALL)
 def _(v, st):
-    _row(v, "| HOLDS | [[borrowers]] | [[quick-checkout]] | |")
-    _row(v, "| Addressed-By | [[quick-checkout]] | [[self-checkout]] | |", 2)
+    _row(v, "| [[borrowers]] | HOLDS | [[quick-checkout]] | |")
+    _row(v, "| [[quick-checkout]] | Addressed-By | [[self-checkout]] | |", 2)
     return []
 
 
@@ -1445,7 +1445,7 @@ def _lay(frm, to, key_from, key_to, act_from, act_to):
 
 @seed("TABLE-LAYERS-swap", ALL)
 def _(v, st):
-    _row(v, "| holds | [[quick-checkout]] | [[borrowers]] | |")
+    _row(v, "| [[quick-checkout]] | holds | [[borrowers]] | |")
     return [
         _tbl(
             "TABLE-LAYERS",
@@ -1457,7 +1457,7 @@ def _(v, st):
             fix=(
                 "Fix, choose one:",
                 [
-                    "swap the two ends: replace `[[quick-checkout]] | [[borrowers]]` with `[[borrowers]] | [[quick-checkout]]`",
+                    "swap the two ends: replace `[[quick-checkout]] | holds | [[borrowers]]` with `[[borrowers]] | holds | [[quick-checkout]]`",
                     "delete the row",
                 ],
             ),
@@ -1467,7 +1467,7 @@ def _(v, st):
 
 @seed("TABLE-LAYERS-retype", ("draft",))
 def _(v, st):
-    _row(v, "| holds | [[quick-checkout]] | [[self-checkout]] | |")
+    _row(v, "| [[quick-checkout]] | holds | [[self-checkout]] | |")
     return [
         _tbl(
             "TABLE-LAYERS",
@@ -1485,7 +1485,7 @@ def _(v, st):
 
 @seed("TABLE-LAYERS-two-rows-through-a-node", ("draft",))
 def _(v, st):
-    _row(v, "| holds | [[borrowers]] | [[self-checkout]] | |")
+    _row(v, "| [[borrowers]] | holds | [[self-checkout]] | |")
     return [
         _tbl(
             "TABLE-LAYERS",
@@ -1506,7 +1506,7 @@ def _(v, st):
 
 @seed("TABLE-LAYERS-one-end-unresolved", ("draft",), allow=("SCAT-DRAFT-END-NOPAGE",))
 def _(v, st):
-    _row(v, "| holds | [[ghost-g]] | [[borrowers]] | |")
+    _row(v, "| [[ghost-g]] | holds | [[borrowers]] | |")
     return [
         _tbl(
             "TABLE-LAYERS",
@@ -1531,7 +1531,7 @@ def _(v, st):
         + HEADER
         + "\n"
         + SEP
-        + "\n| holds | [[volunteers]] | [[safe-handling]] | |\n",
+        + "\n| [[volunteers]] | holds | [[safe-handling]] | |\n",
     )
     len(v.read(NF).split("\n")) - 6  # heading line
     line = v.read(NF).split("\n").index("## Edges told", 12) + 1
@@ -1560,7 +1560,7 @@ def _(v, st):
         + HEADER
         + "\n"
         + SEP
-        + "\n| holds | [[volunteers]] | [[safe-handling]] | |\n",
+        + "\n| [[volunteers]] | holds | [[safe-handling]] | |\n",
     )
     line = v.read(NF).split("\n").index(HEADER, 14) + 1
     return [
@@ -1584,7 +1584,7 @@ def _(v, st):
         + HEADER
         + "\n"
         + SEP
-        + "\n| holds | [[volunteers]] | [[safe-handling]] | |\n",
+        + "\n| [[volunteers]] | holds | [[safe-handling]] | |\n",
     )
     v.write(
         "concern/safe-handling.md",
@@ -1596,7 +1596,7 @@ def _(v, st):
             + HEADER
             + "\n"
             + SEP
-            + "\n| holds | [[volunteers]] | [[safe-handling]] | |",
+            + "\n| [[volunteers]] | holds | [[safe-handling]] | |",
         ),
     )
     return []
@@ -1604,7 +1604,7 @@ def _(v, st):
 
 @seed("TABLE-DUPLICATE-identical", ALL)
 def _(v, st):
-    v.edit(NF, ROW1 + "\n", ROW1 + "\n| holds | [[borrowers]] | [[quick-checkout]] | |\n")
+    v.edit(NF, ROW1 + "\n", ROW1 + "\n| [[borrowers]] | holds | [[quick-checkout]] | |\n")
     return [
         _tbl(
             "TABLE-DUPLICATE",
@@ -1613,7 +1613,7 @@ def _(v, st):
             line=16,
             col=1,
             what="tells the same edge as row 1 (`holds`, [[borrowers]], [[quick-checkout]]); a narrative tells an edge once",
-            fix="delete the row `| holds | [[borrowers]] | [[quick-checkout]] | |`",
+            fix="delete the row `| [[borrowers]] | holds | [[quick-checkout]] | |`",
         )
     ]
 
@@ -1628,7 +1628,7 @@ def _(v, st):
             where="row 2",
             line=16,
             fix_has=(
-                "delete the row `| holds | [[borrowers]] | [[quick-checkout]] | Again. |`",
+                "delete the row `| [[borrowers]] | holds | [[quick-checkout]] | Again. |`",
                 "if its note `Again.` is worth keeping, put it in the note of row 1 first",
             ),
         )
@@ -1638,7 +1638,7 @@ def _(v, st):
 @seed("TABLE-DUPLICATE-verb-and-slug", ("draft",))
 def _(v, st):
     v.edit(
-        NF, ROW2 + "\n", ROW2 + "\n| addressed-by | [[quick-checkout]] | [[self-checkout]] | |\n"
+        NF, ROW2 + "\n", ROW2 + "\n| [[quick-checkout]] | addressed-by | [[self-checkout]] | |\n"
     )
     return [
         _tbl(
@@ -1653,7 +1653,7 @@ def _(v, st):
 
 @seed("TABLE-DUPLICATE-third-copy", ("draft",))
 def _(v, st):
-    d = "| holds | [[borrowers]] | [[quick-checkout]] | |"
+    d = "| [[borrowers]] | holds | [[quick-checkout]] | |"
     v.edit(NF, ROW1 + "\n", ROW1 + "\n" + d + "\n" + d + "\n")
     return [
         _tbl("TABLE-DUPLICATE", st, where="row 2", line=16),
@@ -1680,13 +1680,13 @@ def _end(name, st, cell, row=1, **kw):
 
 @seed("END-NOLINK-b-existing-name", ALL)
 def _(v, st):
-    _row(v, "| holds | borrowers | [[quick-checkout]] | |")
+    _row(v, "| borrowers | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOLINK",
             st,
             "from",
-            col=11,
+            col=3,
             what="`borrowers` is not a link; each end of a row is one link, `[[page-name]]`",
             fix=(
                 "Fix, choose one:",
@@ -1698,13 +1698,13 @@ def _(v, st):
 
 @seed("END-NOLINK-b-new-name", ("draft",))
 def _(v, st):
-    _row(v, "| holds | New group | [[quick-checkout]] | |")
+    _row(v, "| New group | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOLINK",
             st,
             "from",
-            col=11,
+            col=3,
             what="`New group` is not a link; each end of a row is one link, `[[page-name]]`",
             fix_has=(
                 "replace `New group` with `[[borrowers]]`",
@@ -1717,7 +1717,7 @@ def _(v, st):
 
 @seed("END-NOLINK-b-to-cell-derived-name", ("draft",))
 def _(v, st):
-    _row(v, "| holds | [[borrowers]] | quick checkout | |")
+    _row(v, "| [[borrowers]] | holds | quick checkout | |")
     return [
         _end(
             "END-NOLINK",
@@ -1731,7 +1731,7 @@ def _(v, st):
 
 @seed("END-NOLINK-a-empty", ALL)
 def _(v, st):
-    _row(v, "| holds | | [[quick-checkout]] | |")
+    _row(v, "|  | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOLINK",
@@ -1748,13 +1748,13 @@ def _(v, st):
 
 @seed("END-NOLINK-c-two-links", ("draft",))
 def _(v, st):
-    _row(v, "| holds | [[borrowers]] and [[volunteers]] | [[quick-checkout]] | |")
+    _row(v, "| [[borrowers]] and [[volunteers]] | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOLINK",
             st,
             "from",
-            col=11,
+            col=3,
             what="`[[borrowers]] and [[volunteers]]` is not a link; each end of a row is one link, `[[page-name]]`",
             fix=(
                 "Fix, choose one:",
@@ -1770,7 +1770,7 @@ def _(v, st):
 
 @seed("END-NOLINK-to-cell-empty", ("draft",))
 def _(v, st):
-    _row(v, "| holds | [[borrowers]] | | |")
+    _row(v, "| [[borrowers]] | holds | | |")
     return [
         _end(
             "END-NOLINK",
@@ -1783,19 +1783,19 @@ def _(v, st):
 
 @seed("END-NOLINK-alias-and-embed-are-links", ALL)
 def _(v, st):
-    _row(v, "| holds | [[borrowers|the borrowers]] | ![[quick-checkout]] | |")
+    _row(v, "| [[borrowers|the borrowers]] | holds | ![[quick-checkout]] | |")
     return []
 
 
 @seed("END-NOPAGE-no-near", ALL)
 def _(v, st):
-    _row(v, "| holds | [[ghost]] | [[quick-checkout]] | |")
+    _row(v, "| [[ghost]] | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOPAGE",
             st,
             "from",
-            col=11,
+            col=3,
             what="[[ghost]] does not reach a page (no page is named ghost)",
             fix=("Fix, choose one:", [stub_opt("ghost", "group"), "delete the row"]),
         )
@@ -1804,7 +1804,7 @@ def _(v, st):
 
 @seed("END-NOPAGE-near-match", ("draft",))
 def _(v, st):
-    _row(v, "| holds | [[borrower]] | [[quick-checkout]] | |")
+    _row(v, "| [[borrower]] | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOPAGE",
@@ -1825,7 +1825,7 @@ def _(v, st):
 
 @seed("END-NOPAGE-illegal-variant-c", ("draft",))
 def _(v, st):
-    _row(v, "| holds | [[Safety briefing]] | [[quick-checkout]] | |")
+    _row(v, "| [[Safety briefing]] | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOPAGE",
@@ -1845,7 +1845,7 @@ def _(v, st):
 @seed("END-NOPAGE-typeless-file-variant-b", ("draft",))
 def _(v, st):
     v.write("notes.md", "Just notes.\n")
-    _row(v, "| holds | [[notes]] | [[quick-checkout]] | |")
+    _row(v, "| [[notes]] | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOPAGE",
@@ -1864,7 +1864,7 @@ def _(v, st):
 @seed("END-NOPAGE-group-at-cap", ("draft",))
 def _(v, st):
     v.write("scat.toml", "stakeholder_group_cap = 2\n")
-    _row(v, "| holds | [[ghost]] | [[quick-checkout]] | |")
+    _row(v, "| [[ghost]] | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOPAGE",
@@ -1879,13 +1879,13 @@ def _(v, st):
 @seed("END-NOTNODE-narrative-with-candidate", ALL)
 def _(v, st):
     v.write("narrative/other.md", narrative_copy().replace("Second telling", "Other"))
-    _row(v, "| holds | [[other]] | [[quick-checkout]] | |")
+    _row(v, "| [[other]] | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOTNODE",
             st,
             "from",
-            col=11,
+            col=3,
             what="[[other]] is a narrative page, not a node; a row joins two nodes",
             fix=(
                 "Fix, choose one:",
@@ -1899,7 +1899,7 @@ def _(v, st):
 def _(v, st):
     v.write("narrative/other.md", narrative_copy().replace("Second telling", "Other"))
     v.edit(NF, "[[borrowers]] queued", "people queued")
-    _row(v, "| holds | [[other]] | [[quick-checkout]] | |")
+    _row(v, "| [[other]] | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOTNODE",
@@ -1918,7 +1918,7 @@ def _(v, st):
 def _(v, st):
     put(v, "concern", "odd-page", "Odd page", "draft")
     v.edit("concern/odd-page.md", "type: concern", "type: gadget")
-    _row(v, "| holds | [[odd-page]] | [[quick-checkout]] | |")
+    _row(v, "| [[odd-page]] | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOTNODE",
@@ -1934,7 +1934,7 @@ def _(v, st):
 def _(v, st):
     put(v, "concern", "odd-page", "Odd page", "draft")
     v.edit("concern/odd-page.md", "type: concern", "type:")
-    _row(v, "| holds | [[odd-page]] | [[quick-checkout]] | |")
+    _row(v, "| [[odd-page]] | holds | [[quick-checkout]] | |")
     return [
         _end(
             "END-NOTNODE",
@@ -1950,7 +1950,7 @@ def _(v, st):
 @seed("RULE4-candidate-has-no-message", ALL)
 def _(v, st):
     v.edit(NF, ROW1 + "\n", "")
-    v.edit(NF, ROW2, "| is addressed by | [[quick-checkout]] | [[self-checkout]] | |")
+    v.edit(NF, ROW2, "| [[quick-checkout]] | is addressed by | [[self-checkout]] | |")
     # the body links borrowers and quick-checkout; no row joins them
     return []
 

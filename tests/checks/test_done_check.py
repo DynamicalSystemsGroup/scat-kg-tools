@@ -20,7 +20,7 @@ def at_done(make_vault, files, page):
 def test__a_draft_narrative_with_a_bad_end_and_no_description_would_fail_at_done(make_vault):
     files = {
         DESK: narrative(
-            status="draft", description=None, rows=("| holds | borrowers | [[safe-handling]] | |",)
+            status="draft", description=None, rows=("| borrowers | holds | [[safe-handling]] | |",)
         )
     }
     v, report = at_done(make_vault, files, DESK)

@@ -8,6 +8,6 @@ At the annual meeting the [[funders]] asked what the library could show for thei
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[funders]] | [[careful-record-keeping]] | Wants the counts for the annual report \| audit. |
+| [[funders]] | holds | [[careful-record-keeping]] | Wants the counts for the annual report \| audit. |

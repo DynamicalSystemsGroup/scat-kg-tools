@@ -11,9 +11,9 @@ A kiosk at the door gives [[quick-checkout]]: the borrower scans the tool with a
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| addressed-by | [[quick-checkout]] | [[self-checkout\|the kiosk]] | Would cut the queue to a scan. |
-| addressed-by | [[safe-handling-of-tools]] | [[safety-briefing]] | The kiosk shows it on screen first. |
-| provided-by | [[self-checkout]] | [[booking-app]] | The app keeps the loan record. |
-| provided-by | [[self-checkout]] | [[barcode-scanner]] | Identifies the tool by its label. |
+| [[quick-checkout]] | addressed-by | [[self-checkout\|the kiosk]] | Would cut the queue to a scan. |
+| [[safe-handling-of-tools]] | addressed-by | [[safety-briefing]] | The kiosk shows it on screen first. |
+| [[self-checkout]] | provided-by | [[booking-app]] | The app keeps the loan record. |
+| [[self-checkout]] | provided-by | [[barcode-scanner]] | Identifies the tool by its label. |

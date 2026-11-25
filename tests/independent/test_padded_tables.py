@@ -15,26 +15,26 @@ from indep_kit import (
 
 NBSP = " "
 CLEAN = [
-    ("holds", "[[borrowers]]", "[[quick-checkout]]", "Said twice."),
-    ("is addressed by", "[[quick-checkout|the checkout]]", "[[self-checkout\\|the desk]]", ""),
-    ("is provided by", "![[self-checkout]]", "[[booking-app]]", "a \\| b"),
-    ("addressed-by", "[[safe-handling]]", "[[self-checkout]]", "slug spelling"),
+    ("[[borrowers]]", "holds", "[[quick-checkout]]", "Said twice."),
+    ("[[quick-checkout|the checkout]]", "is addressed by", "[[self-checkout\\|the desk]]", ""),
+    ("![[self-checkout]]", "is provided by", "[[booking-app]]", "a \\| b"),
+    ("[[safe-handling]]", "addressed-by", "[[self-checkout]]", "slug spelling"),
 ]
 DEFECTS = {
-    "nolink": ("holds", "volunteers", "[[safe-handling]]", ""),
-    "empty": ("holds", "", "[[safe-handling]]", ""),
-    "nopage": ("holds", "[[ghost]]", "[[safe-handling]]", ""),
-    "notnode": ("holds", "[[saturday]]", "[[safe-handling]]", ""),
-    "layers": ("holds", "[[quick-checkout]]", "[[volunteers]]", "wrong way"),
-    "type": ("owns", "[[volunteers]]", "[[safe-handling]]", ""),
-    "duplicate": ("holds", "[[borrowers]]", "[[quick-checkout]]", "again"),
-    "two-links": ("holds", "[[volunteers]] [[borrowers]]", "[[safe-handling]]", ""),
+    "nolink": ("volunteers", "holds", "[[safe-handling]]", ""),
+    "empty": ("", "holds", "[[safe-handling]]", ""),
+    "nopage": ("[[ghost]]", "holds", "[[safe-handling]]", ""),
+    "notnode": ("[[saturday]]", "holds", "[[safe-handling]]", ""),
+    "layers": ("[[quick-checkout]]", "holds", "[[volunteers]]", "wrong way"),
+    "type": ("[[volunteers]]", "owns", "[[safe-handling]]", ""),
+    "duplicate": ("[[borrowers]]", "holds", "[[quick-checkout]]", "again"),
+    "two-links": ("[[volunteers]] [[borrowers]]", "holds", "[[safe-handling]]", ""),
 }
 STYLES = ["compact", "obsidian", "spaces", "tabs-nbsp", "crlf", "crlf-obsidian"]
 
 
 def render(rows, style):
-    head = ("type", "from", "to", "note")
+    head = ("from", "type", "to", "note")
     if style in ("compact", "crlf"):
         lines = ["| " + " | ".join(head) + " |", "|---|---|---|---|"]
         lines += ["| " + " | ".join(r) + " |" for r in rows]
@@ -63,7 +63,7 @@ def build(tmp_path, rows, style, status):
         for name, title in items:
             v.write(f"{type_}/{name}.md", page_text(type_, title))
     text = narrative_text(status, ())
-    head, _ = text.split("| type | from | to | note |")
+    head, _ = text.split("| from | type | to | note |")
     crlf = style.startswith("crlf")
     v.write(NF, head + "\n".join(render(rows, style)) + "\n", crlf=crlf)
     return v
@@ -112,6 +112,6 @@ def test_fixes_of_a_padded_table_apply_and_clear(tmp_path, tmp_factory, name, st
 
 
 def test_padding_changes_nothing_about_which_ends_are_nodes(tmp_path):
-    rows = [("holds", "[[ borrowers ]]", "[[  quick-checkout  ]]", "spaces inside the link")]
+    rows = [("[[ borrowers ]]", "holds", "[[  quick-checkout  ]]", "spaces inside the link")]
     v = build(tmp_path, rows, "obsidian", "done")
     assert v.check() == []

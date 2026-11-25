@@ -14,7 +14,7 @@ def _refusal(doc):
 def test_refused_lists_every_error_and_writes_nothing(make_base):
     v = make_base("draft")
     v.edit(NF, 'description: "A Saturday at the lending desk."\n', "")
-    v.edit(NF, "| holds | [[borrowers]]", "| holds | borrowers")
+    v.edit(NF, "| [[borrowers]] | holds", "| borrowers | holds")
     before = v.snapshot()
     code, doc = v.scat("set-status", "saturday", "done")
     assert code == 1
@@ -71,7 +71,7 @@ def test_invalid_status_is_refused_with_the_status_error_listed(make_base):
 
 def test_stub_and_draft_are_never_refused(make_base):
     v = make_base("done")
-    v.edit(NF, "| holds | [[borrowers]]", "| holds | borrowers")
+    v.edit(NF, "| [[borrowers]] | holds", "| borrowers | holds")
     for target in ("draft", "stub"):
         code, doc = v.scat("set-status", "saturday", target)
         assert code == 0 and doc["ok"], doc
@@ -80,7 +80,7 @@ def test_stub_and_draft_are_never_refused(make_base):
 
 def test_check_never_prints_the_refusal_rule(make_base):
     v = make_base("done")
-    v.edit(NF, "| holds | [[borrowers]]", "| holds | borrowers")
+    v.edit(NF, "| [[borrowers]] | holds", "| borrowers | holds")
     assert all(p.rule != "SCAT-DONE-REFUSED" for p in v.check())
 
 

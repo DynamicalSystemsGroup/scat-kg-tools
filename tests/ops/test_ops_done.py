@@ -30,7 +30,7 @@ def seed(make_vault, rows):
 def test_a_draft_with_an_end_that_is_no_link_and_no_description_is_refused_and_unchanged(
     make_vault, snap
 ):
-    root = seed(make_vault, ["| holds | [[g]] | c | |"])
+    root = seed(make_vault, ["| [[g]] | holds | c | |"])
     before = snap(root)
     r = set_status("n", "done", root=root)
     assert not r.ok and snap(root) == before
@@ -52,7 +52,7 @@ def test_a_draft_with_an_end_that_is_no_link_and_no_description_is_refused_and_u
 
 
 def test_the_same_narrative_with_both_fixed_is_set(make_vault):
-    root = seed(make_vault, ["| holds | [[g]] | [[c]] | |"])
+    root = seed(make_vault, ["| [[g]] | holds | [[c]] | |"])
     page = root / "narrative/n.md"
     page.write_text(
         page.read_text(encoding="utf-8").replace(
@@ -94,7 +94,7 @@ def test_a_page_with_an_invalid_status_is_refused_and_the_status_error_is_listed
 
 @pytest.mark.parametrize("status", ["stub", "draft"])
 def test_stub_and_draft_are_never_refused(make_vault, status):
-    root = seed(make_vault, ["| holds | [[g]] | c | |"])
+    root = seed(make_vault, ["| [[g]] | holds | c | |"])
     set_status("n", "done", root=root)  # refused; the page stays as it was
     assert set_status("n", "stub", root=root).ok
     assert set_status("n", status, root=root).ok
@@ -121,7 +121,7 @@ def test_a_page_already_done_is_unchanged_not_judged_again(make_vault):
 
 
 def test_the_refusal_data_and_the_cli_say_the_same(make_vault, capsys):
-    a = seed(make_vault, ["| holds | [[g]] | c | |"])
+    a = seed(make_vault, ["| [[g]] | holds | c | |"])
     r = set_status("n", "done", root=a)
     doc = r.to_dict()
     assert VALIDATOR.is_valid(doc), list(VALIDATOR.iter_errors(doc))[:1]

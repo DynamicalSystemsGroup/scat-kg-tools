@@ -190,7 +190,7 @@ To see a problem with a fix a program can apply, change `[[cap-setting]]` to `[[
                 "action": "delete-line",
                 "file": "narrative/groups-under-a-cap-pitch.md",
                 "line": 22,
-                "find": "| is provided by | [[groups-clustered-under-a-cap]] | [[cap-settin]] | The cap setting is what fixes the number of groups. The cap is a per-instance parameter (D-020); the example vault sets it to 3. |"
+                "find": "| [[groups-clustered-under-a-cap]] | is provided by | [[cap-settin]] | The cap setting is what fixes the number of groups. The cap is a per-instance parameter (D-020); the example vault sets it to 3. |"
               }
             ]
           }
@@ -451,7 +451,7 @@ It prints `created <path>` for each page it made, `changed <path>` for each narr
 
     ```text
     changed narrative/desk-notes-one.md
-    note: added `| holds | [[project-leads]] | [[reading-group]] | Said twice. |` to narrative/desk-notes-one.md at line 12
+    note: added `| [[project-leads]] | holds | [[reading-group]] | Said twice. |` to narrative/desk-notes-one.md at line 12
     ```
 
 === "CLI"
@@ -462,7 +462,7 @@ It prints `created <path>` for each page it made, `changed <path>` for each narr
 
     ```text
     changed narrative/desk-notes-two.md
-    note: added `| holds | [[project-leads]] | [[study-circle]] | Said twice. |` to narrative/desk-notes-two.md at line 12
+    note: added `| [[project-leads]] | holds | [[study-circle]] | Said twice. |` to narrative/desk-notes-two.md at line 12
     ```
 
 As data:
@@ -486,7 +486,7 @@ As data:
   "unchanged": [],
   "refused": [],
   "notes": [
-    "added `| is addressed by | [[reading-group]] | [[reading-shelf]] | |` to narrative/desk-notes-one.md at line 13"
+    "added `| [[reading-group]] | is addressed by | [[reading-shelf]] | |` to narrative/desk-notes-one.md at line 13"
   ],
   "edge": {
     "type": "addressed-by",

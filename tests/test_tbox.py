@@ -74,7 +74,7 @@ def test_the_table_is_read_from_the_narrative():
     assert TBOX.table_type.slug == "narrative"
     assert TBOX.table.heading == "Edges told"
     assert [(c.name, c.holds) for c in TBOX.table.columns] == [
-        ("type", "edge-type"), ("from", "from"), ("to", "to"), ("note", "note"),
+        ("from", "from"), ("type", "edge-type"), ("to", "to"), ("note", "note"),
     ]  # fmt: skip
     assert [t.slug for t in TBOX.page_types.values() if t.table] == ["narrative"]
 

@@ -7,7 +7,7 @@ contracts and never calls the tool."""
 import pytest
 from indep_kit import Vault, oracle_ends, page_text, unseen_mismatches
 
-HEAD = "\n## Edges told\n\n| type | from | to | note |\n|---|---|---|---|\n"
+HEAD = "\n## Edges told\n\n| from | type | to | note |\n|---|---|---|---|\n"
 
 
 def sh(v, *args):
@@ -27,7 +27,7 @@ def fill_node(v, type_, name, title):
 def append_row(v, narrative, row):
     path = f"narrative/{narrative}.md"
     text = v.read(path)
-    if "| type | from | to | note |" not in text:
+    if "| from | type | to | note |" not in text:
         text = text.rstrip("\n") + "\n" + HEAD
     v.write(path, text.rstrip("\n") + "\n" + row + "\n")
 
@@ -95,14 +95,14 @@ def breadth_steps():
     steps.append(
         (
             "row with a plain-text end",
-            lambda v: append_row(v, "n1", "| holds | borrowers | [[quick-checkout]] | |"),
+            lambda v: append_row(v, "n1", "| borrowers | holds | [[quick-checkout]] | |"),
         )
     )
     steps.append(
         (
             "make the end a link",
             lambda v: v.edit(
-                "narrative/n1.md", "| holds | borrowers |", "| holds | [[borrowers]] |"
+                "narrative/n1.md", "| borrowers | holds |", "| [[borrowers]] | holds |"
             ),
         )
     )
@@ -110,7 +110,7 @@ def breadth_steps():
         (
             "second row by hand",
             lambda v: append_row(
-                v, "n1", "| is addressed by | [[quick-checkout]] | [[self-checkout]] | |"
+                v, "n1", "| [[quick-checkout]] | is addressed by | [[self-checkout]] | |"
             ),
         )
     )
@@ -125,24 +125,24 @@ def breadth_steps():
     steps.append(
         (
             "row linking a page that does not exist",
-            lambda v: append_row(v, "n1", "| holds | [[elders]] | [[safe-handling]] | |"),
+            lambda v: append_row(v, "n1", "| [[elders]] | holds | [[safe-handling]] | |"),
         )
     )
     steps.append(("stub-links makes the page", lambda v: sh(v, "stub-links")))
     steps.append(
         (
             "a row ending at a narrative",
-            lambda v: append_row(v, "n1", "| holds | [[n1]] | [[safe-handling]] | |"),
+            lambda v: append_row(v, "n1", "| [[n1]] | holds | [[safe-handling]] | |"),
         )
     )
     steps.append(
-        ("remove that row", lambda v: drop_row(v, "n1", "| holds | [[n1]] | [[safe-handling]] | |"))
+        ("remove that row", lambda v: drop_row(v, "n1", "| [[n1]] | holds | [[safe-handling]] | |"))
     )
-    steps.append(("empty end", lambda v: append_row(v, "n1", "| holds | | [[safe-handling]] | |")))
+    steps.append(("empty end", lambda v: append_row(v, "n1", "|  | holds | [[safe-handling]] | |")))
     steps.append(
         (
             "remove the empty-end row",
-            lambda v: drop_row(v, "n1", "| holds | | [[safe-handling]] | |"),
+            lambda v: drop_row(v, "n1", "|  | holds | [[safe-handling]] | |"),
         )
     )
     steps.append(("fill elders", fill_all_nodes))
@@ -207,14 +207,14 @@ def depth_steps():
     steps.append(
         (
             "row linking a page that does not exist",
-            lambda v: append_row(v, "n1", "| holds | [[elders]] | [[safe-handling]] | |"),
+            lambda v: append_row(v, "n1", "| [[elders]] | holds | [[safe-handling]] | |"),
         )
     )
     steps.append(("stub-links makes both", lambda v: sh(v, "stub-links")))
     steps.append(
         (
             "row with plain text ends",
-            lambda v: append_row(v, "n1", "| holds | volunteers | safe-handling | |"),
+            lambda v: append_row(v, "n1", "| volunteers | holds | safe-handling | |"),
         )
     )
     steps.append(
@@ -222,15 +222,15 @@ def depth_steps():
             "make them links",
             lambda v: v.edit(
                 "narrative/n1.md",
-                "| holds | volunteers | safe-handling | |",
-                "| holds | [[volunteers]] | [[safe-handling]] | |",
+                "| volunteers | holds | safe-handling | |",
+                "| [[volunteers]] | holds | [[safe-handling]] | |",
             ),
         )
     )
     steps.append(
         (
             "remove that row",
-            lambda v: drop_row(v, "n1", "| holds | [[volunteers]] | [[safe-handling]] | |"),
+            lambda v: drop_row(v, "n1", "| [[volunteers]] | holds | [[safe-handling]] | |"),
         )
     )
     steps.append(
@@ -283,11 +283,11 @@ def edges_of(v):
     for p in sorted(v.root.glob("narrative/*.md")):
         for line in p.read_text().split("\n"):
             m = re.match(
-                r"^\|\s*(holds|is addressed by|addressed-by|is provided by|provided-by)\s*\|\s*\[\[([^\]|]+)[^\]]*\]\]\s*\|\s*\[\[([^\]|]+)[^\]]*\]\]",
+                r"^\|\s*\[\[([^\]|]+)[^\]]*\]\]\s*\|\s*(holds|is addressed by|addressed-by|is provided by|provided-by)\s*\|\s*\[\[([^\]|]+)[^\]]*\]\]",
                 line,
             )
             if m:
-                out.add((verbs[m.group(1)], m.group(2), m.group(3)))
+                out.add((verbs[m.group(2)], m.group(1), m.group(3)))
     return out
 
 

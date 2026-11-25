@@ -134,11 +134,11 @@ Each edge the account tells is a row. `record-edge` writes the row for you, and 
 $ uv run scat record-edge holds workshop-participants tools-come-back-in-good-order --told-by saturday-at-the-tool-library --note "Said twice in the first hour."
 created concern/tools-come-back-in-good-order.md
 changed narrative/saturday-at-the-tool-library.md
-note: added `| holds | [[workshop-participants]] | [[tools-come-back-in-good-order]] | Said twice in the first hour. |` to narrative/saturday-at-the-tool-library.md at line 19
+note: added `| [[workshop-participants]] | holds | [[tools-come-back-in-good-order]] | Said twice in the first hour. |` to narrative/saturday-at-the-tool-library.md at line 19
 $ uv run scat record-edge addressed-by tools-come-back-in-good-order sign-out-sheet --told-by saturday-at-the-tool-library
 created affordance/sign-out-sheet.md
 changed narrative/saturday-at-the-tool-library.md
-note: added `| is addressed by | [[tools-come-back-in-good-order]] | [[sign-out-sheet]] | |` to narrative/saturday-at-the-tool-library.md at line 20
+note: added `| [[tools-come-back-in-good-order]] | is addressed by | [[sign-out-sheet]] | |` to narrative/saturday-at-the-tool-library.md at line 20
 ```
 
 The new concern and affordance are stubs, so you write their descriptions later. The rows are in the page, which you can also edit by hand:
@@ -160,10 +160,10 @@ From the point of view of Workshop participants (about 10:20)
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[workshop-participants]] | [[tools-come-back-in-good-order]] | Said twice in the first hour. |
-| is addressed by | [[tools-come-back-in-good-order]] | [[sign-out-sheet]] | |
+| [[workshop-participants]] | holds | [[tools-come-back-in-good-order]] | Said twice in the first hour. |
+| [[tools-come-back-in-good-order]] | is addressed by | [[sign-out-sheet]] | |
 ```
 
 Recording an edge the narrative already tells changes nothing, so you can repeat a command safely:
@@ -195,10 +195,10 @@ From the point of view of [[workshop-participants|Workshop participants]] (about
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[workshop-participants]] | [[tools-come-back-in-good-order]] | Said twice in the first hour. |
-| is addressed by | [[tools-come-back-in-good-order]] | [[sign-out-sheet]] | |
+| [[workshop-participants]] | holds | [[tools-come-back-in-good-order]] | Said twice in the first hour. |
+| [[tools-come-back-in-good-order]] | is addressed by | [[sign-out-sheet]] | |
 ```
 
 ```text
@@ -323,9 +323,9 @@ From the point of view of [[workshop-participants|Workshop participants]] (about
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| is addressed by | [[tools-come-back-in-good-order]] | [[sign-out-sheet]] | |
+| [[tools-come-back-in-good-order]] | is addressed by | [[sign-out-sheet]] | |
 ```
 
 ```text
@@ -371,10 +371,10 @@ Linking two nodes of a pair says nothing yet, so there is no message, and each s
 ```text
 $ uv run scat record-edge holds workshop-participants late-returns --told-by sunday-at-the-desk --note "Said as the main worry."
 changed narrative/sunday-at-the-desk.md
-note: added `| holds | [[workshop-participants]] | [[late-returns]] | Said as the main worry. |` to narrative/sunday-at-the-desk.md at line 16
+note: added `| [[workshop-participants]] | holds | [[late-returns]] | Said as the main worry. |` to narrative/sunday-at-the-desk.md at line 16
 $ uv run scat record-edge addressed-by late-returns reminder-text --told-by sunday-at-the-desk
 changed narrative/sunday-at-the-desk.md
-note: added `| is addressed by | [[late-returns]] | [[reminder-text]] | |` to narrative/sunday-at-the-desk.md at line 17
+note: added `| [[late-returns]] | is addressed by | [[reminder-text]] | |` to narrative/sunday-at-the-desk.md at line 17
 ```
 
 ```text
@@ -391,10 +391,10 @@ From the point of view of [[workshop-participants|Workshop participants]]: [[lat
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[workshop-participants]] | [[late-returns]] | Said as the main worry. |
-| is addressed by | [[late-returns]] | [[reminder-text]] | |
+| [[workshop-participants]] | holds | [[late-returns]] | Said as the main worry. |
+| [[late-returns]] | is addressed by | [[reminder-text]] | |
 ```
 
 ```text
@@ -424,11 +424,11 @@ From the point of view of [[workshop-participants|Workshop participants]]: [[lat
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[workshop-participants]] | late-returns | |
-| holds | [[late-returns]] | [[workshop-participants]] | |
-| holds | [[workshop-participants]] | [[late-return]] | |
+| [[workshop-participants]] | holds | late-returns | |
+| [[late-returns]] | holds | [[workshop-participants]] | |
+| [[workshop-participants]] | holds | [[late-return]] | |
 ```
 
 ```text
@@ -477,9 +477,9 @@ Apply the first fix to each: link the name, swap the two ends, and link the exis
 ```text
 $ uv run scat check monday-at-the-desk
 warning [SCAT-DRAFT-TABLE-DUPLICATE] narrative/monday-at-the-desk.md:17:1 row 2: tells the same edge as row 1 (`holds`, [[workshop-participants]], [[late-returns]]); a narrative tells an edge once
-  Fix: delete the row `| holds | [[workshop-participants]] | [[late-returns]] | |`
+  Fix: delete the row `| [[workshop-participants]] | holds | [[late-returns]] | |`
 warning [SCAT-DRAFT-TABLE-DUPLICATE] narrative/monday-at-the-desk.md:18:1 row 3: tells the same edge as row 1 (`holds`, [[workshop-participants]], [[late-returns]]); a narrative tells an edge once
-  Fix: delete the row `| holds | [[workshop-participants]] | [[late-returns]] | |`
+  Fix: delete the row `| [[workshop-participants]] | holds | [[late-returns]] | |`
 0 errors, 2 warnings
 ```
 
@@ -498,9 +498,9 @@ note: `status` set to done (was draft)
 Obsidian's table editor re-pads the columns when you click into a table. That is harmless: the tool reads a table whatever its spacing, so a hand-aligned table passes as a compact one does.
 
 ```text
-| type  | from                      | to                | note                 |
+| from  | type                      | to                | note                 |
 | ----- | ------------------------- | ----------------- | -------------------- |
-| holds | [[workshop-participants]] | [[late-returns]]  | Said as the main worry. |
+| [[workshop-participants]] | holds | [[late-returns]]  | Said as the main worry. |
 ```
 
 ```text
@@ -614,7 +614,7 @@ The template's own example is clean. Warnings do not block: a command exits with
     ```text
     changed narrative/desk-notes-one.md
 
-    note: added `| holds | [[workshop-participants]] | [[lending-desk-opens-on-time]] | Said twice. |` to narrative/desk-notes-one.md at line 12
+    note: added `| [[workshop-participants]] | holds | [[lending-desk-opens-on-time]] | Said twice. |` to narrative/desk-notes-one.md at line 12
 
     changed narrative/desk-notes-one.md
 
@@ -633,7 +633,7 @@ The template's own example is clean. Warnings do not block: a command exits with
     ```text
     changed narrative/desk-notes-two.md
 
-    note: added `| holds | [[workshop-participants]] | [[volunteers-are-easy-to-find]] | Said twice. |` to narrative/desk-notes-two.md at line 12
+    note: added `| [[workshop-participants]] | holds | [[volunteers-are-easy-to-find]] | Said twice. |` to narrative/desk-notes-two.md at line 12
 
     changed narrative/desk-notes-two.md
 

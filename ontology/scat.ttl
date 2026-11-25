@@ -167,7 +167,7 @@ scat:Narrative a owl:Class ;
     scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description, scat:field-timeframe ;
     scat:optionalField scat:field-kind ;
     scat:tableHeading "Edges told" ;
-    scat:tableColumns ( scat:column-type scat:column-from scat:column-to scat:column-note ) .
+    scat:tableColumns ( scat:column-from scat:column-type scat:column-to scat:column-note ) .
 
 scat:Index a owl:Class ;
     rdfs:label "Index" ;

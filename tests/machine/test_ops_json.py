@@ -217,8 +217,8 @@ def test_stub_links_two_types_gives_a_slot(tmp_path):
     root = copies(tmp_path)[0]
     (root / "narrative" / "dual.md").write_text(
         "---\ntype: narrative\nstatus: draft\ntitle: D\n---\n\n## Edges told\n\n"
-        "| type | from | to | note |\n|---|---|---|---|\n"
-        "| holds | [[borrowers]] | [[ghost]] | |\n| is addressed by | [[quick-checkout]] | [[ghost]] | |\n",
+        "| from | type | to | note |\n|---|---|---|---|\n"
+        "| [[borrowers]] | holds | [[ghost]] | |\n| [[quick-checkout]] | is addressed by | [[ghost]] | |\n",
         encoding="utf-8",
     )
     r = scat_kg.stub_links(root=root)

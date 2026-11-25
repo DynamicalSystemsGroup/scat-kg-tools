@@ -18,7 +18,7 @@ def rows(*extra, status="draft", **kw):
 
 
 def end(rule, *cells, status="draft"):
-    return rule, rows(f"| holds | {cells[0]} | {cells[1]} | |", status=status)
+    return rule, rows(f"| {cells[0]} | holds | {cells[1]} | |", status=status)
 
 
 DANGLING = "SCAT-LINK-DANGLING-BODY"
@@ -62,57 +62,57 @@ for stem in ("DRAFT", "DONE"):
         (
             f"{stem}-nolink-name",
             nl,
-            rows("| holds | borrowers | [[safe-handling]] | |", status=status),
+            rows("| borrowers | holds | [[safe-handling]] | |", status=status),
             (),
         ),
         (
             f"{stem}-nolink-stub",
             nl,
-            rows("| holds | Sandra's crew | [[safe-handling]] | |", status=status),
+            rows("| Sandra's crew | holds | [[safe-handling]] | |", status=status),
             (),
         ),
-        (f"{stem}-nolink-empty", nl, rows("| holds |  | [[safe-handling]] | |", status=status), ()),
+        (f"{stem}-nolink-empty", nl, rows("|  | holds | [[safe-handling]] | |", status=status), ()),
         (
             f"{stem}-nolink-two",
             nl,
-            rows("| holds | [[staff]] and [[borrowers]] | [[safe-handling]] | |", status=status),
+            rows("| [[staff]] and [[borrowers]] | holds | [[safe-handling]] | |", status=status),
             (),
         ),
         (
             f"{stem}-nolink-to",
             nl,
-            rows("| holds | [[staff]] | quick checkout | |", status=status),
+            rows("| [[staff]] | holds | quick checkout | |", status=status),
             (),
         ),
         (
             f"{stem}-nopage-ghost",
             np,
-            rows("| holds | [[staff]] | [[ghost]] | |", status=status),
+            rows("| [[staff]] | holds | [[ghost]] | |", status=status),
             (),
         ),
         (
             f"{stem}-nopage-near",
             np,
-            rows("| holds | [[borrower]] | [[safe-handling]] | |", status=status),
+            rows("| [[borrower]] | holds | [[safe-handling]] | |", status=status),
             (),
         ),
         (
             f"{stem}-nopage-illegal",
             np,
-            rows("| holds | [[staff]] | [[Safety briefing]] | |", status=status),
+            rows("| [[staff]] | holds | [[Safety briefing]] | |", status=status),
             (),
         ),
         (
             f"{stem}-nopage-typeless",
             np,
-            {**rows("| holds | [[staff]] | [[notes]] | |", status=status), "notes.md": "no type\n"},
+            {**rows("| [[staff]] | holds | [[notes]] | |", status=status), "notes.md": "no type\n"},
             (),
         ),
         (
             f"{stem}-nopage-cap",
             np,
             {
-                **rows("| holds | [[ghost]] | [[safe-handling]] | |", status=status),
+                **rows("| [[ghost]] | holds | [[safe-handling]] | |", status=status),
                 "group/third.md": H.doc("group", "Third"),
             },
             (),
@@ -120,7 +120,7 @@ for stem in ("DRAFT", "DONE"):
         (
             f"{stem}-notnode-narrative",
             nn,
-            rows("| holds | [[kiosk-pitch]] | [[safe-handling]] | |", status=status),
+            rows("| [[kiosk-pitch]] | holds | [[safe-handling]] | |", status=status),
             (),
         ),
         (
@@ -129,7 +129,7 @@ for stem in ("DRAFT", "DONE"):
             {
                 D: H.narrative(
                     status=status,
-                    rows=("| holds | [[kiosk-pitch]] | [[safe-handling]] | |",),
+                    rows=("| [[kiosk-pitch]] | holds | [[safe-handling]] | |",),
                     account="A [[safe-handling]].\n",
                 )
             },
@@ -139,7 +139,7 @@ for stem in ("DRAFT", "DONE"):
             f"{stem}-notnode-invalid-type",
             nn,
             {
-                **rows("| holds | [[staff]] | [[odd]] | |", status=status),
+                **rows("| [[staff]] | holds | [[odd]] | |", status=status),
                 "concern/odd.md": H.doc("gadget", "Odd"),
             },
             (),
@@ -200,8 +200,8 @@ def test_the_empty_cell_fix_is_the_whole_row_line_with_an_author_slot(make_vault
     option = p.fix_data.options[0]
     assert option.kind == "slot"
     (e,) = option.edits
-    assert (e.find, e.author_slot) == ("| holds |  | [[safe-handling]] | |", "<node you choose>")
-    assert e.replace == "| holds | [[<node you choose>]] | [[safe-handling]] | |"
+    assert (e.find, e.author_slot) == ("|  | holds | [[safe-handling]] | |", "<node you choose>")
+    assert e.replace == "| [[<node you choose>]] | holds | [[safe-handling]] | |"
 
 
 def test_every_delete_option_is_a_delete_line_guarded_by_the_row(make_vault):
@@ -213,4 +213,4 @@ def test_every_delete_option_is_a_delete_line_guarded_by_the_row(make_vault):
             16,
             p.fix_data.options[-1].edits[0].find,
         )
-        assert e.find.startswith("| holds |")
+        assert "| holds |" in e.find

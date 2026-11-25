@@ -177,12 +177,12 @@ def linked(make_vault):
             "narrative/n.md": narrative(
                 "N",
                 [
-                    "| holds | [[volunteers]] | [[safety]] | |",
-                    "| is addressed by | [[safety]] | [[briefing]] | |",
-                    "| holds | [[Bad Name]] | [[here]] | |",
-                    "| is provided by | [[briefing]] | [[here]] | |",
-                    "| nonsense | [[unknown-type]] | [[also-unknown]] | |",
-                    "| holds | plain text | [[no-link-end]] | |",
+                    "| [[volunteers]] | holds | [[safety]] | |",
+                    "| [[safety]] | is addressed by | [[briefing]] | |",
+                    "| [[Bad Name]] | holds | [[here]] | |",
+                    "| [[briefing]] | is provided by | [[here]] | |",
+                    "| [[unknown-type]] | nonsense | [[also-unknown]] | |",
+                    "| plain text | holds | [[no-link-end]] | |",
                 ],
                 "done",
                 "",
@@ -235,7 +235,7 @@ def test_stub_links_for_one_page_only(linked):
 def test_stub_links_an_end_that_reaches_a_page_of_another_type_entails_nothing(make_vault):
     root = make_vault(
         {
-            "narrative/n.md": narrative("N", ["| holds | [[tech]] | [[c]] | |"]),
+            "narrative/n.md": narrative("N", ["| [[tech]] | holds | [[c]] | |"]),
             "technology/tech.md": fm("technology", "Tech"),
         }
     )
@@ -247,7 +247,7 @@ def test_stub_links_target_named_as_two_types_is_refused_alone(make_vault):
     root = make_vault(
         {
             **CAP3,
-            "narrative/s.md": narrative("S", ["| holds | [[ok]] | [[x]] | |", "| is addressed by | [[y]] | [[x]] | |"]),
+            "narrative/s.md": narrative("S", ["| [[ok]] | holds | [[x]] | |", "| [[y]] | is addressed by | [[x]] | |"]),
         }
     )  # fmt: skip
     r = stub_links(root=root)
@@ -260,7 +260,7 @@ def test_stub_links_over_the_cap_creates_nothing_from_the_call(make_vault, snap)
         {
             "scat.toml": "stakeholder_group_cap = 2\n",
             **group("g1", "G1"),
-            "narrative/s.md": narrative("S", ["| holds | [[g2]] | [[c]] | |", "| holds | [[g3]] | [[c]] | |"]),
+            "narrative/s.md": narrative("S", ["| [[g2]] | holds | [[c]] | |", "| [[g3]] | holds | [[c]] | |"]),
         }
     )  # fmt: skip
     before = snap(root)
@@ -272,8 +272,8 @@ def test_stub_links_over_the_cap_creates_nothing_from_the_call(make_vault, snap)
 def test_stub_links_a_malformed_row_and_a_table_on_another_type_entail_nothing(make_vault):
     root = make_vault(
         {
-            "narrative/n.md": narrative("N", ["| holds | [[g]] | [[c]] |"]),  # three cells
-            "concern/x.md": fm("concern", "X", "draft", "", "## Edges told\n\n| type | from | to | note |\n|---|---|---|---|\n| holds | [[g2]] | [[c2]] | |\n"),
+            "narrative/n.md": narrative("N", ["| [[g]] | holds | [[c]] |"]),  # three cells
+            "concern/x.md": fm("concern", "X", "draft", "", "## Edges told\n\n| from | type | to | note |\n|---|---|---|---|\n| [[g2]] | holds | [[c2]] | |\n"),
         }
     )  # fmt: skip
     assert not stub_links(root=root).created

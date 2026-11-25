@@ -76,7 +76,7 @@ def test_example_links_that_are_not_ids_are_named_with_a_fix_to_the_id(make_base
 def test_example_row_ends_that_are_not_ids_are_mismatches_with_a_fix_to_the_id(make_base):
     v = make_base("done")
     v.write("group/tool-borrowers.md", page_text("group", "Tool borrowers"))
-    v.edit(NF, "| holds | [[borrowers]]", "| holds | [[Tool Borrowers]]")
+    v.edit(NF, "| [[borrowers]] | holds", "| [[Tool Borrowers]] | holds")
     (p,) = v.check()
     assert (p.rule, p.severity, p.where) == ("SCAT-DONE-END-NOPAGE", "error", "row 1 cell `from`")
     assert "[[tool-borrowers]]" in p.fix_text
@@ -88,8 +88,8 @@ def test_example_that_does_neither_gets_both_kinds_of_message(make_base):
     v.write("concern/Safe Tool Use.md", page_text("concern", "Safe Tool Use"))
     v.edit(
         NF,
-        "| holds | [[borrowers]] | [[quick-checkout]]",
-        "| holds | [[borrowers]] | [[Safe tool use]]",
+        "| [[borrowers]] | holds | [[quick-checkout]]",
+        "| [[borrowers]] | holds | [[Safe tool use]]",
     )
     rules = sorted(p.rule for p in v.check())
     assert rules == ["SCAT-DONE-END-NOPAGE", "SCAT-NAME"]
@@ -121,7 +121,7 @@ def test_the_contracts_example_table_is_conformant_under_the_contracts_own_rules
     tables = [
         b
         for b in _blocks()
-        if b.lstrip().startswith("## Edges told") and "| type | from | to | note |" in b
+        if b.lstrip().startswith("## Edges told") and "| from | type | to | note |" in b
     ]
     assert tables, "page contracts section 4 no longer shows an example table"
     v = Vault(tmp_path / "v")
@@ -138,17 +138,17 @@ def test_the_contracts_example_table_is_conformant_under_the_contracts_own_rules
 
 
 def test_the_contracts_example_stub_is_what_stub_links_writes(tmp_path):
-    """Page contracts 6 shows the row `| is provided by | [[safety-briefing]] | [[booking-app]] | |` and says which
+    """Page contracts 6 shows the row `| [[safety-briefing]] | is provided by | [[booking-app]] | |` and says which
     files it creates, with title "Safety briefing"; the example block of the stub is the page the tool writes."""
     text = CONTRACTS.read_text()
-    assert "[[safety-briefing]] | [[booking-app]]" in text
+    assert "[[safety-briefing]] | is provided by | [[booking-app]]" in text
     v = Vault(tmp_path / "v")
     v.write("scat.toml", "stakeholder_group_cap = 3\n")
     v.write(
         "narrative/example.md",
         '---\ntype: narrative\nstatus: draft\ntitle: "Example"\ndescription: "d"\ntimeframe: past\n---\n\n'
-        "## Edges told\n\n| type | from | to | note |\n|---|---|---|---|\n"
-        "| is provided by | [[safety-briefing]] | [[booking-app]] | |\n",
+        "## Edges told\n\n| from | type | to | note |\n|---|---|---|---|\n"
+        "| [[safety-briefing]] | is provided by | [[booking-app]] | |\n",
     )
     code, doc = v.scat("stub-links")
     assert code == 0 and sorted(doc["created"]) == [

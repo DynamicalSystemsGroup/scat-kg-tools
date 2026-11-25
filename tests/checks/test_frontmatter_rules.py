@@ -216,7 +216,7 @@ def test__scat_fm_type__an_invalid_type_is_checked_by_no_rule_that_needs_it(make
 
 def test__scat_fm_type__a_row_end_that_links_the_page_gives_no_end_message_for_its_type(make_vault):
     # the end rules judge a page that is not a node: SCAT-*-END-NOTNODE, once; the page's own error is separate
-    rows = ("| holds | [[staff]] | [[odd]] | |",)
+    rows = ("| [[staff]] | holds | [[odd]] | |",)
     odd = "concern/odd.md"
     r = report_of(
         make_vault,
@@ -255,7 +255,7 @@ def test__scat_fm_status__a_narrative_with_an_invalid_status_gets_none_of_the_ne
     make_vault,
 ):
     page = narrative(status="finished", description=None, timeframe=None).replace(
-        "| holds | [[staff]] | [[safe-handling]] | |", "| holds | [[staff]] | [[ghost]] | |"
+        "| [[staff]] | holds | [[safe-handling]] | |", "| [[staff]] | holds | [[ghost]] | |"
     )
     r = report_of(make_vault, {DESK: page})
     assert rules_of(r) == ["SCAT-FM-STATUS"]

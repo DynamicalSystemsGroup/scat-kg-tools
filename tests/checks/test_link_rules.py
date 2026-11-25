@@ -245,7 +245,7 @@ def test__scat_link_dangling_body__links_in_a_table_with_a_malformed_header_are_
     make_vault,
 ):
     page = narrative(status="draft").replace(
-        "| type | from | to | note |", "| kind | from | to | note |"
+        "| from | type | to | note |", "| from | kind | to | note |"
     )
     page = page.replace("[[safe-handling]] | |", "[[ghost]] | |")
     r = report_of(make_vault, {DESK: page})
@@ -368,7 +368,7 @@ def test__scat_mention__in_a_note_cell_one_message(make_vault):
 
 
 def test__scat_mention__plain_text_in_a_from_cell_is_not_this_rules(make_vault):
-    rows = (*DESK_ROWS, "| holds | briefing | [[quick-checkout]] | |")
+    rows = (*DESK_ROWS, "| briefing | holds | [[quick-checkout]] | |")
     r = report_of(make_vault, {DESK: narrative(rows=rows)})
     assert "SCAT-MENTION" not in rules_of(r)
 

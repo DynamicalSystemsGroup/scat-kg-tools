@@ -42,7 +42,7 @@ NODES = {
     "affordance/a.md": node("affordance", "a"),
     "technology/t.md": node("technology", "t"),
 }
-HEAD = "| type | from | to | note |\n|---|---|---|---|\n"
+HEAD = "| from | type | to | note |\n|---|---|---|---|\n"
 
 
 def vault(make_vault, body, **more):
@@ -254,19 +254,19 @@ def key(rows):
 
 
 def written(style):
-    out = ["| type | from | to | note |", "|---|---|---|---|"]
+    out = ["| from | type | to | note |", "|---|---|---|---|"]
     for verb, a, b, note in SAME:
         if style == "padded":
-            out.append(f"| {verb:<16} | [[{a}]]   | [[{b}]]      | {note:<10} |")
+            out.append(f"| [[{a}]]   | {verb:<16} | [[{b}]]      | {note:<10} |")
         elif style == "compact":
-            out.append(f"|{verb}|[[{a}]]|[[{b}]]|{note}|")
+            out.append(f"|[[{a}]]|{verb}|[[{b}]]|{note}|")
         elif style == "alias":
-            out.append(f"| {verb} | [[{a}\\|shown]] | [[{b}\\|shown]] | {note} |")
+            out.append(f"| [[{a}\\|shown]] | {verb} | [[{b}\\|shown]] | {note} |")
         elif style == "slug":
             slug = TBOX.edge_type_named(verb).slug
-            out.append(f"| {slug.upper()} | [[{a}]] | ![[{b}]] | {note} |")
+            out.append(f"| [[{a}]] | {slug.upper()} | ![[{b}]] | {note} |")
         elif style == "spaces":
-            out.append(f"\t| {verb} |{NBSP}[[ {a} ]]{NBSP}| [[ {b}  ]] |  {note}  |   ")
+            out.append(f"\t| [[ {a} ]]{NBSP}| {verb} |{NBSP}[[ {b}  ]] |  {note}  |   ")
     return "\n".join(out) + "\n"
 
 
@@ -297,7 +297,7 @@ def test_obsidian_repadding_changes_nothing(make_vault):
 # the table: where it is read
 # ---------------------------------------------------------------------------------------------------------
 
-ROW = "| holds | [[g]] | [[c]] | |\n"
+ROW = "| [[g]] | holds | [[c]] | |\n"
 EDGE = (EdgeKey("holds", "g", "c"),)
 
 
@@ -377,11 +377,11 @@ def test_where_a_heading_or_a_table_inside_a_fence_is_not_read(make_vault):
 
 
 def test_where_a_table_is_the_contiguous_lines_that_start_with_a_bar(make_vault):
-    body = f"## Edges told\n\n{HEAD}{ROW}| holds | [[g2]] | [[c2]] | |\n\nafter\n| holds | [[g]] | [[c2]] | |\n"
+    body = f"## Edges told\n\n{HEAD}{ROW}| [[g2]] | holds | [[c2]] | |\n\nafter\n| [[g]] | holds | [[c2]] | |\n"
     n = table_of(make_vault, body)
     assert [r.n for r in n.rows] == [1, 2] and len(n.edges) == 2
     assert n.table.last_line == n.rows[-1].line  # the blank line ends it
-    body = f"## Edges told\n\n{HEAD}{ROW}   | holds | [[g2]] | [[c2]] | |\n"
+    body = f"## Edges told\n\n{HEAD}{ROW}   | [[g2]] | holds | [[c2]] | |\n"
     assert len(table_of(make_vault, body).rows) == 2  # a row may start after spaces
 
 
@@ -391,7 +391,7 @@ def test_where_a_table_is_the_contiguous_lines_that_start_with_a_bar(make_vault)
 
 
 def test_a_second_table_under_the_heading_is_not_read_and_is_reported(make_vault):
-    body = f"## Edges told\n\n{HEAD}{ROW}\ntext\n\n{HEAD}| holds | [[g2]] | [[c2]] | |\n"
+    body = f"## Edges told\n\n{HEAD}{ROW}\ntext\n\n{HEAD}| [[g2]] | holds | [[c2]] | |\n"
     n = table_of(make_vault, body)
     assert n.edges == EDGE and len(n.rows) == 1  # the rows of the second tell no edge
     (p,) = n.problems
@@ -400,7 +400,7 @@ def test_a_second_table_under_the_heading_is_not_read_and_is_reported(make_vault
 
 
 def test_a_second_heading_is_not_read_and_is_reported(make_vault):
-    body = f"## Edges told\n\n{HEAD}{ROW}\n## Edges told\n\n{HEAD}| holds | [[g2]] | [[c2]] | |\n"
+    body = f"## Edges told\n\n{HEAD}{ROW}\n## Edges told\n\n{HEAD}| [[g2]] | holds | [[c2]] | |\n"
     n = table_of(make_vault, body)
     assert n.edges == EDGE
     (p,) = n.problems
@@ -428,10 +428,10 @@ def test_a_second_heading_with_no_table_under_the_first_still_reads_the_first_on
 @pytest.mark.parametrize(
     "header",
     [
-        "| TYPE | From | TO | Note |",
-        "|type|from|to|note|",
-        "|  type  | from |to| note|",
-        "| type | from | to | note",
+        "| FROM | Type | TO | Note |",
+        "|from|type|to|note|",
+        "|  from  | type |to| note|",
+        "| from | type | to | note",
     ],
 )
 def test_header_names_are_compared_without_case_and_ignoring_spaces(make_vault, header):
@@ -444,21 +444,21 @@ def test_header_names_are_compared_without_case_and_ignoring_spaces(make_vault, 
     ["|---|---|---|---|", "| --- | --- | --- | --- |", "|:--|:-:|--:|---|", "|---|", "|-|-|"],
 )
 def test_separator_rows_with_or_without_alignment_colons_are_accepted(make_vault, separator):
-    n = table_of(make_vault, f"## Edges told\n\n| type | from | to | note |\n{separator}\n{ROW}")
+    n = table_of(make_vault, f"## Edges told\n\n| from | type | to | note |\n{separator}\n{ROW}")
     assert n.edges == EDGE and n.problems == ()
 
 
 HEADER_CASES = [
     # (header, separator line or None for none, variant, detail, what the problem is about)
     ("| from | to | type | note |", "|---|---|---|---|", "order", ""),
-    ("| kind | from | to | note |", "|---|---|---|---|", "names", ""),
-    ("| type | from | to |", "|---|---|---|", "names", ""),
-    ("| type | from | to | note | extra |", "|---|---|---|---|---|", "names", ""),
-    ("| type | from | to | note |", "| a | b |", "separator", "row"),
-    ("| type | from | to | note |", None, "separator", "row"),  # the second line is a row
-    ("| type | from | to | note |", "", "separator", "alone"),  # a header row alone
+    ("| from | kind | to | note |", "|---|---|---|---|", "names", ""),
+    ("| from | type | to |", "|---|---|---|", "names", ""),
+    ("| from | type | to | note | extra |", "|---|---|---|---|---|", "names", ""),
+    ("| from | type | to | note |", "| a | b |", "separator", "row"),
+    ("| from | type | to | note |", None, "separator", "row"),  # the second line is a row
+    ("| from | type | to | note |", "", "separator", "alone"),  # a header row alone
     ("| from | to | type | note |", None, "order+separator", "row"),
-    ("| kind | from | to | note |", "| a | b |", "names+separator", "row"),
+    ("| from | kind | to | note |", "| a | b |", "names+separator", "row"),
 ]
 
 
@@ -479,7 +479,7 @@ def test_a_malformed_header_is_one_problem_and_its_rows_tell_no_edge(
 
 
 def test_a_header_row_alone_at_the_end_of_the_file_is_a_malformed_table(make_vault):
-    n = table_of(make_vault, "## Edges told\n\n| type | from | to | note |")
+    n = table_of(make_vault, "## Edges told\n\n| from | type | to | note |")
     assert [(p.variant, p.detail) for p in n.problems] == [("separator", "alone")]
 
 
@@ -502,15 +502,15 @@ def row_problems(make_vault, row):
 @pytest.mark.parametrize(
     "row,variant,cells,closed",
     [
-        ("| holds | [[g]] | [[c]] |", "missing-note", 3, True),
-        ("| holds | [[g]] | [[c]] | n", "unclosed", 4, False),
-        ("| holds | [[g]] | [[c]]", "missing-note-unclosed", 3, False),
-        ("| holds | [[g]] | [[c]] | x | y |", "extra-cells", 5, True),
-        ("| holds | [[g]] |", "too-few", 2, True),
-        ("| holds | [[g]]", "too-few", 2, False),
+        ("| [[g]] | holds | [[c]] |", "missing-note", 3, True),
+        ("| [[g]] | holds | [[c]] | n", "unclosed", 4, False),
+        ("| [[g]] | holds | [[c]]", "missing-note-unclosed", 3, False),
+        ("| [[g]] | holds | [[c]] | x | y |", "extra-cells", 5, True),
+        ("| [[g]] | holds |", "too-few", 2, True),
+        ("| [[g]] | holds", "too-few", 2, False),
         ("|", "too-few", 0, True),
         (
-            "| holds | [[g]] | [[c]] | a \\|",
+            "| [[g]] | holds | [[c]] | a \\|",
             "unclosed",
             4,
             False,
@@ -529,7 +529,7 @@ def test_wrong_cell_counts_and_unclosed_rows_are_data(make_vault, row, variant, 
 
 def test_a_well_formed_row_has_no_problem_and_rows_are_numbered_in_order(make_vault):
     body = (
-        f"## Edges told\n\n{HEAD}{ROW}| holds | [[g2]] | [[c2]] |\n| holds | [[g]] | [[c2]] | |\n"
+        f"## Edges told\n\n{HEAD}{ROW}| [[g2]] | holds | [[c2]] |\n| [[g]] | holds | [[c2]] | |\n"
     )
     n = table_of(make_vault, body)
     assert [(r.n, r.well_formed) for r in n.rows] == [(1, True), (2, False), (3, True)]
@@ -538,13 +538,13 @@ def test_a_well_formed_row_has_no_problem_and_rows_are_numbered_in_order(make_va
 
 
 def test_a_bar_in_a_note_written_escaped_is_text(make_vault):
-    n, problems = row_problems(make_vault, r"| holds | [[g]] | [[c]] | a \| b \|\| c |")
+    n, problems = row_problems(make_vault, r"| [[g]] | holds | [[c]] | a \| b \|\| c |")
     assert problems == [] and n.rows[0].note == "a | b || c" and len(n.rows[0].cells) == 4
     assert n.rows[0].cells[3].raw == r"a \| b \|\| c"
 
 
 def test_an_unescaped_bar_in_a_note_makes_a_fifth_cell(make_vault):
-    n, problems = row_problems(make_vault, "| holds | [[g]] | [[c]] | a | b |")
+    n, problems = row_problems(make_vault, "| [[g]] | holds | [[c]] | a | b |")
     assert problems == [("extra-cells", 1)] and n.edges == ()
 
 
@@ -553,39 +553,39 @@ def test_an_unescaped_bar_in_a_note_makes_a_fifth_cell(make_vault):
     [r"[[g|shown]]", r"[[g\|shown]]", r"[[ g | shown ]]", r"![[g]]", "[[g#Head]]", "[[g^blk]]"],
 )
 def test_a_bar_inside_double_brackets_never_ends_a_cell(make_vault, cell):
-    n, problems = row_problems(make_vault, f"| holds | {cell} | [[c]] | |")
+    n, problems = row_problems(make_vault, f"| {cell} | holds | [[c]] | |")
     assert problems == [] and n.rows[0].from_target == "g" and len(n.rows[0].cells) == 4
     assert n.edges == EDGE
 
 
 def test_a_bar_escaped_inside_a_code_span_is_one_bar_in_the_cell_text(make_vault):
-    n, problems = row_problems(make_vault, r"| holds | [[g]] | [[c]] | the `a \| b` form |")
+    n, problems = row_problems(make_vault, r"| [[g]] | holds | [[c]] | the `a \| b` form |")
     assert problems == [] and n.rows[0].note == "the `a | b` form"
 
 
 def test_a_link_in_a_code_span_is_not_an_end(make_vault):
-    n, _ = row_problems(make_vault, "| holds | `[[g]]` | [[c]] | |")
+    n, _ = row_problems(make_vault, "| `[[g]]` | holds | [[c]] | |")
     assert n.rows[0].from_target is None and n.rows[0].cells[1].links == () and n.edges == ()
 
 
 def test_whitespace_of_any_kind_is_dropped_at_the_ends_and_one_run_inside_is_one_space(make_vault):
     n, problems = row_problems(
         make_vault,
-        f"|\t is{NBSP}{NBSP}addressed \t by {NBSP}|{NBSP}[[ c ]]{NBSP}|\t[[ a\t]] |   word \t\t word   |",
+        f"|{NBSP}[[ c ]]{NBSP}|\t is{NBSP}{NBSP}addressed \t by {NBSP}|\t[[ a\t]] |   word \t\t word   |",
     )
     assert problems == []
     r = n.rows[0]
     assert (r.type_text, r.edge_type, r.from_target, r.to_target) == (
         "is addressed by", "addressed-by", "c", "a",
     )  # fmt: skip
-    assert r.note == "word word" and r.cells[0].raw.startswith("is")
+    assert r.note == "word word" and r.cells[1].raw.startswith("is")
     assert n.edges == (EdgeKey("addressed-by", "c", "a"),)
 
 
 def test_the_note_may_be_empty_and_a_link_in_it_is_a_link_of_the_narrative(make_vault):
-    n, problems = row_problems(make_vault, "| holds | [[g]] | [[c]] | |")
+    n, problems = row_problems(make_vault, "| [[g]] | holds | [[c]] | |")
     assert problems == [] and n.rows[0].note == ""
-    n, _ = row_problems(make_vault, "| holds | [[g]] | [[c]] | see [[c2]] |")
+    n, _ = row_problems(make_vault, "| [[g]] | holds | [[c]] | see [[c2]] |")
     assert "c2" in n.nodes and n.rows[0].note == "see [[c2]]"
     assert n.edges == EDGE  # the link in the note tells no edge
 
@@ -605,7 +605,7 @@ def test_the_note_may_be_empty_and_a_link_in_it_is_a_link_of_the_narrative(make_
     ],
 )  # fmt: skip
 def test_the_type_cell_is_the_verb_or_the_slug_without_regard_to_case(make_vault, cell, slug):
-    n, _ = row_problems(make_vault, f"| {cell} | [[g]] | [[c]] | |")
+    n, _ = row_problems(make_vault, f"| [[g]] | {cell} | [[c]] | |")
     assert n.rows[0].edge_type == slug
     assert n.rows[0].type_text == cell
     if slug != "holds":
@@ -635,7 +635,7 @@ def test_the_type_cell_is_the_verb_or_the_slug_without_regard_to_case(make_vault
 def test_each_end_is_exactly_one_link_and_nothing_else(
     make_vault, from_cell, to_cell, from_target, to_target
 ):
-    n, _ = row_problems(make_vault, f"| holds | {from_cell} | {to_cell} | |")
+    n, _ = row_problems(make_vault, f"| {from_cell} | holds | {to_cell} | |")
     r = n.rows[0]
     assert (r.from_target, r.to_target) == (from_target, to_target)
     assert r.from_text == from_cell.strip() or "|" in from_cell
@@ -655,12 +655,12 @@ def test_a_row_tells_an_edge_only_between_nodes_of_the_layers_its_type_fixes(mak
         ("owns", "[[g]]", "[[c]]", False),
     ]
     for verb, a, b, tells in cases:
-        got = edges_of(make_vault, f"## Edges told\n\n{HEAD}| {verb} | {a} | {b} | |\n")
+        got = edges_of(make_vault, f"## Edges told\n\n{HEAD}| {a} | {verb} | {b} | |\n")
         assert bool(got) is tells, (verb, a, b)
 
 
 def test_two_rows_of_one_narrative_for_one_pair_are_one_telling(make_vault):
-    body = f"## Edges told\n\n{HEAD}| holds | [[g]] | [[c]] | first |\n| HOLDS | [[g]] | [[c]] | again |\n"
+    body = f"## Edges told\n\n{HEAD}| [[g]] | holds | [[c]] | first |\n| [[g]] | HOLDS | [[c]] | again |\n"
     g = load(vault(make_vault, body))
     (e,) = g.edges
     assert [(t.row, t.note) for t in e.tellings] == [(1, "first")]
@@ -734,9 +734,9 @@ def test_candidates_are_pairs_of_neighbouring_layers_both_linked_with_no_row(mak
 
 def test_a_pair_with_a_row_in_any_form_is_no_candidate(make_vault):
     # a row for the pair that is malformed, or written the wrong way round, is still a row there
-    body = f"[[g]] [[c]]\n\n## Edges told\n\n{HEAD}| holds | [[g]] | [[c]]\n"
+    body = f"[[g]] [[c]]\n\n## Edges told\n\n{HEAD}| [[g]] | holds | [[c]]\n"
     assert load(vault(make_vault, body)).candidates == ()
-    body = f"[[g]] [[c]]\n\n## Edges told\n\n{HEAD}| holds | [[c]] | [[g]] | |\n"
+    body = f"[[g]] [[c]]\n\n## Edges told\n\n{HEAD}| [[c]] | holds | [[g]] | |\n"
     assert load(vault(make_vault, body)).candidates == ()
 
 
@@ -760,8 +760,8 @@ def test_links_to_pages_that_are_not_nodes_are_in_no_fingerprint(make_vault):
 
 def test_two_loads_are_equal_whatever_order_the_files_were_written_in(make_vault, tmp_path):
     files = {**NODES,
-             "narrative/b.md": narrative(f"## Edges told\n\n{HEAD}| holds | [[g2]] | [[c2]] | |\n"),
-             "narrative/a.md": narrative(f"## Edges told\n\n{HEAD}{ROW}| is provided by | [[a]] | [[t]] | |\n")}  # fmt: skip
+             "narrative/b.md": narrative(f"## Edges told\n\n{HEAD}| [[g2]] | holds | [[c2]] | |\n"),
+             "narrative/a.md": narrative(f"## Edges told\n\n{HEAD}{ROW}| [[a]] | is provided by | [[t]] | |\n")}  # fmt: skip
     first = make_vault(files)
     second = tmp_path.parent / (tmp_path.name + "-reversed")
     for rel in reversed(list(files)):
@@ -800,7 +800,7 @@ def apply(text, edits):
 
 
 TEXT = narrative(
-    f"The account [[g]].\n\n## Edges told\n\n{HEAD}| holds | [[g]] | [[c]] | one |\n| holds | [[g2]] | [[c]] | two |\n\nAfter the table.\n"
+    f"The account [[g]].\n\n## Edges told\n\n{HEAD}| [[g]] | holds | [[c]] | one |\n| [[g2]] | holds | [[c]] | two |\n\nAfter the table.\n"
 )
 
 
@@ -808,8 +808,8 @@ def test_add_row_to_an_existing_table_keeps_every_other_line_byte_identical():
     r = add_row(TEXT, "narrative/n.md", "is addressed by", "c", "a", "Said | twice")
     assert r.ok and r.changed
     old, new = lines(TEXT), lines(r.text)
-    i = old.index("| holds | [[g2]] | [[c]] | two |") + 1
-    assert new == old[:i] + ["| is addressed by | [[c]] | [[a]] | Said \\| twice |"] + old[i:]
+    i = old.index("| [[g2]] | holds | [[c]] | two |") + 1
+    assert new == old[:i] + ["| [[c]] | is addressed by | [[a]] | Said \\| twice |"] + old[i:]
     assert apply(TEXT, r.edits) == r.text
     (e,) = r.edits
     assert isinstance(e, Edit) and e.action == "replace-text" and e.file == "narrative/n.md"
@@ -817,8 +817,8 @@ def test_add_row_to_an_existing_table_keeps_every_other_line_byte_identical():
 
 def test_add_row_writes_the_verb_even_when_given_the_slug(make_vault):
     r = add_row(TEXT, "p.md", "provided-by", "a", "t")
-    assert "| is provided by | [[a]] | [[t]] | |" in r.text
-    assert format_row("holds", "g", "c", "  a\n b ") == "| holds | [[g]] | [[c]] | a b |"
+    assert "| [[a]] | is provided by | [[t]] | |" in r.text
+    assert format_row("holds", "g", "c", "  a\n b ") == "| [[g]] | holds | [[c]] | a b |"
 
 
 def test_add_row_to_a_padded_table_leaves_the_padding_alone(make_vault):
@@ -843,7 +843,7 @@ def test_add_row_with_no_table_writes_the_heading_header_and_separator_at_the_en
     assert (
         r.text
         == text
-        + "\n## Edges told\n\n| type | from | to | note |\n|---|---|---|---|\n| holds | [[g]] | [[c]] | |\n"
+        + "\n## Edges told\n\n| from | type | to | note |\n|---|---|---|---|\n| [[g]] | holds | [[c]] | |\n"
     )
     assert apply(text, r.edits) == r.text
     nofinal = text.rstrip("\n")  # no newline at the end: none is added
@@ -859,9 +859,9 @@ def test_add_row_with_a_heading_and_no_table_puts_the_table_under_the_heading():
     assert lines(r.text)[-8:] == [
         "## Edges told",
         "",
-        "| type | from | to | note |",
+        "| from | type | to | note |",
         "|---|---|---|---|",
-        "| holds | [[g]] | [[c]] | |",
+        "| [[g]] | holds | [[c]] | |",
         "",
         "No edges yet.",
         "",
@@ -885,7 +885,7 @@ def test_add_row_keeps_crlf_endings():
     bare = narrative("Account.\n").replace("\n", "\r\n")
     r = add_row(bare, "n.md", "holds", "g", "c")
     assert "\n" not in r.text.replace("\r\n", "") and r.text.endswith(
-        "| holds | [[g]] | [[c]] | |\r\n"
+        "| [[g]] | holds | [[c]] | |\r\n"
     )
 
 
@@ -907,10 +907,10 @@ def test_add_row_refuses_what_it_cannot_do_and_writes_nothing():
 def test_remove_rows_deletes_whole_lines_and_keeps_the_others_byte_identical():
     r = remove_rows(TEXT, "narrative/n.md", [1])
     old = lines(TEXT)
-    i = old.index("| holds | [[g]] | [[c]] | one |")
+    i = old.index("| [[g]] | holds | [[c]] | one |")
     assert lines(r.text) == old[:i] + old[i + 1 :]
     assert [(e.action, e.line, e.find) for e in r.edits] == [
-        ("delete-line", i + 1, "| holds | [[g]] | [[c]] | one |")
+        ("delete-line", i + 1, "| [[g]] | holds | [[c]] | one |")
     ]
     assert apply(TEXT, r.edits) == r.text
     both = remove_rows(TEXT, "n.md", [2, 1, 2])
@@ -944,3 +944,43 @@ def test_read_table_is_the_seam_the_builders_and_the_loader_share():
     assert reading.table.heading_line == 10 and reading.table.header_line == 12
     assert reading.table.separator_line == 13 and reading.table.rows[0].line == 14
     assert reading.table.last_line == 14 and reading.problems == ()
+
+
+# ---------------------------------------------------------------------------------------------------------
+# WP21-G1: the columns are `from | type | to | note`, and only that order is read or written
+# ---------------------------------------------------------------------------------------------------------
+
+OLD_ORDER = "| type | from | to | note |\n|---|---|---|---|\n| holds | [[g]] | [[c]] | |\n"
+
+
+def test_the_columns_come_from_the_tbox_in_the_order_from_type_to_note():
+    assert TBOX.table.names == ("from", "type", "to", "note")
+    assert [c.holds for c in TBOX.table.columns] == ["from", "edge-type", "to", "note"]
+
+
+@pytest.mark.parametrize(
+    "slug,a,b,verb",
+    [
+        ("holds", "g", "c", "holds"),
+        ("addressed-by", "c", "a", "is addressed by"),
+        ("provided-by", "a", "t", "is provided by"),
+    ],
+)
+def test_each_edge_type_is_written_and_read_in_the_new_order(make_vault, slug, a, b, verb):
+    row = format_row(slug, a, b, "n")
+    assert row == f"| [[{a}]] | {verb} | [[{b}]] | n |"
+    n = table_of(make_vault, f"## Edges told\n\n{HEAD}{row}\n")
+    assert n.problems == () and n.edges == (EdgeKey(slug, a, b),)
+
+
+def test_a_table_in_the_old_order_is_refused_and_its_rows_tell_no_edge(make_vault):
+    n = table_of(make_vault, "## Edges told\n\n" + OLD_ORDER)
+    (p,) = n.problems
+    assert (p.kind, p.variant) == ("header", "order")
+    assert n.rows == () and n.edges == ()
+
+
+def test_add_row_refuses_a_table_in_the_old_order_and_writes_nothing():
+    text = narrative("Account [[g]] [[c]].\n\n## Edges told\n\n" + OLD_ORDER)
+    r = add_row(text, "n.md", "holds", "g", "c")
+    assert r.text is None and r.edits == ()

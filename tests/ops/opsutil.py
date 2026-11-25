@@ -39,7 +39,7 @@ def narrative(
     """A narrative page: frontmatter, a line of account, and a table of edges with `rows` (whole row lines)."""
     table = ""
     if rows is not None:
-        table = "\n## Edges told\n\n| type | from | to | note |\n|---|---|---|---|\n" + "".join(
+        table = "\n## Edges told\n\n| from | type | to | note |\n|---|---|---|---|\n" + "".join(
             r + "\n" for r in rows
         )
     return fm("narrative", title, status, extra, "The account.\n" + table)

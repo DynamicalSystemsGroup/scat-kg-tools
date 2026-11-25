@@ -20,8 +20,8 @@ def _page(type_, title, extra="", body=""):
 
 
 def _narrative(title, rows, timeframe="past", body=""):
-    table = "\n## Edges told\n\n| type | from | to | note |\n|---|---|---|---|\n" + "".join(
-        f"| {t} | [[{a}]] | [[{b}]] | note |\n" for t, a, b in rows
+    table = "\n## Edges told\n\n| from | type | to | note |\n|---|---|---|---|\n" + "".join(
+        f"| [[{a}]] | {t} | [[{b}]] | note |\n" for t, a, b in rows
     )
     return _page("narrative", title, f"timeframe: {timeframe}\n", body + table)
 

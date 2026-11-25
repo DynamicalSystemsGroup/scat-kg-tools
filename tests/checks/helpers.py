@@ -15,7 +15,7 @@ ROOT = Path(__file__).parents[2]
 EXAMPLES = ROOT / "contracts" / "examples"
 CATALOGUE = ROOT / "contracts" / "rule-catalogue.md"
 
-HEADER = "| type | from | to | note |"
+HEADER = "| from | type | to | note |"
 SEP = "|---|---|---|---|"
 
 
@@ -34,7 +34,7 @@ def doc(type_, title, *, status="done", description="D", extra="", body="") -> s
 
 
 def row(type_, a, b, note="") -> str:
-    return f"| {type_} | [[{a}]] | [[{b}]] | {note} |".replace("|  |", "| |")
+    return f"| [[{a}]] | {type_} | [[{b}]] | {note} |".replace("|  |", "| |")
 
 
 def table(*rows, header=HEADER, sep=SEP) -> str:
