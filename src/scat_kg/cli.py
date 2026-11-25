@@ -130,6 +130,62 @@ def _parser() -> argparse.ArgumentParser:
         metavar="NARRATIVE",
         help="remove the rows of this narrative only; repeat it for each narrative",
     )
+    scope = "Writes nothing"
+    p = command(
+        "fingerprint",
+        "Show a narrative's fingerprint: its nodes by layer, the edges its rows tell, and the "
+        f"links that have no row (candidates). NARRATIVE is a name; without it, every narrative. {scope}.",
+        '`scat_kg.fingerprint()`, `scat_kg.fingerprint("<narrative>")`',
+    )
+    p.add_argument("narrative", nargs="?", metavar="NARRATIVE", help="show this narrative only")
+    p = command(
+        "edges",
+        f"Show every edge of one type, with the narratives that tell it and its status. {scope}.",
+        '`scat_kg.edge_table("<type>")`',
+    )
+    p.add_argument(
+        "type",
+        metavar="TYPE",
+        help="one of: "
+        + ", ".join(f"{s} ({e.from_type} then {e.to_type})" for s, e in TBOX.edge_types.items()),
+    )
+    p = command(
+        "layered",
+        "Show the layered view: the union of the fingerprints of the narratives named by --narrative, "
+        f"or, without it, of every narrative. {scope}.",
+        '`scat_kg.layered()`, `scat_kg.layered(["<narrative>"])`',
+    )
+    p.add_argument(
+        "--narrative",
+        action="append",
+        metavar="NARRATIVE",
+        help="include this narrative; repeat it for each narrative",
+    )
+    p = command(
+        "trace",
+        "Follow edges from a node: up toward the groups, down toward the technologies, or both. "
+        f"The node itself is left out. {scope}.",
+        '`scat_kg.trace("<node>")`, `scat_kg.trace("<node>", "<direction>")`',
+    )
+    p.add_argument(
+        "node", metavar="NODE", help="the name of a group, concern, affordance or technology"
+    )
+    p.add_argument(
+        "--direction",
+        default="both",
+        metavar="DIRECTION",
+        help="up, down or both (default: both)",
+    )
+    p = command(
+        "export-edges",
+        "Write each edge table to DIR as `<type>.csv` and `<type>.md`. Overwrites a file only when its "
+        "content differs; makes DIR if it is not there. Refuses where `scat edges` would, and then writes "
+        "nothing.",
+        '`scat_kg.export_edges("<dir>")`',
+    )
+    p.add_argument(
+        "--out", required=True, metavar="DIR", help="the folder the tables go in (no default)"
+    )
     return top
 
 
@@ -154,6 +210,16 @@ def run(args: argparse.Namespace):
             return scat_kg.remove_edge(args.from_node, args.to_node, args.told_by, root=root)
         case "stub-links":
             return scat_kg.stub_links(args.page, root=root)
+        case "fingerprint":
+            return scat_kg.fingerprint(args.narrative, root=root)
+        case "edges":
+            return scat_kg.edge_table(args.type, root=root)
+        case "layered":
+            return scat_kg.layered(args.narrative, root=root)
+        case "trace":
+            return scat_kg.trace(args.node, args.direction, root=root)
+        case "export-edges":
+            return scat_kg.export_edges(args.out, root=root)
     raise AssertionError(args.command)  # argparse requires a command
 
 

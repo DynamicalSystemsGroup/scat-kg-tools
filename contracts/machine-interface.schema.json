@@ -2,16 +2,17 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://scat-kg-tools.invalid/contracts/machine-interface.schema.json",
   "title": "scat machine interface, schema_version 2",
-  "description": "The one JSON document a scat command prints with --json, and the dict a Python result's to_dict() returns. Every object allows extra fields: adding a field does not change schema_version. The set of rule ids is not enumerated here, only its pattern. Version 2 follows the layout of D-088: pages are group, concern, affordance, technology and narrative; an edge is a row of a narrative table, so record-edge and remove-edge results name the edge and the rows they touched. kind is check, status or operation. A refusal, even by check or status, gives kind operation with ok false. ok is false on an error or a refusal; warnings keep it true. The exit code is 0 when ok, 1 otherwise, and 2 for a command line that cannot be read. Stdout holds exactly one document; text for humans goes to stderr. Line numbers count the file's lines, front matter included; columns count characters, from 1.",
+  "description": "The one JSON document a scat command prints with --json, and the dict a Python result's to_dict() returns. Every object allows extra fields: adding a field does not change schema_version. The set of rule ids is not enumerated here, only its pattern. Version 2 follows the layout of D-088: pages are group, concern, affordance, technology and narrative; an edge is a row of a narrative table, so record-edge and remove-edge results name the edge and the rows they touched. kind is check, status, operation or view. A refusal, even by check or status, gives kind operation with ok false. ok is false on an error or a refusal; warnings keep it true. The exit code is 0 when ok, 1 otherwise, and 2 for a command line that cannot be read. Stdout holds exactly one document; text for humans goes to stderr. Line numbers count the file's lines, front matter included; columns count characters, from 1.",
   "oneOf": [
     { "$ref": "#/$defs/CheckResult" },
     { "$ref": "#/$defs/StatusResult" },
-    { "$ref": "#/$defs/OperationResult" }
+    { "$ref": "#/$defs/OperationResult" },
+    { "$ref": "#/$defs/ViewResult" }
   ],
   "$defs": {
     "SchemaVersion": { "const": 2 },
     "OperationName": {
-      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge). New commands may appear, so the names are not enumerated.",
+      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge, fingerprint, edges, layered, trace, export-edges). New commands may appear, so the names are not enumerated.",
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]*$"
     },
@@ -31,6 +32,7 @@
     },
     "StringList": { "type": "array", "items": { "type": "string" } },
     "PathList": { "type": "array", "items": { "$ref": "#/$defs/VaultPath" } },
+    "AnyPathList": { "description": "export-edges only: a path inside the vault is vault-relative with /; a folder outside it is written as given.", "type": "array", "items": { "type": "string", "minLength": 1 } },
 
     "CheckResult": {
       "description": "What check returns when it ran. A check that could not run (not a vault, page not found, ...) is an OperationResult with ok false.",
@@ -95,9 +97,9 @@
         "kind": { "const": "operation" },
         "operation": { "$ref": "#/$defs/OperationName" },
         "ok": { "type": "boolean" },
-        "created": { "$ref": "#/$defs/PathList" },
-        "changed": { "$ref": "#/$defs/PathList" },
-        "unchanged": { "$ref": "#/$defs/PathList", "description": "Looked at and already right: nothing written." },
+        "created": { "$ref": "#/$defs/AnyPathList" },
+        "changed": { "$ref": "#/$defs/AnyPathList" },
+        "unchanged": { "$ref": "#/$defs/AnyPathList", "description": "Looked at and already right: nothing written." },
         "refused": { "type": "array", "items": { "$ref": "#/$defs/Refusal" } },
         "notes": { "$ref": "#/$defs/StringList", "description": "Sentences for a person." },
         "problems": { "type": "array", "items": { "$ref": "#/$defs/Problem" }, "description": "Optional. The problems the write leaves, on the pages it touched and the pages one link away, in the catalogue's sort order." },
@@ -106,6 +108,11 @@
         "rows_removed": { "type": "array", "items": { "$ref": "#/$defs/RowRef" }, "description": "The rows the call deleted." }
       },
       "allOf": [
+        {
+          "description": "Every operation but export-edges lists vault paths.",
+          "if": { "properties": { "operation": { "const": "export-edges" } }, "required": ["operation"] },
+          "else": { "properties": { "created": { "$ref": "#/$defs/PathList" }, "changed": { "$ref": "#/$defs/PathList" }, "unchanged": { "$ref": "#/$defs/PathList" } } }
+        },
         {
           "description": "record-edge and remove-edge, when they ran, name the edge and the rows they added and removed. When they refuse, nothing was written and these fields may be absent.",
           "if": {
@@ -121,6 +128,101 @@
         {
           "if": { "properties": { "ok": { "const": false } }, "required": ["ok"] },
           "then": { "properties": { "refused": { "minItems": 1 } } }
+        }
+      ]
+    },
+    "ViewNode": {
+      "description": "A node of a view: a page of one of the four layers.",
+      "type": "object",
+      "required": ["name", "type", "status"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["group", "concern", "affordance", "technology"], "description": "The layer, in layer order: group, concern, affordance, technology." },
+        "status": { "type": ["string", "null"], "description": "As written on the page." }
+      }
+    },
+    "ViewEdge": {
+      "description": "An edge of the graph, one per (type, from, to), as every view gives it: with every narrative that tells it, and its derived status (the least advanced of those narratives). Relationship annotations appear in no view.",
+      "type": "object",
+      "required": ["type", "from", "to", "narratives", "status"],
+      "properties": {
+        "type": { "$ref": "#/$defs/EdgeType" },
+        "from": { "type": "string", "minLength": 1 },
+        "to": { "type": "string", "minLength": 1 },
+        "narratives": { "$ref": "#/$defs/StringList", "description": "In byte order." },
+        "status": { "type": ["string", "null"] }
+      }
+    },
+    "ViewCandidate": {
+      "description": "A rule-4 candidate (D-085): two nodes a narrative links, with an edge type between their layers, and no row. It is not an edge.",
+      "type": "object",
+      "required": ["type", "from", "to"],
+      "properties": {
+        "type": { "$ref": "#/$defs/EdgeType" },
+        "from": { "type": "string", "minLength": 1 },
+        "to": { "type": "string", "minLength": 1 }
+      }
+    },
+    "ViewNarrative": {
+      "description": "One narrative's fingerprint: nodes flat in layer order then name; edges are the narrative's own rows; candidates are linked pairs that have no row.",
+      "type": "object",
+      "required": ["name", "kind", "status", "nodes", "edges", "candidates"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "kind": { "type": ["string", "null"], "description": "scenario or architecture, as written." },
+        "status": { "type": ["string", "null"] },
+        "nodes": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" } },
+        "edges": { "type": "array", "items": { "$ref": "#/$defs/ViewEdge" } },
+        "candidates": { "type": "array", "items": { "$ref": "#/$defs/ViewCandidate" } }
+      }
+    },
+    "ViewResult": {
+      "description": "What fingerprint, edges, layered and trace return when they ran: the data of one view, deterministic (layer order, then name; edges in graph order; narratives in path order). A view that cannot run (unknown name, an error in a page it draws, no vault) is an OperationResult with ok false and its problems. fingerprint: narratives. edges: edge_type, from_layer, to_layer, rows. layered: narratives (names), nodes (by layer), edges. trace: node, direction, up and down (nodes in layer order then name; empty for a direction not asked), edges (those walked); the node itself is in neither list.",
+      "type": "object",
+      "required": ["schema_version", "kind", "operation", "ok"],
+      "properties": {
+        "schema_version": { "$ref": "#/$defs/SchemaVersion" },
+        "kind": { "const": "view" },
+        "operation": { "enum": ["fingerprint", "edges", "layered", "trace"] },
+        "ok": { "const": true },
+        "narratives": { "type": "array", "description": "fingerprint: the fingerprints (ViewNarrative), one per narrative asked, or every narrative in path order. layered: the names of the narratives drawn." },
+        "edge_type": { "$ref": "#/$defs/EdgeType" },
+        "from_layer": { "type": "string" },
+        "to_layer": { "type": "string" },
+        "rows": { "type": "array", "items": { "$ref": "#/$defs/ViewEdge" }, "description": "edges: every edge of the type, in graph order." },
+        "nodes": {
+          "type": "object",
+          "description": "layered: the nodes the fingerprints link, keyed by layer, in layer order.",
+          "required": ["group", "concern", "affordance", "technology"],
+          "properties": {
+            "group": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" } },
+            "concern": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" } },
+            "affordance": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" } },
+            "technology": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" } }
+          }
+        },
+        "edges": { "type": "array", "items": { "$ref": "#/$defs/ViewEdge" } },
+        "node": { "type": "string", "minLength": 1 },
+        "direction": { "enum": ["up", "down", "both"] },
+        "up": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" }, "description": "trace: nodes toward the groups." },
+        "down": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" }, "description": "trace: nodes toward the technologies." }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "operation": { "const": "fingerprint" } }, "required": ["operation"] },
+          "then": { "required": ["narratives"], "properties": { "narratives": { "items": { "$ref": "#/$defs/ViewNarrative" } } } }
+        },
+        {
+          "if": { "properties": { "operation": { "const": "edges" } }, "required": ["operation"] },
+          "then": { "required": ["edge_type", "from_layer", "to_layer", "rows"] }
+        },
+        {
+          "if": { "properties": { "operation": { "const": "layered" } }, "required": ["operation"] },
+          "then": { "required": ["narratives", "nodes", "edges"], "properties": { "narratives": { "items": { "type": "string" } } } }
+        },
+        {
+          "if": { "properties": { "operation": { "const": "trace" } }, "required": ["operation"] },
+          "then": { "required": ["node", "direction", "up", "down", "edges"] }
         }
       ]
     },

@@ -14,7 +14,7 @@ the changes from version 1.
 - **Python.** A result's `to_dict()` returns exactly the CLI's data.
 - **Paths** are vault-relative: `/`, no leading `/`, no `..`. `line` and `column` count from 1, or are null.
 
-`kind` is `check`, `status` or `operation`. A refusal, even by `check` or `status`, gives kind `operation` with `ok` false.
+`kind` is `check`, `status`, `operation` or `view` (`fingerprint`, `edges`, `layered`, `trace`). A refusal, even by `check` or `status`, gives kind `operation` with `ok` false.
 
 ## Fields you may rely on
 
@@ -36,6 +36,14 @@ Nothing outside it is promised.
 | option | `kind`, `text`, `command`, `edits` |
 | command | `argv`, `repl`, `author_slot` |
 | edit | `action`, `file`, `field`, `value`, `author_slot`, `line`, `column`, `find`, `replace`, `to` |
+
+## View fields
+
+| Object | Fields |
+|---|---|
+| view | `narratives`, `edge_type`, `from_layer`, `to_layer`, `rows`, `nodes`, `edges`, `node`, `direction`, `up`, `down` |
+| node | `name`, `type`, `status` |
+| view edge | the edge fields and `status` |
 
 ## Fixes
 
