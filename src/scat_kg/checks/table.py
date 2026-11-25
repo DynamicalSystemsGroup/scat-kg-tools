@@ -36,6 +36,15 @@ def _is_row(line: str) -> bool:
     return "[[" in line or bool(cells and TBOX.edge_type_named(cells[0].text))
 
 
+def _joins_header(ctx: Ctx, page: Page, tp: TableProblem, headers: list[int]) -> bool:
+    """Whether a "second table" starts in the lines run on from a malformed header (no blank line between):
+    its first row follows a separator the reader did not take, so it is the same table."""
+    return any(
+        h < tp.line and all(ctx.body_text(page, n).strip() for n in range(h, tp.line))
+        for h in headers
+    )
+
+
 def _header(ctx: Ctx, page: Page, rule: str, tp: TableProblem):
     header = ctx.body_text(page, tp.line).strip()
     names_wrong, order_wrong = tp.variant.startswith("names"), tp.variant.startswith("order")
@@ -310,7 +319,14 @@ def table_rules(ctx: Ctx, page: Page):
     table = reading.table
     first_line = table.header_line if table else reading.first_heading_line
     rows = {r.n: r for r in table.rows} if table else {}
+    headers = [tp.line for tp in reading.problems if tp.kind == "header"]
     for tp in reading.problems:
+        if (
+            tp.kind == "second"
+            and tp.variant != "heading"
+            and _joins_header(ctx, page, tp, headers)
+        ):
+            continue  # the table with the malformed header is reported once (header message first)
         stem_ = {"header": "TABLE-HEADER", "row": "TABLE-ROW", "second": "TABLE-SECOND"}[tp.kind]
         rule = ctx.pair(page, stem_)
         if rule is None:

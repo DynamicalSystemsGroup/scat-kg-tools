@@ -36,6 +36,16 @@ def _plain(ctx: Ctx, page: Page) -> str:
     return "\n".join(lines)
 
 
+def _in_cell(ctx: Ctx, page: Page, line: int, column: int) -> bool:
+    """Whether the place is inside a cell of the narrative's table (any of its rows)."""
+    reading = ctx.reading(page)
+    if reading is None or reading.table is None:
+        return False
+    return any(
+        c.line == line and c.start < column <= c.end for r in reading.table.rows for c in r.cells
+    )
+
+
 @page_rule
 def mention(ctx: Ctx, page: Page):
     if not ctx.typed(page) or not page.body:
@@ -59,7 +69,12 @@ def mention(ctx: Ctx, page: Page):
         line = page.body_line + plain.count("\n", 0, best.start())
         column = best.start() - (plain.rfind("\n", 0, best.start()) + 1) + 1
         written = best.group()
-        link = f"[[{target.name}]]" if written == target.name else f"[[{target.name}|{written}]]"
+        bar = (
+            "\\|" if _in_cell(ctx, page, line, column) else "|"
+        )  # a cell writes the alias bar `\|`
+        link = (
+            f"[[{target.name}]]" if written == target.name else f"[[{target.name}{bar}{written}]]"
+        )
         out.append(
             ctx.problem(
                 "SCAT-MENTION",

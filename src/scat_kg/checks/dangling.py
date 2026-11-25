@@ -236,6 +236,7 @@ def link_dangling_body(ctx: Ctx, page: Page):
                 f"does not reach a page ({d.reason})",
                 fix_of(opts, notes),
                 line=link.line,
+                pos=link.column,
                 target=target,
             )
         )
