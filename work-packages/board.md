@@ -20,7 +20,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP12 | The terms reference (F-8; D-068) | all units done (WP12-U5 by the ACE under D-074); WP12 ready for ACE acceptance | `WP12.md` |
 | RS1 | Research spike: Obsidian plugin (outside v0.1; branch `spike/obsidian-plugin`, never merged into `dev`) | readout, installable plugin and tests done | `RS1-obsidian-plugin.md` |
 | RS2 | Research spike: graph analysis (outside v0.1; branch `spike/analysis`, never merged into `dev`) | readout, package, notebook and tests done | `RS2-analysis.md` |
-| WP14 | Prior-art readout (D-079) | scope check returned to the ACE with fixes; no unit planned | `WP14.md` |
+| WP14 | Prior-art readout (D-079) | all units done and merged; ready for ACE acceptance | `WP14.md` |
 | WP16 | Ontology and layout (absorbs WP13) | impact map and file map done (WP16-U0); scope not yet written | `impact/WP16.md` |
 | RS3 | Research spike: chat path (D-080; branch `spike/chat-path`, never merged into `dev`) | offline part done (U1, U2); live part waits for the chief engineer's sign-ins | `RS3-chat-path.md` |
 
@@ -164,6 +164,11 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP16-U0 | change consultant (impact map, file map), sonnet | 5 | 5 | `wp16/u0` | done |  | 2026-11-24T21:35:00-05:00 | clean first time; PM re-ran the sweep, output matched; 11 open questions for the ACE; merged d972831 |
 | RS3-U1 | research engineer (chat documentation), sonnet | 3 | 3 | `spike/chat-path` | done |  | 2026-11-24T21:35:01-05:00 | docs only, no use of inference.coop; chat is LibreChat, not Open WebUI; note over its word target |
 | RS3-U2 | Python developer (throwaway MCP server), sonnet | 5 | 3 | `spike/chat-path` | done |  | 2026-11-24T21:35:02-05:00 | 4 tests pass (PM re-ran); scat_kg.check(page) already exists, so easier than estimated |
+| WP14-U1 | research engineer (INCOSE paper notes), sonnet | 3 | 2 | none (notes returned as text) | done |  | 2026-11-24T21:39:27-05:00 | about 30 s worker, 4 tool calls; notes clean, page-referenced; below estimate (one PDF) |
+| WP14-U2 | research engineer (ant-rdf and knowledgecomplex notes), sonnet | 3 | 3 | none (notes returned as text) | done |  | 2026-11-24T21:39:27-05:00 | about 1 min worker, 14 tool calls; notes on two repositories; matches estimate |
+| WP14-U3 | research engineer (public vault source, earlier private work as principles), sonnet | 3 | 3 | none (notes returned as text) | done |  | 2026-11-24T21:39:27-05:00 | about 1.2 min worker, 20 tool calls; found the public source is a package, not a vault; matches estimate |
+| WP14-U4 | technical writer (the readout), sonnet | 3 | 5 | `wp14/u4` | done |  | 2026-11-24T21:39:27-05:00 | two push-backs (private-derived quote and wording, then trace and sense fixes), one typo fix; 3 revisions; merged 3a9deed; over estimate because of the review rounds |
+| WP14-U5 | reviewer (WP14-R1 to R3), sonnet | 2 | 3 | none (notes returned as text) | done |  | 2026-11-24T21:39:27-05:00 | two review rounds on a fresh reviewer (R1 to R3 greps run outside the file); found one pre-existing private repository name in decisions/log.md, outside the blast radius |
 
 ## Iterations and velocity
 
@@ -183,6 +188,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 12 | WP12-U1 to U4, U6 to U11 (U6 to U11 added by the PM; U5 blocked) | 18 | 20 | 1.11 | 0.84 h | 23.8 |
 | 13 | WP12-U5 (done by the ACE under D-074 after a guard block) | 1 | 2 | 2.00 | 5.79 h | 0.35 |
 | 14 | WP16-U0, RS3-U1, RS3-U2 | 13 | 11 | 0.85 | 0.40 h | 27.5 |
+| 15 | WP14-U1 to U5 | 14 | 16 | 1.14 | 0.1 h | 160.0 |
 
 ## Velocity and forecast
 
@@ -193,6 +199,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP14 ready for ACE acceptance: five units, readout at `research/prior-art/readout.md` (1,735 words before the source table). Iteration 15 closed: 14 est. pts, 16 realized (ratio 1.14), 0.1 h, raw velocity 160.0 realized pts/hour. `python3 work-packages/check_metrics.py --accept WP14` passes. Over: U4 (5 against 3: two push-backs, one for private-derived wording and one for source-sense and trace fixes); U5 (3 against 2: two review rounds). Lesson: a writer's brief for a readout built on private principles should say to state lessons generally and mark each source's own sense of edge, field and model up front; and flag to the ACE that decisions/log.md line 124 already names a private repository.
 
 Current: WP12 ready for ACE acceptance. WP12-U5 is done (the ACE made the edits under D-074 after a guard refusal); iteration 13 closed: 1 est. pt, 2 realized (ratio 2.00), 5.79 h wall clock (mostly waiting on the block), raw velocity 0.35 realized pts/hour, not a throughput signal. Iteration 12 closed: 18 est. pts, 20 realized (ratio 1.11), 0.84 h, raw velocity 23.8 realized pts/hour. `python3 work-packages/check_metrics.py --accept WP12` passes. Over: U1 (5 against 3: three push-backs for forward uses of defined terms; the 600-word cap left no room), and the page needed four fresh cold readers because each Haiku round adds new guesses. Lesson: for a 600-word glossary, state the "no term before its definition" standard in the brief (every prose use above its entry links; intro guide labels and code-span names exempt), and plan the cold-reader rounds as a loop of two to four units, not one.
 
