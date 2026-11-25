@@ -1856,3 +1856,26 @@ means):
 WP16's build stage proceeds on this. The architecture's open WP16 slots (edge as page or field; where an edge records
 its narratives; how the one-link-away scope treats edges) are answered by it; the PM's build units record the answers
 in `contracts/architecture.md` within its word cap.
+
+## D-089 | 2026-11-24 | WP16 build: the PM's defaults confirmed; rulings on its flags; a glossary entry added
+
+The PM (WP16 U3 to U5 done on `wp16/build`; U6 to U14 queued; it stopped because its context grew large) recorded its
+build-stage defaults in `work-packages/WP16.md` on that branch. The ACE confirms them as written: page types and the
+`kind` field, edges as rows with one edge per (type, from, to), whitespace-tolerant table reading, links and
+fingerprints, derived edge status, `record_edge` and `remove_edge` (refusing to change a `done` narrative until the
+coder sets it to `draft`: done is not frozen, but changing it is the coder's step), the `done` refusal, relationship
+annotations as body lines, Bases index pages, `schema_version` 2, and integration on `pm-work` with one push to `dev`
+when green.
+
+Rulings on the PM's flags:
+1. The machine-interface page exceeds its 600-word cap (1,558 words). The page is cut back to 600 words, with the
+   detail moved into the JSON Schema's descriptions and the rule catalogue; the cap test is restored, not skipped. A
+   skipped test weakens a requirement, which `ORG.md` forbids.
+2. `stakeholder_group_cap` is a user-visible key with no glossary word. The glossary gains **cap** (an addition, not a
+   change of any sense; the sweep for "cap" finds it used only in that sense). The key keeps its name.
+3. The Bases leave out pages under the template folder; the ACE opens every generated `.base` in Obsidian during
+   WP16's acceptance walk.
+4. Rule 4 candidates count every pair the narrative links whose edge another narrative tells: that is D-085's intent.
+   Accepted.
+5. Narratives need `timeframe` before `done`: correct per the ontology; the spike pages are not migrated.
+6. U4's fixes after its failed review get a second, independent review before WP16 is accepted.
