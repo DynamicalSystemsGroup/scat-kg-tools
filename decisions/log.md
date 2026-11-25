@@ -2173,8 +2173,11 @@ neither. The chief engineer chose "Rewrite both": the ACE rewrites those commits
 verifies that the text is gone from every reachable commit, and records the old and new heads. This is the chief
 engineer's authorisation for those two force-pushes only.
 
-## D-110 | 2026-11-25 | WP8-U1: the held test edit is allowed
+## D-110 | 2026-11-25 | WP8-U1: the two held assertion changes are allowed
 
-Asked whether to allow the held edit to `tests/ops/test_ops_stub.py` (D-042; the test's setup only, assertions
-unchanged) or drop it. The chief engineer chose "Allow the edit". The ACE applies it as held, and checks that no
-assertion changed.
+First asked with a wrong description (the ACE said the edit touched only the test's setup); the chief engineer chose
+"Allow the edit" on that description. The ACE then found, from D-042, that the edit changes two assertions, and asked
+again on the right facts: in `tests/ops/test_ops_stub.py`, (1) `not r.ok` becomes `r.ok and r.unchanged ==
+("concern/a.md",)` (stub on an existing page of the same type is a no-op, D-039), and (2) the same-type refusal row
+becomes a different-type row (`affordance`), still refused. The chief engineer chose "Allow both changes". The ACE
+applies exactly these two changes (fixes on `wp8/u1`, `3ed3163`, `9e6ca44`) and nothing else in the test.
