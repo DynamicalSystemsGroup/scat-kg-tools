@@ -1,7 +1,7 @@
 # SCAT rule catalogue (WP16, for the layout of D-088)
 
 What a check looks at, at what severity, and what each message tells the user to do. It serves goal WP4-G3 and
-requirements R-1 to R-4, R-8 and R-23 of the mission. The TBox (`ontology/scat.ttl`) says what a conformant page is;
+requirements R-1 to R-4, R-8 and R-23 of the mission. The ontology (`ontology/scat.ttl`) says what a conformant page is;
 this file says how a departure is graded and worded. The page contracts (`contracts/page-contracts.md`) say how pages
 are named, written and linked, how a narrative's table is read, and which pages a link entails. This file uses their
 conventions and does not restate them; where it needs one it names the contract section.
@@ -47,6 +47,13 @@ table is read only on a page of type `narrative`. A table whose header or separa
 SCAT-DRAFT-TABLE-HEADER and SCAT-DONE-TABLE-HEADER condition) is reported once and its rows are checked by no row rule:
 which cell is which is not known until the header is right, and it tells no edge until then (a table of a header row alone is such a table). A second table or heading is not read at all (SCAT-*-TABLE-SECOND).
 
+**Well-formed.** A *table* is well-formed when its header row has the four column names, in order, and a separator row
+follows. A *row* is well-formed when it has four cells and ends with an unescaped `|` (page contracts 4, Cells). A row
+that is not well-formed tells no edge: SCAT-*-TABLE-ROW judges it, first and alone; the type, layers, duplicate and end
+rules do not (R-23 is not engaged until the row is right), so a link in its `from` or `to` cell is graded by nothing
+until then. A link in any other cell of it is an ordinary body link. In a table whose header is malformed, in a second
+table, and outside the table altogether, every link is an ordinary body link, graded by SCAT-LINK-DANGLING-BODY.
+
 **Empty.** A field is *missing* when the key is absent or its value is null, an empty or blank string, or an empty
 list. A cell is *empty* when it holds nothing but whitespace.
 
@@ -70,8 +77,8 @@ An unfinished page is never an error for being unfinished: nothing in the `done`
 Setting `done` is judged as the page would stand at `done` (section 5).
 
 **Order and format.** Messages sort by file path (byte order), then line (a message with no line sorts first), then
-column (messages with no column sort first), then rule id, then the field, link or cell in the order the page lists
-them, then the target name (byte order), then the field name (byte order). Messages identical in rule, file, line and
+column (messages with no column sort first), then rule id, then the position in the file of the field key, link or
+cell, then the target name (byte order), then the field name (byte order). Messages identical in rule, file, line and
 text are printed once, with ` (x<n>)` appended to the first line. The format:
 
 ```
@@ -86,7 +93,7 @@ or, when the fix is a choice between alternatives, or steps:
 ```
 `<severity>` is `error` or `warning`, and `refused` in the refusal of section 5. `<line>` is the 1-based line of the link, field key, header or row; `<column>`
 (characters, 1-based) is given for a table cell (its first character), a row (its first `|`), the header (its first
-`|`) and a mention (the first character of the text). `<where>` is ``field `<name>` `` (a front-matter field, or a key of `scat.toml`, whose file is then `scat.toml`), ``link [[<target>]]``,
+`|`) and a mention (the first character of the text). `<where>` is ``field `<name>` `` (a frontmatter field, or a key of `scat.toml`, whose file is then `scat.toml`), ``link [[<target>]]``,
 `frontmatter`, `table header`, ``row <n>`` or ``row <n> cell `<type|from|to>` ``. Angle-bracket words are filled in by
 the tool, except a slot marked *(author)*, which stays in the message literally because only the author can fill it.
 A fix says exactly which line to write, replace or delete. A command fix names the command and its REPL twin on one
@@ -110,7 +117,8 @@ choice is the author's); **slot** (exact except one *(author)* slot); **advisory
 | set-status | `scat set-status <page-name> <status>` | `scat_kg.set_status("<page-name>", "<status>")` | Sets `status`, adding the key if absent. Setting `done` is judged first (section 5). |
 
 `record-edge` and `remove-edge` are operations of the tool too (`scat record-edge TYPE FROM TO --told-by NARRATIVE
-[--note TEXT]`, `scat remove-edge FROM TO [--told-by NARRATIVE]`), with results in the machine interface. No message
+[--told-by NARRATIVE ...] [--note TEXT]`, `scat remove-edge FROM TO [--told-by NARRATIVE ...]`; `--told-by` may be repeated,
+and `remove-edge` without it removes the rows of every narrative that tells the pair), with results in the machine interface. No message
 names them: recording an edge is writing a row, which the author does in Obsidian or by that command, and no rule says
 a row is missing (section 4).
 
@@ -161,7 +169,7 @@ because the model it checked is gone (D-088).
 | SCAT-LINK-UNLISTED | retired | no link fields |
 | SCAT-LINK-ENDPOINT | retired | no link fields; the layers of a row's ends are SCAT-*-TABLE-LAYERS |
 | SCAT-LINK-DANGLING | retired | it checked frontmatter links, which are never read now (page contracts 3) |
-| SCAT-LINK-DISCOURAGED, SCAT-LINK-DISCOURAGED-BODY | retired | no discouraged field or body link in the TBox |
+| SCAT-LINK-DISCOURAGED, SCAT-LINK-DISCOURAGED-BODY | retired | no discouraged field or body link in the ontology |
 | SCAT-CONFLICT-SELF | retired | the `conflicts` field is gone; a relationship annotation has no meaning to the tool |
 | SCAT-REL-DUPLICATE | retired | no relation pages; duplicates in a narrative are SCAT-*-TABLE-DUPLICATE |
 | SCAT-RAW-BACKLINK, SCAT-RAW-UNCODED | retired | no raw and coded pairs |
@@ -182,8 +190,8 @@ because the model it checked is gone (D-088).
 | SCAT-DONE-FIELD | error | done | all | a field required from `done` is missing | slot |
 | SCAT-DRAFT-FIELD | warning | draft; stub for `timeframe` | all | a field required from `done` is missing | slot |
 | SCAT-LINK-DANGLING-BODY | error | every status | all | a link outside a table end reaches no page | options |
-| SCAT-CAP | error | vault | vault | more `group` pages than the cap | options |
-| SCAT-CAP-CONFIG | error | vault | vault | `scat.toml` or its cap missing, malformed or not a whole number of at least 1 | slot |
+| SCAT-CAP | error | vault | vault; all when a `group` page is in the set | more `group` pages than the cap | options |
+| SCAT-CAP-CONFIG | error | vault | vault; all when a `group` page is in the set | `scat.toml` or its cap missing, malformed or not a whole number of at least 1 | slot |
 | SCAT-MENTION | warning | every status | all | body names an existing node page in plain text | exact |
 | SCAT-DRAFT-TABLE-HEADER | warning | stub, draft | all | the table's header or separator row is malformed | advisory |
 | SCAT-DONE-TABLE-HEADER | error | done | all | the table's header or separator row is malformed | advisory |
@@ -220,6 +228,13 @@ manual. The variants, where they differ:
 | SCAT-*-TABLE-TYPE, -LAYERS, -NOLINK, -NOPAGE, -NOTNODE, -SECOND | options in every variant |
 | SCAT-CAP | options; SCAT-CAP-CONFIG: slot |
 
+SCAT-FM-STATUS is options in every variant: which status is true is a claim about the page, so even a near match is the
+author's to confirm; the near matches of SCAT-FM-TYPE and SCAT-FM-TIMEFRAME are exact, as a spelling mends a spelling.
+The schema wants two or more options for kind `options`, so a fix left with one option takes that option's kind. The
+built tool does this in these named cases, where the column above names the kind of the choice: SCAT-FM-REQUIRED
+`status` (one command: exact); the near match of SCAT-FM-STATUS (one edit: exact); SCAT-LINK-DANGLING-BODY when only
+the replace-by-text option remains (exact); and, in SCAT-CAP, option 1 is kind `manual`, not `advisory`.
+
 "all" is page, one link away and vault. The pair rules are *needs status*: a narrative whose `status` is missing or
 invalid gets the status error and none of them. They report only on narratives. Tests: every test starts from a clean
 fixture vault with zero messages, injects exactly one defect, and expects exactly one message of the rule, equal to
@@ -245,23 +260,23 @@ error [SCAT-FM-PARSE] <file>[:<line>] frontmatter: <parser's reason, or "the clo
 error [SCAT-FM-REQUIRED] <file> field `status`: missing
   Fix: run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`); use `stub` or `done` instead of `draft` if that is the truth
 error [SCAT-FM-REQUIRED] <file> field `title`: missing
-  Fix: add the line `title: "<Title>"` (when `title:` is present but empty, replace that line), where <Title> is the page name with each - replaced by a space and the first letter upper case (reword it if you like)
+  Fix: add the line `title: "<Title>"` (the page name with each - replaced by a space and the first letter upper case; reword it if you like)
 ```
-- **Fix kind:** options for `status` (the author knows whether the page is finished; `draft` never overstates), exact for `title` (the contract's own stub title). Edits: `status`: `command{set-status <page-name> draft}`; `title`: `set-field{title, "<Title>"}`.
+- **Fix kind:** options for `status` (the author knows whether the page is finished; `draft` never overstates), exact for `title` (the contract's own stub title). When `title:` is present but empty the fix reads "replace the line `title:` with `title: "<Title>"`" and the same tail. Edits: `status`: `command{set-status <page-name> draft}`; `title`: `set-field{title, "<Title>"}`.
 - **Seed:** `status`, then `title`, removed in turn, each at `stub` and `draft` (a `stub` status excuses neither); a narrative as well as a node page.
 
 ### SCAT-FM-TYPE
 - **Severity:** error. **Fires:** every status. **Runs at:** all; reads only its page.
-- **Trigger:** `type` is present and is not one of `group`, `concern`, `affordance`, `technology`, `narrative` (the TBox's page types that are Markdown pages: `index` is a type of the TBox, but an index is a generated Base and not a Markdown page, so `type: index` in a Markdown file is a wrong type); or `type` is present but empty.
+- **Trigger:** `type` is present and is a string that is not one of `group`, `concern`, `affordance`, `technology`, `narrative` (the ontology's page types that are Markdown pages: `index` is a type of the ontology, but an index is a generated Base and not a Markdown page, so `type: index` in a Markdown file is a wrong type); or `type` is present but empty. A value that is not a string is SCAT-FM-SHAPE's.
 - **Message:**
 ```
 error [SCAT-FM-TYPE] <file> field `type`: `<value>` is not a page type
-  Fix: change it to `type: <near match>`            (when a near match among the five keys exists)
-  Fix, choose the one that describes this page: `type: <key>` ...    (otherwise, one numbered line per key with its `scat:pageDescription`, in alphabetical order)
+  Fix: change it to `type: <near match>`            (when a near match among the five types exists)
+  Fix, choose the one that describes this page: `type: <key>` ...    (otherwise, one numbered line per type with its `scat:pageDescription`, in alphabetical order)
 ```
 For an empty `type`, `the value is empty, which is not a page type` replaces `` `<value>` is not a page type`` and the list is given. For `index`, the list is given and a note says an index is generated by `scat index`.
 - **Fix kind:** options (exact when the near match exists). Edits: one `set-field{type, <key>}` per option.
-- **Seed:** `type: Concern` (near match `concern`); `type: gadget` (list); `type:` with no value; `type: index`. A link to the page from a narrative's row gives no end message (cascade guard). A file with no `type` is not a page.
+- **Seed:** `type: Concern` (near match `concern`); `type: gadget` (list); `type:` with no value; `type: index`. A link to the page from a narrative's row gives SCAT-*-END-NOTNODE, besides this error (cascade guard). A file with no `type` is not a page.
 
 ### SCAT-FM-STATUS
 - **Severity:** error. **Fires:** every status. **Runs at:** all; reads only its page.
@@ -277,7 +292,7 @@ error [SCAT-FM-STATUS] <file> field `status`: `<value>` is not a status
 
 ### SCAT-FM-TIMEFRAME
 - **Severity:** error. **Fires:** every status. **Runs at:** all; reads only its page. Narratives only.
-- **Trigger:** `timeframe` is present and not empty, and is not `past`, `future` or `mixed` (the TBox's value set). An empty `timeframe:` is missing, not invalid: see SCAT-DONE-FIELD and SCAT-DRAFT-FIELD.
+- **Trigger:** `timeframe` is present and not empty, is a string, and is not `past`, `future` or `mixed` (the ontology's value set). An empty `timeframe:` is missing, not invalid: see SCAT-DONE-FIELD and SCAT-DRAFT-FIELD. A value that is not a string is SCAT-FM-SHAPE's.
 - **Message:**
 ```
 error [SCAT-FM-TIMEFRAME] <file> field `timeframe`: `<value>` is not a timeframe
@@ -289,7 +304,7 @@ error [SCAT-FM-TIMEFRAME] <file> field `timeframe`: `<value>` is not a timeframe
 
 ### SCAT-FM-KIND
 - **Severity:** error. **Fires:** every status. **Runs at:** all; reads only its page. Narratives only.
-- **Trigger:** `kind` is present and not empty and is not `scenario` or `architecture`. The field is optional: absent or empty is no defect.
+- **Trigger:** `kind` is present and not empty, is a string, and is not `scenario` or `architecture`. The field is optional: absent or empty is no defect. A value that is not a string is SCAT-FM-SHAPE's.
 - **Message:**
 ```
 error [SCAT-FM-KIND] <file> field `kind`: `<value>` is not a kind
@@ -322,7 +337,7 @@ error [SCAT-NAME] <file> frontmatter: the page name `<page-name>` <is not legal 
   Fix: change the file name to `<new-name>.md`, then change the links that meant this page from `[[<page-name>]]` to `[[<new-name>]]`
 ```
 `<new-name>` is the free derived name of the page's `title`. For (a) every link that names `<page-name>` is changed. For (b) two pages share the name, so only the links meant for the renamed page are changed, and the author tells them apart by context; the links meant for the other page keep `[[<page-name>]]`. When the title is missing or its derived name is empty, the fix is "choose a legal name by hand (page contracts section 2)".
-- **Fix kind:** exact. Edits: `rename-file{file, to}`, then one `replace-text` per link to rename (a table cell edited by its `column`).
+- **Fix kind:** exact; manual when no legal name can be derived from the title (the hand choice, no edits). Edits: `rename-file{file, to}`, then one `replace-text` per link to rename (a table cell edited by its `column`).
 - **Seed:** `Safe Tool.md`; a 65-character name; `con.md`; `a--b.md`; `safety.md` and `Safety.md` (case only); `x.md` in two folders (one message, on the later path); a page titled "Café menu" (derived name `cafe-menu`); one with a non-Latin title (hand choice).
 
 ### SCAT-DONE-FIELD
@@ -357,7 +372,7 @@ warning [SCAT-DRAFT-FIELD] <file> field `timeframe`: missing (required once the 
 
 ### SCAT-LINK-DANGLING-BODY
 - **Severity:** error. **Fires:** every status. **Runs at:** all; reads the vault (names, near match, the cap).
-- **Trigger:** a link in a page after the frontmatter whose target is not the name of any page, and that is not a row end of a narrative's table (those are SCAT-*-END-NOPAGE, graded by status). A link in a row's `note` cell is a link like any other and is covered here. Targets that are not page links (page contracts 3) are never dangling. Frontmatter links are never read. Three variants share the id: (a) a legal name and no such file; (b) a legal name for which a Markdown file exists that has no `type`, so it is not a page; (c) a name that is not legal, including one that differs from an existing name only by case.
+- **Trigger:** a link in a page after the frontmatter whose target is not the name of any page, and that is not a row end: a link in the `from` or `to` cell of a row of a narrative's first table, when the table is well-formed (those are SCAT-*-END-NOPAGE, graded by status, or for a row that is not well-formed, graded by nothing: section 1). A link in a row's `note` cell is a link like any other and is covered here. Targets that are not page links (page contracts 3) are never dangling. Frontmatter links are never read. Three variants share the id: (a) a legal name and no such file; (b) a legal name for which a Markdown file exists that has no `type`, so it is not a page; (c) a name that is not legal, including one that differs from an existing name only by case.
 - **Message:**
 ```
 error [SCAT-LINK-DANGLING-BODY] <file>:<line> link [[<target>]]: does not reach a page (<no page is named <target> | <other-file> exists but has no `type`, so it is not a page | <target> is not a legal page name: <reason>>)
@@ -404,6 +419,7 @@ error [SCAT-CAP-CONFIG] scat.toml field `stakeholder_group_cap`: <the file is mi
 warning [SCAT-MENTION] <file>:<line>:<column> text `<as written>`: names the <type-key> page [[<page-name>]] but does not link it
   Fix: on line <line> replace `<as written>` with `[[<page-name>|<as written>]]`          (`[[<page-name>]]` when the text is the page name)
 ```
+In a table cell the bar of an alias link is written `\|`: the replacement is `[[<page-name>\|<as written>]]` (page contracts 3).
 - **Fix kind:** exact. Edits: `replace-text{line, column, find "<as written>", replace "[[<page-name>|<as written>]]"}`. Linking where a name appears is the coding the narrative needs, and a link adds no edge: only a row does.
 - **Seed:** a narrative mentioning a concern's title once in plain text (one message); once plain and once linked (none); inside a code span (none); in a `note` cell (one message); plain text in a `from` cell (none from this rule); a node page mentioning another node's title (one message); the page's own title (none).
 
@@ -414,28 +430,29 @@ Each has a warning id and an error id (section 1, status behaviour); the message
 severity. In the sections below `[SCAT-*-X]` stands for both. **Runs at:** all. **Needs status**, narratives only.
 
 #### SCAT-*-TABLE-HEADER
-- **Reads:** its page. **Trigger:** under the heading `Edges told` (page contracts 4 rules for where) the first table's header row does not have the cells `type`, `from`, `to`, `note`, in that order, compared without regard to case and ignoring spaces at their ends; or the line after the header row is not a separator row (`|---|` with or without alignment colons), including when the table is a header row alone. One message per table. The rows of such a table are checked by no row rule.
+- **Reads:** its page. **Trigger:** under the heading `Edges told` (page contracts 4 rules for where) the first table's header row does not have the cells `type`, `from`, `to`, `note`, in that order, compared without regard to case and ignoring spaces at their ends; or the line after the header row is not a separator row (`|---|` with or without alignment colons), including when the table is a header row alone. One message per table, even when the header and the separator are both wrong: the header message takes precedence. The rows of such a table are checked by no row rule.
 - **Message:**
 ```
-<severity> [SCAT-*-TABLE-HEADER] <file>:<line>:<column> table header: the header row is `<header as written>`, not `| type | from | to | note |`
-<severity> [SCAT-*-TABLE-HEADER] <file>:<line>:<column> table header: the line after the header row is `<line as written>`, not a separator row
+<severity> [SCAT-*-TABLE-HEADER] <file>:<line>:<column> table header: the header row is `<header as written>`, not `| type | from | to | note |`       (the names are wrong, or in another order)
+<severity> [SCAT-*-TABLE-HEADER] <file>:<line>:<column> table header: the line after the header row is `<line as written>`, not a separator row       (the names are right and a line follows)
+<severity> [SCAT-*-TABLE-HEADER] <file>:<line>:<column> table header: there is no separator row after the header row       (the names are right and the table is the header row alone)
   Fix: replace the line `<header as written>` with `| type | from | to | note |`
   Fix: replace the line `<line as written>` with `|---|---|---|---|`
-  Fix: replace the line `<header as written>` with those two lines, header then `|---|---|---|---|`           (no separator row: the second line is a row)
+  Fix: replace the line `<header as written>` with two lines, `<header>` then `|---|---|---|---|`           (no separator row: the second line is a row, or no line follows)
 ```
-When the header and the separator are both wrong, the first and the second fix are two edits of one fix, in line order. When the header has the four names but in another order, the fix is **advisory** and has no edit: "the columns must be `type`, `from`, `to`, `note`, in this order: move the cells of the header and of every row; the tool never moves cells" (rewriting only the header would make every row misread).
+In the third fix `<header>` is the right header when the names are wrong, else the header as written. When the header and the separator are both wrong, the fix is one option of two edits, in line order: "replace the line `<header as written>` with `| type | from | to | note |` and the line `<line as written>` with `|---|---|---|---|`". When the header has the four names but in another order, the fix is **advisory** and has no edit: "the columns must be `type`, `from`, `to`, `note`, in this order: move the cells of the header and of every row; the tool never moves cells" (rewriting only the header would make every row misread).
 - **Fix kind:** exact when a name is wrong or missing, or the separator is missing or wrong; advisory for the order. Edits: `replace-text{line, find <the line as written>, replace}`; the third form's `replace` holds a line break.
 - **Seed:** header `| from | to | type | note |` (advisory); header `| kind | from | to | note |` (exact); header `| type | from | to |`; separator `| a | b |`; separator missing (the second line a row); a header row alone with nothing after it.
 
 #### SCAT-*-TABLE-ROW
-- **Reads:** its page. **Trigger:** a row of a well-formed table does not have four cells (page contracts 4, Cells), or does not end with a `|`. A cell is the text between two unescaped `|`, `\|` and a bar inside `[[ ]]` not counting.
+- **Reads:** its page. **Trigger:** a row of a well-formed table does not have four cells (page contracts 4, Cells), or does not end with a `|`. A cell is the text between two unescaped `|`, `\|` and a bar inside `[[ ]]` not counting. A row that is not well-formed (section 1) tells no edge, and this is the only rule that judges it.
 - **Message:**
 ```
 <severity> [SCAT-*-TABLE-ROW] <file>:<line>:<column> row <n>: the row has <k> cells, not 4 (type, from, to, note)
 <severity> [SCAT-*-TABLE-ROW] <file>:<line>:<column> row <n>: the row does not end with `|`
   Fix: <exact fix of the variant>
 ```
-Variants: (a) three cells, the closing `|` present (the note is missing): add an empty note: replace the final `|` with `| |`; (b) four cells and no closing `|`: write ` |` after the last cell; (c) three cells and no closing `|` (`| holds | [[a]] | [[b]]`): write ` | |` after the last cell, which adds the empty note and the closing bar; (d) more than four cells: "a `|` inside the note is written `\|`", choose one: replace the `|` that opens cell 5 and the ones after it with `\|` (options one per way the extra cells are read: only as the note), or delete the row; (e) fewer than three cells, with or without the closing `|`: choose one: delete the row, or write the row again (advisory).
+The second message is for variant (b) alone; every other variant, with or without its closing `|`, gets the first. Variants and their fix sentences, as built: (a) three cells, the closing `|` present (the note is missing): "add an empty note: replace the final `|` with `| |`"; (b) four cells and no closing `|`: "write ` |` after the last cell: replace `<last cell>` with `<last cell> |`"; (c) three cells and no closing `|` (`| holds | [[a]] | [[b]]`): "write ` | |` after the last cell, which adds the empty note and the closing bar: replace `<last cell>` with `<last cell> | |`"; (d) more than four cells, choose one: "a `|` inside the note is written `\|`: replace the `|` that opens cell 5 and the ones after it with `\|`" (one edit per bar, right to left; the extra cells are read only as the note), or "delete the row"; (e) fewer than three cells, with or without the closing `|`, choose one: "delete the row", or the advisory "write the row again with four cells and a closing `|`: `| type | from | to | note |`".
 - **Fix kind:** exact for (a), (b) and (c); options for (d) and (e). Edits: `replace-text{line, column, find "|", replace "| |"}`; `replace-text{... find <last cell>, replace "<last cell> |"}`; `delete-line{line, find}`.
 - **Seed:** `| holds | [[a]] | [[b]] |` (a); `| holds | [[a]] | [[b]] | n` (b); `| holds | [[a]] | [[b]]` (c); `| holds | [[a]] | [[b]] | x | y |` (d); `| holds | [[a]] |` (e).
 
@@ -450,6 +467,7 @@ Variants: (a) three cells, the closing `|` present (the note is missing): add an
     3. replace `<value>` with `holds`; 4. ... `is addressed by`; 5. ... `is provided by`    (when neither 1 nor 2 applies)
     n. delete the row
 ```
+For an empty cell the message reads `row <n> cell `type`: the value is empty, which is not an edge type (holds, is addressed by, is provided by)` and each option reads "replace the empty cell with `<verb>`".
 - **Fix kind:** options (a single exact option 1 is still printed with the delete option). Edits: `replace-text{line, column, find <value>, replace <verb>}` (an empty cell: the whole row line as `find`); `delete-line{line, find}`.
 - **Seed:** `| owns | [[g]] | [[c]] | |` with a group and a concern (option 1); `| holdz | ... |` (near match); an empty cell; a row of two unresolved ends (options 3 to 5).
 
@@ -486,7 +504,7 @@ Options 1 and 2 cannot both apply. The swap's `find` is the text from the first 
 - **Message:**
 ```
 <severity> [SCAT-*-TABLE-DUPLICATE] <file>:<line>:<column> row <n>: tells the same edge as row <m> (`<verb>`, [[<from>]], [[<to>]]); a narrative tells an edge once
-  Fix: delete the row `<row as written>`          (when the row has a note, add: if its note `<note>` is worth keeping, put it in the note of row <m> first)
+  Fix: delete the row `<row as written>`          (when the row has a note, the sentence goes on: (if its note `<note>` is worth keeping, put it in the note of row <m> first))
 ```
 - **Fix kind:** exact. Edits: `delete-line{line, find <row as written>}`.
 - **Seed:** two identical rows; the same pair once as `holds` and once as the slug `holds`; a third copy (two messages); the same pair in two narratives (none).
@@ -499,12 +517,14 @@ is not a node. These are graded as pairs: a warning while the narrative is `stub
 is `done`. A mismatch is always anchored on the narrative, at the cell. The knowledge graph has no row for an end that
 is not a node, so the narrative's fingerprint does not include it. **Runs at:** all. **Needs status**, narratives only.
 A table with a malformed header, and a row with the wrong number of cells, are not checked here (cascade guard).
+A duplicated row, a row in the wrong direction and a row between the wrong layers are *other problems* of the table (page contracts 4), covered under the pair E-N rules (section 6); they are not mismatches, and R-23's closed list is the three end rules.
 
 #### SCAT-*-END-NOLINK
 - **Reads:** its page, and the vault when it looks for pages of the layer. **Trigger:** a `from` or `to` cell is not exactly one link: (a) it is empty; (b) it holds text and no link; (c) it holds more than one link, or a link beside other text. An embed `![[name]]` is one link, and an alias link is one link.
 - **Message:**
 ```
 <severity> [SCAT-*-END-NOLINK] <file>:<line>:<column> row <n> cell `<from|to>`: `<cell as written>` is not a link; each end of a row is one link, `[[page-name]]`
+<severity> [SCAT-*-END-NOLINK] <file>:<line>:<column> row <n> cell `<from|to>`: the cell is empty; each end of a row is one link, `[[page-name]]`       (a: the empty cell)
   Fix, choose one:
     1. replace `<text>` with `[[<name>]]`                       (b: when a page of the layer's type has that name, or the derived name of the text; one option per candidate, near match first)
     2. replace `<text>` with `[[<d>]]`, then run `scat stub <d> --type <layer key>` (REPL: `scat_kg.stub("<d>", type="<layer key>")`)       (b: when no page has the derived name <d> and the layer is known; two steps)
@@ -512,7 +532,7 @@ A table with a malformed header, and a row with the wrong number of cells, are n
     4. replace the cell with `<one link of it>`; any text beside it belongs in the `note` cell by hand      (c: one option per link)
     n. delete the row
 ```
-When the layer is not known (the `type` cell is not an edge type, SCAT-*-TABLE-TYPE) options 2 are withheld, and 1 offers only existing pages. The cap rule of SCAT-LINK-DANGLING-BODY applies to a stub of a `group`.
+Variant (c) uses the first message, "is not a link", though a link is there: the cell is not exactly one. When the layer is not known (the `type` cell is not an edge type, SCAT-*-TABLE-TYPE) options 2 are withheld, and 1 offers only existing pages. The cap rule of SCAT-LINK-DANGLING-BODY applies to a stub of a `group`.
 - **Fix kind:** options (a: slot among the options). Edits: `replace-text{line, column, find <text>, replace "[[<name>]]"}`; `command{stub <d> --type <layer key>}` as the second step of option 2 (`sequence` true); `delete-line{line, find}`; an empty cell: the whole row line as `find`, `author_slot` the placeholder.
 - **Seed:** `| holds | borrowers | [[c]] | |` where `borrowers` is an existing group's page name (option 1) and where it is not (option 2); `| holds | | [[c]] | |` (empty); `| holds | [[a]] and [[b]] | [[c]] | |` (c); the same defect on the `to` cell.
 
@@ -534,7 +554,7 @@ Variant (b) replaces option 2 by the lines that make the typeless file a page of
 - **Reads:** its page, the vault and the target's page. **Trigger:** a row end is one link whose target is a page that is not a valid node: a page of type `narrative`, or a page whose `type` is missing from the five or invalid (that page has its own SCAT-FM-TYPE error as well; this is the mismatch, at the row). A node page of the wrong layer is SCAT-*-TABLE-LAYERS.
 - **Message:**
 ```
-<severity> [SCAT-*-END-NOTNODE] <file>:<line>:<column> row <n> cell `<from|to>`: [[<target>]] is <a narrative page | a page with the invalid type `<value>`>, not a node; a row joins two nodes
+<severity> [SCAT-*-END-NOTNODE] <file>:<line>:<column> row <n> cell `<from|to>`: [[<target>]] is <a narrative page | a page with the invalid type `<value>` | a page with an empty `type`>, not a node; a row joins two nodes
   Fix, choose one:
     1. replace `[[<target>]]` with `[[<candidate>]]`        (one option per candidate for the end's layer; withheld when the layer is unknown)
     2. replace `[[<target>]]` with `[[<node you choose>]]` (author)        (when there is no candidate)
@@ -589,6 +609,7 @@ in the wrong layers), carried as operation refusals with no rule id; they list n
 
 | Requirement | Rules |
 |---|---|
+| R-2 every message names the file, the place and the rule, and gives the fix | every rule: the message format and fix of section 1, checked by the golden tests of section 3 |
 | R-1 required fields and types | SCAT-FM-PARSE, SCAT-FM-REQUIRED, SCAT-FM-TYPE, SCAT-FM-STATUS, SCAT-FM-TIMEFRAME, SCAT-FM-KIND, SCAT-FM-SHAPE, SCAT-DONE-FIELD |
 | R-1 page names (page contracts 2) | SCAT-NAME |
 | R-1 links to pages that do not exist | SCAT-LINK-DANGLING-BODY; at a table end SCAT-DRAFT-END-NOPAGE, SCAT-DONE-END-NOPAGE |
@@ -596,6 +617,7 @@ in the wrong layers), carried as operation refusals with no rule id; they list n
 | R-1 the group cap | SCAT-CAP, SCAT-CAP-CONFIG |
 | R-3 unfinished is never an error | SCAT-DRAFT-FIELD, and every SCAT-DRAFT- pair id, as warnings; nothing else fires for `done` fields at `stub` or `draft` |
 | R-3 full contract at `done`; the `done` check | SCAT-DONE-FIELD, every SCAT-DONE- pair id, SCAT-DONE-REFUSED |
+| R-4 checks never write | none: no rule writes (section 1, Scopes); the operations are `stub`, `set-status`, `record-edge`, `remove-edge` and `index` |
 | R-8 fixes as data | every rule: a fix kind and its edits (the machine interface) |
 | R-23 mismatches | SCAT-*-END-NOLINK, -NOPAGE, -NOTNODE (and the table above); rule 4: none, section 4 |
 | Unlinked-mention warning (basic) | SCAT-MENTION |
@@ -615,9 +637,9 @@ disagree with the rows, so the graph holds one edge per (type, from, to) by cons
 | **E-T** | An edge names no narrative, or one that is absent or not a narrative | Cannot occur in this layout, because an edge exists only as a row on a narrative's page; no row, no edge, so no edge is left naming nothing, and the narrative it names is the page it is read from. A table on a page that is not a narrative is not read |
 | **N-T** | The edge is `done` but a narrative it names lacks a link | Cannot occur as a separate problem, because an edge has no file to anchor it. The problem is the narrative's mismatch (the L-N rules), an error on the narrative once it is `done`; an edge is `done` only when every narrative telling it is `done`, so each such mismatch is already an error there; and the refusal to set `done` (section 5) holds it back first |
 
-**TBox coverage map.** One line per field of the TBox: `<kind> <type-key>.<field> -> <rule ids>`; `*` stands for the
+**Ontology coverage map.** One line per field of the ontology: `<kind> <type-key>.<field> -> <rule ids>`; `*` stands for the
 pair's two ids. It is checked against `ontology/scat.ttl` by a script. Every required and optional field of every page
-type of the TBox must appear.
+type of the ontology must appear.
 
 ```
 required group.type -> SCAT-FM-TYPE, SCAT-LINK-DANGLING-BODY
@@ -654,13 +676,11 @@ edge-type provided-by -> SCAT-*-TABLE-TYPE, SCAT-*-TABLE-LAYERS
 
 `index` has no fields and is no Markdown page: no rule reads it.
 
-## 7. Needs from the TBox and the page contracts
+## 7. Needs from the ontology and the page contracts
 
-Nothing blocks. Points for the PM, none fixed here (the contract and the TBox are other units' work):
-- Page contracts 1 says "at every status, every link is checked: it must reach a page that exists"; this catalogue grades a link at a row end that reaches no page as a mismatch (warning until `done`, as page contracts 4 and the brief for this unit say) and every other dangling link as an error at every status. Section 1 of the contract should say the end of a row is the exception.
-- Page contracts 4 does not say whether the rows of a table with a malformed header are read. The catalogue says they are not (reported once, rows unchecked, no edge told); the loader must do the same.
+Nothing blocks. Points for the PM, none fixed here (the contract and the ontology are other units' work):
 - Page contracts 4 lists "an end that is not a link" as the mismatch, and says an end holds "exactly one link and nothing else". The catalogue reads a cell that is empty, has text only, or has several links or text beside one link as that mismatch (SCAT-*-END-NOLINK, variants a to c).
-- The TBox lists `index` among the `scat:key` types. A Markdown file with `type: index` is a wrong type here (SCAT-FM-TYPE).
+- The ontology lists `index` among the `scat:key` types. A Markdown file with `type: index` is a wrong type here (SCAT-FM-TYPE).
 - Page contracts 10 and `scat.toml` still call the cap `stakeholder_group_cap`; the catalogue keeps the key and says "group" everywhere else.
 - Architecture section 4, rule 2 (an edge names at least one narrative) and rule 1's "one entry per pair" are moot in this layout, because an edge is its rows; the architecture's wording of M3 and M4 will want the same change.
 - Architecture M4 says severity is given by paired rule ids; this catalogue does so (SCAT-DRAFT-X and SCAT-DONE-X).
@@ -700,8 +720,8 @@ cell is corrected by a `replace-text` edit with a `column`. A refusal to set a p
 `rule` `SCAT-DONE-REFUSED` and `problems`: the errors the page would have at status `done`, each with its own fix. Its
 own `fix` is two options: an advisory one, and `set-status <page> draft` as an exact command.
 
-**Detail of the promised fields.** `field` of a problem is a front-matter field or a key of `scat.toml`, and null for
-a link, a table or row, a name or all front matter. `repeat` is the number of identical messages a problem stands for.
+**Detail of the promised fields.** `field` of a problem is a frontmatter field or a key of `scat.toml`, and null for
+a link, a table or row, a name or all frontmatter. `repeat` is the number of identical messages a problem stands for.
 `counts` of a status result is per status, and `other`. `problems` of an operation is what the write leaves, one link
 away. `problems` of a refusal is the problems that make it, each with its fix. `to_dict()` of a result returns exactly
 the data the CLI prints.
