@@ -65,7 +65,7 @@ directly with the three kinds of edge.
 
 A **narrative** is one account drawn from the field notes, kept on one page that moves through the status states (G3):
 a **stub** has a name and perhaps some metadata; a **draft** holds the account, possibly as plain text with no coding
-yet; and it is **done** when it is coded: every concept it names is identified and linked, so it has a valid support
+yet; and it is **done** when it is coded: every concept the account refers to is identified and linked, so it has a valid support
 (G1), the coding is conformant, and the coder has judged that it interprets the field notes appropriately. Setting
 `done` is the coder's attestation of that judgement; the tools check only the structure. Done is not
 frozen: the repository is git, and a narrative can keep evolving. Most
@@ -124,7 +124,7 @@ the tools alone, on their own work and data, to decide whether to use them, and 
 will never commit to it for a facilitated project. So trying it solo is a stage of the organiser's journey, not a
 separate user, and the docs make that first try easy.
 
-The user, a facilitator-analyst and the **coder** of the data, is technically savvy but not a software developer, and works on macOS for v0.1 (see
+The organiser is also the **coder** of the data. They are technically savvy but not a software developer, and works on macOS for v0.1 (see
 Governance). They navigate GitHub's web interface, including creating a repository from a template; read, write and
 follow links in Obsidian; and follow documentation literally, step by step. They code by one of three paths (G14), and
 each has its own user experience:
@@ -132,7 +132,7 @@ each has its own user experience:
    `scat` CLI as an equal path to the same operations and messages. The docs lead with the REPL, because CLI commands
    get long when run through uv. Its future state is an Obsidian community plugin, which is out of scope for v0.1
    (see Non-goals).
-2. **Through a chat with an MCP server**, editing in Obsidian. This user must not be required to open a terminal. The docs explain how to
+2. **Through a chat with an MCP server**, editing in Obsidian. On this path, the organiser must not be required to open a terminal. The docs explain how to
    configure inference.coop, as an example of an OpenAI-API-compatible interface, to use the MCP server.
 3. **Through an IDE with agents**, such as Cursor, or VS Code with an agent. The docs point to the skills that help the
    AI coding assistant set itself up.
@@ -172,6 +172,8 @@ matters without claiming to be exhaustive. No particular project's choices appea
     between them: Heldby (stakeholder group × concern), Addresses (concern × affordance) and Attributes (affordance ×
     technology). Names may follow an adopted ontology. Each edge between a given pair appears once, and names the
     narratives that refer to it;
+  - the rule that a link is not an edge: an Obsidian link from a narrative to a vertex records only that the
+    narrative refers to it, and never creates an edge;
   - **narrative**, a base class of its own, outside the vertex and edge pattern, and a page type of its own, one page
     per narrative whose status is its coding state, with scenario and architecture as its subclasses. A narrative's **support** is the vertices it links plus the edges that name it. A support is **valid** when it is
     closed: every edge that names the narrative has both its vertices linked by it;
@@ -188,16 +190,17 @@ matters without claiming to be exhaustive. No particular project's choices appea
 - **G2. Vault ↔ graph.** Markdown pages with YAML frontmatter parse into an ABox that is checked against the TBox.
   Every class has a class page: a description, plus an index table of its instances (name, short description, link)
   that the tools generate from the instance pages.
-- **G3. Page lifecycle.** Every content page carries a status, `stub → draft → done`. Class pages are generated, so
+- **G3. Record lifecycle.** Every content record carries a status, wherever it is realised, `stub → draft → done`. Class pages are generated, so
   they carry none. For a narrative, `done` means coded (see "Narratives"); for a vertex or edge, its
-  required fields and links are complete and the coder has signed it off. The tools create any page the ontology entails that doesn't exist yet, as a `stub`, so the graph is
+  required fields and links, as the TBox's linking rules set them, are complete and the coder has signed it off. The tools create any page the ontology entails that doesn't exist yet, as a `stub`, so the graph is
   never incomplete, only unfinished.
 - **G4. Operations**, in the Python API and the `scat` CLI, usable in an interactive session:
   - check conformance at three scopes: one page, its neighborhood (the page plus everything one link away, in either
     direction), and the whole vault;
   - read status at the same three scopes, and set a page's status;
   - regenerate the class indexes;
-  - create entailed missing pages as stubs.
+  - create entailed missing pages as stubs;
+  - record an edge, and remove one, so neither the coder nor the assistant hand-writes its structure (R-11).
 
   The local and neighborhood checks act as a fast linter during working sessions.
 - **G5. Two repositories.** `scat-kg-tools` is a slim, separately maintained package with the TBox, the tools and the
@@ -209,7 +212,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
   each coded. Like any others, its stakeholder groups are groups: none stands for one identifiable person. It
   avoids politically loaded illustrations. It doubles as the test fixture and the documentation example.
 - **G7. Documentation on GitHub Pages**, from `scat-kg-tools`, with a light musical reference (R-15). It has a page for
-  each stage of the journey: getting started, a planning guide, a scenario facilitation guide, an architecture
+  each stage of the manual journey (J1–J7): getting started, a planning guide, a scenario facilitation guide, an architecture
   facilitation guide and a coding guide, a guide for the chat path, and a short note on the IDE path. It summarises the end-to-end flow on one
   page, makes data storage, rights and consent explicit, and gives a reference for the terms, the Python API and the
   CLI. Each operational choice (participation terms, AI use, where each class of material is kept, who it is released
@@ -245,7 +248,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
   eliciting scenarios and architectures, and holding disagreement without adjudicating it.
 - **G12. A template analysis notebook.** The template carries a notebook that loads a vault bound to the schema and
   gives the network analysis the project needs, as named views:
-  - the **narrative view**: one coded narrative's support (G1), its fingerprint: the vertices and edges it mentions,
+  - the **narrative view**: one coded narrative's support (G1), its fingerprint,
     drawn as four columns in class order (group, concern, affordance, technology) with the edges between neighbouring
     columns;
   - the **table views**: each of the three kinds of edge is a bipartite subgraph and so a table, exported as CSV and
@@ -324,7 +327,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
 |---|---|---|
 | D-1 | The TBox in Turtle, in `scat-kg-tools` | G1, G10 |
 | D-2 | The tools (parser, checks, the operations, the Python API and CLI, their machine-readable output with its schema, the table views, a public vault loader, and the MCP server with its prompts and skills) with their test suite, and the architecture document, in `scat-kg-tools` | G2, G3, G4, G12, G14, G16, G17 |
-| D-3 | The template repository: vault skeleton, class pages, instance configuration (the stakeholder-group cap), the pinned tools, the case study, the analysis notebook, and a setup skill for IDE agents *(default)* | G5, G6, G9, G12, G14, G15 |
+| D-3 | The template repository: vault skeleton, class pages, instance configuration (the stakeholder-group cap), the pinned tools, the case study, the analysis notebook, and a setup skill for IDE agents | G5, G6, G9, G12, G14, G15 |
 | D-4 | The documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9, G11, G14, G17 |
 | D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, the facilitation research, the prior-art readout, the chat-path spike, and the impact maps | G8, G10, G11, G13, G14, G16 |
 | D-6 | The reviewer's guide for the chief engineer, in the `scat-kg-tools` release PR. It is sized for a person and split into sittings: (1) the end-to-end walkthroughs (UA-M); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
@@ -338,7 +341,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 |---|---|---|
 | R-1 | Conformance checks structure, never content: types, fields, links, names, status, the cap and index freshness. What the content says (tensions, matches, gaps) is for analysis, after conformance passes and the coder signs off the content. Conformance problems are graded: errors block and warnings don't. Errors cover the ontology's constraints (required fields and types, edge endpoints, the linking rules), the stakeholder-group cap, valid status, and links to pages that don't exist. The rule catalogue gives every rule an id and a severity. | Seeded-defect tests, at least one per rule |
 | R-2 | Every message names the file, the field or link, and the rule broken (by id). It gives the fix as something a literal reader can apply: an exact command to run, or an exact field and value to write. | Golden-output tests on the seeded defects |
-| R-3 | An unfinished page is never an error just for being unfinished. The full contract applies when a page is `done`. Links and edge endpoints are checked at every status. | Tests per status |
+| R-3 | An unfinished page is never an error just for being unfinished. The full contract applies when a page is `done`. Links and edge endpoints are checked at every status; R-23 sets when a divergence between links and edges is an error. | Tests per status |
 | R-4 | Checks never write to the vault. Every write is an explicit operation (index, stub, set status). | Tests that snapshot the vault before and after each operation |
 | R-5 | The checks are fast enough to work as a linter. On a laptop, with a 500-page vault: one page under 1 s, a neighborhood under 2 s, the whole vault under 5 s *(ACE's thresholds)*. | Benchmark over a generated 500-page vault |
 | R-6 | On the manual path, starting from a clean user environment with only the documented prerequisites: a fresh clone of the template, then one documented setup command, after which `check` on the whole vault passes on the worked example. | Clean-environment trial |
@@ -358,7 +361,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-20 | **The chat path works, at two test levels.** The MCP server's tools pass automated tests, and the chat path (G14) is run end to end in the inference.coop browser chat at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents, which stand in for field notes. The field test comes after v0.1 and is not part of this repository. Other providers are not tested in v0.1. | The automated tests in CI; each end-to-end run recorded step by step with screenshots in the acceptance record |
 | R-21 | **Coding happens in Obsidian.** A coder can code a narrative and review its support in Obsidian alone, without the same content held on two pages, and without opening pages that carry no content of their own. | A review in Obsidian with screenshots in the record; UA-M |
 | R-22 | **Architecture before detailed design.** The architecture document names the model, the views and the control plane, each module's interface contract and responsibilities, and is reviewed by architecture reviewers before any further package starts detailed design. | The review record; the ACE's approval, logged |
-| R-23 | **Links and edges reconcile.** The forms a connection can take form a closed list: a narrative's link to a vertex, an edge record, an edge's references to its vertices and to its narratives, and a relationship's two ends. The tools detect each divergence between these forms and give a fix that reconciles it. Before `done` a divergence is a warning; at `done` it is an error (R-3). Incremental coding, breadth first or depth first, never leaves a divergence the tools can't see. The docs show both ways of working. | Tests that generate divergent vaults and check each divergence is reported with a working fix; a named architecture reviewer for this area; a UX review in Obsidian of an incremental coding session, with screenshots |
+| R-23 | **Links and edges reconcile.** The forms a connection can take form a closed list: a narrative's link to a vertex, an edge record, and an edge's references to its vertices and to its narratives. Links outside these forms carry no graph meaning and are checked only as links (R-1). The tools detect each divergence between these forms and give a fix that reconciles it. A divergence that involves a narrative is a warning while the narrative is a draft and an error once it is `done`; an edge cannot be `done` unless every narrative it names links both its vertices. Incremental coding, breadth first or depth first, never leaves a divergence the tools can't see. The docs show both ways of working. | Tests that generate divergent vaults and check each divergence is reported with a working fix; a named architecture reviewer for this area; a UX review in Obsidian of an incremental coding session, with screenshots |
 
 ## User acceptance
 
@@ -382,12 +385,13 @@ in the chat and in Obsidian, to a clean check of a private repository, with no t
 
 **UA-A, the AI user tests**, run by the team on the candidate before the chief engineer's walkthrough:
 
-- **Personas.** At least three for the manual journey, each written in the user's own words and never the tool's
+- **Personas.** Every tester is the organiser at the solo-trial stage (see "Users"), varying only in comfort with the
+  tools. At least three for the manual journey, each written in the user's own words and never the tool's
   vocabulary. **Most run on Haiku**, so the test doesn't depend on much reasoning: if the right way needs reasoning to
   find, it isn't yet the easy way.
-  - a facilitator-analyst who is comfortable with a terminal, GitHub and Obsidian but is not a developer (Haiku);
-  - a newcomer to Obsidian and the command line, careful and literal (Haiku);
-  - the same facilitator-analyst on Sonnet, as a control: a step that Sonnet passes and Haiku fails points to the
+  - an organiser who is comfortable with a terminal, GitHub and Obsidian but is not a developer (Haiku);
+  - an organiser who is new to the command line, careful and literal (Haiku);
+  - the first organiser on Sonnet, as a control: a step that Sonnet passes and Haiku fails points to the
     docs or the tools, not the user.
 
   At least one Haiku tester works in the Python REPL, and at least one uses the CLI. The chat journey has its own
@@ -556,15 +560,17 @@ serves this mission as written; a change that would alter the mission goes to th
   The Markdown is what the coder confirms; the tool reads it, builds the graph, and checks that the graph matches it
   (job (i)) and conforms (job (ii)). An edge is asserted in the Markdown, written by the coder or by the assistant for
   the coder to confirm:
-  - a link from a narrative to a vertex says the narrative mentions it (coding in place: names are linked where they
+  - a link from a narrative to a vertex says the narrative refers to it (coding in place: names are linked where they
     appear, so the account keeps its words);
   - an edge is its own record, naming its two vertices and the narratives that refer to it; a link from a narrative to
     a vertex never creates an edge;
   - the checks hold the two in step: every edge's endpoints have the right classes (R-1), and an edge that names a
-    narrative has both its vertices mentioned by that narrative, so a support is always a closed subgraph. A narrative
+    narrative has both its vertices linked by that narrative, so a support is always a closed subgraph. A narrative
     that breaks this cannot be `done`.
 
   The schema-and-projection package settles how edges are written and shown, checked in Obsidian (G15).
+- **The IDE setup skill** in the template (D-3) is a short skill file that helps an AI coding assistant set itself up
+  for the vault; the docs point to it.
 - **The relationship** has only the same-class rule; it is never entailed, never required and never in an index's
   required links. Whether it is a page or a field is decided by the projection design (G15). The earlier typed
   `conflicts` link between concerns, and its rule `SCAT-CONFLICT-SELF`, leave the release; existing values migrate to
