@@ -9,8 +9,9 @@ Fill in every section. Paste real output; a claim with none does not count (see 
 **Round and date:**
 **Docs source:** Pages URL, or local build of commit `<hash>` (a local build is recorded as known-weak)
 **Environment:** fresh home directory: yes/no. `uv` was preinstalled and the uv installer was not run: yes (state this
-plainly; it is a known gap held for the chief engineer, log D-040 and D-041). Remote removed from the clone: yes/no.
-Paste: `echo $HOME`, `which uv`, `uv --version`, `git remote -v` (empty).
+plainly; it is a known gap held for the chief engineer, log D-040 and D-041). Remote removed from each of the two clones
+(`my-trial` for J1 to J2, `my-vault` for J5 to J10): yes/no.
+Paste: `echo $HOME`, `which uv`, `uv --version`, and `git remote -v` run in each clone (empty).
 
 ## 0. Cold-read answer (R-15)
 
@@ -26,9 +27,9 @@ Did any metaphor, image or phrase obscure an instruction? Page, short quote, wha
 
 ## 1. Stage by stage
 
-Repeat this block for J1 to J7. If you did not reach a stage, write "not reached", and do not fill it in.
+Repeat this block for J1 to J10. If you did not reach a stage, write "not reached", and do not fill it in.
 
-### J1 Find / J2 Create / J3 Set up / J4 Plan / J5 Capture / J6 Code / J7 Finish
+### J1 Discover / J2 Try / J3 Decide / J4 Set terms / J5 Set up / J6 Plan / J7 Capture / J8 Code / J9 Analyse / J10 Hand over
 
 - **Reached and done?** yes / no / partly. What "done" looked like, shown by output.
 - **Where I got stuck:** (page, step, what I was trying to do, how long or how many tries)
@@ -45,16 +46,25 @@ Repeat this block for J1 to J7. If you did not reach a stage, write "not reached
 
 Severity:
 
-- **Blocking:** the tester was stopped short of J7, or a command on a page does not work as shown.
-- **A failed or refused J7 push** (the isolated clone has no remote, and the environment may refuse it) is **not a finding and not blocking**. Paste what happened and move on.
+- **Blocking:** the tester was stopped short of the hand-over (J10), or a command on a page does not work as shown.
+- **A failed or refused push** at J10, of the branch or of the tag (the isolated clones have no remote, and the environment may refuse it), is **not a finding and not blocking**. Paste what happened and move on.
 - **Not blocking:** everything else. Every guess is at least a not-blocking finding.
 
 Every guess is a finding, even one that went well.
 
 ## 3. End state
 
-Paste the final whole-folder check, the status of every page you made, and `git log --oneline` of your work.
-Did you reach J7 with a clean check (zero errors)? yes / no. If no, the stage you stopped at, and why:
+Paste the final whole-folder check, the status of every page you made, and `git log --oneline` of your work in each clone.
+Did you reach J10 with a clean check (zero errors)? yes / no. If no, the stage you stopped at, and why:
+
+The hand-over (J10), each with pasted output:
+
+- **The tag** you made, with the command that made it:
+- **The commit it pins**, with the clean check and the clean `git status` that preceded it (pasted):
+- **The recipient** your hand-over case names:
+- **What you looked at to decide the model was finished** (your decision as the organiser, in your own words):
+- **What happened to the pushes** (pasted; neither a failed nor a refused push is a finding):
+- **Read-only git commands you used for evidence**, listed (if the pages did not say how to show which commit a tag pins, that is a finding):
 
 ## 4. Dispositions (filled in afterwards, by the ACE)
 
