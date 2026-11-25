@@ -365,8 +365,12 @@ Requirements state outcomes. How each is met is decided in the work packages.
 
 ## User acceptance
 
-Acceptance is judged by people using the product, not only by tests. It covers two paths: the manual path and the chat
-path. The IDE path is tested by the team only.
+Acceptance is judged by people using the product, not only by tests. It covers three journeys: the solo trial, the manual
+journey and the chat journey. The IDE path is tested by the team only.
+
+**The solo-trial journey** comes first, because an organiser who can't make the tools work alone won't adopt them:
+from the docs site, set up, code one narrative from their own notes, and see its support. It runs on the manual path
+*(default)*, and is short enough to finish in one sitting.
 
 **The manual journey:**
 
@@ -386,7 +390,7 @@ in the chat and in Obsidian, to a clean check of a private repository, with no t
 **UA-A, the AI user tests**, run by the team on the candidate before the chief engineer's walkthrough:
 
 - **Personas.** Every tester is the organiser at the solo-trial stage (see "Users"), varying only in comfort with the
-  tools. At least three for the manual journey, each written in the user's own words and never the tool's
+  tools. At least three for the manual journey, each of whom first runs the solo-trial journey, each written in the user's own words and never the tool's
   vocabulary. **Most run on Haiku**, so the test doesn't depend on much reasoning: if the right way needs reasoning to
   find, it isn't yet the easy way.
   - an organiser who is comfortable with a terminal, GitHub and Obsidian but is not a developer (Haiku);
@@ -417,13 +421,13 @@ in the chat and in Obsidian, to a clean check of a private repository, with no t
 
 **UA-M, the chief engineer's walkthroughs** (the first sitting of the reviewer's guide, and the core of acceptance):
 
-- He runs the manual journey, J1 to J7, himself on the candidate. He starts from the Pages preview, makes a real
+- He runs the solo-trial journey, then the manual journey, J1 to J7, himself on the candidate. He starts from the Pages preview, makes a real
   repository through the documented creation path, clones it, sets up, and works through an interactive session with
   the REPL and the CLI, coding a small elicitation of his own choosing. He also runs the chat journey as he would use
   it.
 - The walkthrough scripts give each stage's entry point and what "done" looks like, so a session can be split and
   resumed.
-- **Pass:** he completes both journeys from the documentation without help, and judges the documentation clear and
+- **Pass:** he completes all three journeys from the documentation without help, and judges the documentation clear and
   navigable and the journeys clear.
 - Anything he flags is fixed on `dev`, and the candidate is refreshed (see Governance, "Release"). The walkthrough
   then resumes from the affected stage.
@@ -440,7 +444,7 @@ in the chat and in Obsidian, to a clean check of a private repository, with no t
 ## Definition of good enough
 
 - R-1 to R-23 met, with evidence.
-- UA-A passes on the candidate, for both journeys.
+- UA-A passes on the candidate, for all three journeys (solo trial, manual, chat).
 - The candidate is staged for UA-M, with the reviewer's guide ready.
 - The ontology, toolchain, facilitation, prior-art and chat-path readouts exist, and the architecture document is
   reviewed (R-22). Every TBox term traces to an adopted ontology or is recorded as authored, with the trade study's
