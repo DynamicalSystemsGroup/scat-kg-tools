@@ -18,7 +18,8 @@ Base file, not a page.
 
 **A page** is a Markdown file ending `.md`, anywhere in the vault outside folders whose name starts with a dot, whose
 frontmatter has a `type` key. Other Markdown files (a README, say) are not pages and are ignored. The vault's Obsidian
-page-template folder (10) is not read, nor is `.obsidian/`. An index (9) is a `.base` file and is not a page.
+page-template folder (10) is not read, nor is `.obsidian/`. An index (9) is a `.base` file and is not a Markdown page: it has no frontmatter and no `type` field, though `index`
+is one of the TBox's types.
 
 **Layout.** The tools put each page they create in the folder named for its type, at the vault root: `group/`,
 `concern/`, `affordance/`, `technology/` and `narrative/`; the generated index files go in `index/`. A page by hand may
@@ -45,15 +46,15 @@ Free text in Markdown. Nothing in it is required.
   required only when the text contains `:` or `#`, starts with a quote, or has other characters YAML treats
   specially (a bare colon or `#` in an unquoted value breaks the YAML). Unquoted plain text is accepted. Inside
   quotes, `"` is written `\"` and `\` is written `\\`. `type`, `status`, `kind` and `timeframe` are written bare.
-- Keys that the TBox does not list for the page type are ignored, whatever they hold (you may add your own note
-  keys). No page type has a link field: a link in the frontmatter is never read (3).
+- Keys that the TBox does not list for the type are ignored, whatever they hold (you may add your own note
+  keys). No type has a link field: a link in the frontmatter is never read (3).
 
 **Status.** Every page has `status`: `stub`, `draft` or `done`, in that order.
 - `stub`: the page exists because something links to it, or has just been started. Only `type`, `status` and `title`
   are required.
 - `draft`: being written. The required fields are the same as for `stub`; the fields that `done` requires are the
   author's to-do list, and how a tool grades their absence on a draft is the catalogue's call.
-- `done`: the author judges the page complete. Every required field in the page type's table must be present and
+- `done`: the author judges the page complete. Every required field in the type's table must be present and
   non-empty, and the page is judged as it would stand at `done`: setting `done` is refused while it would fail.
 - At every status, every link is checked: it must reach a page that exists. Being unfinished is never a fault in
   itself.
@@ -67,8 +68,8 @@ Free text in Markdown. Nothing in it is required.
 | `index` | not a page: no fields | | |
 
 `kind` is optional on a narrative at every status. A narrative's table is optional at every status: a narrative with
-no table tells no edge. A mismatch (4) involving a narrative is a warning until the narrative is `done`, and an error
-at `done`.
+no table tells no edge. A mismatch or other problem of the table (4) involving a narrative is a warning until the narrative is `done`, and an
+error at `done`.
 
 **The field tables** below give each key's "Required from": `stub` (present at every status), `done` (required once the
 page is `done`) or `optional` (may be present).
@@ -169,12 +170,16 @@ given (the fingerprint view lists the candidate pair).
   tells no edge. A second table, or a second such heading, is not read.
 - *Columns.* The header row has the four column names of the TBox, in its order: `type`, `from`, `to`, `note`, each
   compared without regard to case. The next line is the separator row (`|---|`, with or without alignment colons).
-  Every following line that starts with `|` is a row, up to the first line that is not. A row has four cells, one for
+  The table is the contiguous lines whose first non-space character is `|`, from the header row to the first line that
+  is not such a line; each line after the separator row is a row. A heading or a table inside a fenced code block is not
+  read. A row has four cells, one for
   each column, and a leading and a trailing `|`.
-- *Cells.* A cell is the text between two unescaped `|`. In every cell, spaces at the ends are dropped and a run of
-  spaces inside is read as one, so Obsidian's table editor may re-pad the columns (it does, and a hand-aligned table
+- *Cells.* A cell is the text between two unescaped `|`. In every cell, whitespace (any Unicode space, a tab or a
+  no-break space) at the ends is dropped and a run of it inside is read as one; the same holds inside `[[ name ]]`,
+  where the name is read trimmed. So Obsidian's table editor may re-pad the columns (it does, and a hand-aligned table
   is as good as a compact one). `\|` inside a cell is a bar in the text, not the end of the cell. A bar inside
-  `[[ ]]` is never the end of a cell, written escaped or not.
+  `[[ ]]` is never the end of a cell, written escaped or not. A `\|` inside a code span in a cell is read as one bar
+  in the cell text. A row with a missing trailing cell has the wrong number of cells.
 - *The `type` cell* is the verb or the slug of one of the three edge types, compared without regard to case:
 
   | Edge type | Slug | Verb | `from` is a | `to` is a |
@@ -185,23 +190,26 @@ given (the fingerprint view lists the candidate pair).
 
   The tools write the verb. Both spellings in one table are fine.
 - *The `from` and `to` cells* each hold exactly one link and nothing else, as in 3 (an alias link `[[name\|text]]`
-  is one link; the name is read).
+  is one link; the name is read; an embed `![[name]]` is accepted as an end).
 - *The `note` cell* is free text on one line, and it may be empty. A `|` in it is written `\|`. It has no meaning to
   the tool; a link in it is a link of the narrative like any other.
 
 **One row, one edge told.** The row is the narrative's telling of the pair (type, from, to). If a second narrative
 tells the same pair it has its own row with its own note; nothing is copied between them.
 
-**Mismatches.** The contract names these; the catalogue grades them and gives a fix for each (4 is the only place a
-link and an edge can disagree):
-- an end that is not a link, or is a link that reaches no page, or reaches a page that is not a node;
+**Mismatches.** A mismatch is a link and an edge that should agree and do not (glossary). In a narrative that happens
+at a row's end, and the contract names two cases; the catalogue grades them and gives a fix for each:
+- an end that is not a link;
+- an end that is a link that reaches no page, or reaches a page that is not a node.
+
+The other disagreement, a link at both ends of a pair with no row for it, is the *candidate* above and gets no message.
+
+**Other problems of the table.** These are not mismatches; the catalogue grades them too:
 - an end whose node is of the wrong layer for the type (a `concern` at the `from` end of `holds`), including the pair
   written in the wrong direction and a pair between layers that are not neighbours (a group and an affordance);
 - an unknown type in the `type` cell;
 - two rows of one narrative with the same type, `from` and `to`;
 - a table whose header is not the four columns, or a row whose number of cells is not four.
-
-A narrative that links both ends of a pair and has no row for it is no mismatch (above).
 
 **`kind`.** `scenario` is a narrative about people doing things over time: it tells groups, concerns and affordances.
 `architecture` is a narrative about how parts are put together into tools that offer affordances: it tells concerns,
@@ -240,7 +248,7 @@ title: "<the name with each - replaced by a space, first letter upper case>"
 and an empty body. For example, the row `| is provided by | [[safety-briefing]] | [[booking-app]] | |` creates
 `affordance/safety-briefing.md` with type `affordance` and title "Safety briefing", and `technology/booking-app.md`.
 The author edits the title after. A row whose type cell is unknown entails nothing, and neither does an end that
-already reaches a page of another type: that is a mismatch (4) and the author decides whether the row or the page's
+already reaches a page of another type: that is a problem of the table (4) and the author decides whether the row or the page's
 `type` is wrong.
 
 **Any other link entails a page, but not its type.** The account does not say what the page is, and guessing would put
@@ -273,9 +281,9 @@ It is ordinary body text. It has no field, no type and no meaning to the tool: i
 link must resolve, and it stays out of every view and of the knowledge graph. Write it on whichever of the two entries
 is read first; it is not repeated on the other.
 
-## 8. Page types: fields
+## 8. Types: fields
 
-The folder the tools create a page in is the type's slug. Every page type here has `type`, `status`, `title` and
+The folder the tools create a page in is the type's slug. Every type here that is a page has `type`, `status`, `title` and
 `description`. Every field table below is the TBox's, field for field (11).
 
 ### `group`
@@ -399,7 +407,8 @@ Not a page and no fields: the Obsidian Base file the tool generates for a type (
 
 An index lists the pages of one type. It is **one Obsidian Base per type**, `index/<type>.base`, a view of the pages
 whose `type` matches. It needs Obsidian 1.9 or later. It is generated once by `scat index` and never kept up to date by
-a tool, because a Base reads the vault itself, so it cannot go stale. The loader ignores it.
+a tool, because a Base reads the vault itself, so it cannot go stale. The loader ignores it. A Base lists every page of the type, including a page in the template folder (10) that carries
+that type (to be decided by the ACE whether the filter should exclude it).
 
 `scat index` writes the five files `index/group.base`, `index/concern.base`, `index/affordance.base`,
 `index/technology.base` and `index/narrative.base`. It writes only a file that does not exist and never rewrites one
@@ -447,9 +456,9 @@ stakeholder_group_cap = 3
 
 ## 11. Agreement with the TBox
 
-Every key in the field tables is a `scat:key` of a field of that page type in the TBox, and every field the TBox lists
-for a page type is in its table, with the TBox's level (`requiredField` with its `requiredFrom`, `optionalField`).
-The page types are the TBox's six `scat:key` values: `group`, `concern`, `affordance`, `technology`, `narrative` and
+Every key in the field tables is a `scat:key` of a field of that type in the TBox, and every field the TBox lists
+for a type is in its table, with the TBox's level (`requiredField` with its `requiredFrom`, `optionalField`).
+The types are the TBox's six `scat:key` values: `group`, `concern`, `affordance`, `technology`, `narrative` and
 `index`. The statuses are the TBox's `StatusValues`: `stub`, `draft`, `done`. `timeframe` takes `past`, `future`,
 `mixed` and `kind` takes `scenario`, `architecture`, as the TBox's value sets. The edge types, with their slugs, verbs
 and the node types of their two ends, are the table in 4, and the TBox's three `scat:EdgeType` properties
@@ -467,7 +476,7 @@ the form of the Base files, the cap file, what a link entails, how an edge's sta
 - Name validity: a name that is not a slug (2); a name over 64 characters; a reserved name; two pages with the same
   name in different folders; two names that differ only by case.
 - A link that reaches no page (3, 6).
-- The mismatches of 4, and a narrative that is `done` while one is left; setting `done` is judged as the page would stand
+- The mismatches and other problems of 4, and a narrative that is `done` while one is left; setting `done` is judged as the page would stand
   at `done`.
 - A missing or invalid `scat.toml` (10); a group stub that would exceed the cap (6, 10), for which the stub option is
   withdrawn.
