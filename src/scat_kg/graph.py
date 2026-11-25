@@ -441,6 +441,14 @@ class Skipped:
 
 
 @dataclass(frozen=True)
+class Unreadable:
+    """A page whose frontmatter cannot be read: its type is unknown, so the graph leaves it out."""
+
+    path: str
+    reason: str  # the parser's reason
+
+
+@dataclass(frozen=True)
 class Graph:
     root: str
     nodes: dict[str, tuple[Node, ...]]  # by layer, in the TBox's layer order; each by name
@@ -451,6 +459,7 @@ class Graph:
     vault: Vault | None = field(default=None, compare=False, repr=False)
     refusal: Any = None  # a `Refusal` (scat_kg.ops.result) when the folder is missing; else None
     skipped: tuple[Skipped, ...] = ()  # rows that tell no edge, by narrative path, then row
+    unreadable: tuple[Unreadable, ...] = ()  # pages left out for frontmatter that cannot be read
 
     @property
     def ok(self) -> bool:
@@ -647,6 +656,11 @@ def load(root: str | Path) -> Graph:
         links=links,
         vault=vault,
         skipped=tuple(skipped),
+        unreadable=tuple(
+            Unreadable(p.path, p.frontmatter_error.reason)
+            for p in vault.pages
+            if p.frontmatter_error is not None
+        ),
     )
 
 
