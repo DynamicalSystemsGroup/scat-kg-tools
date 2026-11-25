@@ -168,6 +168,32 @@ def test_missing_docker(rig):
     assert not rig.called("tailscale")
 
 
+def test_docker_is_found_in_docker_desktops_own_folder(rig, tmp_path):
+    folder = tmp_path / "Docker.app" / "Contents" / "Resources" / "bin"
+    folder.mkdir(parents=True)
+    shutil.copy(rig.bin / "docker", folder / "docker")
+    # no SCAT_CHAT_DOCKER: the launcher must find `docker` on its own, only in the folders it was told (not the real ones on this Mac)
+    r = rig.run("start", SCAT_CHAT_DOCKER=None, SCAT_CHAT_SEARCH_PATH=str(folder), **STOP)
+    assert "needs Docker Desktop" not in r.stdout
+    assert rig.called("docker build") and rig.called("docker run")
+
+
+def test_docker_not_in_docker_desktops_folder_is_still_missing(rig, tmp_path):
+    empty = tmp_path / "empty"
+    empty.mkdir()
+    r = rig.run("start", SCAT_CHAT_DOCKER=None, SCAT_CHAT_SEARCH_PATH=str(empty))
+    assert r.returncode == 1 and "needs Docker Desktop" in r.stdout
+    assert not rig.called("docker")
+
+
+def test_docker_desktops_real_folder_is_the_default():
+    text = (REPO / "deploy" / "scat-chat.sh").read_text()
+    assert "/Applications/Docker.app/Contents/Resources/bin" in text
+    assert (
+        "/usr/local/bin:/opt/homebrew/bin:/Applications/Docker.app/Contents/Resources/bin" in text
+    )
+
+
 def test_missing_colima_and_no_docker_running(rig):
     r = rig.run("start", SCAT_CHAT_COLIMA=str(rig.bin / "nope"))
     assert r.returncode == 1 and "Docker Desktop is not running" in r.stdout

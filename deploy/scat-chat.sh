@@ -9,13 +9,15 @@
 # Every outside program is found through an environment override so tests can use stand-ins:
 #   SCAT_CHAT_DOCKER, SCAT_CHAT_COLIMA, SCAT_CHAT_TAILSCALE, SCAT_CHAT_OPENSSL, SCAT_CHAT_CURL,
 #   SCAT_CHAT_PBCOPY, SCAT_CHAT_PBPASTE, SCAT_CHAT_CAFFEINATE, SCAT_CHAT_OSASCRIPT, SCAT_CHAT_OPEN
-# Other settings: SCAT_CHAT_HOME (state folder), SCAT_CHAT_CONTEXT (the source to build), SCAT_CHAT_PORT,
+# Other settings: SCAT_CHAT_SEARCH_PATH (folders searched first for the programs; for tests), SCAT_CHAT_HOME (state folder), SCAT_CHAT_CONTEXT (the source to build), SCAT_CHAT_PORT,
 #   SCAT_CHAT_VAULT, SCAT_CHAT_WAIT, SCAT_CHAT_TUNNEL_WAIT, SCAT_CHAT_UI.
 # SCAT_CHAT_UI=plain prints instead of showing dialogs, and takes answers from SCAT_CHAT_A_<KEY> or stdin:
 #   VAULT (a folder), COPY (copy), OPEN (open), STOP (stop). In plain mode start returns once the session is up,
 #   unless SCAT_CHAT_A_STOP=stop (the Stop button), which tears down at once.
 
-PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
+# Where `docker` may live: Homebrew (Intel, Apple silicon) and Docker Desktop's own folder.
+SEARCH=${SCAT_CHAT_SEARCH_PATH:-/usr/local/bin:/opt/homebrew/bin:/Applications/Docker.app/Contents/Resources/bin}
+PATH="$SEARCH:$PATH"
 export PATH
 
 HERE=$(cd "$(dirname "$0")" && pwd -P)

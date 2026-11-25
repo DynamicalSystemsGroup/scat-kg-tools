@@ -12,7 +12,8 @@ terminal. Obsidian stays where you read and decide.
     nobody has yet run the whole path as a coder following this page. Your first run is the real test. Where this
     page cannot vouch for a step, it says so. If a step fails and its message does not help, tell the person who
     set this up for you which step and what the window said. One more thing not checked: the launcher looks for the
-    `docker` command only in `/usr/local/bin` and `/opt/homebrew/bin`. If Docker Desktop keeps it elsewhere, the
+    `docker` command in `/usr/local/bin`, `/opt/homebrew/bin` and Docker Desktop's own folder
+    (`/Applications/Docker.app/Contents/Resources/bin`). If Docker Desktop keeps it somewhere else, the
     launcher says Docker Desktop is not installed although it is; tell the person who set this up.
 
 ## What the chat path is, and what it needs
