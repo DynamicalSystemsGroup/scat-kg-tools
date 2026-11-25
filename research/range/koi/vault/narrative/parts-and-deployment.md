@@ -17,12 +17,12 @@ The doctrine counts the main threat as the pull toward homogenisation. It values
 
 This is read as the baseline, what exists: the doctrine and its deployments are there.
 
-Thin spots: the implementation team and research collaborators are named by the input but have no group in the vault (cap 4 is full), so they are named without links. The paradigm and instances distinction and the lifecycle and decommissioning view are not coded, and [[heterogeneous-horizontal-scaling|heterogeneous horizontal scaling]] is linked but tied to adoption in the source, not to variety, so no edge is coded for it. Community members are linked and hold nothing here. The source does not say what variety is protected from, beyond standardisation, nor which substrates are meant, so no technology is coded. It does not say that the doctrine or the chief engineer's push is what answers the coherence concern, so that concern has no "is addressed by" edge. The two rows marked "Reading:" are the coder's reading, not something a sentence says.
+Thin spots: the implementation team and research collaborators are named by the input but have no group in the vault (cap 4 is full), so they are named without links. The paradigm and instances distinction and the lifecycle and decommissioning view are not coded, and [[heterogeneous-horizontal-scaling|heterogeneous horizontal scaling]] is linked but tied to adoption in the source, not to variety, so no edge is coded for it. Community members are linked and hold nothing here. The source does not say what variety is protected from, beyond standardisation, nor which substrates are meant, so no technology is coded. It does not say that the doctrine or the chief engineer's push is what answers the coherence concern, so that concern has no "is addressed by" edge. The two rows marked "Reading:" are the worker's reading (a worker standing in for the coder), not something a sentence says.
 
 ## Edges told
 
 | type | from | to | note |
 |---|---|---|---|
 | holds | [[technical-team]] | [[protocol-design-integrity]] | The chief engineer is accountable for the protocol's coherence as a whole. |
-| holds | [[technical-team]] | [[requisite-variety]] | Reading: the coder's reading. No sentence names who holds this; the chief engineer's push for the paradigm and not any one substrate is read as the technical team holding it. |
-| is addressed by | [[requisite-variety]] | [[koi-doctrine]] | Reading: the coder's reading. The doctrine holds the value and separates paradigm from instances; the source does not say it answers the concern. |
+| holds | [[technical-team]] | [[requisite-variety]] | Reading: the worker's reading, standing in for the coder. No sentence names who holds this; the chief engineer's push for the paradigm and not any one substrate is read as the technical team holding it. |
+| is addressed by | [[requisite-variety]] | [[koi-doctrine]] | Reading: the worker's reading, standing in for the coder. The doctrine holds the value and separates paradigm from instances; the source does not say it answers the concern. |
