@@ -23,9 +23,10 @@ What is left before I open the release PRs: items 1 and 3 below.
    that drawings are saved only inside the vault (as the chat path already does) and the code changes instead.
 2. **Permission to install Docker Desktop (D-096)**, so the chat path's graphical container runtime is tested once
    before release. Without it, the guide keeps saying it is untested.
-3. **One sitting (about an hour) for the chat path**, in the browser pane: WP18's live run (WP18-R4) and the three
-   chat-path user tests (D-098). You sign in and paste each key; I drive, at a human pace, with lab material only, and
-   each run ends torn down with its key rotated.
+3. **The chat path.** WP18's live run (WP18-R4) ran on 25 November and is torn down
+   (`acceptance/chat-path/live-run-wp18-r4.md`). Left: delete the "Scat Lab" MCP entry in the chat by hand; the
+   three chat-path user tests (D-098) in a later sitting. Your UX observations from the run are harvested as
+   candidates C1 to C7 in `work-packages/candidates.md`.
 4. **The uv gap (D-040, D-041):** every UA-A tester had uv pre-installed, where the mission says "uv not installed".
    Accept it as a known gap, or permit one fresh tester to run uv's official installer.
 5. **History rewrites, all optional:** `main` (commit `c58113b`, the pilot line) and `dev` (commit `20ff07a`, private

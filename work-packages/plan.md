@@ -4,6 +4,8 @@ The ordered work packages. Owned by the ACE, and revised at each package accepta
 `MISSION.md` (Governance, "The plan") sets. The chief engineer does not approve this file; changes are logged in
 `decisions/log.md`. Words follow `GLOSSARY.md`.
 
+Unscoped work surfaced by the chief engineer or by runs is kept in `candidates.md`; read it before scoping a package.
+
 ## Done
 
 WP1 to WP11 built and accepted the first candidate (ontology research, toolchain, facilitation research, ontology and

@@ -25,6 +25,9 @@ PASS or a list of items to fix, each one checkable. Include a glossary check: ev
 sense. Work with the change consultant (`.claude/agents/change-consultant.md`) on impact maps; it supports you, and it
 reports to you.
 
+Before you PASS a scope, check `work-packages/candidates.md`: name any candidate the package touches, and say
+whether the scope takes it or leaves it.
+
 ## Units and workers
 
 Split an approved package into units: one tight scope and one set of files each. Run units with disjoint files in
