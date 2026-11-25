@@ -69,7 +69,7 @@ The `done` rules change today's unchecked `set_status`; WP16 owns the change to 
 ## 4. Links and edges (G17)
 
 **Four forms**, a closed list (R-23); other links have no graph meaning and are checked only as links.
-**L**: a link in a narrative's account or table (the narrative refers to the node, nothing more). **E**: an edge, one
+**L**: a link in a narrative's account or table (the narrative refers to the node, nothing more). A row's end is a link. **E**: an edge, one
 per (type, from, to), never stored: built from rows. **N**: a row's two ends. **T**: the row itself, which names its
 narrative. The coder writes L and rows; M5 writes rows; Obsidian's table editor may re-pad them. The edge's type follows
 its layers: `holds` (group, concern), `is addressed by` (concern, affordance), `is provided by` (affordance,
@@ -77,24 +77,25 @@ technology); slugs `holds`, `addressed-by`, `provided-by`. An edge is `done` whe
 
 **Four rules.** (1) *Ends*, M3: a row's type is known and both ends are nodes in the layers it joins, in its direction.
 (2) *Told*, M3: no narrative has two rows for one pair. These are conformance. (3) *Fingerprint*, M4: every row end is a
-link in its narrative. (4) *Candidate*, M4: a narrative links both ends of an edge it has no row for. Rule 3 is
-anchored on the narrative: a warning until it is `done`, then an error (R-23). One problem per mismatch.
+link (`[[page]]`, not plain text). (4) *Candidate*, M4: a narrative links both ends of an edge it has no row for. Rules 1 to 3 are
+anchored on the narrative: each a warning until it is `done`, then an error (R-23). One problem per mismatch.
 
 |Pair|What disagrees|Detection|Fix (form edited)|Incremental case|
 |---|---|---|---|---|
-|**L–N**|A row's end is not a link in its narrative.|Rule 3.|Link it where the account names it: exact `replace-text`, else manual (L); or delete the row (T).|Depth first: row first, link later; the write's result warns.|
+|**L–N**|A row's end is plain text, not a link.|Rule 3.|Replace the text with the link (the fix is offered) (L); or delete the row (T).|Only a hand edit leaves one: `record-edge` writes both ends as links.|
 |**L–E**|n links both ends of an edge and has no row for it. Not a mismatch under G1.|Rule 4: no message; a candidate in the fingerprint view (D-085).|Add a row to n (T), or leave it.|Breadth first: rows recorded after linking.|
-|**E–N**|An end is not a node, is in the wrong layer or direction, or the type is unknown. Conformance.|Rule 1; an end that is no page: R-1, an error at every status.|Stub the missing node (M5), relink if renamed, retype or turn the row.|Recording stubs absent ends; only a hand edit leaves one missing.|
+|**E–N**|An end is not a node, is in the wrong layer or direction, or the type is unknown. Conformance.|Rule 1; an end that is no page is graded likewise.|`stub-links` makes the missing node (M5); relink if renamed, retype or turn the row.|Recording stubs absent ends and never leaves a mismatch; only a hand edit does.|
 |**E–T**|A narrative tells a pair twice. Conformance.|Rule 2.|Merge the rows.|Recording an existing pair is "unchanged".|
 
 **Why no order of coding hides a mismatch.**
 1. *Total and stateless.* M1 reads all four forms from the Markdown on every call; nothing stored goes stale.
-2. *Graded at every status.* Rules 1 and 2 follow R-1; rule 3 warns on unfinished work (R-3), errs once `done`; no
-   order of coding reaches an ungraded state. Rule 4 follows the ACE.
+2. *Graded at every status.* Rules 1 to 3 warn on unfinished work (R-3), err once `done`; no
+   order of coding reaches an ungraded state. Rule 4 follows the ACE. (A link in an account to no page is an error at every status, R-1.)
 3. *Scopes.* An edge lives in its narratives' pages, so a page check reports every problem on its rows, and the
    one-link-away check of a node covers the narratives that tell its edges; rule 4 on others shows on their own check
    or the vault scope.
-4. *Writes report what they leave.*
+4. *Writes leave no mismatch and say what they did.* `record-edge` links both ends, stubs an absent node and notes the row
+   it added; `stub-links` makes the node pages that row ends link and the vault lacks.
 
 A forgotten edge is graded by no rule (G1); the fingerprint view shows it. A generator test builds vaults in each order
 (nodes first, rows first, one narrative at a time), injects every mismatch above, and asserts a report with a fix.
@@ -105,11 +106,13 @@ dry-july      scenario draft      links: allocation
 sensor-pitch  architecture done   links: allocation, soil-sensor
   Edges told: holds | farmers | allocation
 ```
-- *Case 1.* `sensor-pitch` has the row but does not link `farmers`: an error on it (L–N). Rule 3 outranks the
-  discouraged-link warning a group link in an architecture draws; the usual fix deletes the row.
-- *Case 2.* A row recorded first makes the result warn on `dry-july` until it links `farmers`.
+- *Case 1.* A hand-written row in `sensor-pitch` has `farmers` as plain text: an error on it (L–N); the fix offered is
+  the link, or deleting the row.
+- *Case 2.* `record-edge holds farmers allocation --told-by dry-july` adds the row with both ends linked, stubbing
+  `allocation` if absent: no problem. `dry-july`'s account need not link `farmers` (rule 4 stays silent).
 - *Case 3.* Remove edge deletes its rows, keeping links; it is refused while `sensor-pitch` is `done`.
-- *Case 4.* Deleting `allocation` by hand leaves dangling links and a row end that is no node; `stub-links` restores it.
+- *Case 4.* Deleting `allocation` by hand leaves dangling links and a row end that is no page (a warning on a draft, an
+  error on a `done` narrative); `stub-links` restores it.
 
 ## 5. The coding loop and the journey
 
