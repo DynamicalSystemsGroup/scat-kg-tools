@@ -79,23 +79,25 @@ only after teardown if a session was opened.
 
 **Sitting B: J5 to J7. One short session.**
 
-1. Chief engineer: start SCAT Chat as the page says (open the container runtime app first if the page names it). **Relies on
-   WP18's docs:** the window's words are the evidence; paste them. If a step fails, see "If a docs step fails".
-2. The key is on his clipboard. **He** pastes it into the chat's server form (address, Streamable HTTPS, API key); the
-   hands and the tester never see or type it. The hands fill the other fields as the tester asks.
-3. J5: the tester reasons from the page; the hands get the repository onto the Mac as the page says (GitHub Desktop's
-   Clone, with the Local path set outside Documents, Desktop, Downloads and iCloud). **Relies on WP18's docs:** the
-   chat-path page's GitHub Desktop section. If the tester says the page does not say how, or a step fails as written,
-   that is a finding; the chief engineer then does that step, recorded as "a person, because the page left nowhere to
-   go". The vault is wherever the Local path points. The hands open that folder as a vault in Obsidian (computer use,
-   if he has granted it; otherwise he does). Obsidian itself is UA-M's: the opening is shown by a listing of the folder,
-   which holds the Obsidian settings.
-4. J5's check runs on the untouched template through the chat: one message from the tester, the answer pasted. Then
-   the chief engineer clicks **Stop** and the teardown below runs. J6 and J7 need no session.
-   J5 then ends with the example removed, as the page's "Remove the example" step says, with no session open: the
-   hands do it on the tester's requests (Show in Finder, drag the example's folders to the Trash, commit and push in
-   GitHub Desktop). The assistant never deletes. The hands paste a listing of the folder showing them gone; if the page
-   does not say how, that is a finding and the chief engineer does the step.
+1. J5, in the page's order: clone, remove the example, then the session and the check. The tester reasons from the
+   page; the hands clone the repository onto the Mac as the page says (GitHub Desktop's Clone, with the Local path set
+   outside Documents, Desktop, Downloads and iCloud). **Relies on WP18's docs:** the chat-path page's GitHub Desktop
+   section. If the tester says the page does not say how, or a step fails as written, that is a finding; the chief
+   engineer then does that step, recorded as "a person, because the page left nowhere to go". The vault is wherever
+   the Local path points.
+2. J5, remove the example, as the page's "Remove the example" step says, with no session open: the hands do it on the
+   tester's requests (Show in Finder, drag the example's five folders to the Trash, type the summary and commit in
+   GitHub Desktop, Push origin). The assistant never deletes. The hands paste a listing of the folder showing them
+   gone; if the page does not say how, that is a finding and the chief engineer does the step.
+3. The hands open that folder as a vault in Obsidian (computer use, if he has granted it; otherwise he does). Obsidian
+   itself is UA-M's: the opening is shown by a listing of the folder, which holds the Obsidian settings.
+4. Chief engineer: start SCAT Chat as the page says (open the container runtime app first if the page names it). **Relies on
+   WP18's docs:** the window's words are the evidence; paste them. If a step fails, see "If a docs step fails". The
+   key is on his clipboard. **He** pastes it into the chat's server form (address, Streamable HTTPS, API key); the
+   hands and the tester never see or type it. The hands fill the other fields as the tester asks. J5's check runs on
+   the vault with the example removed, through the chat: one message from the tester, the answer pasted (the page says
+   it should find no problems). Then the chief engineer clicks **Stop** and the teardown below runs. J6 and J7 need
+   no session.
 5. J6: the hands write the tester's plan words into the file `planning` names, in the vault folder.
 6. J7: the hands turn the lab notes in the brief into files, exactly the notes and nothing else, and attach them to
    a new conversation in the chat (a collection if the chat offers one). One message asks the assistant what it can
@@ -109,7 +111,7 @@ only after teardown if a session was opened.
    server entry with the new key (the page says the old one stops working), or deletes it and adds it again.
 2. J8: the tester takes one story and one design proposal round the coding loop. The assistant drafts in its reply;
    the tester edits it; the hands paste the tester's final words into the page in Obsidian or in the file; the
-   assistant proposes and records; the check runs. **Setting a page finished is the tester's decision,** made after it
+   assistant proposes and records; the check runs. **Setting a page to `done` is the tester's decision,** made after it
    has read the page; the hands set it, on its word, with a screenshot, in Obsidian. If the assistant offers to set
    it, or the server is asked, log what it said word for word as a finding (the page says the server refuses).
 3. J9: the four views are asked of the assistant; the tester's reading is two sentences each; the written tables are
@@ -222,7 +224,7 @@ repositories), in a folder named for the round and the tester:
 - every screenshot, named `<tester>-J<stage>-<nn>.png`, listed in the run record with its time. At least one per
   stage; one of the repository page showing it private (J2); one of the SCAT Chat window each time it starts and
   stops (with the key area **not** in the screenshot: crop or hide it before saving); one of each chat answer the
-  report quotes; one of the status of each page set finished; one of the tag and commit on GitHub (J10);
+  report quotes; one of the status of each page set to `done`; one of the tag and commit on GitHub (J10);
 - every pasted text the tester received;
 - the teardown record for each sitting, with the stop message word for word and the confirming checks pasted;
 - the filed report, with `<address>` and `<repository>` in place of the real ones.

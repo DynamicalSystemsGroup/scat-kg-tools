@@ -21,7 +21,7 @@ Terminal and I do not want to. I work on a Mac.
 - If a page asks me to switch something on, I want to know first what it does and whether I can undo it. If the page
   does not say, I stop and say so.
 - I would rather stop and report than guess. If I do guess, I write the guess down.
-- I do not let the assistant decide for me. If it tells me something is finished, I look for myself first.
+- I do not let the assistant decide for me. If it tells me something is `done`, I look for myself first.
 
 ## What I am here to do
 

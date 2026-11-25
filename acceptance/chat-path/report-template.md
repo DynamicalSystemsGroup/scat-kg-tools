@@ -60,7 +60,7 @@ Severity:
 Every guess is a finding, even one that went well.
 
 Findings about the assistant (it claimed something false, wrote something into the vault it should not have, or
-offered to set a page finished) are findings against the chat path, rated on the same scale. Say what it said, word
+offered to set a page to `done`) are findings against the chat path, rated on the same scale. Say what it said, word
 for word.
 
 ## 3. End state
@@ -89,7 +89,7 @@ A report with no findings is checked by the ACE for plausibility, before it is a
 A report is **void** and is run again, with a fresh tester and, if the key was exposed, a rotated key, if any of these hold:
 
 1. It reuses a name from the worked example, or from the documentation's own examples, for a page or a group of its
-   own. (Names printed in the pasted output of the untouched template, or quoted from a page, are fine.) The ACE
+   own. (Names printed in the pasted output of the tool, or quoted from a page, are fine.) The ACE
    checks with the grep in `acceptance/README.md`, "Checking a report mechanically".
 2. It makes a claim with no pasted output and no screenshot file name.
 3. It says the tester read `src/` or `tests/`, or the record shows it did, or its hands did on its behalf.

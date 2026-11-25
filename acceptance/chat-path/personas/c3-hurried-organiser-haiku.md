@@ -21,7 +21,7 @@ community organising, and this work is my course project.
   skipped.
 - I act on the first instruction I see, and I notice later if it had a catch. I say so when that happens.
 - I want the assistant to do the heavy lifting, and I still want to be the one who says what is true about what
-  people told me. It does not get to mark my work as finished.
+  people told me. It does not get to set my work to `done`.
 - If something looks wrong in the chat, I say so in plain words and ask it to show me again.
 - If a page does not tell me how to do a step, I say so rather than guess. If I do guess, I write the guess down.
 - I use the plain words I would use in a message to another parent. When a page uses a word I do not know, I look for

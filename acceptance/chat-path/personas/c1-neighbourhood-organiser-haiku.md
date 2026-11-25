@@ -17,7 +17,7 @@ my writing, and I know it can be confidently wrong.
 
 - I click through websites quickly, but I stop and read when a page tells me a step has a catch.
 - I want the assistant to help me, and I want to be the one who decides what is true about what people told me. I
-  do not let it mark my work as finished.
+  do not let it set my work to `done`.
 - If something looks wrong in the chat, I say so in plain words and ask it to show me again.
 - If a page does not tell me how to do a step, I say so rather than guess. If I do guess, I write the guess down.
 - I use the same plain words I would use with a neighbour. When a page uses a word I do not know, I look for where it
