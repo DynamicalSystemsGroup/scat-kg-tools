@@ -180,9 +180,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP16-U2 | fresh reviewer (opens each variant against R-21), sonnet | 3 | 3 | `spike/layout` | done |  | 2026-11-24T22:52:32-05:00 | about 3 min; checks run, Obsidian not available to it |
 | WP16-U3 | ontology designer (TBox, page contracts, example vault), sonnet | 8 | 8 | `wp16/u3` | done |  | 2026-11-24T23:10:13-05:00 | about 7 min worker plus one fix round after a fresh reviewer PASS with 3 minor defects; reviewer ran own checker; 11 flags for the ACE kept in the report |
 | WP16-U4 | rule-catalogue and machine-interface author, sonnet | 5 | 5 | `wp16/u4` | done |  | 2026-11-24T23:24:23-05:00 | about 8 min worker plus one fix round (11 reviewer defects, all fixed); second review of the fixes not run, the fixes were re-checked by the author only; 32 rules, schema v2 |
-| WP16-U5 | Python developer (loader, graph, table reader, read-layer tests), sonnet | 8 |  | `wp16/u5` | in flight |  |  |  |
-| WP16-U6 | Python developer (checks, mismatch rules, done grading), sonnet | 8 |  | `wp16/u6` | queued | WP16-U5 |  |  |
-| WP16-U7 | Python developer (operations, API, CLI, Bases index pages), sonnet | 8 |  | `wp16/u7` | queued | WP16-U5 |  |  |
+| WP16-U5 | Python developer (loader, graph, table reader, read-layer tests), sonnet | 8 | 8 | `wp16/u5` | done |  | 2026-11-24T23:40:43-05:00 | about 12 min worker (71 tool calls) plus one review fix round; fresh reviewer ran 40 own vault cases, PASS; 600-word cap test restored as a marked skip pending ACE ruling; checks and ops are import stubs for U6, U7 |
+| WP16-U6 | Python developer (checks, mismatch rules, done grading), sonnet | 8 |  | `wp16/u6` | queued | next to start (ready: U5 merged) |  |  |
+| WP16-U7 | Python developer (operations, API, CLI, Bases index pages), sonnet | 8 |  | `wp16/u7` | queued | WP16-U6 (checks and the done grading) |  |  |
 | WP16-U8 | test engineer (seeded defects, mismatch vaults, guidance case, padded tables), sonnet | 5 |  | `wp16/u8` | queued | WP16-U6, WP16-U7 |  |  |
 | WP16-U9 | technical writer (coding guide, terms page and drift test, reference pages), sonnet | 8 |  | `wp16/u9` | queued | WP16-U7 |  |  |
 | WP16-U10 | technical writer (flow page, data and consent page, WP13 passages), sonnet | 5 |  | `wp16/u10` | queued | WP16-U9 (nav, terms link) |  |  |
