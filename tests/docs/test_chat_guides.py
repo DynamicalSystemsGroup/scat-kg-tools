@@ -126,3 +126,10 @@ def test_nav_lists_both_pages():
     nav = (ROOT / "mkdocs.yml").read_text(encoding="utf-8")
     for page in ("chat-path.md", "leave-no-trace.md"):
         assert re.search(rf"(?m)^\s+- [^:]+: {re.escape(page)}\s*$", nav), page
+
+
+def test_every_numbered_step_in_the_chat_path_names_a_place():
+    steps = _steps(CHAT, "What the chat path is, and what it needs", "What leaves your machine")
+    assert len(steps) >= 40
+    bad = [s for s in steps if not MARK.match(s)]
+    assert not bad, f"steps with no place: {bad}"

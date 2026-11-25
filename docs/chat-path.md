@@ -16,6 +16,9 @@ app), **In Finder**, **In GitHub Desktop**, **In Obsidian**, **In Tailscale** or
     following this page, so your first run is the real test. Where this page cannot vouch for a step, it says so. If
     a step fails and its message does not help, tell the person who set this up for you which step and what the
     window said.
+    One more thing not checked: the launcher looks for the `docker` command in `/usr/local/bin`, `/opt/homebrew/bin`
+    and Docker Desktop's own folder (`/Applications/Docker.app/Contents/Resources/bin`). If it says Docker is not
+    installed although it is, that is the likely cause; tell the person who set this up.
 
 If your project's data policy is strict (an AI platform that must keep nothing, or "approved chatbot only"), see
 [Leave no trace](leave-no-trace.md). It is one option for such a policy, not something you need for a session.
@@ -63,11 +66,13 @@ Your notes are about real groups of people.
 
 **Clone it.** Cloning downloads your repository to your Mac.
 
-1. Open GitHub Desktop and sign in to your GitHub account when it asks.
-2. Choose **File**, then **Clone Repository...** (the dialog is titled "Clone a Repository").
-3. Pick your new repository from the list under **GitHub.com**, or paste its address under **URL**.
-4. Set **Local path** to a folder outside Documents, Desktop, Downloads and iCloud (see "What you need"), then
-   choose **Clone**.
+1. **In GitHub Desktop:** open the app and sign in to your GitHub account when it asks.
+2. **In GitHub Desktop:** choose **File**, then **Clone Repository...** (the dialog is titled "Clone a Repository").
+3. **In GitHub Desktop:** pick your new repository from the list under **GitHub.com**, or paste its address under
+   **URL**.
+4. **In GitHub Desktop:** set **Local path** to a folder outside Documents, Desktop, Downloads and iCloud (see "What
+   you need").
+5. **In GitHub Desktop:** choose **Clone**.
 
 Your vault is the cloned folder. It holds `scat.toml`. In the preview, the template's default branch is `dev`; GitHub
 Desktop shows the current branch at the top, and if it shows `main` choose `dev` from that list.
@@ -75,13 +80,14 @@ Desktop shows the current branch at the top, and if it shows `main` choose `dev`
 **Remove the example: your hands do it.** The template holds a worked example that you remove before you add your own
 pages. **The assistant never deletes anything**, and the server has no operation that deletes a page or a folder (it can remove an edge's row, which only you ask for). You delete.
 
-1. In GitHub Desktop, choose **Repository**, then **Show in Finder**.
-2. In Finder, drag these five folders to the Trash: `affordance`, `concern`, `group`, `narrative` and
+1. **In GitHub Desktop:** choose **Repository**, then **Show in Finder**.
+2. **In Finder:** drag these five folders to the Trash: `affordance`, `concern`, `group`, `narrative` and
    `technology`. Keep the `index` folder and everything else.
-3. Back in GitHub Desktop, the **Changes** list shows the deleted pages. In the **Summary** box type
-   `Remove the example`, then choose the button at the bottom left of the list, **Commit to main**. On a branch
-   called `dev` it reads **Commit to dev**: it carries the current branch's name.
-4. Choose **Push origin** in the top bar.
+3. **In GitHub Desktop:** the **Changes** list shows the deleted pages. In the **Summary** box type
+   `Remove the example`.
+4. **In GitHub Desktop:** choose the button at the bottom left of the list, **Commit to main**. On a branch called
+   `dev` it reads **Commit to dev**: it carries the current branch's name.
+5. **In GitHub Desktop:** choose **Push origin** in the top bar.
 
 Then, in the chat once the session is running, ask the assistant to run the check. It should say there are no problems.
 
@@ -110,8 +116,8 @@ tell the person who set this up what happened.
 
 Colima has no graphical installer. It comes through Homebrew, the Mac's package manager.
 
-1. **In a terminal:** if the command `brew --version` prints nothing useful, install Homebrew first by following the
-   one command on <https://brew.sh>.
+1. **In a terminal:** run `brew --version`. If it prints nothing useful, install Homebrew first by following the one
+   command on <https://brew.sh>.
 2. **In a terminal:** run the next command. It installs Colima and the `docker` command it needs.
 
     ```text
@@ -213,12 +219,13 @@ You do this once. What you set up stays in the chat after Stop (see "Clean up").
 The live run used inference.coop's chat, which has Skills and an Agent Builder. Where this page has not seen a
 button's name, it says what to look for.
 
-1. **In a web browser:** open the skill file on GitHub,
-   <https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/skills/scat-coding/SKILL.md>, and keep it open.
+1. **In a web browser:** open the skill file,
+   <https://raw.githubusercontent.com/DynamicalSystemsGroup/scat-kg-tools/dev/skills/scat-coding/SKILL.md>, select
+   all (Cmd-A) and copy (Cmd-C) its text, and keep the tab open.
 2. **In the chat:** look for **Skills** (in the chat's menus or settings; this page has not recorded where) and
    choose to create a new skill. Name it `scat-coding`.
-3. **In the chat:** give the skill the content of the file from step 1 (paste its text, or upload the file if the
-   form offers an upload). Save. Whether the chat takes the file as it stands or asks for a different form was not
+3. **In the chat:** give the skill the text you copied in step 1 (paste it, or upload the file if the form offers an
+   upload). Save. Whether the chat takes the file as it stands or asks for a different form was not
    recorded.
 4. **In the chat:** open the **Agent Builder**. Give the agent a name you will recognise, for example "SCAT coder".
 5. **In the chat:** in the agent's settings choose a model and, as tools, the server you added under "Connect the
@@ -253,17 +260,17 @@ was not tried. If it does, `code-a-narrative` starts the loop.
 
 This is the [coding loop](coding.md#the-coding-loop) with an assistant. What is a rule and what is a norm is on the [norms](norms.md) page.
 
-1. **Interpreting.** You give the field notes and name the narrative. The assistant asks about anything unclear; it
+1. **In the chat:** **Interpreting.** You give the field notes and name the narrative. The assistant asks about anything unclear; it
    does not decide.
-2. **Authoring.** The assistant drafts the account as text in its reply. It does not write it into the vault. You
+2. **In the chat and in Obsidian:** **Authoring.** The assistant drafts the account as text in its reply. It does not write it into the vault. You
    read it, edit it, and paste it into the narrative page in Obsidian.
-3. **Coding.** The assistant proposes the nodes and links the account names. You confirm. Then it makes the pages
+3. **In the chat:** **Coding.** The assistant proposes the nodes and links the account names. You confirm. Then it makes the pages
    that are missing and records each edge you confirmed, by the tool's operations. It never types a table row by
    hand.
-4. **Reviewing.** The assistant runs the check on the narrative and its neighbours, and quotes each problem as the
+4. **In the chat:** **Reviewing.** The assistant runs the check on the narrative and its neighbours, and quotes each problem as the
    tool reports it. A passing check means the structure fits. It does not mean the narrative is correct. You read
    the page in Obsidian and decide whether the account matches the notes.
-5. **Done is yours.** You set `status: done` in Obsidian. The assistant never does, and the server refuses it if
+5. **In Obsidian:** **Done is yours.** You set `status: done` in Obsidian. The assistant never does, and the server refuses it if
    asked.
 
 The server and Obsidian use the same folder, so what the assistant records appears in Obsidian. How quickly
@@ -355,8 +362,8 @@ That is the clean-up the lab run did on 25 November. Delete only the server entr
 - **A skill or a saved agent you set up stays** unless you remove it. Leave them for the next session, or remove them
   in the chat where you made them (where the chat keeps them for removal was not recorded; look where you created
   them).
-- **Your uploaded field notes and conversations** stay in the chat account until you delete them there. The chat
-  provider keeps saved chats until you delete them. How to delete an uploaded file and a conversation was not
+- **Your uploaded field notes and conversations** stay in the chat account until you delete them there. Whether and how long the chat
+  provider keeps them is not recorded here (to confirm). How to delete an uploaded file and a conversation was not
   recorded for this page; look for a file library and the conversation's menu in the chat.
 - **Your vault** is on your Mac and is not touched.
 
