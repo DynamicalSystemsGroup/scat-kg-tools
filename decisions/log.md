@@ -1957,3 +1957,36 @@ case from `mzargham/ant-rdf` as a SCAT range vault, coded by hand through the to
 by side, under one PM, after the WP17 correction unit (D-093) lands, since that unit also touches `src/` and the
 metrics log. Neither touches `contracts/machine-interface.*`, where WP17-U3b is held. Revert point
 `divergence/D-093`.
+
+## D-095 | 2026-11-25 | WP17 follow-ups landed: metrics corrected, two check gaps closed
+
+`dev` ed08bdc, CI green; `check_metrics.py` passes on the whole log (536 records), and now refuses a timestamp more than
+five minutes ahead. The 45 future-stamped records are corrected by appended records carrying `corrects` (lines 476 to
+520); iteration 23 is restated at 1.04 h. The two check gaps are closed: a view refuses, naming the row, rather than
+omit a broken row; a duplicate node name behind a row end is named with both files. Two existing tests that asserted
+the old silent omission changed with that behaviour, as D-093 decided; both are listed in the unit report. Left for
+WP20's cleanup: a narrative with unparsable frontmatter is still left out of whole-vault views silently, and two
+sentences in the architecture document need the new refusals. WP17 stays unaccepted only on WP17-U3b.
+
+## D-096 | 2026-11-25 | WP18 and WP19 mid-way: rulings on the PM's defaults and flags
+
+State: on `origin/wp18/build` (e2dfb98), not yet on `dev`: WP18-U1 (the assistant's file), U2 (the MCP server: 13
+tools, 3 prompts, core dependencies unchanged, never sets `done`), U3 (image and launcher: read-only root, all
+capabilities dropped, loopback only, 401 without the key, key rotated on stop, nothing left running), and WP19-U1 (the
+range inputs). Remaining: WP18-U4 (docs) and U5 (the template's IDE skill), WP19-U2 to U4 (the coding), their reviews
+and open wording fixes (`work-packages/pm-handover.md`).
+
+The ACE's rulings:
+- The PM's defaults stand: the vault is mounted read-write and written only through the tool's operations (the tool
+  in the container must write); a WP19 review sample of at least a third of the narratives; WP19's workers set `done`
+  standing in for the coder, which the note says plainly.
+- `mzargham/ant-rdf` stays cited in WP19 (WP19-R1 requires the citation; it is public).
+- The assistant's file drops "where they differ from it, this file rules": precedence belongs to `MISSION.md`.
+- **The container runtime for the chat path is Docker Desktop**, which has a graphical installer; Colima, which has
+  none, is documented as the alternative for coders comfortable with a terminal. Docker Desktop is untested here and
+  installing it needs the chief engineer's permission: on the morning list. Its licence terms are named in the docs as
+  a fact, without advice.
+- The docs show how to put Tailscale's command line in place from the app's own menu, and how to open the unsigned
+  launcher the first time (right-click, Open).
+- The launcher never changes tailnet settings itself (HTTPS, the Funnel policy, the machine name); it tells the coder
+  which click does it and why. Confirmed.
