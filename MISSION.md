@@ -86,9 +86,10 @@ again.
 navigable in Obsidian, the views are generated, and the coder who interpreted the field notes states that the model
 is a good representation of what those notes contain. That statement is made outside the tool, the way work is
 handed over: the coder decides the model is finished, locks a version, and hands it over, as in a contract delivery, a
-paper submission or a class project hand-in. Locking a version means tagging a commit in git; the docs show how on
-each path, using GitHub's own features. A project may have several coders and reviewers, like the authors and
-reviewers of a paper; git records who coded what, and SCAT adds nothing of its own for sign-off or release control.
+paper submission or a class project hand-in. Locking a version means tagging a commit in git: with `git tag` on the manual path,
+and with GitHub's own features (a GitHub Release, or GitHub Desktop) on the chat path, as the chat-path spike chooses.
+A project may have several co-authors and peer reviewers, like a paper; git records who coded what, and the
+statement is made by any one of them, by the project's own rule. SCAT adds nothing of its own for this.
 
 Most narratives are one of two types, which look at the same knowledge graph from opposite sides. This is an important heuristic
 for facilitating, capturing and coding, though a narrative may be neither.
@@ -289,8 +290,9 @@ matters without claiming to be exhaustive. No particular project's choices appea
   - **By hand in Obsidian** is the base: LLM use is never assumed (R-19).
   - **The chat path** is the priority for design and testing in v0.1. The first field deployment may use one private
     LLM service, inference.coop, through its browser chat, which reaches outside tools only through MCP servers. The
-    open-source service is built for it: an MCP server with its tools, prompts and skills, depending on `scat-kg`. It
-    also generates the views (G12), so a chat-path coder reaches a finished model without a terminal. A
+    open-source service is built for it: an MCP server with its tools, prompts and skills, a front end to the tool that
+    depends on `scat-kg`. It also generates the views (G12), from the same code the notebook uses, so a chat-path
+    coder reaches a finished model without a terminal. A
     workable chat workflow is a UX design problem in its own right: the input material is uploaded to the chat as a
     collection, files are created and downloaded, kept in a private git repository and edited in Obsidian, with
     copying and pasting where it can't be avoided. It is kept simple, and its setup, git and checks work without a
@@ -339,9 +341,10 @@ matters without claiming to be exhaustive. No particular project's choices appea
   problematization is for a richer ontology such as `ant-rdf`, applied afterwards.
 - Adjudicating between stories or architectures. Neither the tools nor the guides judge which architecture is correct
   or which stories should be focal.
-- Analysis tooling beyond the template notebook's views (G12). The earlier analysis spike stays on its branch, `spike/analysis`.
+- Analysis tooling beyond the views of G12. The earlier analysis spike stays on its branch, `spike/analysis`.
 - Legal advice, consent-form templates, or recommended data-use policies.
-- A sign-off or release-control mechanism of SCAT's own; git and GitHub provide it.
+- A mechanism of SCAT's own for signing off a finished model, or for authorship and review across coders; git and
+  GitHub provide it.
 - Publishing to PyPI.
 
 ## Deliverables
@@ -349,7 +352,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
 | ID | Deliverable | Serves |
 |---|---|---|
 | D-1 | The ontology in Turtle, in `scat-kg-tools` | G1, G10 |
-| D-2 | The tools (parser, checks, the operations, the Python API and CLI, their machine-readable output with its schema, the edge-table export, a public vault loader, and the MCP server with its prompts and skills) with their test suite, and the architecture document, in `scat-kg-tools` | G2, G3, G4, G12, G14, G16, G17 |
+| D-2 | The tool (parser, checks, the operations, the Python API and CLI, their machine-readable output with its schema, a public vault loader, and the view generation the notebook and the MCP server share), and the MCP server with its prompts and skills, with their test suite, and the architecture document, in `scat-kg-tools` | G2, G3, G4, G12, G14, G16, G17 |
 | D-3 | The template repository: vault skeleton, index pages, the vault's configuration (the stakeholder-group cap), the pinned tools, the case study, the analysis notebook, and a setup skill for IDE agents | G5, G6, G9, G12, G14, G15 |
 | D-4 | The documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9, G11, G14, G17 |
 | D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, the facilitation research, the prior-art readout, the chat-path spike, and the impact maps | G8, G10, G11, G13, G14, G16 |
@@ -381,7 +384,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault. Its fingerprint view gives, for each coded narrative, exactly its fingerprint, with no relationship annotation; it exports the three edge tables; and a trace from a node of each type returns exactly the nodes reachable up and down the layers. | The notebook executed in the template's CI, with tests on the views and the traces |
 | R-18 | **Ripple-complete changes.** Before a package that changes a term, contract, rule or this mission is approved, its impact map lists every artifact that refers to what changes, each marked change, keep (with why) or historical. At acceptance, the same sweep finds no reference that is unmarked or still says the old thing. | The impact map in the scope; the sweep's output in the acceptance record |
 | R-19 | **Manual first.** Every step, from field notes to coded vault to analysis, can be done by a person by hand, in Obsidian and the REPL or CLI, with no LLM. The process stays consistent with ethnographic coding practice, so a project whose data rights rule out AI loses nothing but speed. Any AI assistance is optional and provider-agnostic, and holds no authority: the coder is the interpretive authority and the tool the conformance authority (see "Three actors, two authorities"). | The UA-M walkthrough and the docs test, run with no LLM; the ACE's review of each spike readout against it |
-| R-20 | **The chat path works, at two test levels.** The MCP server's tools pass automated tests, and the chat path (G14) is run end to end in the inference.coop browser chat at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents, which stand in for field notes. The field test comes after v0.1 and is not part of this repository. Other providers are not tested in v0.1. | The automated tests in CI; each end-to-end run recorded step by step with screenshots in the acceptance record |
+| R-20 | **The chat path works, at two test levels.** The MCP server's tools pass automated tests, its views equal the notebook's on the same vault, and the chat path (G14) is run end to end in the inference.coop browser chat at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents, which stand in for field notes. The field test comes after v0.1 and is not part of this repository. Other providers are not tested in v0.1. | The automated tests in CI; each end-to-end run recorded step by step with screenshots in the acceptance record |
 | R-21 | **Coding happens in Obsidian.** A coder can code a narrative and review its fingerprint in Obsidian alone, without the same content held on two pages, and without opening pages that carry no content of their own. | A review in Obsidian with screenshots in the record; UA-M |
 | R-22 | **Architecture before detailed design.** The architecture document names the model, the views and the control plane, each module's interface contract and responsibilities, and is reviewed by architecture reviewers before any further package starts detailed design. | The review record; the ACE's approval, logged |
 | R-23 | **Links and edges reconcile.** The forms that must agree are a closed list: a narrative's link to a node, an edge's entry, and an edge's references to its nodes and to its narratives. Links outside these forms carry no graph meaning and are checked only as links (R-1). The tool detects each mismatch between these forms and gives a fix that reconciles it. A mismatch that involves a narrative is a warning while the narrative is a draft and an error once it is `done`; an edge cannot be `done` unless every narrative it names links both its nodes. Incremental coding, breadth first or depth first, never leaves a mismatch the tool can't see. The docs show both ways of working. | Tests that generate vaults with mismatches and check each mismatch is reported with a working fix; a named architecture reviewer for this area; a UX review in Obsidian of an incremental coding session, with screenshots |
@@ -408,8 +411,8 @@ from the docs site, set up, code one narrative from their own notes, see its fin
 | J7 Finish | reaches a clean whole-vault check, generates the views, navigates the vault in Obsidian, commits and pushes, then decides the model is finished, locks a version and hands it over | coding guide |
 
 **The chat journey** is written with the chat path (G14): from the input material uploaded to the chat, through coding
-in the chat and in Obsidian, to a clean check of a private repository and a signed-off finished model, with no
-terminal.
+in the chat and in Obsidian, to a clean check of a private repository and generated views, then the coder decides the model is finished, locks
+a version and hands it over, all with no terminal.
 
 **UA-A, the AI user tests**, run by the team on the candidate before the chief engineer's walkthrough:
 
@@ -437,8 +440,9 @@ terminal.
   stuck, what it had to guess, and where the docs left it with nowhere to go.
 - **Pass bar.** Every tester, the Haiku testers included, reaches the end of its journey with a clean check. Testers
   on the manual and chat journeys end as a hand-over: given a stated hand-over case (a contract delivery, a paper
-  submission or a class project hand-in), they decide the model is finished, lock a version and hand it over, and the
-  report shows the locked version. Every
+  submission or a class project hand-in), they decide the model is finished, lock a version and hand it over; the
+  report names the tag, the commit it pins and the recipient the case names. Manual testers, whose clone has no
+  remote, lock with `git tag`. Every
   guess (any action the docs did not literally state) counts as a finding. A finding is **blocking** if it stopped the
   tester short of the end, or if a docs command doesn't work as shown. Every finding is dispositioned: either fixed and
   re-tested by a fresh tester, or accepted with a reason and listed in the reviewer's guide. The final round leaves no
@@ -526,7 +530,7 @@ The chief engineer has accepted by merging the release PRs.
   - **Platforms:** macOS is the supported user platform for v0.1, and CI runs on Linux. Nothing may be built in a
     way known to put later Linux or Windows support at risk: no platform-specific paths, shells, line endings or
     tools in the package, and anything unavoidably platform-specific is isolated and recorded.
-- **Until the release,** nothing is merged to `main`, tagged or published, with two exceptions:
+- **Until the release,** nothing in `scat-kg-tools` or `scat-kg-template` is merged to `main`, tagged or published, with two exceptions:
   - changes to this mission;
   - the **candidate stage** that UA-M needs:
     - the docs site deploys from `dev` to Pages, marked pre-release;
@@ -627,6 +631,8 @@ serves this mission as written; a change that would alter the mission goes to th
   contracts, and the link-edge correspondence of G17), that review the architecture document before detailed design
   (R-22).
 - **The range vault** rebuilds the KOI case with groups, not named people.
+- **Views on the chat path** are written into the project's private repository, so a finished model's views can be
+  checked there.
 - **Order of work.** WP12 (the terms page, now on `dev`) is accepted first; the ontology-and-layout package revises
   it for the narrative model (R-18). Then the prior-art readout; then the architecture
   document and the chat-path spike, side by side. Then one ontology-and-layout package (G1, G15), which absorbs WP13
