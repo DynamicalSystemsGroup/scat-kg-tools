@@ -1,0 +1,14 @@
+filters:
+  and:
+    - 'note.type == "technology"'
+views:
+  - type: table
+    name: "Technologies"
+    order:
+      - file.name
+      - note.title
+      - note.status
+      - note.description
+    sort:
+      - property: file.name
+        direction: ASC
