@@ -1814,3 +1814,16 @@ calls and D-085's additions). Staged: a layout spike on `spike/layout` (two or t
 reviewed by the ACE in Obsidian with screenshots), then the decide stage (logged), then build, quality control,
 integrate (both pins) and the cascade review (the change consultant's re-sweep). Absorbs WP13. The chief engineer is
 away overnight: anything that needs him goes on the morning list and does not stop the package.
+
+## D-087 | 2026-11-24 | WP16 scope fixed for the PM's check; RS3's tunnel findings
+
+The PM's scope check failed WP16 on two items, both right: no deliverables list at stated paths traced to goals, and
+the goals did not name the architecture modules they build on (R-22). Both are added; nothing else in the scope
+changes.
+
+RS3-U3 (research only; nothing installed): the tunnel pick for v0.1 is Tailscale Funnel (free, a fixed URL, TLS ends on
+the coder's machine); no tunnel is documented as set up without a terminal, so the chat path needs a shipped launcher,
+and whether the Tailscale Mac app alone can switch Funnel on is unverified. Terminal-free git: GitHub Desktop, plus the
+GitHub web interface for the template and Releases. A real test of Funnel on the chief engineer's Mac needs his
+permission to install it: on the morning list. Whether a launcher counts as "not required to open a terminal" is
+answered by the launcher's design in WP18 (a double-click app, no typed commands).
