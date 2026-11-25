@@ -1714,3 +1714,10 @@ Scope `work-packages/WP14.md`: a readout of at most 1,800 words in `research/pri
 WP15 and WP16, with public sources cited and private ones read for principles only. Mission item 6 (prior-art readout
 as input) and Governance ("the prior-art readout comes before the architecture document"). No impact map: it changes
 no term, contract, rule or mission text.
+
+## D-080 | 2026-11-24 | RS3 (chat-path spike) approved
+
+Scope `work-packages/RS3-chat-path.md`: five questions on the inference.coop chat, how it reaches the tool, the
+workflow, working with no terminal, and the views; offline first, then light live use with lab material after the
+chief engineer signs in. `MISSION.md` G14 and the Agent's defaults ("The chat-path spike"). Runs beside WP15; the
+ACE drives the live part.
