@@ -59,7 +59,7 @@ Your notes are about real groups of people.
 **Clone it.** Cloning downloads your repository to your Mac.
 
 1. Open GitHub Desktop and sign in to your GitHub account when it asks.
-2. Choose **File**, then **Clone a repository**.
+2. Choose **File**, then **Clone Repository...** (the dialog is titled "Clone a Repository").
 3. Pick your new repository from the list under **GitHub.com**, or paste its address under **URL**.
 4. Set **Local path** to a folder outside Documents, Desktop, Downloads and iCloud (see "What you need"), then
    choose **Clone**.
