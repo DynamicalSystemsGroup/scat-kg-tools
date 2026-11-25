@@ -2,17 +2,12 @@
 
 import os
 import shutil
-import stat
 import subprocess
 
 import pytest
 from conftest import REPO, STATUS_NO_HTTPS, STATUS_STOPPED
 
 STOP = {"SCAT_CHAT_A_STOP": "stop"}
-
-
-def assert_mode_600(p):
-    assert stat.S_IMODE(p.stat().st_mode) == 0o600
 
 
 def test_start_order_flags_and_stop_button(rig):
@@ -32,7 +27,7 @@ def test_start_order_flags_and_stop_button(rig):
     run = calls[rig.called("docker run")[0]]
     for flag in [
         "--read-only", "--tmpfs /tmp", "--security-opt no-new-privileges", "--cap-drop ALL",
-        f"-p 127.0.0.1:{rig.server.port}:8765", f"-v {rig.vault.resolve()}:/vault", "--env-file",
+        f"-p 127.0.0.1:{rig.server.port}:8765", f"-v {rig.vault.resolve()}:/vault", "--env-file /dev/stdin",
     ]:  # fmt: skip
         assert flag in run, (flag, run)
     assert "UID" not in calls[rig.called("docker build")[0]]  # no host uid baked into the image
@@ -41,48 +36,124 @@ def test_start_order_flags_and_stop_button(rig):
     rig.nothing_left()
 
 
-def test_key_never_on_a_command_line_and_is_shown_and_copied(rig):
+def test_key_is_kept_in_the_keychain_and_not_shown_or_copied(rig):
     r = rig.run("start")  # stays up
     assert r.returncode == 0, r.stdout + r.stderr
     key = rig.key()
-    assert len(key) == 64
-    assert_mode_600(rig.keyfile)
-    assert key not in "\n".join(rig.calls_list())
-    assert rig.clip() == key
-    assert key in r.stdout
+    assert len(key) == 64 and rig.keys_seen() == [key]
+    assert key not in r.stdout  # the dialog never shows it
+    assert rig.clip() == ""  # and it is on the clipboard only on request
     assert "https://fake-mac.tail1234.ts.net/mcp" in r.stdout
-    assert "Paste this address" in r.stdout
+    assert "Paste this address" in r.stdout and "Copy key" in r.stdout
     assert rig.run("status").returncode == 0
     rig.run("stop")
     rig.nothing_left()
 
 
-def test_stop_rotates_key_clears_clipboard_and_is_idempotent(rig):
-    rig.run("start")
-    before = rig.key()
+def test_keychain_calls_go_through_security_with_the_item_on_stdin(rig):
+    rig.run("start", **STOP)
+    calls = rig.calls_list()
+    assert "security -i" in calls  # the item is written by a command on stdin
+    assert "security(stdin) add-generic-password -s scat-chat" in calls
+    assert any(
+        c.startswith("security find-generic-password -s scat-chat") and c.endswith(" -w")
+        for c in calls
+    )
+    assert any(c.startswith("security delete-generic-password -s scat-chat") for c in calls)
+    for c in calls:
+        if c.startswith("security") and "add-generic-password" in c:
+            assert " -w " not in c + " " or c.startswith("security(stdin)"), c
+
+
+def test_key_reaches_the_container_on_stdin_only(rig):
+    rig.run("start", **STOP)
+    (key,) = rig.keys_seen()
+    assert (rig.stub / "env-in").read_text() == f"SCAT_MCP_KEY={key}\n"
+    assert "--env-file /dev/stdin" in rig.calls_list()[rig.called("docker run")[0]]
+
+
+def all_files_text(folder):
+    return b"".join(p.read_bytes() for p in folder.rglob("*") if p.is_file())
+
+
+def test_key_is_in_no_argument_of_any_program_and_in_no_file_of_the_state_folder(rig):
+    # dialog mode, so the osascript stand-in sees what the real dialog would be given; the coder copies the key, then stops
+    (rig.stub / "osa-answers").write_text("Copy key\nStop\n")
+    r = rig.run("start", SCAT_CHAT_UI="dialog")
+    assert r.returncode == 0, r.stdout
+    (key,) = rig.keys_seen()
+    calls = rig.calls_list()
+    for program in ["docker", "osascript", "security", "tailscale", "colima", "curl"]:
+        assert any(c.startswith(program) for c in calls), program
+    assert not [c for c in calls if key in c], "the key is on a command line"
+    assert rig.clip() == ""  # Copy key put it there on stdin; Stop cleared it
+    assert key.encode() not in all_files_text(rig.state)
+    assert key not in r.stdout
+
+
+def test_copy_key_puts_the_key_on_the_clipboard_only_when_the_coder_asks(rig):
+    rig.run("start", **STOP)
+    assert rig.clip() == ""  # started and stopped without asking: never copied
+    r = rig.run(
+        "start", SCAT_CHAT_A_COPYKEY="copy"
+    )  # the coder clicks Copy key, then leaves the session up
+    assert r.returncode == 0, r.stdout
+    assert rig.clip() == rig.key()
+    assert rig.key() not in r.stdout
+    assert not [c for c in rig.calls_list() if rig.key() in c]
+    rig.run("stop")
+
+
+def test_the_dialog_copy_key_button_copies_and_asks_again_until_stop(rig):
+    (rig.stub / "osa-answers").write_text("Copy key\nCopy key\nStop\n")
+    r = rig.run("start", SCAT_CHAT_UI="dialog")
+    assert r.returncode == 0, r.stdout
+    assert len([c for c in rig.calls_list() if 'buttons {"Copy key", "Stop"}' in c]) == 3
+    assert not rig.item()
+    rig.nothing_left()
+    # the dialog without a Copy key answer leaves the clipboard empty
+    r = rig.run("start", SCAT_CHAT_UI="dialog")
+    assert rig.clip() == ""
+
+
+def test_stop_deletes_the_key_clears_the_clipboard_and_is_idempotent(rig):
+    rig.run("start", SCAT_CHAT_A_COPYKEY="copy")
+    assert rig.item() and rig.clip() == rig.key()
     r = rig.run("stop")
     assert r.returncode == 0 and "Stopped." in r.stdout, r.stdout
-    after = rig.key()
-    assert after != before and len(after) == 64
-    assert_mode_600(rig.keyfile)
+    assert "the key was deleted" in r.stdout and "replaced" not in r.stdout
+    assert not rig.item()
     assert rig.clip() == ""
     rig.nothing_left()
     assert rig.called("tailscale funnel --https=443 off")
+    assert rig.called("security delete-generic-password")
     r2 = rig.run("stop")  # twice
     assert r2.returncode == 0 and "Stopped." in r2.stdout
-    assert rig.key() != after  # each stop replaces the key again; still mode 600
-    assert_mode_600(rig.keyfile)
+    assert not rig.item()
+
+
+def test_a_dry_run_stop_leaves_no_keychain_item(rig):
+    r = rig.run("start", **STOP)  # plain mode, stand-ins: a dry run
+    assert r.returncode == 0 and "Stopped." in r.stdout
+    assert rig.keys_seen() and not rig.item()
+    rig.nothing_left()
+
+
+def test_a_key_that_cannot_be_kept_stops_the_start(rig):
+    r = rig.run("start", STUB_FAIL_KEYCHAIN="1")
+    assert r.returncode == 1 and "keychain" in r.stdout
+    assert not rig.called("docker run")
 
 
 def test_stop_when_nothing_ever_ran(rig):
     r = rig.run("stop")
     assert r.returncode == 0 and "Stopped." in r.stdout
-    assert not rig.keyfile.exists()
+    assert not rig.item()
     assert not rig.called("tailscale funnel")  # never touches a tunnel it did not start
 
 
 def test_clipboard_not_cleared_when_it_holds_something_else(rig):
-    rig.run("start")
+    rig.run("start", SCAT_CHAT_A_COPYKEY="copy")
     (rig.stub / "clip").write_text("my own text")
     rig.run("stop")
     assert rig.clip() == "my own text"
@@ -305,9 +376,7 @@ def test_teardown_when_server_never_answers(rig):
     assert r.returncode == 1 and "did not answer" in r.stdout
     rig.nothing_left()
     assert not rig.called("tailscale funnel --bg")
-    # the key made for the failed start was replaced
-    assert len(rig.key()) == 64 and rig.key() != "0" * 63 + "1"
-    assert_mode_600(rig.keyfile)
+    assert rig.keys_seen() and not rig.item()  # the key made for the failed start was deleted
 
 
 def test_failed_build_says_what_to_click(rig):
@@ -320,10 +389,9 @@ def test_failed_build_says_what_to_click(rig):
     assert not rig.called("docker run")
 
 
-def test_every_stop_leaves_key_rotated_after_failed_start(rig):
+def test_every_stop_leaves_no_key_after_failed_start(rig):
     rig.run("start", STUB_FAIL_RUN="1")
-    assert rig.key() == f"{2:064d}"  # made as key 1, replaced by key 2
-    assert_mode_600(rig.keyfile)
+    assert rig.keys_seen() == [f"{1:064d}"] and not rig.item()
 
 
 def test_script_syntax():

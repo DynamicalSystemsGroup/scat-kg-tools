@@ -3,16 +3,17 @@
 #
 # The coder double-clicks SCAT Chat.app, which calls this script; nobody types a command. Every message says
 # what happened and what to click next. Stop always runs: the Stop button, quitting the app, and any failure
-# after start end in the same teardown (tunnel off, container removed, Mac allowed to sleep, key replaced,
+# after start end in the same teardown (tunnel off, container removed, Mac allowed to sleep, key deleted,
 # clipboard cleared), which is safe to run twice and when nothing is running.
 #
 # Every outside program is found through an environment override so tests can use stand-ins:
 #   SCAT_CHAT_DOCKER, SCAT_CHAT_COLIMA, SCAT_CHAT_TAILSCALE, SCAT_CHAT_OPENSSL, SCAT_CHAT_CURL,
-#   SCAT_CHAT_PBCOPY, SCAT_CHAT_PBPASTE, SCAT_CHAT_CAFFEINATE, SCAT_CHAT_OSASCRIPT, SCAT_CHAT_OPEN
+#   SCAT_CHAT_PBCOPY, SCAT_CHAT_PBPASTE, SCAT_CHAT_CAFFEINATE, SCAT_CHAT_OSASCRIPT, SCAT_CHAT_OPEN,
+#   SCAT_CHAT_SECURITY (the macOS keychain tool; only the key_* functions call it)
 # Other settings: SCAT_CHAT_SEARCH_PATH (folders searched first for the programs; for tests), SCAT_CHAT_HOME (state folder), SCAT_CHAT_CONTEXT (the source to build), SCAT_CHAT_PORT,
 #   SCAT_CHAT_VAULT, SCAT_CHAT_WAIT, SCAT_CHAT_TUNNEL_WAIT, SCAT_CHAT_UI.
 # SCAT_CHAT_UI=plain prints instead of showing dialogs, and takes answers from SCAT_CHAT_A_<KEY> or stdin:
-#   VAULT (a folder), COPY (copy), OPEN (open), STOP (stop). In plain mode start returns once the session is up,
+#   VAULT (a folder), COPY (copy), OPEN (open), COPYKEY (copy: the Copy key button), STOP (stop). In plain mode start returns once the session is up,
 #   unless SCAT_CHAT_A_STOP=stop (the Stop button), which tears down at once.
 
 # Where `docker` may live: Homebrew (Intel, Apple silicon) and Docker Desktop's own folder.
@@ -43,12 +44,13 @@ PBPASTE=${SCAT_CHAT_PBPASTE:-pbpaste}
 CAFFEINATE=${SCAT_CHAT_CAFFEINATE:-caffeinate}
 OSASCRIPT=${SCAT_CHAT_OSASCRIPT:-osascript}
 OPEN=${SCAT_CHAT_OPEN:-open}
+SECURITY=${SCAT_CHAT_SECURITY:-/usr/bin/security}
 
 IMAGE=scat-chat-mcp
 # The published image (WP21-G6): one per package version, read from the pyproject.toml that travels with the launcher.
 REGISTRY_IMAGE=ghcr.io/dynamicalsystemsgroup/scat-kg-tools
 CONTAINER=scat-chat
-KEYFILE=$STATE/key.env
+KEY_SERVICE=scat-chat # the keychain item: service and account
 FUNNEL_POLICY_PAGE=https://login.tailscale.com/f/funnel
 DNS_PAGE=https://login.tailscale.com/admin/dns
 INIT='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"scat-chat","version":"0"}}}'
@@ -117,9 +119,13 @@ ui_folder() { # KEY message: prints the folder chosen, or nothing
     fi
 }
 
-ui_hold() { # message: the dialog with the Stop button; returns when the coder clicks Stop
+ui_hold() { # message (never the key): the dialog with the Copy key and Stop buttons; returns when the coder clicks Stop
     if [ "$UI" = plain ]; then
         printf '%s\n' "$1"
+        if [ "$(plain_answer_env COPYKEY)" = copy ]; then
+            copy_key
+            printf 'The key is on your clipboard.\n'
+        fi
         if [ "$(plain_answer_env STOP)" = stop ]; then
             return 0
         fi
@@ -127,12 +133,25 @@ ui_hold() { # message: the dialog with the Stop button; returns when the coder c
         CLEANUP=0
         exit 0
     fi
-    "$OSASCRIPT" -e 'on run argv' \
-        -e 'display dialog (item 1 of argv) with title "SCAT Chat" buttons {"Stop"} default button "Stop"' \
-        -e 'end run' "$1" >/dev/null 2>&1 &
-    DPID=$!
-    wait "$DPID" 2>/dev/null
-    DPID=""
+    while :; do
+        "$OSASCRIPT" -e 'on run argv' \
+            -e 'try' \
+            -e 'return button returned of (display dialog (item 1 of argv) with title "SCAT Chat" buttons {"Copy key", "Stop"} default button "Stop")' \
+            -e 'on error' -e 'return "Stop"' -e 'end try' \
+            -e 'end run' "$1" >"$STATE/hold.out" 2>/dev/null &
+        DPID=$!
+        wait "$DPID" 2>/dev/null
+        DPID=""
+        hold_a=$(cat "$STATE/hold.out" 2>/dev/null)
+        rm -f "$STATE/hold.out"
+        [ "$hold_a" = "Copy key" ] || break
+        copy_key
+        ui_progress "The key is on your clipboard."
+    done
+}
+
+copy_key() { # the only way the key reaches the clipboard: the coder asked for it
+    key_get | "$PBCOPY"
 }
 
 plain_answer_env() { # KEY: the environment answer only (never reads stdin)
@@ -145,6 +164,9 @@ die() { # message: stop here; the exit handler shows it with the teardown's sent
 }
 
 # ---------------------------------------------------------------- the key
+# The session key lives in the macOS login keychain for one session. Only these functions name `security`; it is the
+# macOS-specific part (a Linux version replaces just these four). The key never goes on a command line: it is written
+# as a command on the stdin of `security -i`, and read with `find-generic-password -w` into a pipe.
 
 new_key() {
     if have "$OPENSSL"; then
@@ -154,22 +176,22 @@ new_key() {
     fi
 }
 
-write_key() { # key: a file readable by the coder only, replaced in one step
-    (
-        umask 077
-        printf 'SCAT_MCP_KEY=%s\n' "$1" >"$KEYFILE.new" &&
-            chmod 600 "$KEYFILE.new" &&
-            mv -f "$KEYFILE.new" "$KEYFILE"
-    )
+key_put() { # key: store it (replacing any item left by a crashed session)
+    printf 'add-generic-password -U -s "%s" -a "%s" -w "%s"\n' "$KEY_SERVICE" "$KEY_SERVICE" "$1" |
+        "$SECURITY" -i >/dev/null 2>&1
 }
 
-read_key() {
-    sed -n 's/^SCAT_MCP_KEY=//p' "$KEYFILE" 2>/dev/null | head -1
+key_get() { # prints the key, or nothing when there is none
+    kg=$("$SECURITY" find-generic-password -s "$KEY_SERVICE" -a "$KEY_SERVICE" -w 2>/dev/null) || return 1
+    printf '%s' "$kg"
 }
 
-file_mode_ok() { # the file is -rw-------
-    # shellcheck disable=SC2012 # ls is the one way to read the mode that is the same on macOS and Linux (stat flags differ)
-    [ "$(ls -ln "$1" 2>/dev/null | cut -c1-10)" = "-rw-------" ]
+key_drop() { # deletes the item; safe when there is none
+    "$SECURITY" delete-generic-password -s "$KEY_SERVICE" -a "$KEY_SERVICE" >/dev/null 2>&1 || true
+}
+
+key_present() {
+    "$SECURITY" find-generic-password -s "$KEY_SERVICE" -a "$KEY_SERVICE" >/dev/null 2>&1
 }
 
 # ---------------------------------------------------------------- checks of the outside world
@@ -202,7 +224,7 @@ funnel_url() { # the public https address now published, if any
 
 http_code() { # 0|1: the status of a POST to the server, without the key (0) or with it (1)
     if [ "$1" = 1 ]; then
-        printf 'header = "Authorization: Bearer %s"\n' "$(read_key)" |
+        printf 'header = "Authorization: Bearer %s"\n' "$(key_get)" |
             "$CURL" -s -m 5 -K - -o /dev/null -w '%{http_code}' -X POST \
                 -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
                 -d "$INIT" "http://127.0.0.1:$PORT/mcp" 2>/dev/null
@@ -231,7 +253,7 @@ wait_dead() { # pid
 # Everything the session started, off; each step verified. Sets RESULT to one plain sentence.
 teardown() {
     bad=""
-    oldkey=$(read_key)
+    oldkey=$(key_get)
 
     if [ -f "$STATE/tunnel" ]; then
         if have "$TAILSCALE"; then
@@ -270,12 +292,11 @@ teardown() {
         fi
     fi
 
-    if [ -f "$KEYFILE" ]; then
-        write_key "$(new_key)"
-        if [ "$(read_key)" = "$oldkey" ] || ! file_mode_ok "$KEYFILE"; then
-            bad="$bad the old key could not be replaced;"
-        fi
+    key_drop
+    if key_present; then
+        bad="$bad the key could not be deleted (open Keychain Access and delete the item named $KEY_SERVICE);"
     fi
+    rm -f "$STATE/key.env" # a key file left by an earlier version of this launcher
 
     if [ -n "$oldkey" ] && [ "$("$PBPASTE" 2>/dev/null)" = "$oldkey" ]; then
         printf '' | "$PBCOPY"
@@ -286,7 +307,7 @@ teardown() {
 
     rm -f "$STATE/session" "$STATE/session.txt"
     if [ -z "$bad" ]; then
-        RESULT="Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was replaced, and your clipboard holds no key."
+        RESULT="Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was deleted, and your clipboard holds no key."
     else
         RESULT="Stopped, but I could not confirm:$bad click SCAT Chat again, then Stop, or restart your Mac, to be sure."
     fi
@@ -434,12 +455,13 @@ Check that you are online, then click SCAT Chat again."
 }
 
 step_server() {
-    write_key "$(new_key)"
-    [ "$(read_key | wc -c | tr -d ' ')" -ge 33 ] || die "I could not make a new key. Restart your Mac, then click SCAT Chat again."
+    key_put "$(new_key)" && key_present ||
+        die "I could not keep a new key in your keychain. If macOS asked for permission, click Allow; then click SCAT Chat again."
     "$DOCKER" rm -f "$CONTAINER" >/dev/null 2>&1
-    "$DOCKER" run -d --name "$CONTAINER" --read-only --tmpfs /tmp --user "$HOST_UID:$HOST_GID" \
+    printf 'SCAT_MCP_KEY=%s\n' "$(key_get)" |
+        "$DOCKER" run -d --name "$CONTAINER" --read-only --tmpfs /tmp --user "$HOST_UID:$HOST_GID" \
         --security-opt no-new-privileges --cap-drop ALL \
-        -p "127.0.0.1:$PORT:8765" -v "$VAULT:/vault" --env-file "$KEYFILE" "$TAG" >/dev/null 2>"$STATE/run.log" ||
+        -p "127.0.0.1:$PORT:8765" -v "$VAULT:/vault" --env-file /dev/stdin "$TAG" >/dev/null 2>"$STATE/run.log" ||
         die "The server would not start: $(tail -n 3 "$STATE/run.log" | tr '\n' ' ')
 Make sure no other SCAT Chat is open and port $PORT is free, then click SCAT Chat again."
 
@@ -523,19 +545,16 @@ cmd_start() {
     step_tunnel
     step_awake
 
-    KEY=$(read_key)
-    printf '%s' "$KEY" | "$PBCOPY"
     printf '%s\n' "$URL" >"$STATE/session.txt"
     ui_hold "SCAT Chat is running.
 
 1. In the chat, open MCP settings and add a server.
 2. Paste this address:
 $URL
-3. Choose API key as the authentication, and paste this key (it is already on your clipboard):
-$KEY
+3. Choose API key as the authentication. Click Copy key below, then paste the key in the chat. The key is never shown on screen.
 
 Vault: $VAULT
-Your Mac stays awake while this window is open. Click Stop when you are done: that switches everything off and replaces the key."
+Your Mac stays awake while this window is open. Click Stop when you are done: that switches everything off and deletes the key."
 }
 
 # ---------------------------------------------------------------- stop, status
