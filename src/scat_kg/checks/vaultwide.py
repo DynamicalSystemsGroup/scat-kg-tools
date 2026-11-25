@@ -42,7 +42,7 @@ def cap_config(ctx: Ctx):
         fixes.option(
             "slot",
             f"{verb} `stakeholder_group_cap = {slot}` (author) in scat.toml; choose a whole "
-            f"number of 1 or more (the vault has {n} stakeholder-group pages now{least})",
+            f"number of 1 or more (the vault has {n} group pages now{least})",
             fixes.set_field(FILE, KEY, slot, author_slot=slot),
         )
     )
@@ -71,5 +71,5 @@ def cap(ctx: Ctx):
             ),
         ]
     )
-    what = f"the vault holds {n} stakeholder-group pages, over the cap of {cap_value}: {names}"
+    what = f"the vault holds {n} group pages, over the cap of {cap_value}: {names}"
     return [ctx.problem("SCAT-CAP", FILE, WHERE, what, fix, on=KEY)]

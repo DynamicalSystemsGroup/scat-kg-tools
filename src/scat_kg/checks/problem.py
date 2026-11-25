@@ -4,37 +4,36 @@ from dataclasses import dataclass, replace
 
 from scat_kg.fix import Fix
 
-# Every rule in the catalogue and its severity (section 3). SCAT-INDEX-STALE is listed so the id is known
-# and its severity is fixed, but no check function is registered for it yet (see registry.DEFERRED).
+# Every rule of the catalogue (section 3) and its severity. A pair is two ids: the `SCAT-DRAFT-` id is a warning
+# (a `stub` or `draft` narrative), the `SCAT-DONE-` id the same condition as an error (a `done` narrative).
+_PAIRS = (
+    "TABLE-HEADER",
+    "TABLE-ROW",
+    "TABLE-TYPE",
+    "TABLE-LAYERS",
+    "TABLE-SECOND",
+    "TABLE-DUPLICATE",
+    "END-NOLINK",
+    "END-NOPAGE",
+    "END-NOTNODE",
+)
 SEVERITY = {
     "SCAT-FM-PARSE": "error",
     "SCAT-FM-REQUIRED": "error",
     "SCAT-FM-TYPE": "error",
-    "SCAT-FM-REQUIRED-LINK": "error",
     "SCAT-FM-STATUS": "error",
-    "SCAT-FM-INDEXES": "error",
     "SCAT-FM-TIMEFRAME": "error",
+    "SCAT-FM-KIND": "error",
     "SCAT-FM-SHAPE": "error",
     "SCAT-NAME": "error",
     "SCAT-DONE-FIELD": "error",
-    "SCAT-DONE-LINK": "error",
     "SCAT-DRAFT-FIELD": "warning",
-    "SCAT-DRAFT-LINK": "warning",
-    "SCAT-LINK-SHAPE": "error",
-    "SCAT-LINK-UNLISTED": "error",
-    "SCAT-LINK-ENDPOINT": "error",
-    "SCAT-LINK-DANGLING": "error",
     "SCAT-LINK-DANGLING-BODY": "error",
-    "SCAT-LINK-DISCOURAGED": "warning",
-    "SCAT-LINK-DISCOURAGED-BODY": "warning",
     "SCAT-CAP": "error",
     "SCAT-CAP-CONFIG": "error",
-    "SCAT-CONFLICT-SELF": "warning",
-    "SCAT-REL-DUPLICATE": "warning",
     "SCAT-MENTION": "warning",
-    "SCAT-RAW-BACKLINK": "warning",
-    "SCAT-RAW-UNCODED": "warning",
-    "SCAT-INDEX-STALE": "warning",
+    **{f"SCAT-DRAFT-{p}": "warning" for p in _PAIRS},
+    **{f"SCAT-DONE-{p}": "error" for p in _PAIRS},
 }
 
 
@@ -43,7 +42,7 @@ class Problem:
     rule: str
     severity: str  # "error" blocks; "warning" does not
     file: str  # the catalogue's <file>: vault-relative, `/` separators (or `scat.toml`)
-    where: str  # "field `x`", "link [[t]]", "fields `a` and `b`", "frontmatter", "text `...`"
+    where: str  # "field `x`", "link [[t]]", "frontmatter", "text `...`", "table header", "row 2 cell `to`"
     what: str  # what is wrong
     fix: str  # the whole fix block, from "Fix" on; always the text of `fix_data`
     line: int | None = None

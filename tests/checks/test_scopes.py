@@ -6,19 +6,22 @@ from pathlib import Path
 
 import pytest
 from helpers import (
+    CATALOGUE,
+    DESK,
     EXAMPLES,
-    SC,
+    KIOSK,
     base,
-    coded,
+    catalogue_severities,
     doc,
-    got,
-    links,
+    narrative,
     report_of,
-    run,
+    row,
+    rules_of,
     seeded,
     vault,
 )
 
+import scat_kg
 from scat_kg.checks import (
     DEFERRED,
     PAGE_RULES,
@@ -31,7 +34,7 @@ from scat_kg.checks import (
 )
 from scat_kg.vault import read_vault
 
-STAFF = "stakeholder-group/staff.md"
+STAFF = "group/staff.md"
 TECH = "technology/booking-app.md"
 
 
@@ -46,6 +49,10 @@ def snapshot(root: Path) -> dict:
     return out
 
 
+def messages(report) -> list[str]:
+    return [p.render() for p in report.problems]
+
+
 def test__clean_fixture__every_scope_gives_nothing(make_vault):
     v = vault(make_vault)
     assert check_vault(v).problems == ()
@@ -56,212 +63,207 @@ def test__clean_fixture__every_scope_gives_nothing(make_vault):
 
 
 def test__scopes__a_defect_in_a_neighbor_is_in_the_neighborhood_not_the_page(make_vault):
-    v = vault(make_vault, {STAFF: doc("stakeholder-group", "Staff", description=None)})
-    assert check_page(v, SC).problems == ()  # the defect is on staff, not on the scenario
-    near = check_neighborhood(v, SC)
+    v = vault(make_vault, {STAFF: doc("group", "Staff", description=None)})
+    assert check_page(v, DESK).problems == ()  # the defect is on staff, not on the narrative
+    near = check_neighborhood(v, DESK)
     assert [(p.rule, p.file) for p in near.problems] == [("SCAT-DONE-FIELD", STAFF)]
     assert not near.ok
-    own = check_page(v, STAFF)
-    assert got(own) == got(near)  # the same page gives the same message at every scope
+    assert messages(check_page(v, STAFF)) == messages(near)  # the same page gives the same message at every scope
 
 
 def test__scopes__a_defect_two_links_away_is_outside_the_neighborhood(make_vault):
     v = vault(make_vault, {TECH: doc("technology", "Booking app", description=None)})
-    # SC links raw, groups, concerns and affordances, and the architecture links the technology
-    assert check_neighborhood(v, SC).problems == ()
-    assert [p.file for p in check_neighborhood(v, "kiosk-pitch-coded").problems] == [TECH]
+    # the desk-day narrative links no technology; the kiosk pitch links the booking app
+    assert check_neighborhood(v, DESK).problems == ()
+    assert [p.file for p in check_neighborhood(v, KIOSK).problems] == [TECH]
+    assert check_neighborhood(v, "self-checkout").problems == ()  # a node reached only through the narrative's rows
 
 
 def test__scopes__the_neighborhood_follows_links_in_both_directions(make_vault):
     v = vault(make_vault)
-    names = {p.name for p in neighborhood(v, "staff")}
-    # backlinks only: the relation page, the coded scenario, and the class page whose table lists the group
-    assert names == {"staff", "desk-day-coded", "staff-holds-safe-handling", "stakeholder-groups"}
-    names = {p.name for p in neighborhood(v, "desk-day-coded")}
-    assert names == {"desk-day-coded", "desk-day", "staff", "safe-handling", "self-checkout"}
+    assert {p.name for p in neighborhood(v, "staff")} == {"staff", "desk-day"}  # a backlink only
+    assert {p.name for p in neighborhood(v, DESK)} == {
+        "desk-day",
+        "staff",
+        "safe-handling",
+        "borrowers",
+        "quick-checkout",
+        "self-checkout",
+    }
+    assert {p.name for p in neighborhood(v, "quick-checkout")} == {
+        "quick-checkout",
+        "careful-keeping",  # its relationship annotation links it
+        "desk-day",
+        "kiosk-pitch",
+    }
 
 
 def test__scopes__a_defect_in_a_page_that_links_here_is_in_the_neighborhood(make_vault):
-    v = vault(make_vault, {SC: coded(status="done", affordances="")})
-    assert [(p.rule, p.file) for p in check_neighborhood(v, "staff").problems] == [
-        ("SCAT-DONE-LINK", SC)
-    ]
+    v = vault(make_vault, {DESK: narrative(description=None)})
+    assert [p.file for p in check_neighborhood(v, "staff").problems] == [DESK]
     assert check_page(v, "staff").problems == ()
 
 
 def test__scopes__the_address_may_be_a_name_a_path_or_a_page(make_vault):
-    v = vault(make_vault, {STAFF: doc("stakeholder-group", "Staff", description=None)})
-    expect = got(check_page(v, "staff"))
-    assert got(check_page(v, STAFF)) == expect == got(check_page(v, v.address("staff").page))
+    v = vault(make_vault, {STAFF: doc("group", "Staff", description=None)})
+    by_page = check_page(v, v.address(STAFF).page)
+    assert messages(check_page(v, "staff")) == messages(check_page(v, STAFF)) == messages(by_page)
     with pytest.raises(LookupError):
-        check_page(v, "no-such-page")
+        check_page(v, "nope")
+
+
+def test__scopes__the_same_page_gives_the_same_messages_at_every_scope(make_vault):
+    files = {
+        STAFF: doc("group", "Staff", description=None),
+        DESK: narrative(status="draft", timeframe=None, rows=(row("holds", "staff", "ghost"),)),
+        "concern/safe-handling.md": doc("concern", "Safe handling", body="\nSee [[ghost2]].\n"),
+    }
+    v = vault(make_vault, files)
+    whole = check_vault(v).problems
+    for p in v.pages:
+        mine = [m.render() for m in whole if m.file == p.path]
+        assert messages(check_page(v, p)) == mine
+        assert [m.render() for m in check_neighborhood(v, p).problems if m.file == p.path] == mine
 
 
 def test__scopes__vault_rules_run_at_page_scope_only_for_a_group_page(make_vault):
-    files = {"scat.toml": "stakeholder_group_cap = 1\n"}
-    v = vault(make_vault, files)
-    assert [p.rule for p in check_page(v, "staff").problems] == ["SCAT-CAP"]
-    assert [p.rule for p in check_neighborhood(v, "staff").problems] == ["SCAT-CAP"]
-    assert check_page(v, "safe-handling").problems == ()
-    assert [p.rule for p in check_vault(v).problems] == ["SCAT-CAP"]
-    # the neighborhood of a concern holds the heldby page and the scenario, but no group page
-    assert check_neighborhood(v, "safe-handling").problems == ()
-    # one that holds a group page in its neighbors does
-    assert [p.rule for p in check_neighborhood(v, "desk-day-coded").problems] == ["SCAT-CAP"]
-
-
-# errors block, warnings do not
+    v = vault(make_vault, {"scat.toml": "stakeholder_group_cap = 1\n"})
+    assert rules_of(check_page(v, STAFF)) == ["SCAT-CAP"]
+    assert rules_of(check_page(v, "concern/safe-handling.md")) == []
+    assert rules_of(check_neighborhood(v, DESK)) == ["SCAT-CAP"]  # the narrative's neighborhood holds groups
+    assert rules_of(check_neighborhood(v, "concern/careful-keeping.md")) == []
+    assert rules_of(check_vault(v)) == ["SCAT-CAP"]
 
 
 def test__errors_block_and_warnings_do_not(make_vault):
-    warn = report_of(make_vault, {SC: coded(status="draft", groups="")})
-    assert [p.severity for p in warn.problems] == ["warning"] and warn.ok
-    assert warn.errors == () and len(warn.warnings) == 1
-    err = report_of(make_vault, {SC: coded(groups="")})
-    assert [p.severity for p in err.problems] == ["error"] and not err.ok
-    both = report_of(
-        make_vault,
-        {
-            SC: coded(groups="", body="quick checkout\n"),
-            STAFF: doc("stakeholder-group", "S", status="draft", description=None),
-        },
-    )
-    assert {p.severity for p in both.problems} == {"error", "warning"} and not both.ok
-    assert all(p.severity == SEVERITY[p.rule] for p in both.problems)
+    warn = report_of(make_vault, {DESK: narrative(status="draft", rows=(row("holds", "staff", "ghost"),))})
+    assert warn.ok and len(warn.warnings) == 1 and not warn.errors
+    err = report_of(make_vault, {DESK: narrative(rows=(row("holds", "staff", "ghost"),))})
+    assert not err.ok and len(err.errors) == 1 and not err.warnings
 
 
 def test__every_rule_has_one_severity_and_none_is_deferred():
-    assert DEFERRED == {} and SEVERITY["SCAT-INDEX-STALE"] == "warning"  # every rule is implemented
-    assert len(SEVERITY) == 28
-    assert len(PAGE_RULES) + len(VAULT_RULES) >= 15
+    stated = catalogue_severities()
+    assert len(stated) == 32
+    assert SEVERITY == stated
+    assert DEFERRED == {}
+    assert PAGE_RULES and VAULT_RULES
+    for stem in ("TABLE-HEADER", "TABLE-ROW", "TABLE-TYPE", "TABLE-LAYERS", "TABLE-SECOND", "TABLE-DUPLICATE"):
+        assert (SEVERITY[f"SCAT-DRAFT-{stem}"], SEVERITY[f"SCAT-DONE-{stem}"]) == ("warning", "error")
+    for stem in ("END-NOLINK", "END-NOPAGE", "END-NOTNODE"):
+        assert (SEVERITY[f"SCAT-DRAFT-{stem}"], SEVERITY[f"SCAT-DONE-{stem}"]) == ("warning", "error")
+    assert not [r for r in stated if "REFUSED" in r]  # an operation rule: no `scat check` prints it
 
 
-# order and format
+def test__retired_ids_are_never_printed(make_vault):
+    retired = re.findall(r"\| (SCAT-[A-Z-]+)(?:, (SCAT-[A-Z-]+))? \| retired \|", CATALOGUE.read_text())
+    ids = {i for pair in retired for i in pair if i}
+    assert "SCAT-INDEX-STALE" in ids and "SCAT-CONFLICT-SELF" in ids and not ids & set(SEVERITY)
 
 
 def test__messages_are_in_the_catalogues_order_and_format(make_vault):
     files = {
-        SC: coded(groups="", concerns=links("concerns", "safe-handling", "ghost")),
-        "concern/careful-keeping.md": doc(
-            "concern", "C", description=None, extra=links("conflicts", "quick-checkout")
+        "concern/safe-handling.md": doc("concern", "Safe handling", body="\nSee [[ghost]] and [[ghost2]].\n"),
+        "affordance/self-checkout.md": doc("affordance", "Self checkout", description=None),
+        DESK: narrative(
+            status="draft",
+            timeframe=None,
+            rows=(row("holds", "staff", "ghost"), row("holds", "ghost2", "safe-handling")),
         ),
     }
-    r = report_of(make_vault, files)
-    assert [(p.file, p.rule) for p in r.problems] == [
-        ("concern/careful-keeping.md", "SCAT-DONE-FIELD"),
-        (SC, "SCAT-DONE-LINK"),
-        (SC, "SCAT-LINK-DANGLING"),
+    report = report_of(make_vault, files)
+    keys = [(p.file.encode(), -1 if p.line is None else p.line, -1 if p.column is None else p.column, p.rule) for p in report.problems]
+    assert keys == sorted(keys)
+    assert [p.file for p in report.problems][:2] == ["affordance/self-checkout.md", "concern/safe-handling.md"]
+    heads = [m.split("\n")[0] for m in messages(report)]
+    assert all(re.match(r"(error|warning) \[SCAT-[A-Z-]+\] [^ ]+ ", h) for h in heads)
+    # the same line and column sort by rule id: the two ghosts on one line of the concern page
+    assert [p.where for p in report.problems if p.file == "concern/safe-handling.md"] == [
+        "link [[ghost]]",
+        "link [[ghost2]]",
     ]
-    head = re.compile(
-        r"^(error|warning) \[SCAT-[A-Z-]+\] \S+( field `\w+`| link \[\[[^\]]+\]\]| frontmatter| text `.*`): .+$"
-    )
-    for p in r.problems:
-        text = p.render().split("\n")
-        assert head.match(text[0]), text[0]
-        assert all(line.startswith("  ") for line in text[1:]) and text[1].startswith("  Fix")
-    assert r.render().count("\n  Fix") == 3
 
 
 def test__line_and_column_appear_in_the_location_only_where_the_catalogue_gives_them(make_vault):
-    r = report_of(
-        make_vault, {SC: coded(body="quick checkout\n", concerns=links("concerns", "ghost"))}
-    )
-    first = [p.render().split("\n")[0] for p in r.problems]
-    assert any(re.match(r"^error \[SCAT-LINK-DANGLING\] \S+:\d+ field", x) for x in first)
-    assert any(re.match(r"^warning \[SCAT-MENTION\] \S+:\d+:\d+ text", x) for x in first)
+    files = {
+        "concern/safe-handling.md": doc("concern", "Safe handling", status=None, body="\nSee [[ghost]] and a briefing.\n"),
+        DESK: narrative(status="draft", rows=("| holds | [[staff]] | [[safe-handling]]", "| holds | [[staff]] | ghost | |")),
+    }
+    report = report_of(make_vault, files)
+    shown = {p.rule: p.render().split(" ")[2] for p in report.problems}
+    assert shown["SCAT-FM-REQUIRED"] == "concern/safe-handling.md"  # a field: no line
+    assert shown["SCAT-LINK-DANGLING-BODY"] == "concern/safe-handling.md:7"  # a link: the line
+    assert shown["SCAT-MENTION"] == "concern/safe-handling.md:7:21"  # a mention: line and column
+    assert shown["SCAT-DRAFT-TABLE-ROW"] == f"{DESK}:16:1"  # a row: its first `|`
+    assert shown["SCAT-DRAFT-END-NOLINK"] == f"{DESK}:17:23"  # a cell: its first character
 
 
-# the examples (WP5-R8)
-
-
-def test__examples__no_errors_and_only_the_warning_the_readme_names():
+def test__examples__no_errors_and_only_the_two_warnings_the_readme_names():
     v = read_vault(EXAMPLES)
     report = check_vault(v)
-    assert report.ok and report.errors == ()
-    assert [(p.rule, p.file) for p in report.problems] == [
-        ("SCAT-DRAFT-FIELD", "heldby/volunteer-staff-holds-careful-record-keeping.md")
+    assert report.ok and not report.errors
+    # the draft narrative is unfinished on purpose: no `description` and no `timeframe`
+    assert [(p.rule, p.file, p.where) for p in report.problems] == [
+        ("SCAT-DRAFT-FIELD", "narrative/funders-meeting.md", "field `description`"),
+        ("SCAT-DRAFT-FIELD", "narrative/funders-meeting.md", "field `timeframe`"),
     ]
     for page in v.pages:
-        for scope in ("page", "neighborhood"):
-            r = run(v, scope, page)
-            assert r.errors == (), (page.path, r.render())
-            assert {(p.rule, p.file) for p in r.problems} <= {
-                ("SCAT-DRAFT-FIELD", "heldby/volunteer-staff-holds-careful-record-keeping.md")
-            }
-
-
-# checks never write (R-4)
+        mine = [m.render() for m in report.problems if m.file == page.path]
+        assert messages(check_page(v, page)) == mine
+        assert [m.render() for m in check_neighborhood(v, page).problems if m.file == page.path] == mine
 
 
 def test__checks_leave_the_directory_unchanged(make_vault):
-    files = {
-        SC: coded(
-            groups="",
-            body="quick checkout [[ghost]]\n",
-            concerns=links("concerns", "safe-handling", "ghost"),
-        ),
-        "concern/quick-checkout.md": doc(
-            "concern", "Q", extra=links("conflicts", "quick-checkout")
-        ),
-        "notes.md": "words\n",
-        "scat.toml": "stakeholder_group_cap = 1\n",
-        "bad.md": "---\ntype: concern\n\tstatus: done\n---\n",
-    }
-    v = vault(make_vault, files)
-    root = v.root
+    root = vault(make_vault, {STAFF: doc("group", "Staff", description=None)}).root
     before = snapshot(root)
-    full = check_vault(v)
-    assert len(full.problems) > 5  # the vault really is full of defects
-    for page in v.pages:
-        check_page(v, page)
-        check_neighborhood(v, page)
+    v = read_vault(root)
+    check_vault(v)
+    check_page(v, STAFF)
+    check_neighborhood(v, DESK)
+    scat_kg.check(root=root)
     assert snapshot(root) == before
 
 
 def test__checks_leave_the_example_vault_unchanged():
     before = snapshot(EXAMPLES)
-    v = read_vault(EXAMPLES)
-    check_vault(v)
-    for page in v.pages:
-        check_page(v, page)
-        check_neighborhood(v, page)
+    check_vault(read_vault(EXAMPLES))
+    scat_kg.check(root=EXAMPLES)
     assert snapshot(EXAMPLES) == before
 
 
-# nothing a vault holds may crash a check
-
-
-WEIRD = {
-    "w/type-list.md": "---\ntype: [a, b]\n---\n",
-    "w/type-null.md": "---\ntype:\n---\n",
-    "w/status-num.md": "---\ntype: concern\nstatus: 5\ntitle: 7\ndescription: [1, 2]\nconflicts: 5\n---\n",
-    "w/links-weird.md": "---\ntype: scenario-coded\nstatus: done\ntitle: x\ndescription: x\nraw: {a: b}\ngroups: 3\n"
-    'concerns:\n  - [[a, b]]\n  - null\n  - 2.5\naffordances: "[[a]]"\n---\n[[\n]]\n![[x]] [[|]] [[^]]\n',
-    "w/relation-weird.md": "---\ntype: heldby\nstatus: done\ntitle: x\ndescription: x\ngroup:\n  - 1\nconcern: [[x]]\n---\n",
-    "w/class-weird.md": "---\ntype: class\nindexes: [x]\ntitle: 5\n---\n",
-    "w/date.md": "---\ntype: concern\nstatus: done\ntitle: 2024-01-01\ndescription: x\n---\n",
-    "w/bom.md": "﻿---\ntype: concern\nstatus: done\ntitle: b\ndescription: x\n---\nquick checkout\n",
-    "w/empty.md": "",
-    "w/only-fence.md": "---\n",
-    "scat.toml": "stakeholder_group_cap = true\n",
-}
-
-
 def test__no_vault_content_crashes_a_check(make_vault):
-    v = vault(make_vault, WEIRD)
-    report = check_vault(v)
-    assert not report.ok
-    for page in v.pages:
-        check_page(v, page)
-        check_neighborhood(v, page)
-    assert check_vault(v).render() == report.render()  # deterministic
+    junk = {
+        "concern/a.md": "---\n---\n",
+        "concern/b.md": "---\ntype: [1, 2]\n---\n",
+        "concern/c.md": "---\ntype: concern\nstatus: [x]\ntitle: {a: b}\n---\n[[\n]]\n[[a]][[b]]|\n",
+        "narrative/d.md": "---\ntype: narrative\nstatus: draft\ntitle: D\n---\n## Edges told\n|\n|||\n| a |\n",
+        "narrative/e.md": "---\ntype: narrative\nstatus: draft\ntitle: E\n---\n# edges TOLD #\n| type | from | to | note |\n|:-:|--|\n| x |\n",
+        "narrative/f.md": "---\ntype: narrative\nstatus: done\n---\n## Edges told\n\n| type | from | to | note |\n|---|---|---|---|\n| holds | [[ ]] | ![[c]] | `|` |\n| holds | [[c]]\n",
+        "bin.md": b"\xff\xfe\x00 not utf-8",
+        "x/.hidden.md": "---\ntype: concern\n---\n",
+    }
+    v = vault(make_vault, junk)
+    check_vault(v)
+    for p in v.pages:
+        check_page(v, p)
+        check_neighborhood(v, p)
 
 
 def test__invalid_utf8_and_crlf_are_read(make_vault):
-    files = {"w/latin1.md": b"---\ntype: concern\nstatus: done\ntitle: \xe9\ndescription: x\n---\n"}
-    assert check_vault(vault(make_vault, files)).problems == ()
+    page = b'---\ntype: concern\nstatus: done\ntitle: "Safe handling"\ndescription: "D"\n---\n\xff body\n'
+    seeded(make_vault, {"concern/safe-handling.md": page, DESK: narrative().replace("\n", "\r\n")})
+    seeded(make_vault, {DESK: narrative().replace("\n", "\r\n")})
+    seeded(make_vault, {DESK: "\ufeff" + narrative()})  # a byte order mark is dropped
+    ghost = narrative(status="draft", rows=(row("holds", "staff", "ghost"),))
+    assert messages(report_of(make_vault, {DESK: ghost})) == messages(
+        report_of(make_vault, {DESK: ghost.replace("\n", "\r\n")})
+    )
 
 
 def test__base_fixture_is_the_one_the_tests_start_from(make_vault):
-    assert len(base()) == 16
-    seeded(make_vault, {})
+    v = vault(make_vault)
+    assert sorted(p.type for p in v.pages) == sorted(
+        ["group"] * 2 + ["concern"] * 3 + ["affordance"] * 2 + ["technology"] + ["narrative"] * 2
+    )
+    assert all(p.status == "done" for p in v.pages)
+    assert len(base()) == len(v.pages) + 1  # the pages and scat.toml

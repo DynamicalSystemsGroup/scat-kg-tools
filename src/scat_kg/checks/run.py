@@ -1,10 +1,22 @@
 """The three scopes: one page, its neighborhood, the whole vault. Checks read; they never write.
 
-TODO(WP16-U6): the rules of the old model are not run; U6 rebuilds the checks for the row model.
+A scope is a set of pages: every rule that reports on one of them runs (reading other pages where it needs to), so
+the same page gives the same messages at every scope. The vault-level rules (SCAT-CAP, SCAT-CAP-CONFIG) run at
+vault scope, and at the other two when a `group` page is in the set. `check_page_at_done` is the done check
+(catalogue section 5): the page as it would stand at `done`.
 """
 
-from scat_kg.ops.result import Result
-from scat_kg.ops.result import not_built as _not_built
+from scat_kg.checks import (  # noqa: F401  (register the rules)
+    completeness,
+    dangling,
+    ends,
+    frontmatter,
+    mention,
+    table,
+    vaultwide,
+)
+from scat_kg.checks.ctx import NODE_TYPES, PAGE_RULES, VAULT_RULES, Ctx
+from scat_kg.checks.problem import Problem, Report, finalize
 from scat_kg.vault import Page, Vault
 
 
@@ -19,9 +31,33 @@ def _resolve(vault: Vault, page: Page | str) -> Page:
     return found.page
 
 
-def check_page(vault: Vault, page: Page | str) -> Result:
-    """TODO(WP16-U6): every rule that reports on this page."""
-    return _not_built("check")
+def _run(
+    vault: Vault,
+    pages: list[Page],
+    whole: bool,
+    focus: Page | None = None,
+    as_done: Page | None = None,
+    vault_rules: bool | None = None,
+) -> Report:
+    ctx = Ctx(vault, as_done)
+    ctx.whole, ctx.focus = whole, focus
+    problems: list[Problem] = []
+    for p in pages:
+        for rule in PAGE_RULES:
+            problems += rule(ctx, p)
+    # the vault-level rules run at vault scope, and at the other scopes when a group page is checked
+    if vault_rules is None:
+        vault_rules = whole or any(p.type_key == NODE_TYPES[0] for p in pages)
+    if vault_rules:
+        for rule in VAULT_RULES:
+            problems += rule(ctx)
+    return Report(finalize(problems))
+
+
+def check_page(vault: Vault, page: Page | str) -> Report:
+    """Every rule that reports on this page (reading other pages where a rule needs them)."""
+    found = _resolve(vault, page)
+    return _run(vault, [found], False, found)
 
 
 def neighborhood(vault: Vault, page: Page | str) -> list[Page]:
@@ -35,11 +71,23 @@ def neighborhood(vault: Vault, page: Page | str) -> list[Page]:
     return [q for q in vault.pages if q.path in paths]
 
 
-def check_neighborhood(vault: Vault, page: Page | str) -> Result:
-    """TODO(WP16-U6): the page and everything one link away, in either direction (G4)."""
-    return _not_built("check")
+def check_neighborhood(vault: Vault, page: Page | str) -> Report:
+    """The page and everything one link away, in either direction (G4)."""
+    return _run(vault, neighborhood(vault, page), False, _resolve(vault, page))
 
 
-def check_vault(vault: Vault) -> Result:
-    """TODO(WP16-U6): every page, and the vault-level rules."""
-    return _not_built("check")
+def check_vault(vault: Vault) -> Report:
+    """Every page, and the vault-level rules."""
+    return _run(vault, list(vault.pages), True)
+
+
+def check_page_at_done(vault: Vault, page: Page | str) -> Report:
+    """The page judged as it would stand at `done` (catalogue section 5): every rule that reports on it, with its
+    status taken as `done` whatever it says. The problems the refusal to set `done` lists are `.errors` of the
+    report; its warnings do not block.
+
+    The pages one link away are read and add nothing, and the vault-wide rules (SCAT-CAP, SCAT-CAP-CONFIG) are
+    left out: they do not depend on this page's status. Reads only; nothing is written.
+    """
+    found = _resolve(vault, page)
+    return _run(vault, [found], False, found, as_done=found, vault_rules=False)

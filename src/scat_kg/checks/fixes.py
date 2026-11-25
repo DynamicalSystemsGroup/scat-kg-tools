@@ -4,9 +4,7 @@ A rule builds its fix from these, so the sentence a person reads and the data a 
 the command phrase is generated from the `Command`, the line to put from the `Edit`'s value.
 """
 
-from scat_kg.checks.ctx import Ctx
 from scat_kg.fix import Command, Edit, Fix, FixOption
-from scat_kg.vault import Page
 
 # commands: argv is what follows `scat`, repl is the same call in Python
 
@@ -26,23 +24,11 @@ def stub(name: str, type_key: str, *, slot: str | None = None) -> Command:
     )
 
 
-def stub_pair(relation: str, a: str, b: str, *, slot: str | None = None) -> Command:
-    return Command(
-        ("stub-pair", relation, a, b), f'scat_kg.stub_pair("{relation}", "{a}", "{b}")', slot
-    )
-
-
-def stub_links(ref: str | None = None, *, slot: str | None = None) -> Command:
-    if ref is None:
-        return Command(("stub-links",), "scat_kg.stub_links()", slot)
-    return Command(("stub-links", ref), f'scat_kg.stub_links("{ref}")', slot)
-
-
 def index() -> Command:
     return Command(("index",), "scat_kg.index()")
 
 
-# edits: the five actions of the contract
+# edits: the actions of the contract
 
 
 def set_field(file: str, field: str, value: object, *, author_slot: str | None = None) -> Edit:
@@ -54,9 +40,28 @@ def delete_field(file: str, field: str) -> Edit:
 
 
 def replace_text(
-    file: str, line: int, find: str, replace: str, *, column: int | None = None
+    file: str,
+    line: int,
+    find: str,
+    replace: str,
+    *,
+    column: int | None = None,
+    author_slot: str | None = None,
 ) -> Edit:
-    return Edit("replace-text", file, line=line, column=column, find=find, replace=replace)
+    return Edit(
+        "replace-text",
+        file,
+        line=line,
+        column=column,
+        find=find,
+        replace=replace,
+        author_slot=author_slot,
+    )
+
+
+def delete_line(file: str, line: int, find: str) -> Edit:
+    """Remove one whole line (a table row); `find` is the line as written, a guard."""
+    return Edit("delete-line", file, line=line, find=find)
 
 
 def rename_file(file: str, to: str) -> Edit:
@@ -89,8 +94,10 @@ def single(opt: FixOption) -> Fix:
 def alternatives(
     opts: list[FixOption], head: str | None = None, notes: tuple[str, ...] = ()
 ) -> Fix:
-    """A fix of two or more alternatives (kind `options`)."""
-    return Fix.choose("options", opts, head, notes)
+    """A fix of alternatives (kind `options`); one option left is the fix, and its kind is the fix's (the schema
+    wants two or more for `options`). The notes follow either way."""
+    kind = opts[0].kind if len(opts) == 1 else "options"
+    return Fix.choose(kind, opts, head, notes)
 
 
 def inline(opts: list[FixOption], head: str = "Fix, choose one:") -> Fix:
@@ -101,7 +108,7 @@ def inline(opts: list[FixOption], head: str = "Fix, choose one:") -> Fix:
 # put this line
 
 
-def put_line(ctx: Ctx, page: Page, key: str, line: str) -> str:
+def put_line(ctx, page, key: str, line: str) -> str:
     """The catalogue's add-or-replace: add the line when the key is absent, replace it when empty."""
     if key not in page.fields:
         return f"add the line `{line}`"
@@ -109,8 +116,8 @@ def put_line(ctx: Ctx, page: Page, key: str, line: str) -> str:
 
 
 def put_field(
-    ctx: Ctx,
-    page: Page,
+    ctx,
+    page,
     key: str,
     value: object,
     line: str,

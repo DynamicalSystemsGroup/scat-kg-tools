@@ -1,6 +1,8 @@
 """Every rule in the catalogue has a seeded-defect test.
 
-A seeded-defect test is named `test__<rule id, lower case, - as _>__<what is seeded>`.
+A seeded-defect test is named `test__<rule id, lower case, - as _>__<what is seeded>`. A pair of rules (a
+`SCAT-DRAFT-X` and a `SCAT-DONE-X`) has one seed set, run at each status, and its tests carry the DRAFT id: the DONE
+id is covered when the same tests run at `done`, which the coverage test below checks by what the session saw.
 """
 
 import re
@@ -17,7 +19,7 @@ def catalogue_ids() -> list[str]:
 
 def test__the_registry_knows_every_rule_in_the_catalogue():
     ids = catalogue_ids()
-    assert len(ids) == len(set(ids)) == 28
+    assert len(ids) == len(set(ids)) == 32
     assert set(ids) == set(SEVERITY)
     assert catalogue_severities() == SEVERITY
 
@@ -29,13 +31,15 @@ def test__every_rule_has_a_seeded_test(request, capsys):
         if parts[0] == "test" and len(parts) >= 3 and parts[1].startswith("scat_"):
             seeded.setdefault(parts[1].upper().replace("_", "-"), set()).add(item.name)
     ids = catalogue_ids()
-    uncovered = [i for i in ids if i not in seeded]
+    # a pair is covered by its DRAFT form's tests, which run at the three statuses (and so produce the DONE id)
+    covered = {i: seeded.get(i) or seeded.get(i.replace("-DONE-", "-DRAFT-")) for i in ids}
+    uncovered = [i for i in ids if not covered[i]]
     with capsys.disabled():
         print("\nrule ids in the catalogue:", len(ids))
-        print("rule ids with a seeded-defect test:", len([i for i in ids if i in seeded]))
+        print("rule ids with a seeded-defect test:", len(ids) - len(uncovered))
         for i in ids:
-            print(f"  {i:28} {len(seeded.get(i, ())):3} test(s)")
+            print(f"  {i:34} {len(covered[i] or ()):3} test(s)")
         print("without a test:", uncovered)
     assert uncovered == []
     assert DEFERRED == {}
-    assert set(seeded) <= set(ids)
+    assert {i.replace("-DONE-", "-DRAFT-") for i in seeded} <= {i.replace("-DONE-", "-DRAFT-") for i in ids}
