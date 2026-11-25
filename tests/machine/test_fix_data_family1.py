@@ -111,6 +111,12 @@ CASES = [
     ("cap-config-toml", "SCAT-CAP-CONFIG", {"scat.toml": "stakeholder_group_cap = \n"}, ()),
     ("cap-config-key", "SCAT-CAP-CONFIG", {"scat.toml": "other = 1\n"}, ()),
     ("cap-config-bad", "SCAT-CAP-CONFIG", {"scat.toml": "stakeholder_group_cap = 0\n"}, ()),
+    (
+        "suggest-config",
+        "SCAT-SUGGEST-CONFIG",
+        {"scat.toml": "link_suggestions = 1\nstakeholder_group_cap = 3\n"},
+        (),
+    ),
     ("mention", "SCAT-MENTION", {C: H.doc("concern", "S", body="\nNeeds a briefing.\n")}, ()),
     (
         "mention-name",

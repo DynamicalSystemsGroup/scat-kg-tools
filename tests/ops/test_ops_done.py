@@ -75,7 +75,7 @@ def test_a_node_page_with_no_description_is_refused(make_vault, snap):
 def test_a_narrative_with_only_warnings_at_done_is_set(make_vault):
     root = make_vault(
         {
-            **CAP3,
+            "scat.toml": "stakeholder_group_cap = 3\nlink_suggestions = true\n",
             "concern/quick.md": fm("concern", "Quick checkout", "done", DESC),
             "narrative/n.md": fm("narrative", "N", "draft", NARR_OK, "A quick checkout here.\n"),
         }

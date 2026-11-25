@@ -1029,6 +1029,22 @@ def _(v, st):
     )
 
 
+@seed("SUGGEST-CONFIG-string", ("draft",))
+def _(v, st):
+    v.write("scat.toml", 'stakeholder_group_cap = 3\nlink_suggestions = "yes"\n')
+    what = 'the value `"yes"` is not a TOML boolean, `true` or `false`'
+    return [
+        Exp(
+            "SCAT-SUGGEST-CONFIG",
+            E_,
+            "scat.toml",
+            "field `link_suggestions`",
+            what,
+            fix_has=("`link_suggestions = true`", "`link_suggestions = false`"),
+        )
+    ]
+
+
 # ======================================================================================= mention
 def _mention(file, line, col, text, key, name, repl=None, type_="concern"):
     return Exp(

@@ -460,9 +460,12 @@ stakeholder_group_cap = 3
 ```
 
 - The value is a TOML integer of 1 or more (a float such as `3.0` is a configuration problem). The tools read this key
-  and ignore any other key in the file, except `templates_folder`: the vault-relative folder of the Obsidian page
+  and ignore any other key in the file, except `link_suggestions` (below) and `templates_folder`: the vault-relative folder of the Obsidian page
   templates, which the tools do not read as pages (1). It is a string; if the key is absent, empty or not a string, the
   folder is `templates`.
+- `link_suggestions` turns the link suggestions on (SCAT-MENTION, in the catalogue): a TOML boolean, `true` or
+  `false`. If the key is absent the suggestions are off, as `false`; a value that is not a boolean is a configuration
+  problem for the catalogue to report (SCAT-SUGGEST-CONFIG).
 - The count is the number of pages with `type: group`, at every status, stubs included.
 - The cap is checked over the whole vault. A vault above the cap is not conformant.
 - The key is at the top level of the file. There is no default: if the file is missing or not valid TOML, or the key

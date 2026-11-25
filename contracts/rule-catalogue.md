@@ -34,7 +34,7 @@ leaves nothing); its *free derived name* is what step 4 gives. A derived name is
 **Scopes.** A check runs at *page*, *one link away* or *vault* scope (G4): the page; the page and every page it links
 or that links it; every page. A rule reports on one file, and a check of that file runs every rule that reports on it,
 reading other pages when the rule needs them. The one exception is SCAT-CAP, which reports on `scat.toml` though it is anchored on a page check (it runs when a `group` page is in the set). The same page gives the same messages at every scope. Rules that are not
-about one page (SCAT-CAP, SCAT-CAP-CONFIG) run at vault scope, and at the other two when a `group` page is in the
+about one page (SCAT-CAP, SCAT-CAP-CONFIG, SCAT-SUGGEST-CONFIG) run at vault scope, and at the other two when a `group` page is in the
 checked set. For a narrative, the nodes at its row ends are one link away, so a check one link away reads them and
 reports on each page it reaches by that page's own rules. Checks never write (R-4). Each rule below says which pages it
 reads besides its own.
@@ -153,7 +153,8 @@ because the model it checked is gone (D-088).
 | SCAT-LINK-DANGLING-BODY | adapted | every link outside a table end |
 | SCAT-CAP | adapted | counts `group` pages |
 | SCAT-CAP-CONFIG | kept | |
-| SCAT-MENTION | adapted | on every page, narratives included |
+| SCAT-SUGGEST-CONFIG | new | the `link_suggestions` key of `scat.toml` |
+| SCAT-MENTION | adapted | on every page, narratives included; off unless `link_suggestions = true` in `scat.toml` (WP21-G9) |
 | SCAT-NOEDGES | new | a `done` coded narrative with no row (MISSION G1); a warning, never an error |
 | SCAT-UNCODED | new | a narrative that links no node page, so it is excluded (WP21-G2); a warning, never an error |
 | SCAT-DRAFT-TABLE-HEADER, SCAT-DONE-TABLE-HEADER | new | pair |
@@ -196,7 +197,8 @@ because the model it checked is gone (D-088).
 | SCAT-LINK-DANGLING-BODY | error | every status | all | a link outside a table end reaches no page | options |
 | SCAT-CAP | error | vault | vault; all when a `group` page is in the set | more `group` pages than the cap | options |
 | SCAT-CAP-CONFIG | error | vault | vault; all when a `group` page is in the set | `scat.toml` or its cap missing, malformed or not a whole number of at least 1 | slot |
-| SCAT-MENTION | warning | every status | all | body names an existing node page in plain text | exact |
+| SCAT-SUGGEST-CONFIG | error | vault | as SCAT-CAP-CONFIG | `link_suggestions` in `scat.toml` is not `true` or `false` | options |
+| SCAT-MENTION | warning | every status | all (only when `link_suggestions = true`) | body names an existing node page in plain text | exact |
 | SCAT-NOEDGES | warning | done | all | a `done` coded narrative has a well-formed table with no rows, or no table | options |
 | SCAT-UNCODED | warning | every status | all | a narrative links no node page anywhere in its body | options |
 | SCAT-DRAFT-TABLE-HEADER | warning | stub, draft | all | the table's header or separator row is malformed | advisory |
@@ -232,7 +234,7 @@ manual. The variants, where they differ:
 | SCAT-*-TABLE-HEADER | name wrong or separator missing: exact; the four names in another order: advisory |
 | SCAT-*-TABLE-ROW | (a), (b), (c): exact; (d), (e): options |
 | SCAT-*-TABLE-TYPE, -LAYERS, -NOLINK, -NOPAGE, -NOTNODE, -SECOND | options in every variant |
-| SCAT-CAP | options; SCAT-CAP-CONFIG: slot |
+| SCAT-CAP | options; SCAT-CAP-CONFIG: slot; SCAT-SUGGEST-CONFIG: options (two exact edits) |
 
 SCAT-FM-STATUS is options in every variant: which status is true is a claim about the page, so even a near match is the
 author's to confirm; the near matches of SCAT-FM-TYPE and SCAT-FM-TIMEFRAME are exact, as a spelling mends a spelling.
@@ -417,8 +419,21 @@ error [SCAT-CAP-CONFIG] scat.toml field `stakeholder_group_cap`: <the file is mi
 - **Fix kind:** slot. The cap is a planning decision. Edits: `set-field{file scat.toml, field stakeholder_group_cap, value "<number you choose>", author_slot}`.
 - **Seed:** the file removed; a broken line; the key removed; `stakeholder_group_cap = "three"`; `= 0`; `= 2.5`; `= 3.0`.
 
+### SCAT-SUGGEST-CONFIG
+- **Severity:** error. **Fires:** vault level. **Runs at:** as SCAT-CAP.
+- **Trigger:** `scat.toml` has a top-level `link_suggestions` whose value is not a TOML boolean (a string, a number). An absent key is not a trigger: the suggestions are off.
+- **Message:**
+```
+error [SCAT-SUGGEST-CONFIG] scat.toml field `link_suggestions`: the value `<value>` is not a TOML boolean, `true` or `false`
+  Fix, choose one: ...
+    1. replace the line `link_suggestions = <value>` with `link_suggestions = true` (show the link suggestions)
+    2. or with `link_suggestions = false` (the default: no link suggestions)
+```
+- **Fix kind:** options, two exact edits: `set-field{file scat.toml, field link_suggestions, value true | false}`.
+- **Seed:** `link_suggestions = "yes"`; `= 1`.
+
 ### SCAT-MENTION
-- **Severity:** warning. **Fires:** every status. **Runs at:** all; reads the vault (the titles and names of node pages).
+- **Severity:** warning. **Fires:** every status, but only when `scat.toml` says `link_suggestions = true`; by default the rule reports nothing (a link suggestion is the coder's to ask for: off by default like the fingerprint's candidates, D-101, but a persistent `scat.toml` switch, where the candidates are a per-call option). **Runs at:** all; reads the vault (the titles and names of node pages).
 - **Trigger:** the body of a page (narrative or node; a table's `note` cells are included, its `from` and `to` cells are not: those are row ends, judged by SCAT-*-END-NOLINK) contains, as plain text, the `title` or the page name of an existing node page, matched case-insensitively at word boundaries, with the words of a title or name separated by a space or a hyphen in any mix ("Walk-in customers" matches the title `Walk in customers` and the page `walk-in-customers`; the suggested link keeps the text as written), for a title or name of at least 4 characters, outside code, outside any wikilink, and when the body has no link to that page. Not the page itself. A narrative with `kind: architecture` is not offered a link to a `group` page, and one with `kind: scenario` none to a `technology` page (the glossary: an architecture rarely names a group, a scenario rarely names a technology; D-100); a narrative with no `kind` and a node page are unchanged. Reported once per page and target, at the first occurrence. No stemming, no plurals.
 - **Message:**
 ```

@@ -106,7 +106,7 @@ def _(v):
 
 @variant("at-the-cap", "END-NOPAGE")
 def _(v):
-    v.write("scat.toml", "stakeholder_group_cap = 2\n")
+    v.write("scat.toml", "stakeholder_group_cap = 2\nlink_suggestions = true\n")
     row(v, "| [[ghost]] | holds | [[quick-checkout]] | |")
 
 

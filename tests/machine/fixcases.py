@@ -56,7 +56,7 @@ def assert_matches_text(opt, text):
         assert opt.command.repl in text
     for e in opt.edits:
         if e.action == "set-field" and e.value is not None:
-            v = str(e.value)
+            v = str(e.value).lower() if isinstance(e.value, bool) else str(e.value)
             for part in v.split(e.author_slot) if e.author_slot else [v]:
                 assert part in text, (part, text)
         if e.action == "rename-file":
@@ -118,7 +118,13 @@ def _set_field(path: Path, e) -> None:
     if e.action == "delete-field":
         del lines[found]
     else:
-        value = e.value if isinstance(e.value, str) else str(e.value)
+        value = (
+            e.value
+            if isinstance(e.value, str)
+            else str(e.value).lower()
+            if isinstance(e.value, bool)
+            else str(e.value)
+        )
         plain = re.fullmatch(r"[\w-]+", value) and isinstance(yaml.safe_load(value), str)
         text = f"{e.field}: {value}" if plain else f'{e.field}: "{value}"'
         if path.suffix == ".toml":
