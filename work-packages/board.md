@@ -17,7 +17,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP9 | v0.1 cleanup after the chief engineer's skim (D-052) | all units done and verified on fresh clones | `WP9.md` |
 | WP10 | Past or future on the captured narratives (D-057, D-058) | all units done; handed to the ACE for acceptance | `WP10.md` |
 | WP11 | A stable machine interface (R-16; D-060, D-062) | all units done and merged; handed to the ACE for acceptance | `WP11.md` |
-| WP12 | The terms reference (F-8; D-068) | all units done but WP12-U5 (blocked: a guard refused the worker's fix commit); handed to the ACE | `WP12.md` |
+| WP12 | The terms reference (F-8; D-068) | all units done (WP12-U5 by the ACE under D-074); WP12 ready for ACE acceptance | `WP12.md` |
 | RS1 | Research spike: Obsidian plugin (outside v0.1; branch `spike/obsidian-plugin`, never merged into `dev`) | readout, installable plugin and tests done | `RS1-obsidian-plugin.md` |
 | RS2 | Research spike: graph analysis (outside v0.1; branch `spike/analysis`, never merged into `dev`) | readout, package, notebook and tests done | `RS2-analysis.md` |
 
@@ -151,7 +151,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP12-U2 | test engineer (terms page cannot drift from the TBox), sonnet | 2 | 2 | `wp12/u2` | done |  | 2026-11-24T15:19:41-05:00 | first-time reviewer PASS (7 mutations all caught, prose edits survived); 990 tests; merged 672b41b |
 | WP12-U3 | UA-A designer (project-manager persona and brief in the user's words), sonnet | 1 | 1 | `wp12/u3` | done |  | 2026-11-24T14:49:11-05:00 | first-time worker pass; reviewer FAIL on a strict jargon reading ruled not a defect (stage words are the brief's own method vocabulary); merged 6cfce43 |
 | WP12-U4 | simulated user (R3 cold read of the terms page, one Haiku tester) and report filing, haiku | 2 | 2 | `wp12/u4` | done |  | 2026-11-24T15:19:41-05:00 | one Haiku cold reader, no tools; report filed unedited (13 findings, 2 blocking); merged 11f5e31 |
-| WP12-U5 | technical writer (reviewer's guide line, acceptance README line), sonnet | 1 |  | `wp12/u5` | blocked | the ACE: the worker's edit commit to fix false counts in acceptance/README.md and acceptance/reviewers-guide.md was refused by the guard; the PM did not work around it; reviewer FAIL on b1fce7f stands |  |  |
+| WP12-U5 | technical writer (reviewer's guide line, acceptance README line), sonnet; the guard refused the worker's edit commit, so the ACE made the edits under D-074 | 1 | 2 | `wp12/u5` | done |  | 2026-11-24T21:07:04-05:00 | small edit but a guard refusal, a block and an escalation round to the chief engineer; the ACE merged wp12/u5 (b1fce7f) and applied the review's corrections in 778e070 under D-074 |
 | WP12-U6 | technical writer (fixes to the terms page from the R3 round 1 findings; added by the PM), sonnet | 2 | 2 | `wp12/u6` | done |  | 2026-11-24T15:19:41-05:00 | fix unit added by the PM from round 1; first-time reviewer PASS (cuts paid for 5 added fixes at 599 words); merged e6977f6 |
 | WP12-U7 | simulated user (R3 round 2, fresh Haiku tester) and report filing; added by the PM, haiku | 2 | 2 | `wp12/u7` | done |  | 2026-11-24T15:19:41-05:00 | round 2 fresh Haiku tester, report filed; one blocking mark (F8) fixed by U8; merged 3d549f6 |
 | WP12-U8 | technical writer (one-phrase fix from the R3 round 2 finding F8; added by the PM), haiku | 1 | 1 | `wp12/u8` | done |  | 2026-11-24T15:19:41-05:00 | one-phrase Haiku fix, reviewer PASS first time; merged 6e4cc02 |
@@ -175,6 +175,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 10 | WP10-U1 to U4, U4b (U4b added by the PM) | 23 | 23 | 1.00 | 0.72 h | 31.9 |
 | 11 | WP11-U1 to U11, U5b, U7b, U7c (U5b, U7b, U7c added by the PM) | 52 | 51 | 0.98 | 2.14 h | 23.8 |
 | 12 | WP12-U1 to U4, U6 to U11 (U6 to U11 added by the PM; U5 blocked) | 18 | 20 | 1.11 | 0.84 h | 23.8 |
+| 13 | WP12-U5 (done by the ACE under D-074 after a guard block) | 1 | 2 | 2.00 | 5.79 h | 0.35 |
 
 ## Velocity and forecast
 
@@ -186,7 +187,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
 
-Current: WP12 is done except WP12-U5 (blocked, waiting on the ACE). Iteration 12 closed: 18 est. pts, 20 realized (ratio 1.11), 0.84 h, raw velocity 23.8 realized pts/hour. `python3 work-packages/check_metrics.py --accept WP12` fails only on U5 being `blocked`. Over: U1 (5 against 3: three push-backs for forward uses of defined terms; the 600-word cap left no room), and the page needed four fresh cold readers because each Haiku round adds new guesses. Lesson: for a 600-word glossary, state the "no term before its definition" standard in the brief (every prose use above its entry links; intro guide labels and code-span names exempt), and plan the cold-reader rounds as a loop of two to four units, not one.
+Current: WP12 ready for ACE acceptance. WP12-U5 is done (the ACE made the edits under D-074 after a guard refusal); iteration 13 closed: 1 est. pt, 2 realized (ratio 2.00), 5.79 h wall clock (mostly waiting on the block), raw velocity 0.35 realized pts/hour, not a throughput signal. Iteration 12 closed: 18 est. pts, 20 realized (ratio 1.11), 0.84 h, raw velocity 23.8 realized pts/hour. `python3 work-packages/check_metrics.py --accept WP12` passes. Over: U1 (5 against 3: three push-backs for forward uses of defined terms; the 600-word cap left no room), and the page needed four fresh cold readers because each Haiku round adds new guesses. Lesson: for a 600-word glossary, state the "no term before its definition" standard in the brief (every prose use above its entry links; intro guide labels and code-span names exempt), and plan the cold-reader rounds as a loop of two to four units, not one.
 
 Current: WP11 is done: 14 units merged into `dev` (tools candidate commit 32150b0, template `dev` 5a7290f). Iteration 11 closed: 52 est. pts, 51 realized (ratio 0.98), 2.14 h, raw velocity 23.8 realized pts/hour. `python3 work-packages/check_metrics.py --accept WP11` passes. Over and under, WP11: on estimate; the largest rule family and the contract page each took a push-back round; U10 under (Haiku, mechanical). Lessons: a unit that converts rules can break a test of an earlier unit that assumed the placeholder, so plan the first typed conversion with its test fallout; a worker cannot edit a file outside its brief even when told by message, so put every file in the brief or plan a follow-up unit; keep a contract page's word budget with headroom, because late clarifications cost a trim round.
 
