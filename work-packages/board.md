@@ -21,6 +21,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | RS1 | Research spike: Obsidian plugin (outside v0.1; branch `spike/obsidian-plugin`, never merged into `dev`) | readout, installable plugin and tests done | `RS1-obsidian-plugin.md` |
 | RS2 | Research spike: graph analysis (outside v0.1; branch `spike/analysis`, never merged into `dev`) | readout, package, notebook and tests done | `RS2-analysis.md` |
 | WP14 | Prior-art readout (D-079) | all units done and merged; ready for ACE acceptance | `WP14.md` |
+| WP15 | Architecture document and review (D-083) | all units done and merged; ready for ACE acceptance | `WP15.md` |
 | WP16 | Ontology and layout (absorbs WP13) | impact map and file map done (WP16-U0); scope not yet written | `impact/WP16.md` |
 | RS3 | Research spike: chat path (D-080; branch `spike/chat-path`, never merged into `dev`) | offline part done (U1, U2); live part waits for the chief engineer's sign-ins | `RS3-chat-path.md` |
 
@@ -169,6 +170,11 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP14-U3 | research engineer (public vault source, earlier private work as principles), sonnet | 3 | 3 | none (notes returned as text) | done |  | 2026-11-24T21:39:27-05:00 | about 1.2 min worker, 20 tool calls; found the public source is a package, not a vault; matches estimate |
 | WP14-U4 | technical writer (the readout), sonnet | 3 | 5 | `wp14/u4` | done |  | 2026-11-24T21:39:27-05:00 | two push-backs (private-derived quote and wording, then trace and sense fixes), one typo fix; 3 revisions; merged 3a9deed; over estimate because of the review rounds |
 | WP14-U5 | reviewer (WP14-R1 to R3), sonnet | 2 | 3 | none (notes returned as text) | done |  | 2026-11-24T21:39:27-05:00 | two review rounds on a fresh reviewer (R1 to R3 greps run outside the file); found one pre-existing private repository name in decisions/log.md, outside the blast radius |
+| WP15-U1 | software architect (architecture document), sonnet | 8 | 5 | `wp15/u1`  | done |  | 2026-11-24T21:51:00-05:00 | about 9 min worker, 40 tool calls; 2,498 words on first pass with every G1 part and all six pairs; merged 541da90; under estimate (the revision is counted in U5) |
+| WP15-U2 | architecture reviewer A (whole document), sonnet | 3 | 2 | none (report returned as text)  | done |  | 2026-11-24T21:56:00-05:00 | about 3 min, 20 tool calls; 3 blocking findings; report recorded in research/architecture/review.md |
+| WP15-U3 | architecture reviewer B (chat path, manual first), sonnet | 3 | 3 | none (report returned as text)  | done |  | 2026-11-24T21:56:00-05:00 | about 2.5 min, 12 tool calls; ran set-status on scratch vaults; 3 blocking findings; recorded |
+| WP15-U4 | architecture reviewer C (links and edges, cross-cutting contracts), opus | 5 | 5 | none (report returned as text)  | done |  | 2026-11-24T21:57:00-05:00 | about 5 min, 22 tool calls; ran the code on scratch copies; 2 blocking findings, 8 fragments; went over the word cap with reason; recorded |
+| WP15-U5 | software architect (revision), sonnet | 3 | 5 | `wp15/u1`  | done |  | 2026-11-24T22:04:34-05:00 | about 5 min, 27 tool calls; 5 blocking findings fixed inside a 2,500-word cap and about 28 findings answered in a table; one reword for the attribution grep; over estimate because the three reports disagreed on the same two M5 rules and the cap forced cuts |
 
 ## Iterations and velocity
 
@@ -189,6 +195,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 13 | WP12-U5 (done by the ACE under D-074 after a guard block) | 1 | 2 | 2.00 | 5.79 h | 0.35 |
 | 14 | WP16-U0, RS3-U1, RS3-U2 | 13 | 11 | 0.85 | 0.40 h | 27.5 |
 | 15 | WP14-U1 to U5 | 14 | 16 | 1.14 | 0.1 h | 160.0 |
+| 16 | WP15-U1 to U5 | 22 | 20 | 0.91 | 0.39 h | 51.3 |
 
 ## Velocity and forecast
 
@@ -199,6 +206,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP15 ready for ACE acceptance: `contracts/architecture.md` (2,499 words, cap 2,500) and `research/architecture/review.md` (the WP15-R2 table, three reviewers' reports, findings and answers). Iteration 16 closed: 22 est. pts, 20 realized (ratio 0.91), 0.39 h, raw velocity 51.3 realized pts/hour. Three reviewers, all 'not ready' on first pass (five blocking findings, mostly on M5's `done` rules and the M3/M4 split); all fixed in one revision, not re-reviewed. Over: U5 (5 against 3). Under: U1 (5 against 8). Lesson: for a spec-heavy document under a tight word cap, plan the revision unit at 5, since reviewers' fixes must be paid for with cuts.
 
 Current: WP14 ready for ACE acceptance: five units, readout at `research/prior-art/readout.md` (1,735 words before the source table). Iteration 15 closed: 14 est. pts, 16 realized (ratio 1.14), 0.1 h, raw velocity 160.0 realized pts/hour. `python3 work-packages/check_metrics.py --accept WP14` passes. Over: U4 (5 against 3: two push-backs, one for private-derived wording and one for source-sense and trace fixes); U5 (3 against 2: two review rounds). Lesson: a writer's brief for a readout built on private principles should say to state lessons generally and mark each source's own sense of edge, field and model up front; and flag to the ACE that decisions/log.md line 124 already names a private repository.
 
