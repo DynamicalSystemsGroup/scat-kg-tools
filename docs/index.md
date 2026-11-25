@@ -92,4 +92,5 @@ Take it from the top:
 
 - [The flow](flow.md): the whole journey, step by step.
 - [Getting started](getting-started.md): create your private repository and run your first check.
+- [The chat path](chat-path.md): code with an assistant in a chat window.
 - [Terms](reference/terms.md): how the pieces relate, in one place.
