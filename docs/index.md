@@ -80,7 +80,7 @@ Four stages, one page each. The first time through, take them in order, from the
 | Code | Afterwards, link the nodes each narrative names and record the edges it tells, fixing each problem from its message. | [Coding](coding.md) |
 | Finish | Reach a clean check, commit, and explore the result in Obsidian. | [Coding](coding.md) |
 
-Before the first stage you set up your own private vault: that is [Getting started](getting-started.md). When you
+Before the first stage you set up your own private vault: that is [Getting started](getting-started.md). To try SCAT alone first, on your own notes and in one sitting, follow [the solo trial](getting-started.md#the-solo-trial): set up, code one narrative, see its fingerprint and set it `done`. When you
 need the exact form of a command, the reference has it: the [Python API](reference/api.md) and the
 [CLI](reference/cli.md).
 
@@ -92,5 +92,6 @@ Take it from the top:
 
 - [The flow](flow.md): the whole journey, step by step.
 - [Getting started](getting-started.md): create your private repository and run your first check.
+- [The solo trial](getting-started.md#the-solo-trial): try it alone on your own notes, in one sitting.
 - [The chat path](chat-path.md): code with an assistant in a chat window.
 - [Terms](reference/terms.md): how the pieces relate, in one place.

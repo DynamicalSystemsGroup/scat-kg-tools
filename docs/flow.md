@@ -11,7 +11,7 @@ SCAT (Stakeholder groups, Concerns, Affordances and Technologies) is built for a
 | Step and guide | What happens | Depends on |
 |---|---|---|
 | **1 Discover**<br>[Home](index.md) | The organiser finds out what SCAT makes of a discussion: a vault of narratives, nodes and edges. | Nothing. |
-| **2 Try**<br>[Getting started](getting-started.md) | Alone, on their own notes: one narrative is coded, its [fingerprint](reference/terms.md) is viewed in Obsidian, and it is set to `done`. | Setup, as in step 5. |
+| **2 Try**<br>[The solo trial](getting-started.md#the-solo-trial) | Alone, on their own notes: one narrative is coded, its [fingerprint](reference/terms.md) is viewed in Obsidian, and it is set to `done`. | Setup, as in step 5. |
 | **3 Decide**<br>This page | The organiser chooses to run a facilitated elicitation. | The trial. |
 | **4 Set terms**<br>[Data, rights and consent](data-and-consent.md) | Before the first session, the organiser answers and documents the nine choices: collection, storage, consent, use of contributions, AI, release, licence, rights holders, and commitments to participants. | Step 3. |
 | **5 Set up**<br>[Getting started](getting-started.md) | A private repository is made on GitHub from the template, cloned, set up with one command and opened in Obsidian as a vault. | Alone, nothing. With contributors, step 4's storage answer. |

@@ -25,7 +25,7 @@ Every request must carry a key; without it the server answers with a 401 status 
 You need:
 
 - A Mac that stays awake and online while you work (the launcher keeps it awake while its window is open).
-- A vault, as in [Getting started](getting-started.md), kept in a folder outside Documents, Desktop, Downloads and
+- A vault, as in [Getting started](getting-started.md) or, with no terminal, [GitHub Desktop](#your-vault-with-no-terminal-github-desktop), kept in a folder outside Documents, Desktop, Downloads and
   iCloud (macOS hides those from the server's container; the launcher offers a copy if yours is there).
 - A container runtime: Docker Desktop, or Colima.
 - Tailscale, with its command line.
@@ -43,6 +43,47 @@ You need:
 
 The server cannot set a narrative to `done` or move one out of `done`, so the assistant cannot, by construction.
 The rules the assistant follows are in `contracts/assistant.md`.
+
+## Your vault with no terminal: GitHub Desktop
+
+Getting started types its git commands in Terminal. On the chat path you can do the same four jobs, clone, remove
+the example, commit and push, with [GitHub Desktop](https://desktop.github.com), a free app from GitHub, and with
+Finder. **These steps were not run for this page.** They use the app's standard menu and button names, and the
+wording on your version may differ. If a name here is not on your screen, use the nearest one and tell the person
+who set this up what you saw.
+
+**Create your private repository first, on the website.** Do step 1 of [Getting started](getting-started.md), the
+**On the GitHub website** path: **Use this template**, then **Create a new repository**, with visibility **Private**.
+Your notes are about real groups of people.
+
+**Clone it.** Cloning downloads your repository to your Mac.
+
+1. Open GitHub Desktop and sign in to your GitHub account when it asks.
+2. Choose **File**, then **Clone a repository**.
+3. Pick your new repository from the list under **GitHub.com**, or paste its address under **URL**.
+4. Set **Local path** to a folder outside Documents, Desktop, Downloads and iCloud (see "What you need"), then
+   choose **Clone**.
+
+Your vault is the cloned folder. It holds `scat.toml`. In the preview, the template's default branch is `dev`; GitHub
+Desktop shows the current branch at the top, and if it shows `main` choose `dev` from that list.
+
+**Remove the example: your hands do it.** The template holds a worked example that you remove before you add your own
+pages. **The assistant never deletes anything**, and the server has no operation that deletes a page or a folder (it can remove an edge's row, which only you ask for). You delete.
+
+1. In GitHub Desktop, choose **Repository**, then **Show in Finder**.
+2. In Finder, drag these five folders to the Trash: `affordance`, `concern`, `group`, `narrative` and
+   `technology`. Keep the `index` folder and everything else.
+3. Back in GitHub Desktop, the **Changes** list shows the deleted pages. In the **Summary** box type
+   `Remove the example`, then choose the button at the bottom left of the list, **Commit to main**. On a branch
+   called `dev` it reads **Commit to dev**: it carries the current branch's name.
+4. Choose **Push origin** in the top bar.
+
+Then, in the chat once the session is running, ask the assistant to run the check. It should say there are no problems.
+
+**Commit and push your work, any time.** After the assistant records edges and you have read and set pages to `done`
+in Obsidian, GitHub Desktop's **Changes** list shows every changed page. Read it. Type a summary, such as
+`Code the notes from my first session`, choose **Commit to main** (or the branch's name), then **Push origin**. The
+assistant does not commit or push; you do. Check the whole vault is clean first.
 
 ## Install once
 
@@ -200,7 +241,7 @@ GitHub's features and no terminal:
 **Releases**, then **Draft a new release**, then in the tag box type a name such as `v1` and choose the option to
 create that new tag. Add a title and choose **Publish release**. The tag now names that commit.
 
-**GitHub Desktop** can also commit, push and tag; this page does not give its clicks.
+**GitHub Desktop** commits and pushes, as shown under [your vault with no terminal](#your-vault-with-no-terminal-github-desktop); this page does not give its clicks for tagging.
 
 This was read in GitHub's documentation, not run by a coder, and GitHub's wording changes.
 
