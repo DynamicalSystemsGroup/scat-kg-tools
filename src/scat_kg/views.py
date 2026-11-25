@@ -150,6 +150,13 @@ def _page_named(op: str, g: Graph, name: str, kind: str) -> Refused | None:
     return None
 
 
+def _text(op: str, value: object, what: str) -> Refused | None:
+    """Refuse a value that is not a string: a name, an edge type or a direction is always text."""
+    if isinstance(value, str):
+        return None
+    return _refuse(op, repr(value), f"{what} must be a string", f"pass {what} as a string")
+
+
 def fingerprint(narrative: str | None = None, *, root: str | Path = ".") -> View | Result:
     """A narrative's fingerprint: its nodes, the edges its rows tell, and its rule-4 candidates.
 
@@ -160,7 +167,7 @@ def fingerprint(narrative: str | None = None, *, root: str | Path = ".") -> View
     if bad:
         return bad
     if narrative is not None:
-        bad = _page_named(op, g, narrative, "narrative")
+        bad = _text(op, narrative, "a narrative name") or _page_named(op, g, narrative, "narrative")
         if bad:
             return bad
         chosen = [g.narrative(narrative)]
@@ -193,6 +200,8 @@ def fingerprint(narrative: str | None = None, *, root: str | Path = ".") -> View
 def edge_table(type: str, *, root: str | Path = ".") -> View | Result:
     """Every edge of one type (`holds`, `addressed-by`, `provided-by`), in graph order."""
     op = "edges"
+    if bad := _text(op, type, "an edge type"):
+        return bad
     if type not in TBOX.edge_types:
         return _refuse(
             op,
@@ -221,6 +230,15 @@ def edge_table(type: str, *, root: str | Path = ".") -> View | Result:
 def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> View | Result:
     """The union of the fingerprints of the named narratives (none: every narrative), as four layers."""
     op = "layered"
+    if narratives is not None and not (
+        isinstance(narratives, list | tuple) and all(isinstance(n, str) for n in narratives)
+    ):
+        return _refuse(
+            op,
+            repr(narratives),
+            "narratives must be a list of narrative names",
+            'pass a list of narrative names, for example `["dry-july"]`, or nothing for every narrative',
+        )
     g, bad = _open(op, root)
     if bad:
         return bad
@@ -249,6 +267,8 @@ def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> V
 def trace(node: str, direction: str = "both", *, root: str | Path = ".") -> View | Result:
     """Follow edges from a node up (toward groups), down (toward technologies) or both; the node itself is left out."""
     op = "trace"
+    if bad := _text(op, direction, "a direction") or _text(op, node, "a node name"):
+        return bad
     if direction not in DIRECTIONS:
         return _refuse(
             op, direction, "this is not a direction", f"use one of: {', '.join(DIRECTIONS)}"

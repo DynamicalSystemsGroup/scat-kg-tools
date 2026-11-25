@@ -2,17 +2,17 @@
 
 Every `scat` command takes `--json` and prints one document shaped by
 [`machine-interface.schema.json`](machine-interface.schema.json) (JSON Schema 2020-12). The schema's `description`
-fields give the detail of each object; the rule catalogue (section 8) gives the edge operations, the table problems and
-the changes from version 1.
+fields detail each object; the rule catalogue (section 8) gives the edge operations, table problems and
+changes from version 1.
 
-- **Versioning.** `schema_version` is an integer, now 2. Adding a field keeps the version. Removing, renaming or
+- **Versioning.** `schema_version` is an integer, 2. Adding a field keeps the version. Removing, renaming or
   changing a field's meaning bumps it, as does a new value in a closed list (severities, fix kinds, option kinds, edit
   actions, edge types). Ignore unknown fields.
 - **Rule ids** are never renamed, only retired. New ids need no bump: match `^SCAT-[A-Z0-9]+(-[A-Z0-9]+)*$`, not a list.
 - **Streams.** Stdout holds exactly one JSON document; text for humans goes to stderr. Exit 0 when `ok`, 1 otherwise,
   2 for a command line that cannot be read.
 - **Python.** A result's `to_dict()` returns exactly the CLI's data.
-- **Paths** are vault-relative: `/`, no leading `/`, no `..`. `line` and `column` count from 1, or are null.
+- **Paths** are vault-relative (`/`, no leading `/`, no `..`), except in `export-edges` and `draw` results: outside the vault, as given. `line` and `column` count from 1, or are null.
 
 `kind` is `check`, `status`, `operation` or `view` (`fingerprint`, `edges`, `layered`, `trace`). A refusal, even by `check` or `status`, gives kind `operation` with `ok` false.
 
