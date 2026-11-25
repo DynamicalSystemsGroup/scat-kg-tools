@@ -199,6 +199,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP16-U13b | technical writer (architecture section 4 to the tool as built; added by the PM), sonnet | 2 | 2 | `wp16/u13b` | done |  | 2026-11-25T01:26:23-05:00 | under 3 min; verified by running the tool |
 | WP16-U14 | change consultant (re-sweep of the impact map), sonnet | 3 | 3 | `wp16/u14` | done |  | 2026-11-25T01:26:28-05:00 | about 4 min; re-sweep not clean: 5 stale items |
 | WP16-U14b | editor (stale hits from the re-sweep; added by the PM), sonnet | 2 | 2 | `wp16/u14b` | done |  | 2026-11-25T01:26:29-05:00 | about 2.5 min; S7 still 22 lines in 8 files, all named keeps (retired words asserted on purpose, formal ontology identifiers, a decision title) |
+| WP16-U15 | technical writer (flow and consent page fixes, reader guesses, coding guide, reviewer's guide; added by the PM), sonnet | 3 | 3 | `pm-wp16fix` | done |  | 2026-11-25T09:30:00-05:00 | five disagreements fixed (nine choices, nine checklist items); flow 499 words, consent 731; docs test, strict build, terms drift test green |
+| WP16-U15r | reviewer (fresh; added by the PM), sonnet | 2 | 1 | `pm-wp16fix` | done |  | 2026-11-25T09:30:00-05:00 | PASS, two non-blocking notes |
 | RS3-U4 | technical writer (chat-path readout, added at the ACE's call), sonnet | 3 | 2 | `rs3/u4` | done |  | 2026-11-25T01:26:30-05:00 | under 1 min, 8 tool calls; 1,409 words; no separate fresh reviewer yet |
 
 ## Iterations and velocity
@@ -226,6 +228,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 19 | WP16-U3, WP16-U4 | 13 | 13 | 1.00 | 0.60 h | 21.7 |
 | 20 | WP16-U5 | 8 | 8 | 1.00 | 0.20 h | 40.0 |
 | 21 | WP16-U6, U6b, U4b, U4c, U7, U6f, U7f, U8, U9, U9f, U10, U11, U12, U12b, U13, U13b, U14, U14b, RS3-U4 (U6b, U4b, U4c, U6f, U7f, U9f, U12b, U13b, U14b and RS3-U4 added by the PM or the ACE) | 70 | 64 | 0.91 | 1.75 h | 36.6 |
+| 22 | WP16-U15, WP16-U15r (added by the PM) | 5 | 4 | 0.80 | 0.4 h | 10.0 |
 
 ## Velocity and forecast
 

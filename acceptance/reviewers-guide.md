@@ -137,7 +137,7 @@ alone: `uv run pytest tests/bench -s -q` printed page 245 ms, neighborhood 249 m
 
 | Req | Requirement | Evidence you can run or open | Status |
 |---|---|---|---|
-| R-1 | Errors block, warnings don't; every rule has id and severity | `uv run python tests/scripts/rules_without_tests.py` lists none (exit 0); 28 rule ids in `contracts/rule-catalogue.md`, audited in sitting 4c; `tests/checks/` | met |
+| R-1 | Errors block, warnings don't; every rule has id and severity | `uv run python tests/scripts/rules_without_tests.py` lists none (exit 0); 32 rule ids in `contracts/rule-catalogue.md` (the v0.1 audit of 28 is in sitting 4c); `tests/checks/` | met |
 | R-2 | Messages name file, field, rule id and an exact fix | `tests/checks/test_wp8_u2_messages.py`; `tests/test_paths.py` | met; golden tests pin id, file, field and fix, not full prose (D-032) |
 | R-3 | Unfinished pages are never errors; links checked always | `tests/checks/test_status_rules.py`, `tests/checks/test_link_rules.py` | met |
 | R-4 | Checks never write; writes are explicit operations | `tests/test_r4_snapshots.py` | met |
@@ -277,7 +277,7 @@ exists for them.
     confirm". The `gh` command passes `--private`, but the website path relies on you choosing Private. Only your stage 2
     exercises it.
   - The four class definitions are marked `unverified` in `ontology/scat.ttl` (D-032).
-  - The concern conflict is an explicit link (`conflicts`), checked for type and existence, not the disjointness axiom you named (D-028). Its warning was removed (D-052).
+  - A conflict between two concerns was an explicit `conflicts` link (D-028) and its warning was removed (D-052). The `conflicts` field is gone now; a relationship annotation, a body line with a link, records it, and the tool attaches no meaning to it.
   - My R-6 rerun used my own home and uv cache, so it is weaker than UA-A.
 - **(k) Coding guide length.** The coding guide is long (about 5,600 words) and no ruling splits it. The Haiku
   testers in rounds 1 to 3 all finished it.
@@ -320,7 +320,7 @@ names no `divergence` tags, so there are none for it.
 **Your two corrections (D-052).**
 
 1. Conformance checks structure, never content. You said: "we should not be getting warnings about conflicting
-   concerns." The `conflicts` link stays as an explicit link, checked only for type and existence. The warning
+   concerns." The `conflicts` link stayed as an explicit link then, checked only for type and existence (since replaced by the relationship annotation, which the tool does not check). The warning
    about a record that holds two conflicting concerns was removed from the rules, the contract, the tests, the docs, the walkthrough and this guide
    (WP9-U1, U1b, U4). The checks of a correctly built model now print `no problems` on the template's worked example.
    Where tensions are sharpest, or where concerns match or leave a gap, is analysis. It comes after conformance

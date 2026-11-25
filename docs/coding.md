@@ -23,7 +23,7 @@ A **narrative** is one account drawn from your field notes, kept on one page. Co
 | `concern` | `concern/` | what a group cares about | you, or `scat stub` |
 | `affordance` | `affordance/` | what a tool or arrangement lets someone do | you, or `scat stub` |
 | `technology` | `technology/` | the thing that provides an affordance | you, or `scat stub` |
-| `narrative` | `narrative/` | one account, with the table of edges it tells | you |
+| `narrative` | `narrative/` | one account, with the table of edges it tells | you, or `scat stub --type narrative NAME` |
 | index pages | `index/` | a list of the pages of one type | `scat index`, once |
 
 An **edge** is no page. It is one row of a narrative's `Edges told` table, and there are three types, fixed by the layers they join:
@@ -772,6 +772,17 @@ git push
 ```
 
 Run `git status` first and read the list: it shows what the commit will hold. `git add .` stages every change in the folder, so if the list holds a change you did not mean to make, sort that out before you go on. Commit when the whole-vault check ends with zero errors.
+
+## Lock a version
+
+To state that the model is finished, lock the version: a git tag on the commit you pushed, then push the tag. Like the commands above, these are not tool commands:
+
+```text
+git tag v1
+git push origin v1
+```
+
+The tag names that commit for good; later commits do not move it.
 
 ## Look at it in Obsidian
 
