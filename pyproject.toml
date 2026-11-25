@@ -5,12 +5,16 @@ description = "Tools for checking and working on a SCAT knowledge-graph vault"
 requires-python = ">=3.12"
 dependencies = ["pydantic", "PyYAML", "rdflib"]
 
+[project.optional-dependencies]
+draw = ["matplotlib>=3.8"]
+
 [project.scripts]
 scat = "scat_kg.cli:main"
 
 [dependency-groups]
 dev = [
     "jsonschema>=4.26.0",
+    "matplotlib>=3.8",
     "pytest",
     "ruff",
 ]

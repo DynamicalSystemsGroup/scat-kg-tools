@@ -63,6 +63,8 @@ positional arguments:
                   `<type>.md`. Overwrites a file only when its content
                   differs; makes DIR if it is not there. Refuses where `scat
                   edges` would, and then writes nothing.
+    draw          Draw a view as an image (needs the extra `draw`): `.png` or
+                  `.svg`.
 
 options:
   -h, --help      show this help message and exit
@@ -70,7 +72,7 @@ options:
 Run `scat <command> --help` for a command.
 ```
 
-`scat` has thirteen commands. Each prints a message and exits with a code:
+`scat` has fourteen commands. Each prints a message and exits with a code:
 
 | Exit code | Meaning |
 |---|---|
@@ -1299,7 +1301,7 @@ options:
 REPL: `scat_kg.export_edges("<dir>")`
 ```
 
-Writes the three edge tables, one CSV and one Markdown file each, into `DIR`. The CSV file has the columns `from`, `to`, `narratives` (joined by `;`) and `status`. The Markdown file is a generated heading, one sentence and a table. Names are plain text, so the files add no page, link or row to a vault, even when `DIR` is inside it. Of the five commands here, it is the only one that writes.
+Writes the three edge tables, one CSV and one Markdown file each, into `DIR`. The CSV file has the columns `from`, `to`, `narratives` (joined by `;`) and `status`. The Markdown file is a generated heading, one sentence and a table. Names are plain text, so the files add no page, link or row to a vault, even when `DIR` is inside it. Of the six commands here, it and `scat draw` are the only ones that write.
 
 A file that is there is rewritten only when its content differs, so running it again changes nothing. It refuses, writing nothing, where `scat edges` would, and when `DIR` is a file. Paths inside the vault folder are shown from it; a folder outside it is shown as you gave it.
 
@@ -1361,6 +1363,101 @@ $ uv run scat export-edges --out edge-tables --json
   "notes": []
 }
 ```
+
+## scat draw
+
+```text
+usage: scat draw [-h] <drawing> ...
+
+Draw a view as an image, four columns in layer order. Needs the extra `draw`: `pip install "scat-kg[draw]"`. The only write is the image file you name with --out.
+
+positional arguments:
+  <drawing>
+    fingerprint  Draw a narrative's fingerprint: its nodes and edges in four
+                 columns, its candidates (links with no row) dashed. Refuses
+                 where `scat fingerprint` would, and then writes nothing.
+    layered      Draw the layered view of the narratives named by --narrative
+                 or, without it, of every narrative. Refuses where `scat
+                 layered` would, and then writes nothing.
+
+options:
+  -h, --help     show this help message and exit
+
+REPL: `from scat_kg import draw`, then `draw.fingerprint(...)` or `draw.layered(...)`
+```
+
+Draws a view as an image in four columns, one for each layer, in layer order, with the layer's name at the top. Each node is a box labelled with its name, and with its status in brackets when that is not `done`; each edge is a line between neighbouring columns. Within a column the nodes are in order of name. `scat draw fingerprint` draws one narrative's fingerprint and shows its candidates (links with no row) as dashed lines. `scat draw layered` draws the layered view of the narratives you name with `--narrative`, or of every narrative.
+
+Drawing needs the extra `draw`: `pip install "scat-kg[draw]"`. Without it, the command refuses and says so. The same command gives the same image, byte for byte.
+
+`--out FILE` is required. A file ending in `.png` or `.svg` is written, and any other ending is refused. A file that is there is rewritten only when its content differs. It is the only thing `scat draw` writes. It refuses, writing nothing, where `scat fingerprint` or `scat layered` would. Paths inside the vault folder are shown from it; a file outside it is shown as you gave it.
+
+Exit codes: 0, or 1 for a refusal.
+
+### scat draw fingerprint
+
+```text
+usage: scat draw fingerprint [-h] [--root ROOT] [--json] --out FILE NARRATIVE
+
+Draw a narrative's fingerprint: its nodes and edges in four columns, its candidates (links with no row) dashed. Refuses where `scat fingerprint` would, and then writes nothing.
+
+positional arguments:
+  NARRATIVE    the narrative's name
+
+options:
+  -h, --help   show this help message and exit
+  --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
+  --out FILE   the image file to write, ending in `.png` or `.svg` (no
+               default)
+
+REPL: `draw.fingerprint("<narrative>").save("<file>")`
+```
+
+### scat draw layered
+
+```text
+usage: scat draw layered [-h] [--root ROOT] [--json] [--narrative NARRATIVE]
+                         --out FILE
+
+Draw the layered view of the narratives named by --narrative or, without it, of every narrative. Refuses where `scat layered` would, and then writes nothing.
+
+options:
+  -h, --help            show this help message and exit
+  --root ROOT           the vault folder, the one with scat.toml (default:
+                        here)
+  --json                print the result as one JSON document (machine-
+                        interface contract), nothing else
+  --narrative NARRATIVE
+                        include this narrative; repeat it for each narrative
+  --out FILE            the image file to write, ending in `.png` or `.svg`
+                        (no default)
+
+REPL: `draw.layered().save("<file>")`, `draw.layered(["<narrative>"]).save("<file>")`
+```
+
+=== "Python"
+
+    ```python
+    from scat_kg import draw
+
+    draw.layered().save("layered.png")
+    ```
+
+    ```text
+    created layered.png
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat draw layered --out layered.png
+    ```
+
+    ```text
+    created layered.png
+    ```
 
 ## Where next
 

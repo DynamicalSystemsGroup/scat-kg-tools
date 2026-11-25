@@ -10,6 +10,7 @@ import sys
 from collections.abc import Sequence
 
 import scat_kg
+from scat_kg import draw
 from scat_kg.ops.names import STUBBABLE
 from scat_kg.tbox import TBOX
 
@@ -23,8 +24,8 @@ def _parser() -> argparse.ArgumentParser:
     )
     sub = top.add_subparsers(dest="command", metavar="<command>", required=True)
 
-    def command(name, summary, twin):
-        p = sub.add_parser(
+    def command(name, summary, twin, parent=sub):
+        p = parent.add_parser(
             name,
             help=summary,
             description=summary,
@@ -186,6 +187,39 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--out", required=True, metavar="DIR", help="the folder the tables go in (no default)"
     )
+    drawing = sub.add_parser(
+        "draw",
+        help="Draw a view as an image (needs the extra `draw`): `.png` or `.svg`.",
+        description="Draw a view as an image, four columns in layer order. Needs the extra `draw`: "
+        '`pip install "scat-kg[draw]"`. The only write is the image file you name with --out.',
+        epilog="REPL: `from scat_kg import draw`, then `draw.fingerprint(...)` or `draw.layered(...)`",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    which = drawing.add_subparsers(dest="drawing", metavar="<drawing>", required=True)
+    out_help = "the image file to write, ending in `.png` or `.svg` (no default)"
+    p = command(
+        "fingerprint",
+        "Draw a narrative's fingerprint: its nodes and edges in four columns, its candidates "
+        "(links with no row) dashed. Refuses where `scat fingerprint` would, and then writes nothing.",
+        '`draw.fingerprint("<narrative>").save("<file>")`',
+        which,
+    )
+    p.add_argument("narrative", metavar="NARRATIVE", help="the narrative's name")
+    p.add_argument("--out", required=True, metavar="FILE", help=out_help)
+    p = command(
+        "layered",
+        "Draw the layered view of the narratives named by --narrative or, without it, of every "
+        "narrative. Refuses where `scat layered` would, and then writes nothing.",
+        '`draw.layered().save("<file>")`, `draw.layered(["<narrative>"]).save("<file>")`',
+        which,
+    )
+    p.add_argument(
+        "--narrative",
+        action="append",
+        metavar="NARRATIVE",
+        help="include this narrative; repeat it for each narrative",
+    )
+    p.add_argument("--out", required=True, metavar="FILE", help=out_help)
     return top
 
 
@@ -220,6 +254,13 @@ def run(args: argparse.Namespace):
             return scat_kg.trace(args.node, args.direction, root=root)
         case "export-edges":
             return scat_kg.export_edges(args.out, root=root)
+        case "draw":
+            made = (
+                draw.fingerprint(args.narrative, root=root)
+                if args.drawing == "fingerprint"
+                else draw.layered(args.narrative, root=root)
+            )
+            return made.save(args.out) if isinstance(made, draw.Drawing) else made
     raise AssertionError(args.command)  # argparse requires a command
 
 
