@@ -15,8 +15,16 @@ full, as typed), and turns the items into goals, requirements and non-goals at t
 | C4 | **Status is set when the coder leaves a page.** `done` if finished, `draft` if not; `draft` marks unfinished work, not a step to pass through. | Coding guide, walkthroughs, the skill (end of session: name the pages to tag, offer `draft`; `done` stays the coder's) | "His model of status" |
 | C5 | **Descriptions are brief and do not repeat the account.** The `done` error for a missing `description` is intended, like a required commit message; on the chat path the assistant may offer one. Writing the account and the description is a mixed loop, coder-first or assistant-first, any number of rounds; the coder's move to `done` validates the content. | Coding guide, chat-path guide, the skill | "On the `description` error", and the chief engineer's choice after it |
 | C6 | **Ship the assistant's rules as a chat skill and set up a saved agent.** The chat (LibreChat) has Skills and an Agent Builder; the guide uses neither. The skill also needs the edge grammar (F8), `kind` (F12), one step per reply (F9) and an offered `description` (C5). Agents start from the Agent Builder's Select on this instance. | WP18 deliverables (`contracts/assistant.md` as a SKILL.md), `docs/chat-path.md` | F5, F6, F8, F9, F12 |
+| C8 | **A session's full life cycle in the chat-path guide: start, use, stop, clean up.** Clean-up covers the server entry (done in 8d620fe), the uploaded field notes (delete them from the chat's file library), and the conversation (delete it, or use the chat's temporary mode from the start when the history should not be kept; inference.coop shows a "Temporary Chat" control, not yet tried). | `docs/chat-path.md`, the walkthroughs, `docs/data-and-consent.md` | The chief engineer, 25 November, quoted below |
 | C7 | **The session key shows in the process list** while the app runs (passed as a dialog argument). | `deploy/` launcher | F15 |
 
 Process lesson from the same run, kept in the ACE's own notes and here for workers: steps that need no judgement, sign-in
 or key (copying between apps, pasting an accepted draft, opening a vault) are done by whoever drives the run, not
 handed to the chief engineer.
+
+C8, the chief engineer's words (25 November, quoted as typed; recorded by the ACE):
+
+> "a full life cycle for this may include spinning up, using and tearing down (and cleaning up) after a session. in the
+> event that we don't want to save the conversation history we may also include using the ephemeral chat mode. and if
+> we are uploading field notes we may also want to delete/remove the collection from the AI tool as part of the tear
+> down"

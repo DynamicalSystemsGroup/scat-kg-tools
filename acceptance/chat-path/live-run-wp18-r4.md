@@ -21,8 +21,9 @@ Words follow `GLOSSARY.md`. The run is complete and torn down; the ACE's call on
    one; the ACE added it. Check of the whole vault: no problems, with the narrative `done`.
 7. Teardown at 13:04 by quitting SCAT Chat (its Stop). Verified: no SCAT Chat process, no `scat-chat` container,
    Funnel reports no serve config, the public address does not answer, the clipboard holds no key, and the stored key
-   (mode 600) differs from the session's key. Still to do by a person's hands: delete the "Scat Lab" MCP entry in the
-   chat.
+   (mode 600) differs from the session's key. The chief engineer then deleted the "Scat Lab" MCP entry in the chat by hand. Left in the chat
+   account: the uploaded note and the two conversations (C8), and the `scat-coding` skill and the agent, kept for the
+   chat-path user tests.
 
 ## Findings
 
@@ -42,6 +43,7 @@ Words follow `GLOSSARY.md`. The run is complete and torn down; the ACE's call on
 | F12 | The coder asked for "a scenario"; the narrative was made with no `kind`, and nothing prompted it. | Assistant behaviour; skill text |
 | F14 | Set to `done` straight from `stub`, the narrative failed SCAT-DONE-FIELD (no `description`). A `draft` page is warned about `description`; a `stub` page is not, and the assistant never moved the page to `draft`, so nothing flagged it before `done`. | Rule staging; skill text |
 | F15 | While a session runs, its key is in plain text in the process list: the app shows it in a dialog launched with the key as a command-line argument, so any local process can read it with `ps`. The key ends with the session (rotated at Stop). | Security defect (WP18 launcher) |
+| F16 | The guide's Stop named the chat-entry delete only in its failure branch, with no steps. Fixed on `dev` (8d620fe): Stop is now stop, check, delete the entry. | Docs gap, fixed |
 | F13 | The account has no links to the nodes it names, and SCAT-MENTION stayed silent (see below). | Rule condition; skill text |
 
 ## For later revisions

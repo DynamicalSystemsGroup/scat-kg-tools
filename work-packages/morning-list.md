@@ -26,7 +26,7 @@ What is left before I open the release PRs: items 1 and 3 below.
 3. **The chat path.** WP18's live run (WP18-R4) ran on 25 November and is torn down
    (`acceptance/chat-path/live-run-wp18-r4.md`). Left: delete the "Scat Lab" MCP entry in the chat by hand; the
    three chat-path user tests (D-098) in a later sitting. Your UX observations from the run are harvested as
-   candidates C1 to C7 in `work-packages/candidates.md`.
+   candidates C1 to C8 in `work-packages/candidates.md`.
 4. **The uv gap (D-040, D-041):** every UA-A tester had uv pre-installed, where the mission says "uv not installed".
    Accept it as a known gap, or permit one fresh tester to run uv's official installer.
 5. **History rewrites, all optional:** `main` (commit `c58113b`, the pilot line) and `dev` (commit `20ff07a`, private
