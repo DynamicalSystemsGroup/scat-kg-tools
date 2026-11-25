@@ -12,14 +12,14 @@
 
 DSG needs, for an upcoming project, a first usable release of a toolkit for turning facilitated discussions into a
 conformant knowledge graph. Participants tell stories (scenarios) and propose architectures. Their field notes are drafted
-into narratives, which are coded in pages of an Obsidian vault in git. Coding decompiles each narrative into four concepts:
+into narratives, which are coded in pages of an Obsidian vault in git. Coding decompiles each narrative into four classes of vertex:
 **s**takeholders, **c**oncerns, **a**ffordances and **t**echnologies. The acronym is SCAT, named for scat singing in
-jazz. Coding relates the four concepts through explicit, typed edges, layered as bipartite graphs:
+jazz. Coding relates the vertices through explicit, typed edges, forming three bipartite graphs:
 stakeholders–concerns, concerns–affordances, and affordances–technologies.
 
 The result is a navigable, interpretable dataset, and that dataset is the data product. Its conformance to a fixed
 ontology is what makes it analysable. It is scaled to a human note-taker: just enough structure to make the data
-interpretable, but mostly a formal structure for arranging Obsidian notes. The git repository is the data of record,
+interpretable, but mostly a formal structure for arranging Obsidian notes. The git repository is the authoritative copy of the data,
 and the graph is derived from it.
 
 The practices it supports, eliciting, capturing and coding narratives and holding disagreement without adjudicating
@@ -61,11 +61,70 @@ benefit without seeing the full ontology. They just need it to work; the documen
 They work directly with narratives (mostly scenarios and architectures) and the four kinds of vertex, and less
 directly with the three kinds of edge.
 
+## Reserved terms
+
+Three vocabularies meet here: graph theory (the model as a graph), the semantic web (the model as an ontology), and
+Obsidian (the model as Markdown files). The same idea can wear a different word in each, and the same word can mean
+different things. So these terms are reserved: this mission, every scope of work, the contracts, the code and the
+docs use each one only in the sense given, and use the word in the left column for that sense and no other. The
+docs gloss each term in plain words on first use and on the Terms page *(default)*.
+
+**The graph** (what the analysis reasons about):
+
+| Term | Means | Not to be called |
+|---|---|---|
+| vertex | one stakeholder group, concern, affordance or technology in the graph | node, entity, element, concept |
+| edge | one typed connection between two vertices in neighbouring layers (Heldby, Addresses or Attributes), at most one per pair | link, relation, triple |
+| layer | the vertices of one vertex class; the four layers, in order: group, concern, affordance, technology | level, tier |
+| bipartite graph | the edges of one edge class with the two layers they join; also readable as a table | layer, table (except in the table views) |
+| support | a narrative's subgraph: the vertices it links plus the edges that name it (G1) | footprint, scope |
+| composed graph | the union of the supports of a set of narratives, up to the whole vault | whole graph, merged graph |
+| trace | a walk from one vertex up or down the layers | path, query |
+| relationship | a free-text remark between two records of the same class; not an edge, and outside every graph view | edge, link, relation |
+
+**The ontology** (how the model is defined and checked):
+
+| Term | Means | Not to be called |
+|---|---|---|
+| class | a type defined in the TBox: the vertex classes, the edge classes, narrative and its subclasses, relationship | type (except the `type` field), kind, category |
+| TBox | the fixed ontology, in Turtle | schema (except the JSON Schema of R-16, and loosely in user docs), model |
+| ABox | the instances read from a vault | data (when the ABox is meant) |
+| instance | a member of a class in the ABox; every vertex, edge and narrative is one | entity, object |
+| record | an instance as it is stored in the vault, as a page or, where the projection decides, a field | entry, item |
+| triple | one RDF statement inside the TBox or ABox; an implementation detail, never a synonym for an edge | edge, link |
+
+**The vault** (what the coder sees in Obsidian):
+
+| Term | Means | Not to be called |
+|---|---|---|
+| vault | the folder of Markdown files Obsidian opens; one git repository | database, graph |
+| page | one Markdown file with frontmatter and a `type` | note (except Obsidian's own UI), document, node |
+| field | one key in a page's frontmatter | property, attribute (except Obsidian's "Properties" panel) |
+| link | an Obsidian wikilink, `[[…]]`, in a field or in the body; a reference between pages, never an edge | edge, relation, connection |
+| status | a record's state: `stub`, `draft` or `done` (G3) | state, stage |
+| class page | the generated page that indexes a class's instances | index (alone), hub |
+
+**The work** (who does what, to which material):
+
+| Term | Means | Not to be called |
+|---|---|---|
+| field notes | the supplied material, in whatever form it arrives (an input) | raw notes, transcripts (unless they are) |
+| narrative | one account drawn from the field notes, on one page; a scenario, an architecture, or neither | story (except a scenario), record |
+| coding | identifying and linking what a narrative refers to, and recording its edges | annotation, tagging |
+| coder, assistant, tool | the three actors (see "Users and how they work") | user (when a role is meant), agent, AI, system |
+| connection | any of the forms in R-23's list, when speaking across vocabularies; never a fourth thing | relation, link (when an edge is meant) |
+| divergence | a mismatch between a link and an edge that should agree (R-23) | conflict, inconsistency |
+| model | in the architecture (G16), the TBox plus a conformant vault; as a class of material, the git repository | graph (when the TBox or vault is meant) |
+
+Words in the right-hand column may appear in quotations and in names that aren't ours (`concept-definition-stage`,
+Obsidian's "Properties"). "Record" as a verb, and in process names (the acceptance record, decision records, the review
+record), is ordinary English. Elsewhere, the reserved term is used.
+
 ## Narratives: scenarios and architectures
 
-A **narrative** is one account drawn from the field notes, kept on one page that moves through the status states (G3):
+A **narrative** is one account drawn from the field notes, kept on one page that moves through the three statuses (G3):
 a **stub** has a name and perhaps some metadata; a **draft** holds the account, possibly as plain text with no coding
-yet; and it is **done** when it is coded: every concept the account refers to is identified and linked, so it has a valid support
+yet; and it is **done** when it is coded: every vertex the account refers to is identified and linked, so it has a valid support
 (G1), the coding is conformant, and the coder has judged that it interprets the field notes appropriately. Setting
 `done` is the coder's attestation of that judgement; the tools check only the structure. Done is not
 frozen: the repository is git, and a narrative can keep evolving. Most
@@ -94,7 +153,7 @@ counterfactual "what would happen if" is future, and a habitual "when someone wo
 narrative may be marked **mixed**, the honest record of an account that blurs the two. The mark only tags the
 captured narratives, and the guidance on it lives in the facilitation guides alone.
 
-Whether the narrator sees what is told as good, bad or a mix is not recorded in the schema. For anything real a mix is
+Whether the narrator sees what is told as good, bad or a mix is not recorded in the TBox. For anything real a mix is
 expected, and it stays in the story's own words. SCAT is pragmatic and thin. It doesn't compete with richer ontologies
 such as `ant-rdf`, which cost more and do more analytically: problematization belongs there, and nothing stops the same
 case from being coded in both, with different tools.
@@ -175,7 +234,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
   - the rule that a link is not an edge: an Obsidian link from a narrative to a vertex records only that the
     narrative refers to it, and never creates an edge;
   - **narrative**, a base class of its own, outside the vertex and edge pattern, and a page type of its own, one page
-    per narrative whose status is its coding state, with scenario and architecture as its subclasses. A narrative's **support** is the vertices it links plus the edges that name it. A support is **valid** when it is
+    per narrative whose status records how far its coding has got, with scenario and architecture as its subclasses. A narrative's **support** is the vertices it links plus the edges that name it. A support is **valid** when it is
     closed: every edge that names the narrative has both its vertices linked by it. A `done` narrative whose support has
     no edges gets a warning, not an error, so the coder confirms it was intended;
   - each record's required and optional fields, including the past, future or mixed mark on every narrative (see
@@ -185,7 +244,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
     narrative's own rules;
   - how the graph holds disagreement and margins of potential conflict. At minimum, the same concern can be held by
     different stakeholder groups;
-  - one generic **relationship** between two records of the same class: a note with a place in the graph, whose only
+  - one generic **relationship** between two records of the same class: a free-text remark with a place in the vault, whose only
     rule is that both ends share a class. It is optional, the tools give it no meaning, and analysis views leave it
     out. No typed links between records of the same class are defined (see Non-goals).
 - **G2. Vault ↔ graph.** Markdown pages with YAML frontmatter parse into an ABox that is checked against the TBox.
@@ -247,7 +306,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
   2025, DOI 10.1111/epic.70009), and recent unpublished grant-proposal drafts from the same collaboration, which the
   chief engineer supplies and which are read for principles only. The strategy covers the improvisational stance,
   eliciting scenarios and architectures, and holding disagreement without adjudicating it.
-- **G12. A template analysis notebook.** The template carries a notebook that loads a vault bound to the schema and
+- **G12. A template analysis notebook.** The template carries a notebook that loads a vault that conforms to the TBox and
   gives the network analysis the project needs, as named views:
   - the **narrative view**: one coded narrative's support (G1), its fingerprint,
     drawn as four columns in class order (group, concern, affordance, technology) with the edges between neighbouring
@@ -294,7 +353,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
   from a prior-art readout and reviewed before detailed design starts.
 
 - **G17. Links and edges stay in step (a known pitfall).** Many connections appear in two forms: "this page
-  references that page" in Obsidian, and "this element is connected to that element" in the knowledge graph. Making
+  references that page" in Obsidian, and "this vertex is connected to that vertex" in the knowledge graph. Making
   the two feel like one thing has a large bearing on the coder's experience, and part of why there is code at all is
   to detect when they diverge and to reconcile them. Coding is incremental: stub, fill in, stub further, fill in
   again, breadth first for some people and depth first for others. The docs guide that incremental work for people
@@ -310,11 +369,11 @@ matters without claiming to be exhaustive. No particular project's choices appea
 - Testing AI assistance against any provider other than inference.coop in v0.1. Broader testing comes later.
 - Faces or triangles of any kind, including ones inferred from scenarios and architectures.
 - Letting instance repositories extend the TBox, and evolving the TBox after v0.1.
-- Checking that named entities are linked, beyond a basic warning.
+- Checking that pages named in a page's text are linked, beyond a basic warning.
 - The verification, validation and human-signature assurance framework of the INCOSE paper.
-- Attributing statements to individuals in the schema. The data records groups; an event's participation terms are
+- Attributing statements to individuals in the TBox. The data records groups; an event's participation terms are
   its own policy, which the docs name without choosing one. How field notes are taken is the facilitator's call.
-- Recording the narrator's normative posture (good, bad or mixed) in the schema. It stays in the story's text;
+- Recording the narrator's normative posture (good, bad or mixed) in the TBox. It stays in the story's text;
   problematization is for a richer ontology such as `ant-rdf`, applied afterwards.
 - Adjudicating between stories or architectures. Neither the tools nor the guides judge which architecture is correct
   or which stories should be focal.
@@ -352,7 +411,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-10 | The docs site has no dead ends or broken links. Every journey page says what you need before you start and where to go next. | Strict build and link check; the ACE's browser pass over every page, at desktop and phone width |
 | R-11 | **Make the right way the easy way.** There is one obvious way to create each kind of page, and users never hand-write structure the tools can generate. Each journey page leads with the one action to take next. | The Haiku testers' reports; the ACE's review |
 | R-12 | Repositories made from the template are private by default, and the docs and the template's README recommend private repositories. | A probe of the documented creation path on the candidate; UA-M |
-| R-13 | The schema has one source. The TBox is authoritative; any other form the tools use is generated from it or held equal to it by a test. | The generator or the equality test, in CI |
+| R-13 | The TBox is the one source of the ontology, and authoritative; any other form the tools use is generated from it or held equal to it by a test. | The generator or the equality test, in CI |
 | R-14 | The planning and facilitation guides carry the improvisational stance ("yes, and"; "from this perspective"). They contain no step that ranks, votes on or adjudicates between stories or architectures. | The ACE's review of the guides; UA-M |
 | R-15 | **A light musical reference, clarity first.** The package and its docs carry the music-note logo and one brief aside on improvisation, where the "yes, and" stance is introduced. Everywhere else, plain words win over any musical reference. | The chief engineer's judgement in UA-M |
 | R-16 | **A stable machine interface.** Every result the operations return is also available as versioned, machine-readable data, from the Python API and the CLI alike. Its schema lives with the contracts, and changing it follows a stated versioning rule. A fix is data a tool can apply (what kind of fix it is, the exact command, or the field to write), not only a sentence. This is the interface the MCP server, the Obsidian plugin and any later tool build on. | Every operation's output validated against the schema in tests; a test that the text messages and the data agree |
@@ -480,6 +539,9 @@ The chief engineer has accepted by merging the release PRs.
   - the user tests come last.
 - **TBox changes before release.** Once the TBox and page contracts are accepted, a change to them during v0.1 is the
   ACE's logged call if it serves the mission as written. It is an intent gap if it would change what the graph means.
+- **Reserved terms.** Every scope of work, contract, test name and doc page uses the reserved terms. The PM's scope
+  check rejects a scope that uses a word from a "Not to be called" column for a reserved sense, and the change
+  consultant's sweep includes the reserved terms.
 - **Ripple-aware change.** A change-management consultant, an agent that supports the PM, builds each impact map
   (R-18) before the ACE approves a scope and re-runs the sweep before acceptance. It also keeps the file map of the
   packages in flight: packages whose blast radii overlap are merged or put in order, never run so that one undoes
@@ -573,7 +635,7 @@ serves this mission as written; a change that would alter the mission goes to th
     narrative has both its vertices linked by that narrative, so a support is always a closed subgraph. A narrative
     that breaks this cannot be `done`.
 
-  The schema-and-projection package settles how edges are written and shown, checked in Obsidian (G15).
+  The TBox-and-projection package settles how edges are written and shown, checked in Obsidian (G15).
 - **The IDE setup skill** in the template (D-3) is a short skill file that helps an AI coding assistant set itself up
   for the vault; the docs point to it.
 - **The relationship** has only the same-class rule; it is never entailed, never required and never in an index's
@@ -595,9 +657,9 @@ serves this mission as written; a change that would alter the mission goes to th
   contracts, and the link-edge correspondence of G17), that review the architecture document before detailed design
   (R-22).
 - **The range vault** rebuilds the KOI case with groups, not named people.
-- **Order of work.** WP12 (the terms page, now on `dev`) is accepted first; the schema-and-projection package revises
+- **Order of work.** WP12 (the terms page, now on `dev`) is accepted first; the TBox-and-projection package revises
   it for the narrative model (R-18). Then the prior-art readout; then the architecture
-  document and the chat-path spike, side by side. Then one schema-and-projection package (G1, G15), which absorbs WP13
+  document and the chat-path spike, side by side. Then one TBox-and-projection package (G1, G15), which absorbs WP13
   (the flow and consent pages, not yet built) so the shared docs are edited once. Then the views (G12) and the chat path (G14), in the order the
   architecture sets.
 
