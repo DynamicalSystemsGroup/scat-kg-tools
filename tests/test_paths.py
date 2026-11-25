@@ -17,7 +17,7 @@ from scat_kg import cli
 ROOT = Path(__file__).parents[1]
 EXAMPLES = ROOT / "contracts" / "examples"
 BAD_LINK = "[[no-such-concern]]"
-HELDBY = "narrative/saturday-at-the-lending-desk.md"  # the page the defect is seeded in
+SEEDED_NARRATIVE = "narrative/saturday-at-the-lending-desk.md"  # the page the defect is seeded in
 NO_FOLDER = "/no/such/scat-vault"
 
 
@@ -33,7 +33,7 @@ def make(tmp_path: Path, name: str, defect: bool) -> Path:
     root = tmp_path / name
     shutil.copytree(EXAMPLES, root)
     if defect:  # one error: a link to a page that does not exist
-        page = root / HELDBY
+        page = root / SEEDED_NARRATIVE
         text = page.read_text(encoding="utf-8")
         page.write_text(text.replace("[[careful-record-keeping]]", BAD_LINK), encoding="utf-8")
     return root
@@ -43,7 +43,12 @@ def make(tmp_path: Path, name: str, defect: bool) -> Path:
 CASES = {
     "check-clean-vault": (lambda r: scat_kg.check(root=r), ["check"], 0, False),
     "check-vault-with-error": (lambda r: scat_kg.check(root=r), ["check"], 1, True),
-    "check-page": (lambda r: scat_kg.check(HELDBY, root=r), ["check", HELDBY], 1, True),
+    "check-page": (
+        lambda r: scat_kg.check(SEEDED_NARRATIVE, root=r),
+        ["check", SEEDED_NARRATIVE],
+        1,
+        True,
+    ),
     "check-page-by-name": (
         lambda r: scat_kg.check("quick-checkout", root=r),
         ["check", "quick-checkout"],
@@ -57,8 +62,8 @@ CASES = {
         False,
     ),
     "check-neighborhood-with-error": (
-        lambda r: scat_kg.check(HELDBY, neighborhood=True, root=r),
-        ["check", HELDBY, "--neighborhood"],
+        lambda r: scat_kg.check(SEEDED_NARRATIVE, neighborhood=True, root=r),
+        ["check", SEEDED_NARRATIVE, "--neighborhood"],
         1,
         True,
     ),
@@ -225,8 +230,8 @@ CASES = {
     ),
     "stub-links-vault": (lambda r: scat_kg.stub_links(root=r), ["stub-links"], 0, True),
     "stub-links-page": (
-        lambda r: scat_kg.stub_links(HELDBY, root=r),
-        ["stub-links", HELDBY],
+        lambda r: scat_kg.stub_links(SEEDED_NARRATIVE, root=r),
+        ["stub-links", SEEDED_NARRATIVE],
         0,
         True,
     ),

@@ -205,7 +205,7 @@ D-037 and D-043 (`git ls-remote --tags <repo> | grep divergence`).
 | D-049 | Fix T1; accept T2 and T3 as known-weak; R-15 recorded met | `acceptance/reports/r5-findings.md` | none |
 | D-050 | Candidate verified; round-3 findings accepted; local paths redacted from public records (still in git history; removing them needs a force-push, your call) | ACE reruns; re-grep returns 0 | none |
 | D-052 | Checkpoint rc1; conformance checks structure, never content; jazz toned down; WP9; two research spikes | your two corrections, quoted in sitting 4c | `checkpoint/v0.1-rc1` on both repositories |
-| D-053 | Rule audit: 22 rules clearly structural, four borderline rules kept, one removed | the table in sitting 4c | none |
+| D-053 | Rule audit: 22 rules clearly structural, four borderline rules kept, one removed | the audit summary in sitting 4c | none |
 | D-054 | The spikes may continue into feature development on their branches, outside v0.1 | your typed direction | none |
 | D-057 | Grounding axis (past, future, mixed) goes into v0.1; the play test pauses | your typed "Into v0.1" | `divergence/D-057` |
 | D-058 | Amendment 3 merged; WP10 approved; test edits authorised | your typed "Yes, authorise" | `divergence/D-057` |
@@ -289,8 +289,8 @@ exists for them.
   `docs/reference/api.md`: they are output only, so a change to the data would not fail it. I re-ran the nine CLI
   examples in order on a fresh clone of the template at `5a7290f`, and all nine equal their blocks. The visual check of the
   JSON blocks on the two reference pages was measured by DOM only, not by eye.
-- **(o) A relation-type refusal stays a manual fix (WP11).** `scat stub --type heldby` refuses and names
-  `scat stub-pair <relation> <endpoint-a> <endpoint-b>` (and the pair refusal for the cap is manual too). The fix is
+- **(o) An edge refusal stays a manual fix (WP11).** `scat stub` refuses an edge and names
+  `scat record-edge <type> <from> <to> --told-by <narrative>` (and the refusal for the cap is manual too). The fix is
   `manual`, not a command a tool can run, because the contract allows one `author_slot` per command and this needs
   three values. A plugin shows the text and you type the command.
 - **(p) The Terms page (WP12).** Fresh Haiku testers cold-read it four times (`acceptance/reports/wp12-r3-round1.md` to
@@ -335,49 +335,17 @@ kept, marked as retained for reference only. The old reports in `acceptance/repo
 
 The audit and the rulings below record the v0.1 catalogue, with its raw, coded, relation and class pages. The rules in force are in `contracts/rule-catalogue.md`.
 
-**The rule audit (D-053).** The 27 rule ids then in `contracts/rule-catalogue.md` were checked for any content judgement. A
-verdict STRUCTURE means the rule looks at pages, fields, names, counts or links, and never at what a note says. WP10 added
-one rule (row 28), so the ids below are the 28 that the catalogue lists (`grep -o 'SCAT-[A-Z-]*'
-contracts/rule-catalogue.md | sort -u | wc -l` prints 28).
-
-| # | Rule id | Severity | What it looks at | Verdict |
-|---|---|---|---|---|
-| 1 | SCAT-FM-PARSE | error | frontmatter is not a readable mapping | STRUCTURE |
-| 2 | SCAT-FM-REQUIRED | error | a required text field is missing | STRUCTURE |
-| 3 | SCAT-FM-TYPE | error | `type` is not one of the twelve keys | STRUCTURE |
-| 4 | SCAT-FM-REQUIRED-LINK | error | a relation page lacks an endpoint field | STRUCTURE |
-| 5 | SCAT-FM-STATUS | error | `status` is not `stub`, `draft` or `done` | STRUCTURE |
-| 6 | SCAT-FM-INDEXES | error | a class page's `indexes` value is outside its set | STRUCTURE |
-| 7 | SCAT-FM-SHAPE | error | a text field is not one non-empty string | STRUCTURE |
-| 8 | SCAT-NAME | error | a file name is illegal or not unique | STRUCTURE |
-| 9 | SCAT-DONE-FIELD | error | a done page lacks a text field | STRUCTURE |
-| 10 | SCAT-DONE-LINK | error | a done page lacks a link field | STRUCTURE |
-| 11 | SCAT-DRAFT-FIELD | warning | a draft page lacks a text field it needs by done | STRUCTURE |
-| 12 | SCAT-DRAFT-LINK | warning | a draft page lacks a link field it needs by done | STRUCTURE |
-| 13 | SCAT-LINK-SHAPE | error | a link field is not a list of well-formed links | STRUCTURE |
-| 14 | SCAT-LINK-UNLISTED | error | a page has a non-empty link field its type does not list | STRUCTURE |
-| 15 | SCAT-LINK-ENDPOINT | error | a link target is the wrong page type | STRUCTURE |
-| 16 | SCAT-LINK-DANGLING | error | a frontmatter link target does not exist | STRUCTURE |
-| 17 | SCAT-LINK-DANGLING-BODY | error | a body link target does not exist | STRUCTURE |
-| 18 | SCAT-CAP | error | stakeholder-group pages exceed the cap | STRUCTURE |
-| 19 | SCAT-CAP-CONFIG | error | `scat.toml` or its cap is missing or malformed | STRUCTURE |
-| 20 | SCAT-REL-DUPLICATE | warning | two relation pages state the same pair | STRUCTURE |
-| 21 | SCAT-RAW-BACKLINK | warning | a coded page lists a raw page that does not list it back | STRUCTURE |
-| 22 | SCAT-INDEX-STALE | warning | a class page's table is missing or differs from what `index` writes | STRUCTURE |
-| 23 | SCAT-LINK-DISCOURAGED | warning | a link field the TBox discourages for this page type is non-empty | STRUCTURE (ACE ruling B1, kept) |
-| 24 | SCAT-LINK-DISCOURAGED-BODY | warning | a body link goes to a class the TBox discourages for this page type | STRUCTURE (ACE ruling B1, kept) |
-| 25 | SCAT-CONFLICT-SELF | warning | a concern lists itself under `conflicts`; the message states only that fact | STRUCTURE (ACE ruling B2, kept, message trimmed) |
-| 26 | SCAT-MENTION | warning | text names an existing page without linking it | STRUCTURE (ACE ruling B3, kept) |
-| 27 | SCAT-RAW-UNCODED | warning | a done raw page has no coded page and no coded page lists it | STRUCTURE (ACE ruling B4, kept) |
-| 28 | SCAT-FM-TIMEFRAME | error | `timeframe` on a raw page is not `past`, `future` or `mixed` | STRUCTURE (added in WP10, after the D-053 audit; my reading) |
-
-Rows 1 to 22 are the ones D-053 calls unambiguously structural. Rows 23 to 27 are the borderline rules the ACE ruled
-on (B1 covers two rules). All are kept. A further rule, the warning about a record that holds two conflicting concerns, was content and is removed (D-052, D-053).
+**The rule audit (D-053).** The 27 rule ids then in the catalogue were checked for any content judgement. 22 were
+unambiguously structural (they look at pages, fields, names, counts or links, never at what a note says), four
+borderline rules were kept by the ACE rulings B1 to B4, and one, the warning about a record that holds two conflicting
+concerns, was content and was removed (D-052, D-053). WP10 added one rule after the audit. The per-rule table belonged to
+that catalogue, and most of its ids are retired. The rules in force, with their ids and severities, are in
+`contracts/rule-catalogue.md`.
 
 **Checklist.**
 
 - [ ] I checked that `checkpoint/v0.1-rc1` exists on both repositories.
-- [ ] I read the table and accept every verdict, or I name the rule I would change.
+- [ ] I read the audit summary and the catalogue, and accept the verdicts, or I name the rule I would change.
 - [ ] I accept that R-15 rests on my own judgement (sitting 2).
 
 **Done looks like.** The checkpoint is confirmed, and each verdict is accepted or noted.
