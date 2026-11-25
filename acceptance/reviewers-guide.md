@@ -233,7 +233,7 @@ exists for them.
 
 ## Sitting 4b. What is known to be weak
 
-**Entry point.** The list below, items (a) to (o). Each names the file or log entry that backs it.
+**Entry point.** The list below, items (a) to (p). Each names the file or log entry that backs it.
 
 - **(a) uv.** UA-A testers had uv preinstalled. No agent ran uv's installer (D-040, D-041). `MISSION.md` UA-A says "uv
   not installed". This departure is yours to disposition. Close it with one fresh tester rerun after you permit the
@@ -294,16 +294,16 @@ exists for them.
   `manual`, not a command a tool can run, because the contract allows one `author_slot` per command and this needs
   three values. A plugin shows the text and you type the command.
 - **(p) The Terms page (WP12).** Fresh Haiku testers cold-read it four times (`acceptance/reports/wp12-r3-round1.md` to
-  `wp12-r3-round4.md`). All five questions were answered correctly in each round. One page defect was fixed per round in
-  rounds 1 to 3. In round 4 the only blocking mark, the size of the stakeholder-group cap, which is set per vault in
-  `scat.toml`, is accepted as not a page defect, and the remaining findings ask for teaching the guides carry. The
+  `wp12-r3-round4.md`). The PM fixed one page defect after each of rounds 1 to 3. In round 4 the only blocking mark,
+  the size of the stakeholder-group cap, which is set per vault in `scat.toml`, is accepted as not a page defect; the
+  remaining findings ask for teaching the guides carry. Read the reports for the answers and guesses themselves. The
   page's `Stage` is one value per entry, so Status is placed at capture, which is the PM's judgement.
 
 **Checklist.**
 
 - [ ] I gave (a) my answer.
 - [ ] I gave (e) my answer.
-- [ ] I read (b) to (d) and (f) to (o) and accept each, or I note it.
+- [ ] I read (b) to (d) and (f) to (p) and accept each, or I note it.
 
 **Done looks like.** (a) and (e) each have your answer, and every other item is accepted or noted.
 

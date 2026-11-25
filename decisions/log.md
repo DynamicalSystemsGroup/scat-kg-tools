@@ -1645,3 +1645,20 @@ of the fact the choice matters". The cut [...] holds project-specific details, r
 
 ACE outcome: Mission Amendment 5 (PR #8) names the three classes. WP13's consent page is organised by them, asks each
 item per class where the answer can differ, and shows no project's choices as such.
+
+## D-074 | 2026-11-24 | WP12-U5 corrections made by the ACE; stale release PRs closed
+
+The chief engineer's instruction (chat, typed by the ACE): "you are clear to make the described as well as clear to
+close PRs without merging if they are no longer on the path to delivery. i will squash merge the PR 8 as the signal
+that you are clear to enter autonomous mode when i am ready".
+
+ACE outcome:
+- WP12-U5's branch (`wp12/u5`, b1fce7f) is merged into `dev`, with the corrections its review asked for, which a
+  guard had refused when the instruction reached a worker as an agent message: the acceptance README's persona counts
+  now separate the three journey personas from p4's page cold read; the reviewer's guide covers items (a) to (p); and
+  item (p) no longer claims every question was answered correctly in every round, but says what the PM fixed and
+  points to the reports. 990 tests pass.
+- The release PRs `scat-kg-tools#3` and `scat-kg-template#1` are closed without merging. They carry the candidate from
+  before Mission Amendment 5, which the next candidate replaces; new release PRs are opened at the candidate stage.
+- WP12's acceptance (metrics, the PM's closing record) waits for the autonomous run, which starts when the chief
+  engineer squash-merges PR #8.

@@ -8,12 +8,12 @@ run by the tools or by CI. The kit is not in the docs site's navigation.
 
 | File | What it is |
 |---|---|
-| `personas/` | Three personas in the user's own words: p1 facilitator-analyst, Python session, Haiku; p2 newcomer, command line, Haiku; p3 facilitator-analyst, Python session, Sonnet, as control. |
+| `personas/` | Personas in the user's own words. The three journey personas: p1 facilitator-analyst, Python session, Haiku; p2 newcomer, command line, Haiku; p3 facilitator-analyst, Python session, Sonnet, as control. p4 is a page cold read (row below). |
 | `briefs/` | One self-contained brief per persona, which is all a tester is given, and `cold-read-part1.md` and `cold-read-part2.md`, the two halves of the R-15 cold read. The cold-read briefs are retained for reference only: the cold read is not part of this release's acceptance (D-052). |
 | `report-template.md` | What a tester returns: the cold-read answer first, then J1 to J7, findings, severity, dispositions, void rules. |
 | `personas/p4-…`, `briefs/p4-…` | Persona 4 and its brief (`personas/p4-event-coordinator-haiku.md`, `briefs/p4-event-coordinator-haiku.md`) are the project-manager cold read of one docs page, the Terms page, for WP12-R3. The tester gets the brief plus the page text only and uses no tools, so the clean-environment setup below does not apply. The reports are `reports/wp12-r3-round1.md` to `wp12-r3-round4.md`. |
 
-Each persona has a coding domain of its own, none of them the worked example: p1 flood readiness in a river town, p2
+Each journey persona (p1 to p3) has a coding domain of its own, none of them the worked example: p1 flood readiness in a river town, p2
 stall allocation at a farmers' market, p3 parts ordering at a bicycle-repair co-operative. Each brief carries its
 domain's event notes: three groups, one story session and one design session, within the template's cap. A tester
 codes at least one story and one design proposal, each raw and coded.
@@ -81,11 +81,11 @@ example was removed, makes the report void.
 
 | UA-A rule in MISSION.md | Kit file and section |
 |---|---|
-| At least three personas, in the user's own words, never the tool's vocabulary | `personas/` (three files), "About me" and "How I work" |
+| At least three personas, in the user's own words, never the tool's vocabulary | `personas/` (p1 to p3; p4 is a page cold read), "About me" and "How I work" |
 | Facilitator-analyst, terminal, GitHub and Obsidian but not a developer (Haiku) | `personas/p1-facilitator-repl-haiku.md` |
 | Newcomer to Obsidian and the command line, careful and literal (Haiku) | `personas/p2-newcomer-cli-haiku.md` |
 | Same facilitator-analyst on Sonnet, as control | `personas/p3-facilitator-repl-sonnet-control.md`, `briefs/p3-...` |
-| Most on Haiku | two of three personas; the model is named in each brief |
+| Most on Haiku | two of the three journey personas; the model is named in each brief |
 | At least one Haiku tester in the REPL, at least one on the CLI | p1 (Python session), p2 (command line) |
 | Clean user environment: fresh home directory, uv not installed | this README, "Clean-environment setup". The uv half is replaced by "preinstalled", stated in each report (D-040, D-041) |
 | Starts from the Pages preview URL and follows only what the docs say | each brief, "Where you start" and "Follow only the pages"; this README, "Docs source" |
