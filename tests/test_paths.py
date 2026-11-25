@@ -4,6 +4,8 @@ the same fixture, gives the same message, the same files and the exit code the C
 The CLI is run through `cli.main(argv)` (no subprocess), and once for real as `uv run scat`.
 """
 
+# TODO(WP16-U6/U7) lift: UNBUILT, the forced exit code 1 for unbuilt commands, and the two skipped tests.
+
 import os
 import shutil
 import subprocess

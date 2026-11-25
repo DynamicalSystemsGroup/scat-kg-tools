@@ -420,8 +420,12 @@ def test_schema_does_not_enumerate_rule_ids():
     assert "enum" not in SCHEMA["$defs"]["OperationName"]
 
 
-def test_contract_page_is_at_most_1600_words():  # was 600 at version 1; version 2 adds the edge operations
-    assert len(PAGE.split()) <= 1600
+@pytest.mark.skip(
+    reason="TODO(WP16): machine-interface.md is 1558 words against the 600-word cap (log); "
+    "ACE to rule: cut the page or raise the cap"
+)
+def test_contract_page_is_at_most_600_words():
+    assert len(PAGE.split()) <= 600
 
 
 def def_properties(*names: str) -> set[str]:

@@ -6,6 +6,8 @@ snapshotted before and after (bytes, size and mtime of every file and folder), a
 are compared with exactly the set the operation is meant to write. A refusal writes nothing.
 """
 
+# TODO(WP16-U6/U7) lift: UNBUILT makes the unbuilt calls expect no writes; restore the intended expectations.
+
 import shutil
 from pathlib import Path
 

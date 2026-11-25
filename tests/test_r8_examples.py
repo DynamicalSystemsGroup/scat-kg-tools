@@ -6,6 +6,8 @@ adds: the one allowed warning is the one the README names, each page is checked 
 `scat_kg.check` by path, every page type has an example, and no example page is left out of the check.
 """
 
+# TODO(WP16-U6/U7) lift: the check-based tests below are skipped (UNBUILT) until U6 rebuilds the checks.
+
 from pathlib import Path
 
 import pytest
