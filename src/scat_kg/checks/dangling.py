@@ -23,7 +23,7 @@ from scat_kg.checks.text import (
 from scat_kg.fix import Fix, FixOption
 from scat_kg.vault import Page
 
-HAND = "choose a legal page name by hand (contract section 2), then write the link with it"
+HAND = "choose a legal page name by hand (page contracts section 2), then write the link with it"
 
 
 @dataclass(frozen=True)

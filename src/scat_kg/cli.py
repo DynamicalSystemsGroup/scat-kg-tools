@@ -73,7 +73,7 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("status", metavar="STATUS", help="stub, draft or done")
     command(
         "index",
-        "Write the Base file `index/<type>.base` of each type that has none. Never rewrites one.",
+        "Write the index page `index/<type>.base` of each type that has none. Never rewrites one.",
         "`scat_kg.index()`",
     )
     p = command(
