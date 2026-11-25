@@ -437,6 +437,7 @@ class Skipped:
     row: int  # the row's number
     line: int
     reason: str  # plain text, no links
+    fix: str | None = None  # what to do, when the reason has its own fix; else the view's usual one
 
 
 @dataclass(frozen=True)
@@ -496,6 +497,9 @@ def _empty(root: str, refusal: Any) -> Graph:
     return Graph(root, {t: () for t in TBOX.layers}, (), (), (), (), None, refusal)
 
 
+RENAME_FIX = "rename one of the pages so the name is carried by one page (`scat check` names them), then run this again"
+
+
 def _end_problem(vault: Vault, nodes: dict, end: str, target: str | None) -> str | None:
     """Why a row's end reaches no node, in plain words; None when it reaches exactly one node page."""
     if target is None:
@@ -504,7 +508,8 @@ def _end_problem(vault: Vault, nodes: dict, end: str, target: str | None) -> str
     if not found:
         return f"the `{end}` end `{target}` reaches no page"
     if len(found) > 1:
-        return f"the name `{target}` is carried by more than one page"
+        paths = ", ".join(sorted(p.path for p in found))
+        return f"the `{end}` end `{target}` is carried by more than one page: {paths}"
     if found[0].type not in nodes:
         return f"the `{end}` end `{target}` reaches a page that is not a node"
     return None
@@ -579,7 +584,8 @@ def load(root: str | Path) -> Graph:
                             f"{et.from_type} to a {et.to_type}"
                         )
             if why:
-                skipped.append(Skipped(p.name, p.path, row.n, row.line, why))
+                fix = RENAME_FIX if "is carried by more than one page" in why else None
+                skipped.append(Skipped(p.name, p.path, row.n, row.line, why, fix))
                 continue
             key = EdgeKey(et.slug, a.name, b.name)
             own.setdefault(key, Telling(p.name, p.path, row.n, row.line, row.note, status))

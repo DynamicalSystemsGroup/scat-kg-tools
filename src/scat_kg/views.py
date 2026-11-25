@@ -134,7 +134,7 @@ def _skipped(op: str, g: Graph, names) -> Refused | None:
             Refusal(
                 f"{k.path} row {k.row}",
                 k.reason,
-                f"fix the row (`scat check {k.path}` says how), then run this again",
+                k.fix or f"fix the row (`scat check {k.path}` says how), then run this again",
             )
             for k in rows
         ),
