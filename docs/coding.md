@@ -45,6 +45,8 @@ You work each narrative round the same four steps, as often as it takes:
 3. **Coding.** Link each node where the account names it, and record each edge it tells.
 4. **Reviewing.** Run the check, then fix what it reports. You confirm two things yourself: the account matches the field notes, and the coding is a correct use of SCAT. The tool cannot judge either.
 
+The [norms](norms.md) say what the tool requires and what is only guidance, and what `done` needs.
+
 When the check passes and you confirm both, set the narrative to `done`. Done is not frozen: to change a `done` narrative you set it back to `draft`, edit, then set `done` again, and the tool checks it again then.
 
 ### The three actors

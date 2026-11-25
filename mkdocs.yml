@@ -50,6 +50,7 @@ nav:
       - Scenarios: facilitate-scenarios.md
       - Architectures: facilitate-architectures.md
   - Coding: coding.md
+  - Norms: norms.md
   - Coding in a chat: chat-path.md
   - Coding in an IDE: ide.md
   - Analysis: analysis.md
