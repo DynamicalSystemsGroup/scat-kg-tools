@@ -1662,3 +1662,31 @@ ACE outcome:
   before Mission Amendment 5, which the next candidate replaces; new release PRs are opened at the candidate stage.
 - WP12's acceptance (metrics, the PM's closing record) waits for the autonomous run, which starts when the chief
   engineer squash-merges PR #8.
+
+## D-076 | 2026-11-24 | Mission Amendment 5 merged; `dev` synced; revert point
+
+The chief engineer merged PR #8 (merge commit 0e74f19 on `main`), which rewrote `MISSION.md` as a self-standing
+document and added `GLOSSARY.md`. The decision records are in the PR #8 thread. His words: "i merged it". The merge
+is the signal to enter autonomous mode (his earlier words: "i will squash merge the PR 8 as the signal that you are
+clear to enter autonomous mode when i am ready").
+
+ACE outcome:
+- `main` is merged into `dev` (c0cb9c4), so `dev` carries the mission and the glossary.
+- Revert point: tag `divergence/D-076` on 778e070, the `dev` commit before the merge.
+- The PR branch is deleted. The merge was a merge commit, not a squash, so an early commit on that branch with a
+  line the chief engineer asked to keep out of the public repo is in `main`'s history; removing it needs a
+  force-push to `main`, which is his call. It is on the morning list.
+
+## D-077 | 2026-11-24 | WP12 accepted
+
+Evidence: `python3 work-packages/check_metrics.py --accept WP12` passes (338 records); CI and Pages green on c0cb9c4,
+whose content differs from the head (d8f87b7) only in the metrics log and the board; 990 tests passed at 778e070; the
+terms page and its drift test are on `dev`; the four cold-reader rounds and the U5 corrections (D-074).
+
+Rulings on the PM's flags:
+- The Elicitation entry's "Vault: none" against its clean-check line, and the page's other entries, are superseded:
+  Amendment 5 changes the narrative model (one page per narrative, nodes and edges, fingerprints), so the terms page
+  is rewritten in the ontology-and-layout package against `GLOSSARY.md` (R-18). No fix now.
+- Status placed at "capture", and guide-derived claims outside the drift test: accepted for v0.1's current page;
+  the rewrite revisits both.
+- The page at its 600-word cap, and the U4 filing without a separate reviewer: accepted.
