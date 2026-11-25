@@ -2113,3 +2113,8 @@ Outcome as recorded:
   loop as a MAY and runs it, testing that it is supported.
 
 Release timing for C3 to C8 is put to the chief engineer as one follow-up (D-103).
+
+## D-103 | 2026-11-25 | C3 to C8 are in v0.1
+
+Asked as one follow-up to D-102 (are C3 to C8 also in v0.1?). The chief engineer chose "Yes, all in v0.1". All of
+C1 to C8 are built before the release PRs.
