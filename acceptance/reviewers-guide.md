@@ -6,8 +6,8 @@
 frontmatter cannot be read, naming the file, and the architecture sentences are added (see 4c, "Closed since D-095").
 UA-A on the manual path has not run: round 1 waits on the candidate, and a later unit fills section 4d from the
 reports. The chat path's UA-A has three testers, two on Haiku and one on Sonnet; the ACE runs their sessions, light
-and spaced, in your sittings. WP20-U8, the docs unit for the five defects the reviewers found (4c, item 9), is done and has
-passed review; the candidate is pinned after it lands on `dev`. Until the candidate is pinned, treat every "result
+and spaced, in your sittings. WP20-U8, the docs unit for the five defects the reviewers found (4c, item 9), is done, has
+passed review and is merged to `dev`; the candidate pin follows. Until the candidate is pinned, treat every "result
 when written" below as stale.
 
 Read one sitting, tick its boxes, stop. Each sitting has an entry point, a short list of what to look at, and one
