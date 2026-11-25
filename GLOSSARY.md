@@ -17,27 +17,27 @@ the same package. Each change is listed for the chief engineer's review at accep
 
 | Term | Definition | Example use | Formal concept and source |
 |---|---|---|---|
-| **node** | One group, concern, affordance or technology in the layered graph. | "`watershed-stewards` is a group node." | Vertex (graph theory); a 0-simplex (knowledge complex) |
-| **edge** | A typed connection between two nodes in neighbouring layers. There are three kinds, read as "holds" (group → concern), "is addressed by" (concern → affordance) and "is provided by" (affordance → technology). At most one per pair. | "Farm irrigators *hold* guaranteed irrigation allocation." | Edge (graph theory); a 1-simplex (knowledge complex); in the TBox, Heldby, Addresses and Attributes |
+| **node** | One group, concern, affordance or technology in the layered graph. One exception, always spelled out: Obsidian's graph view draws every page as a node; there, say "a node in Obsidian's graph view", which is a page. | "`watershed-stewards` is a group node." | Vertex (graph theory); a 0-simplex (knowledge complex) |
+| **edge** | A typed connection between two nodes in neighbouring layers. There are three types, read as "holds" (group → concern), "is addressed by" (concern → affordance) and "is provided by" (affordance → technology). At most one per pair. | "Farm irrigators *hold* guaranteed irrigation allocation." | Edge (graph theory); a 1-simplex (knowledge complex); in the TBox, Heldby, Addresses and Attributes |
 | **element** | Any node or edge. | "Coding identifies every element the account tells." | Simplex (knowledge complex) |
-| **layer** | All the nodes of one kind. The four layers, in order: group, concern, affordance, technology. "Up" is toward groups. | "Tracing a concern goes one layer up to groups." | Partition of a layered (k-partite) graph (graph theory) |
+| **layer** | All the nodes of one type. The four layers, in order: group, concern, affordance, technology. "Up" is toward groups. | "Tracing a concern goes one layer up to groups." | Partition of a layered (k-partite) graph (graph theory) |
 | **knowledge graph** | The nodes, edges and narratives the tool builds from a vault and checks against the ontology. | "The tool checks that the knowledge graph matches the pages." | An ABox under a TBox (description logic) |
 | **narrative** | One account drawn from the field notes, on one page. Usually a scenario or an architecture, sometimes neither. In analysis it can be drawn as a node of its own, joined to what it tells. | "The dry-July narrative is a scenario." | Authored in SCAT, from the coding practice of `ant-rdf` |
 | **scenario** | A narrative about people doing things over time; it tells groups, concerns and affordances. | "A scenario rarely names a technology." | Authored in SCAT |
 | **architecture** | A narrative about how parts are put together into tools that offer affordances; it tells concerns, affordances and technologies. | "An architecture rarely names a group." | Authored in SCAT |
 | **fingerprint** | The elements a narrative tells: its nodes and the edges it tells. Drawn with the narrative as a node, it is that node's neighbourhood. It may have no edges and may be disconnected. | "The sensor-first pitch's fingerprint has seven nodes and two edges." | Support (mathematics: where a function is non-zero, here the narrative's indicator over the elements); neighbourhood (graph theory) |
-| **edge table** | All edges of one kind, between two neighbouring layers, read as a table. | "Export the *holds* table as CSV." | Bipartite graph (graph theory) |
+| **edge table** | All edges of one type, between two neighbouring layers, read as a table. | "Export the *holds* table as CSV." | Bipartite graph (graph theory) |
 | **layered view** | The nodes and edges of the vault, or of a chosen set of narratives, drawn as the four layers. | "In the layered view, three groups share one concern." | Layered graph drawing (graph theory) |
 | **trace** | Following edges from one node up or down the layers. | "Trace this concern down to the technologies behind it." | Reachability (graph theory); traceability (requirements engineering) |
 | **view** | A purposeful picture or table made from a conformant knowledge graph: a fingerprint, an edge table, the layered view, a trace. | "The views are generated after the check passes." | View in model–view–controller (software architecture) |
-| **relationship annotation** | A free-text remark between two entries of the same kind, such as two concerns that pull against each other. Not an edge; it stays out of every view. | "A relationship annotation records that anonymity and attribution pull apart." | Authored in SCAT |
+| **relationship annotation** | A free-text remark between two entries of the same type, such as two concerns that pull against each other. Not an edge; it stays out of every view. | "A relationship annotation records that anonymity and attribution pull apart." | Authored in SCAT |
 
 ## The ontology underneath
 
 | Term | Definition | Example use | Formal concept and source |
 |---|---|---|---|
-| **kind** | One of the defined categories: the four node kinds, the three edge kinds, narrative (with scenario and architecture), and relationship annotation. A page names its kind in its `type` field. | "`technology` is a node kind." | Class (OWL, RDFS) |
-| **the ontology** | This project's fixed definitions of the kinds and their rules, which the tool checks against. ("An ontology", unqualified, is any other one, such as those surveyed for adoption.) | "The ontology says a holds edge joins a group to a concern." | TBox (description logic; OWL, in Turtle) |
+| **type** | One of the defined categories: the four node types, the three edge types, narrative (with scenario and architecture), and relationship annotation. A page names its type in its `type` field. | "`technology` is a node type." | Class (OWL, RDFS) |
+| **the ontology** | This project's fixed definitions of the types and their rules, which the tool checks against. ("An ontology", unqualified, is any other one, such as those surveyed for adoption.) | "The ontology says a holds edge joins a group to a concern." | TBox (description logic; OWL, in Turtle) |
 | **entry** | One node, edge, narrative or relationship annotation as stored in the vault: a page, or a field on a page. | "Each node is an entry with its own page." | Record; an individual in the ABox (description logic) |
 | **conformant** | Passing the tool's two checks: the knowledge graph matches the pages, and it obeys the ontology. | "The vault is conformant: no errors." | Conformance checking (authored rule catalogue, against the TBox) |
 
@@ -49,7 +49,7 @@ the same package. Each change is listed for the chief engineer's review at accep
 | **page** | One Markdown file with a `type` in its frontmatter. | "The narrative page holds the account." | Obsidian note |
 | **field** | One key in a page's frontmatter; Obsidian shows fields as "Properties". | "The `status` field reads `draft`." | YAML frontmatter (Obsidian) |
 | **link** | An Obsidian `[[…]]` reference from one page to another. Never an edge by itself. | "Link `quick-leak-response` where the account names it." | Wikilink (Obsidian) |
-| **index page** | The page the tool generates for a kind, listing its entries. | "The concern index page lists 18 concerns." | Class page (authored) |
+| **index page** | The page the tool generates for a type, listing its entries. | "The concern index page lists 18 concerns." | Class page (authored) |
 | **status** | How far an entry has got: `stub` (a name, perhaps some metadata), `draft` (content, not yet complete) or `done` (complete, conformant and signed off by the coder). | "The narrative is `done`: coded and signed off." | Authored in SCAT |
 | **mismatch** | A link and an edge that should agree but don't. The tool reports each with a fix. | "The tool reports a mismatch between the page and the graph." | Divergence (authored; R-23) |
 
