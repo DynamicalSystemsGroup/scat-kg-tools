@@ -146,7 +146,7 @@ def test_every_numbered_step_in_the_chat_path_names_a_place():
 
 def test_no_step_refers_to_a_step_of_another_page():
     """D-119: a step refers to no step on another page by number or range."""
-    ref = re.compile(r"\bsteps? \d+", re.I)
+    ref = re.compile(r"\bsteps? \d+", re.IGNORECASE)
     steps = _steps(LNT, "The walkthrough", "What is removed and what stays")
     assert not [s for s in steps if ref.search(s) or "same section" in s]
     assert not ref.search(LNT.read_text(encoding="utf-8"))
