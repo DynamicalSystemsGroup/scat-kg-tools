@@ -2314,3 +2314,24 @@ permission guard, and the ACE did not make it in its place; it asked the chief e
 corrected to 9 estimated points. He chose "Yes, correct it". A correcting record (`corrects` the original's `ts`) is
 appended and the board's row reads 9 est, 13 realized, ratio 1.44. `check_metrics.py --accept WP21` passes.
 Also: template `dev` is 271c3e9, pinning tools 7f0ed05 (check: no problems); the docs tests pin it (66 passed).
+
+## D-121 | 2026-11-25 | WP21 accepted
+
+A fresh acceptance reviewer checked R1, R2, R2b and R3 to R10 against tools `dev` 34d5213 and template `dev` 271c3e9
+and found no checkable defect: R1, R2, R2b, R3, R9, R10 met; R4 to R8 met with notes. Its evidence: 2401 tests pass,
+ruff clean, the strict docs build clean, the template's check "no problems", the old table header absent except one
+deliberate seed line in the catalogue. The notes are the parts reserved for the chief engineer's sitting and the
+release (R4 loading the skill; R5 the keychain's behaviour from the built app, a locked keychain, iCloud sync, and a
+`ps` check during a dry run; R6 the first image push; R7 the leave-no-trace run) and one fact for the reviewer's guide:
+R8's test-file diff is larger than the two assertions D-110 allowed because R1's column order rewrote that file's
+tables. CI went red after WP21 merged (the iteration-36 metrics slip, then the ACE's own over-long pin line, unformatted)
+and is green again at 834490f. `check_metrics.py --accept WP21` passes. The ACE accepts WP21. Candidates C1 to C8 are
+done in v0.1; C9 stays a candidate.
+
+## D-122 | 2026-11-25 | WP18 accepted
+
+WP18-R4, the live run, ran on 25 November (`acceptance/chat-path/live-run-wp18-r4.md`). Its security finding F15/C7
+(the session key visible in the process list) is fixed by WP21-U8 (D-115): the key lives in the login keychain, never
+in a process's arguments, and is deleted at Stop. R2's "key rotated" now reads "key deleted" (D-115; one key per
+session). R1, R3, R5 hold on `dev` 834490f with CI green; `check_metrics.py --accept WP18` passes. The ACE accepts WP18.
+The chat-path user tests (WP20-UC1) remain for the chief engineer's sitting.

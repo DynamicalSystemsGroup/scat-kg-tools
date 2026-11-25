@@ -6,13 +6,11 @@ Updated 25 November, afternoon. Earlier versions are in git history. Words follo
 
 | Package | State |
 |---|---|
-| WP14, WP15, RS3, WP16, WP19 | accepted |
-| WP17 views | **accepted** (D-111): U3b applied after your D-104 |
-| WP18 chat path | built; live run done 25 November (`acceptance/chat-path/live-run-wp18-r4.md`); acceptance waits on the key fix (C7, in WP21) |
-| WP20 candidate and user acceptance | manual path passes UA-A; the uv gap is closed (D-112); chat-path UA-A waits on your sitting |
-| WP21 rules and norms, life cycle, image (C1 to C8, D-102 to D-107, D-110) | scope revised after the PM's check; impact map in progress; then approval and build |
+| WP14 to WP19, WP21 | accepted (WP17 D-111, WP18 D-122, WP21 D-121) |
+| WP20 candidate and user acceptance | manual path passes UA-A; uv gap closed (D-112); chat-path UA-A waits on your sitting |
 
-Before the release PRs: WP21 built and accepted, WP18 accepted, the chat-path sitting below.
+Candidate: tools `dev` 834490f (CI green), template `dev` 271c3e9 pinning tools 7f0ed05, Pages preview current.
+Before the release PRs: your chat-path sitting (item 1).
 
 ## Waiting on you
 
