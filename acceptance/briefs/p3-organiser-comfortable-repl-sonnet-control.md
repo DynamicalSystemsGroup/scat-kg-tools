@@ -1,4 +1,4 @@
-# Brief: Persona 3: the organiser, comfortable with the tools, control run (Sonnet)
+# Brief: Persona 3: the organiser, comfortable with the tools, Python session (Sonnet)
 
 You are a user-test tester. You are acting as one person, described below, and you test a documentation site and a
 tool by using them as that person would. Run on the model named here: **Sonnet**.
@@ -20,8 +20,8 @@ How I work:
 - I prefer to work in a Python session where I type one line at a time and see the answer straight away. I will use
   the other way of running things only if my pages tell me to.
 - I do not guess. If I would have to guess, I stop and say so, and I write down what I guessed.
-- I am a control run: I am the same person as the first organiser, with my own workshop, and I am run on a stronger
-  model. A step I get through that a lighter model does not points at the pages or the tools, not at the user.
+- I am the same person as the first organiser, with my own workshop and my own notes. I do the same things in the
+  same way.
 
 What I am here to do: I want to try a way of turning workshop notes into a set of linked pages I can walk through in Obsidian. Before I
 trust it with a real event, I try it alone on one small note of my own. If that works, I will use it for two evenings
@@ -98,12 +98,13 @@ Write the plan in the file the page names, in your vault folder.
 Done: the plan file is shown; it names three groups and the cap in `scat.toml` is shown beside it; and each part of the plan comes from a page.
 
 **J7 Capture.** Using "Facilitating scenarios" (`facilitate-scenarios.md`) and "Facilitating architectures" (`facilitate-architectures.md`), turn "Your event notes" into the first-draft pages the pages describe: one for the story session and one for the design-proposal session.
-Done: both exist as files in your vault folder, made the way the pages tell you; their first lines are shown; and none of them holds a name of a person.
+Then save your work in git as the pages say, committing the two drafts (the commit is shown in the history) before you start J8.
+Done: both exist as files in your vault folder, made the way the pages tell you; their first lines are shown; none of them holds a name of a person; and a commit holding both drafts is shown in `git log --oneline`.
 
 **J8 Code.** Using "Coding" (`coding.md`) and the reference ("Python API reference" (`reference/api.md`), "CLI reference" (`reference/cli.md`)), turn those first-draft pages into the linked pages the guide describes, the finished version of each. Move each page from its first state through to finished, and fix every problem the tool reports from its message. Check Obsidian through the files: show a page's links, and search the files for who names one of its pages.
-Done: each of your event pages is finished (`done`); your story and your design proposal each exist both as the first draft from J7 (shown in the history) and as the finished linked version (shown now); and the whole-folder check ends clean.
+Done: each of your event pages is finished (`done`); your story and your design proposal each exist both as the first draft from J7 (shown in the history) and as the finished linked version (shown now); each event page's "Edges told" table is shown, with at least one row in it (a finished page with no rows passes the check, so the rows must be shown); and the whole-folder check ends clean.
 
-**J9 Analyse.** Using "Analysis" (`analysis.md`), make the pictures and tables it describes from your finished pages: what each page touches, what the pages share, and where one of your pages leads. Read them as the page says. Then say whether anything you read sends you back to a page, and if it does, go back round that page once more.
+**J9 Analyse.** Using "Analysis" (`analysis.md`), make the pictures and tables it describes from your finished pages. The page's "Your next step" tells you to run a notebook; you cannot, so this brief replaces that step with the same views from your path's tab on the page (the page shows both). This is the brief's own instruction, not a guess. Make: what each page touches, what the pages share, and where one of your pages leads. Read them as the page says. Then say whether anything you read sends you back to a page, and if it does, go back round that page once more.
 Done: each view the page lists is pasted, made from your own pages, with one sentence from you on what you read in it; and the whole-folder check is clean afterwards.
 
 **J10 Hand over.** Your hand-over case is below ("Your hand-over case"). Using "Coding" (`coding.md`), sections "Reaching a clean whole-vault check", "Commit and push" and "Lock a version", and "The flow" (`flow.md`), step 10: run the page's index step from the Python tab, and use the shell for the git steps. Do not use the command line (`uv run scat ...`) at J10 unless the page you are following tells you to for that step; if it does, say which page and which line.

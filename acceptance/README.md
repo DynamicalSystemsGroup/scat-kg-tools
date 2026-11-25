@@ -83,10 +83,10 @@ for d in my-trial my-vault; do git -C "$d" remote remove origin; done   # simula
 ## Checking a report mechanically
 
 For the void rule on reused names, grep a report for the worked example's names and the docs' own example names.
-**Keep this list from testers.** It was built from the page folders of the template's example (`scat-kg-template`) and the `[[...]]` names in `docs/`. Refresh it whenever either changes.
+**Keep this list from testers.** It was built from the page folders of the template's example (`scat-kg-template`) and the `[[...]]` names in `docs/`. Refresh it whenever either changes. The `[[...]]` names, and the names in the `scat stub`, `record-edge` and `set-status` examples of `docs/`, were extracted with `grep -rhoE '\[\[[^]|#]+' docs` and `grep -rhoE 'scat stub [a-z0-9-]+|record_edge\("[^"]*"|set[-_]status[ (]"?[a-z0-9-]+' docs`.
 
 ```text
-grep -niE 'anonymity|attribution|intent-without-drift|gated-approval|groups-clustered-under-a-cap|revert-with-history-kept|groups-under-a-cap-pitch|two-branches-and-tags-pitch|false-start-and-clean-restart|notes-at-a-chatham-house-session|facilitator-analysts|project-leads|workshop-participants|volunteer-stewards|cap-setting|archive-tags|main-and-dev-branches|tools-come-back|shared-spreadsheet|sign-out-sheet|shared-sheet-pitch|saturday-at-the-tool-library|travel-time|tool-library|lending|borrowers|volunteer-staff|funders|booking-app|kiosk|self-checkout|quick-checkout|safe-handling|careful-record-keeping|reading-group|study-circle|reading-list' report.md
+grep -niE 'anonymity|attribution|intent-without-drift|gated-approval|groups-clustered-under-a-cap|revert-with-history-kept|groups-under-a-cap-pitch|two-branches-and-tags-pitch|false-start-and-clean-restart|notes-at-a-chatham-house-session|facilitator-analysts|project-leads|workshop-participants|volunteer-stewards|cap-setting|archive-tags|main-and-dev-branches|tools-come-back|shared-spreadsheet|sign-out-sheet|shared-sheet-pitch|saturday-at-the-tool-library|travel-time|tool-library|lending|borrowers|volunteer-staff|funders|booking-app|kiosk|self-checkout|quick-checkout|safe-handling|careful-record-keeping|reading-group|study-circle|booking-sheet-pitch|harbour-crews|late-returns?|reminder-text|reading-shelf|desk-notes-(one|two)|sunday-at-the-desk|monday-at-the-desk|volunteers-are-easy-to-find|lending-desk-(opens-on-time|saturday)|tools-come-back-in-good-order|study-circle-two|cap-settin|reading-list' report.md
 ```
 
 Run the same grep against each brief (`grep ... briefs/p1-*.md`) before a round: a hit in a brief is a defect in the brief, and the output must be empty.
@@ -147,3 +147,4 @@ noticed, since the guide text carries the word jazz in one plain sentence.
 - The test git identity is pre-set in the environment (the docs' own `git` identity prompt is not exercised).
 - A local build of the docs is weaker than the Pages deploy and is recorded as such.
 - The persona text is a model's reading of a person. It tests the docs, not real users, which UA-M covers.
+- J9: the Analysis page's "Your next step" is to run the notebook. The brief tells the tester, as its own instruction, to make the views from the Python tab or the CLI tab instead, because testers have no notebook (default). The notebook itself is covered by the template's CI and UA-M.
