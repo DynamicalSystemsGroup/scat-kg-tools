@@ -24,7 +24,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP15 | Architecture document and review (D-083) | all units done and merged; ready for ACE acceptance | `WP15.md` |
 | WP16 | Ontology and layout (absorbs WP13) | all units built and merged on `wp16/build` (iterations 20 and 21); re-sweep not clean on kept words only; pushed to `dev` once green; ready for the ACE's Obsidian walk | `impact/WP16.md` |
 | RS3 | Research spike: chat path (D-080; branch `spike/chat-path`, never merged into `dev`) | offline part done (U1 to U3, tunnel and git notes in); live part waits for the chief engineer's sign-ins | `RS3-chat-path.md` |
-| WP17 | The views (D-092) | all units done and landed on `pm-wp17` except WP17-U3b (blocked: the guard refused a one-line schema edit; waits on the ACE); full suite green; template notebook on `wp17/notebook` | `WP17.md` |
+| WP17 | The views (D-092) | all units done and landed (U8 to U10 correct the metrics and close two check gaps, D-093) except WP17-U3b (blocked: the guard refused a one-line schema edit; waits on the ACE); full suite green; template notebook on `wp17/notebook` | `WP17.md` |
 
 ## Units
 
@@ -200,24 +200,30 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP16-U13b | technical writer (architecture section 4 to the tool as built; added by the PM), sonnet | 2 | 2 | `wp16/u13b` | done |  | 2026-11-25T01:26:23-05:00 | under 3 min; verified by running the tool |
 | WP16-U14 | change consultant (re-sweep of the impact map), sonnet | 3 | 3 | `wp16/u14` | done |  | 2026-11-25T01:26:28-05:00 | about 4 min; re-sweep not clean: 5 stale items |
 | WP16-U14b | editor (stale hits from the re-sweep; added by the PM), sonnet | 2 | 2 | `wp16/u14b` | done |  | 2026-11-25T01:26:29-05:00 | about 2.5 min; S7 still 22 lines in 8 files, all named keeps (retired words asserted on purpose, formal ontology identifiers, a decision title) |
-| WP16-U15 | technical writer (flow and consent page fixes, reader guesses, coding guide, reviewer's guide; added by the PM), sonnet | 3 | 3 | `pm-wp16fix` | done |  | 2026-11-25T09:30:00-05:00 | five disagreements fixed (nine choices, nine checklist items); flow 499 words, consent 731; docs test, strict build, terms drift test green |
-| WP16-U15r | reviewer (fresh; added by the PM), sonnet | 2 | 1 | `pm-wp16fix` | done |  | 2026-11-25T09:30:00-05:00 | PASS, two non-blocking notes |
+| WP16-U15 | technical writer (flow and consent page fixes, reader guesses, coding guide, reviewer's guide; added by the PM), sonnet | 3 | 3 | `pm-wp16fix` | done |  | 2026-11-25T01:35:09-05:00 | five disagreements fixed (nine choices, nine checklist items); flow 499 words, consent 731; docs test, strict build, terms drift test green |
+| WP16-U15r | reviewer (fresh; added by the PM), sonnet | 2 | 1 | `pm-wp16fix` | done |  | 2026-11-25T01:35:09-05:00 | PASS, two non-blocking notes |
 | RS3-U4 | technical writer (chat-path readout, added at the ACE's call), sonnet | 3 | 2 | `rs3/u4` | done |  | 2026-11-25T01:26:30-05:00 | under 1 min, 8 tool calls; 1,409 words; no separate fresh reviewer yet |
-| WP17-U1 | Python developer (view generator M6: views, loader export, hand-computed tests), sonnet | 8 | 8 | `wp17/u1` | done |  | 2026-11-25T09:46:52-05:00 | 69 view tests, hand-computed; first-time review PASS (29 independent cases, 0 diffs); about 6 min worker; on estimate |
-| WP17-U1r | reviewer (fresh; runs U1's checks), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T09:46:52-05:00 | PASS; independent hand-computed vault and template clone; 4 non-blocking notes |
-| WP17-U2 | Python developer (exports, CLI twins, machine-interface additions, architecture slot), sonnet | 5 | 5 | `wp17/u2` | done |  | 2026-11-25T10:00:46-05:00 | 136 new tests; first-time review PASS, 6 non-blocking notes; two forced design calls (separate fields table, path relaxation); on estimate |
-| WP17-U2r | reviewer (fresh; runs U2's checks), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T10:00:46-05:00 | PASS; independent hand-computed holds CSV; rendered page not viewable (no http) |
-| WP17-U3 | Python developer (drawings in the optional extra draw, with CLI twin), sonnet | 5 | 5 | `wp17/u3` | done |  | 2026-11-25T10:22:07-05:00 | 290-line draw.py, 4 test files; first-time review PASS; one flag (schema path rule) blocked by the guard, carried as U3b; on estimate |
+| WP17-U1 | Python developer (view generator M6: views, loader export, hand-computed tests), sonnet | 8 | 8 | `wp17/u1` | done |  | 2026-11-25T01:54:55-05:00 | 69 view tests, hand-computed; first-time review PASS (29 independent cases, 0 diffs); about 6 min worker; on estimate |
+| WP17-U1r | reviewer (fresh; runs U1's checks), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T01:54:55-05:00 | PASS; independent hand-computed vault and template clone; 4 non-blocking notes |
+| WP17-U2 | Python developer (exports, CLI twins, machine-interface additions, architecture slot), sonnet | 5 | 5 | `wp17/u2` | done |  | 2026-11-25T02:08:48-05:00 | 136 new tests; first-time review PASS, 6 non-blocking notes; two forced design calls (separate fields table, path relaxation); on estimate |
+| WP17-U2r | reviewer (fresh; runs U2's checks), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T02:08:48-05:00 | PASS; independent hand-computed holds CSV; rendered page not viewable (no http) |
+| WP17-U3 | Python developer (drawings in the optional extra draw, with CLI twin), sonnet | 5 | 5 | `wp17/u3` | done |  | 2026-11-25T02:30:09-05:00 | 290-line draw.py, 4 test files; first-time review PASS; one flag (schema path rule) blocked by the guard, carried as U3b; on estimate |
 | WP17-U3b | Python developer (schema: draw results may carry paths outside the vault; added by the PM after U3's flag), sonnet | 1 |  | `wp17/u3b` | blocked | the ACE: the permission guard refused the one-line schema edit twice; patch ready (`OperationResult.allOf[0]` if: operation enum export-edges, draw) |  |  |
-| WP17-U3r | reviewer (fresh; runs U3's checks, looks at the drawings), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T10:22:07-05:00 | PASS; looked at the PNGs and a 100-node drawing; 7 non-blocking notes |
-| WP17-U4 | Python and notebook developer (template notebook, CI step, pins), sonnet | 5 | 5 | `wp17/u4 (template)` | done |  | 2026-11-25T10:38:17-05:00 | notebook, CI step and pins; first-time review PASS, template CI green in 22 s on the branch; on estimate |
-| WP17-U4r | reviewer (fresh; runs U4's checks, opens the executed notebook), sonnet | 2 | 1 | `-` | done |  | 2026-11-25T10:38:17-05:00 | PASS; fresh clone, hand-checked fingerprints, traces, two breakages; 3 notes |
-| WP17-U5 | technical writer (analysis guide, API reference), sonnet | 3 | 3 | `wp17/u5` | done |  | 2026-11-25T10:38:17-05:00 | guide 418 words and eight API entries; reviewer's one defect was a wrong reading (page shows state at that point; worker's evidence upheld); on estimate |
-| WP17-U5r | reviewer (fresh; runs U5's checks, opens the pages), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T10:38:17-05:00 | one disputed defect upheld for the worker; rendered page not viewable in the browser pane (tab cap) |
-| WP17-U6 | technical writer (the three carried fixes and the terms page's SCAT entry), sonnet | 2 | 2 | `wp17/u6` | done |  | 2026-11-25T09:46:52-05:00 | four small fixes; reviewer PASS with nits; one word-cap trim on the terms page; on estimate |
-| WP17-U6r | reviewer (fresh; runs U6's checks), haiku | 1 | 1 | `-` | done |  | 2026-11-25T09:46:52-05:00 | PASS; one disputed note (pre-existing entry name) |
-| WP17-U7 | change consultant (file-map check at start and before acceptance), sonnet | 1 | 1 | `wp17/u7` | done |  | 2026-11-25T10:12:35-05:00 | one push-back round (stale WP16 row, two local branches missing); re-review PASS |
-| WP17-U7r | reviewer (fresh; checks U7's map against the diff), haiku | 1 | 1 | `-` | done |  | 2026-11-25T10:12:35-05:00 | two reviews (first FAIL with two defects, re-review PASS) |
+| WP17-U3r | reviewer (fresh; runs U3's checks, looks at the drawings), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T02:30:09-05:00 | PASS; looked at the PNGs and a 100-node drawing; 7 non-blocking notes |
+| WP17-U4 | Python and notebook developer (template notebook, CI step, pins), sonnet | 5 | 5 | `wp17/u4 (template)` | done |  | 2026-11-25T02:46:33-05:00 | notebook, CI step and pins; first-time review PASS, template CI green in 22 s on the branch; on estimate |
+| WP17-U4r | reviewer (fresh; runs U4's checks, opens the executed notebook), sonnet | 2 | 1 | `-` | done |  | 2026-11-25T02:46:33-05:00 | PASS; fresh clone, hand-checked fingerprints, traces, two breakages; 3 notes |
+| WP17-U5 | technical writer (analysis guide, API reference), sonnet | 3 | 3 | `wp17/u5` | done |  | 2026-11-25T02:46:33-05:00 | guide 418 words and eight API entries; reviewer's one defect was a wrong reading (page shows state at that point; worker's evidence upheld); on estimate |
+| WP17-U5r | reviewer (fresh; runs U5's checks, opens the pages), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T02:46:33-05:00 | one disputed defect upheld for the worker; rendered page not viewable in the browser pane (tab cap) |
+| WP17-U6 | technical writer (the three carried fixes and the terms page's SCAT entry), sonnet | 2 | 2 | `wp17/u6` | done |  | 2026-11-25T01:54:55-05:00 | four small fixes; reviewer PASS with nits; one word-cap trim on the terms page; on estimate |
+| WP17-U6r | reviewer (fresh; runs U6's checks), haiku | 1 | 1 | `-` | done |  | 2026-11-25T01:54:55-05:00 | PASS; one disputed note (pre-existing entry name) |
+| WP17-U7 | change consultant (file-map check at start and before acceptance), sonnet | 1 | 1 | `wp17/u7` | done |  | 2026-11-25T02:20:35-05:00 | one push-back round (stale WP16 row, two local branches missing); re-review PASS |
+| WP17-U7r | reviewer (fresh; checks U7's map against the diff), haiku | 1 | 1 | `-` | done |  | 2026-11-25T02:20:35-05:00 | two reviews (first FAIL with two defects, re-review PASS) |
+| WP17-U8 | Python developer (check_metrics: a timestamp ahead of the clock), sonnet | 2 | 2 | `wp17/u8` | done |  | 2026-11-25T03:07:49-05:00 | 7 tests, rule proven by mutation; 45 corrections checked against git; first-time PASS |
+| WP17-U8r | reviewer (fresh; runs U8's checks), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T03:07:49-05:00 | PASS; 4 notes |
+| WP17-U9 | Python developer (gap A: views refuse naming each skipped row), sonnet | 5 | 5 | `wp17/u9` | done |  | 2026-11-25T03:07:49-05:00 | 69 tests; two existing tests changed (relied on silent omission); first-time PASS |
+| WP17-U9r | reviewer (fresh; runs U9's checks), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T03:07:49-05:00 | PASS; 3 notes (a narrative with unparsable frontmatter is still omitted by whole-vault views) |
+| WP17-U10 | Python developer (gap B: duplicate node name named, no new rule), sonnet | 3 | 3 | `wp17/u10` | done |  | 2026-11-25T03:07:49-05:00 | 49 tests; first-time PASS |
+| WP17-U10r | reviewer (fresh; runs U10's checks), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T03:07:49-05:00 | PASS; 4 notes (both ends duplicated: one end named) |
 
 ## Iterations and velocity
 
@@ -245,7 +251,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 20 | WP16-U5 | 8 | 8 | 1.00 | 0.20 h | 40.0 |
 | 21 | WP16-U6, U6b, U4b, U4c, U7, U6f, U7f, U8, U9, U9f, U10, U11, U12, U12b, U13, U13b, U14, U14b, RS3-U4 (U6b, U4b, U4c, U6f, U7f, U9f, U12b, U13b, U14b and RS3-U4 added by the PM or the ACE) | 70 | 64 | 0.91 | 1.75 h | 36.6 |
 | 22 | WP16-U15, WP16-U15r (added by the PM) | 5 | 4 | 0.80 | 0.4 h | 10.0 |
-| 23 | WP17-U1, U1r, U2, U2r, U3, U3r, U4, U4r, U5, U5r, U6, U6r, U7, U7r (U3b blocked, not in it) | 41 | 40 | 0.98 | 1.07 h | 37.4 |
+| 23 | WP17-U1, U1r, U2, U2r, U3, U3r, U4, U4r, U5, U5r, U6, U6r, U7, U7r (U3b blocked, not in it) | 41 | 40 | 0.98 | 1.04 h | 38.5 |
+| 24 | WP17-U8, U8r, U9, U9r, U10, U10r (added by the PM after D-093) | 15 | 15 | 1.00 | 0.26 h | 57.7 |
 
 ## Velocity and forecast
 
@@ -257,7 +264,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
 
-Current: WP17 built and landed on `pm-wp17`: 1,943 tests pass, ruff and lock clean. Iteration 23 closed: 41 est. pts, 40 realized (ratio 0.98), 1.07 h, raw velocity 37.4 realized pts/h. `check_metrics.py --accept WP17` fails only on WP17-U3b (blocked on the ACE, not done). Waiting on the ACE: allow the one-line schema edit (U3b), run the notebook and look at its drawings (`docs/assets/layered-case-study.png`, the template CI artifact `analysis-executed`).
+Current: WP17 corrections (D-093) done: the 45 future-stamped records are corrected from git, `check_metrics.py` refuses a timestamp more than 5 minutes ahead, views refuse naming each skipped row, a duplicate node name behind a row end is named. Iteration 24: 15 est, 15 realized, 0.26 h, 57.7 pts/h; iteration 23 restated at 1.04 h, 38.5. Earlier: WP17 built and landed on `pm-wp17`: 1,943 tests pass, ruff and lock clean. Iteration 23 closed: 41 est. pts, 40 realized (ratio 0.98), 1.07 h, raw velocity 37.4 realized pts/h. `check_metrics.py --accept WP17` fails only on WP17-U3b (blocked on the ACE, not done). Waiting on the ACE: allow the one-line schema edit (U3b), run the notebook and look at its drawings (`docs/assets/layered-case-study.png`, the template CI artifact `analysis-executed`).
 
 Current: WP16 build is done on `wp16/build`: 1,770 tests pass, `python3 work-packages/check_metrics.py --accept WP16` passes. Iteration 21 closed: 70 est. pts, 64 realized (ratio 0.91), 1.75 h, raw velocity 36.6 realized pts/h. Waiting on the ACE: the Obsidian walk on the migrated template (every generated `.base`), and the cold-reader findings on the flow and consent pages (`acceptance/reports/wp16-flow-consent-cold-read.md`).
 
