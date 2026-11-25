@@ -275,6 +275,14 @@ matters without claiming to be exhaustive. No particular project's choices appea
   this common picture, with the modules, their interface contracts and who is responsible for what. It is planned
   from a prior-art readout and reviewed before detailed design starts.
 
+- **G17. Links and edges stay in step (a known pitfall).** Many relations appear in two forms: "this page
+  references that page" in Obsidian, and "this element is connected to that element" in the knowledge graph. Making
+  the two feel like one thing has a large bearing on the coder's experience, and part of why there is code at all is
+  to detect when they diverge and to reconcile them. Coding is incremental: stub, fill in, stub further, fill in
+  again, breadth first for some people and depth first for others. The docs guide that incremental work for people
+  and for the LLMs helping them, and the tools make each step's divergences visible with a fix. This area gets extra
+  coverage from architecture review, testing and UX review in Obsidian.
+
 ## Non-goals
 
 - Typed links between records of the same class, such as incompatible concerns, adversarial groups, complementary
@@ -336,6 +344,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-20 | **The chat path works, at two test levels.** The MCP server's tools pass automated tests, and the chat path (G14) is run end to end in the inference.coop browser chat at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents. The field test comes after v0.1 and is not part of this repository. Other providers are not tested in v0.1. | The automated tests in CI; each end-to-end run recorded step by step with screenshots in the acceptance record |
 | R-21 | **Coding happens in Obsidian.** A coder can code a narrative and review its support in Obsidian alone, without the same content held on two pages, and without opening pages that carry no content of their own. | A review in Obsidian with screenshots in the record; UA-M |
 | R-22 | **Architecture before detailed design.** The architecture document names the model, the views and the control plane, each module's interface contract and responsibilities, and is reviewed by architecture reviewers before any further package starts detailed design. | The review record; the ACE's approval, logged |
+| R-23 | **Links and edges reconcile.** For every way a relation can appear (a link, an edge record, a mention in a narrative), the tools detect each divergence between the forms and give a fix that reconciles them; incremental coding, breadth first or depth first, never leaves a divergence the tools can't see. The docs show both ways of working. | Tests that generate divergent vaults and check each divergence is reported with a working fix; a named architecture reviewer for this area; a UX review in Obsidian of an incremental coding session, with screenshots |
 
 ## User acceptance
 
@@ -412,7 +421,7 @@ in the chat and in Obsidian, to a clean check of a private repository, with no t
 
 ## Definition of good enough
 
-- R-1 to R-22 met, with evidence.
+- R-1 to R-23 met, with evidence.
 - UA-A passes on the candidate, for both journeys.
 - The candidate is staged for UA-M, with the reviewer's guide ready.
 - The ontology, toolchain, facilitation, prior-art and chat-path readouts exist, and the architecture document is
@@ -556,7 +565,8 @@ serves this mission as written; a change that would alter the mission goes to th
   browser chat after the chief engineer signs in; the agent never enters credentials, and only lab and range material
   (R-20) goes to it. The R-20 end-to-end runs are made on demand, not on every push.
 - **Architecture reviewers** are fresh agents, on Sonnet with one on Opus for a named reason (the cross-cutting
-  contracts), that review the architecture document before detailed design (R-22).
+  contracts, and the link-edge correspondence of G17), that review the architecture document before detailed design
+  (R-22).
 - **The range vault** rebuilds the KOI case with groups, not named people.
 - **Order of work.** WP12 (the terms page) is accepted first. Then the prior-art readout; then the architecture
   document and the chat-path spike, side by side. Then one schema-and-projection package (G1, G15), which absorbs WP13
