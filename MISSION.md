@@ -176,7 +176,8 @@ matters without claiming to be exhaustive. No particular project's choices appea
     narrative refers to it, and never creates an edge;
   - **narrative**, a base class of its own, outside the vertex and edge pattern, and a page type of its own, one page
     per narrative whose status is its coding state, with scenario and architecture as its subclasses. A narrative's **support** is the vertices it links plus the edges that name it. A support is **valid** when it is
-    closed: every edge that names the narrative has both its vertices linked by it;
+    closed: every edge that names the narrative has both its vertices linked by it. A `done` narrative whose support has
+    no edges gets a warning, not an error, so the coder confirms it was intended;
   - each record's required and optional fields, including the past, future or mixed mark on every narrative (see
     "Narratives");
   - class pages, which the tools generate;
