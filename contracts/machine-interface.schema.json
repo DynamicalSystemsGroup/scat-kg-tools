@@ -1,17 +1,17 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://scat-kg-tools.invalid/contracts/machine-interface.schema.json",
-  "title": "scat machine interface, schema_version 1",
-  "description": "The one JSON document a scat command prints with --json, and the dict a Python result's to_dict() returns. Every object allows extra fields: adding a field does not change schema_version. The set of rule ids is not enumerated here, only its pattern.",
+  "title": "scat machine interface, schema_version 2",
+  "description": "The one JSON document a scat command prints with --json, and the dict a Python result's to_dict() returns. Every object allows extra fields: adding a field does not change schema_version. The set of rule ids is not enumerated here, only its pattern. Version 2 follows the layout of D-088: pages are group, concern, affordance, technology and narrative; an edge is a row of a narrative table, so record-edge and remove-edge results name the edge and the rows they touched.",
   "oneOf": [
     { "$ref": "#/$defs/CheckResult" },
     { "$ref": "#/$defs/StatusResult" },
     { "$ref": "#/$defs/OperationResult" }
   ],
   "$defs": {
-    "SchemaVersion": { "const": 1 },
+    "SchemaVersion": { "const": 2 },
     "OperationName": {
-      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-pair, stub-links). New commands may appear, so the names are not enumerated.",
+      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge). New commands may appear, so the names are not enumerated.",
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]*$"
     },
@@ -67,9 +67,9 @@
         "scope": { "enum": ["page", "neighborhood", "vault"] },
         "rows": { "type": "array", "items": { "$ref": "#/$defs/StatusRow" } },
         "counts": {
-          "description": "Pages per status. Besides the statuses of the ontology, other is a missing or invalid status and none is a class page (which carries no status).",
+          "description": "Pages per status. Besides the statuses of the ontology, other is a missing or invalid status. Every page type carries a status, so there is no count for pages without one (version 1 had none, for class pages).",
           "type": "object",
-          "required": ["other", "none"],
+          "required": ["other"],
           "additionalProperties": { "type": "integer", "minimum": 0 }
         },
         "notes": { "$ref": "#/$defs/StringList" }
@@ -82,7 +82,7 @@
         "path": { "$ref": "#/$defs/VaultPath" },
         "name": { "type": "string", "description": "The file name without .md." },
         "type": { "type": ["string", "null"], "description": "The type key as written; null when there is none that is a string." },
-        "status": { "type": ["string", "null"], "description": "The status as written; null when missing, not a string, or on a class page." }
+        "status": { "type": ["string", "null"], "description": "The status as written; null when missing or not a string." }
       }
     },
 
@@ -99,9 +99,21 @@
         "changed": { "$ref": "#/$defs/PathList" },
         "unchanged": { "$ref": "#/$defs/PathList", "description": "Looked at and already right: nothing written." },
         "refused": { "type": "array", "items": { "$ref": "#/$defs/Refusal" } },
-        "notes": { "$ref": "#/$defs/StringList" }
+        "notes": { "$ref": "#/$defs/StringList" },
+        "problems": { "type": "array", "items": { "$ref": "#/$defs/Problem" }, "description": "Optional. The problems the write leaves, on the pages it touched and the pages one link away, in the catalogue's sort order." },
+        "edge": { "$ref": "#/$defs/EdgeRef" },
+        "rows_added": { "type": "array", "items": { "$ref": "#/$defs/RowRef" } },
+        "rows_removed": { "type": "array", "items": { "$ref": "#/$defs/RowRef" } }
       },
       "allOf": [
+        {
+          "description": "record-edge and remove-edge, when they ran, name the edge and the rows they added and removed. When they refuse, nothing was written and these fields may be absent.",
+          "if": {
+            "properties": { "operation": { "enum": ["record-edge", "remove-edge"] }, "ok": { "const": true } },
+            "required": ["operation", "ok"]
+          },
+          "then": { "required": ["edge", "rows_added", "rows_removed"] }
+        },
         {
           "if": { "properties": { "ok": { "const": true } }, "required": ["ok"] },
           "then": { "properties": { "refused": { "maxItems": 0 } } }
@@ -118,7 +130,35 @@
       "properties": {
         "subject": { "type": "string", "description": "The file, field or name the refusal is about." },
         "why": { "type": "string" },
+        "rule": { "$ref": "#/$defs/RuleId", "description": "Optional. The rule of the catalogue that gives the refusal (SCAT-DONE-REFUSED for a refusal to set a page to done)." },
+        "problems": { "type": "array", "items": { "$ref": "#/$defs/Problem" }, "description": "Optional. The problems that make the refusal, as they stand in the situation the operation judged (for SCAT-DONE-REFUSED, the errors the page would have at status done), each with its fix." },
         "fix": { "$ref": "#/$defs/Fix" }
+      }
+    },
+    "EdgeType": {
+      "description": "The slug of an edge type, as the ontology states it (scat:slug). A closed list: a new edge type bumps schema_version.",
+      "enum": ["holds", "addressed-by", "provided-by"]
+    },
+    "EdgeRef": {
+      "description": "An edge of the knowledge graph, as record-edge and remove-edge leave it: one per (type, from, to).",
+      "type": "object",
+      "required": ["type", "from", "to", "narratives"],
+      "properties": {
+        "type": { "$ref": "#/$defs/EdgeType" },
+        "from": { "type": "string", "minLength": 1, "description": "The page name of the node at the first end." },
+        "to": { "type": "string", "minLength": 1, "description": "The page name of the node at the second end." },
+        "narratives": { "$ref": "#/$defs/StringList", "description": "The page names of every narrative that has a row for this edge once the operation is done, in byte order. Empty after a remove-edge that took the last row: the edge is gone from the graph." }
+      }
+    },
+    "RowRef": {
+      "description": "One row of a narrative's table of edges that an operation added or removed.",
+      "type": "object",
+      "required": ["narrative", "file", "line"],
+      "properties": {
+        "narrative": { "type": "string", "minLength": 1, "description": "The page name of the narrative." },
+        "file": { "$ref": "#/$defs/VaultPath" },
+        "line": { "type": "integer", "minimum": 1, "description": "The line of the row: in the file as written, for an added row; in the file as it was before the write, for a removed row." },
+        "note": { "type": "string", "description": "The row's note cell, as written (empty when there is none)." }
       }
     },
 
@@ -131,7 +171,7 @@
         "file": { "$ref": "#/$defs/VaultPath" },
         "line": { "$ref": "#/$defs/PositiveIntOrNull" },
         "column": { "$ref": "#/$defs/PositiveIntOrNull" },
-        "field": { "type": ["string", "null"], "description": "The front-matter field the problem is about; null when it is about a link, the whole front matter, a name, and so on." },
+        "field": { "type": ["string", "null"], "description": "The field the problem is about: a front-matter field of the page, or a key of scat.toml (then file is scat.toml); null when it is about a link, a table or one of its rows, the whole front matter, a name, and so on." },
         "where": { "type": "string" },
         "what": { "type": "string" },
         "repeat": { "type": "integer", "minimum": 1 },
@@ -199,11 +239,12 @@
     },
 
     "Edit": {
-      "description": "One change a tool can apply. A closed list of actions; a new action bumps schema_version.",
+      "description": "One change a tool can apply. A closed list of actions; a new action bumps schema_version (delete-line, new in version 2, is how a table row is removed).",
       "oneOf": [
         { "$ref": "#/$defs/SetField" },
         { "$ref": "#/$defs/DeleteField" },
         { "$ref": "#/$defs/ReplaceText" },
+        { "$ref": "#/$defs/DeleteLine" },
         { "$ref": "#/$defs/RenameFile" },
         { "$ref": "#/$defs/DeleteFile" }
       ]
@@ -231,16 +272,28 @@
       }
     },
     "ReplaceText": {
-      "description": "Replace the text find with replace on a line of the page (its body, or front matter lines that are not a plain field). find is the literal text as written in the file at that line. Without column, find is replaced everywhere on the line; with column, only the occurrence at that column.",
+      "description": "Replace the text find with replace on a line of the page (its body, or front matter lines that are not a plain field). find is the literal text as written in the file at that line. Without column, find is replaced everywhere on the line; with column, only the occurrence at that column. replace may contain a line break, which adds a line (a table's separator row is added this way); a fix then has no other edit to a later line of the same file.",
       "type": "object",
       "required": ["action", "file", "line", "find", "replace"],
       "properties": {
+        "author_slot": { "type": "string", "minLength": 1, "description": "Present when replace holds a placeholder the author must replace: this is that placeholder's exact text. Never write it as is." },
         "action": { "const": "replace-text" },
         "file": { "$ref": "#/$defs/VaultPath" },
         "line": { "type": "integer", "minimum": 1 },
         "column": { "type": "integer", "minimum": 1, "description": "Where find starts on the line. Present: only the occurrence at this column is replaced. Absent: every occurrence on the line is." },
         "find": { "type": "string", "minLength": 1 },
         "replace": { "type": "string" }
+      }
+    },
+    "DeleteLine": {
+      "description": "Delete one whole line of the page, with its line break. Used to remove a row of a narrative's table: a line cannot be removed by replace-text, which would leave an empty line, and an empty line ends a table. find is the whole line as written, a guard: when the line at line is not exactly find, nothing is deleted.",
+      "type": "object",
+      "required": ["action", "file", "line", "find"],
+      "properties": {
+        "action": { "const": "delete-line" },
+        "file": { "$ref": "#/$defs/VaultPath" },
+        "line": { "type": "integer", "minimum": 1 },
+        "find": { "type": "string", "minLength": 1, "description": "The whole line as written, without its line break." }
       }
     },
     "RenameFile": {
