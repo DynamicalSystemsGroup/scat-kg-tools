@@ -53,11 +53,11 @@ it before Stop; the testers' plan does not include it.
 
 ## What needs your sign-ins (held for you)
 
-No agent has run this path as a coder, and Docker Desktop has not been tried end to end with the launcher
-([`chat-path.md`](../docs/chat-path.md), first warning). These need you:
+No agent has run this path as a coder, and Docker Desktop, the alternative to Colima, has not been tried end to end
+with the launcher ([`chat-path.md`](../docs/chat-path.md), first warning). These need you:
 
 1. **GitHub**: your account, to make the private repository and to publish a release.
-2. **Docker Desktop**: the download, and the Mac password it asks for.
+2. **Colima**: the Homebrew install ("A container runtime: Colima" under Install once). Docker Desktop is the untested alternative; use it only if told.
 3. **The public-link service** ([Install once](../docs/chat-path.md#install-once) names it): signing in, and two
    one-time settings in its account. One of them publishes your Mac's name in a public record that cannot be erased;
    the page says to rename the Mac first if its name is private.
@@ -148,26 +148,27 @@ it needs](../docs/chat-path.md#what-the-chat-path-is-and-what-it-needs), [Instal
    do): Show in Finder, drag `affordance`, `concern`, `group`, `narrative` and `technology` to the Trash, then commit
    and push in GitHub Desktop. Record how, and anything the page leaves out.
    Then open the folder in Obsidian as a vault (**Open folder as vault**, version 1.9 or later).
-3. Install once, in the page's order: SCAT Chat.app (step 0), a container runtime (step 1; Docker Desktop is the one
-   with no terminal), the public-link service and its command line (step 2), its two account settings (step 3), the
-   first open of the app (step 4).
-4. Start a session: open Docker Desktop and wait for it to say running; open SCAT Chat; choose the folder that holds
-   `scat.toml` (if it is in Documents, Desktop, Downloads or iCloud the launcher offers a copy: record what you chose);
-   wait for the first build.
-5. Connect the chat: in the chat's MCP settings add the address from the window (it ends in `/mcp`), the Streamable
-   HTTPS transport, API key authentication, and the key from your clipboard.
+3. Install once, in the page's order: SCAT Chat.app (Get SCAT Chat.app), a container runtime (Colima, a few commands in a terminal), the public-link service and its command line (Tailscale), its two one-time settings, the
+   first open of the app.
+4. Start a session, as [Start a session](../docs/chat-path.md#start-a-session) says: open SCAT Chat; choose the folder
+   that holds `scat.toml` (if it is in Documents, Desktop, Downloads or iCloud the launcher offers a copy: record what
+   you chose); wait for the first fetch or build.
+5. Connect the chat, as [Connect the chat](../docs/chat-path.md#connect-the-chat) says: add the address from the window
+   (it ends in `/mcp`), the Streamable HTTPS transport, API key authentication, and the key (click **Copy key** in the
+   window; the window never shows it). Then set up the skill and the saved agent ([Set up the skill and the saved
+   agent](../docs/chat-path.md#set-up-the-skill-and-the-saved-agent)) and record every control you could not find.
 6. Ask the assistant for a check of the whole vault. The page does not give this sentence; record the words you used.
 
 **Done.**
 - The repository is private on GitHub, the example is removed and pushed, and the folder is open as a vault in Obsidian.
-- A window says "SCAT Chat is running." and shows an address, a key and your vault.
+- A window says "SCAT Chat is running." and shows an address and your vault, with **Copy key** and **Stop** buttons and no key.
 - The assistant's reply to the check quotes the tool's result, `no problems`, for the vault with the example removed and pushed.
 
 **Record.** Every step the page could not vouch for (it says so), each launcher message you saw and whether the page's
 table covered it, and the exact words of any failure. Anything you guessed.
 
-**Resume.** Open Docker Desktop, open SCAT Chat, wait for "SCAT Chat is running.", paste the new key into the chat's
-server entry, and ask for the check again. The one-time installs are not redone.
+**Resume.** Open SCAT Chat, wait for "SCAT Chat is running.", click Copy key and paste the new key into a new server
+entry in the chat, and ask for the check again. The one-time installs are not redone.
 
 ## J6 Plan
 
@@ -207,7 +208,7 @@ them in a form the chat can take as an attachment (the mission calls this a coll
 Obsidian"](../docs/chat-path.md#the-coding-loop-in-the-chat-and-in-obsidian), with [`coding.md`, "The coding
 loop"](../docs/coding.md#the-coding-loop).
 
-**Steps.** Start a session (J5 steps 4 and 5). Attach the field notes and ask the assistant to help you code the
+**Steps.** Start a session (J5 steps 4 and 5); start a chat with your saved agent. Attach the field notes and ask the assistant to help you code the
 narrative, naming it. Then, for each narrative:
 1. Interpreting: tell the assistant what the notes say and answer what it asks. It decides nothing.
 2. Authoring: it drafts the account in its reply; you edit it and paste it into the narrative page in Obsidian.
@@ -253,7 +254,7 @@ views read like.
 ## J10 Hand over
 
 **Enter.** [`chat-path.md`, "Lock a version"](../docs/chat-path.md#lock-a-version) and
-[Stop](../docs/chat-path.md#stop), with [`coding.md`, "Lock a version"](../docs/coding.md#lock-a-version); and your J4
+[Stop](../docs/chat-path.md#stop) and [Clean up](../docs/chat-path.md#clean-up), with [`coding.md`, "Lock a version"](../docs/coding.md#lock-a-version); and your J4
 release, licence and rights answers.
 
 **Steps.**
@@ -270,14 +271,16 @@ release, licence and rights answers.
    Note the commit the release page shows for the tag, if it shows one. With a terminal at hand, the commands in [See
    which commit a tag pins](../docs/coding.md#see-which-commit-a-tag-pins) give it (docs fix 4).
 5. Hand it over to the recipient the case names.
-6. Click **Stop** in the SCAT Chat window. Delete the server entry in the chat.
+6. Click **Stop** in the SCAT Chat window, then clean up the chat platform as [Clean up](../docs/chat-path.md#clean-up)
+   says (delete the server entry; the rest is optional). Under a strict data policy, run [Leave
+   no trace](../docs/leave-no-trace.md) instead; it is an option, not part of this pass.
 
 **Done.**
 - The whole-vault check is clean and the vault is navigable in Obsidian.
 - The release and its tag are on GitHub, in a repository that is still private, and you can name the tag, the commit it
   pins and the recipient.
 - The window says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was
-  replaced, and your clipboard holds no key."
+  deleted, and your clipboard holds no key."
 
 **Record.** The tag, the commit and the recipient; how you pushed; any wording of GitHub that differed from the page;
 the Stop message, in full, if it was not the one above.
