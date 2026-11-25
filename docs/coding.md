@@ -3,280 +3,636 @@
 !!! tip "Your next step"
     In your vault folder, run `uv run scat check` and read what it says.
 
-Coding means reading a raw page, then restating its meaning in plain words.
+Coding means linking the nodes a narrative names and recording the edges it tells, on the narrative's own page.
 
-Coding is the step where your raw notes become part of the graph. You read each raw scenario or raw architecture and write each raw page again as a **coded page**. Restate each raw page in your own plain words. Keep its meaning, and add no judgement of your own. A coded page names the stakeholder groups, concerns, affordances and technologies the notes talk about. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. A **technology** is the thing that provides it. The [home page](index.md) defines all four. You do not summarise or judge. You name what is there, keeping the meaning of the raw wording. The raw page stays exactly as it was written; the coded page is a separate page that reads it.
-
-You say which things the notes name. The tools create the pages and links that follow, and the checker tells you in plain words what is still wrong. Two links you write by hand: the `raw:` link on the coded page, which says which raw page it reads, and the `coded:` link on the raw page. The check names the `coded:` link when it is missing (`SCAT-RAW-BACKLINK`), and you add it. This page shows the whole loop, from start to finish: a raw page, a pushed commit and a look at the graph.
+A **narrative** is one account drawn from your field notes, kept on one page. Coding is the step where that account becomes part of the knowledge graph. You write the account, link each group, concern, affordance or technology where the account names it, and add one row to the page's `Edges told` table for each edge the account tells. The tool checks the result and tells you in plain words what still disagrees. Nothing is copied to a second page: you code in the same page you wrote the account in. The [home page](index.md) defines the four kinds of node, and the [terms](reference/terms.md) page defines every other word used here.
 
 ## Before you start
 
-- A vault set up as in [Getting started](getting-started.md): the folder holds `scat.toml`, you are inside it in Terminal, and `uv sync` has run. While SCAT is a preview being tried before its first release, a fresh clone may need `git checkout dev` first.
-- Remove the worked example from your vault before you add any page of your own: see [Start your own content](getting-started.md#5-start-your-own-content). If you already added pages, the same step still works, and the check lists draft warnings for them and no errors.
-- Raw notes saved as raw pages, from [Facilitating scenarios](facilitate-scenarios.md) or [Facilitating architectures](facilitate-architectures.md). In hand, you need a few plain sentences of raw notes, written as they were told.
-- Your stakeholder groups, planned in the [planning guide](planning.md) and named by role. In hand, you need a short list of the groups, one name per group.
-
-Every operation below has two spellings that give the same messages. Each step shows the Python REPL way first and the command-line way beside it. To open the REPL, type `uv run python`, then `import scat_kg` once. The commands on this page can all be typed in a copy of the template vault, so you can follow along and lose nothing. The worked example is a small community tool library. A plugin or any other tool reads the same results as data: `--json` and `to_dict()` give the same data ([Machine-readable output](reference/api.md#machine-readable-output)).
+- A vault set up as in [Getting started](getting-started.md): the folder holds `scat.toml`, you are inside it in Terminal, and `uv sync` has run.
+- Obsidian 1.9 or later, with the vault open. The index pages are Obsidian Bases, which older versions do not show.
+- Field notes from a session, as in [Facilitating scenarios](facilitate-scenarios.md) or [Facilitating architectures](facilitate-architectures.md). In hand, you need a few plain sentences of notes, written as they were told.
+- Your groups, planned in the [planning guide](planning.md) and named by role. A group is a role, never a person: the vault holds at most the cap of groups set in `scat.toml`.
+- To follow along, type the commands in a copy of the template vault, so you lose nothing. The worked example is a small community tool library.
 
 ## What the pages are
 
-There are four kinds of thing in a vault (SCAT), three kinds of relation page, raw and coded pages, and class pages.
-
 | Page type | Folder | What it holds | Who writes it |
 |---|---|---|---|
-| `stakeholder-group` | `stakeholder-group/` | a group, named by role | you, or `scat stub` |
-| `concern` | `concern/` | an interest someone holds | you, or `scat stub` |
-| `affordance` | `affordance/` | something that can be done | you, or `scat stub` |
-| `technology` | `technology/` | a thing that provides an affordance | you, or `scat stub` |
-| `heldby` | `heldby/` | this group holds this concern | the tools, from a pair you name |
-| `addresses` | `addresses/` | this affordance addresses this concern | the tools, from a pair you name |
-| `attributes` | `attributes/` | this affordance is attributed to this technology | the tools, from a pair you name |
-| `scenario-raw`, `architecture-raw` | `scenario-raw/`, `architecture-raw/` | the notes as told | you |
-| `scenario-coded`, `architecture-coded` | `scenario-coded/`, `architecture-coded/` | your reading of one raw page | you |
-| `class` | `class/` | a generated table of every page of one kind | `scat index` |
+| `group` | `group/` | a group, named by role | you, or `scat stub` |
+| `concern` | `concern/` | what a group cares about | you, or `scat stub` |
+| `affordance` | `affordance/` | what a tool or arrangement lets someone do | you, or `scat stub` |
+| `technology` | `technology/` | the thing that provides an affordance | you, or `scat stub` |
+| `narrative` | `narrative/` | one account, with the table of edges it tells | you |
+| index pages | `index/` | a list of the pages of one type | `scat index`, once |
 
-A **relation page** says one fact: a group holds a concern, an affordance addresses a concern, an affordance is attributed to a technology. You do not write its structure. You name the pair, and the tools write the page with both ends filled in. You then add a description, and a note on how this group holds this concern if you have one. The order of the pair matters:
+An **edge** is no page. It is one row of a narrative's `Edges told` table, and there are three types, fixed by the layers they join:
 
-| Relation | Name the pair as |
-|---|---|
-| `heldby` | group, then concern |
-| `addresses` | concern, then affordance |
-| `attributes` | affordance, then technology |
+| Edge type | Name it as | The `from` node is a | The `to` node is a |
+|---|---|---|---|
+| `holds` | `holds` | `group` | `concern` |
+| `is addressed by` | `addressed-by` | `concern` | `affordance` |
+| `is provided by` | `provided-by` | `affordance` | `technology` |
 
-Choose each pair from the notes. For `heldby`, take a group and one concern that group voiced in its own words. For `addresses`, take that concern and an affordance the notes show answering it. For `attributes`, take that affordance and the technology the notes name as providing it. The description of a relation page is one sentence saying that fact in plain words, for example `description: "Participants want borrowed tools returned in the state they left."` If the notes name no group for a concern, use the group assigned to that note in your session plan. If that is not known, create no pair and leave the gap recorded.
+The tool builds the knowledge graph from the pages on every call and never holds it. It has one edge for each (type, from, to), and the edge names every narrative that has a row for it. An edge is `done` when every narrative that tells it is `done`, so you sign off edges by signing off narratives. A **link** is only "this page refers to that one". A link never makes an edge; only a row does.
 
-### The linking rules
+## The coding loop
 
-A coded page links to the pages it relates, and what it relates depends on what it is.
+You work each narrative round the same four steps, as often as it takes:
 
-- A **scenario** relates **groups, concerns and affordances**. It tells what people did and cared about.
-- An **architecture** relates **concerns, affordances and technologies**. It tells what a design offers and what provides it.
+1. **Interpreting.** Read the field notes, and later the views, and decide what they say. This is yours alone.
+2. **Authoring.** Write or revise the account on the narrative page. An assistant may draft it; the wording you keep is yours.
+3. **Coding.** Link each node where the account names it, and record each edge it tells.
+4. **Reviewing.** Run the check, then fix what it reports. You confirm two things yourself: the account matches the field notes, and the coding is a correct use of SCAT. The tool cannot judge either.
 
-Both link back to the raw page they were read from, in `raw`. Here is the coded scenario of some tool-library notes. It is page content, which you type in Obsidian, so it is a `text` block and not a command:
+When the check passes and you confirm both, set the narrative to `done`. Done is not frozen: to change a `done` narrative you set it back to `draft`, edit, then set `done` again, and the tool checks it again then.
+
+### The three actors
+
+- **You, the coder,** own interpretation. You alone move a narrative into or out of `done`.
+- **The tool** owns conformance. It checks that the knowledge graph matches the pages and that it obeys the ontology. No part of the tool can tell who is calling it.
+- **An assistant,** where your participation terms allow one, helps and holds no authority. It may draft and may run the commands. Which data an assistant may touch is settled before the first session: see [Data, rights and consent](data-and-consent.md).
+
+On the chat path, the server never moves a page into or out of `done`, so the assistant cannot, by construction. On the IDE path an assistant can run `scat set-status`, because the command cannot tell who types it. That is a residual risk, accepted: there, authority holds by the rules written for the assistant and by your review of what it changed in git (`git diff` before every commit), not by the tool.
+
+## Where narratives and their edges come from
+
+Everything starts in the field notes, and only you read them. You turn what a session told into one narrative page, with `scat stub` making the empty page and you writing the account. The narrative is where each edge comes from: a row of its `Edges told` table says "this account tells that a group holds that concern". There is no other place an edge is written, and no page to open for one.
+
+Two narratives can tell the same edge. Each has its own row and its own note, and the knowledge graph has one edge naming both. A narrative that mentions two nodes without a row for the pair has not told an edge, even if the notes would support one: the row is your statement that the account tells it.
+
+## A narrative, start to finish
+
+This is one narrative coded the way most people begin, writing first and recording edges as they come. Each `$` line is a command you type, without the `$`; the lines under it are exactly what the tool prints. Page content is what you type in Obsidian.
+
+### 1. Make the page
 
 ```text
----
-type: scenario-coded
-status: draft
-title: "Saturday at the tool library, coded"
-description: "Loans go unrecorded when the sheet runs out."
-raw:
-  - "[[saturday-at-the-tool-library]]"
-groups:
-  - "[[workshop-participants]]"
-concerns:
-  - "[[tools-come-back-in-good-order]]"
-affordances:
-  - "[[sign-out-sheet]]"
----
-
-Read from [[saturday-at-the-tool-library]].
+$ uv run scat stub saturday-at-the-tool-library --type narrative
+created narrative/saturday-at-the-tool-library.md
 ```
 
-A coded architecture has the same shape, with `technologies` where a scenario has `groups`:
+The page starts as a stub, with only what every page needs:
 
 ```text
 ---
-type: architecture-coded
-status: draft
-title: "Shared sheet pitch, coded"
-description: "A shared spreadsheet provides the sign-out sheet."
-raw:
-  - "[[shared-sheet-pitch]]"
-concerns:
-  - "[[tools-come-back-in-good-order]]"
-affordances:
-  - "[[sign-out-sheet]]"
-technologies:
-  - "[[shared-spreadsheet]]"
----
-
-Read from [[shared-sheet-pitch]].
-```
-
-The raw page lists its coded pages in `coded`, so a reader can walk both ways. The tools check this and tell you if one side is missing.
-
-## Where raw and coded pages come from
-
-A raw page is the notes as told. Its body holds the plain-sentence notes, written as they were told, with no links. The [facilitation guides](facilitate-scenarios.md) teach how to write one, so this page does not repeat it. `scat stub` is the one way to create a raw or a coded page. Run `scat stub <name> --type scenario-raw` (or `scenario-coded`, `architecture-raw`, `architecture-coded`). Name a coded page after its raw page with `-coded` on the end.
-
-A stub starts at `status: stub`, with only `type`, `status` and `title`: no `description` and no `coded` or `raw` line. A raw stub also has an empty `timeframe:` line; see the [facilitation guides](facilitate-scenarios.md#past-or-future-one-at-a-time).
-
-For example, the stub of a raw page and of its coded page, as the tool makes them:
-
-```text
-$ uv run scat stub saturday-at-the-tool-library --type scenario-raw
-created scenario-raw/saturday-at-the-tool-library.md
-$ uv run scat stub saturday-at-the-tool-library-coded --type scenario-coded
-created scenario-coded/saturday-at-the-tool-library-coded.md
-```
-
-```text
----
-type: scenario-coded
+type: narrative
 status: stub
-title: "Saturday at the tool library coded"
+title: "Saturday at the tool library"
+timeframe: # past | future | mixed
 ---
 ```
 
-You then write the notes into the raw page and the links into the coded page, as in the example above.
+The check does not fault an unfinished page. It notes, as a warning, what `done` will need:
 
-## Status: stub, draft, done
+```text
+$ uv run scat check saturday-at-the-tool-library
+warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `timeframe`: missing (required once the page is done)
+  Fix, choose one before you set status: done:
+    1. replace the line `timeframe: # past | future | mixed` with `timeframe: past` (author)
+    2. replace the line `timeframe: # past | future | mixed` with `timeframe: future` (author)
+    3. replace the line `timeframe: # past | future | mixed` with `timeframe: mixed` (author)
+0 errors, 1 warning
+```
 
-Every page of your own carries a `status`. It usually moves forward as you work, and you can set it back:
+### 2. Write the account
 
-| Status | Meaning |
-|---|---|
-| `stub` | the page exists because something links to it. It has the minimum. |
-| `draft` | you are writing it. |
-| `done` | you finished it. The full contract applies. |
+Open the page in Obsidian and write the account under the front matter, as it was told. Set `kind` to `scenario` (a story of people doing things over time) or `architecture` (how parts fit into tools), set `timeframe` to `past`, `future` or `mixed` (see [past or future](facilitate-scenarios.md#past-or-future-one-at-a-time)), and change `status` to `draft`. The `description` can wait. The links come next.
 
-**An unfinished page is never an error for being unfinished.** A stub or a draft that lacks a description gets no error, and at most a warning that the page is not finished. Links and relation ends are checked at every status, because a link to a page that does not exist is wrong whatever the status. Class pages are generated and carry no status.
+```text
+---
+type: narrative
+kind: scenario
+status: draft
+title: "Saturday at the tool library"
+timeframe: past
+---
 
-## The operations, in the order you meet them
+From the point of view of Workshop participants (about 10:20)
+
+- Saturday, desk opens at 9. Three people ask for the same drill.
+- Concern: "tools must come back in good order."
+- The sign-out sheet lets us see who has what. It stops us seeing tools that are late.
+```
+
+The check shows the to-do for the `description`, and notices that the account names a group the vault already has and asks you to link it:
+
+```text
+$ uv run scat check saturday-at-the-tool-library
+warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
+  Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
+warning [SCAT-MENTION] narrative/saturday-at-the-tool-library.md:9:27 text `Workshop participants`: names the group page [[workshop-participants]] but does not link it
+  Fix: on line 9 replace `Workshop participants` with `[[workshop-participants|Workshop participants]]`
+0 errors, 2 warnings
+```
+
+### 3. Record the edges
+
+Each edge the account tells is a row. `record-edge` writes the row for you, and creates the node pages the row names if the vault lacks them, as stubs of the right type: the layer fixes the type. `--told-by` names the narrative:
+
+```text
+$ uv run scat record-edge holds workshop-participants tools-come-back-in-good-order --told-by saturday-at-the-tool-library --note "Said twice in the first hour."
+created concern/tools-come-back-in-good-order.md
+changed narrative/saturday-at-the-tool-library.md
+note: added `| holds | [[workshop-participants]] | [[tools-come-back-in-good-order]] | Said twice in the first hour. |` to narrative/saturday-at-the-tool-library.md at line 19
+$ uv run scat record-edge addressed-by tools-come-back-in-good-order sign-out-sheet --told-by saturday-at-the-tool-library
+created affordance/sign-out-sheet.md
+changed narrative/saturday-at-the-tool-library.md
+note: added `| is addressed by | [[tools-come-back-in-good-order]] | [[sign-out-sheet]] | |` to narrative/saturday-at-the-tool-library.md at line 20
+```
+
+The new concern and affordance are stubs, so you write their descriptions later. The rows are in the page, which you can also edit by hand:
+
+```text
+---
+type: narrative
+kind: scenario
+status: draft
+title: "Saturday at the tool library"
+timeframe: past
+---
+
+From the point of view of Workshop participants (about 10:20)
+
+- Saturday, desk opens at 9. Three people ask for the same drill.
+- Concern: "tools must come back in good order."
+- The sign-out sheet lets us see who has what. It stops us seeing tools that are late.
+
+## Edges told
+
+| type | from | to | note |
+|---|---|---|---|
+| holds | [[workshop-participants]] | [[tools-come-back-in-good-order]] | Said twice in the first hour. |
+| is addressed by | [[tools-come-back-in-good-order]] | [[sign-out-sheet]] | |
+```
+
+Recording an edge the narrative already tells changes nothing, so you can repeat a command safely:
+
+```text
+$ uv run scat record-edge holds workshop-participants tools-come-back-in-good-order --told-by saturday-at-the-tool-library
+unchanged narrative/saturday-at-the-tool-library.md
+note: narrative/saturday-at-the-tool-library.md already has this row, so nothing was written
+```
+
+### 4. Link the names
+
+In Obsidian, link each node where the account names it, with `[[name|words as written]]`. A row's own ends are links already. Here are the three links added to the account:
+
+```text
+---
+type: narrative
+kind: scenario
+status: draft
+title: "Saturday at the tool library"
+timeframe: past
+---
+
+From the point of view of [[workshop-participants|Workshop participants]] (about 10:20)
+
+- Saturday, desk opens at 9. Three people ask for the same drill.
+- Concern: "[[tools-come-back-in-good-order|tools must come back in good order]]."
+- [[sign-out-sheet|The sign-out sheet]] lets us see who has what. It stops us seeing tools that are late.
+
+## Edges told
+
+| type | from | to | note |
+|---|---|---|---|
+| holds | [[workshop-participants]] | [[tools-come-back-in-good-order]] | Said twice in the first hour. |
+| is addressed by | [[tools-come-back-in-good-order]] | [[sign-out-sheet]] | |
+```
+
+```text
+$ uv run scat check saturday-at-the-tool-library --neighborhood
+warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
+  Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
+0 errors, 1 warning
+```
+
+Check one page, or a page and every page one link away, as here, as you go.
+
+### 5. A link without a row
+
+You may link a node that the account only mentions. Here the first bullet gains a link to a second group, the project leads:
+
+```text
+- Saturday, desk opens at 9. Three people ask for the same drill, and the [[project-leads|project leads]] hear of it.
+```
+
+The check says:
+
+```text
+$ uv run scat check saturday-at-the-tool-library --neighborhood
+warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
+  Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
+0 errors, 1 warning
+```
+
+No message. A narrative that links both nodes of a pair but has no row for it is a **candidate**: the tool does not know whether the account tells that edge, and that is your judgement of the field notes, not a defect. The fingerprint view lists such pairs, so that you can decide for each whether to add a row. That view is not one of the `scat` commands yet. Until it arrives, Obsidian's Outgoing links panel for the page shows the nodes it links, and its table shows the edges it tells. Together they are the narrative's **fingerprint**.
+
+### 6. Set it to done
+
+Setting `done` is judged as the page would stand at `done`. It is refused while it would fail, and nothing is written:
+
+```text
+$ uv run scat set-status saturday-at-the-tool-library done
+refused [SCAT-DONE-REFUSED] narrative/saturday-at-the-tool-library.md: 1 error(s) would stand at status done; status unchanged
+  error [SCAT-DONE-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing on a page with status: done
+    Fix, choose one:
+      1. add the line `description: "<one sentence you write>"` (author)
+      2. run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library", "draft")`) if the page is not finished
+  Fix, choose one:
+    1. fix the problems above, then run `scat set-status saturday-at-the-tool-library done` again
+    2. leave the page at `draft`: run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library", "draft")`)
+```
+
+Fix what it lists (here, add the line `description: "Loans go unrecorded when the sheet runs out."` to the front matter), then set it again:
+
+```text
+$ uv run scat set-status saturday-at-the-tool-library done
+changed narrative/saturday-at-the-tool-library.md
+note: `status` set to done (was draft)
+$ uv run scat status saturday-at-the-tool-library --neighborhood
+done         narrative/saturday-at-the-tool-library.md
+stub         affordance/sign-out-sheet.md
+stub         concern/tools-come-back-in-good-order.md
+done         group/project-leads.md
+done         group/workshop-participants.md
+2 stub, 3 done
+```
+
+`done` is your word that the account matches the field notes and the coding is right. The tool has checked only the structure.
+
+### 7. Change a done narrative
+
+A `done` narrative is not frozen, but changing it is your step. `record-edge` and `remove-edge` refuse to touch one:
+
+```text
+$ uv run scat record-edge provided-by sign-out-sheet shared-spreadsheet --told-by saturday-at-the-tool-library
+refused narrative/saturday-at-the-tool-library.md: the narrative is `done` and this row would change it; changing a `done` narrative is your step
+  Fix: set the narrative to `draft` with `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library", "draft")`), run this again, then set it to `done` again; the page is checked then
+```
+
+Set it to `draft`, make the change, then set it to `done` again. Here the edge is removed. The links stay, since they belong to the account:
+
+```text
+$ uv run scat set-status saturday-at-the-tool-library draft
+changed narrative/saturday-at-the-tool-library.md
+note: `status` set to draft (was done)
+$ uv run scat remove-edge workshop-participants tools-come-back-in-good-order
+changed narrative/saturday-at-the-tool-library.md
+note: removed the row at line 20 of narrative/saturday-at-the-tool-library.md
+note: the links stay in the narratives; remove one by hand if the account no longer names it
+```
+
+The row is gone and the links are where they were:
+
+```text
+---
+type: narrative
+kind: scenario
+status: draft
+title: "Saturday at the tool library"
+description: "Loans go unrecorded when the sheet runs out."
+timeframe: past
+---
+
+From the point of view of [[workshop-participants|Workshop participants]] (about 10:20)
+
+- Saturday, desk opens at 9. Three people ask for the same drill, and the [[project-leads|project leads]] hear of it.
+- Concern: "[[tools-come-back-in-good-order|tools must come back in good order]]."
+- [[sign-out-sheet|The sign-out sheet]] lets us see who has what. It stops us seeing tools that are late.
+
+## Edges told
+
+| type | from | to | note |
+|---|---|---|---|
+| is addressed by | [[tools-come-back-in-good-order]] | [[sign-out-sheet]] | |
+```
+
+```text
+$ uv run scat check saturday-at-the-tool-library
+no problems
+```
+
+## Coding in increments
+
+Coding is rarely done in one go. You stub something, fill it in, stub more, and fill in again, and the tool tells you what disagrees after every step. Two orders are common, and neither hides a mismatch.
+
+**Depth first** codes one narrative at a time, as above: write the account, record its edges (which creates the nodes), link the names. **Breadth first** makes the nodes first, then links, then records the edges. Here the three nodes of a Sunday narrative are made with `scat stub`, named in the account, and checked:
+
+```text
+$ uv run scat stub sunday-at-the-desk --type narrative
+created narrative/sunday-at-the-desk.md
+$ uv run scat stub late-returns --type concern
+created concern/late-returns.md
+$ uv run scat stub reminder-text --type affordance
+created affordance/reminder-text.md
+```
+
+```text
+---
+type: narrative
+kind: scenario
+status: draft
+title: "Sunday at the desk"
+description: "Late returns, and a text that might help."
+timeframe: future
+---
+
+From the point of view of [[workshop-participants|Workshop participants]]: [[late-returns|late returns]] spoil the week. A [[reminder-text|reminder text]] on Friday would help.
+```
+
+```text
+$ uv run scat check sunday-at-the-desk --neighborhood
+no problems
+```
+
+Linking two nodes of a pair says nothing yet, so there is no message, and each step is cheap. Then the edges, one row each:
+
+```text
+$ uv run scat record-edge holds workshop-participants late-returns --told-by sunday-at-the-desk --note "Said as the main worry."
+changed narrative/sunday-at-the-desk.md
+note: added `| holds | [[workshop-participants]] | [[late-returns]] | Said as the main worry. |` to narrative/sunday-at-the-desk.md at line 16
+$ uv run scat record-edge addressed-by late-returns reminder-text --told-by sunday-at-the-desk
+changed narrative/sunday-at-the-desk.md
+note: added `| is addressed by | [[late-returns]] | [[reminder-text]] | |` to narrative/sunday-at-the-desk.md at line 17
+```
+
+```text
+---
+type: narrative
+kind: scenario
+status: draft
+title: "Sunday at the desk"
+description: "Late returns, and a text that might help."
+timeframe: future
+---
+
+From the point of view of [[workshop-participants|Workshop participants]]: [[late-returns|late returns]] spoil the week. A [[reminder-text|reminder text]] on Friday would help.
+
+## Edges told
+
+| type | from | to | note |
+|---|---|---|---|
+| holds | [[workshop-participants]] | [[late-returns]] | Said as the main worry. |
+| is addressed by | [[late-returns]] | [[reminder-text]] | |
+```
+
+```text
+$ uv run scat check sunday-at-the-desk --neighborhood
+no problems
+```
+
+Linking a name before its page exists is the one thing that is an error at every status, because a link must reach a page. The message offers `scat stub NAME --type ...` for each type, and a row's end offers the one type the layer fixes.
+
+## When a link and an edge disagree
+
+A **mismatch** is a link and an edge that disagree. It happens at a row's end: the end is not a link, or links a name that is no page, or links a page that is not a node. The table has other faults too: a row in the wrong direction or between layers that are not neighbours, a row repeated within one narrative, a type the ontology does not know, or a row that is not four cells. The tool grades them all alike.
+
+While the narrative is a `stub` or `draft`, each is a warning. Once it is `done`, each is an error, and `set-status ... done` refuses. This hand-written table has three of them:
+
+```text
+---
+type: narrative
+kind: scenario
+status: draft
+title: "Monday at the desk"
+description: "A hand-written table."
+timeframe: past
+---
+
+From the point of view of [[workshop-participants|Workshop participants]]: [[late-returns|late returns]] again.
+
+## Edges told
+
+| type | from | to | note |
+|---|---|---|---|
+| holds | [[workshop-participants]] | late-returns | |
+| holds | [[late-returns]] | [[workshop-participants]] | |
+| holds | [[workshop-participants]] | [[late-return]] | |
+```
+
+```text
+$ uv run scat check monday-at-the-desk
+warning [SCAT-DRAFT-END-NOLINK] narrative/monday-at-the-desk.md:16:39 row 1 cell `to`: `late-returns` is not a link; each end of a row is one link, `[[page-name]]`
+  Fix, choose one:
+    1. replace `late-returns` with `[[late-returns]]`
+    2. delete the row
+warning [SCAT-DRAFT-TABLE-LAYERS] narrative/monday-at-the-desk.md:17:1 row 2: `holds` joins a group to a concern, but [[late-returns]] is a concern page, and [[workshop-participants]] is a group page
+  Fix, choose one:
+    1. swap the two ends: replace `[[late-returns]] | [[workshop-participants]]` with `[[workshop-participants]] | [[late-returns]]`
+    2. delete the row
+warning [SCAT-DRAFT-END-NOPAGE] narrative/monday-at-the-desk.md:18:39 row 3 cell `to`: [[late-return]] does not reach a page (no page is named late-return)
+  Fix, choose one:
+    1. replace `[[late-return]]` with `[[late-returns]]`
+    2. run `scat stub late-return --type concern` (REPL: `scat_kg.stub("late-return", type="concern")`) to create a concern page
+    3. delete the row
+0 errors, 3 warnings
+```
+
+Each message names the row and cell, says what is wrong and gives its fixes. Setting `done` now is judged as the page would stand at `done`:
+
+```text
+$ uv run scat set-status monday-at-the-desk done
+refused [SCAT-DONE-REFUSED] narrative/monday-at-the-desk.md: 3 error(s) would stand at status done; status unchanged
+  error [SCAT-DONE-END-NOLINK] narrative/monday-at-the-desk.md:16:39 row 1 cell `to`: `late-returns` is not a link; each end of a row is one link, `[[page-name]]`
+    Fix, choose one:
+      1. replace `late-returns` with `[[late-returns]]`
+      2. delete the row
+  error [SCAT-DONE-TABLE-LAYERS] narrative/monday-at-the-desk.md:17:1 row 2: `holds` joins a group to a concern, but [[late-returns]] is a concern page, and [[workshop-participants]] is a group page
+    Fix, choose one:
+      1. swap the two ends: replace `[[late-returns]] | [[workshop-participants]]` with `[[workshop-participants]] | [[late-returns]]`
+      2. delete the row
+  error [SCAT-DONE-END-NOPAGE] narrative/monday-at-the-desk.md:18:39 row 3 cell `to`: [[late-return]] does not reach a page (no page is named late-return)
+    Fix, choose one:
+      1. replace `[[late-return]]` with `[[late-returns]]`
+      2. run `scat stub late-return --type concern` (REPL: `scat_kg.stub("late-return", type="concern")`) to create a concern page
+      3. delete the row
+  Fix, choose one:
+    1. fix the problems above, then run `scat set-status monday-at-the-desk done` again
+    2. leave the page at `draft`: run `scat set-status monday-at-the-desk draft` (REPL: `scat_kg.set_status("monday-at-the-desk", "draft")`)
+```
+
+Apply the first fix to each: link the name, swap the two ends, and link the existing concern in place of the misspelt one. Swapping the ends of row 2 gave it the same pair as row 1, and the check says so:
+
+```text
+$ uv run scat check monday-at-the-desk
+warning [SCAT-DRAFT-TABLE-DUPLICATE] narrative/monday-at-the-desk.md:17:1 row 2: tells the same edge as row 1 (`holds`, [[workshop-participants]], [[late-returns]]); a narrative tells an edge once
+  Fix: delete the row `| holds | [[workshop-participants]] | [[late-returns]] | |`
+0 errors, 1 warning
+```
+
+Delete the second row, and the narrative passes and can be set to `done`:
+
+```text
+$ uv run scat check monday-at-the-desk
+no problems
+$ uv run scat set-status monday-at-the-desk done
+changed narrative/monday-at-the-desk.md
+note: `status` set to done (was draft)
+```
+
+### The table in Obsidian
+
+Obsidian's table editor re-pads the columns when you click into a table. That is harmless: the tool reads a table whatever its spacing, so a hand-aligned table passes as a compact one does.
+
+```text
+| type  | from                      | to                | note                 |
+| ----- | ------------------------- | ----------------- | -------------------- |
+| holds | [[workshop-participants]] | [[late-returns]]  | Said as the main worry. |
+```
+
+```text
+$ uv run scat check monday-at-the-desk
+no problems
+```
+
+### Relationship annotations
+
+Two entries of one type can pull against each other, such as two concerns. SCAT records that as a **relationship annotation**: a line in the body of one of the two pages, with a link to the other. It has no meaning to the tool, is not an edge and stays out of every view. The link must still reach a page, like any link:
+
+```text
+---
+type: concern
+status: stub
+title: "Late returns"
+---
+
+Pulls against [[anonymity]]: chasing a borrower for a late tool means knowing who they are.
+```
+
+```text
+$ uv run scat check late-returns --neighborhood
+no problems
+```
+
+## The operations
+
+Every operation has two spellings that give the same messages: the Python REPL (`uv run python`, then `import scat_kg` once) and the command line. Each step shows both. The names differ between the two spellings, so you can type both in one vault. All of them write only new files or the lines they name, and none of them writes a narrative's account.
 
 ### Check, at three scopes
 
-`check` reads the vault and writes nothing. Run it often. It has three scopes:
-
-- **One page**: the page you just touched. The quickest.
-- **Neighbourhood**: the page and every page one link away, in either direction. Use it after you add links.
-- **Whole vault**: every page. Use it before you commit.
-
-A page is named by its name (`gated-approval`) or by its path from the vault folder (`affordance/gated-approval.md`).
+`check` reads the vault and writes nothing. It has three scopes: **one page**, the quickest; **a page and every page one link away**, in either direction, which you use after adding links; and **the whole vault**, which you use before you commit. A page is named by its name (`anonymity`) or its path from the vault folder (`concern/anonymity.md`).
 
 === "Python (REPL)"
 
     ```python
     import scat_kg
     scat_kg.check()
+    scat_kg.check("anonymity")
+    scat_kg.check("anonymity", neighborhood=True)
+    ```
+
+    ```text
+    no problems
+
+    no problems
+
+    no problems
     ```
 
 === "CLI"
 
     ```bash
     uv run scat check
+    uv run scat check anonymity
+    uv run scat check anonymity --neighborhood
     ```
 
-```text
-no problems
-```
+    ```text
+    no problems
 
-The template's own example is clean. Warnings, when there are any, do not block. A command exits with 0 unless there is an error, so "0 errors" is a pass. Now one page, then its neighbourhood:
+    no problems
 
-=== "Python (REPL)"
-
-    ```python
-    scat_kg.check("gated-approval")
-    scat_kg.check("gated-approval", neighborhood=True)
+    no problems
     ```
 
-=== "CLI"
+The template's own example is clean. Warnings do not block: a command exits with 0 unless there is an error.
 
-    ```bash
-    uv run scat check gated-approval
-    uv run scat check gated-approval --neighborhood
-    ```
+### Stub: make a page
 
-```text
-no problems
-no problems
-```
-
-### Stub: create pages, never write structure
-
-The tools create the page, as a `stub`, for anything a link needs. Three commands:
-
-- `stub` makes one page of a kind you name: `concern`, `affordance`, `technology`, `stakeholder-group`, or a raw or coded page (`scenario-raw`, `scenario-coded`, `architecture-raw`, `architecture-coded`). It refuses a name that is already taken.
-- `stub-pair` makes the relation page for a pair, and stubs an end that does not exist. Run it once for each pair you find in the notes. Naming the same pair again changes nothing.
-- `stub-links` makes the pages that link fields name and the vault lacks. Use it after you write a coded page, to create everything the page points at.
-
-`stub` refuses a name that is already taken, so the two spellings below make two different concerns. Type one spelling, or both.
+`stub` makes one page of the type you name (`group`, `concern`, `affordance`, `technology` or `narrative`) with `status: stub`. It refuses a name that is taken, a name that is not legal (lower-case letters, digits and single hyphens), and a new group that would go over the cap.
 
 === "Python (REPL)"
 
     ```python
     scat_kg.stub("lending-desk-opens-on-time", type="concern")
+    scat_kg.stub("desk-notes-one", type="narrative")
+    ```
+
+    ```text
+    created concern/lending-desk-opens-on-time.md
+
+    created narrative/desk-notes-one.md
     ```
 
 === "CLI"
 
     ```bash
     uv run scat stub volunteers-are-easy-to-find --type concern
+    uv run scat stub desk-notes-two --type narrative
     ```
 
-```text
-created concern/lending-desk-opens-on-time.md
-```
+    ```text
+    created concern/volunteers-are-easy-to-find.md
 
-The CLI line prints `created concern/volunteers-are-easy-to-find.md`. Each is a stub, so neither is an error. A stub stays a stub until you write it.
+    created narrative/desk-notes-two.md
+    ```
 
-Now the three pairs. The group already exists in the template. The tools create the concern, the affordance and the technology that the pairs name:
+### Record an edge, and remove one
+
+`record-edge` takes the type, the two nodes and the narrative that tells it. It adds a row to that narrative, makes a missing node or narrative as a stub, and leaves every link alone. `remove-edge` deletes the rows that tell a pair, from the narratives you name with `--told-by` or, without it, from every narrative that tells it. Both refuse a narrative that is `done`.
 
 === "Python (REPL)"
 
     ```python
-    scat_kg.stub_pair("heldby", "workshop-participants", "tools-come-back-in-good-order")
-    scat_kg.stub_pair("addresses", "tools-come-back-in-good-order", "sign-out-sheet")
-    scat_kg.stub_pair("attributes", "sign-out-sheet", "shared-spreadsheet")
+    scat_kg.record_edge("holds", "workshop-participants", "lending-desk-opens-on-time", ["desk-notes-one"], note="Said twice.")
+    scat_kg.remove_edge("workshop-participants", "lending-desk-opens-on-time")
+    ```
+
+    ```text
+    changed narrative/desk-notes-one.md
+
+    note: added `| holds | [[workshop-participants]] | [[lending-desk-opens-on-time]] | Said twice. |` to narrative/desk-notes-one.md at line 12
+
+    changed narrative/desk-notes-one.md
+
+    note: removed the row at line 12 of narrative/desk-notes-one.md
+
+    note: the links stay in the narratives; remove one by hand if the account no longer names it
     ```
 
 === "CLI"
 
     ```bash
-    uv run scat stub-pair heldby workshop-participants tools-come-back-in-good-order
-    uv run scat stub-pair addresses tools-come-back-in-good-order sign-out-sheet
-    uv run scat stub-pair attributes sign-out-sheet shared-spreadsheet
+    uv run scat record-edge holds workshop-participants volunteers-are-easy-to-find --told-by desk-notes-two --note "Said twice."
+    uv run scat remove-edge workshop-participants volunteers-are-easy-to-find
     ```
 
-```text
-created concern/tools-come-back-in-good-order.md
-created heldby/workshop-participants-holds-tools-come-back-in-good-order.md
-note: write `description`, `notes` and the body in heldby/workshop-participants-holds-tools-come-back-in-good-order.md; the endpoints are filled
-created affordance/sign-out-sheet.md
-created addresses/tools-come-back-in-good-order-addresses-sign-out-sheet.md
-note: write `description`, `notes` and the body in addresses/tools-come-back-in-good-order-addresses-sign-out-sheet.md; the endpoints are filled
-created technology/shared-spreadsheet.md
-created attributes/sign-out-sheet-attributed-to-shared-spreadsheet.md
-note: write `description`, `notes` and the body in attributes/sign-out-sheet-attributed-to-shared-spreadsheet.md; the endpoints are filled
-```
+    ```text
+    changed narrative/desk-notes-two.md
 
-A relation page's file name is made from its title, joined by the relation's verb, and cut at 64 characters, not counting `.md`. If a pair's names are long, the file name is shorter than the two names together and may end partway through a word, and a clash with an existing name adds `-2`, `-3` and so on. The full title stays in the page's `title:` line, and you need not rename the file.
+    note: added `| holds | [[workshop-participants]] | [[volunteers-are-easy-to-find]] | Said twice. |` to narrative/desk-notes-two.md at line 12
 
-That is the output of the first spelling you type. The second spelling prints `unchanged <file>` and a note that the page already states the pair, for each of the three. Nothing is written twice.
+    changed narrative/desk-notes-two.md
 
-Open one of the new pages. The tools wrote everything except what only you know:
+    note: removed the row at line 12 of narrative/desk-notes-two.md
 
-```text
----
-type: heldby
-status: stub
-title: "Workshop participants holds Tools come back in good order"
-group: "[[workshop-participants]]"
-concern: "[[tools-come-back-in-good-order]]"
----
-```
+    note: the links stay in the narratives; remove one by hand if the account no longer names it
+    ```
 
-Nothing in the body is required. You add a `description` and, if you have one, an optional one-line `notes` on how this group holds this concern. In Obsidian the page then reads:
+### Stub links
 
-```text
----
-type: heldby
-status: draft
-title: "Workshop participants holds Tools come back in good order"
-description: "Participants want borrowed tools returned in the state they left."
-group: "[[workshop-participants]]"
-concern: "[[tools-come-back-in-good-order]]"
-notes: "Held most strongly about the ladder."
----
-```
-
-Now `stub-links`. Run it on the whole vault, or name one page. Nothing is missing here, so it says so:
+`stub-links` makes the node pages that the ends of rows link and the vault lacks, as the type the layer fixes. A link in the account has no layer, so it needs `scat stub NAME --type ...`. With nothing to make, it says so:
 
 === "Python (REPL)"
 
     ```python
     scat_kg.stub_links()
+    ```
+
+    ```text
+    stub-links: nothing to do
     ```
 
 === "CLI"
@@ -285,144 +641,68 @@ Now `stub-links`. Run it on the whole vault, or name one page. Nothing is missin
     uv run scat stub-links
     ```
 
-```text
-stub-links: nothing to do
-```
-
-When you have written a coded page that links to pages that do not exist yet, `scat stub-links <page>` creates them. That is the fastest way to code: write the links, then run it. The first message under "How to read a message" shows it at work.
-
-New stubs are never errors. Check the neighbourhood of the concern to see:
-
-=== "Python (REPL)"
-
-    ```python
-    scat_kg.check("tools-come-back-in-good-order", neighborhood=True)
+    ```text
+    stub-links: nothing to do
     ```
-
-=== "CLI"
-
-    ```bash
-    uv run scat check tools-come-back-in-good-order --neighborhood
-    ```
-
-```text
-no problems
-```
 
 ### Status, and set-status
 
-`status` lists each page's status and the counts, at the same three scopes as `check`.
+`status` lists each page's status and the counts, at the same three scopes as `check`. `set-status` moves a page between `stub`, `draft` and `done`; setting the status a page already has changes nothing. Setting `done` is checked, as in step 6.
 
 === "Python (REPL)"
 
     ```python
-    scat_kg.status("sign-out-sheet")
-    scat_kg.status("tools-come-back-in-good-order", neighborhood=True)
+    scat_kg.status("desk-notes-one")
+    scat_kg.set_status("desk-notes-one", "draft")
+    ```
+
+    ```text
+    stub         narrative/desk-notes-one.md
+
+    1 stub
+
+    changed narrative/desk-notes-one.md
+
+    note: `status` set to draft (was stub)
     ```
 
 === "CLI"
 
     ```bash
-    uv run scat status sign-out-sheet
-    uv run scat status tools-come-back-in-good-order --neighborhood
+    uv run scat status desk-notes-two
+    uv run scat set-status desk-notes-two draft
     ```
 
-```text
-stub         affordance/sign-out-sheet.md
-1 stub
-stub         concern/tools-come-back-in-good-order.md
-stub         addresses/tools-come-back-in-good-order-addresses-sign-out-sheet.md
-stub         heldby/workshop-participants-holds-tools-come-back-in-good-order.md
-3 stub
-```
+    ```text
+    stub         narrative/desk-notes-two.md
 
-The whole vault lists every page and ends with the counts:
+    1 stub
 
-=== "Python (REPL)"
+    changed narrative/desk-notes-two.md
 
-    ```python
-    scat_kg.status()
+    note: `status` set to draft (was stub)
     ```
 
-=== "CLI"
+### Index: the index pages
 
-    ```bash
-    uv run scat status
-    ```
-
-The last lines of the output. It lists every page first, and shows class pages as `(no status: class page)`:
-
-```text
-done         technology/main-and-dev-branches.md
-stub         technology/shared-spreadsheet.md
-7 stub, 28 done, 7 none
-```
-
-That is the count after one spelling of the steps above. If you typed both the REPL and the CLI `stub` line, you made one more concern, and the count reads `8 stub, 28 done, 7 none`.
-
-`set-status` moves a page along: `stub`, `draft` or `done`. A stub becomes a draft when you start filling it in: set it with `scat set-status <page> draft` (REPL: `scat_kg.set_status("<page>", "draft")`), or edit the `status` line by hand. When the page is finished, set `done`, then run `check` on that page. Setting the status a page already has changes nothing, so you can repeat it.
-
-=== "Python (REPL)"
-
-    ```python
-    scat_kg.set_status("sign-out-sheet", "draft")
-    ```
-
-=== "CLI"
-
-    ```bash
-    uv run scat set-status sign-out-sheet draft
-    ```
-
-```text
-changed affordance/sign-out-sheet.md
-note: `status` set to draft (was stub)
-```
-
-The second spelling prints `unchanged affordance/sign-out-sheet.md` and `note: status is already draft`.
-
-`set-status` writes the status and nothing else. It does not check that the page is ready. Run `check` on the page after you set `done`. Message 7 below shows why.
-
-### Index: keep the class pages current
-
-A class page lists every page of its kind in a table, with a name, a short description and a link. The tools write the table, between two marker lines, so never edit it by hand. After you add pages, the tables are out of date, and the whole-vault check says so as a warning:
-
-=== "Python (REPL)"
-
-    ```python
-    scat_kg.check()
-    ```
-
-=== "CLI"
-
-    ```bash
-    uv run scat check
-    ```
-
-```text
-warning [SCAT-DRAFT-FIELD] affordance/sign-out-sheet.md field `description`: missing (required once the page is done)
-  Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
-warning [SCAT-INDEX-STALE] class/addresses-pairs.md index table: the table differs from the addresses pages
-  Fix: run `scat index` (REPL: `scat_kg.index()`)
-warning [SCAT-INDEX-STALE] class/affordances.md index table: the table differs from the affordance pages
-  Fix: run `scat index` (REPL: `scat_kg.index()`)
-warning [SCAT-INDEX-STALE] class/attributes-pairs.md index table: the table differs from the attributes pages
-  Fix: run `scat index` (REPL: `scat_kg.index()`)
-warning [SCAT-INDEX-STALE] class/concerns.md index table: the table differs from the concern pages
-  Fix: run `scat index` (REPL: `scat_kg.index()`)
-warning [SCAT-INDEX-STALE] class/heldby-pairs.md index table: the table differs from the heldby pages
-  Fix: run `scat index` (REPL: `scat_kg.index()`)
-warning [SCAT-INDEX-STALE] class/technologies.md index table: the table differs from the technology pages
-  Fix: run `scat index` (REPL: `scat_kg.index()`)
-0 errors, 7 warnings
-```
-
-The `Fix:` line is the exact command. Run it:
+An index page lists the pages of one type. It is an Obsidian Base, `index/<type>.base`, which reads the vault itself, so it cannot go stale. `index` writes the ones that are missing and never rewrites one, so you can add a column to a Base by hand. The template ships all five, so on a fresh copy every line says `unchanged`:
 
 === "Python (REPL)"
 
     ```python
     scat_kg.index()
+    ```
+
+    ```text
+    unchanged index/group.base
+
+    unchanged index/concern.base
+
+    unchanged index/affordance.base
+
+    unchanged index/technology.base
+
+    unchanged index/narrative.base
     ```
 
 === "CLI"
@@ -431,313 +711,52 @@ The `Fix:` line is the exact command. Run it:
     uv run scat index
     ```
 
-```text
-changed class/addresses-pairs.md
-changed class/affordances.md
-changed class/attributes-pairs.md
-changed class/concerns.md
-changed class/heldby-pairs.md
-changed class/technologies.md
-unchanged class/stakeholder-groups.md
-```
+    ```text
+    unchanged index/group.base
 
-`unchanged` means that page did not need a rewrite. That is good news, not a fault. Run `index` a second time, for example the other spelling, and every line says `unchanged`. Run the whole-vault check again:
+    unchanged index/concern.base
 
-=== "Python (REPL)"
+    unchanged index/affordance.base
 
-    ```python
-    scat_kg.check()
+    unchanged index/technology.base
+
+    unchanged index/narrative.base
     ```
 
-=== "CLI"
-
-    ```bash
-    uv run scat check
-    ```
-
-```text
-warning [SCAT-DRAFT-FIELD] affordance/sign-out-sheet.md field `description`: missing (required once the page is done)
-  Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
-0 errors, 1 warning
-```
-
-Zero errors. The draft warning says the affordance still needs a description before it can be `done`. That is a to-do, not a fault.
+Open `index/concern.base` in Obsidian (1.9 or later) to see every concern at a glance, with its status and description.
 
 ## How to read a message
 
-Every message has the same parts:
+Every message has the same parts, as in this one from step 6 above:
 
 ```text
-error [SCAT-LINK-DANGLING] scenario-coded/saturday-at-the-tool-library-coded.md:11 field `concerns`: [[tools-come-back-in-good-order]] does not reach a page (no page is named tools-come-back-in-good-order)
-  Fix: run `scat stub tools-come-back-in-good-order --type concern` (REPL: `scat_kg.stub("tools-come-back-in-good-order", type="concern")`) to create it as a stub
+error [SCAT-DONE-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing on a page with status: done
+  Fix, choose one:
+    1. add the line `description: "<one sentence you write>"` (author)
+    2. run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library", "draft")`) if the page is not finished
 ```
 
 1. **Severity.** `error` blocks. `warning` does not. `refused` means a command did not run, and nothing was written.
-2. **The rule id**, in square brackets. It names the rule, and it is the word to search for in the reference.
-3. **The file**, and the line number after it when there is one.
-4. **The field or the link**: the frontmatter field (`concerns`) or the `[[link]]`.
-5. **What is wrong**, in one sentence.
-6. **The fix.** An exact command, or an exact line to write or delete. A fix marked `(author)` is a line only you can word.
+2. **The rule id**, in square brackets. It names the rule. Rule ids with `DRAFT` are the warnings a `stub` or `draft` gets; the same rule with `DONE` is the error at `done`.
+3. **The file**, the line and column, and the row and cell when it is a table.
+4. **What is wrong**, in one sentence.
+5. **The fix.** An exact command, or an exact line to write or delete. A fix marked `(author)` is a line only you can word.
 
-Do what the fix says, then check again. Each message below starts from a fresh copy of the template, and its first line says which pages it needs and what status they have, so you can follow any one on its own. All were provoked and fixed in a scratch copy. Each shows page content as `text`, because you edit it in Obsidian. A line that starts with `$` is a command you type, without the `$`.
-
-### 1. A link to a page that does not exist (`SCAT-LINK-DANGLING`)
-
-Start: a fresh copy of the template, a raw page `saturday-at-the-tool-library` made with `scat stub`, and the coded page above, still a draft, with nothing else made yet. Checking the coded page:
-
-```text
-$ uv run scat check saturday-at-the-tool-library-coded
-error [SCAT-LINK-DANGLING] scenario-coded/saturday-at-the-tool-library-coded.md:11 field `concerns`: [[tools-come-back-in-good-order]] does not reach a page (no page is named tools-come-back-in-good-order)
-  Fix: run `scat stub tools-come-back-in-good-order --type concern` (REPL: `scat_kg.stub("tools-come-back-in-good-order", type="concern")`) to create it as a stub
-error [SCAT-LINK-DANGLING] scenario-coded/saturday-at-the-tool-library-coded.md:13 field `affordances`: [[sign-out-sheet]] does not reach a page (no page is named sign-out-sheet)
-  Fix: run `scat stub sign-out-sheet --type affordance` (REPL: `scat_kg.stub("sign-out-sheet", type="affordance")`) to create it as a stub
-2 errors, 0 warnings
-```
-
-Two fixes, two commands. One command does both, because `stub-links` creates every page the page links to:
-
-```text
-$ uv run scat stub-links saturday-at-the-tool-library-coded
-created affordance/sign-out-sheet.md
-created concern/tools-come-back-in-good-order.md
-$ uv run scat check saturday-at-the-tool-library-coded
-no problems
-```
-
-### 2. The raw page does not point back (`SCAT-RAW-BACKLINK`)
-
-Start: a fresh copy of the template, the raw page (made with `scat stub`, `timeframe: past` filled in) and the coded page above, and the concern and affordance stub pages they link to (the result of message 1). The neighbourhood check of the coded page:
-
-```text
-$ uv run scat check saturday-at-the-tool-library-coded --neighborhood
-warning [SCAT-RAW-BACKLINK] scenario-raw/saturday-at-the-tool-library.md field `coded`: [[saturday-at-the-tool-library-coded]] lists this page in `raw`, but this page does not list it
-  Fix: in scenario-raw/saturday-at-the-tool-library.md add `coded:` and under it the line `- "[[saturday-at-the-tool-library-coded]]"`
-0 errors, 1 warning
-```
-
-Its fix is a hand edit, in the raw page. Add the two lines to the frontmatter, for example straight after `title`:
-
-```text
-coded:
-  - "[[saturday-at-the-tool-library-coded]]"
-```
-
-Check the raw page again. The warning is gone:
-
-```text
-$ uv run scat check saturday-at-the-tool-library
-no problems
-```
-
-This stub gets no description warning, because an unfinished page is never faulted for being unfinished. The warning comes when you set the page to `draft`:
-
-```text
-$ uv run scat set-status saturday-at-the-tool-library draft
-changed scenario-raw/saturday-at-the-tool-library.md
-note: `status` set to draft (was stub)
-$ uv run scat check saturday-at-the-tool-library
-warning [SCAT-DRAFT-FIELD] scenario-raw/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
-  Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
-0 errors, 1 warning
-```
-
-The warning is a to-do: the raw page is a draft and still wants its sentence.
-
-### 3. A status the tools do not know (`SCAT-FM-STATUS`)
-
-Start: a fresh copy of the template and the raw page made with `scat stub` (`timeframe: past` filled in), with a typo in its status line, `status: dun`:
-
-```text
-$ uv run scat check saturday-at-the-tool-library
-error [SCAT-FM-STATUS] scenario-raw/saturday-at-the-tool-library.md field `status`: `dun` is not a status
-  Fix, choose one: `status: stub` (just started), `status: draft` (being written), `status: done` (finished)
-1 error, 0 warnings
-```
-
-Write `status: draft` in its place. The error is gone, and the check shows the to-do for the empty description:
-
-```text
-$ uv run scat check saturday-at-the-tool-library
-warning [SCAT-DRAFT-FIELD] scenario-raw/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
-  Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
-0 errors, 1 warning
-```
-
-### 4. A link to the wrong kind of page (`SCAT-LINK-ENDPOINT`)
-
-Start: a fresh copy of the template, the raw page, the stub pages `tools-come-back-in-good-order` (concern), `sign-out-sheet` (affordance) and `shared-spreadsheet` (technology, made with `scat stub shared-spreadsheet --type technology`), and the coded page set to `done`, with the technology under `affordances` by mistake:
-
-```text
-affordances:
-  - "[[shared-spreadsheet]]"
-```
-
-```text
-$ uv run scat check saturday-at-the-tool-library-coded
-error [SCAT-LINK-ENDPOINT] scenario-coded/saturday-at-the-tool-library-coded.md:13 field `affordances`: [[shared-spreadsheet]] is a technology page, but `affordances` must link affordance pages
-  Fix: `affordances` is required on a page with status: done and this is its only good item, and no existing affordance page was found to replace it with: run `scat set-status saturday-at-the-tool-library-coded draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library-coded", "draft")`) first, then change the item by hand
-1 error, 0 warnings
-```
-
-The page is `done` and this is its only item, so deleting it alone would only trade this error for a missing-link error. The fix says to set the page back to `draft` first, then change the item by hand:
-
-```text
-$ uv run scat set-status saturday-at-the-tool-library-coded draft
-changed scenario-coded/saturday-at-the-tool-library-coded.md
-note: `status` set to draft (was done)
-```
-
-The check now offers the plain fix:
-
-```text
-$ uv run scat check saturday-at-the-tool-library-coded
-error [SCAT-LINK-ENDPOINT] scenario-coded/saturday-at-the-tool-library-coded.md:13 field `affordances`: [[shared-spreadsheet]] is a technology page, but `affordances` must link affordance pages
-  Fix: delete the item line `- "[[shared-spreadsheet]]"` under `affordances`
-  (no existing affordance page was found to replace it with)
-1 error, 0 warnings
-```
-
-The notes name the sign-out sheet, so write that item in its place, then set the page to `done` again. The next message is what the check says if you delete the item and leave `affordances:` empty.
-
-### 5. A finished page that is missing a link (`SCAT-DONE-LINK`)
-
-Start: a fresh copy of the template, the raw page, the stub pages `tools-come-back-in-good-order` (concern) and `sign-out-sheet` (affordance), and the coded page set to `done` with `affordances:` empty (the page of message 4 with its wrong item deleted).
-
-```text
-$ uv run scat check saturday-at-the-tool-library-coded
-error [SCAT-DONE-LINK] scenario-coded/saturday-at-the-tool-library-coded.md field `affordances`: required link field is missing or empty on a page with status: done
-  Fix, choose one:
-    1. replace the line `affordances:` with this, keeping the lines that fit (no suggestions found; you decide):
-         affordances:
-           - "[[<one affordance page you choose>]]" (author)
-    2. run `scat set-status saturday-at-the-tool-library-coded draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library-coded", "draft")`) if the page is not finished
-1 error, 0 warnings
-```
-
-Two ways out, and the message gives you both. The sign-out sheet is the affordance the notes name, so choose fix 1:
-
-```text
-affordances:
-  - "[[sign-out-sheet]]"
-```
-
-```text
-$ uv run scat check saturday-at-the-tool-library-coded
-no problems
-```
-
-### 6. A technology on a scenario (`SCAT-LINK-DISCOURAGED`)
-
-Start: a fresh copy of the template, the raw page, the three stub pages from message 4, and the coded page set to `done` with `sign-out-sheet` under `affordances`. A scenario relates groups, concerns and affordances. Now add `technologies:` and its item straight after the `affordances` block:
-
-```text
-affordances:
-  - "[[sign-out-sheet]]"
-technologies:
-  - "[[shared-spreadsheet]]"
-```
-
-```text
-$ uv run scat check saturday-at-the-tool-library-coded
-warning [SCAT-LINK-DISCOURAGED] scenario-coded/saturday-at-the-tool-library-coded.md:14 field `technologies`: a scenario relates groups, concerns and affordances; technologies stay in the background, so linking technology pages here is discouraged: [[shared-spreadsheet]]
-  Fix: delete `technologies:` and its list items
-0 errors, 1 warning
-```
-
-The line number depends on where you put the line. The technology belongs in an architecture, as in the example above. Delete the two lines, and the check reads:
-
-```text
-$ uv run scat check saturday-at-the-tool-library-coded
-no problems
-```
-
-### 7. A finished page that is missing a field (`SCAT-DONE-FIELD`)
-
-Start: a fresh copy of the template and one stub page, made with `scat stub sign-out-sheet --type affordance`. `set-status` accepts `done` for it. The check does not:
-
-```text
-$ uv run scat set-status sign-out-sheet done
-changed affordance/sign-out-sheet.md
-note: `status` set to done (was stub)
-$ uv run scat check sign-out-sheet
-error [SCAT-DONE-FIELD] affordance/sign-out-sheet.md field `description`: missing on a page with status: done
-  Fix, choose one:
-    1. add the line `description: "<one sentence you write>"` (author)
-    2. run `scat set-status sign-out-sheet draft` (REPL: `scat_kg.set_status("sign-out-sheet", "draft")`) if the page is not finished
-1 error, 0 warnings
-```
-
-If the page is finished, write the sentence (fix 1):
-
-```text
----
-type: affordance
-status: done
-title: "Sign out sheet"
-description: "A paper sheet where each loan is written down."
----
-```
-
-```text
-$ uv run scat check sign-out-sheet
-no problems
-```
-
-If you do not have the sentence yet, fix 2 sets the page back to `draft`, and the error becomes the warning you saw earlier (`SCAT-DRAFT-FIELD`). An unfinished page is not an error. (If the page was a `draft` first, the `set-status` note reads `(was draft)`.)
-
-### 8. A new group over the cap (`SCAT-CAP`)
-
-Start: a fresh copy of the template and nothing else. The vault allows three stakeholder groups, set by `stakeholder_group_cap` in `scat.toml`. The cap protects anonymity: few, broad groups cannot point to one person. Naming a fourth group in a pair is refused, and nothing is written:
-
-```text
-$ uv run scat stub-pair heldby volunteer-stewards tools-come-back-in-good-order
-refused scat.toml field `stakeholder_group_cap`: the vault is at its cap of 3 stakeholder groups, so a new group page (volunteer-stewards) would break SCAT-CAP; choose an existing group
-  Fix: either link an existing group, or write `stakeholder_group_cap = 4` in scat.toml (the cap protects against identifying individuals; raise it only if the plan allows)
-```
-
-The template's three example groups already fill the cap. Your own vault replaces them with the groups you planned: see [Start your own content](getting-started.md#5-start-your-own-content) in the getting-started guide. Then name an existing group, which is usually the right fix. The other way out is the second fix: write `stakeholder_group_cap = 4` in `scat.toml`. With it set to 4, the new group page is created. Raise the cap only if your plan allows it, because the cap protects anonymity.
-
-Naming an existing group works at once:
-
-```text
-$ uv run scat stub-pair heldby workshop-participants tools-come-back-in-good-order
-created concern/tools-come-back-in-good-order.md
-created heldby/workshop-participants-holds-tools-come-back-in-good-order.md
-note: write `description`, `notes` and the body in heldby/workshop-participants-holds-tools-come-back-in-good-order.md; the endpoints are filled
-```
-
-### Two messages you have already met
-
-`SCAT-INDEX-STALE` (a warning) means a class page's table is out of date. Run `scat index`. `SCAT-DRAFT-FIELD` (a warning) means a draft page lacks a field it needs by `done`.
+Do what the fix says, then check again.
 
 ## What the check does not judge
 
-The check looks at structure: that a page has the fields its type needs, that every link points at a page that
-exists, that names and counts follow the rules. It does not judge what your notes say. Concerns that pull against
-each other are normal, and recording them is the point of SCAT. A concern can say so, in its `conflicts` field:
-
-```text
-conflicts:
-  - "[[attribution]]"
-```
-
-`conflicts` is an explicit link between concerns. The check makes sure the link has the right type and points at a
-page that exists, and that a concern does not list itself. That is all. A coded record may hold two concerns that
-pull apart, and the check says nothing about it. Seeing where tensions are sharpest, or where concerns match or leave
-a gap, is analysis. It comes after the check passes and a coder has signed off the content.
+The check looks at structure: that a page has the fields its type needs, that every link reaches a page, that every row is well formed and joins the right layers. It does not judge what your notes say. A forgotten edge is graded by no rule: only you know the account tells it. Tensions, matches and gaps are for analysis, which comes after the check passes and you have signed off the content.
 
 ## Reaching a clean whole-vault check
 
 "Clean" means **zero errors**. A check with nothing to report prints `no problems`. Work in this order:
 
 1. Run `uv run scat check`. Read the errors first.
-2. Fix an error the way its `Fix:` line says. Check the page, then its neighbourhood, then the whole vault.
-3. Run `uv run scat index` so the class pages match.
-4. Run `uv run scat check` again. When it ends `0 errors`, you are clean.
+2. Fix each the way its `Fix:` line says. Check the page, then its neighbourhood, then the whole vault.
+3. Run `uv run scat check` again. When it ends `0 errors` or prints `no problems`, you are clean.
 
-Aim to bring every page you made to `done`: the raw pages, the coded pages, the relation pages, and the stubs the tools made for you. A page left at `stub` or `draft` does not stop a clean check, because the bar is 0 errors; a `draft` that lacks a field `done` needs gets a warning. To finish a page, write its description and links, run `set-status <page> done`, then run `check`.
-
-Then look at the warnings. Each is a to-do (a draft that still needs a sentence) or a rule you can satisfy with a command.
+Aim to bring every narrative you made to `done`. A page left at `stub` or `draft` does not stop a clean check, because an unfinished page is never faulted for being unfinished. Then look at the warnings: each is a to-do.
 
 ## Commit and push
 
@@ -750,18 +769,19 @@ git commit -m "Code the notes from my first session"
 git push
 ```
 
-Run `git status` first and read the list: it shows what the commit will hold. `git add .` stages every change in the folder, so if the list holds a change you did not mean to make, stop and sort that out before you go on. `git commit` saves it with a message you write. `git push` sends it to GitHub. If git asks who you are the first time, it prints the two lines to type. Commit when the whole-vault check ends with zero errors.
+Run `git status` first and read the list: it shows what the commit will hold. `git add .` stages every change in the folder, so if the list holds a change you did not mean to make, sort that out before you go on. Commit when the whole-vault check ends with zero errors.
 
 ## Look at it in Obsidian
 
-Open the vault folder in Obsidian (**Open folder as vault**). The same pages, now as a graph:
+Open the vault folder in Obsidian (**Open folder as vault**, version 1.9 or later):
 
 - **Links.** Every `[[name]]` is a link. Click it to go to that page.
-- **Backlinks.** Open a concern page and look at the Backlinks panel in the right sidebar. It lists every page that points at the concern: each Heldby page (who holds it), each Addresses page (what addresses it) and each coded page that names it. This is how you ask "who holds this concern?" without a second list.
-- **Graph view.** Open the graph view from the left ribbon or the command palette. Each page is a dot and each link a line. A Heldby page sits between a group and a concern, so a concern held by several groups shows several lines. Where two groups hold the same concern, you see it. The local graph shows one page and its neighbours.
-- **Class pages.** The pages in the `class` folder (Concerns, Affordances and so on) are the tables `scat index` writes. Open `class/concerns.md` to see every concern at a glance, with its description and a link. Run `uv run scat index` first if you added pages.
+- **Backlinks.** Open a concern and look at the Backlinks panel. It lists every narrative that names the concern, which is how you ask "who tells this?" without a second list.
+- **Outgoing links.** Open a narrative and look at the Outgoing links panel: the nodes it links, which with its table are its fingerprint.
+- **Graph view.** Each page is a dot and each link a line. Obsidian draws every page as a node here, narratives included.
+- **Index pages.** The Bases in `index/` list every page of one type.
 
-Obsidian shows the graph. Only the tools check it, so run `uv run scat check` before you commit.
+Obsidian shows the vault. Only the tool checks it, so run `uv run scat check` before you commit.
 
 ## Where next
 
@@ -769,6 +789,7 @@ Keep the reference close:
 
 - [Python API reference](reference/api.md): every REPL call, with all its options.
 - [CLI reference](reference/cli.md): every command and its full help text.
-- [Facilitating scenarios](facilitate-scenarios.md) and [Facilitating architectures](facilitate-architectures.md): collect the next round of raw notes.
+- [The flow](flow.md): where coding sits between capture and analysis.
+- [Facilitating scenarios](facilitate-scenarios.md) and [Facilitating architectures](facilitate-architectures.md): collect the next round of notes.
 - [Planning](planning.md): revisit your groups before the next workshop.
 - [Home](index.md)

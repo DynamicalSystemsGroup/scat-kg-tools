@@ -27,28 +27,34 @@ Check and work on a SCAT knowledge-graph vault. Every command has a REPL twin
 
 positional arguments:
   <command>
-    check       Check the vault against the rules. PAGE is a page name or its
-                path from the vault folder; without it, the whole vault.
-                Writes nothing.
-    status      Show each page's status and the counts. PAGE is a page name or
-                its path from the vault folder; without it, the whole vault.
-    set-status  Set a page's status to stub, draft or done.
-    index       Rewrite the generated table of every class page, creating a
-                missing class page.
-    stub        Create a stub page (a concern, affordance, technology,
-                stakeholder-group or record page).
-    stub-pair   Create the relation page for a pair, stubbing an endpoint that
-                does not exist.
-    stub-links  Create the pages that link fields name and the vault lacks.
-                PAGE limits it to one page.
+    check        Check the vault against the rules. PAGE is a page name or its
+                 path from the vault folder; without it, the whole vault.
+                 Writes nothing.
+    status       Show each page's status and the counts. PAGE is a page name
+                 or its path from the vault folder; without it, the whole
+                 vault.
+    set-status   Set a page's status to stub, draft or done.
+    index        Write the index page `index/<type>.base` of each type that
+                 has none. Never rewrites one.
+    stub         Create a stub page: a node (group, concern, affordance or
+                 technology) or a narrative.
+    stub-links   Create the node pages that the ends of rows link and the
+                 vault lacks. PAGE limits it to one page.
+    record-edge  Record an edge: add its row to each narrative named by
+                 --told-by that has none, stubbing a missing node or
+                 narrative. Leaves the links as they are. Refuses a narrative
+                 that is done.
+    remove-edge  Remove an edge: delete its rows, from the narratives named by
+                 --told-by or, without it, from every narrative that tells it.
+                 Leaves the links. Refuses a narrative that is done.
 
 options:
-  -h, --help    show this help message and exit
+  -h, --help     show this help message and exit
 
 Run `scat <command> --help` for a command.
 ```
 
-`scat` has seven commands. Each prints a message and exits with a code:
+`scat` has eight commands. Each prints a message and exits with a code:
 
 | Exit code | Meaning |
 |---|---|
@@ -78,8 +84,9 @@ Every command takes `--root ROOT`, the vault folder (default: the current folder
         scat_kg.set_status("x", "draft")
         scat_kg.index()
         scat_kg.stub("x", type="concern")
-        scat_kg.stub_pair("heldby", "a", "b")
         scat_kg.stub_links()                # or stub_links("x")
+        scat_kg.record_edge("holds", "a", "b", ["narrative-name"], note="")
+        scat_kg.remove_edge("a", "b")       # or remove_edge("a", "b", ["narrative-name"])
 
     Each call takes `root=` (the vault folder; default: the current directory) and returns an object whose
     `str()` is the message the `scat` command prints, and which prints as that message. `.ok` is False when
@@ -150,7 +157,7 @@ $ uv run scat check --json
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "check",
   "operation": "check",
   "ok": true,
@@ -158,7 +165,7 @@ $ uv run scat check --json
 }
 ```
 
-To see a problem with a fix a program can apply, change `[[intent-without-drift]]` to `[[intent-without-drfit]]` on line 11 of `scenario-coded/false-start-and-clean-restart-coded.md`, a one-letter typo in a link. The fix has two options: a `set-field` edit that writes the closest existing page, and a `command` that creates the missing page. `scat check` exits with 1.
+To see a problem with a fix a program can apply, change `[[cap-setting]]` to `[[cap-settin]]` in the second row of the table of `narrative/groups-under-a-cap-pitch.md` (line 22), a one-letter typo in a link. The fix has three options: a `replace-text` edit that writes the right name, a `command` that creates the missing page, and a `delete-line` edit. `scat check` exits with 1.
 
 ```text
 $ uv run scat check --json
@@ -166,61 +173,73 @@ $ uv run scat check --json
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "check",
   "operation": "check",
   "ok": false,
   "problems": [
     {
-      "rule": "SCAT-LINK-DANGLING",
+      "rule": "SCAT-DONE-END-NOPAGE",
       "severity": "error",
-      "file": "scenario-coded/false-start-and-clean-restart-coded.md",
-      "line": 11,
-      "column": null,
-      "field": "concerns",
-      "where": "field `concerns`",
-      "what": "[[intent-without-drfit]] does not reach a page (no page is named intent-without-drfit)",
+      "file": "narrative/groups-under-a-cap-pitch.md",
+      "line": 22,
+      "column": 55,
+      "field": null,
+      "where": "row 2 cell `to`",
+      "what": "[[cap-settin]] does not reach a page (no page is named cap-settin)",
       "repeat": 1,
       "fix": {
         "kind": "options",
         "options": [
           {
             "kind": "exact",
-            "text": "replace `- \"[[intent-without-drfit]]\"` with `- \"[[intent-without-drift]]\"` (the closest existing concern page)",
+            "text": "replace `[[cap-settin]]` with `[[cap-setting]]`",
             "edits": [
               {
-                "action": "set-field",
-                "file": "scenario-coded/false-start-and-clean-restart-coded.md",
-                "field": "concerns",
-                "value": [
-                  "[[intent-without-drift]]"
-                ]
+                "action": "replace-text",
+                "file": "narrative/groups-under-a-cap-pitch.md",
+                "line": 22,
+                "column": 55,
+                "find": "[[cap-settin]]",
+                "replace": "[[cap-setting]]"
               }
             ]
           },
           {
             "kind": "exact",
-            "text": "run `scat stub intent-without-drfit --type concern` (REPL: `scat_kg.stub(\"intent-without-drfit\", type=\"concern\")`) to create it as a stub",
+            "text": "run `scat stub cap-settin --type technology` (REPL: `scat_kg.stub(\"cap-settin\", type=\"technology\")`) to create a technology page",
             "command": {
               "argv": [
                 "stub",
-                "intent-without-drfit",
+                "cap-settin",
                 "--type",
-                "concern"
+                "technology"
               ],
-              "repl": "scat_kg.stub(\"intent-without-drfit\", type=\"concern\")"
+              "repl": "scat_kg.stub(\"cap-settin\", type=\"technology\")"
             }
+          },
+          {
+            "kind": "exact",
+            "text": "delete the row",
+            "edits": [
+              {
+                "action": "delete-line",
+                "file": "narrative/groups-under-a-cap-pitch.md",
+                "line": 22,
+                "find": "| is provided by | [[groups-clustered-under-a-cap]] | [[cap-settin]] | The cap setting is what fixes the number of groups. The cap is a per-instance parameter (D-020); the example vault sets it to 3. |"
+              }
+            ]
           }
         ],
         "notes": []
       },
-      "text": "error [SCAT-LINK-DANGLING] scenario-coded/false-start-and-clean-restart-coded.md:11 field `concerns`: [[intent-without-drfit]] does not reach a page (no page is named intent-without-drfit)\n  Fix, choose one:\n    1. replace `- \"[[intent-without-drfit]]\"` with `- \"[[intent-without-drift]]\"` (the closest existing concern page)\n    2. run `scat stub intent-without-drfit --type concern` (REPL: `scat_kg.stub(\"intent-without-drfit\", type=\"concern\")`) to create it as a stub"
+      "text": "error [SCAT-DONE-END-NOPAGE] narrative/groups-under-a-cap-pitch.md:22:55 row 2 cell `to`: [[cap-settin]] does not reach a page (no page is named cap-settin)\n  Fix, choose one:\n    1. replace `[[cap-settin]]` with `[[cap-setting]]`\n    2. run `scat stub cap-settin --type technology` (REPL: `scat_kg.stub(\"cap-settin\", type=\"technology\")`) to create a technology page\n    3. delete the row"
     }
   ]
 }
 ```
 
-Change the typo back (`[[intent-without-drfit]]` to `[[intent-without-drift]]`) before you type the next commands, which assume that page as the template has it.
+Change the typo back (`[[cap-settin]]` to `[[cap-setting]]`) before you type the next commands, which assume the narrative as the template has it.
 
 ## scat status
 
@@ -242,7 +261,7 @@ options:
 REPL: `scat_kg.status()`, `scat_kg.status("<page>")`, `scat_kg.status("<page>", neighborhood=True)`
 ```
 
-Shows the status of each page, then the counts. It writes nothing. The status is `stub`, `draft` or `done`; a class page shows `(no status: class page)`.
+Shows the status of each page, then the counts. It writes nothing. The status is `stub`, `draft` or `done`.
 
 Exit codes: 0, or 1 for a refusal (a page that is not there, a vault folder that is not there, `--neighborhood` without `PAGE`).
 
@@ -250,22 +269,34 @@ Exit codes: 0, or 1 for a refusal (a page that is not there, a vault folder that
 
     ```python
     scat_kg.status("anonymity")
+    scat_kg.status("anonymity", neighborhood=True)
     ```
 
     ```text
     done         concern/anonymity.md
     1 done
+    done         concern/anonymity.md
+    done         concern/attribution.md
+    done         narrative/groups-under-a-cap-pitch.md
+    done         narrative/notes-at-a-chatham-house-session.md
+    4 done
     ```
 
 === "CLI"
 
     ```bash
     uv run scat status anonymity
+    uv run scat status anonymity --neighborhood
     ```
 
     ```text
     done         concern/anonymity.md
     1 done
+    done         concern/anonymity.md
+    done         concern/attribution.md
+    done         narrative/groups-under-a-cap-pitch.md
+    done         narrative/notes-at-a-chatham-house-session.md
+    4 done
     ```
 
 With `--json`:
@@ -276,7 +307,7 @@ $ uv run scat status anonymity --json
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "status",
   "operation": "status",
   "ok": true,
@@ -293,8 +324,7 @@ $ uv run scat status anonymity --json
     "stub": 0,
     "draft": 0,
     "done": 1,
-    "other": 0,
-    "none": 0
+    "other": 0
   },
   "notes": []
 }
@@ -320,9 +350,9 @@ options:
 REPL: `scat_kg.set_status("<page-name>", "<status>")`
 ```
 
-Changes the `status:` line of one page and nothing else in the file. `PAGE` is a name or a path.
+Changes the `status:` line of one page and nothing else in the file. `PAGE` is a name or a path. Setting a narrative or a node to `done` is judged as the page would stand at `done`, and refused while it would fail: the refusal lists each error with its fix and writes nothing (see [Coding](../coding.md#6-set-it-to-done)).
 
-Exit codes: 0 when the status was changed or already was that value, 1 for a refusal (not a status, no such page, a class page).
+Exit codes: 0 when the status was changed or already was that value, 1 for a refusal (not a status, no such page, a page that would fail at `done`).
 
 === "Python"
 
@@ -356,18 +386,18 @@ $ uv run scat set-status attribution draft --json
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "operation",
   "operation": "set-status",
   "ok": true,
   "created": [],
-  "changed": [
+  "changed": [],
+  "unchanged": [
     "concern/attribution.md"
   ],
-  "unchanged": [],
   "refused": [],
   "notes": [
-    "`status` set to draft (was done)"
+    "status is already draft"
   ]
 }
 ```
@@ -380,7 +410,7 @@ $ uv run scat set-status attribution finished --json
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "operation",
   "operation": "set-status",
   "ok": false,
@@ -396,7 +426,7 @@ $ uv run scat set-status attribution finished --json
         "options": [
           {
             "kind": "manual",
-            "text": "use one of: stub, draft, done (stub: just started, draft: being written, done: finished)"
+            "text": "use one of: stub, draft, done (stub: a name, perhaps some metadata; draft: content, not yet complete; done: complete, conformant and signed off by the coder)"
           }
         ],
         "notes": []
@@ -412,7 +442,7 @@ $ uv run scat set-status attribution finished --json
 ```text
 usage: scat index [-h] [--root ROOT] [--json]
 
-Rewrite the generated table of every class page, creating a missing class page.
+Write the index page `index/<type>.base` of each type that has none. Never rewrites one.
 
 options:
   -h, --help   show this help message and exit
@@ -423,9 +453,9 @@ options:
 REPL: `scat_kg.index()`
 ```
 
-Rewrites the generated table in each of the seven class pages, and creates a class page that is missing. It prints one line per class page: `created`, `changed` or `unchanged`. A page it did not need to rewrite prints `unchanged`.
+Writes `index/<type>.base`, the index page of each type, for each one that is missing, and never rewrites one. It prints one line per file: `created`, `changed` or `unchanged`. The template ships all five, so on it every line says `unchanged`.
 
-Exit codes: 0, or 1 for a refusal (another file holds a class page's name, or a class page has no readable table markers).
+Exit codes: 0, or 1 for a refusal (another file holds an index page's name).
 
 === "Python"
 
@@ -434,13 +464,11 @@ Exit codes: 0, or 1 for a refusal (another file holds a class page's name, or a 
     ```
 
     ```text
-    unchanged class/addresses-pairs.md
-    unchanged class/affordances.md
-    unchanged class/attributes-pairs.md
-    unchanged class/concerns.md
-    unchanged class/heldby-pairs.md
-    unchanged class/stakeholder-groups.md
-    unchanged class/technologies.md
+    unchanged index/group.base
+    unchanged index/concern.base
+    unchanged index/affordance.base
+    unchanged index/technology.base
+    unchanged index/narrative.base
     ```
 
 === "CLI"
@@ -450,13 +478,11 @@ Exit codes: 0, or 1 for a refusal (another file holds a class page's name, or a 
     ```
 
     ```text
-    unchanged class/addresses-pairs.md
-    unchanged class/affordances.md
-    unchanged class/attributes-pairs.md
-    unchanged class/concerns.md
-    unchanged class/heldby-pairs.md
-    unchanged class/stakeholder-groups.md
-    unchanged class/technologies.md
+    unchanged index/group.base
+    unchanged index/concern.base
+    unchanged index/affordance.base
+    unchanged index/technology.base
+    unchanged index/narrative.base
     ```
 
 With `--json`:
@@ -467,20 +493,18 @@ $ uv run scat index --json
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "operation",
   "operation": "index",
   "ok": true,
   "created": [],
   "changed": [],
   "unchanged": [
-    "class/addresses-pairs.md",
-    "class/affordances.md",
-    "class/attributes-pairs.md",
-    "class/concerns.md",
-    "class/heldby-pairs.md",
-    "class/stakeholder-groups.md",
-    "class/technologies.md"
+    "index/group.base",
+    "index/concern.base",
+    "index/affordance.base",
+    "index/technology.base",
+    "index/narrative.base"
   ],
   "refused": [],
   "notes": []
@@ -492,7 +516,7 @@ $ uv run scat index --json
 ```text
 usage: scat stub [-h] [--root ROOT] [--json] --type TYPE NAME
 
-Create a stub page (a concern, affordance, technology, stakeholder-group or record page).
+Create a stub page: a node (group, concern, affordance or technology) or a narrative.
 
 positional arguments:
   NAME         the new page's name: a-z, 0-9 and hyphens
@@ -502,53 +526,56 @@ options:
   --root ROOT  the vault folder, the one with scat.toml (default: here)
   --json       print the result as one JSON document (machine-interface
                contract), nothing else
-  --type TYPE  the page type key, one of: affordance, architecture-coded,
-               architecture-raw, concern, scenario-coded, scenario-raw,
-               stakeholder-group, technology
+  --type TYPE  the page's type, one of: group, concern, affordance,
+               technology, narrative
 
-REPL: `scat_kg.stub("<page-name>", type="<type-key>")`
+REPL: `scat_kg.stub("<page-name>", type="<type>")`
 ```
 
-Creates one page with `status: stub`. The `--type` option is required. Use [`scat stub-pair`](#scat-stub-pair) for a relation page; a class page comes only from [`scat index`](#scat-index).
+Creates one page with `status: stub`. The `--type` option is required. A node (`group`, `concern`, `affordance`, `technology`) or a `narrative`; a narrative stub also carries an empty `timeframe:` line for you to fill.
 
 Exit codes: 0 when the page was created, 1 for a refusal (not a legal name, a file already has the name, not a stubbable type, or the group cap). A missing `--type` is a command line that cannot be read: exit code 2.
 
-The CLI example uses a different name from the Python one, so both can run in one vault.
+The CLI example uses different names from the Python one, so both can run in one vault.
 
 === "Python"
 
     ```python
     scat_kg.stub("reading-group", type="concern")
+    scat_kg.stub("desk-notes-one", type="narrative")
     ```
 
     ```text
     created concern/reading-group.md
+    created narrative/desk-notes-one.md
     ```
 
 === "CLI"
 
     ```bash
     uv run scat stub study-circle --type concern
+    uv run scat stub desk-notes-two --type narrative
     ```
 
     ```text
     created concern/study-circle.md
+    created narrative/desk-notes-two.md
     ```
 
 With `--json`:
 
 ```text
-$ uv run scat stub study-circle --type concern --json
+$ uv run scat stub study-circle-two --type concern --json
 ```
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "operation",
   "operation": "stub",
   "ok": true,
   "created": [
-    "concern/study-circle.md"
+    "concern/study-circle-two.md"
   ],
   "changed": [],
   "unchanged": [],
@@ -557,85 +584,12 @@ $ uv run scat stub study-circle --type concern --json
 }
 ```
 
-## scat stub-pair
-
-```text
-usage: scat stub-pair [-h] [--root ROOT] [--json]
-                      RELATION ENDPOINT-A ENDPOINT-B
-
-Create the relation page for a pair, stubbing an endpoint that does not exist.
-
-positional arguments:
-  RELATION     one of: addresses (concern then affordance), attributes
-               (affordance then technology), heldby (group then concern)
-  ENDPOINT-A
-  ENDPOINT-B
-
-options:
-  -h, --help   show this help message and exit
-  --root ROOT  the vault folder, the one with scat.toml (default: here)
-  --json       print the result as one JSON document (machine-interface
-               contract), nothing else
-
-REPL: `scat_kg.stub_pair("<relation>", "<endpoint-a>", "<endpoint-b>")`
-```
-
-Creates the relation page for a pair, and a stub for an endpoint that does not exist. If a page already states this pair, it prints `unchanged` and creates nothing.
-
-Exit codes: 0 when it created pages or found the pair already stated, 1 for a refusal (an endpoint of the wrong type, a name that is not legal, the same name twice, an unknown relation).
-
-=== "Python"
-
-    ```python
-    scat_kg.stub_pair("heldby", "project-leads", "reading-group")
-    ```
-
-    ```text
-    created heldby/project-leads-holds-reading-group.md
-    note: write `description`, `notes` and the body in heldby/project-leads-holds-reading-group.md; the endpoints are filled
-    ```
-
-=== "CLI"
-
-    ```bash
-    uv run scat stub-pair heldby project-leads study-circle
-    ```
-
-    ```text
-    created heldby/project-leads-holds-study-circle.md
-    note: write `description`, `notes` and the body in heldby/project-leads-holds-study-circle.md; the endpoints are filled
-    ```
-
-With `--json`:
-
-```text
-$ uv run scat stub-pair heldby project-leads study-circle --json
-```
-
-```json
-{
-  "schema_version": 1,
-  "kind": "operation",
-  "operation": "stub-pair",
-  "ok": true,
-  "created": [
-    "heldby/project-leads-holds-study-circle.md"
-  ],
-  "changed": [],
-  "unchanged": [],
-  "refused": [],
-  "notes": [
-    "write `description`, `notes` and the body in heldby/project-leads-holds-study-circle.md; the endpoints are filled"
-  ]
-}
-```
-
 ## scat stub-links
 
 ```text
 usage: scat stub-links [-h] [--root ROOT] [--json] [PAGE]
 
-Create the pages that link fields name and the vault lacks. PAGE limits it to one page.
+Create the node pages that the ends of rows link and the vault lacks. PAGE limits it to one page.
 
 positional arguments:
   PAGE         look at this page's links only
@@ -649,9 +603,9 @@ options:
 REPL: `scat_kg.stub_links()`, `scat_kg.stub_links("<page>")`
 ```
 
-Creates the pages that link fields name and the vault lacks, from one page or the whole vault. Links to pages that exist create nothing. When there is nothing to create it prints `stub-links: nothing to do`.
+Creates the node pages that the ends of rows link and the vault lacks, each of the type its layer fixes, from one page or the whole vault. A link elsewhere in a narrative names no layer, so it is reported as a note and made with `scat stub`. When there is nothing to create it prints `stub-links: nothing to do`.
 
-Exit codes: 0 when it created pages or had nothing to do, 1 for a refusal (links that name one page as two types, the group cap, a page that is not there).
+Exit codes: 0 when it created pages or had nothing to do, 1 for a refusal (the group cap, a page that is not there).
 
 === "Python"
 
@@ -681,7 +635,7 @@ $ uv run scat stub-links --json
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "operation",
   "operation": "stub-links",
   "ok": true,
@@ -690,6 +644,196 @@ $ uv run scat stub-links --json
   "unchanged": [],
   "refused": [],
   "notes": []
+}
+```
+
+## scat record-edge
+
+```text
+usage: scat record-edge [-h] [--root ROOT] [--json] --told-by NARRATIVE
+                        [--note TEXT]
+                        TYPE FROM TO
+
+Record an edge: add its row to each narrative named by --told-by that has none, stubbing a missing node or narrative. Leaves the links as they are. Refuses a narrative that is done.
+
+positional arguments:
+  TYPE                 one of: holds (group then concern), addressed-by
+                       (concern then affordance), provided-by (affordance then
+                       technology)
+  FROM                 the name of the node at the first end
+  TO                   the name of the node at the second end
+
+options:
+  -h, --help           show this help message and exit
+  --root ROOT          the vault folder, the one with scat.toml (default:
+                       here)
+  --json               print the result as one JSON document (machine-
+                       interface contract), nothing else
+  --told-by NARRATIVE  the narrative that tells the edge; repeat it for each
+                       narrative
+  --note TEXT          the row's note (default: none)
+
+REPL: `scat_kg.record_edge("<type>", "<from>", "<to>", ["<narrative>"], note="<text>")`
+```
+
+Records an edge: adds its row to each narrative named by `--told-by` that has none, makes a missing node or narrative as a stub, and leaves every link alone. `TYPE` is `holds`, `addressed-by` or `provided-by` (the verb, such as `"is addressed by"`, is accepted too). If a narrative already has the row it prints `unchanged` and writes nothing. `--note` is the row's note.
+
+Exit codes: 0 when it changed or found the row there, 1 for a refusal (a narrative that is `done`, an unknown type, ends in the wrong layers, the same name at both ends).
+
+=== "Python"
+
+    ```python
+    scat_kg.record_edge("holds", "project-leads", "reading-group", ["desk-notes-one"], note="Said twice.")
+    ```
+
+    ```text
+    changed narrative/desk-notes-one.md
+    note: added `| holds | [[project-leads]] | [[reading-group]] | Said twice. |` to narrative/desk-notes-one.md at line 12
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat record-edge holds project-leads study-circle --told-by desk-notes-two --note "Said twice."
+    ```
+
+    ```text
+    changed narrative/desk-notes-two.md
+    note: added `| holds | [[project-leads]] | [[study-circle]] | Said twice. |` to narrative/desk-notes-two.md at line 12
+    ```
+
+With `--json`, which adds the edge and the rows added:
+
+```text
+$ uv run scat record-edge addressed-by study-circle reading-shelf --told-by desk-notes-two --json
+```
+
+```json
+{
+  "schema_version": 2,
+  "kind": "operation",
+  "operation": "record-edge",
+  "ok": true,
+  "created": [
+    "affordance/reading-shelf.md"
+  ],
+  "changed": [
+    "narrative/desk-notes-two.md"
+  ],
+  "unchanged": [],
+  "refused": [],
+  "notes": [
+    "added `| is addressed by | [[study-circle]] | [[reading-shelf]] | |` to narrative/desk-notes-two.md at line 13"
+  ],
+  "edge": {
+    "type": "addressed-by",
+    "from": "study-circle",
+    "to": "reading-shelf",
+    "narratives": [
+      "desk-notes-two"
+    ]
+  },
+  "rows_added": [
+    {
+      "narrative": "desk-notes-two",
+      "file": "narrative/desk-notes-two.md",
+      "line": 13,
+      "note": ""
+    }
+  ],
+  "rows_removed": []
+}
+```
+
+## scat remove-edge
+
+```text
+usage: scat remove-edge [-h] [--root ROOT] [--json] [--told-by NARRATIVE]
+                        FROM TO
+
+Remove an edge: delete its rows, from the narratives named by --told-by or, without it, from every narrative that tells it. Leaves the links. Refuses a narrative that is done.
+
+positional arguments:
+  FROM                 the name of the node at the first end
+  TO                   the name of the node at the second end
+
+options:
+  -h, --help           show this help message and exit
+  --root ROOT          the vault folder, the one with scat.toml (default:
+                       here)
+  --json               print the result as one JSON document (machine-
+                       interface contract), nothing else
+  --told-by NARRATIVE  remove the rows of this narrative only; repeat it for
+                       each narrative
+
+REPL: `scat_kg.remove_edge("<from>", "<to>")`, `scat_kg.remove_edge("<from>", "<to>", ["<narrative>"])`
+```
+
+Removes an edge: deletes its rows, from the narratives named by `--told-by` or, without it, from every narrative that tells it. The links stay. It refuses a narrative that is `done`: set it to `draft` first. When no narrative tells the edge it prints `remove-edge: nothing to do`.
+
+Exit codes: 0, or 1 for a refusal (a narrative that is `done`).
+
+=== "Python"
+
+    ```python
+    scat_kg.remove_edge("project-leads", "reading-group")
+    ```
+
+    ```text
+    changed narrative/desk-notes-one.md
+    note: removed the row at line 12 of narrative/desk-notes-one.md
+    note: the links stay in the narratives; remove one by hand if the account no longer names it
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat remove-edge project-leads study-circle
+    ```
+
+    ```text
+    changed narrative/desk-notes-two.md
+    note: removed the row at line 12 of narrative/desk-notes-two.md
+    note: the links stay in the narratives; remove one by hand if the account no longer names it
+    ```
+
+With `--json`:
+
+```text
+$ uv run scat remove-edge study-circle reading-shelf --json
+```
+
+```json
+{
+  "schema_version": 2,
+  "kind": "operation",
+  "operation": "remove-edge",
+  "ok": true,
+  "created": [],
+  "changed": [
+    "narrative/desk-notes-two.md"
+  ],
+  "unchanged": [],
+  "refused": [],
+  "notes": [
+    "removed the row at line 12 of narrative/desk-notes-two.md",
+    "the links stay in the narratives; remove one by hand if the account no longer names it"
+  ],
+  "edge": {
+    "type": "addressed-by",
+    "from": "study-circle",
+    "to": "reading-shelf",
+    "narratives": []
+  },
+  "rows_added": [],
+  "rows_removed": [
+    {
+      "narrative": "desk-notes-two",
+      "file": "narrative/desk-notes-two.md",
+      "line": 12,
+      "note": ""
+    }
+  ]
 }
 ```
 

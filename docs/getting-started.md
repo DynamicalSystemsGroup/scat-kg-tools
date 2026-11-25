@@ -49,7 +49,7 @@ Check that you are in the right folder:
 ls
 ```
 
-You should see `scat.toml` in the list, with folders such as `concern` and `class`.
+You should see `scat.toml` in the list, with folders such as `concern` and `narrative`.
 
 !!! note "Your folder name"
     The folder is named after the repository you created. These pages say `my-vault`. If you chose another name,
@@ -108,8 +108,8 @@ That is a pass. A **clean** check prints `no problems`. **Errors** block you: a 
 The check looks at structure only: that each page has what its type needs, that links point at pages that exist,
 and that names and counts follow the rules. It does not judge what your notes say. Where concerns pull against each
 other, or match, or leave a gap, that is for analysis later, after the check passes and a coder has signed off the
-content. You can record that two concerns pull apart with an explicit `conflicts` link; the check only makes sure
-the link has the right type and points at a page that exists.
+content. You can record that two concerns pull apart with a relationship annotation, a plain line in the body of one
+concern with a link to the other; the tool gives it no meaning.
 
 Run the check again after every change you make.
 
@@ -133,38 +133,38 @@ no problems
 
 ### Two things the tools do that may surprise you
 
-`scat.toml` is required. It sits in the vault folder and holds the cap on stakeholder groups. If it is missing, the
+`scat.toml` is required. It sits in the vault folder and holds the cap on groups. If it is missing, the
 check reports an error (`SCAT-CAP-CONFIG`). If you see that error, you are probably in the wrong folder, or the file
-was deleted. In a wrong (empty) folder the check also prints seven `SCAT-INDEX-STALE` warnings, one per class page, like this one, and ends with `1 error, 7 warnings`:
+was deleted. In a wrong (empty) folder the check ends with `1 error, 0 warnings`:
 
 ```text
-warning [SCAT-INDEX-STALE] class/addresses-pairs.md index table: the page is missing
-  Fix: run `scat index` (REPL: `scat_kg.index()`)
+error [SCAT-CAP-CONFIG] scat.toml field `stakeholder_group_cap`: the file is missing
+  Fix: add the line `stakeholder_group_cap = <number you choose>` (author) in scat.toml; choose a whole number of 1 or more (the vault has 0 group pages now)
+1 error, 0 warnings
 ```
 
-Do not run `scat index` to fix this. `cd` into your vault folder instead.
+Do not run `scat index` to fix this: it would write five files into the wrong folder. `cd` into your vault folder instead.
 
-`scat index` rebuilds the tables on the class pages from the pages themselves. It prints `unchanged` for each class
-page it did not need to rewrite. On the untouched example, every line says `unchanged`, and that is correct:
+`scat index` writes the index pages, one Obsidian Base for each type, in the `index` folder, and only the ones that are missing. It never rewrites one. The template already holds all five, so on the untouched example every line says `unchanged`, and that is correct:
 
 ```bash
 uv run scat index
 ```
 
 ```text
-unchanged class/addresses-pairs.md
-unchanged class/affordances.md
-unchanged class/attributes-pairs.md
-unchanged class/concerns.md
-unchanged class/heldby-pairs.md
-unchanged class/stakeholder-groups.md
-unchanged class/technologies.md
+unchanged index/group.base
+unchanged index/concern.base
+unchanged index/affordance.base
+unchanged index/technology.base
+unchanged index/narrative.base
 ```
 
 ## 4. Open the vault in Obsidian
 
-Open Obsidian, choose **Open folder as vault**, and pick your folder (`my-vault`). Open a page in the `concern`
-folder and click its links: you are walking the graph. Create pages with `scat stub`. [Coding](coding.md#where-raw-and-coded-pages-come-from) says more.
+Open Obsidian (version 1.9 or later, which the index pages need), choose **Open folder as vault**, and pick your
+folder (`my-vault`). Open a page in the `narrative` folder and click its links: you are walking the graph. Open a file in
+the `index` folder to see every page of one type. Create pages with `scat stub`.
+[Coding](coding.md#where-narratives-and-their-edges-come-from) says more.
 
 ## 5. Start your own content
 
@@ -173,37 +173,35 @@ own vault before you code your own notes. Do this step **before you add any page
 you want the example open while you read the other guides. You can remove it at any time.
 
 When you are ready, type these commands in your vault folder. The first deletes the example page folders and keeps
-`class`. The second rebuilds the class tables. The third checks:
+`index`, whose Bases read whatever pages the vault holds. The second checks:
 
 ```text
-git rm -r addresses affordance architecture-coded architecture-raw attributes concern heldby scenario-coded scenario-raw stakeholder-group technology
-uv run scat index
+git rm -r affordance concern group narrative technology
 uv run scat check
 ```
 
-`scat index` prints `changed` for each of the seven class pages, and `scat check` then prints:
+`scat check` then prints:
 
 ```text
 no problems
 ```
 
-If you already added raw pages of your own, `git rm` leaves them where they are, and `scat check` prints a
+If you already added narratives of your own, `git rm` leaves them where they are, and `scat check` prints a
 `SCAT-DRAFT-FIELD` warning for each of those pages that is still a draft, then `0 errors` and the number of warnings. That is correct: warnings do not block you.
 
-`git rm` has already staged the removal of the example pages. Stage the rebuilt class tables as well, then save it all as a commit, so your vault keeps the change. `git add -u` stages changes to files git already tracks, and nothing else, so pages and files of your own are not swept in:
+`git rm` has already staged the removal of the example pages. Save it as a commit, so your vault keeps the change. `git commit` saves what is staged, and nothing else, so pages and files of your own are not swept in:
 
 ```text
-git add -u
 git commit -m "Remove the example"
 ```
 
 Your vault now holds no example pages. You do not write the folders or pages for your own content by hand. The tools
-create each one, as you will see in the [coding guide](coding.md).
+create each one as a stub, as you will see in the [coding guide](coding.md).
 
 ## Where next
 
 Set up? Then pick where to go next:
 
 - [Planning](planning.md): decide your sessions, your groups and your framing, before the event.
-- [Coding](coding.md): when you already have raw notes.
+- [Coding](coding.md): when you already have field notes.
 - [Home](index.md): what SCAT is and why it has its name.

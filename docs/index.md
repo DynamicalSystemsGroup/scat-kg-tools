@@ -16,31 +16,33 @@ what you will have at the end. The next page walks you through the first command
 
 SCAT turns facilitated discussions into a structured set of notes you can read, follow and check.
 
-You run workshops. Participants tell stories and propose designs. You take raw notes. Afterwards you code those notes
-into pages, using four kinds of thing:
+You run workshops. Participants tell stories and propose designs. You take field notes. Afterwards you write each
+account as a narrative page and code it, using four kinds of node:
 
 - **S**takeholder groups: the groups of people the notes come from.
 - **C**oncerns: what a group cares about.
 - **A**ffordances: what a tool or arrangement lets someone do.
 - **T**echnologies: the things that provide those affordances.
 
-Pages link to each other, the way the parts of a system fit together. A group holds a concern. A concern is addressed by an affordance. An affordance is attributed
-to a technology. Those links are what make the notes a graph you can walk through.
+A narrative links the nodes it names, and tells the edges between them, the way the parts of a system fit together. A group
+holds a concern. A concern is addressed by an affordance. An affordance is provided by a technology. Those edges are what
+make the notes a graph you can walk through. An edge is one row in the table of a narrative that tells it, so there is
+nothing to keep in step.
 
-![The four SCAT concepts as four linked cards: Stakeholder groups, Concerns, Affordances and Technologies, joined by the links holds, addressed by and attributed to.](assets/bandstand.svg){ .bandstand }
+![The four SCAT concepts as four linked cards: Stakeholder groups, Concerns, Affordances and Technologies, joined by the edges holds, is addressed by and is provided by.](assets/bandstand.svg){ .bandstand }
 
 Two kinds of session feed it, and they look at the same graph from opposite sides:
 
 - **Scenarios are behavioural.** A scenario is a story of people doing things over time. Technology stays in the
-  background. What shows is what it lets people do, its affordances. A coded scenario relates stakeholder groups,
-  concerns and affordances.
+  background. What shows is what it lets people do, its affordances. A scenario tells groups, concerns and
+  affordances.
 - **Architectures are structural.** An architecture is an assembly of parts into tools that offer affordances that
-  address concerns. People are set aside, so a design does not presume who will use it. A coded architecture relates
+  address concerns. People are set aside, so a design does not presume who will use it. An architecture tells
   concerns, affordances and technologies.
 
-The people in your data appear as **groups**, never as individuals. Sessions run under the Chatham House rule: what
-was said can be used, but no one is identified. Each vault sets a cap on how many groups it holds, and participants
-are clustered into groups that fit under it.
+The people in your data appear as **groups**, never as individuals. What the participation terms agreed for the event
+allow is for you to settle before the first session: see [Data, rights and consent](data-and-consent.md). Each vault
+sets a cap on how many groups it holds, and participants are clustered into groups that fit under it.
 
 ## Why it is called SCAT
 
@@ -52,13 +54,13 @@ the others offer and adds to it. Two habits from that carry through the whole me
 - **"From this perspective."** Each contribution is placed in the group it comes from and worded that way. Every
   contribution is taken up and set in its own perspective.
 
-So when two groups want opposite things, SCAT does not settle it. It holds both. Conflicting concerns are recorded as
-explicit links, and the tools do not pick between them. Nobody has to be argued into agreement.
+So when two groups want opposite things, SCAT does not settle it. It holds both. Concerns that pull against each other
+are recorded as a relationship annotation, a plain line with a link, and the tools do not pick between them. Nobody has to be argued into agreement.
 
 ## What you end up with
 
 A vault: a folder of linked pages that you open in Obsidian, kept in git. The tools check that every page fits the
-structure and that every link goes somewhere. You can click through from a group to its concerns, to the affordances
+structure, that every link goes somewhere and that every edge a narrative tells joins the nodes it should. You can click through from a group to its concerns, to the affordances
 that address them, and to the technologies behind those. The git history is the record of how it got there.
 
 ## Who it is for
@@ -74,8 +76,8 @@ Four stages, one page each. The first time through, take them in order, from the
 | Stage | What you do | Page |
 | --- | --- | --- |
 | Plan | Decide which sessions collect scenarios and which collect architectures, who takes part, and how groups are formed. | [Planning](planning.md) |
-| Capture | During the event, record raw scenarios and raw architectures. | [Facilitating scenarios](facilitate-scenarios.md) and [Facilitating architectures](facilitate-architectures.md) |
-| Code | Afterwards, turn the raw notes into pages and links, fixing each problem from its message. | [Coding](coding.md) |
+| Capture | During the event, take field notes and write each account as a narrative. | [Facilitating scenarios](facilitate-scenarios.md) and [Facilitating architectures](facilitate-architectures.md) |
+| Code | Afterwards, link the nodes each narrative names and record the edges it tells, fixing each problem from its message. | [Coding](coding.md) |
 | Finish | Reach a clean check, commit, and explore the result in Obsidian. | [Coding](coding.md) |
 
 Before the first stage you set up your own private vault: that is [Getting started](getting-started.md). When you
@@ -88,5 +90,6 @@ This documentation lives at <https://dynamicalsystemsgroup.github.io/scat-kg-too
 
 Take it from the top:
 
+- [The flow](flow.md): the whole journey, step by step.
 - [Getting started](getting-started.md): create your private repository and run your first check.
 - [Terms](reference/terms.md): how the pieces relate, in one place.
