@@ -6,7 +6,7 @@ for the package named.
 
 ## 1. Model, views and control
 
-Model, view and control (MVC, in software architecture):
+Model, view and control (MVC):
 
 |Part|What it is|Relation to the model|
 |---|---|---|
@@ -28,8 +28,7 @@ Model, view and control (MVC, in software architecture):
 |**Tool**|Conformance: (i) the knowledge graph matches the Markdown; (ii) it obeys the ontology.|(i) M4 finds where links and edges disagree, over M1's graph (a round-trip test covers M1). (ii) M0, M3. M5 writes.|
 |**Assistant**|None. Drafts, drives calls.|Chat: M8; IDE: M7.|
 
-No module in M0 to M6 can tell who is calling. The assistant's permitted and forbidden acts are written once, in a short
-file under `contracts/` (WP18), cited by the MCP prompts, the IDE setup skill and the docs. Authority holds by
+No module in M0 to M6 can tell who is calling. The assistant's permitted and forbidden acts are written once, in a file under `contracts/` (WP18), cited by the MCP prompts, the IDE setup skill and the docs. Authority holds by
 construction on the chat path (M8 never crosses `done`), and by that file and git review on the IDE path.
 
 ## 3. Modules
@@ -69,7 +68,7 @@ The `done` rules change today's unchecked `set_status`; WP16 owns the change to 
 ## 4. Links and edges (G17)
 
 **Four forms**, a closed list (R-23); other links have no graph meaning and are checked only as links.
-**L**: a link in a narrative's account or table (the narrative refers to the node, nothing more). A row's end is a link. **E**: an edge, one
+**L**: a link in a narrative's account or table. A row's end is a link. **E**: an edge, one
 per (type, from, to), never stored: built from rows. **N**: a row's two ends. **T**: the row itself, which names its
 narrative. The coder writes L and rows; M5 writes rows; Obsidian's table editor may re-pad them. The edge's type follows
 its layers: `holds` (group, concern), `is addressed by` (concern, affordance), `is provided by` (affordance,
@@ -82,9 +81,9 @@ anchored on the narrative: each a warning until it is `done`, then an error (R-2
 
 |Pair|What disagrees|Detection|Fix (form edited)|Incremental case|
 |---|---|---|---|---|
-|**L–N**|A row's end is plain text, not a link.|Rule 3.|Replace the text with the link (the fix is offered) (L); or delete the row (T).|Only a hand edit leaves one: `record-edge` writes both ends as links.|
+|**L–N**|A row's end is plain text, not a link.|Rule 3.|Replace the text with the link (L); or delete the row (T).|Only a hand edit leaves one.|
 |**L–E**|n links both ends of an edge and has no row for it. Not a mismatch under G1.|Rule 4: no message; a candidate in the fingerprint view (D-085).|Add a row to n (T), or leave it.|Breadth first: rows recorded after linking.|
-|**E–N**|An end is not a node, is in the wrong layer or direction, or the type is unknown. Conformance.|Rule 1; an end that is no page is graded likewise.|`stub-links` makes the missing node (M5); relink if renamed, retype or turn the row.|Recording stubs absent ends and never leaves a mismatch; only a hand edit does.|
+|**E–N**|An end is not a node, is in the wrong layer or direction, or the type is unknown. Conformance.|Rule 1; an end that is no page is graded likewise.|`stub-links` makes the missing node (M5); relink if renamed, retype or turn the row.|Recording stubs absent ends; only a hand edit leaves one.|
 |**E–T**|A narrative tells a pair twice. Conformance.|Rule 2.|Merge the rows.|Recording an existing pair is "unchanged".|
 
 **Why no order of coding hides a mismatch.**
@@ -100,7 +99,7 @@ anchored on the narrative: each a warning until it is `done`, then an error (R-2
 A forgotten edge is graded by no rule (G1); the fingerprint view shows it. A generator test builds vaults in each order
 (nodes first, rows first, one narrative at a time), injects every mismatch above, and asserts a report with a fix.
 
-**Fragment** (the forms drawn plainly).
+**Fragment** (the forms drawn).
 ```
 dry-july      scenario draft      links: allocation
 sensor-pitch  architecture done   links: allocation, soil-sensor
@@ -111,8 +110,7 @@ sensor-pitch  architecture done   links: allocation, soil-sensor
 - *Case 2.* `record-edge holds farmers allocation --told-by dry-july` adds the row with both ends linked, stubbing
   `allocation` if absent: no problem. `dry-july`'s account need not link `farmers` (rule 4 stays silent).
 - *Case 3.* Remove edge deletes its rows, keeping links; it is refused while `sensor-pitch` is `done`.
-- *Case 4.* Deleting `allocation` by hand leaves dangling links and a row end that is no page (a warning on a draft, an
-  error on a `done` narrative); `stub-links` restores it.
+- *Case 4.* Deleting `allocation` by hand leaves dangling links and a row end that is no page; `stub-links` restores it.
 
 ## 5. The coding loop and the journey
 
@@ -148,7 +146,8 @@ interface, GitHub Desktop, an Obsidian git plugin), not M8.
 - **Decided (WP17): the view document.** Kind `view`; `operation` is `fingerprint`, `edges`, `layered` or `trace`, each a
   `scat` command with a REPL twin; `schema_version` stays 2. Nodes are `{name, type, status}`; an edge names every
   narrative that tells it; the fingerprint adds rule-4 candidates. A view refuses, as an operation with `problems`, on an
-  error in a page it draws. `export-edges --out DIR` is the only writer (R-4). Shape: `machine-interface.schema.json`.
+  error in a page it draws, and on a skipped row in a narrative it draws, naming the row; a whole-vault view also refuses on a
+  page whose frontmatter cannot be read, naming the file and why. A duplicate node name behind a row end is named with both files. `export-edges --out DIR` is the only writer (R-4). Shape: `machine-interface.schema.json`.
 - **[OPEN: WP18] Tool, prompt and skill names; the assistant's file; the view folder.**
 - **Decided (D-084): the chat route.** v0.1: M8 on the coder's machine, behind a tunnel with an API key. Later:
   governed compute. RS3 picks the tunnel and terminal-free git; M8's contract is unchanged.

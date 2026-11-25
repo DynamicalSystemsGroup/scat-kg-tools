@@ -141,9 +141,33 @@ def _skipped(op: str, g: Graph, names) -> Refused | None:
     )
 
 
-def _drawn(op: str, g: Graph, narratives, nodes, edges, scope) -> Refused | None:
-    """The refusals of a view: an error in a page drawn first, else a skipped row in the narratives of `scope`."""
-    return _check(op, g, narratives, nodes, edges) or _skipped(op, g, scope)
+def _unreadable(op: str, g: Graph) -> Refused | None:
+    """Refuse a whole-vault view when a page's frontmatter cannot be read: one refusal for each such page."""
+    if not g.unreadable:
+        return None
+    return Refused(
+        op,
+        refused=tuple(
+            Refusal(
+                u.path,
+                f"its frontmatter cannot be read ({u.reason}), so this view cannot tell whether it is a narrative",
+                f"fix the frontmatter (`scat check {u.path}` says how), then run this again",
+            )
+            for u in g.unreadable
+        ),
+    )
+
+
+def _drawn(
+    op: str, g: Graph, narratives, nodes, edges, scope, whole: bool = False
+) -> Refused | None:
+    """The refusals of a view: an error in a page drawn first, else a skipped row in the narratives of `scope`,
+    else (a `whole`-vault view) a page whose frontmatter cannot be read."""
+    return (
+        _check(op, g, narratives, nodes, edges)
+        or _skipped(op, g, scope)
+        or (_unreadable(op, g) if whole else None)
+    )
 
 
 def _open(op: str, root: str | Path) -> tuple[Graph | None, Refused | None]:
@@ -220,7 +244,7 @@ def fingerprint(narrative: str | None = None, *, root: str | Path = ".") -> View
         nodes |= set(nar.nodes)
         edges += es
     names = [n.name for n in chosen]
-    bad = _drawn(op, g, names, _nodes(g, nodes), edges, names)
+    bad = _drawn(op, g, names, _nodes(g, nodes), edges, names, narrative is None)
     return bad or View(op, {"narratives": items})
 
 
@@ -242,7 +266,7 @@ def edge_table(type: str, *, root: str | Path = ".") -> View | Result:
     et = TBOX.edge_types[type]
     rows = [e for e in g.edges if e.type == type]
     ends = {x for e in rows for x in (e.from_node, e.to_node)}
-    bad = _drawn(op, g, [], _nodes(g, ends), rows, [n.name for n in g.narratives])
+    bad = _drawn(op, g, [], _nodes(g, ends), rows, [n.name for n in g.narratives], True)
     return bad or View(
         op,
         {
@@ -281,7 +305,7 @@ def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> V
     edges = [e for e in g.edges if e.key in keys]
     nodes = _nodes(g, {x for n in chosen for x in n.nodes})
     names = [n.name for n in chosen]
-    bad = _drawn(op, g, names, nodes, edges, names)
+    bad = _drawn(op, g, names, nodes, edges, names, narratives is None)
     return bad or View(
         op,
         {
@@ -326,7 +350,7 @@ def trace(node: str, direction: str = "both", *, root: str | Path = ".") -> View
     downs = walk(False) if direction in ("down", "both") else set()
     edges = [e for e in g.edges if e.key in walked]
     shown = _nodes(g, ups | downs | {node})
-    bad = _drawn(op, g, [], shown, edges, [n.name for n in g.narratives])
+    bad = _drawn(op, g, [], shown, edges, [n.name for n in g.narratives], True)
     return bad or View(
         op,
         {
