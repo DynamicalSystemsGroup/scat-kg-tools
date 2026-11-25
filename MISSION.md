@@ -26,9 +26,6 @@ The practices it supports, eliciting, capturing and coding narratives and holdin
 it, were co-developed with Ellie Rennie in the actor-network coding work of `ant-rdf`
 (<https://github.com/mzargham/ant-rdf>).
 
-v0.1 is aimed at a first field deployment. It is built so that a person can do all of it by hand, and so that an LLM,
-where the project's data rights allow one, can take the mechanical work through standard interfaces.
-
 The point of departure is the toolchain, and the Obsidian reading and review experience, described in *Formalizing
 Document Assurance* (INCOSE IS 2026; the chief engineer has a copy), together with earlier repositories:
 - `ant-rdf` (<https://github.com/mzargham/ant-rdf>);
@@ -39,6 +36,9 @@ Document Assurance* (INCOSE IS 2026; the chief engineer has a copy), together wi
   an external ontology through equivalence axioms instead of importing all of it.
 
 The structure here is simpler than any of them.
+
+v0.1 is aimed at a first field deployment. It is built so that a person can do all of it by hand, and so that an LLM,
+where the project's data rights allow one, can take the mechanical work through standard interfaces.
 
 ## Core heuristics
 
