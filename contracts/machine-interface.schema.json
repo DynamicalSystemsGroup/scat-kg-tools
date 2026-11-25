@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://scat-kg-tools.invalid/contracts/machine-interface.schema.json",
   "title": "scat machine interface, schema_version 2",
-  "description": "The one JSON document a scat command prints with --json, and the dict a Python result's to_dict() returns. Every object allows extra fields: adding a field does not change schema_version. The set of rule ids is not enumerated here, only its pattern. Version 2 follows the layout of D-088: pages are group, concern, affordance, technology and narrative; an edge is a row of a narrative table, so record-edge and remove-edge results name the edge and the rows they touched.",
+  "description": "The one JSON document a scat command prints with --json, and the dict a Python result's to_dict() returns. Every object allows extra fields: adding a field does not change schema_version. The set of rule ids is not enumerated here, only its pattern. Version 2 follows the layout of D-088: pages are group, concern, affordance, technology and narrative; an edge is a row of a narrative table, so record-edge and remove-edge results name the edge and the rows they touched. kind is check, status or operation. A refusal, even by check or status, gives kind operation with ok false. ok is false on an error or a refusal; warnings keep it true. The exit code is 0 when ok, 1 otherwise, and 2 for a command line that cannot be read. Stdout holds exactly one document; text for humans goes to stderr. Line numbers count the file's lines, front matter included; columns count characters, from 1.",
   "oneOf": [
     { "$ref": "#/$defs/CheckResult" },
     { "$ref": "#/$defs/StatusResult" },
@@ -64,7 +64,7 @@
         "kind": { "const": "status" },
         "operation": { "const": "status" },
         "ok": { "const": true },
-        "scope": { "enum": ["page", "neighborhood", "vault"] },
+        "scope": { "enum": ["page", "neighborhood", "vault"], "description": "page: one page. neighborhood: a page and its linked pages. vault: every page." },
         "rows": { "type": "array", "items": { "$ref": "#/$defs/StatusRow" } },
         "counts": {
           "description": "Pages per status. Besides the statuses of the ontology, other is a missing or invalid status. Every page type carries a status, so there is no count for pages without one (version 1 had none, for class pages).",
@@ -87,7 +87,7 @@
     },
 
     "OperationResult": {
-      "description": "What every other command returns, and what check and status return when they refuse. ok is true exactly when refused is empty.",
+      "description": "What every other command returns, and what check and status return when they refuse. ok is true exactly when refused is empty. created holds pages the call wrote new (for record-edge and remove-edge, the stub of a missing end node or narrative); changed, pages it altered (for those two, the narratives it wrote a row into); notes, sentences for a person. Links are never added or removed by record-edge or remove-edge.",
       "type": "object",
       "required": ["schema_version", "kind", "operation", "ok", "created", "changed", "unchanged", "refused", "notes"],
       "properties": {
@@ -99,11 +99,11 @@
         "changed": { "$ref": "#/$defs/PathList" },
         "unchanged": { "$ref": "#/$defs/PathList", "description": "Looked at and already right: nothing written." },
         "refused": { "type": "array", "items": { "$ref": "#/$defs/Refusal" } },
-        "notes": { "$ref": "#/$defs/StringList" },
+        "notes": { "$ref": "#/$defs/StringList", "description": "Sentences for a person." },
         "problems": { "type": "array", "items": { "$ref": "#/$defs/Problem" }, "description": "Optional. The problems the write leaves, on the pages it touched and the pages one link away, in the catalogue's sort order." },
         "edge": { "$ref": "#/$defs/EdgeRef" },
-        "rows_added": { "type": "array", "items": { "$ref": "#/$defs/RowRef" } },
-        "rows_removed": { "type": "array", "items": { "$ref": "#/$defs/RowRef" } }
+        "rows_added": { "type": "array", "items": { "$ref": "#/$defs/RowRef" }, "description": "The rows the call wrote. Both rows_added and rows_removed are empty when the call found nothing to do: ok is then true and the narratives are in unchanged." },
+        "rows_removed": { "type": "array", "items": { "$ref": "#/$defs/RowRef" }, "description": "The rows the call deleted." }
       },
       "allOf": [
         {
@@ -130,13 +130,13 @@
       "properties": {
         "subject": { "type": "string", "description": "The file, field or name the refusal is about." },
         "why": { "type": "string" },
-        "rule": { "$ref": "#/$defs/RuleId", "description": "Optional. The rule of the catalogue that gives the refusal (SCAT-DONE-REFUSED for a refusal to set a page to done)." },
+        "rule": { "$ref": "#/$defs/RuleId", "description": "Optional. The rule of the catalogue that gives the refusal (SCAT-DONE-REFUSED for a refusal to set a page to done; that refusal's own fix has two options: an advisory one, and set-status <page> draft as an exact command). A refusal of record-edge or remove-edge (a narrative it would change is done, an unknown type, ends in the wrong layers) writes nothing, and edge, rows_added and rows_removed may then be absent." },
         "problems": { "type": "array", "items": { "$ref": "#/$defs/Problem" }, "description": "Optional. The problems that make the refusal, as they stand in the situation the operation judged (for SCAT-DONE-REFUSED, the errors the page would have at status done), each with its fix." },
         "fix": { "$ref": "#/$defs/Fix" }
       }
     },
     "EdgeType": {
-      "description": "The slug of an edge type, as the ontology states it (scat:slug). A closed list: a new edge type bumps schema_version.",
+      "description": "The slug of an edge type, as the ontology states it (scat:slug). For remove-edge, the type its ends' layers fix. A closed list: a new edge type bumps schema_version.",
       "enum": ["holds", "addressed-by", "provided-by"]
     },
     "EdgeRef": {
@@ -169,10 +169,10 @@
         "rule": { "$ref": "#/$defs/RuleId" },
         "severity": { "enum": ["error", "warning"] },
         "file": { "$ref": "#/$defs/VaultPath" },
-        "line": { "$ref": "#/$defs/PositiveIntOrNull" },
-        "column": { "$ref": "#/$defs/PositiveIntOrNull" },
+        "line": { "$ref": "#/$defs/PositiveIntOrNull", "description": "From 1, counting the file's lines, front matter included. For a problem about a table, the line of the row (of the header row, for the header)." },
+        "column": { "$ref": "#/$defs/PositiveIntOrNull", "description": "From 1, counting characters. For a problem about a table, the first character of the cell it is about (of the first |, for a whole row)." },
         "field": { "type": ["string", "null"], "description": "The field the problem is about: a front-matter field of the page, or a key of scat.toml (then file is scat.toml); null when it is about a link, a table or one of its rows, the whole front matter, a name, and so on." },
-        "where": { "type": "string" },
+        "where": { "type": "string", "description": "Where in the file, for example row 2 cell `to`. A row is removed by a delete-line edit; a cell is corrected by a replace-text edit with a column." },
         "what": { "type": "string" },
         "repeat": { "type": "integer", "minimum": 1 },
         "fix": { "$ref": "#/$defs/Fix" },
@@ -184,10 +184,10 @@
       "type": "object",
       "required": ["kind", "options", "notes"],
       "properties": {
-        "kind": { "enum": ["exact", "options", "slot", "advisory", "manual"] },
+        "kind": { "enum": ["exact", "options", "slot", "advisory", "manual"], "description": "The kind of the catalogue rule's fix. Each option has its own kind (never options). exact carries a command, edits or both; slot has an author_slot on an edit or on its command; advisory and manual carry neither." },
         "head": { "type": "string", "description": "The line that introduces the options, for example Fix, choose one:" },
         "sequence": { "type": "boolean", "description": "True: do every option in order (steps). Absent or false: the options are alternatives; the author picks one." },
-        "options": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/FixOption" } },
+        "options": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/FixOption" }, "description": "Alternatives unless sequence is true. An option applies its edits, then its command." },
         "notes": { "$ref": "#/$defs/StringList" }
       },
       "if": { "properties": { "kind": { "const": "options" } }, "required": ["kind"] },
@@ -257,8 +257,8 @@
         "action": { "const": "set-field" },
         "file": { "$ref": "#/$defs/VaultPath" },
         "field": { "type": "string", "minLength": 1 },
-        "value": { "type": ["string", "integer", "number", "boolean", "array"], "description": "A JSON value; the tool writing it chooses the YAML or TOML form." },
-        "author_slot": { "type": "string", "minLength": 1, "description": "Present when value holds a placeholder the author must replace: this is that placeholder's exact text. Never write it as is." }
+        "value": { "type": ["string", "integer", "number", "boolean", "array"], "description": "A JSON value; the tool writing it chooses the YAML or TOML spelling. When the page has no front matter, add a block between two --- lines. Also used for a key of scat.toml." },
+        "author_slot": { "type": "string", "minLength": 1, "description": "Present when value holds a placeholder the author must replace: this is that placeholder's exact text. Never write it as is. In an array value, the placeholder is the text of one string element." }
       }
     },
     "DeleteField": {
@@ -272,7 +272,7 @@
       }
     },
     "ReplaceText": {
-      "description": "Replace the text find with replace on a line of the page (its body, or front matter lines that are not a plain field). find is the literal text as written in the file at that line. Without column, find is replaced everywhere on the line; with column, only the occurrence at that column. replace may contain a line break, which adds a line (a table's separator row is added this way); a fix then has no other edit to a later line of the same file.",
+      "description": "Replace the text find with replace on a line of the page (its body, or front matter lines that are not a plain field). find is the literal text as written in the file at that line. Without column, find is replaced everywhere on the line; with column, only the occurrence at that column. replace may contain a line break, which adds a line (a table's separator row is added this way; for a new table, anchor on the last line of the file; no catalogue fix inserts a row); a fix then has no other edit to a later line of the same file.",
       "type": "object",
       "required": ["action", "file", "line", "find", "replace"],
       "properties": {
