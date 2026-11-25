@@ -1,40 +1,39 @@
 # Morning list for the chief engineer
 
-Updated 25 November, morning. Earlier versions are in git history. Words follow `GLOSSARY.md`.
+Updated 25 November, afternoon. Earlier versions are in git history. Words follow `GLOSSARY.md`.
 
 ## Where the release stands
 
-Every work package of Mission Amendment 5 is built and on `dev`, CI green in both repositories (tools 490ba13,
-template 31667fc, Pages preview current):
-
 | Package | State |
 |---|---|
-| WP14 prior art, WP15 architecture, RS3 chat-path spike, WP16 ontology and layout, WP19 range vault | accepted |
-| WP17 views (fingerprint, edge tables, layered view, traces; notebook in the template) | built; held only on WP17-U3b (item 1) |
-| WP18 chat path (MCP server, assistant's file, container, launcher, guides) | built; waits only on its live run (item 3) |
-| WP20 candidate and user acceptance | manual path passes UA-A (two rounds, D-100, D-101); chat path waits on item 3; reviewer's guide current |
+| WP14, WP15, RS3, WP16, WP19 | accepted |
+| WP17 views | **accepted** (D-111): U3b applied after your D-104 |
+| WP18 chat path | built; live run done 25 November (`acceptance/chat-path/live-run-wp18-r4.md`); acceptance waits on the key fix (C7, in WP21) |
+| WP20 candidate and user acceptance | manual path passes UA-A; the uv gap is closed (D-112); chat-path UA-A waits on your sitting |
+| WP21 rules and norms, life cycle, image (C1 to C8, D-102 to D-107, D-110) | scope revised after the PM's check; impact map in progress; then approval and build |
 
-What is left before I open the release PRs: items 1 and 3 below.
+Before the release PRs: WP21 built and accepted, WP18 accepted, the chat-path sitting below.
 
 ## Waiting on you
 
-1. **WP17-U3b, a guard-refused one-line schema edit (D-093).** `scat draw --out` can save a drawing outside the
-   vault, which the machine-interface schema doesn't allow for `draw`. Either (a) you allow the edit, or (b) I rule
-   that drawings are saved only inside the vault (as the chat path already does) and the code changes instead.
-2. **Permission to install Docker Desktop (D-096)**, so the chat path's graphical container runtime is tested once
-   before release. Without it, the guide keeps saying it is untested.
-3. **The chat path.** WP18's live run (WP18-R4) ran on 25 November and is torn down
-   (`acceptance/chat-path/live-run-wp18-r4.md`); you deleted the MCP entry. Left: clean-up in the chat (C8); the
-   three chat-path user tests (D-098) in a later sitting. Your UX observations from the run are harvested as
-   candidates C1 to C8 in `work-packages/candidates.md`.
-4. **The uv gap (D-040, D-041):** every UA-A tester had uv pre-installed, where the mission says "uv not installed".
-   Accept it as a known gap, or permit one fresh tester to run uv's official installer.
-5. **History rewrites, all optional:** `main` (commit `c58113b`, the pilot line) and `dev` (commit `20ff07a`, private
-   repository names; an old log entry, now redacted). Each needs a force-push only you can authorise.
-6. **Your template checkout:** a `git pull` will stop on your uncommitted `.obsidian/` edits (`core-plugins.json`,
+1. **History rewrites (D-109 is held, D-113).** Sizing them showed costs the question didn't state. `c58113b` is in
+   `dev` as well as `main`, so removing it re-hashes about 754 commits on `dev` and 59 on `main`. That orphans the
+   template's pinned tools commit, the 23 revert tags and the hashes cited across the log, board and metrics. GitHub
+   also keeps the old commits reachable through PR #8's head ref, so the text would not be fully gone without asking
+   GitHub support. Do you still want both rewrites, knowing this?
+2. **One more lab conversation in inference.coop.** This run's uploaded note and its two conversations are deleted
+   there (local copies kept). A third conversation, "Vault Check Results Summary", is from the overnight server test,
+   with lab material only. Delete it too?
+3. **A one-line mission edit for D-106:** Release step 3 would also publish the MCP server image when the ACE tags
+   `v0.1.0`. The mission is yours to change; I'll draft the sentence for your merge.
+4. **A chat-path sitting (after WP21):** the three chat-path user tests (D-098), the "leave no trace" walkthrough run,
+   and loading the skill package. You sign in and paste each key; I drive.
+5. **Your template checkout:** a `git pull` will stop on your uncommitted `.obsidian/` edits (`core-plugins.json`,
    `app.json`). Settle them before pulling.
-7. **WP8-U1 (D-042):** the held test edit in `tests/ops/test_ops_stub.py` (its assertions are untouched).
-8. **At release:** the w3id namespace registration PR from your fork.
+6. **At release:** the w3id namespace registration PR from your fork.
+
+Settled today: D-102 to D-108, D-110 (release scope C1 to C8, U3b, Colima default, the published image, leave no
+trace, the uv test, WP8-U1's two assertions).
 
 ## For your walkthrough (UA-M)
 
