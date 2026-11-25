@@ -28,7 +28,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP18 | The chat path (D-094) | all units done; WP18-R4 run 25 November; acceptance waits on the C7 fix (WP21) | `WP18.md` |
 | WP19 | The range vault (D-094) | all units done and reviewed on `pm-wp18`; `check_metrics.py --accept WP19` passes; ready for ACE acceptance | `WP19.md` |
 | WP20 | The candidate and user acceptance (D-097) | manual path passed UA-A round 2 (D-101); all units done except WP20-UC1 (chat-path UA-A, queued, waits on the chief engineer's sitting) | `WP20.md` |
-| WP21 | Rules and norms, the chat path's life cycle, the published image (D-114) | in flight; units planned, wave 1 starting | `WP21.md` |
+| WP21 | Rules and norms, the chat path's life cycle, the published image (D-114) | all units done and merged on `dev`; ready for ACE acceptance after the template pin | `WP21.md` |
 
 ## Units
 
@@ -278,8 +278,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U3hr | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:51:21-05:00 | fresh reviewer PASS first time |
 | WP21-U8f | Python developer (shellcheck SC2015 in the launcher, red CI on dev; unplanned fix forward for U8), sonnet | 1 | 1 | `wp21/u8f` | done |  | 2026-11-25T17:51:21-05:00 | fix forward: shellcheck SC2015 red CI; uvx shellcheck-py clean; merged 61627f7 |
 | WP21-U8fr | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:51:21-05:00 | fresh reviewer PASS first time |
-| WP21-U10b | Python developer (launcher missing-runtime message, test_terms docstring; D-119), sonnet | 1 |  | `wp21/u10b` | in flight |  |  |  |
-| WP21-U10br | reviewer (fresh), sonnet | 1 |  | `-` | queued | U10b |  |  |
+| WP21-U10b | Python developer (launcher missing-runtime message, test_terms docstring; D-119), sonnet | 1 | 1 | `wp21/u10b` | done |  | 2026-11-25T18:17:21-05:00 | launcher message and docstring; PASS first time; merged 9ab48b3 |
+| WP21-U10br | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T18:17:21-05:00 | fresh reviewer PASS first time |
 | WP21-U4 | mechanical sweep (template, range vault), haiku | 2 | 2 | `wp21/template`; `wp21/u4` | done |  | 2026-11-25T17:09:19-05:00 | first-time PASS; haiku swap script, template f2a562a pushed on wp21/template; range vault 43b6b9d; merged 7e41fa6 |
 | WP21-U4r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:09:19-05:00 | fresh reviewer PASS first time, script-checked the swap |
 | WP21-U5 | technical writer (docs/norms.md), sonnet | 5 | 5 | `wp21/u5` | done |  | 2026-11-25T17:09:19-05:00 | first-time PASS; 777 words, self-audit of every must; merged 2eb1c3e |
@@ -292,8 +292,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U8r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:09:19-05:00 | fresh reviewer PASS first time |
 | WP21-U9 | Python developer (image CI, launcher pull, run-time user), sonnet | 5 | 5 | `wp21/u9` | done |  | 2026-11-25T15:46:40-05:00 | first-time PASS; own workflow file for the paths filter; 2 tests added, 2 edited for G6; merged 9616a24 |
 | WP21-U9r | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, built the image under Colima |
-| WP21-U10 | technical writer (life-cycle guide, leave-no-trace), sonnet | 5 |  | `wp21/u10` | in flight |  |  |  |
-| WP21-U10r | reviewer and cold reader (fresh), sonnet | 2 |  | `-` | queued | U10 |  |  |
+| WP21-U10 | technical writer (life-cycle guide, leave-no-trace), sonnet | 5 | 8 | `wp21/u10` | done |  | 2026-11-25T18:17:21-05:00 | 3 push-backs on R7's one-action bar, D-119 reworded it; 2 cold readers; one more tiny fix round; 2401 tests; merged c89411e |
+| WP21-U10r | reviewer and cold reader (fresh), sonnet | 2 | 3 | `-` | done |  | 2026-11-25T18:17:21-05:00 | 4 fresh review rounds and 2 cold readers (hence 3 against 2) |
 
 ## Iterations and velocity
 
@@ -333,6 +333,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 33 | WP21-U1, U1r, U7, U7r, U9, U9r | 14 | 14 | 1.00 | 0.6 h | 23.33 |
 | 34 | WP21-U2, U2r, U3, U3r, U3g, U3gr, U4, U4r, U5, U5r, U8, U8r (U4b, a 1-point pin edit, unplanned: no separate review, the docs tests are its check) | 33 | 33 | 1.00 | 2.2 h | 15.0 |
 | 35 | WP21-U3h, U3hr, U6, U6r, U8f, U8fr (U8f, U8fr added by the PM: red CI) | 12 | 13 | 1.08 | 1.6 h | 8.13 |
+| 36 | WP21-U10, U10r, U10b, U10br (U10b, U10br added by the PM after D-119) | 10 | 13 | 1.30 | 1.7 h | 7.65 |
 
 ## Velocity and forecast
 
@@ -343,6 +344,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP21 all units done (iteration 36: 10 est, 13 realized; U10 ran over: R7's one-action bar took three review rounds until D-119 reworded it; lesson: a per-step granularity bar needs a definition of one step before a guide is written). `check_metrics.py --accept WP21` passes. Waiting on the ACE: the template pin and merge, the sittings (R4, R7, R6).
 
 Current: WP21 wave 3 landed (U3h, U6, U8f merged; iteration 35: 12 est, 13 realized, 1.6 h). U10 is blocked on the ACE: the one-action bar of R7 failed three review rounds (branch wp21/u10 at 43539d5, not merged).
 
