@@ -2124,3 +2124,16 @@ C1 to C8 are built before the release PRs.
 Asked whether `scat draw --out` may save outside the vault (the one-line machine-interface schema edit, guard-refused
 and held, D-093) or drawings stay inside the vault. The chief engineer chose "Allow the schema edit". The schema gains
 `draw` beside `export-edges`; the code is unchanged.
+
+## D-105 | 2026-11-25 | Colima is the chat path's default runtime; the container in the open-source repo
+
+Asked whether to install and test Docker Desktop, leave it untested, or lead with Colima. The chief engineer's answer,
+quoted as typed and recorded by the ACE:
+
+> "let's make colima the default since this version we said mac only 0.1. also i think it merits providing the docker
+> container or the mcp server as part of the open source repo for the tools. this will make the spin up to tear down
+> cycle much clear and more reproducible."
+
+Outcome: Colima becomes the default runtime in the chat-path guide (v0.1 is Mac only); Docker Desktop becomes the
+untested alternative, and D-096's install request is withdrawn. On the container: the Dockerfile is already in the
+tools repo (`deploy/`); what "providing the container" covers is put as one follow-up (D-106).
