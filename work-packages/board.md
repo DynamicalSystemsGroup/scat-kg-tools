@@ -274,19 +274,21 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U3r | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T17:09:19-05:00 | fresh reviewer PASS first time, behaviour run |
 | WP21-U3g | Python developer (SCAT-MENTION opt-in, glossary draft), sonnet | 3 | 3 | `wp21/u3g` | done |  | 2026-11-25T17:09:19-05:00 | 1 push-back (3 checkable items) and a rebase onto U3, re-reviewed PASS; separate rule SCAT-SUGGEST-CONFIG; glossary change drafted for the ACE; merged 0b952b4 |
 | WP21-U3gr | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T17:09:19-05:00 | review found 3 items, re-review PASS (haiku) |
+| WP21-U3h | technical writer and Python developer (G9 glossary change as decided in D-117), sonnet | 2 |  | `wp21/u3h` | in flight |  |  |  |
+| WP21-U3hr | reviewer (fresh), sonnet | 1 |  | `-` | queued | U3h |  |  |
 | WP21-U4 | mechanical sweep (template, range vault), haiku | 2 | 2 | `wp21/template`; `wp21/u4` | done |  | 2026-11-25T17:09:19-05:00 | first-time PASS; haiku swap script, template f2a562a pushed on wp21/template; range vault 43b6b9d; merged 7e41fa6 |
 | WP21-U4r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:09:19-05:00 | fresh reviewer PASS first time, script-checked the swap |
 | WP21-U5 | technical writer (docs/norms.md), sonnet | 5 | 5 | `wp21/u5` | done |  | 2026-11-25T17:09:19-05:00 | first-time PASS; 777 words, self-audit of every must; merged 2eb1c3e |
 | WP21-U5r | reviewer and cold reader (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T17:09:19-05:00 | fresh reviewer and cold read PASS first time |
-| WP21-U6 | Python developer (skill package, drift test), sonnet | 5 |  | `wp21/u6` | queued | U5 |  |  |
-| WP21-U6r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U6 |  |  |
+| WP21-U6 | Python developer (skill package, drift test), sonnet | 5 | 5 | `wp21/u6` | done |  | 2026-11-25T17:14:13-05:00 | first-time PASS; verbatim rules copy with markers; 11 drift tests; merged ab1951c |
+| WP21-U6r | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T17:14:13-05:00 | fresh reviewer PASS first time, 7 mutations caught |
 | WP21-U7 | research engineer (secret-handling spike), sonnet | 3 | 3 | `wp21/u7` | done |  | 2026-11-25T15:46:40-05:00 | first-time PASS; dummy-value experiments confirmed the F15 cause; 1237 words |
 | WP21-U7r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, re-ran checks |
 | WP21-U8 | Python developer (launcher secret handling), sonnet | 3 | 3 | `wp21/u8` | done |  | 2026-11-25T17:09:18-05:00 | first-time PASS; stand-ins for security, osascript, curl; 9 existing tests edited for D-115; merged 3bf9b15 |
 | WP21-U8r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:09:19-05:00 | fresh reviewer PASS first time |
 | WP21-U9 | Python developer (image CI, launcher pull, run-time user), sonnet | 5 | 5 | `wp21/u9` | done |  | 2026-11-25T15:46:40-05:00 | first-time PASS; own workflow file for the paths filter; 2 tests added, 2 edited for G6; merged 9616a24 |
 | WP21-U9r | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, built the image under Colima |
-| WP21-U10 | technical writer (life-cycle guide, leave-no-trace), sonnet | 5 |  | `wp21/u10` | queued | U6, U8, U9 |  |  |
+| WP21-U10 | technical writer (life-cycle guide, leave-no-trace), sonnet | 5 |  | `wp21/u10` | in flight |  |  |  |
 | WP21-U10r | reviewer and cold reader (fresh), sonnet | 2 |  | `-` | queued | U10 |  |  |
 
 ## Iterations and velocity
