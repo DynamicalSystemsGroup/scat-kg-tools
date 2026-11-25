@@ -278,6 +278,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U3hr | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:51:21-05:00 | fresh reviewer PASS first time |
 | WP21-U8f | Python developer (shellcheck SC2015 in the launcher, red CI on dev; unplanned fix forward for U8), sonnet | 1 | 1 | `wp21/u8f` | done |  | 2026-11-25T17:51:21-05:00 | fix forward: shellcheck SC2015 red CI; uvx shellcheck-py clean; merged 61627f7 |
 | WP21-U8fr | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:51:21-05:00 | fresh reviewer PASS first time |
+| WP21-U10b | Python developer (launcher missing-runtime message, test_terms docstring; D-119), sonnet | 1 |  | `wp21/u10b` | in flight |  |  |  |
+| WP21-U10br | reviewer (fresh), sonnet | 1 |  | `-` | queued | U10b |  |  |
 | WP21-U4 | mechanical sweep (template, range vault), haiku | 2 | 2 | `wp21/template`; `wp21/u4` | done |  | 2026-11-25T17:09:19-05:00 | first-time PASS; haiku swap script, template f2a562a pushed on wp21/template; range vault 43b6b9d; merged 7e41fa6 |
 | WP21-U4r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:09:19-05:00 | fresh reviewer PASS first time, script-checked the swap |
 | WP21-U5 | technical writer (docs/norms.md), sonnet | 5 | 5 | `wp21/u5` | done |  | 2026-11-25T17:09:19-05:00 | first-time PASS; 777 words, self-audit of every must; merged 2eb1c3e |
@@ -290,7 +292,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U8r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:09:19-05:00 | fresh reviewer PASS first time |
 | WP21-U9 | Python developer (image CI, launcher pull, run-time user), sonnet | 5 | 5 | `wp21/u9` | done |  | 2026-11-25T15:46:40-05:00 | first-time PASS; own workflow file for the paths filter; 2 tests added, 2 edited for G6; merged 9616a24 |
 | WP21-U9r | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, built the image under Colima |
-| WP21-U10 | technical writer (life-cycle guide, leave-no-trace), sonnet | 5 |  | `wp21/u10` | blocked | ACE decision: R7 one-action bar, 3 review rounds (wp21/u10 43539d5) |  |  |
+| WP21-U10 | technical writer (life-cycle guide, leave-no-trace), sonnet | 5 |  | `wp21/u10` | in flight |  |  |  |
 | WP21-U10r | reviewer and cold reader (fresh), sonnet | 2 |  | `-` | queued | U10 |  |  |
 
 ## Iterations and velocity
