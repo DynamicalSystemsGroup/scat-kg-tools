@@ -4,8 +4,6 @@ the same fixture, gives the same message, the same files and the exit code the C
 The CLI is run through `cli.main(argv)` (no subprocess), and once for real as `uv run scat`.
 """
 
-# TODO(WP16-U7) lift: UNBUILT and the forced exit code 1 for unbuilt commands.
-
 import os
 import shutil
 import subprocess
@@ -21,10 +19,6 @@ EXAMPLES = ROOT / "contracts" / "examples"
 BAD_LINK = "[[no-such-concern]]"
 HELDBY = "narrative/saturday-at-the-lending-desk.md"  # the page the defect is seeded in
 NO_FOLDER = "/no/such/scat-vault"
-
-# The calls U7 (operations) rebuilds: until then each returns the standard refusal, so its exit code is 1.
-# TODO(WP16-U7): drop this.
-UNBUILT = {"index", "stub", "stub-pair", "stub-links"}
 
 
 def tree(root: Path) -> dict[str, bytes]:
@@ -130,27 +124,102 @@ CASES = {
         1,
         False,
     ),
-    "stub-relation-type-refused": (
-        lambda r: scat_kg.stub("x-holds-y", type="heldby", root=r),
-        ["stub", "x-holds-y", "--type", "heldby"],
+    "stub-index-type-refused": (
+        lambda r: scat_kg.stub("x", type="index", root=r),
+        ["stub", "x", "--type", "index"],
         1,
         False,
     ),
-    "stub-pair": (
-        lambda r: scat_kg.stub_pair("heldby", "borrowers", "quick-checkout", root=r),
-        ["stub-pair", "heldby", "borrowers", "quick-checkout"],
+    "set-status-done-refused": (
+        lambda r: scat_kg.set_status("funders-meeting", "done", root=r),
+        ["set-status", "funders-meeting", "done"],
+        1,
+        False,
+    ),
+    "record-edge": (
+        lambda r: scat_kg.record_edge(
+            "holds", "borrowers", "lending-rules", ["story"], "n", root=r
+        ),
+        ["record-edge", "holds", "borrowers", "lending-rules", "--told-by", "story", "--note", "n"],
         0,
         False,
     ),
-    "stub-pair-stubs-a-missing-endpoint": (
-        lambda r: scat_kg.stub_pair("heldby", "borrowers", "lending-rules", root=r),
-        ["stub-pair", "heldby", "borrowers", "lending-rules"],
+    "record-edge-two-narratives": (
+        lambda r: scat_kg.record_edge(
+            "addressed-by", "quick-checkout", "self-checkout", ["funders-meeting", "x"], root=r
+        ),
+        [
+            "record-edge",
+            "addressed-by",
+            "quick-checkout",
+            "self-checkout",
+            "--told-by",
+            "funders-meeting",
+            "--told-by",
+            "x",
+        ],
         0,
         False,
     ),
-    "stub-pair-not-a-relation": (
-        lambda r: scat_kg.stub_pair("owns", "a", "b", root=r),
-        ["stub-pair", "owns", "a", "b"],
+    "record-edge-unchanged": (
+        lambda r: scat_kg.record_edge(
+            "holds", "borrowers", "quick-checkout", "saturday-at-the-lending-desk", root=r
+        ),
+        [
+            "record-edge",
+            "holds",
+            "borrowers",
+            "quick-checkout",
+            "--told-by",
+            "saturday-at-the-lending-desk",
+        ],
+        0,
+        False,
+    ),
+    "record-edge-bad-type": (
+        lambda r: scat_kg.record_edge("owns", "a", "b", "n", root=r),
+        ["record-edge", "owns", "a", "b", "--told-by", "n"],
+        1,
+        False,
+    ),
+    "record-edge-into-done": (
+        lambda r: scat_kg.record_edge(
+            "holds", "funders", "lending-rules", "saturday-at-the-lending-desk", root=r
+        ),
+        [
+            "record-edge",
+            "holds",
+            "funders",
+            "lending-rules",
+            "--told-by",
+            "saturday-at-the-lending-desk",
+        ],
+        1,
+        False,
+    ),
+    "remove-edge": (
+        lambda r: scat_kg.remove_edge("funders", "careful-record-keeping", root=r),
+        ["remove-edge", "funders", "careful-record-keeping"],
+        0,
+        False,
+    ),
+    "remove-edge-told-by": (
+        lambda r: scat_kg.remove_edge(
+            "funders", "careful-record-keeping", ["funders-meeting"], root=r
+        ),
+        ["remove-edge", "funders", "careful-record-keeping", "--told-by", "funders-meeting"],
+        0,
+        False,
+    ),
+    "remove-edge-from-done": (
+        lambda r: scat_kg.remove_edge("borrowers", "quick-checkout", root=r),
+        ["remove-edge", "borrowers", "quick-checkout"],
+        1,
+        False,
+    ),
+    "remove-edge-no-such-node": (
+        lambda r: scat_kg.remove_edge("ghost", "quick-checkout", root=r),
+        ["remove-edge", "ghost", "quick-checkout"],
         1,
         False,
     ),
@@ -182,8 +251,6 @@ def run_both(tmp_path, capsys, api, argv, defect):
 @pytest.mark.parametrize("case", CASES)
 def test__the_api_and_the_cli_give_the_same_message_files_and_exit_code(case, tmp_path, capsys):
     api, argv, exit_code, defect = CASES[case]
-    if argv[0] in UNBUILT:
-        exit_code = 1  # the refusal; the intended code is the one in CASES
     result, code, out, a, b = run_both(tmp_path, capsys, api, argv, defect)
     assert out == str(result) + "\n"
     assert repr(result) == str(result)  # at the REPL it prints as its message
@@ -194,7 +261,9 @@ def test__the_api_and_the_cli_give_the_same_message_files_and_exit_code(case, tm
 
 def test__every_operation_is_covered():
     commands = {argv[0] for _, argv, _, _ in CASES.values()}
-    assert commands == {"check", "status", "set-status", "index", "stub", "stub-pair", "stub-links"}
+    assert commands == {
+        "check", "status", "set-status", "index", "stub", "stub-links", "record-edge", "remove-edge",
+    }  # fmt: skip
 
 
 def test__a_warning_alone_exits_zero_and_an_error_exits_nonzero(tmp_path, capsys):
@@ -207,6 +276,33 @@ def test__a_warning_alone_exits_zero_and_an_error_exits_nonzero(tmp_path, capsys
     assert scat_kg.check(root=clean).ok and not scat_kg.check(root=bad).ok
     # the draft narrative has no `description` and no `timeframe`: two warnings, no error
     assert len(scat_kg.check(root=clean).warnings) == 2 and not scat_kg.check(root=clean).errors
+
+
+def test__a_session_of_edges_gives_the_same_messages_and_files_on_both_paths(tmp_path, capsys):
+    """record, remove, refuse then accept `done`, index and stub-links: the CLI and the API twin, step by step."""
+    a, b = make(tmp_path, "api", False), make(tmp_path, "cli", False)
+    (a / "index/concern.base").unlink()
+    (b / "index/concern.base").unlink()
+    steps = [
+        (lambda r: scat_kg.record_edge("holds", "funders", "lending-rules", "story", "n", root=r),
+         ["record-edge", "holds", "funders", "lending-rules", "--told-by", "story", "--note", "n"]),
+        (lambda r: scat_kg.record_edge("holds", "funders", "lending-rules", "story", "n", root=r),
+         ["record-edge", "holds", "funders", "lending-rules", "--told-by", "story", "--note", "n"]),
+        (lambda r: scat_kg.set_status("story", "done", root=r), ["set-status", "story", "done"]),
+        (lambda r: scat_kg.remove_edge("funders", "lending-rules", root=r),
+         ["remove-edge", "funders", "lending-rules"]),
+        (lambda r: scat_kg.set_status("story", "draft", root=r), ["set-status", "story", "draft"]),
+        (lambda r: scat_kg.remove_edge("funders", "lending-rules", root=r),
+         ["remove-edge", "funders", "lending-rules"]),
+        (lambda r: scat_kg.index(root=r), ["index"]),
+        (lambda r: scat_kg.stub_links(root=r), ["stub-links"]),
+    ]  # fmt: skip
+    for api, argv in steps:
+        result = api(a)
+        capsys.readouterr()
+        code = cli.main([*argv, "--root", str(b)])
+        assert capsys.readouterr().out == str(result) + "\n", argv
+        assert code == (0 if result.ok else 1) and tree(a) == tree(b), argv
 
 
 def test__the_vault_root_defaults_to_the_current_directory(tmp_path, capsys, monkeypatch):
@@ -252,7 +348,8 @@ def test__the_message_is_the_one_the_catalogue_prints_and_its_fix_runs_on_both_p
 
 
 @pytest.mark.parametrize(
-    "command", ["check", "status", "set-status", "index", "stub", "stub-pair", "stub-links"]
+    "command",
+    ["check", "status", "set-status", "index", "stub", "stub-links", "record-edge", "remove-edge"],
 )
 def test__every_command_has_help(command, capsys):
     with pytest.raises(SystemExit) as e:
@@ -267,12 +364,23 @@ def test__the_top_level_help_lists_every_command(capsys):
         cli.main(["--help"])
     assert e.value.code == 0
     out = capsys.readouterr().out
-    for c in ("check", "status", "set-status", "index", "stub", "stub-pair", "stub-links"):
+    for c in (
+        "check", "status", "set-status", "index", "stub", "stub-links", "record-edge", "remove-edge",
+    ):  # fmt: skip
         assert c in out
+    assert "stub-pair" not in out
 
 
 def test__a_command_line_that_cannot_be_read_exits_two(capsys):
-    for argv in ([], ["nonsense"], ["stub", "x"], ["set-status", "x"]):
+    for argv in (
+        [],
+        ["nonsense"],
+        ["stub", "x"],
+        ["set-status", "x"],
+        ["stub-pair", "heldby", "a", "b"],
+        ["record-edge", "holds", "a", "b"],  # --told-by is required
+        ["remove-edge", "a"],
+    ):
         with pytest.raises(SystemExit) as e:
             cli.main(argv)
         assert e.value.code == 2

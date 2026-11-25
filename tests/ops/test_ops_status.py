@@ -1,7 +1,7 @@
 import difflib
 
 import pytest
-from opsutil import fm
+from opsutil import fm, narrative
 
 from scat_kg.ops import StatusReport, read_status, set_status
 
@@ -18,14 +18,13 @@ def vault(make_vault):
     return make_vault(
         {
             "scat.toml": "stakeholder_group_cap = 3\n",
-            "concern/a.md": fm("concern", "A", "stub", 'conflicts:\n  - "[[b]]"\n', "see [[c]]\n"),
+            "concern/a.md": fm("concern", "A", "stub", "", "Pulls against [[b]]; see [[c]]\n"),
             "concern/b.md": fm("concern", "B", "done"),
             "concern/c.md": fm("concern", "C", "draft"),
             "concern/d.md": fm("concern", "D", "stub"),
-            "heldby/h.md": fm("heldby", "H", "draft", 'group: "[[g]]"\nconcern: "[[a]]"\n'),
-            "stakeholder-group/g.md": fm("stakeholder-group", "G", "done"),
-            "concern/far.md": fm("concern", "Far", "done", 'conflicts:\n  - "[[d]]"\n'),
-            "class/concerns.md": "---\ntype: class\ntitle: C\ndescription: d\nindexes: concern\n---\n",
+            "narrative/h.md": narrative("H", ["| holds | [[g]] | [[a]] | |"], "draft"),
+            "group/g.md": fm("group", "G", "done"),
+            "concern/far.md": fm("concern", "Far", "done", "", "Pulls against [[d]]\n"),
         }
     )
 
@@ -43,22 +42,26 @@ def test_status_page_scope(vault):
 
 def test_status_neighborhood_is_one_link_either_direction(vault):
     r = read_status("neighborhood", "a", root=vault)
-    # out: b (frontmatter), c (body); in: h (heldby links a). Not g (two away), not d, far.
+    # out: b and c (body); in: h (a narrative whose row ends link a). Not g (two away), not d, far.
     assert [x.name for x in r.rows] == ["a", "b", "c", "h"]
     assert rows(r) == {"a": "stub", "b": "done", "c": "draft", "h": "draft"}
-    assert r.counts == {"stub": 1, "draft": 2, "done": 1, "other": 0, "none": 0}
+    assert r.counts == {"stub": 1, "draft": 2, "done": 1, "other": 0}
 
 
 def test_status_neighborhood_follows_inbound_only_links(vault):
     assert [x.name for x in read_status("neighborhood", "d", root=vault).rows] == ["d", "far"]
 
 
-def test_status_vault_scope_counts_and_class_page(vault):
+def test_status_vault_scope_counts_every_page_by_status(vault):
     r = read_status("vault", root=vault)
-    assert len(r.rows) == 8
-    assert r.counts == {"stub": 2, "draft": 2, "done": 3, "other": 0, "none": 1}
-    text = str(r)
-    assert "(no status: class page)" in text and "class/concerns.md" in text
+    assert len(r.rows) == 7
+    assert r.counts == {
+        "stub": 2,
+        "draft": 2,
+        "done": 3,
+        "other": 0,
+    }  # no `none`: every type has a status
+    assert "(no status" not in str(r)
 
 
 def test_status_missing_and_invalid_count_as_other(make_vault):
@@ -90,19 +93,19 @@ def test_status_never_writes(vault, snap):
 def test_set_status_edits_only_the_status_line(vault, snap, diff):
     before = snap(vault)
     old = (vault / "concern/a.md").read_bytes()
-    r = set_status("a", "done", root=vault)
+    r = set_status("a", "draft", root=vault)
     assert r.ok and r.changed == ("concern/a.md",)
     assert diff(before, snap(vault)) == {"concern/a.md": "changed"}  # nothing else, byte for byte
     assert lines_changed(old, (vault / "concern/a.md").read_bytes()) == [
         "-status: stub\n",
-        "+status: done\n",
+        "+status: draft\n",
     ]
 
 
 def test_set_status_is_idempotent_and_reports_it(vault, snap):
-    set_status("a", "done", root=vault)
+    set_status("a", "draft", root=vault)
     before = snap(vault)
-    r = set_status("a", "done", root=vault)
+    r = set_status("a", "draft", root=vault)
     assert r.ok and r.unchanged == ("concern/a.md",) and not r.changed
     assert snap(vault) == before  # not even rewritten (mtime too)
 
@@ -135,8 +138,8 @@ def test_set_status_fills_an_empty_status_value(make_vault):
 
 def test_set_status_does_not_touch_status_text_in_the_body(make_vault):
     root = make_vault({"a.md": "---\ntype: concern\nstatus: stub\n---\nstatus: stub\n"})
-    set_status("a", "done", root=root)
-    assert (root / "a.md").read_text() == "---\ntype: concern\nstatus: done\n---\nstatus: stub\n"
+    set_status("a", "draft", root=root)
+    assert (root / "a.md").read_text() == "---\ntype: concern\nstatus: draft\n---\nstatus: stub\n"
 
 
 @pytest.mark.parametrize(
@@ -145,11 +148,11 @@ def test_set_status_does_not_touch_status_text_in_the_body(make_vault):
         ({"concern/a.md": fm("concern", "A")}, "a", "finished", "not a status"),
         ({"concern/a.md": fm("concern", "A")}, "zzz", "done", "no page"),
         ({"x/a.md": fm("concern", "A"), "y/a.md": fm("concern", "A")}, "a", "done", "more than one"),
-        ({"class/concerns.md": "---\ntype: class\nindexes: concern\n---\n"}, "concerns", "done", "no status"),
+        ({"a.md": "---\ntype: index\n---\n"}, "a", "done", "not the type of a page"),
         ({"a.md": "---\ntype: [oops\n---\n"}, "a", "done", "frontmatter cannot be read"),
-        ({"a.md": "---\ntype: 5\n---\n"}, "a", "done", "not a page type"),
-        ({"a.md": b"---\ntype: concern\ntitle: \xff\n---\n"}, "a", "done", "UTF-8"),
-        ({"a.md": "---\ntype: concern\nstatus: >\n  stub\n---\n"}, "a", "done", "will not rewrite"),
+        ({"a.md": "---\ntype: 5\n---\n"}, "a", "done", "not the type of a page"),
+        ({"a.md": b"---\ntype: concern\ntitle: \xff\n---\n"}, "a", "draft", "UTF-8"),
+        ({"a.md": "---\ntype: concern\nstatus: >\n  stub\n---\n"}, "a", "draft", "will not rewrite"),
     ],
 )  # fmt: skip
 def test_set_status_refuses_and_writes_nothing(make_vault, snap, files, ref, status, word):
@@ -163,4 +166,4 @@ def test_set_status_refuses_and_writes_nothing(make_vault, snap, files, ref, sta
 def test_set_status_message_names_file_and_fix(make_vault):
     root = make_vault({"concern/a.md": fm("concern", "A")})
     text = str(set_status("a", "finished", root=root))
-    assert "stub, draft, done" in text
+    assert "stub, draft, done" in text and "signed off by the coder" in text

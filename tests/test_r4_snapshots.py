@@ -6,8 +6,6 @@ snapshotted before and after (bytes, size and mtime of every file and folder), a
 are compared with exactly the set the operation is meant to write. A refusal writes nothing.
 """
 
-# TODO(WP16-U7) lift: UNBUILT makes the unbuilt calls expect no writes; restore the intended expectations.
-
 import shutil
 from pathlib import Path
 
@@ -18,11 +16,6 @@ from scat_kg import cli
 
 EXAMPLES = Path(__file__).parents[1] / "contracts" / "examples"
 HELDBY = "narrative/saturday-at-the-lending-desk.md"  # the page the defect is seeded in
-
-# The calls U7 (operations) rebuilds return the standard refusal until then, which writes nothing: for these
-# the expected changes below are the intended ones and are asserted only once built.
-# TODO(WP16-U7): drop UNBUILT.
-UNBUILT = {"index", "stub", "stub-pair", "stub-links"}
 
 
 def snapshot(root: Path) -> dict[str, tuple]:
@@ -94,12 +87,25 @@ CASES = {
         ["stub", "lending-rules", "--type", "concern"],
         {"concern/lending-rules.md": "created"},
     ),
-    "stub-pair": (
-        lambda r: scat_kg.stub_pair("heldby", "borrowers", "lending-rules", root=r),
-        ["stub-pair", "heldby", "borrowers", "lending-rules"],
+    "record-edge": (
+        lambda r: scat_kg.record_edge("holds", "borrowers", "lending-rules", "story", root=r),
+        ["record-edge", "holds", "borrowers", "lending-rules", "--told-by", "story"],
         {
-            "concern/lending-rules.md": "created",  # the missing endpoint, stubbed
+            "concern/lending-rules.md": "created",  # the missing end, stubbed
+            "narrative/story.md": "created",  # the missing narrative, stubbed, with the row
         },
+    ),
+    "record-edge-existing-narrative": (
+        lambda r: scat_kg.record_edge(
+            "holds", "funders", "lending-rules", "funders-meeting", root=r
+        ),
+        ["record-edge", "holds", "funders", "lending-rules", "--told-by", "funders-meeting"],
+        {"concern/lending-rules.md": "created", "narrative/funders-meeting.md": "changed"},
+    ),
+    "remove-edge": (
+        lambda r: scat_kg.remove_edge("funders", "careful-record-keeping", root=r),
+        ["remove-edge", "funders", "careful-record-keeping"],
+        {"narrative/funders-meeting.md": "changed"},
     ),
     "stub-links-vault": (
         lambda r: scat_kg.stub_links(root=r),
@@ -127,9 +133,33 @@ CASES = {
         ["stub", "quick-checkout", "--type", "concern"],
         NONE,
     ),
-    "stub-pair-refused": (
-        lambda r: scat_kg.stub_pair("owns", "a", "b", root=r),
-        ["stub-pair", "owns", "a", "b"],
+    "set-status-done-refused": (
+        lambda r: scat_kg.set_status("funders-meeting", "done", root=r),
+        ["set-status", "funders-meeting", "done"],
+        NONE,
+    ),
+    "record-edge-refused": (
+        lambda r: scat_kg.record_edge("owns", "a", "b", "n", root=r),
+        ["record-edge", "owns", "a", "b", "--told-by", "n"],
+        NONE,
+    ),
+    "record-edge-into-done-refused": (
+        lambda r: scat_kg.record_edge(
+            "holds", "funders", "lending-rules", "saturday-at-the-lending-desk", root=r
+        ),
+        [
+            "record-edge",
+            "holds",
+            "funders",
+            "lending-rules",
+            "--told-by",
+            "saturday-at-the-lending-desk",
+        ],
+        NONE,
+    ),
+    "remove-edge-refused": (
+        lambda r: scat_kg.remove_edge("borrowers", "quick-checkout", root=r),
+        ["remove-edge", "borrowers", "quick-checkout"],
         NONE,
     ),
     "check-no-such-page": (lambda r: scat_kg.check("nope", root=r), ["check", "nope"], NONE),
@@ -147,12 +177,14 @@ def test__r4__each_operation_and_check_writes_only_what_it_should(case, path, tm
     else:
         cli.main([*argv, "--root", str(root)])
     capsys.readouterr()
-    assert changes(before, snapshot(root)) == (NONE if argv[0] in UNBUILT else expected)
+    assert changes(before, snapshot(root)) == expected
 
 
 def test__r4__every_check_scope_and_operation_is_covered():
     commands = {argv[0] for _, argv, _ in CASES.values()}
-    assert commands == {"check", "status", "set-status", "index", "stub", "stub-pair", "stub-links"}
+    assert commands == {
+        "check", "status", "set-status", "index", "stub", "stub-links", "record-edge", "remove-edge",
+    }  # fmt: skip
     for command in ("check", "status"):
         flags = {tuple(a for a in argv if a.startswith("--n")) for _, argv, _ in CASES.values()
                  if argv[0] == command}  # fmt: skip
@@ -165,7 +197,7 @@ def test__r4__a_second_run_of_every_writing_operation_writes_nothing(tmp_path, c
         if not expected:
             continue
         root = seeded_vault(tmp_path, case)
-        api(root)  # (a refusal until built: nothing written, so the second run is the same)
+        api(root)
         before = snapshot(root)
         api(root)
         capsys.readouterr()
