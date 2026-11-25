@@ -669,3 +669,10 @@ def test__scat_suggest_config__a_boolean_or_no_key_is_not_a_problem(make_vault):
     for text in ("link_suggestions = true\n", "link_suggestions = false\n", ""):
         r = report_of(make_vault, {"scat.toml": f"stakeholder_group_cap = 3\n{text}"})
         assert "SCAT-SUGGEST-CONFIG" not in rules_of(r)
+
+
+def test__scat_uncoded__stays_reported_by_default_with_link_suggestions_off(make_vault):
+    page = narrative(rows=(), account="A Briefing was given. Nothing here links a page.")
+    default = {"scat.toml": "stakeholder_group_cap = 3\n", DESK: page}
+    assert "SCAT-UNCODED" in rules_of(report_of(make_vault, default))
+    assert "SCAT-MENTION" not in rules_of(report_of(make_vault, default))
