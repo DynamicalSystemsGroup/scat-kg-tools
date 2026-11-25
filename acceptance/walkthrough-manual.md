@@ -11,17 +11,20 @@ refreshed, and you resume from the affected stage.
 
 ## Docs fixes pending
 
-Another unit is fixing five documentation defects (log D-098, ruling 3). This script points to where each fix will be.
-Until they land, a mismatch on these five is known and is not a new finding; once they land, it is.
+Another unit has fixed five documentation defects (log D-098, ruling 3) on its branch; they reach the candidate when
+that branch merges. The links below go to where each fix lands. Until it is merged, a mismatch on these is known and is
+not a new finding; once it is, it is.
 
-1. The fingerprint view's command: [coding](../docs/coding.md#5-a-link-without-a-row) says it is not a `scat` command,
-   while [analysis](../docs/analysis.md#the-notebook) and the [CLI reference](../docs/reference/cli.md#scat-fingerprint)
-   give `scat fingerprint`. The command works; the coding guide will say so.
-2. No command to run the notebook: [analysis](../docs/analysis.md#the-notebook) says "run all cells" and no more.
-   The command is in the template's README (J9 step 2).
-3. The solo trial (J2) has no section of its own; it will be in [Getting started](../docs/getting-started.md).
-4. No way is shown to see which commit a tag pins; it will be in [coding](../docs/coding.md#lock-a-version) (J10 step 4).
-5. No no-terminal route (GitHub Desktop) on the chat path; see the chat script.
+1. The fingerprint view's command: [coding](../docs/coding.md#5-a-link-without-a-row), step 5, now runs
+   `uv run scat fingerprint <narrative>`, as [analysis](../docs/analysis.md#the-notebook) and the
+   [CLI reference](../docs/reference/cli.md#scat-fingerprint) do.
+2. The command to run the notebook, `uv run jupyter lab analysis.ipynb`, is in [analysis](../docs/analysis.md#the-notebook),
+   with a headless form (`jupyter nbconvert --to html --execute`) (J9 step 2).
+3. The solo trial has a section of its own: [The solo trial](../docs/getting-started.md#the-solo-trial) (J2).
+4. [See which commit a tag pins](../docs/coding.md#see-which-commit-a-tag-pins): `git rev-parse v1^{commit}`,
+   `git show --stat v1` and `git ls-remote --tags origin v1` (J10 step 4).
+5. A no-terminal route (GitHub Desktop) is on the chat path: [Your vault with no
+   terminal](../docs/chat-path.md#your-vault-with-no-terminal-github-desktop); see the chat script.
 
 ## How to split the walk into sittings and resume
 
@@ -80,7 +83,7 @@ that blocked an instruction.
 
 **Enter.** [`flow.md`](../docs/flow.md#first-try), "First try" (steps 5, 2 and 8, in that order), then
 [`getting-started.md`](../docs/getting-started.md#1-create-your-private-repository), "1. Create your private
-repository". The solo trial will have a section of its own there (docs fix 3). Use a **throwaway** repository, named
+repository". The solo trial has its own section there, [The solo trial](../docs/getting-started.md#the-solo-trial) (docs fix 3). Use a **throwaway** repository, named
 `my-vault` as the docs do. Delete it after J5.
 
 **Steps.**
@@ -148,7 +151,7 @@ repository". The solo trial will have a section of its own there (docs fix 3). U
    finish"](../docs/coding.md#a-narrative-start-to-finish), steps 1 to 5, with the REPL or the CLI as you prefer. Fix
    each problem from its message.
 7. In Obsidian, open your narrative and look at its Outgoing links panel. With its `Edges told` table, those are its
-   fingerprint (step 5 of the same section; the command form is docs fix 1).
+   fingerprint (step 5 of the same section, which now also gives `uv run scat fingerprint <your-narrative>`; docs fix 1).
 8. Set the narrative to `done` (step 6 of the same section).
 
 **Done.**
@@ -334,15 +337,16 @@ scenario is `done`; half two when the architecture is.
 **Steps.**
 1. Check the whole vault is clean, and your narratives are `done`, as [Before you trust a
    view](../docs/analysis.md#before-you-trust-a-view) says: `uv run scat check`.
-2. Open `analysis.ipynb` in the vault and run all cells. The command is in the template's README, and
-   [analysis](../docs/analysis.md#the-notebook) will carry it (docs fix 2):
+2. Open `analysis.ipynb` in the vault and run all cells. The command is in
+   [analysis](../docs/analysis.md#the-notebook) (docs fix 2) and the template's README:
 
    ```text
    uv run jupyter lab analysis.ipynb
    ```
 
    In the window it opens, choose **Run**, then **Run All Cells**. Every cell should end without an
-   `AssertionError`. (Docs gap, tracked in the docs unit.)
+   `AssertionError`. Headless, with no browser session, the page also gives
+   `uv run jupyter nbconvert --to html --execute analysis.ipynb --output-dir executed`, then `open executed/analysis.html`.
 3. Generate the four views with the CLI and the REPL. These are
    [analysis's own forms](../docs/analysis.md#the-notebook); use your own narrative and node names in place of
    the page's `groups-under-a-cap-pitch` and `anonymity`:
@@ -352,7 +356,7 @@ scenario is `done`; half two when the architecture is.
    uv run scat edges holds
    uv run scat layered
    uv run scat trace <your-node> --direction up
-   uv run scat export-edges --out edge-tables
+   uv run scat export-edges --out exports
    ```
 
    ```python
@@ -366,7 +370,8 @@ scenario is `done`; half two when the architecture is.
    you back to your field notes, go round the coding loop once more (J8) before you go on.
 
 **Done.** The notebook ran to the end; the fingerprint, edge table, layered view and trace each printed without an
-error; the three edge tables exist in `edge-tables` (and in `exports/`, written by the notebook); you can say, in your own
+error; the three edge tables exist in `exports/` (the notebook writes them there too; git ignores the folder, so
+`git add .` in J10 does not commit them); you can say, in your own
 words, what one view told you and whether it sent you back. The page does not tell you a narrative is better, and
 you did not read it that way.
 
@@ -374,7 +379,7 @@ you did not read it that way.
 [`coding.md`](../docs/coding.md#5-a-link-without-a-row) ("That view is not one of the `scat` commands yet") and
 `analysis.md` (a `fingerprint` command) agree (docs fix 1); what the views read like.
 
-**Resume.** `edge-tables` exists with files in it, and `uv run scat check` shows no errors. The notebook can be run
+**Resume.** `exports` exists with files in it, and `uv run scat check` shows no errors. The notebook can be run
 again at any time: it writes nothing into your pages.
 
 ## J10 Hand over
@@ -410,13 +415,16 @@ then [Commit and push](../docs/coding.md#commit-and-push) and [Lock a version](.
    git push origin v1
    ```
 
-   Then see which commit the tag pins, and compare it with the last commit (the command is not in the docs yet, docs
-   fix 4):
+   Then see which commit the tag pins, and that GitHub holds the same one
+   ([See which commit a tag pins](../docs/coding.md#see-which-commit-a-tag-pins), docs fix 4):
 
    ```text
-   git rev-list -n 1 v1
-   git log --oneline -1
+   git rev-parse v1^{commit}
+   git show --stat v1
+   git ls-remote --tags origin v1
    ```
+
+   The first and third print the same hash.
 5. Hand it over to the recipient the case names, at the release level your J4 answers set.
 
 **Done.** The final whole-vault check ends `0 errors`, with the five index pages unchanged or created; `git status`

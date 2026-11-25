@@ -11,18 +11,21 @@ refreshed, and you resume from the affected stage.
 
 ## Docs fixes pending
 
-Another unit is fixing five documentation defects (log D-098, ruling 3). This script points to where each fix will be.
-Until they land, a mismatch on these is known and is not a new finding; once they land, it is.
+Another unit has fixed five documentation defects (log D-098, ruling 3) on its branch; they reach the candidate when
+that branch merges. The links go to where each fix lands. Until it is merged, a mismatch on these is known and is not a
+new finding; once it is, it is.
 
-1. The fingerprint view's command: the coding guide says it is not a `scat` command; the analysis guide and the CLI
-   reference give `scat fingerprint`. On the chat path the assistant asks for it as "a fingerprint" (J9).
-2. No command to run the notebook. The chat path does not use the notebook; this matters on the manual path (J9).
-3. The solo trial (J2) has no section of its own; it will be in [Getting started](../docs/getting-started.md).
-4. No way is shown to see which commit a tag pins; it will be in [coding](../docs/coding.md#lock-a-version). On the
-   chat path, GitHub shows the commit beside the tag on the release (J10 step 4).
-5. No no-terminal route (GitHub Desktop) for clone, commit, push and removing the example on the chat path. It will be
-   in [the chat page](../docs/chat-path.md#lock-a-version) and the Getting started page. Until then, J5 steps 1 and 2
-   and J10 step 3 are held gaps: do what you can and record how.
+1. The fingerprint view's command: [coding](../docs/coding.md#5-a-link-without-a-row), step 5, now runs
+   `uv run scat fingerprint`. On the chat path you ask the assistant for "a fingerprint" (J9).
+2. The command to run the notebook is in [analysis](../docs/analysis.md#the-notebook). The chat path does not use the
+   notebook; it matters on the manual path (J9).
+3. The solo trial has a section of its own: [The solo trial](../docs/getting-started.md#the-solo-trial) (J2).
+4. [See which commit a tag pins](../docs/coding.md#see-which-commit-a-tag-pins) uses `git rev-parse v1^{commit}`,
+   `git show --stat v1` and `git ls-remote --tags origin v1`, all terminal commands; on the chat path read the commit
+   from the release on github.com (J10 step 4).
+5. The no-terminal route is [Your vault with no
+   terminal](../docs/chat-path.md#your-vault-with-no-terminal-github-desktop): clone, remove the example, commit and push
+   with GitHub Desktop and Finder (J5, J6, J10). The page says its steps were not run, so each is a thing to record.
 
 ## How to split the walk into sittings and resume
 
@@ -35,28 +38,18 @@ Until they land, a mismatch on these is known and is not a new finding; once the
 
 | Sitting | Stages | Run by | You are done when |
 |---|---|---|---|
-| A. Discover to terms | J1 to J4 | you (take them from the manual walk if done) | answers written, and the AI answer allows the chat path |
-| B. Set up | J5 | you; the sign-ins and installs are yours | a window says the server is running and the chat's check quotes `no problems`; then Stop |
-| C. Plan and capture | J6, J7 | you | `plan.txt`, the example cleared, field notes for one scenario and one architecture |
-| D. Code | J8 | you, with the assistant | every narrative is `done`, set by you in Obsidian |
-| E. Analyse and hand over | J9, J10 | you, with the assistant | a version is locked and handed over, and Stop confirmed |
+| A | J1 to J4 | you (take them from the manual walk if done) | answers written, and the AI answer allows the chat path |
+| B | J5, J6, J7 | you; the sign-ins and installs are yours | the server ran and the chat's check quoted `no problems`; `plan.txt` exists and the example is cleared; field notes exist; Stop confirmed |
+| C | J8, J9, J10 | you, with the assistant | every narrative `done`, a version locked and handed over, Stop confirmed |
 
-**The chat testers (UA-A, log D-098, ruling 4).** Three testers run the chat journey: two on Haiku and one on Sonnet.
-Their sessions are run by the ACE, not by you, light and spaced, and inside your sittings: after you have signed in
-(GitHub, Docker Desktop, the public-link service, the chat account) and started a session, the ACE drives one tester at
-a time in the browser pane, with lab material only, and ends each tester with Stop and a new key. You do not write the
-testers' answers. Their findings are dispositioned before your walk of the same stage. *(default: one tester session
-live at a time; the ACE sets the order and spacing.)*
-
-- **Resume.** Read the stage's **Resume** line and check that state. A chat sitting always begins with "Start a
-  session" and "Connect the chat" (J5), because the key is new each session. Your vault is the record: its git history
-  shows where you stopped.
-- **Your own elicitation.** Use the elicitation, field notes and groups from the manual walk, or make a new one. Use
-  your own words, not the worked example's. Field notes sent to the chat leave your machine: use lab material only,
-  and settle AI use first (J4).
-- **Failing.** Do not work around a failure. Record the page, the step, what you did, the exact words in the window,
-  and what you expected. The launcher's table "When something goes wrong" in `chat-path.md` is the docs' answer; if
-  your case is not in it, that is a finding.
+**The chat testers (UA-A, log D-098, ruling 4).** Three testers run the chat journey, c1 and c3 on Haiku and c2 on
+Sonnet, as the ACE's chat sitting plan sets out. The plan splits each tester's journey into the same three sittings, A
+(J1 to J4), B (J5 to J7) and C (J8 to J10), so each tester has three sittings and there are nine in all. Your sittings
+here are the same three: a tester's sitting is run inside yours, by the ACE, as the tester's hands, light and spaced,
+one tester at a time, with lab material only; the tester never sees a key. You sign in, start the session and click
+Stop; the ACE ends each tester with a new key. Sitting A needs no session; sitting B opens one for J5 and Stop follows
+J5's check (J6 and J7 need none); sitting C opens a new one. J6's cap demo below needs the session, so in your own run do
+it before Stop; the testers' plan does not include it.
 
 ## What needs your sign-ins (held for you)
 
@@ -72,9 +65,10 @@ No agent has run this path as a coder, and Docker Desktop has not been tried end
 5. **macOS**: the first open of SCAT Chat.app, which is unsigned.
 6. **SCAT Chat.app itself**: today it is built by the person who set this up and handed to you, not downloaded.
 
-**Held gaps in the docs** (record what you actually did; docs fix 5): the docs' website path ends in `git clone`, a
-terminal command, and the chat page gives no clone-free way to get the vault onto the Mac; removing the example (J6)
-and committing and pushing (J10) are given only as terminal commands.
+**Held gap in the docs** (docs fix 5): [Your vault with no
+terminal](../docs/chat-path.md#your-vault-with-no-terminal-github-desktop) says its GitHub Desktop and Finder steps
+were not run. Follow them for the clone (J5), removing the example (J6) and committing and pushing (J10), and record
+every name or button that differed on your screen.
 
 ---
 
@@ -94,7 +88,7 @@ and committing and pushing (J10) are given only as terminal commands.
 
 **Enter.** [`flow.md`](../docs/flow.md#first-try), "First try", then
 [`getting-started.md`](../docs/getting-started.md#1-create-your-private-repository), "1. Create your private
-repository" (the solo trial will have a section of its own there, docs fix 3).
+repository" (the solo trial's section is [The solo trial](../docs/getting-started.md#the-solo-trial), docs fix 3).
 
 **Steps.** The solo trial is the manual script's J2, on the manual path (*default*, MISSION.md: J2 runs on the manual path). Take it as done there.
 If you have not run it, run it first.
@@ -146,7 +140,8 @@ it needs](../docs/chat-path.md#what-the-chat-path-is-and-what-it-needs), [Instal
 **Steps.**
 1. Create the repository **private** from `scat-kg-template` on the GitHub website: open
    <https://github.com/DynamicalSystemsGroup/scat-kg-template>, choose **Use this template**, then **Create a new
-   repository**, set the visibility to **Private**. Get the vault onto your Mac and record how (see the held gaps).
+   repository**, set the visibility to **Private**. Get the vault onto your Mac with GitHub Desktop, as [Your vault with no
+   terminal](../docs/chat-path.md#your-vault-with-no-terminal-github-desktop) says (docs fix 5), and record how.
    Keep it outside Documents, Desktop, Downloads and iCloud.
 2. Open the folder in Obsidian as a vault (**Open folder as vault**, version 1.9 or later). Keep the example for now;
    J6 uses it.
@@ -180,8 +175,9 @@ cap in `scat.toml`, participation terms, how the notes are kept, `plan.txt` in t
 ([Groups and the cap](../docs/planning.md#groups-and-the-cap)) is a command; in a session ask the assistant to make a
 new group page named `harbour-crews` while the example's three groups fill the cap of 3, and expect it to be refused
 and to quote the page's message. The page does not give this chat form; record what happened. When the plan is done,
-clear the example ([Start your own content](../docs/getting-started.md#5-start-your-own-content), a terminal command;
-docs fix 5) and record how.
+clear the example with Finder and GitHub Desktop, as [Remove the
+example](../docs/chat-path.md#your-vault-with-no-terminal-github-desktop) says (the assistant deletes nothing; you do),
+commit it, and record how.
 
 **Done.** `plan.txt` exists and names the sessions, the groups within the cap, the participation terms and how the notes
 are kept; the cap refusal appeared and nothing was created; the example is cleared and the check prints `no problems`.
@@ -246,7 +242,7 @@ views"](../docs/analysis.md#the-four-views).
 3. Interpret what you see. If it sends you back to your field notes, go round the loop again (J8).
 
 **Done.** The four views came back in the chat; CSV and Markdown files are in `views/` and open in Obsidian; you can
-say what one view told you, and no view told you a story or group is better.
+say what one view told you, and no view told you a narrative or group is better.
 
 **Record.** Whether the views arrived refused or clean; whether `views/` was versioned with the vault; what the
 views read like.
@@ -264,13 +260,14 @@ release, licence and rights answers.
 2. Open the vault in Obsidian and look at it as [`coding.md`, "Look at it in
    Obsidian"](../docs/coding.md#look-at-it-in-obsidian) says, including a concern's Backlinks panel (it lists the
    narratives that name the concern).
-3. Commit and push your work, which the chat path gives no clicks for (the chat page's [Lock a
-   version](../docs/chat-path.md#lock-a-version) says GitHub Desktop can, without giving its clicks; docs fix 5).
-   Record what you used.
+3. Commit and push your work in GitHub Desktop, as the chat page's [Commit and push your
+   work](../docs/chat-path.md#your-vault-with-no-terminal-github-desktop) says (docs fix 5). The page does not give
+   tagging clicks; step 4 uses github.com. Record what you used.
 4. Take a hand-over case: a contract delivery, a paper submission or a class project hand-in. Decide, as the coder,
    that the model is finished. On github.com, open your repository, choose **Releases**, then **Draft a new release**,
    type a tag name such as `v1`, create the new tag, add a title and choose **Publish release**.
-   Note the commit the release page shows for the tag, if it shows one (docs fix 4).
+   Note the commit the release page shows for the tag, if it shows one. With a terminal at hand, the commands in [See
+   which commit a tag pins](../docs/coding.md#see-which-commit-a-tag-pins) give it (docs fix 4).
 5. Hand it over to the recipient the case names.
 6. Click **Stop** in the SCAT Chat window. Delete the server entry in the chat.
 
