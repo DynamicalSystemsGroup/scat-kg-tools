@@ -12,7 +12,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **layered graph**: nodes and edges, in four layers.
 - **knowledge graph**: the nodes, edges and narratives built from a vault.
 - **narrative**: one account of the field notes, on one `narrative` page, marked `past`, `future` or `mixed`. Each edge it tells is a row of its `Edges told` table.
-- **coded, uncoded**: said of a narrative. Coded: it links at least one node page. Uncoded: it links none. A `done` narrative is fully coded.
+- **coded, uncoded**: said of a narrative. Coded: it links at least one node page. Uncoded: it links none. `done` means adequately coded, as the coder judges; a `done` narrative can be iterated or moved back to `draft`.
 - **excluded**: said of an uncoded narrative: left out of the knowledge graph and every view, and reported.
 - **scenario**: a narrative (`kind` `scenario`) about people doing things over time; it tells groups, concerns and affordances.
 - **architecture**: a narrative (`kind` `architecture`) about parts put together into tools; it tells concerns, affordances and technologies.
