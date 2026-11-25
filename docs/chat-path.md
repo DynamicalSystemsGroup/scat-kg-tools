@@ -66,13 +66,14 @@ Your notes are about real groups of people.
 
 **Clone it.** Cloning downloads your repository to your Mac.
 
-1. **In GitHub Desktop:** open the app and sign in to your GitHub account when it asks.
-2. **In GitHub Desktop:** choose **File**, then **Clone Repository...** (the dialog is titled "Clone a Repository").
-3. **In GitHub Desktop:** pick your new repository from the list under **GitHub.com**, or paste its address under
+1. **In GitHub Desktop:** open the app.
+2. **In GitHub Desktop:** sign in to your GitHub account when it asks.
+3. **In GitHub Desktop:** choose **File** > **Clone Repository...** (the dialog is titled "Clone a Repository").
+4. **In GitHub Desktop:** pick your new repository from the list under **GitHub.com**, or paste its address under
    **URL**.
-4. **In GitHub Desktop:** set **Local path** to a folder outside Documents, Desktop, Downloads and iCloud (see "What
+5. **In GitHub Desktop:** set **Local path** to a folder outside Documents, Desktop, Downloads and iCloud (see "What
    you need").
-5. **In GitHub Desktop:** choose **Clone**.
+6. **In GitHub Desktop:** choose **Clone**.
 
 Your vault is the cloned folder. It holds `scat.toml`. In the preview, the template's default branch is `dev`; GitHub
 Desktop shows the current branch at the top, and if it shows `main` choose `dev` from that list.
@@ -80,11 +81,11 @@ Desktop shows the current branch at the top, and if it shows `main` choose `dev`
 **Remove the example: your hands do it.** The template holds a worked example that you remove before you add your own
 pages. **The assistant never deletes anything**, and the server has no operation that deletes a page or a folder (it can remove an edge's row, which only you ask for). You delete.
 
-1. **In GitHub Desktop:** choose **Repository**, then **Show in Finder**.
+1. **In GitHub Desktop:** choose **Repository** > **Show in Finder**.
 2. **In Finder:** drag these five folders to the Trash: `affordance`, `concern`, `group`, `narrative` and
    `technology`. Keep the `index` folder and everything else.
-3. **In GitHub Desktop:** the **Changes** list shows the deleted pages. In the **Summary** box type
-   `Remove the example`.
+3. **In GitHub Desktop:** in the **Summary** box type `Remove the example`. (The **Changes** list above it shows the
+   deleted pages.)
 4. **In GitHub Desktop:** choose the button at the bottom left of the list, **Commit to main**. On a branch called
    `dev` it reads **Commit to dev**: it carries the current branch's name.
 5. **In GitHub Desktop:** choose **Push origin** in the top bar.
@@ -103,7 +104,8 @@ You do these steps one time per Mac. Each ends with what you should see.
 ### 0. Get SCAT Chat.app
 
 Today the app is not a download. The person who set this up builds it from the `scat-kg-tools` repository with
-`deploy/build-app.sh` and hands it to you. The built app is not kept in the repository.
+`deploy/build-app.sh` and hands it to you. The built app is not kept in the repository. If no one has built it for you, ask the person who set up your tools;
+this guide cannot build it for you.
 
 1. **In Finder:** drag `SCAT Chat.app` into your Applications folder. You should see an app called SCAT Chat there.
 
@@ -116,15 +118,18 @@ tell the person who set this up what happened.
 
 Colima has no graphical installer. It comes through Homebrew, the Mac's package manager.
 
-1. **In a terminal:** run `brew --version`. If it prints nothing useful, install Homebrew first by following the one
-   command on <https://brew.sh>.
-2. **In a terminal:** run the next command. It installs Colima and the `docker` command it needs.
+1. **In a terminal:** open one: press Cmd-Space, type `Terminal`, and press Return. (Every "In a terminal" step below
+   uses this window.)
+2. **In a terminal:** run `brew --version`.
+3. **In a terminal:** if step 2 printed nothing useful, install Homebrew by following the one command on
+   <https://brew.sh>.
+4. **In a terminal:** run the next command. It installs Colima and the `docker` command it needs.
 
     ```text
     brew install colima docker
     ```
 
-3. **In a terminal:** run `colima version`. You should see a version number.
+5. **In a terminal:** run `colima version`. You should see a version number.
 
 You do not start Colima yourself: SCAT Chat starts it (the first start takes a minute) and leaves it running when you
 stop. If both Colima and Docker Desktop are installed, the launcher uses Colima.
@@ -133,11 +138,13 @@ stop. If both Colima and Docker Desktop are installed, the launcher uses Colima.
 
 Tailscale makes the public address.
 
-1. **In a web browser:** download the Tailscale app from <https://tailscale.com/download> and install it.
-2. **In Tailscale:** open it and sign in. You should see the Tailscale icon in the menu bar.
-3. **In Tailscale:** put its command line in place. The app has a menu item for installing the command line tool;
-   look in its menu from the menu bar icon (its wording may differ by version). Choose it and accept any prompt. SCAT
-   Chat needs the `tailscale` command and will say so if it is missing.
+1. **In a web browser:** download the Tailscale app from <https://tailscale.com/download>.
+2. **In Finder:** open the downloaded file and install the app as it shows.
+3. **In Tailscale:** open the app.
+4. **In Tailscale:** sign in. You should see the Tailscale icon in the menu bar.
+5. **In Tailscale:** open the menu from the menu bar icon (its wording may differ by version).
+6. **In Tailscale:** choose the menu item that installs the command line tool, and accept any prompt. SCAT Chat needs
+   the `tailscale` command and will say so if it is missing.
 
 This page could not confirm the exact name of that menu item, so follow what your version of the app shows.
 
@@ -164,8 +171,9 @@ missing, the launcher says "The public link did not start." and that Funnel is p
 SCAT Chat is not signed with an Apple developer certificate, so macOS stops it the first time. It is not harmful:
 it is unsigned. What you can check is that it is the file the person who set this up gave you.
 
-1. **In Finder:** right-click (or Control-click) SCAT Chat, choose **Open**, then **Open** again in the dialog. macOS
-   asks only once.
+1. **In Finder:** right-click (or Control-click) SCAT Chat.
+2. **In Finder:** choose **Open**.
+3. **In Finder:** choose **Open** again in the dialog. macOS asks only once.
 
 If macOS offers no **Open** button, open System Settings, then Privacy and Security, scroll down and look for
 SCAT Chat with an **Open Anyway** button. This page could not check your version of macOS.
@@ -175,14 +183,15 @@ SCAT Chat with an **Open Anyway** button. This page could not check your version
 Colima needs no start by hand: SCAT Chat starts it. (With Docker Desktop, open it and wait for it to say running
 first; the launcher does not start it.)
 
-1. **In Finder:** open SCAT Chat from Applications. The first time, a window asks you to choose your vault: the
-   folder that holds `scat.toml`. The launcher remembers it. (`change-vault` forgets it.)
-2. **In SCAT Chat:** wait. The first time it needs the internet to get the server. It fetches the published image
+1. **In Finder:** open SCAT Chat from Applications.
+2. **In SCAT Chat:** the first time, a window asks you to choose your vault: choose the folder that holds `scat.toml`.
+   The launcher remembers it. (`change-vault` forgets it.)
+3. **In SCAT Chat:** wait. The first time it needs the internet to get the server. It fetches the published image
    for its version ("Fetching the server, once."), and when none is published yet, as with a candidate before its
    release, it builds the server on your Mac ("Building the server, once.", a few minutes). Later sessions reuse
    it. The server runs as your own Mac user, set each time it starts, so it can read and write your vault.
-3. **In SCAT Chat:** a window says "SCAT Chat is running." It shows an address, your vault, and two buttons,
-   **Copy key** and **Stop**. It never shows the key. Leave the window open: your Mac stays awake while it is.
+4. **In SCAT Chat:** read the window that says "SCAT Chat is running." It shows an address, your vault, and two
+   buttons, **Copy key** and **Stop**. It never shows the key. Leave the window open: your Mac stays awake while it is.
 
 If your vault is in Documents, Desktop, Downloads or iCloud, the launcher offers to copy it to `~/SCAT/vault`.
 Your original stays where it is. Work in the copy and bring edits back through git (commit and push from the copy,
@@ -195,13 +204,18 @@ session no longer works: you delete it at the end ("Clean up"), and add a new on
 
 As an example, in inference.coop's chat (lab run, 24 and 25 November, with lab material only):
 
-1. **In the chat:** in the bar of icons on the left, click **MCP Settings**, then choose to add an MCP server.
-2. **In SCAT Chat:** read the address from the window. It ends in `/mcp`.
-3. **In the chat:** type or paste the address as the server's address (copy it from the window if you can select
-   it).
-4. **In the chat:** choose the Streamable HTTPS transport, and API key as the authentication.
-5. **In SCAT Chat:** click **Copy key**. The key is now on your clipboard.
-6. **In the chat:** paste the key into the API key field. Save.
+1. **In the chat:** in the bar of icons on the left, click **MCP Settings**.
+2. **In the chat:** choose to add an MCP server.
+3. **In the chat:** where the form asks for a name, type `SCAT`.
+4. **In SCAT Chat:** read the address in the window. It ends in `/mcp`.
+5. **In the chat:** type the address into the server's address field.
+6. **In the chat:** choose the Streamable HTTPS transport (the way the chat talks to a server over a secure web
+   address).
+7. **In the chat:** choose API key as the authentication.
+8. **In SCAT Chat:** click **Copy key**. The key is now on your clipboard.
+9. **In the chat:** paste the key into the API key field.
+10. **In the chat:** save.
+11. **In any app:** copy a word from anywhere, so your clipboard no longer holds the key.
 
 Your chat's form may be worded differently. The fields are the same: address, transport, key. Where the chat asks
 for a name for the server, use one you will recognise, for example "SCAT".
@@ -220,19 +234,25 @@ The live run used inference.coop's chat, which has Skills and an Agent Builder. 
 button's name, it says what to look for.
 
 1. **In a web browser:** open the skill file,
-   <https://raw.githubusercontent.com/DynamicalSystemsGroup/scat-kg-tools/dev/skills/scat-coding/SKILL.md>, select
-   all (Cmd-A) and copy (Cmd-C) its text, and keep the tab open.
-2. **In the chat:** look for **Skills** (in the chat's menus or settings; this page has not recorded where) and
-   choose to create a new skill. Name it `scat-coding`.
-3. **In the chat:** give the skill the text you copied in step 1 (paste it, or upload the file if the form offers an
-   upload). Save. Whether the chat takes the file as it stands or asks for a different form was not
-   recorded.
-4. **In the chat:** open the **Agent Builder**. Give the agent a name you will recognise, for example "SCAT coder".
-5. **In the chat:** in the agent's settings choose a model and, as tools, the server you added under "Connect the
-   chat" and the chat's Ask User tool if it offers one. Choose the `scat-coding` skill as the agent's only skill.
-6. **In the chat:** save the agent.
-7. **In the chat:** to start a chat with it, open the Agent Builder and use its **Select** control to pick the agent.
-   On inference.coop's instance, agents start from that Select, not from the model menu or from typing `@`.
+   <https://raw.githubusercontent.com/DynamicalSystemsGroup/scat-kg-tools/dev/skills/scat-coding/SKILL.md>.
+2. **In a web browser:** select all (Cmd-A).
+3. **In a web browser:** copy (Cmd-C). Keep the tab open.
+4. **In the chat:** look for **Skills** (in the chat's menus or settings; this page has not recorded where).
+5. **In the chat:** choose to create a new skill.
+6. **In the chat:** name it `scat-coding`.
+7. **In the chat:** paste the text you copied. (If the form offers an upload instead, upload the file; whether the
+   chat takes the file as it stands or asks for a different form was not recorded.)
+8. **In the chat:** save the skill.
+9. **In the chat:** open the **Agent Builder**.
+10. **In the chat:** name the agent something you will recognise, for example "SCAT coder".
+11. **In the chat:** choose a model in the agent's settings.
+12. **In the chat:** add, as a tool, the server you added under "Connect the chat".
+13. **In the chat:** add the chat's Ask User tool, if it offers one.
+14. **In the chat:** choose the `scat-coding` skill as the agent's only skill.
+15. **In the chat:** save the agent.
+16. **In the chat:** open the Agent Builder and find its **Select** control. On inference.coop's instance, agents
+    start from that Select, not from the model menu or from typing `@`.
+17. **In the chat:** use **Select** to pick the agent. A new chat starts with it.
 
 An agent keeps the server entry you chose when you saved it. The server's address and key change each session, so
 each session you add a new entry (as in "Connect the chat") and, if the saved agent no longer lists a working server,
@@ -240,18 +260,20 @@ choose the new entry in the agent's tools again. This was not yet tried.
 
 ## Use
 
-1. **In the chat:** start a chat with your saved agent (step 7 of "Set up the skill and the saved agent"). If you
-   have no saved agent, start a chat with the model and the server entry, and say in your first message to follow the
-   coding loop and the assistant's rules from the `scat-kg` server.
-2. **In the chat:** attach your field notes with the paperclip (or drag and drop), name the narrative and say what you
-   want. For example:
+1. **In the chat:** start a chat with your saved agent (steps 16 and 17 of "Set up the skill and the saved agent").
+   If you have no saved agent, start a chat with the model and the server entry instead, and say in your first
+   message to follow the coding loop and the assistant's rules from the `scat-kg` server.
+2. **In the chat:** attach your field notes with the paperclip (or drag and drop).
+3. **In the chat:** write your request, naming the narrative. For example:
 
     ```text
     Help me code the narrative "dry-july". My field notes are attached. Draft the account as text in your reply; I
     will paste it into Obsidian myself.
     ```
 
-3. **In the chat and in Obsidian:** follow the coding loop below, one step per reply.
+4. **In the chat:** send it.
+
+Then follow the coding loop below, one step per reply.
 
 Whether your chat offers the server's three prompts (`code-a-narrative`, `explain-a-problem`, `review-before-done`)
 was not tried. If it does, `code-a-narrative` starts the loop.
@@ -260,18 +282,18 @@ was not tried. If it does, `code-a-narrative` starts the loop.
 
 This is the [coding loop](coding.md#the-coding-loop) with an assistant. What is a rule and what is a norm is on the [norms](norms.md) page.
 
-1. **In the chat:** **Interpreting.** You give the field notes and name the narrative. The assistant asks about anything unclear; it
-   does not decide.
-2. **In the chat and in Obsidian:** **Authoring.** The assistant drafts the account as text in its reply. It does not write it into the vault. You
-   read it, edit it, and paste it into the narrative page in Obsidian.
-3. **In the chat:** **Coding.** The assistant proposes the nodes and links the account names. You confirm. Then it makes the pages
-   that are missing and records each edge you confirmed, by the tool's operations. It never types a table row by
-   hand.
-4. **In the chat:** **Reviewing.** The assistant runs the check on the narrative and its neighbours, and quotes each problem as the
-   tool reports it. A passing check means the structure fits. It does not mean the narrative is correct. You read
-   the page in Obsidian and decide whether the account matches the notes.
-5. **In Obsidian:** **Done is yours.** You set `status: done` in Obsidian. The assistant never does, and the server refuses it if
-   asked.
+1. **In the chat:** answer what the assistant asks about anything unclear. This is *interpreting*; it decides nothing.
+2. **In the chat:** read the account the assistant drafts as text in its reply. This is *authoring*. It does not
+   write the account into the vault.
+3. **In Obsidian:** paste the account into the narrative page, and edit it there.
+4. **In the chat:** confirm or change the nodes and links the assistant proposes from the account. This is *coding*.
+5. **In the chat:** let the assistant make the pages that are missing and record each edge you confirmed, by the
+   tool's operations. It never types a table row by hand.
+6. **In the chat:** read the check the assistant runs on the narrative and its neighbours. This is *reviewing*. It
+   quotes each problem as the tool reports it. A passing check means the structure fits. It does not mean the
+   narrative is correct.
+7. **In Obsidian:** read the page and decide whether the account matches the notes.
+8. **In Obsidian:** set `status: done` yourself. The assistant never does, and the server refuses it if asked.
 
 The server and Obsidian use the same folder, so what the assistant records appears in Obsidian. How quickly
 Obsidian shows a change was not tried; if a page looks stale, reopen it. If you work in a copy (see above), the
@@ -335,10 +357,10 @@ What each Stop removes, and what stays:
 Stopping has two parts here: stop the session on your Mac, and check that it stopped. Then clean up the chat
 platform (next section).
 
-1. **In SCAT Chat:** click **Stop**, or quit SCAT Chat. Either does the same thing: the public link goes off, the
-   server is removed, your Mac may sleep again, the key was deleted, and your clipboard is cleared of the key. A
-   message then says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was
-   deleted, and your clipboard holds no key."
+1. **In SCAT Chat:** click **Stop**. (Quitting SCAT Chat does the same thing.) The public link goes off, the server is
+   removed, your Mac may sleep again, the key was deleted, and your clipboard is cleared of the key. A message then
+   says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was deleted, and
+   your clipboard holds no key."
 2. **In a web browser:** open the address that ended in `/mcp`. It should not load. If it does, do step 1 again.
 
 If the message says "Stopped, but I could not confirm:" followed by something, click SCAT Chat again, then Stop, or
@@ -350,12 +372,14 @@ Colima keeps running after Stop; it is not in your way. Closing Docker Desktop, 
 ## Clean up
 
 Clean up the chat platform each time, even in a relaxed project: the server entry holds a key that no longer works,
-so delete it rather than leave it. Doing the other items is your choice, unless your data policy says otherwise (see
-[Leave no trace](leave-no-trace.md), which removes everything).
+so delete it rather than leave it. This section is the default flow: delete the server entry, and the rest is your
+choice. If your data policy needs everything removed from the platform, follow the strict option, [Leave no
+trace](leave-no-trace.md), instead.
 
 1. **In the chat:** in the bar of icons on the left, click **MCP Settings** (the last icon above your initials).
-2. **In the chat:** next to the server you added (for example "Scat Lab"), click **Edit**.
-3. **In the chat:** at the bottom left of the form, click the red **delete** button, and confirm.
+2. **In the chat:** next to the server you added ("SCAT"), click **Edit**.
+3. **In the chat:** at the bottom left of the form, click the red **delete** button.
+4. **In the chat:** confirm.
 
 That is the clean-up the lab run did on 25 November. Delete only the server entry; the rest is optional:
 

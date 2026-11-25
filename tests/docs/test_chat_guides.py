@@ -18,9 +18,12 @@ PLACES = (
     "In a web browser",
     "In Tailscale",
     "In a terminal",
-    "In the chat and in Obsidian",
+    "In any app",
 )
 STEP = re.compile(r"^\s*\d+\. (.*)$")
+# One action per step: no joined actions, and one place label only.
+JOINED = (" and then ", ", then ", " and click ", " and choose ", " and save", " and confirm")
+LABEL = re.compile(r"\*\*(In [^*:]+):\*\*")
 MARK = re.compile(r"^\*\*(" + "|".join(re.escape(p) for p in PLACES) + r"):\*\* \S")
 CHAT_HEADINGS = [
     "Install once",
@@ -83,11 +86,21 @@ def test_chat_path_steps_name_a_place():
         assert not bad, f"{start}: steps with no place: {bad}"
 
 
+def _one_action(steps):
+    bad = []
+    for s in steps:
+        labels = LABEL.findall(s)
+        if len(set(labels)) > 1 or any(j in s for j in JOINED):
+            bad.append(s)
+    return bad
+
+
 def test_leave_no_trace_steps_name_a_place():
     steps = _steps(LNT, "The walkthrough", "What is removed and what stays")
-    assert len(steps) >= 20
+    assert len(steps) >= 30
     bad = [s for s in steps if not MARK.match(s)]
     assert not bad, f"steps with no place: {bad}"
+    assert not _one_action(steps)
 
 
 def test_leave_no_trace_says_it_is_an_option_not_a_recommendation():
@@ -130,6 +143,7 @@ def test_nav_lists_both_pages():
 
 def test_every_numbered_step_in_the_chat_path_names_a_place():
     steps = _steps(CHAT, "What the chat path is, and what it needs", "What leaves your machine")
-    assert len(steps) >= 40
+    assert len(steps) >= 60
     bad = [s for s in steps if not MARK.match(s)]
     assert not bad, f"steps with no place: {bad}"
+    assert not _one_action(steps)
