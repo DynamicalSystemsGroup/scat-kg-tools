@@ -101,8 +101,8 @@ fields for what the tool found and what the coder confirmed. Explicit fields ins
 
 **Recommendation (R-1).** Keep the tool's report and the coder's confirmation in different places with different
 writers: the tool writes a report on every run; the coder's `done` is a separate act on the page. Let no rule read content or infer
-anything from a name; R-1 itself says only that errors block and warnings do not. Option for WP15 to weigh, with a
-only partial trace to R-1: a waiver mechanism, where a warning is silenced by a coder-written reason.
+anything from a name; R-1 itself says only that errors block and warnings do not. Option for WP15 to weigh, with
+only a partial trace to R-1: a waiver mechanism, where a warning is silenced by a coder-written reason.
 
 ## Q5. What went wrong or was abandoned, and why?
 
