@@ -2,7 +2,7 @@
 
 This page names the operational choices that later steps depend on. It makes none of them and gives no legal advice.
 Who holds the rights to each kind of material, and what the law or an ethics board requires, is not decided here. The
-organiser, and the organisation or board the organiser answers to, decide it. Every example is one answer among 2 or 3.
+organiser, and the organisation or board the organiser answers to, decide it. Every example is one answer among 2 or 3, and the examples are not the only answers. An answer of your own is fine when it says what you will do, for which kind of material, and for whom (a client, a funder, the participants, or no one); a choice can have a different answer for each kind of material, and a licence or a rights split you make up is as good as one listed.
 
 SCAT holds three kinds of material, and an answer can differ for each: the **inputs** (the field notes, and the
 narratives drafted from them), the **model** (the git repository: narratives, nodes, edges, the [knowledge graph](reference/terms.md)) and
