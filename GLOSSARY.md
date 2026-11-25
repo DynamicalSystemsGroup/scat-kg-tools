@@ -9,8 +9,9 @@ Three vocabularies meet in this project: graph theory, the semantic web, and Obs
 words in each, and the same word can mean different things. This glossary keeps them apart.
 
 **Changing this glossary.** The bar is high, but changes are allowed: an overlooked distinction is better fixed here
-than worked around. A change follows "Changing this mission" in `MISSION.md`, and the change consultant's sweep (R-18)
-finds every use of the changed term first.
+than worked around. The ACE makes a change on `dev` as a logged call: the change consultant's sweep (R-18) finds every
+use of the changed term first, the change and its reason go in `decisions/log.md`, and every use is brought in line in
+the same package. Each change is listed for the chief engineer's review at acceptance.
 
 ## The graph and its views
 
