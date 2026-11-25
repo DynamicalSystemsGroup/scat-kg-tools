@@ -11,8 +11,8 @@
 ## Purpose
 
 DSG needs, for an upcoming project, a first usable release of a toolkit for turning facilitated discussions into a
-conformant knowledge graph. Participants tell stories (scenarios) and propose architectures. Their field notes become raw
-narratives, which are coded into pages of an Obsidian vault in git. Coding decompiles each narrative into four concepts:
+conformant knowledge graph. Participants tell stories (scenarios) and propose architectures. Their field notes are drafted
+into narratives, which are coded in pages of an Obsidian vault in git. Coding decompiles each narrative into four concepts:
 **s**takeholders, **c**oncerns, **a**ffordances and **t**echnologies. The acronym is SCAT, named for scat singing in
 jazz. Coding relates the four concepts through explicit, typed edges, layered as bipartite graphs:
 stakeholders–concerns, concerns–affordances, and affordances–technologies.
@@ -63,8 +63,11 @@ kinds of edge.
 
 ## Narratives: scenarios and architectures
 
-A **narrative** is one account drawn from the field notes. Its raw form records the account as told; its coded form
-identifies the vertices and edges it mentions. Most
+A **narrative** is one account drawn from the field notes, kept on one page that moves through the status states (G3):
+a **stub** has a name and perhaps some metadata; a **draft** holds the account, possibly as plain text with no coding
+yet; and it is **done** when it is coded: every concept it names is identified and linked, so it has a valid support,
+the coding is conformant, and the coder has judged that it interprets the field notes appropriately. Done is not
+frozen: the repository is git, and a narrative can keep evolving. Most
 narratives are one of two kinds, which look at the same graph from opposite sides. This is an important heuristic
 for facilitating, capturing and coding, though a narrative may be neither.
 
@@ -141,8 +144,9 @@ same for everyone: for example, the Chatham House rule or personal attribution.
 
 **Three classes of material.** A SCAT project holds three classes of material, each with its own rules for who and
 what may touch it, where it is kept, and how far it is released:
-- **the inputs:** the supplied materials: the field notes, and the raw narratives made from them;
-- **the model:** the git repository, holding the coded notes and the full knowledge graph;
+- **the inputs:** the supplied materials: the field notes, in whatever form they arrive, which need not follow the
+  ontology;
+- **the model:** the git repository, holding the narratives at every stage and the full knowledge graph;
 - **the analysis:** derivative reports, such as notebooks and documents written with excerpts, data or figures.
 
 The docs present each class's rules as choices, each shown with 2 or 3 reasonable answers that demonstrate the choice
@@ -157,8 +161,8 @@ matters without claiming to be exhaustive. No particular project's choices appea
     between them: Heldby (stakeholder group × concern), Addresses (concern × affordance) and Attributes (affordance ×
     technology). Names may follow an adopted ontology. Each edge between a given pair appears once, and names the
     narratives that refer to it;
-  - **narrative**, a base class of its own, outside the vertex and edge pattern, and a page type of its own, raw and
-    coded, with scenario and architecture as its subclasses. A narrative's **support** is the subgraph of every vertex and edge it mentions;
+  - **narrative**, a base class of its own, outside the vertex and edge pattern, and a page type of its own, one page
+    per narrative whose status is its coding state, with scenario and architecture as its subclasses. A narrative's **support** is the subgraph of every vertex and edge it mentions;
   - each record's required and optional fields, including the past, future or mixed mark on every narrative (see
     "Narratives");
   - the other page type: class pages;
@@ -173,7 +177,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
   Every class has a class page: a description, plus an index table of its instances (name, short description, link)
   that the tools generate from the instance pages.
 - **G3. Page lifecycle.** Every content page carries a status, `stub → draft → done`. Class pages are generated, so
-  they carry none. The tools create any page the ontology entails that doesn't exist yet, as a `stub`, so the graph is
+  they carry none. For a narrative, `done` means coded (see "Narratives"). The tools create any page the ontology entails that doesn't exist yet, as a `stub`, so the graph is
   never incomplete, only unfinished.
 - **G4. Operations**, in the Python API and the `scat` CLI, usable in an interactive session:
   - check conformance at three scopes: one page, its neighborhood (the page plus everything one link away, in either
@@ -189,7 +193,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
 - **G6. The worked example is this project, as its own case study.** The template's example content is the
   elicitation of scat-kg itself, drawn from the chief engineer's recorded statements and the decision log. It is small,
   because users overwrite it, but every class has 2–3 instances, and there are two scenarios and two architectures,
-  each raw and coded. Like any others, its stakeholder groups are groups: none stands for one identifiable person. It
+  each coded. Like any others, its stakeholder groups are groups: none stands for one identifiable person. It
   avoids politically loaded illustrations. It doubles as the test fixture and the documentation example.
 - **G7. Documentation on GitHub Pages**, from `scat-kg-tools`, with a light musical reference (R-15). It has a page for
   each stage of the journey: getting started, a planning guide, a scenario facilitation guide, an architecture
@@ -260,7 +264,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
     Claude is the development team.
   - **The IDE path** is supported, not the priority.
 - **G15. A usable Obsidian projection.** The vault as Obsidian shows it is where the human coder codes and checks that
-  meaning is preserved. Raw and coded material are not duplicated, and the layout uses what Obsidian offers rather
+  meaning is preserved. Each narrative is one page, nothing is duplicated, and the layout uses what Obsidian offers rather
   than folders of near-empty pages. The design may decide which other records are pages and which are fields, and so
   how G2's class pages and G3's stubs are realised, but not what the graph means; narratives stay pages. It is checked in Obsidian itself, not
   reasoned about from the files.
@@ -280,11 +284,10 @@ matters without claiming to be exhaustive. No particular project's choices appea
 - Testing AI assistance against any provider other than inference.coop in v0.1. Broader testing comes later.
 - Faces or triangles of any kind, including ones inferred from scenarios and architectures.
 - Letting instance repositories extend the TBox, and evolving the TBox after v0.1.
-- Enforcing links from raw records to their coded pages beyond a warning.
 - Checking that named entities are linked, beyond a basic warning.
 - The verification, validation and human-signature assurance framework of the INCOSE paper.
 - Attributing statements to individuals in the schema. The data records groups; an event's participation terms are
-  its own policy, which the docs name without choosing one. How raw notes are taken is the facilitator's call.
+  its own policy, which the docs name without choosing one. How field notes are taken is the facilitator's call.
 - Recording the narrator's normative posture (good, bad or mixed) in the schema. It stays in the story's text;
   problematization is for a richer ontology such as `ant-rdf`, applied afterwards.
 - Adjudicating between stories or architectures. Neither the tools nor the guides judge which architecture is correct
@@ -347,8 +350,8 @@ path. The IDE path is tested by the team only.
 | J2 Create | on GitHub's web interface, makes a new **private** repository from `scat-kg-template`, then clones it | getting started |
 | J3 Set up | installs the prerequisites from exact commands, runs one setup command, gets a working `scat_kg`, and opens the folder as an Obsidian vault | getting started |
 | J4 Plan | plans a facilitation event: which sessions elicit scenarios and which elicit architectures, who takes part in each, the participation terms agreed for the event, and stakeholder groups within the cap | planning guide |
-| J5 Capture | during the event, records raw narratives | the two facilitation guides |
-| J6 Code | afterwards, in an interactive session (the Python REPL or the `scat` CLI), decompiles the raw narratives into SCAT pages and edges, moving pages from stub through draft to done and fixing each problem from its message | coding guide; API and CLI reference |
+| J5 Capture | during the event, records field notes | the two facilitation guides |
+| J6 Code | afterwards, in an interactive session (the Python REPL or the `scat` CLI), drafts narratives from the field notes and codes them into SCAT pages and edges, moving pages from stub through draft to done and fixing each problem from its message | coding guide; API and CLI reference |
 | J7 Finish | reaches a clean whole-vault check, commits and pushes, and navigates the resulting graph in Obsidian | coding guide |
 
 **The chat journey** is written with the chat path (G14): from the input material uploaded to the chat, through coding
@@ -373,7 +376,7 @@ in the chat and in Obsidian, to a clean check of a private repository, with no t
   - The Obsidian steps (J3, J7) are checked through the files. Obsidian itself is covered by UA-M and R-21.
   - Chat testers start from the Pages preview and a private repository made from the template, with no terminal.
   - Each tester codes a small elicitation in a domain of its own, different from the worked example: at least one
-    scenario and one architecture, each raw and coded.
+    scenario and one architecture, each coded.
 - **Reporting.** Testers may not read `src/` or `tests/`, and every claim comes with pasted output or a screenshot. A
   report first answers what style or reference the docs evoke. Then, stage by stage, it says where the tester got
   stuck, what it had to guess, and where the docs left it with nowhere to go.
@@ -523,7 +526,7 @@ serves this mission as written; a change that would alter the mission goes to th
   Python. Its schema is a JSON Schema file in `contracts/`, with an integer `schema_version`. Adding a field keeps the
   version, and removing or changing one bumps it. Schema validation runs in the test suite only, so it adds no runtime
   dependency to `scat-kg`. Not included: checking an unsaved editor buffer.
-- **The past/future mark** is a field on the raw narrative, the record of what was told; a coded reading inherits it.
+- **The past/future mark** is a field on the narrative page.
   Working field name `timeframe`, with the values `past`, `future` and `mixed`. Like every required field (R-3), a missing
   value is an error on a `done` page and a warning before.
 - **The relationship** has only the same-class rule; it is never entailed, never required and never in an index's
