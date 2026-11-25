@@ -31,6 +31,17 @@ RETIRED = [
     r"\bheldby\b",
     r"\bconflicts?\b",
 ]
+# The same retired words, for the other pages that teach the model (the flow, consent and coding pages). The
+# stakeholder-group words are left out: "SCAT" is expanded on the flow page, and the cap is worded that way.
+OTHER_PAGES = ["flow.md", "data-and-consent.md", "coding.md"]
+OTHER_RETIRED = [
+    r"\braw (page|record|scenario|architecture)",
+    r"\bcoded (page|record|scenario|architecture)",
+    r"\bclass pages?\b",
+    r"\brelation pages?\b",
+    r"\bheldby\b",
+    r"`?conflicts`? fields?\b",
+]
 PRESCRIPTIVE = re.compile(
     r"\b(should|must|need to|make sure|do not|don't)\b|\byou\b|^- \*\*[^*]+\*\*: (run|use|write|set) ",
     re.IGNORECASE,
@@ -152,3 +163,16 @@ def test_a_retired_word_and_a_prescriptive_sentence_are_reported():
 def test_a_renamed_glossary_verb_is_reported():
     glossary = GLOSSARY.read_text(encoding="utf-8").replace("is addressed by", "is solved by")
     assert any("is addressed by" in p for p in problems(_page(), glossary))
+
+
+@pytest.mark.parametrize("name", OTHER_PAGES)
+def test_the_other_model_pages_use_no_retired_word(name):
+    text = (ROOT / "docs" / name).read_text(encoding="utf-8")
+    hits = [m.group(0) for p in OTHER_RETIRED for m in re.finditer(p, text, re.IGNORECASE)]
+    assert not hits, f"docs/{name} uses retired words: {hits}"
+
+
+def test_a_retired_word_on_another_page_is_reported():
+    text = "Coded pages name groups. A relation page holds the `conflicts` field."
+    hits = [m.group(0) for p in OTHER_RETIRED for m in re.finditer(p, text, re.IGNORECASE)]
+    assert len(hits) == 3, hits
