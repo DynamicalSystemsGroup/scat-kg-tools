@@ -118,9 +118,11 @@ of a design.
 
 ## Users and how they work
 
-The v0.1 user codes the data and is accountable for its interpretation. There are two kinds of user: someone trying
-the modelling approach on their own work and data, and an organiser running a facilitated elicitation with
-contributors. SCAT is built for the organiser.
+The v0.1 user codes the data and is accountable for its interpretation. There is one persona, the **organiser** of a
+facilitated elicitation with contributors, and the design is aware of the adoption lifecycle: an organiser first tries
+the tools alone, on their own work and data, to decide whether to use them, and someone who cannot make it work solo
+will never commit to it for a facilitated project. So trying it solo is a stage of the organiser's journey, not a
+separate user, and the docs make that first try easy.
 
 The user, a facilitator-analyst and the **coder** of the data, is technically savvy but not a software developer, and works on macOS for v0.1 (see
 Governance). They navigate GitHub's web interface, including creating a repository from a template; read, write and
