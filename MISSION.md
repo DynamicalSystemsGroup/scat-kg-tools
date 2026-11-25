@@ -529,6 +529,9 @@ serves this mission as written; a change that would alter the mission goes to th
 - **The past/future mark** is a field on the narrative page.
   Working field name `timeframe`, with the values `past`, `future` and `mixed`. Like every required field (R-3), a missing
   value is an error on a `done` page and a warning before.
+- **Coding in place.** A narrative is coded by linking the concepts it names where they appear in its text, so the
+  account keeps its words; edges that the text doesn't name inline are recorded on the page. The schema-and-projection
+  package settles the details, checked in Obsidian (G15).
 - **The relationship** has only the same-class rule; it is never entailed, never required and never in an index's
   required links. Whether it is a page or a field is decided by the projection design (G15). The earlier typed
   `conflicts` link between concerns, and its rule `SCAT-CONFLICT-SELF`, leave the release; existing values migrate to
