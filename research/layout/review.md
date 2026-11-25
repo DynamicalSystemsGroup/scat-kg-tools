@@ -40,3 +40,19 @@ the docs should say this reformatting is harmless. (The change was reverted.)
 ## Recommendation
 
 Variant C, with variant A's Bases for the index pages. The decision and what it means for the model are in log D-088.
+
+## Acceptance walk (WP16), 25 November
+
+A fresh clone of the template's `dev` (3cdbe60, pinning tools 29438f4) opened in Obsidian 1.12.7:
+- `scat check` on the clone: "no problems".
+- The narrative pages show their properties (`kind`, `status`, `timeframe`), the account with names linked in place,
+  and the "Edges told" table (`img/acceptance-narrative.jpg`).
+- All five generated index pages render as live Bases: concern 3, affordance 3, group 3, narrative 4 (with kind and
+  timeframe), technology 3 (`img/acceptance-concern-index.jpg`).
+- An incremental session with the tool: `stub --type narrative`, the account written, the status set to `draft`, two
+  edges recorded with `record-edge` (rows added, links left alone), `set-status done` refused with exact fixes while
+  `description` and `timeframe` were missing and accepted once they were filled, `record-edge` on the `done` narrative
+  refused with the coder's step named, and the vault checking clean. The page reads correctly in Obsidian
+  (`img/acceptance-coded-in-session.jpg`).
+- Small finding: `scat stub narrative NAME` is refused; the form is `scat stub --type narrative NAME`. The message
+  says so; the coding guide should show the form.
