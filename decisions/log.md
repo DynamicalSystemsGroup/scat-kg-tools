@@ -2064,3 +2064,18 @@ The ACE's dispositions:
   weak. **W8, W12 to W14, W16:** accepted as the PM proposed.
 
 Then a re-pin and round 2 with fresh testers on the manual path.
+
+## D-101 | 2026-11-25 | UA-A round 2 (manual path) passes; last docs fixes without a round 3
+
+Round 1's fixes landed (tools `dev` 7d17534, template `dev` 826bc99, CI green, R-6 on a fresh clone): W1 to W7 in the
+docs; fingerprint candidates off by default, with an option everywhere; the mention rule no longer suggests a
+discouraged link; hyphen and space match in titles. Round 2 (`acceptance/reports/wp20-r2-*.md`, findings
+`wp20-r2-findings.md`): four fresh testers (three Haiku, two of them in the Python session through J10, one Sonnet
+control) all reached J10 with a clean check and a locked version; no blocking finding; none void. **The manual path
+meets UA-A's pass bar.**
+
+Dispositions: X1 (`git add .` sweeps drawings and plan files into a commit) and X5 (the tag name is the organiser's
+own) are docs sentences, fixed. X3: a narrative that quotes the field notes carries that text into the model, whose
+rules then apply to it; the consent page says so in one sentence, as fact. The rest are accepted as the PM proposed.
+Under `MISSION.md` Governance ("the ACE decides, and logs, whether UA-A reruns"), UA-A does not rerun for three docs
+sentences after a passing round; the pin moves and CI, R-6 and R-9 rerun.
