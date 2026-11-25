@@ -39,7 +39,7 @@ Document Assurance* (INCOSE IS 2026; the chief engineer has a copy), together wi
 The structure here is simpler than any of them.
 
 v0.1 is aimed at a first field deployment. It is built so that a person can do all of it by hand, and so that an LLM,
-where the project's data rights allow one, can take the mechanical work through standard interfaces.
+where the project's data rights allow one, can assist the coder through standard interfaces.
 
 ## Core heuristics
 
@@ -135,8 +135,13 @@ each has its own user experience:
 3. **Through an IDE with agents**, such as Cursor, or VS Code with an agent. The docs point to the skills that help the
    AI coding assistant set itself up.
 
-Whatever the path, the machine does mechanical work only, such as transcription and conformance checking. The interpretive
-act, and the check that meaning is preserved, stay with the human coder, in Obsidian.
+**Three actors, two authorities.** Whatever the path:
+- the **coder** (a person) is the interpretive authority: they look at the Markdown in Obsidian and confirm that it
+  represents their coding;
+- the **tool** (the Python package) is the conformance authority, with two jobs: (i) the knowledge graph matches the
+  Markdown, and (ii) the knowledge graph conforms to the ontology;
+- the **assistant** (an LLM, where the project allows one) helps the coder produce and review the text in the Markdown,
+  and helps drive the tool's calls for (i) and (ii). It holds no authority of its own.
 
 **The people in the data** are stakeholder **groups**, never individuals. Each vault sets a cap on how many
 stakeholder groups it holds, and participants are clustered into groups that fit under it. What participants are told
@@ -345,7 +350,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-16 | **A stable machine interface.** Every result the operations return is also available as versioned, machine-readable data, from the Python API and the CLI alike. Its schema lives with the contracts, and changing it follows a stated versioning rule. A fix is data a tool can apply (what kind of fix it is, the exact command, or the field to write), not only a sentence. This is the interface the MCP server, the Obsidian plugin and any later tool build on. | Every operation's output validated against the schema in tests; a test that the text messages and the data agree |
 | R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault. Its narrative view gives, for each coded narrative, exactly its support, with no relationship; its table views export the three edge tables; and a trace from a vertex of each class returns exactly the vertices reachable up and down the layers. | The notebook executed in the template's CI, with tests on the views and the traces |
 | R-18 | **Ripple-complete changes.** Before a package that changes a term, contract, rule or this mission is approved, its impact map lists every artifact that refers to what changes, each marked change, keep (with why) or historical. At acceptance, the same sweep finds no reference that is unmarked or still says the old thing. | The impact map in the scope; the sweep's output in the acceptance record |
-| R-19 | **Manual first.** Every step, from field notes to coded vault to analysis, can be done by a person by hand, in Obsidian and the REPL or CLI, with no LLM. The process stays consistent with ethnographic coding practice, so a project whose data rights rule out AI loses nothing but speed. Any AI assistance is optional, provider-agnostic, and does mechanical work only; the interpretive act stays with the human coder. | The UA-M walkthrough and the docs test, run with no LLM; the ACE's review of each spike readout against it |
+| R-19 | **Manual first.** Every step, from field notes to coded vault to analysis, can be done by a person by hand, in Obsidian and the REPL or CLI, with no LLM. The process stays consistent with ethnographic coding practice, so a project whose data rights rule out AI loses nothing but speed. Any AI assistance is optional and provider-agnostic, and holds no authority: the coder is the interpretive authority and the tool the conformance authority (see "Three actors, two authorities"). | The UA-M walkthrough and the docs test, run with no LLM; the ACE's review of each spike readout against it |
 | R-20 | **The chat path works, at two test levels.** The MCP server's tools pass automated tests, and the chat path (G14) is run end to end in the inference.coop browser chat at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents, which stand in for field notes. The field test comes after v0.1 and is not part of this repository. Other providers are not tested in v0.1. | The automated tests in CI; each end-to-end run recorded step by step with screenshots in the acceptance record |
 | R-21 | **Coding happens in Obsidian.** A coder can code a narrative and review its support in Obsidian alone, without the same content held on two pages, and without opening pages that carry no content of their own. | A review in Obsidian with screenshots in the record; UA-M |
 | R-22 | **Architecture before detailed design.** The architecture document names the model, the views and the control plane, each module's interface contract and responsibilities, and is reviewed by architecture reviewers before any further package starts detailed design. | The review record; the ACE's approval, logged |
@@ -544,7 +549,9 @@ serves this mission as written; a change that would alter the mission goes to th
   Working field name `timeframe`, with the values `past`, `future` and `mixed`. Like every required field (R-3), a missing
   value is an error on a `done` page and a warning before.
 - **Links are not edges.** An Obsidian link is a reference in a Markdown file; an edge is a typed fact in the model.
-  The tools read the links and decide what they mean, and nothing else does:
+  The Markdown is what the coder confirms; the tool reads it, builds the graph, and checks that the graph matches it
+  (job (i)) and conforms (job (ii)). An edge is asserted in the Markdown, written by the coder or by the assistant for
+  the coder to confirm:
   - a link from a narrative to a vertex says the narrative mentions it (coding in place: names are linked where they
     appear, so the account keeps its words);
   - an edge is its own record, naming its two vertices and the narratives that refer to it; a link from a narrative to
