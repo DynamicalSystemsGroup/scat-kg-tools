@@ -1879,3 +1879,21 @@ Rulings on the PM's flags:
    Accepted.
 5. Narratives need `timeframe` before `done`: correct per the ontology; the spike pages are not migrated.
 6. U4's fixes after its failed review get a second, independent review before WP16 is accepted.
+
+## D-090 | 2026-11-25 | RS3 lab run: the chat path works end to end; the MCP server runs in a container
+
+The chief engineer's permissions and direction (chat, typed by the ACE): "you have my permission to install tailscale";
+for switching on Funnel, "Yes, for this run"; for the tailnet's HTTPS and Funnel policy, "Yes, enable both"; before
+enabling HTTPS published the machine's name, "Rename, then enable"; and "i also want the mcp server to be running in a
+container if possible. you should have colima."
+
+What was done (notes on `spike/chat-path`, `research/chat-path/notes-lab-run.md`): the spike MCP server, gated by an
+API key and run in a read-only Docker container under Colima with the lab vault mounted read-only, was published
+through Tailscale Funnel under a neutral machine name and added to the inference.coop chat (the key pasted by the chief
+engineer). The co-op's model called the tool through MCP; its answer matched the tool's own output. Two messages, lab
+material only. Afterwards Funnel was switched off, the container removed and the MCP entry deleted.
+
+ACE outcome: the container is part of the v0.1 chat route (WP18 ships the image and a launcher), alongside D-084's
+tunnel. WP18 takes the findings: Colima cannot read `~/Documents` under macOS privacy rules; Funnel needs the tailnet's
+HTTPS and Funnel policy set once, and the machine renamed before HTTPS; the coder pastes the key; the only terminal
+step was installing Tailscale. RS3's readout remains to be written (RS3-R1), from its four notes.
