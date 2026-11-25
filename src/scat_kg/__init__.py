@@ -12,6 +12,8 @@
     scat_kg.stub_links()                # or stub_links("x")
     scat_kg.record_edge("holds", "a", "b", ["narrative-name"], note="")
     scat_kg.remove_edge("a", "b")       # or remove_edge("a", "b", ["narrative-name"])
+    scat_kg.load()                      # the knowledge graph, derived from the pages
+    scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
 
 Each call takes `root=` (the vault folder; default: the current directory) and returns an object whose
 `str()` is the message the `scat` command prints, and which prints as that message. `.ok` is False when
@@ -22,6 +24,8 @@ from pathlib import Path
 
 from scat_kg.checks import Report, check_neighborhood, check_page, check_vault
 from scat_kg.contract import SCHEMA_VERSION
+from scat_kg.graph import Graph
+from scat_kg.graph import load as _load
 from scat_kg.ops import (
     EdgeResult,
     StatusReport,
@@ -35,10 +39,16 @@ from scat_kg.ops import (
 from scat_kg.ops import read_status as _read_status
 from scat_kg.ops.common import find_page, open_vault
 from scat_kg.ops.result import Result, refused
+from scat_kg.views import Refused, View, edge_table, fingerprint, layered, trace
 
 # At the REPL the result prints as its message (R-8), not as a dataclass dump.
-for _cls in (Result, StatusReport, EdgeResult):
+for _cls in (Result, StatusReport, EdgeResult, Refused):
     _cls.__repr__ = lambda self: str(self)
+
+
+def load(root: str | Path = ".") -> Graph:
+    """The public loader (M1): the vault at `root` read into its knowledge graph (`scat_kg.graph.load`)."""
+    return _load(root)
 
 
 class CheckResult:
@@ -119,12 +129,18 @@ __all__ = [
     "EdgeResult",
     "Result",
     "StatusReport",
+    "View",
     "check",
+    "edge_table",
+    "fingerprint",
     "index",
+    "layered",
+    "load",
     "record_edge",
     "remove_edge",
     "set_status",
     "status",
     "stub",
     "stub_links",
+    "trace",
 ]
