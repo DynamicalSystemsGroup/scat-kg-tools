@@ -186,7 +186,7 @@ because the model it checked is gone (D-088).
 | SCAT-FM-TIMEFRAME | error | every status | all | `timeframe` on a narrative is outside its value set | options |
 | SCAT-FM-KIND | error | every status | all | `kind` on a narrative is outside its value set | options |
 | SCAT-FM-SHAPE | error | every status | all | a text field is not a single non-empty string | manual |
-| SCAT-NAME | error | every status | all | a page's file name is not a legal name, or is not unique | exact |
+| SCAT-NAME | error | every status | all | a page's file name is not a legal name, or is not unique | manual |
 | SCAT-DONE-FIELD | error | done | all | a field required from `done` is missing | slot |
 | SCAT-DRAFT-FIELD | warning | draft; stub for `timeframe` | all | a field required from `done` is missing | slot |
 | SCAT-LINK-DANGLING-BODY | error | every status | all | a link outside a table end reaches no page | options |
