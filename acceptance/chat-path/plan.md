@@ -92,6 +92,10 @@ only after teardown if a session was opened.
    which holds the Obsidian settings.
 4. J5's check runs on the untouched template through the chat: one message from the tester, the answer pasted. Then
    the chief engineer clicks **Stop** and the teardown below runs. J6 and J7 need no session.
+   J5 then ends with the example removed, as the page's "Remove the example" step says, with no session open: the
+   hands do it on the tester's requests (Show in Finder, drag the example's folders to the Trash, commit and push in
+   GitHub Desktop). The assistant never deletes. The hands paste a listing of the folder showing them gone; if the page
+   does not say how, that is a finding and the chief engineer does the step.
 5. J6: the hands write the tester's plan words into the file `planning` names, in the vault folder.
 6. J7: the hands turn the lab notes in the brief into files, exactly the notes and nothing else, and attach them to
    a new conversation in the chat (a collection if the chat offers one). One message asks the assistant what it can

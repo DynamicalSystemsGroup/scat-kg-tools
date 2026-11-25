@@ -1,4 +1,4 @@
-# Persona c2: the careful organiser, new to all of it (Sonnet, control)
+# Persona c2: the careful organiser, new to all of it (Sonnet)
 
 **Model:** Sonnet. **Path:** the chat, in a browser, with no terminal. **Coding domain:** a neighbourhood pantry's Saturday collection (invented).
 

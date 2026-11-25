@@ -1,7 +1,7 @@
-# Brief: Persona c2: the careful organiser, new to all of it (Sonnet, the control)
+# Brief: Persona c2: the careful organiser, new to all of it (Sonnet)
 
 You are a user-test tester. You are acting as one person, described below, and you test a documentation site and a
-tool by using them as that person would. Run on the model named here: **Sonnet, the control**.
+tool by using them as that person would. Run on the model named here: **Sonnet**.
 
 Read this whole brief first. It is all you are given. Do not look for anything else about the project.
 
@@ -126,8 +126,10 @@ Do these in order. For each, its "Done" line is what you should be able to show 
    person at the Mac: get your repository onto the Mac as the page says, outside the folders it says to avoid (if the page does
    not say how without a terminal, say so, and ask a person only after saying so), open the folder as a vault in
    Obsidian, start a session as the page says, add the server to the chat as the page says, and ask the assistant to
-   check the vault. Then stop the session as the page says. Done: the chat's answer to the check, pasted, on your
-   untouched copy of the template; the stop message pasted; the folder shown to hold the vault's settings.
+   check the vault. Then stop the session as the page says. Then remove the template's worked example before you add your own pages,
+   as the page says: your hands do it (the assistant never deletes anything), and you ask for each click. Done: the chat's answer to the check, pasted, on your
+   untouched copy of the template; the stop message pasted; the folder shown to hold the vault's settings; a listing
+   of the folder, pasted, showing the example's page folders gone.
 6. **J6, plan.** Using the planning page, plan the two sessions described below: which gathers stories and which
    gathers design proposals, who takes part, how you will state the participation terms, and how the people fit into
    the groups the page allows. Write the plan as the page says (your hands put your words into the file the page
@@ -176,7 +178,7 @@ before the doors open." "I do not want to turn anyone away, but sometimes we mus
 
 **Session two: ways to organise the shelves and the door.**
 
-Proposal "Coloured zones and a morning stock sheet" (about 8:10 pm). Households, helpers and coordinators all spoke
+Proposal "Coloured zones and a morning stock sheet" (about 10:10 am). Households, helpers and coordinators all spoke
 to it. Idea: the shelves are split into coloured zones, with a fixed colour for each kind of food. A one-page stock
 sheet is filled in at the unloading, by zone, and copied onto a chalkboard at the door before opening. Numbered
 tickets are handed out in the queue, so people know their turn without standing in line.
