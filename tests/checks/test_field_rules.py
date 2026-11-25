@@ -143,3 +143,37 @@ def test__scat_draft_field__a_page_without_a_status_is_judged_by_neither_field_r
 def test__scat_draft_field__every_valid_combination_is_clean(make_vault):
     for status in ("stub", "draft", "done"):
         seeded(make_vault, {DESK: narrative(status=status)})
+
+
+# R-3: the same defects, at each status
+
+STATUSES = {
+    "stub": [
+        "SCAT-DRAFT-FIELD"
+    ],  # a stub is silent about a missing description; the empty timeframe is shown
+    "draft": ["SCAT-DRAFT-FIELD", "SCAT-DRAFT-FIELD"],
+    "done": ["SCAT-DONE-FIELD", "SCAT-DONE-FIELD"],
+}
+
+
+@pytest.mark.parametrize(("status", "rules"), STATUSES.items())
+def test__scat_done_field__per_status_unfinished_is_never_an_error_before_done(
+    make_vault, status, rules
+):
+    r = report_of(make_vault, {DESK: narrative(status=status, description=None, timeframe=None)})
+    assert rules_of(r) == rules
+    assert all(p.severity == ("error" if status == "done" else "warning") for p in r.problems)
+    assert r.ok == (status != "done")
+
+
+@pytest.mark.parametrize("status", ["stub", "draft", "done"])
+def test__scat_fm_required__per_status_title_is_required_at_every_status(make_vault, status):
+    page = f"---\ntype: concern\nstatus: {status}\ndescription: D\n---\n"
+    assert rules_of(report_of(make_vault, {C: page})) == ["SCAT-FM-REQUIRED"]
+
+
+@pytest.mark.parametrize("status", [None, "finished"])
+def test__scat_fm_status__missing_or_invalid_status_gets_no_needs_status_rule(make_vault, status):
+    page = doc("concern", "S", status=status, description=None)
+    rules = set(rules_of(report_of(make_vault, {C: page})))
+    assert rules and not rules & {"SCAT-DONE-FIELD", "SCAT-DRAFT-FIELD"}

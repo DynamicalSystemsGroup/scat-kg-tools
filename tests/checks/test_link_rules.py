@@ -60,6 +60,14 @@ def test__scat_link_dangling_body__a_name_no_row_end_names_offers_the_five_types
     )
 
 
+@pytest.mark.parametrize("status", ["stub", "draft", "done"])
+def test__scat_link_dangling_body__links_are_checked_at_every_status(make_vault, status):
+    page = doc("concern", "Safe handling", status=status, body="\nSee [[ghost]].\n")
+    r = report_of(make_vault, {C: page})
+    assert rules_of(r) == ["SCAT-LINK-DANGLING-BODY"] and r.problems[0].severity == "error"
+    assert not r.ok
+
+
 def test__scat_link_dangling_body__a_name_a_row_end_names_offers_the_layer_that_row_fixes(
     make_vault,
 ):

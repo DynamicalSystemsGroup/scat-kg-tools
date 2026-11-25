@@ -364,6 +364,26 @@ def test__scat_draft_table_type__ends_that_fit_no_type_offer_the_three_verbs(mak
 
 
 @STATUSES
+def test__scat_draft_table_type__a_row_of_two_unresolved_ends_offers_the_three_verbs(
+    make_vault, status
+):
+    r = report_of(make_vault, with_rows(status, "| owns | [[ghost]] | [[nowhere]] | |"))
+    types = [p for p in r.problems if p.rule.endswith("TABLE-TYPE")]
+    assert [o.text for o in types[0].fix_data.options] == [
+        "replace `owns` with `holds`",
+        "replace `owns` with `is addressed by`",
+        "replace `owns` with `is provided by`",
+        DELETE,
+    ]
+    # the row's ends are still checked by the end rules; its layers are not judged
+    assert sorted(x.split("-", 2)[2] for x in rules_of(r)) == [
+        "END-NOPAGE",
+        "END-NOPAGE",
+        "TABLE-TYPE",
+    ]
+
+
+@STATUSES
 def test__scat_draft_table_type__the_slug_and_the_verb_in_any_case_are_types(make_vault, status):
     rows = (
         "| Holds | [[staff]] | [[safe-handling]] | |",

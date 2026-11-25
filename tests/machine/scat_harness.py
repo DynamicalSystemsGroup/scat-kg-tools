@@ -28,8 +28,12 @@ import scat_kg
 from scat_kg import cli
 from scat_kg.checks import run as checks_run
 from scat_kg.checks.problem import Problem, Report
-from scat_kg.ops.result import NOT_BUILT
 from scat_kg.vault import read_vault
+
+try:  # the standard refusal of a call not built yet; once every operation is built it may go, and this with it
+    from scat_kg.ops.result import NOT_BUILT
+except ImportError:  # pragma: no cover
+    NOT_BUILT = None
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = json.loads((ROOT / "contracts" / "machine-interface.schema.json").read_text("utf-8"))
@@ -207,7 +211,7 @@ def assert_option_works(problem: Problem, i: int, copy: Path) -> str:
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             code = cli.main([*argv, "--root", str(copy)])
-        if code != 0 and NOT_BUILT in out.getvalue():
+        if code != 0 and NOT_BUILT and NOT_BUILT in out.getvalue():
             _parses(problem, i, argv, copy)
             commands_parsed += 1
             commands_unbuilt += 1
