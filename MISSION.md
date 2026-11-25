@@ -246,7 +246,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
     different stakeholder groups;
   - one generic **relationship** between two records of the same class: a free-text remark with a place in the vault, whose only
     rule is that both ends share a class. It is optional, the tools give it no meaning, and analysis views leave it
-    out. No typed links between records of the same class are defined (see Non-goals).
+    out. No typed edges between vertices of the same class are defined (see Non-goals).
 - **G2. Vault ↔ graph.** Markdown pages with YAML frontmatter parse into an ABox that is checked against the TBox.
   Every class has a class page: a description, plus an index table of its instances (name, short description, link)
   that the tools generate from the instance pages.
@@ -362,7 +362,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
 
 ## Non-goals
 
-- Typed links between records of the same class, such as incompatible concerns, adversarial groups, complementary
+- Typed edges between vertices of the same class, such as incompatible concerns, adversarial groups, complementary
   affordances or compatible technologies. They are parked on the feature branch `feature/same-type-edges` as a design,
   not work to build, and nothing in the release refers to them.
 - The Obsidian plugin. It stays on its feature branch, `spike/obsidian-plugin`; v0.1 provides the stable interface it builds on (R-16).
@@ -640,7 +640,7 @@ serves this mission as written; a change that would alter the mission goes to th
   for the vault; the docs point to it.
 - **The relationship** has only the same-class rule; it is never entailed, never required and never in an index's
   required links. Whether it is a page or a field is decided by the projection design (G15). The earlier typed
-  `conflicts` link between concerns, and its rule `SCAT-CONFLICT-SELF`, leave the release; existing values migrate to
+  `conflicts` field between concerns, and its rule `SCAT-CONFLICT-SELF`, leave the release; existing values migrate to
   relationships.
 - **Test edits.** Tests that encode `conflicts`, the separate raw and coded page types, or the current layout may change, each change listed
   in the review record.
