@@ -54,8 +54,8 @@ Pages URL and gives, for each stage J1 to J10, where to enter, the steps, what "
 where to resume. `acceptance/walkthrough-chat.md` is the chat path, J1 to J10 with no terminal from J5 on; its docs
 entry is `docs/chat-path.md`. (The older single `acceptance/walkthrough.md` is gone.) Each script splits its walk into
 its own sittings and says where you may stop: the manual script has five (A solo trial J1-J2; B terms and set-up
-J3-J5; C plan and capture J6-J7; D code J8; E analyse and hand over J9-J10) and the chat script has five (A discover to
-terms J1-J4; B set up J5; C plan and capture J6-J7; D code J8; E analyse and hand over J9-J10). These are walk sittings inside
+J3-J5; C plan and capture J6-J7; D code J8; E analyse and hand over J9-J10) and the chat script has three (A J1-J4; B
+J5-J7; C J8-J10), the same three for each chat tester, nine tester sittings in all, run by the ACE inside yours. These are walk sittings inside
 this guide's sitting 1.
 
 **What to look at.**
