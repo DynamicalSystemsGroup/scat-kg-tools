@@ -85,3 +85,4 @@ Confidence: high for the mapping; I could not verify any linked page.
 
 **Overall confidence**
 High on the order of the ten steps and which choices feed which steps. Low on the mechanics: how consent is recorded or withdrawn, what conformance means, how a version is tagged, and where inputs and analysis are kept by default.
+The pages say "the page did not tell me" in these places. I did not fill those gaps with outside knowledge.
