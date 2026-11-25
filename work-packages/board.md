@@ -276,6 +276,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U3gr | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T17:09:19-05:00 | review found 3 items, re-review PASS (haiku) |
 | WP21-U3h | technical writer and Python developer (G9 glossary change as decided in D-117), sonnet | 2 |  | `wp21/u3h` | in flight |  |  |  |
 | WP21-U3hr | reviewer (fresh), sonnet | 1 |  | `-` | queued | U3h |  |  |
+| WP21-U8f | Python developer (shellcheck SC2015 in the launcher, red CI on dev; unplanned fix forward for U8), sonnet | 1 |  | `wp21/u8f` | in flight |  |  |  |
 | WP21-U4 | mechanical sweep (template, range vault), haiku | 2 | 2 | `wp21/template`; `wp21/u4` | done |  | 2026-11-25T17:09:19-05:00 | first-time PASS; haiku swap script, template f2a562a pushed on wp21/template; range vault 43b6b9d; merged 7e41fa6 |
 | WP21-U4r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:09:19-05:00 | fresh reviewer PASS first time, script-checked the swap |
 | WP21-U5 | technical writer (docs/norms.md), sonnet | 5 | 5 | `wp21/u5` | done |  | 2026-11-25T17:09:19-05:00 | first-time PASS; 777 words, self-audit of every must; merged 2eb1c3e |
