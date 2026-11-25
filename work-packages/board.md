@@ -226,18 +226,18 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP17-U9r | reviewer (fresh; runs U9's checks), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T03:07:49-05:00 | PASS; 3 notes (a narrative with unparsable frontmatter is still omitted by whole-vault views) |
 | WP17-U10 | Python developer (gap B: duplicate node name named, no new rule), sonnet | 3 | 3 | `wp17/u10` | done |  | 2026-11-25T03:07:49-05:00 | 49 tests; first-time PASS |
 | WP17-U10r | reviewer (fresh; runs U10's checks), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T03:07:49-05:00 | PASS; 4 notes (both ends duplicated: one end named) |
-| WP18-U1 | technical writer (the assistant's file), sonnet | 2 |  | `wp18/u1` | queued | planned by the PM |  |  |
-| WP18-U1r | reviewer (fresh; runs U1's checks), sonnet | 1 |  | `-` | queued | planned by the PM |  |  |
-| WP18-U2 | Python developer (MCP server M8: tools, prompts, key gate, tests, optional extra), sonnet | 8 |  | `wp18/u2` | queued | planned by the PM |  |  |
-| WP18-U2r | reviewer (fresh; runs U2's checks, drives the server over HTTP), sonnet | 3 |  | `-` | queued | planned by the PM |  |  |
-| WP18-U3 | Python and macOS packaging developer (image, launcher app, teardown, key rotation, tests with stand-in tunnel), sonnet | 8 |  | `wp18/u3` | queued | planned by the PM |  |  |
-| WP18-U3r | reviewer (fresh; runs U3's checks, builds the image, runs the launcher locally), sonnet | 3 |  | `-` | queued | planned by the PM |  |  |
+| WP18-U1 | technical writer (the assistant's file), sonnet | 2 | 2 | `wp18/u1` | done |  | 2026-11-25T03:44:02-05:00 | first-time PASS; one unrequested precedence sentence, harmless |
+| WP18-U1r | reviewer (fresh; runs U1's checks), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T03:44:02-05:00 | PASS; 2 nits |
+| WP18-U2 | Python developer (MCP server M8: tools, prompts, key gate, tests, optional extra), sonnet | 8 | 8 | `wp18/u2` | done |  | 2026-11-25T03:44:02-05:00 | 137 tests, mutation proven; first-time review PASS, 4 notes |
+| WP18-U2r | reviewer (fresh; runs U2's checks, drives the server over HTTP), sonnet | 3 | 3 | `-` | done |  | 2026-11-25T03:44:02-05:00 | PASS; live HTTP run, mutation, export refusals |
+| WP18-U3 | Python and macOS packaging developer (image, launcher app, teardown, key rotation, tests with stand-in tunnel), sonnet | 8 |  | `wp18/u3` | in review | 1 wording fix (scat-chat.sh line 286); guide pointer resolved by U4 |  |  |
+| WP18-U3r | reviewer (fresh; runs U3's checks, builds the image, runs the launcher locally), sonnet | 3 | 3 | `-` | done |  | 2026-11-25T03:47:56-05:00 | PASS; own real run on Colima with a stand-in tunnel; 2 minor wording defects (U3 fix open) |
 | WP18-U4 | technical writer (chat-path guide, IDE note, reference, nav), sonnet | 5 |  | `wp18/u4` | queued | planned by the PM |  |  |
 | WP18-U4r | reviewer (fresh; follows the guide cold, opens the pages), sonnet | 2 |  | `-` | queued | planned by the PM |  |  |
 | WP18-U5 | technical writer (IDE setup skill in the template), sonnet | 2 |  | `wp18/u5` | queued | planned by the PM |  |  |
 | WP18-U5r | reviewer (fresh; runs U5's checks), haiku | 1 |  | `-` | queued | planned by the PM |  |  |
-| WP19-U1 | research engineer (range material: source texts from the public KOI case), sonnet | 5 |  | `wp19/u1` | queued | planned by the PM |  |  |
-| WP19-U1r | reviewer (fresh; reads inputs against ant-rdf, greps for person names), sonnet | 2 |  | `-` | queued | planned by the PM |  |  |
+| WP19-U1 | research engineer (range material: source texts from the public KOI case), sonnet | 5 |  | `wp19/u1` | in review | 3 minor wording fixes from re-review |  |  |
+| WP19-U1r | reviewer (fresh; reads inputs against ant-rdf, greps for person names), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T03:47:56-05:00 | 2 reviews (first FAIL: invented bridges; re-review PASS with 3 minor fixes open) |
 | WP19-U2 | coder (range vault, scenarios: draft and code by hand through the tool), sonnet | 8 |  | `wp19/u2` | queued | planned by the PM |  |  |
 | WP19-U2r | reviewer (fresh; runs the checks, reads a sample of narratives against sources), sonnet | 3 |  | `-` | queued | planned by the PM |  |  |
 | WP19-U3 | coder (range vault, architectures: draft and code by hand through the tool), sonnet | 5 |  | `wp19/u3` | queued | planned by the PM |  |  |

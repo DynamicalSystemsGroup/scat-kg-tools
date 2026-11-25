@@ -60,3 +60,9 @@ browser. Do not contact the chief engineer.
 ## Cost notes
 Round 1 cost about 50 to 90 thousand tokens per tester. A small fix unit with a fresh review costs about 250 thousand
 across worker and reviewer. Scratch files live in the session scratchpad (`ua/`, `v*`, `provision.sh`).
+
+## WP18 and WP19 handover (PM, 2026-11-25)
+
+Integration branch `pm-wp18` (backup `origin/wp18/build`); not yet pushed to `dev`. Landed on it: WP18-U1 (assistant's file), U2 (MCP server, 13 tools, 3 prompts; PASS), U3 (image and launcher; PASS, one wording fix open), WP19-U1 (range inputs; PASS, three minor fixes open). Open fixes, for the original workers (SendMessage): U3 `deploy/scat-chat.sh` line 286 (say "Click SCAT Chat again, then Stop, or restart your Mac"); WP19-U1 koi-06 line 11 ("find it degraded"), koi-09 ("the doctrine" not "the architects"; "most with a place in its appendix"), koi-05 line 7, koi-06 lines 7 and 9, koi-08 line 7 hedges.
+Not started: WP18-U4 (docs; must give the install steps the launcher points to, Colima and Docker CLI have no graphical installer, Tailscale CLI on PATH unconfirmed), WP18-U4r, WP18-U5 (template skill, own worktree of scat-kg-template), WP18-U5r; WP19-U2, U3, U4 and their reviews. Then: tier 1, strict docs build, `check_metrics.py --accept`, iteration 25 record, one push to `dev`.
+Readiness notes: R2 reading used: container root read-only, vault mounted read-write, writes only through the tool's operations (export_edges confined to `<vault>/views/`). Tailscale commands (`funnel --https=443 off`, HTTPS detection from `status --json`, public URL from `funnel status`) are untested against the real binary; the GUI dialogs were only compiled. Gatekeeper: an unsigned built app needs right-click, Open once.
