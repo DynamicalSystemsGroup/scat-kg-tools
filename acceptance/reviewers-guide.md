@@ -6,8 +6,9 @@
 frontmatter cannot be read, naming the file, and the architecture sentences are added (see 4c, "Closed since D-095").
 UA-A on the manual path has not run: round 1 waits on the candidate, and a later unit fills section 4d from the
 reports. The chat path's UA-A has three testers, two on Haiku and one on Sonnet; the ACE runs their sessions, light
-and spaced, in your sittings. A docs unit is pending for five defects the reviewers found (4c, item 9), and the
-candidate is pinned only after it lands. Until then, treat every "result when written" below as stale.
+and spaced, in your sittings. WP20-U8, the docs unit for the five defects the reviewers found (4c, item 9), is done and has
+passed review; the candidate is pinned after it lands on `dev`. Until the candidate is pinned, treat every "result
+when written" below as stale.
 
 Read one sitting, tick its boxes, stop. Each sitting has an entry point, a short list of what to look at, and one
 decision that is yours. Nothing here asks you to trust a claim: each claim names a command to run or a file to open.
@@ -70,10 +71,10 @@ this guide's sitting 1.
   which has not been done (see 4c, item 2). Its UA-A is three testers, two on Haiku and one on Sonnet, run by the ACE
   in these sittings.
 - **Hand-over (J10).** Each path ends with you deciding the model is finished and locking a version with a tag.
-- **Held gaps, pending the docs unit (D-098, ruling 3).** Three of the five defects touch these walks: the solo trial
-  (J2) has no section of its own in the docs; no command is shown to see which commit a tag pins; and the chat path
-  has no no-terminal route (GitHub Desktop) for clone, commit, push and removing the example. Record what you
-  actually did where the docs fall short.
+- **Gaps the docs unit closed (WP20-U8, D-098 ruling 3).** Three of the five defects touched these walks: the solo
+  trial (J2) had no section of its own in the docs; no command was shown to see which commit a tag pins; and the chat
+  path had no no-terminal route (GitHub Desktop) for clone, commit, push and removing the example. WP20-U8 adds them.
+  Record what you actually did where the docs still fall short.
 
 **Split and resume.** Each stage ends in a state you can stop in. To resume, run that stage's "Resume check". If a
 stage fails, do not work around it: note the page, the step, what you typed and what printed. Fixes go on `dev`, the
@@ -411,12 +412,12 @@ live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
 8. **Obsidian and the rendered pages are unseen by agents.** No agent opened Obsidian (the ACE's walk in D-091 is the
    exception for the layout). The rendered phrase tables and JSON blocks (F-6), and the WP17 to WP19 pages at desktop
    and 375 px, were measured without a browser. Your sitting 2 is the first look.
-9. **Five docs defects wait on a docs unit (D-098, ruling 3).** The reviewers found, against R-9, R-10, R-11 and G9:
+9. **Five docs defects, fixed by a docs unit (D-098, ruling 3).** The reviewers found, against R-9, R-10, R-11 and G9:
    the fingerprint view's command contradicts itself between the coding guide and the analysis guide; no command is
    shown to run the notebook; the solo trial (J2) has no section of its own; no way is shown to see which commit a tag
    pins; and the chat path has no no-terminal route for clone, commit, push and removing the example (GitHub Desktop,
-   D-087). **Status: pending.** The unit lands before the candidate is pinned and UA-A runs; the PM updates this item
-   then.
+   D-087). **Status: done.** WP20-U8 fixes all five and passed review; it is merged to `dev`, and
+   the candidate is pinned after it, before UA-A runs.
 10. **The play-test findings file is stale.** `acceptance/playtest-findings.md` still lists F-1 to F-8 with proposed
     dispositions. The board says WP16-U13 and U7f took F-1, F-3, F-5 and F-7; F-4 became R-16; F-8 became WP12 and WP13;
     F-2 (docs theme end of life, 5 May 2027) is a later package; F-6 is your sitting 2. I did not verify the fixes.
