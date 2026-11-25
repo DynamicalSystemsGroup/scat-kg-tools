@@ -1827,3 +1827,32 @@ and whether the Tailscale Mac app alone can switch Funnel on is unverified. Term
 GitHub web interface for the template and Releases. A real test of Funnel on the chief engineer's Mac needs his
 permission to install it: on the morning list. Whether a launcher counts as "not required to open a terminal" is
 answered by the launcher's design in WP18 (a double-click app, no typed commands).
+
+## D-088 | 2026-11-24 | WP16 decide stage: the layout
+
+Evidence: `research/layout/review.md`, the ACE's walk of the three spike variants in Obsidian, with screenshots.
+Variant B is rejected: its edges are text strings in fields, which Obsidian shows as dead text. Variant A works but
+leaves one frontmatter-only page per edge. Variant C keeps coding and reviewing on one page and removes a class of
+mismatch.
+
+The decision (G15 lets WP16 decide which entries are pages and which are fields; it does not change what the graph
+means):
+- **A narrative is one page** holding its account, with names linked where they appear, an optional list of what it
+  refers to beyond the text, and an **"Edges told" table**: one row per edge the account tells (type, from, to, note),
+  each end a link.
+- **An edge in the knowledge graph is one per pair, built by the tool** from every row that tells it, and it names
+  those narratives (G1). Two narratives telling a pair are two tellings, each with its own note; nothing is duplicated.
+- **An edge's status is derived:** it is `done` when every narrative that tells it is `done`. The coder signs off
+  edges by signing off narratives; there is no separate edge sign-off (G3, read with G15).
+- **Recording and removing an edge** (G4) are adding and removing a row, as operations the tool offers and as hand
+  edits it checks.
+- **Nodes are pages; index pages are Bases** that the tool generates once, so they never go stale.
+- **A relationship annotation** is a line on one of its two entries, with a link to the other.
+- **Rule 4 (D-085) still holds:** a narrative that links both ends of a pair without a row gets no message; the
+  fingerprint view lists the pair as a candidate.
+- **The tool reads tables whitespace-tolerantly**, since Obsidian's table editor re-pads them, and the docs say so.
+- Obsidian 1.9 or later is required, for Bases.
+
+WP16's build stage proceeds on this. The architecture's open WP16 slots (edge as page or field; where an edge records
+its narratives; how the one-link-away scope treats edges) are answered by it; the PM's build units record the answers
+in `contracts/architecture.md` within its word cap.
