@@ -3,7 +3,7 @@ import subprocess
 import pytest
 
 TEMPLATE_URL = "https://github.com/DynamicalSystemsGroup/scat-kg-template"
-TEMPLATE_COMMIT = "31667fcfe302c1572c0d6da1730b42e8534b01bc"  # pins tools 585630c
+TEMPLATE_COMMIT = "f2a562ab561928c588099b95ccdb4cf748b03730"  # pins tools 585630c; the template's own pin moves later (WP21)
 
 
 @pytest.fixture(scope="session")
