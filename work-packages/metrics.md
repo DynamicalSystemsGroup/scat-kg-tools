@@ -23,6 +23,12 @@ Take the last record per unit **in file order** (a few WP8 records were appended
 latest = units.groupby("unit").tail(1)  # file order, not sorted by ts
 ```
 
+**A `ts` ahead of the clock is a problem.** A record whose `ts` is more than five minutes after the time the check runs
+is refused by `check_metrics.py`, unless a later record corrects it: a record with the same `unit` (or `iteration`)
+and a `corrects` field equal to the wrong `ts`. Each correction supersedes one earlier record, the earliest not yet
+corrected, so two records of one unit that share a wrong `ts` need two corrections. A superseded record stays in the
+log, but it no longer counts for the future rule, the time-order rule or the iteration checks.
+
 **Iterations can overlap in wall-clock time,** because units run in parallel. So `elapsed_h` and `velocity` for
 overlapping iterations overstate throughput. Treat early velocities as noisy.
 

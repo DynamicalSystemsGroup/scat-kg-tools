@@ -11,19 +11,38 @@ The latest record per unit, in file order, is authoritative (metrics.md).
 
 import json
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 LOG = Path(__file__).with_name("metrics.jsonl")
 HISTORY_LINES = (
     251  # the log's length when WP10 was approved (log D-058); D-061 applies to every later line
 )
+FUTURE_SLACK = timedelta(minutes=5)  # a record may be stamped this far ahead of the clock
 SCALE = {1, 2, 3, 5, 8}
 STATES = {"queued", "in flight", "in review", "done", "blocked"}
 MODELS = {"sonnet", "haiku", "opus"}
 
 
+def identity(r):
+    return (r["kind"], r.get("unit") if r["kind"] == "unit" else r.get("iteration"))
+
+
+def superseded_lines(records):
+    """Lines whose record a later record corrects: same identity, `corrects` equal to its ts, one to one."""
+    gone = set()
+    for i, (n, _, r) in enumerate(records):
+        if "corrects" not in r:
+            continue
+        for m, _, old in records[:i]:
+            if m not in gone and identity(old) == identity(r) and old["ts"] == r["corrects"]:
+                gone.add(m)
+                break
+    return gone
+
+
 def main(argv):
+    now = datetime.now().astimezone()
     accept = argv[argv.index("--accept") + 1] if "--accept" in argv else None
     problems = []
     records = []
@@ -42,13 +61,23 @@ def main(argv):
             continue
         records.append((n, ts, r))
 
+    gone = superseded_lines(records)
+    for n, ts, r in records:
+        if n not in gone and ts > now + FUTURE_SLACK:
+            ahead = ts - now
+            problems.append(
+                f"line {n}: ts is in the future ({r['ts']} is {ahead} ahead of the clock, "
+                f"more than {FUTURE_SLACK}); stamp the real time, or correct it with a later record"
+            )
+
     current = [(n, ts, r) for n, ts, r in records if n > HISTORY_LINES]
     units = {}  # unit -> list of (line, record), file order
     prev_ts = None
     for n, ts, r in current:
-        if prev_ts and ts < prev_ts and "corrects" not in r:
-            problems.append(f"line {n}: ts goes back in time without a `corrects` field")
-        prev_ts = max(prev_ts, ts) if prev_ts else ts
+        if n not in gone:  # a superseded record is not the baseline
+            if prev_ts and ts < prev_ts and "corrects" not in r:
+                problems.append(f"line {n}: ts goes back in time without a `corrects` field")
+            prev_ts = max(prev_ts, ts) if prev_ts else ts
         if r["kind"] == "unit":
             units.setdefault(r.get("unit"), []).append((n, r))
 
@@ -82,7 +111,7 @@ def main(argv):
             if not isinstance(last.get("iteration"), int):
                 problems.append(f"{unit} (line {n}): done without the `iteration` it landed in")
 
-    iterations = [(n, r) for n, ts, r in current if r["kind"] == "iteration"]
+    iterations = [(n, r) for n, ts, r in current if r["kind"] == "iteration" and n not in gone]
     in_iteration = {}
     for n, it in iterations:
         names = it.get("units") or []
