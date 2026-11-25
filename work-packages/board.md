@@ -266,9 +266,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP20-U10 | Python developer (W9 candidates off by default, W10a, W10b), sonnet | 5 | 5 | `wp20c/u10` | done |  | 2026-11-25 | 1 push-back, 2 review rounds; 2289 tests |
 | WP20-UA2 | UA-A round 2, manual path (4 fresh testers: 3 Haiku, 1 Sonnet), haiku | 8 | 8 | none | done |  | 2026-11-25T06:49:12-05:00 | all four reached J10, no blocking finding; dispositions in D-101 |
 | WP20-U11 | technical writer (docs X1, X5, X3), sonnet | 2 | 2 | `wp20c/u11` | done |  | 2026-11-25T06:49:12-05:00 | first-time reviewer PASS, two minor fixes; 48 docs tests; no UA-A round 3 (D-101) |
-| WP21-U1 | Python developer (WP8-U1 port), sonnet | 2 |  | `wp21/u1` | queued |  |  |  |
-| WP21-U1r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U1 |  |  |
-| WP21-U2 | Python developer (table order), sonnet | 5 |  | `wp21/u2` | queued | U1 |  |  |
+| WP21-U1 | Python developer (WP8-U1 port), sonnet | 2 | 2 | `wp21/u1` | done |  | 2026-11-25T15:46:39-05:00 | first-time PASS; hand port, two D-110 assertions only; 2298 tests; merged 32bfa71 |
+| WP21-U1r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, re-ran checks |
+| WP21-U2 | Python developer (table order), sonnet | 5 |  | `wp21/u2` | in flight |  |  |  |
 | WP21-U2r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U2 |  |  |
 | WP21-U3 | Python developer (exclusion, machine interface), sonnet | 5 |  | `wp21/u3` | queued | U2 |  |  |
 | WP21-U3r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U3 |  |  |
@@ -280,12 +280,12 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U5r | reviewer and cold reader (fresh), sonnet | 2 |  | `-` | queued | U5 |  |  |
 | WP21-U6 | Python developer (skill package, drift test), sonnet | 5 |  | `wp21/u6` | queued | U5 |  |  |
 | WP21-U6r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U6 |  |  |
-| WP21-U7 | research engineer (secret-handling spike), sonnet | 3 |  | `wp21/u7` | queued |  |  |  |
-| WP21-U7r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U7 |  |  |
-| WP21-U8 | Python developer (launcher secret handling), sonnet | 3 |  | `wp21/u8` | queued | the ACE's decision on U7's recommendation |  |  |
+| WP21-U7 | research engineer (secret-handling spike), sonnet | 3 | 3 | `wp21/u7` | done |  | 2026-11-25T15:46:40-05:00 | first-time PASS; dummy-value experiments confirmed the F15 cause; 1237 words |
+| WP21-U7r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, re-ran checks |
+| WP21-U8 | Python developer (launcher secret handling), sonnet | 3 |  | `wp21/u8` | blocked | the ACE's decision on U7's recommendation |  |  |
 | WP21-U8r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U8 |  |  |
-| WP21-U9 | Python developer (image CI, launcher pull, run-time user), sonnet | 5 |  | `wp21/u9` | queued |  |  |  |
-| WP21-U9r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U9 |  |  |
+| WP21-U9 | Python developer (image CI, launcher pull, run-time user), sonnet | 5 | 5 | `wp21/u9` | done |  | 2026-11-25T15:46:40-05:00 | first-time PASS; own workflow file for the paths filter; 2 tests added, 2 edited for G6; merged 9616a24 |
+| WP21-U9r | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, built the image under Colima |
 | WP21-U10 | technical writer (life-cycle guide, leave-no-trace), sonnet | 5 |  | `wp21/u10` | queued | U6, U8, U9 |  |  |
 | WP21-U10r | reviewer and cold reader (fresh), sonnet | 2 |  | `-` | queued | U10 |  |  |
 
@@ -324,6 +324,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 29 | WP20-U9, U10 | 8 | 8 | 1.00 | 1.0 h | 8.0 |
 | 30 | WP20-U11, WP20-UA2 | 10 | 10 | 1.00 | 0.1 h | 100.0 |
 | 31 | WP20-U1, U1r, U2r to U6r, UA1 (closed late from git: PM handovers had left them in review or queued; reviews of U2 to U6 ran as 1 to 3 rounds each) | 21 | 26 | 1.24 | 1.0 h | 26.0 |
+| 33 | WP21-U1, U1r, U7, U7r, U9, U9r | 14 | 14 | 1.00 | 0.6 h | 23.33 |
 
 ## Velocity and forecast
 
@@ -334,6 +335,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP21 wave 1 landed (U1, U7, U9 reviewed PASS first time; iteration 33: 14 est, 14 realized, 0.6 h). U2 in flight; U8 blocked on the ACE's decision on U7.
 
 Current: WP20 stale records closed from git (iteration 31: 21 est, 26 realized, 1.0 h, overlapping, noisy; reviews ran 1 to 3 rounds each). WP20-UC1 (chat-path UA-A, est 5) and WP18-R4 (est 5) are queued and wait on the chief engineer's sitting, so `check_metrics.py --accept WP20` fails only on WP20-UC1 and `--accept WP18` only on WP18-R4.
 
