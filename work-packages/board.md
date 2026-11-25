@@ -282,7 +282,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U6r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U6 |  |  |
 | WP21-U7 | research engineer (secret-handling spike), sonnet | 3 | 3 | `wp21/u7` | done |  | 2026-11-25T15:46:40-05:00 | first-time PASS; dummy-value experiments confirmed the F15 cause; 1237 words |
 | WP21-U7r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, re-ran checks |
-| WP21-U8 | Python developer (launcher secret handling), sonnet | 3 |  | `wp21/u8` | blocked | the ACE's decision on U7's recommendation |  |  |
+| WP21-U8 | Python developer (launcher secret handling), sonnet | 3 |  | `wp21/u8` | in flight |  |  |  |
 | WP21-U8r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U8 |  |  |
 | WP21-U9 | Python developer (image CI, launcher pull, run-time user), sonnet | 5 | 5 | `wp21/u9` | done |  | 2026-11-25T15:46:40-05:00 | first-time PASS; own workflow file for the paths filter; 2 tests added, 2 edited for G6; merged 9616a24 |
 | WP21-U9r | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, built the image under Colima |
