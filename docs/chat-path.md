@@ -203,7 +203,7 @@ is removed, your Mac may sleep again, the key is replaced, and your clipboard is
 says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was replaced, and
 your clipboard holds no key."
 
-If it says "Stopped, but I could not confirm:" followed by something, click SCAT Chat and then Stop again, or
+If it says "Stopped, but I could not confirm:" followed by something, click SCAT Chat again, then Stop, or
 restart your Mac. If it says the public link may still be on, open Tailscale and switch Funnel off. Delete the
 server entry in your chat too; it no longer works.
 
@@ -222,10 +222,10 @@ The launcher's messages, and what to do.
 
 | The window says | Do this |
 |---|---|
-| "SCAT Chat needs Colima and Docker's command-line tool, which are not installed." | Install a container runtime as shown under "Install once", then click SCAT Chat. |
-| "SCAT Chat needs Colima, which is not installed, and no other Docker is running." | If you use Docker Desktop, open it, wait until it says running, then click SCAT Chat. Otherwise install Colima. |
+| "SCAT Chat needs Docker Desktop, which is not installed." | Install Docker Desktop as shown under "Install once" (or Colima with the docker command), then click SCAT Chat. |
+| "Docker Desktop is not running." | Open Docker Desktop from your Applications folder, wait until it says it is running, then click SCAT Chat. |
 | "Colima would not start." | Restart your Mac, then click SCAT Chat again. If it repeats, tell the person who set this up. |
-| "Docker does not answer even though Colima is running." | Restart your Mac, then click SCAT Chat again. |
+| "Docker does not answer." | Restart your Mac, then click SCAT Chat again. |
 | "SCAT Chat needs Tailscale ... not installed." | Install Tailscale and its command line as under "Install once", sign in, click SCAT Chat. |
 | "Tailscale is not running or you are not signed in." | Open Tailscale from the menu bar, sign in, click SCAT Chat. |
 | "Tailscale needs HTTPS switched on" | The HTTPS setting above; click Open the page. |
@@ -235,6 +235,7 @@ The launcher's messages, and what to do.
 | "Building the server failed" | Check you are online, then click SCAT Chat again. |
 | "The server would not start" | Close any other SCAT Chat, then click again. |
 | "The server did not answer" or "stopped right after starting" | Click again; if it repeats, tell the person who set this up. |
+| "Stopped, but I could not confirm:" followed by what it could not confirm, then "click SCAT Chat again, then Stop, or restart your Mac, to be sure." | Do that: click SCAT Chat again, then Stop, or restart your Mac. If it names the public link, open Tailscale and switch Funnel off. |
 | "SCAT Chat is already running." | Click Stop in its window, or quit the app, then start again. |
 
 If you use Docker Desktop and the first run fails in a way that table does not cover, that is the untested part:
