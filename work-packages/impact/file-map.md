@@ -2,7 +2,7 @@
 
 Kept by the change consultant (`.claude/agents/change-consultant.md`). For each package in flight, the files it owns.
 The PM checks a unit's blast zone against this map before dispatch; an overlap is reported at once. Updated at
-2026-11-24 from `work-packages/plan.md`, `work-packages/board.md`, the scopes `WP13.md`, `WP14.md`, `RS3-chat-path.md`
+2026-11-25 (WP16 files released) from `work-packages/plan.md`, `work-packages/board.md`, the scopes `WP13.md`, `WP14.md`, `RS3-chat-path.md`
 and `impact/WP16.md`. Words follow `GLOSSARY.md`. Paths are in `scat-kg-tools` unless a repository is named.
 
 ## Packages in flight
@@ -12,9 +12,10 @@ and `impact/WP16.md`. Words follow `GLOSSARY.md`. Paths are in `scat-kg-tools` u
 | WP14 prior-art readout | scope approved (D-079) | `research/prior-art/` (new). Also, as PM-only edits: `work-packages/board.md`, `work-packages/metrics.jsonl`. |
 | WP15 architecture document and review | no scope file yet | The architecture document (deliverable D-2; **path not set**) and the architecture reviewers' review record (**path not set**). Also PM-only: `board.md`, `metrics.jsonl`. |
 | RS3 chat-path spike | scope approved (D-080) | Branch `spike/chat-path` (anything on it, never merged into `dev`); on `dev`: `research/chat-path/`. Also PM-only: `board.md`, `metrics.jsonl`. |
-| WP16 ontology and layout (absorbs WP13) | impact map built (this unit); no scope yet | `ontology/scat.ttl`; `contracts/` (all four documents and `contracts/examples/`); `src/scat_kg/`; `tests/` (including `tests/docs/conftest.py`); `docs/` (all pages, plus new `docs/flow.md` and `docs/data-and-consent.md`) and `mkdocs.yml`; `acceptance/` (README, reviewers-guide, walkthrough, `briefs/`, `personas/`, `playtest-findings.md`, new briefs and reports); `work-packages/WP16.md` and `work-packages/impact/`; in `scat-kg-template`: the vault pages, `class/`, `.obsidian/`, `.gitignore`, `README.md`, `scat.toml`, `pyproject.toml`, `uv.lock`. At acceptance only: `plan.md` item 4 (the ACE). PM-only: `board.md`, `metrics.jsonl`. Detail and counts: `impact/WP16.md`. |
+| WP16 ontology and layout (absorbs WP13) | build complete at tools `wp16/u14` d3f5bce and template `wp16/u12` 3cdbe60; re-sweep run (impact/WP16.md section 9); **files released for acceptance**: no unit owns them once the PM merges | `ontology/scat.ttl`; `contracts/` (all four documents and `contracts/examples/`); `src/scat_kg/`; `tests/` (including `tests/docs/conftest.py`); `docs/` (all pages, plus new `docs/flow.md` and `docs/data-and-consent.md`) and `mkdocs.yml`; `acceptance/` (README, reviewers-guide, walkthrough, `briefs/`, `personas/`, `playtest-findings.md`, new briefs and reports); `work-packages/WP16.md` and `work-packages/impact/`; in `scat-kg-template`: the vault pages, `class/`, `.obsidian/`, `.gitignore`, `README.md`, `scat.toml`, `pyproject.toml`, `uv.lock`. At acceptance only: `plan.md` item 4 (the ACE). PM-only: `board.md`, `metrics.jsonl`. Detail and counts: `impact/WP16.md`. |
 
-WP13 is absorbed into WP16 (D-078): it owns nothing of its own and is not dispatched. Packages not yet in flight (WP17 to
+WP16's files are released: the build units are finished and nothing under the WP16 list is owned until the PM merges the
+branch; the stale hits in `impact/WP16.md` section 9 go back to a unit only by the PM's dispatch. WP13 is absorbed into WP16 (D-078): it owns nothing of its own and is not dispatched. Packages not yet in flight (WP17 to
 WP20) are not listed; WP17, WP18 and WP19 read the model WP16 writes and start after it (plan.md).
 
 ## Files owned by no package, kept as they are
