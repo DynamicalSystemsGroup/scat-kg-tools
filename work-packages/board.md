@@ -333,7 +333,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 33 | WP21-U1, U1r, U7, U7r, U9, U9r | 14 | 14 | 1.00 | 0.6 h | 23.33 |
 | 34 | WP21-U2, U2r, U3, U3r, U3g, U3gr, U4, U4r, U5, U5r, U8, U8r (U4b, a 1-point pin edit, unplanned: no separate review, the docs tests are its check) | 33 | 33 | 1.00 | 2.2 h | 15.0 |
 | 35 | WP21-U3h, U3hr, U6, U6r, U8f, U8fr (U8f, U8fr added by the PM: red CI) | 12 | 13 | 1.08 | 1.6 h | 8.13 |
-| 36 | WP21-U10, U10r, U10b, U10br (U10b, U10br added by the PM after D-119) | 10 | 13 | 1.30 | 1.7 h | 7.65 |
+| 36 | WP21-U10, U10r, U10b, U10br (U10b, U10br added by the PM after D-119) | 9 | 13 | 1.44 | 1.7 h | 7.65 |
 
 ## Velocity and forecast
 

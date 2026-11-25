@@ -2306,3 +2306,11 @@ docstring's "600" follows the new cap. One fresh review against the reworded R7,
 
 Also decided: SCAT-UNCODED keeps warning at every status, `stub` included (the PM's default). It is the to-do a coder
 needs early, in the spirit of C3: a narrative stays out of the knowledge graph until it links a node.
+
+## D-120 | 2026-11-25 | Iteration 36's record corrected, on the chief engineer's yes
+
+The PM's iteration 36 record said 10 estimated points; its units add up to 9. The PM's correction was refused by the
+permission guard, and the ACE did not make it in its place; it asked the chief engineer whether the record may be
+corrected to 9 estimated points. He chose "Yes, correct it". A correcting record (`corrects` the original's `ts`) is
+appended and the board's row reads 9 est, 13 realized, ratio 1.44. `check_metrics.py --accept WP21` passes.
+Also: template `dev` is 271c3e9, pinning tools 7f0ed05 (check: no problems); the docs tests pin it (66 passed).
