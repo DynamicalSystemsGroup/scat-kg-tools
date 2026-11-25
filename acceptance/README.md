@@ -118,7 +118,7 @@ example was removed, makes the report void.
 | The comfortable organiser on Sonnet, as the model comparison (ACE only) | `personas/p3-organiser-comfortable-repl-sonnet.md`, `briefs/p3-...` |
 | Every tester is the organiser at the solo-trial stage, varying only in comfort with the tools; each runs the whole journey from J1 | `personas/` (one persona, three comforts); each brief, "What to do, stage by stage", J1 to J10 |
 | Most on Haiku | two of the three journey personas; the model is named in each brief |
-| At least one Haiku tester in the REPL, at least one on the CLI | p1 (Python session, J2 to J10), p2 (command line, J2 to J10) |
+| At least one Haiku tester in the REPL, at least one on the CLI | p1 (Python session, J3 to J10; J2 on the command line), p2 (command line, J2 to J10) |
 | Clean user environment: fresh home directory, uv not installed | this README, "Clean-environment setup". The uv half is replaced by "preinstalled", stated in each report (D-040, D-041) |
 | Starts from the Pages preview URL and follows only what the docs say | each brief, "Where you start" and "Follow only the pages"; this README, "Docs source" |
 | J5's repository simulated by an isolated clone with the remote removed (and J2's, by a second clone) | this README, "Clean-environment setup", "Two clones" and "J2 and J5"; each brief, "Where you start" |
@@ -157,7 +157,7 @@ noticed, since the guide text carries the word jazz in one plain sentence.
 - uv is preinstalled, not installed from the docs' command. The docs' install step is exercised only by the chief
   engineer (UA-M). Log D-040 and D-041.
 - The isolated clones have no remote, so J10's push cannot work (nor the push of the tag), and the tester's environment may also refuse `git push` (or `git commit`). This is a known limit of the isolation. For agents, J10 is a clean whole-vault check plus a local `git commit` and a local `git tag` that pins it (D-044). The briefs tell the tester to paste what happened to the push and move on: a failed or refused push is not a finding and is not blocking.
-- The testers have no interactive terminal. The REPL testers (p1, p3) type their lines by piping them into `uv run python -i`; the brief gives the pattern. p1 and p3 must use the Python session for every tool step from J2 to J10, and p2 the command line.
+- The testers have no interactive terminal. The REPL testers (p1, p3) type their lines by piping them into `uv run python -i`; the brief gives the pattern. p1 and p3 must use the Python session for every tool step from J3 to J10, and p2 the command line from J2 to J10. J2 is the one exception for p1 and p3: the docs' solo trial section is command-line only, so they run it on the command line.
 - The test git identity is pre-set in the environment (the docs' own `git` identity prompt is not exercised).
 - A local build of the docs is weaker than the Pages deploy and is recorded as such.
 - The persona text is a model's reading of a person. It tests the docs, not real users, which UA-M covers.
