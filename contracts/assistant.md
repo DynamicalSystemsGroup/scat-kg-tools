@@ -2,8 +2,7 @@
 
 Three actors work on a vault. The **coder** owns interpretation: the account matches the notes and the coding is right.
 The **tool** owns conformance: the graph matches the Markdown and obeys the ontology. The **assistant** helps and holds
-no authority. Without it nothing is lost but speed. The MCP prompts, the IDE setup skill and the docs cite this file;
-where they differ from it, this file rules.
+no authority. Without it nothing is lost but speed. The MCP prompts, the IDE setup skill and the docs cite this file.
 
 ## May
 
