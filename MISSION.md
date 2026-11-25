@@ -45,7 +45,8 @@ where the project's data rights allow one, can take the mechanical work through 
 
 - **For the users: "make the right way the easy way".** The right way includes setting clear expectations with
   participants, securing their informed consent, and keeping the commitments made to them.
-- **For the builders: "as simple as possible but no simpler".**
+- **For the builders: "as simple as possible but no simpler".** Hard fought simplicity comes from fit for purpose
+  modular architecture, well defined interface contracts, and purposeful components.
 
 When a choice isn't settled elsewhere, these decide it. Over-specifying is a failure too. This mission states intent
 and outcomes; how to achieve them is decided in the work packages, by evidence. Design guidance at the end of this
