@@ -2259,3 +2259,23 @@ Outcomes:
   instruction. The checkout has no `origin` remote and sits at 5a7290f; a fresh clone is simpler than a pull.
 - **Commit as the trigger** for reading written content into the knowledge graph: a candidate (C9), not scoped.
 - **The w3id namespace registration PR** is deferred until after the release, so it can cite the release.
+
+## D-117 | 2026-11-25 | WP21-G9: the glossary's new terms, and their open points
+
+The change consultant's sweep and the draft (`work-packages/impact/WP21-glossary-draft.md`, from WP21-U3g) are
+accepted with these calls by the ACE:
+- **Edges told vs edge table: option A.** "Edges told" names a narrative's own table (columns `from | type | to |
+  note`); "edge table" keeps its sense (the view: all edges of one type), with the clause "Not a narrative's Edges told
+  table." No existing use changes.
+- **The assistant's rules.** `contracts/assistant.md` keeps its name, "the assistant's rules", and the MCP resource
+  `scat://assistant-rules` is unchanged. The glossary's **rule, norm** row says that the assistant's rules are norms
+  for the assistant, which the server enforces only where it refuses an act (it cannot set `done`).
+- **skill** covers a package of instructions an assistant loads in the chat or the IDE (one entry).
+- **coded, uncoded** as drafted: coded is at least one node link. `MISSION.md:74` uses "coded" for a narrative that is
+  done ("every node the account refers to is identified and linked ..."). The ACE proposes to the chief engineer that
+  it read "fully coded" (a mission edit; morning list). Until then, the glossary row notes that "done" requires a fully
+  coded narrative.
+- **The terms page's word cap** (600, WP12) is raised to fit the eleven new terms; the test changes in that one line.
+- **Uses brought in line:** "session key" in `deploy/README.md`; "saved agent" in the chat-path guide (WP21-U10).
+The application (glossary rows, `docs/reference/terms.md` bullets, the cap) is one unit, WP21-U3h, so the glossary
+and its test land together.
