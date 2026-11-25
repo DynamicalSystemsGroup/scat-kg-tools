@@ -28,6 +28,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP18 | The chat path (D-094) | all units done; WP18-R4 run 25 November; acceptance waits on the C7 fix (WP21) | `WP18.md` |
 | WP19 | The range vault (D-094) | all units done and reviewed on `pm-wp18`; `check_metrics.py --accept WP19` passes; ready for ACE acceptance | `WP19.md` |
 | WP20 | The candidate and user acceptance (D-097) | manual path passed UA-A round 2 (D-101); all units done except WP20-UC1 (chat-path UA-A, queued, waits on the chief engineer's sitting) | `WP20.md` |
+| WP21 | Rules and norms, the chat path's life cycle, the published image (D-114) | in flight; units planned, wave 1 starting | `WP21.md` |
 
 ## Units
 
@@ -265,6 +266,28 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP20-U10 | Python developer (W9 candidates off by default, W10a, W10b), sonnet | 5 | 5 | `wp20c/u10` | done |  | 2026-11-25 | 1 push-back, 2 review rounds; 2289 tests |
 | WP20-UA2 | UA-A round 2, manual path (4 fresh testers: 3 Haiku, 1 Sonnet), haiku | 8 | 8 | none | done |  | 2026-11-25T06:49:12-05:00 | all four reached J10, no blocking finding; dispositions in D-101 |
 | WP20-U11 | technical writer (docs X1, X5, X3), sonnet | 2 | 2 | `wp20c/u11` | done |  | 2026-11-25T06:49:12-05:00 | first-time reviewer PASS, two minor fixes; 48 docs tests; no UA-A round 3 (D-101) |
+| WP21-U1 | Python developer (WP8-U1 port), sonnet | 2 |  | `wp21/u1` | queued |  |  |  |
+| WP21-U1r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U1 |  |  |
+| WP21-U2 | Python developer (table order), sonnet | 5 |  | `wp21/u2` | queued | U1 |  |  |
+| WP21-U2r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U2 |  |  |
+| WP21-U3 | Python developer (exclusion, machine interface), sonnet | 5 |  | `wp21/u3` | queued | U2 |  |  |
+| WP21-U3r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U3 |  |  |
+| WP21-U3g | Python developer (SCAT-MENTION opt-in, glossary draft), sonnet | 3 |  | `wp21/u3g` | queued | U2 |  |  |
+| WP21-U3gr | reviewer (fresh), sonnet | 2 |  | `-` | queued | U3g |  |  |
+| WP21-U4 | mechanical sweep (template, range vault), haiku | 2 |  | `wp21/template`; `wp21/u4` | queued | U2 |  |  |
+| WP21-U4r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U4 |  |  |
+| WP21-U5 | technical writer (docs/norms.md), sonnet | 5 |  | `wp21/u5` | queued | U3 |  |  |
+| WP21-U5r | reviewer and cold reader (fresh), sonnet | 2 |  | `-` | queued | U5 |  |  |
+| WP21-U6 | Python developer (skill package, drift test), sonnet | 5 |  | `wp21/u6` | queued | U5 |  |  |
+| WP21-U6r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U6 |  |  |
+| WP21-U7 | research engineer (secret-handling spike), sonnet | 3 |  | `wp21/u7` | queued |  |  |  |
+| WP21-U7r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U7 |  |  |
+| WP21-U8 | Python developer (launcher secret handling), sonnet | 3 |  | `wp21/u8` | queued | the ACE's decision on U7's recommendation |  |  |
+| WP21-U8r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U8 |  |  |
+| WP21-U9 | Python developer (image CI, launcher pull, run-time user), sonnet | 5 |  | `wp21/u9` | queued |  |  |  |
+| WP21-U9r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U9 |  |  |
+| WP21-U10 | technical writer (life-cycle guide, leave-no-trace), sonnet | 5 |  | `wp21/u10` | queued | U6, U8, U9 |  |  |
+| WP21-U10r | reviewer and cold reader (fresh), sonnet | 2 |  | `-` | queued | U10 |  |  |
 
 ## Iterations and velocity
 
