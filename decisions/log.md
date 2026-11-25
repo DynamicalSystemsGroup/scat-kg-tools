@@ -2137,3 +2137,9 @@ quoted as typed and recorded by the ACE:
 Outcome: Colima becomes the default runtime in the chat-path guide (v0.1 is Mac only); Docker Desktop becomes the
 untested alternative, and D-096's install request is withdrawn. On the container: the Dockerfile is already in the
 tools repo (`deploy/`); what "providing the container" covers is put as one follow-up (D-106).
+
+## D-106 | 2026-11-25 | Publish the MCP server's image
+
+Asked whether "providing the container" means publishing a built image, documenting the local build, or both. The
+chief engineer chose "Publish a built image": CI builds the MCP server image and publishes it at each release, and the
+launcher pulls it instead of building. In v0.1, with C7 and C8 (the life cycle).
