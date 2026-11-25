@@ -486,6 +486,12 @@ def test__scat_mention__a_hyphen_or_space_mix_matches_and_other_cuts_do_not(make
         assert ("SCAT-MENTION" in rules_of(r)) is hit, body_
 
 
+def test__scat_mention__a_title_with_no_word_characters_names_nothing(make_vault):
+    files = {"group/dashes.md": doc("group", "-----"), **body("A line ----- and more.")}
+    r = report_of(make_vault, files)
+    assert "SCAT-MENTION" not in rules_of(r)
+
+
 # SCAT-CAP and SCAT-CAP-CONFIG
 
 CAP_HEAD = "error [SCAT-CAP] scat.toml field `stakeholder_group_cap`: the vault holds {n} group pages, over the cap of {cap}: {names}"

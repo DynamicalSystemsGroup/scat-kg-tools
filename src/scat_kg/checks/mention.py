@@ -70,6 +70,9 @@ def mention(ctx: Ctx, page: Page):
             continue
         best = None
         for text in texts:
+            # a text with no word character (only hyphens or spaces) names nothing
+            if not re.search(r"\w", text):
+                continue
             m = _pattern(text).search(plain)
             if m and (best is None or m.start() < best.start()):
                 best = m
