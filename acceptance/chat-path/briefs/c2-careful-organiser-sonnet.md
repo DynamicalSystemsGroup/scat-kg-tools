@@ -150,9 +150,11 @@ Do these in order. For each, its "Done" line is what you should be able to show 
    you, and whether any view sends you back to the coding loop; if it does, go back. Done: each view shown in the
    chat, pasted; the written tables shown to be in the vault folder; your reading of each.
 10. **J10, hand over.** Reach a clean check of the whole vault and the written views. Decide, with the reason, whether
-    your model is finished for the hand-over case below. If it is, save your work to GitHub (with the way the chat-path
-    page gives, or by asking a person only if it says a person may), lock a version without a terminal as the chat-path
-    page allows, and name the tag. Stop the session as the page says and delete what the page says to delete. Done: a
+    your model is finished for the hand-over case below. If it is, save your work to GitHub (the chat-path page names GitHub Desktop for this and gives no clicks:
+    if it does not say how, say so, and ask a person only after saying so), lock a version without a terminal as the
+    chat-path page allows (a release on GitHub's website, done by your hands), and name the tag. Stop the session as
+    the page says. Ask your hands to delete what the page says to delete: the assistant never deletes anything, and
+    every deletion is done by your hands, on your word. Done: a
     clean whole-vault check, pasted; the tag, the commit it points at and the recipient, all three written in your
     report, with a screenshot of the GitHub page that shows the tag and commit; the stop message pasted.
 

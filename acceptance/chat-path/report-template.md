@@ -70,7 +70,7 @@ for word.
   GitHub page that shows the tag and commit.
 - Did you reach the end with a clean check (zero errors) and a locked version? yes / no. If no, the stage you stopped at, and why.
 - **Teardown** (filled in by the ACE from the run record): the stop message word for word; the public link off; the
-  server gone; the key replaced; the chat's server entry deleted; the chat's test conversations and attached files
+  server gone; the key replaced; the chat's server entry deleted (by the hands, never the assistant); the chat's test conversations and attached files
   deleted (or what the chat does not let you delete); anything not confirmed.
 
 ## 4. Dispositions (filled in afterwards, by the ACE)
