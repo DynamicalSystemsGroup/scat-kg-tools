@@ -20,9 +20,11 @@ stakeholders–concerns, concerns–affordances, and affordances–technologies.
 The result is a navigable, interpretable dataset, and that dataset is the data product. Its conformance to a fixed
 ontology is what makes it analysable. It is scaled to a human note-taker: just enough structure to make the data
 interpretable, but mostly a formal structure for arranging Obsidian notes. The git repository is the data of record,
-and the graph is derived from it. The practices it supports, eliciting, capturing and coding narratives and holding
-disagreement without adjudicating it, were co-developed with Ellie Rennie, and build directly on `ant-rdf`
-(<https://github.com/mzargham/ant-rdf>), the actor-network coding work from that collaboration.
+and the graph is derived from it.
+
+The practices it supports, eliciting, capturing and coding narratives and holding disagreement without adjudicating
+it, were co-developed with Ellie Rennie in the actor-network coding work of `ant-rdf`
+(<https://github.com/mzargham/ant-rdf>).
 
 v0.1 is aimed at a first field deployment. It is built so that a person can do all of it by hand, and so that an LLM,
 where the project's data rights allow one, can take the mechanical work through standard interfaces.
