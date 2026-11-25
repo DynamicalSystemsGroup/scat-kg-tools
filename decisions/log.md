@@ -2291,3 +2291,18 @@ typed and recorded by the ACE:
 Outcome: the mission line is unchanged. The glossary's **coded, uncoded** row (WP21-U3h) says that `done` means the
 narrative is adequately coded as the coder judges, not fully coded, and that a done narrative can still be iterated or
 moved back to `draft`. It does not say "fully coded". D-117's proposal is withdrawn.
+
+## D-119 | 2026-11-25 | WP21-R7 reworded; U10 finishes in one round
+
+U10 (the life-cycle guide and the leave-no-trace walkthrough) passed every check and two cold readers, who found both
+pages followable, which is what the chief engineer asked of teardown ("documented well enough that i could do it from
+the docs or you could do it for me"). Three fresh reviews failed it on R7's wording "each step names one action",
+each finding new compound steps. A requirement that three rounds read differently is the defect, so under D-099 the
+ACE rewords R7, not the pages: **each step names where it is done and one outcome, and refers to no step on another
+page by number or range.** The second half is a real defect the last review found (`leave-no-trace.md` steps 12 to 14
+and 18 point to step ranges of the chat-path guide); U10 inlines them. In the same round: the launcher's
+missing-runtime message stops naming only Docker Desktop (Colima is the default, D-105), and the `test_terms.py`
+docstring's "600" follows the new cap. One fresh review against the reworded R7, then merge.
+
+Also decided: SCAT-UNCODED keeps warning at every status, `stub` included (the PM's default). It is the to-do a coder
+needs early, in the spirit of C3: a narrative stays out of the knowledge graph until it links a node.
