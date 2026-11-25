@@ -51,6 +51,7 @@ the same package. Each change is listed for the chief engineer's review at accep
 | **page** | One Markdown file with a `type` in its frontmatter. | "The narrative page holds the account." | Obsidian note |
 | **field** | One key in a page's frontmatter; Obsidian shows fields as "Properties". | "The `status` field reads `draft`." | YAML frontmatter (Obsidian) |
 | **link** | An Obsidian `[[…]]` reference from one page to another. Never an edge by itself. | "Link `quick-leak-response` where the account names it." | Wikilink (Obsidian) |
+| **cap** | The most stakeholder groups one vault may hold, set by the organiser in the vault's `scat.toml` (key `stakeholder_group_cap`), so few, broad groups can't point to one person. | "The cap is 3, so a fourth group is refused." | Authored in SCAT |
 | **index page** | The page the tool generates for a type, listing its entries. | "The concern index page lists 18 concerns." | Class page (authored) |
 | **status** | How far an entry has got: `stub` (a name, perhaps some metadata), `draft` (content, not yet complete) or `done` (complete, conformant and signed off by the coder). | "The narrative is `done`: coded and signed off." | Authored in SCAT |
 | **mismatch** | A link and an edge that should agree but don't. The tool reports each with a fix. | "The tool reports a mismatch between the page and the graph." | Divergence (authored; R-23) |
