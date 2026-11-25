@@ -105,15 +105,15 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 40. **In the chat:** delete the saved agent. (The chat's Agent Builder holds it; where its delete control is was not
     recorded, so look there.)
 41. **In the chat:** delete the skill `scat-coding`. (Look where you created it.)
-42. **In the chat:** delete the collection you uploaded, and any file left in the chat's file library from this
-    session. (Where these are was not recorded; look for a file library.)
-43. **In the chat:** delete any prompt you saved for this session. If you saved none, there is nothing to do.
-44. **In the chat:** look once more at each place you set something up (MCP Settings, the Agent Builder, the skills,
+42. **In the chat:** delete the collection you uploaded. (Where it is was not recorded; look for a file library.)
+43. **In the chat:** delete any file left in the chat's file library from this session.
+44. **In the chat:** delete any prompt you saved for this session. If you saved none, there is nothing to do.
+45. **In the chat:** look once more at each place you set something up (MCP Settings, the Agent Builder, the skills,
     the files, the history) and check that nothing from this session remains.
 
 ### Check what stays on your Mac
 
-45. **In Finder:** check that your field notes folder and your vault are still there, with your work in them.
+46. **In Finder:** check that your field notes folder and your vault are still there, with your work in them.
 
 ## What is removed and what stays
 

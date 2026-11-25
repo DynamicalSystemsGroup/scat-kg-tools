@@ -260,7 +260,7 @@ choose the new entry in the agent's tools again. This was not yet tried.
 
 ## Use
 
-1. **In the chat:** start a chat with your saved agent (steps 16 and 17 below, in "Set up the skill and the saved agent").
+1. **In the chat:** start a chat with your saved agent (see "Set up the skill and the saved agent", above).
    If you have no saved agent, start a chat with the model and the server entry instead, and say in your first
    message to follow the coding loop and the assistant's rules from the `scat-kg` server.
 2. **In the chat:** attach your field notes with the paperclip (or drag and drop).
@@ -287,13 +287,14 @@ This is the [coding loop](coding.md#the-coding-loop) with an assistant. What is 
    write the account into the vault.
 3. **In Obsidian:** paste the account into the narrative page, and edit it there.
 4. **In the chat:** confirm or change the nodes and links the assistant proposes from the account. This is *coding*.
-5. **In the chat:** let the assistant make the pages that are missing and record each edge you confirmed, by the
-   tool's operations. It never types a table row by hand.
-6. **In the chat:** read the check the assistant runs on the narrative and its neighbours. This is *reviewing*. It
+5. **In the chat:** let the assistant make the pages that are missing.
+6. **In the chat:** let the assistant record each edge you confirmed, by the tool's operations. It never types a
+   table row by hand.
+7. **In the chat:** read the check the assistant runs on the narrative and its neighbours. This is *reviewing*. It
    quotes each problem as the tool reports it. A passing check means the structure fits. It does not mean the
    narrative is correct.
-7. **In Obsidian:** read the page and decide whether the account matches the notes.
-8. **In Obsidian:** set `status: done` yourself. The assistant never does, and the server refuses it if asked.
+8. **In Obsidian:** read the page and decide whether the account matches the notes.
+9. **In Obsidian:** set `status: done` yourself. The assistant never does, and the server refuses it if asked.
 
 The server and Obsidian use the same folder, so what the assistant records appears in Obsidian. How quickly
 Obsidian shows a change was not tried; if a page looks stale, reopen it. If you work in a copy (see above), the
