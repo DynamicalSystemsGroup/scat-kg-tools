@@ -164,6 +164,7 @@ read_key() {
 }
 
 file_mode_ok() { # the file is -rw-------
+    # shellcheck disable=SC2012 # ls is the one way to read the mode that is the same on macOS and Linux (stat flags differ)
     [ "$(ls -ln "$1" 2>/dev/null | cut -c1-10)" = "-rw-------" ]
 }
 
@@ -376,8 +377,10 @@ I can make a copy in ~/SCAT/vault and use the copy. Your original stays where it
 
 Make the copy now?" "Copy" "Cancel")
         [ "$ans" = "Copy" ] || [ "$ans" = "copy" ] || die "Nothing was copied or started. Move your vault outside Documents, Desktop, Downloads and iCloud, or click SCAT Chat again and say Copy."
-        mkdir -p "$COPY_TO" && cp -R "$VAULT/." "$COPY_TO/" ||
-            { rm -rf "$COPY_TO"; die "The copy failed, so nothing was started. If macOS asked whether SCAT Chat may use your Documents folder, click Allow; then click SCAT Chat again."; }
+        if ! { mkdir -p "$COPY_TO" && cp -R "$VAULT/." "$COPY_TO/"; }; then
+            rm -rf "$COPY_TO"
+            die "The copy failed, so nothing was started. If macOS asked whether SCAT Chat may use your Documents folder, click Allow; then click SCAT Chat again."
+        fi
         VAULT=$COPY_TO
         ui_progress "Copied your vault to ~/SCAT/vault. Remember: edits made there must be pulled back through git."
     fi
