@@ -2,6 +2,13 @@
 
 *Four sittings, taken one at a time. Draft for this release: the PM and the ACE finish the parts marked below.*
 
+**Where the release stands (D-098).** WP20-U1 is on `dev` (92b64d7): whole-vault views now refuse a page whose
+frontmatter cannot be read, naming the file, and the architecture sentences are added (see 4c, "Closed since D-095").
+UA-A on the manual path has not run: round 1 waits on the candidate, and a later unit fills section 4d from the
+reports. The chat path's UA-A has three testers, two on Haiku and one on Sonnet; the ACE runs their sessions, light
+and spaced, in your sittings. A docs unit is pending for five defects the reviewers found (4c, item 9), and the
+candidate is pinned only after it lands. Until then, treat every "result when written" below as stale.
+
 Read one sitting, tick its boxes, stop. Each sitting has an entry point, a short list of what to look at, and one
 decision that is yours. Nothing here asks you to trust a claim: each claim names a command to run or a file to open.
 Paths are from the root of `scat-kg-tools` unless they say otherwise.
@@ -33,7 +40,7 @@ changed `src/` or `docs/` was `84fd58b`); the PM refreshes them at staging.
 
 | Sitting | Entry point | The decision you make |
 |---|---|---|
-| 1. The walkthroughs (UA-M) | `acceptance/walkthrough.md`, then `docs/chat-path.md` | Do you pass UA-M on each path? |
+| 1. The walkthroughs (UA-M) | `acceptance/walkthrough-manual.md`, then `acceptance/walkthrough-chat.md` | Do you pass UA-M on each path? |
 | 2. The docs site | the Pages URL above | Are the docs clear and navigable, and is the style light enough (R-15)? |
 | 3. The tools and checks | the command block at the head of sitting 3 | Is each requirement R-1 to R-23 accepted, or noted? |
 | 4. The ACE's calls, the glossary, what is weak | the table in 4a | Which calls do you keep or revert, and what do you do about each weak item? |
@@ -42,9 +49,14 @@ changed `src/` or `docs/` was `84fd58b`); the PM refreshes them at staging.
 
 ## Sitting 1. The end-to-end walkthroughs (UA-M)
 
-**Entry point.** `acceptance/walkthrough.md`. It starts at the Pages URL and gives, for each stage, where to enter,
-what "done" looks like, what to note if it fails, and a resume check. The chat-path script is a second file written for
-WP20-G4 (**PM fills in its path here when it exists**: `acceptance/<file>.md`); its entry point is `docs/chat-path.md`.
+**Entry point.** Two scripts, one per path. `acceptance/walkthrough-manual.md` is the manual path: it starts at the
+Pages URL and gives, for each stage J1 to J10, where to enter, the steps, what "done" looks like, what to record and
+where to resume. `acceptance/walkthrough-chat.md` is the chat path, J1 to J10 with no terminal from J5 on; its docs
+entry is `docs/chat-path.md`. (The older single `acceptance/walkthrough.md` is gone.) Each script splits its walk into
+its own sittings and says where you may stop: the manual script has five (A solo trial J1-J2; B terms and set-up
+J3-J5; C plan and capture J6-J7; D code J8; E analyse and hand over J9-J10) and the chat script has four (A once-only
+installs; B discover to plan J1-J4, J6-J7; C code J8; D analyse and hand over J9-J10). These are walk sittings inside
+this guide's sitting 1.
 
 **What to look at.**
 
@@ -55,8 +67,13 @@ WP20-G4 (**PM fills in its path here when it exists**: `acceptance/<file>.md`); 
 - **Chat path (J1 to J10, G14).** You run it as you would use it: the field notes uploaded to the chat as a
   collection, the coding loop in the chat and in Obsidian, views through the MCP server, ending with the launcher
   torn down and the key rotated. This needs your sign-ins and a key you paste; it is also WP18-R4 (the live run),
-  which has not been done (see 4c, item 2).
+  which has not been done (see 4c, item 2). Its UA-A is three testers, two on Haiku and one on Sonnet, run by the ACE
+  in these sittings.
 - **Hand-over (J10).** Each path ends with you deciding the model is finished and locking a version with a tag.
+- **Held gaps, pending the docs unit (D-098, ruling 3).** Three of the five defects touch these walks: the solo trial
+  (J2) has no section of its own in the docs; no command is shown to see which commit a tag pins; and the chat path
+  has no no-terminal route (GitHub Desktop) for clone, commit, push and removing the example. Record what you
+  actually did where the docs fall short.
 
 **Split and resume.** Each stage ends in a state you can stop in. To resume, run that stage's "Resume check". If a
 stage fails, do not work around it: note the page, the step, what you typed and what printed. Fixes go on `dev`, the
@@ -140,7 +157,8 @@ candidate and replaces it.
 uv run pytest -q: 2258 passed, 107 warnings in 171 s (pytest only; lock, ruff and strict build not re-run for this draft)
 ```
 
-The benchmark alone is `uv run pytest tests/bench -s -q` (R-5).
+The ACE's count on `dev` at 92b64d7, after WP20-U1, is 2,264 passed (D-098); I did not re-run it. The benchmark alone
+is `uv run pytest tests/bench -s -q` (R-5).
 
 **What to look at.** The table. For each row you doubt, open the named file or run the named command. Status is the
 PM's and the ACE's reading, not yours.
@@ -163,10 +181,10 @@ PM's and the ACE's reading, not yours.
 | R-14 | Guides hold the stance and never rank or adjudicate | your sitting 2; `research/facilitation/readout.md` | met on reading only; no test |
 | R-15 | A light musical reference, clarity first | D-052; `docs/index.md` (the logo and one aside) | your judgement (sitting 2); no cold-read bar since D-052 |
 | R-16 | A stable machine interface | `contracts/machine-interface.md` and `.schema.json`; `uv run pytest tests/machine -q`; `uv run scat check --json` on a seeded defect; the built wheel lists only `pydantic`, `pyyaml`, `rdflib` (D-066) | met at `schema_version` 1; **`schema_version` 2 since WP16** (D-089): re-run the wheel check at the candidate. One part is held: WP17-U3b (4c item 1) |
-| R-17 | The notebook runs on the template's vault; fingerprint view, three edge tables, traces | `tests/views/`; the template's CI artifact `analysis-executed` (board, WP17 note) | **not accepted: WP17 is held on WP17-U3b** (D-093, D-095). Tests pass on `dev`; the notebook is on the template's branch `wp17/notebook` per the board, and **the PM confirms at staging that it is on template `dev`** |
+| R-17 | The notebook runs on the template's vault; fingerprint view, three edge tables, traces | `tests/views/`; the template's CI artifact `analysis-executed` (board, WP17 note) | **not accepted: WP17 is held on WP17-U3b** (D-093, D-095). Tests pass on `dev`, and whole-vault views now refuse on an unreadable page (WP20-U1); the notebook is on the template's branch `wp17/notebook` per the board, and **the PM confirms at staging that it is on template `dev`** |
 | R-18 | Ripple-complete changes: an impact map before approval, a clean sweep before acceptance | `work-packages/impact/WP16.md`, `work-packages/impact/file-map.md`; the re-sweep in D-091 | met for WP16 (22 remaining hits are named keeps, D-091); no other package changed a term, contract or rule since |
 | R-19 | Manual first: every step can be done by hand, no LLM | UA-M manual path; the docs test, which runs with no LLM | met in tests; **your sitting 1** is the walk |
-| R-20 | The chat path works, at lab and range level | automated: `uv run pytest tests/mcp_server tests/deploy -q`; lab run: `research/chat-path/readout.md` (D-090); range vault: `research/range/koi/` (D-097) | **open.** The automated part and the lab run are met. The live run in the chat on the shipped launcher (WP18-R4) has not been done, and the range-level run depends on it |
+| R-20 | The chat path works, at lab and range level | automated: `uv run pytest tests/mcp_server tests/deploy -q`; lab run: `research/chat-path/readout.md` (D-090); range vault: `research/range/` (D-097) | **open.** The automated part and the lab run are met. The live run in the chat on the shipped launcher (WP18-R4) has not been done, and the range-level run depends on it |
 | R-21 | Coding happens in Obsidian | `research/layout/review.md`, "Acceptance walk" (D-088, D-091); your sitting 1 | met by the ACE's walk; yours is the one that counts |
 | R-22 | Architecture before detailed design | `contracts/architecture.md`; `research/architecture/review.md` (three reviewers); D-085 | met |
 | R-23 | Links and edges reconcile | `tests/checks/`, `tests/independent/test_mismatch_pairs.py`, `tests/independent/test_coding_order.py`, `tests/independent/test_done_refused.py` | met; the ACE's Obsidian walk covers the incremental coding session (D-091) |
@@ -209,7 +227,7 @@ written (**flag for the ACE**: confirm it was skipped and not lost).
 | D-001 | Yours | Repositories are public under the group; the mission is approved by merging its PR | his typed answer in the entry | none |
 | D-002 | ACE, on his standing instruction | The mission's defaults are the ACE's sign-off; only intent gaps escalate | his standing instruction in the entry | none |
 | D-003 | Yours | Repository names and the four-concept framing (the repositories were later renamed) | his typed words | none |
-| D-004 | ACE | Adopt a sibling project's branches, chain of command and tiered review; reviewer's guide in sittings by output | the entry lists each adopted item | none |
+| D-004 | ACE | Adopt a branch scheme, chain of command and tiered review from an earlier team; reviewer's guide in sittings by output | the entry lists each adopted item | none |
 | D-005 | ACE + yours | Add the candidate stage; read "terminal/repl" as REPL plus CLI; licence Apache-2.0 (yours) | D-007 confirms the reading; his typed licence answer | none |
 | D-006 | Yours | Haiku testers; "make the right way the easy way" | his typed words | none |
 | D-007 | Yours | CLI and REPL are equal paths | his typed words | none |
@@ -273,10 +291,10 @@ written (**flag for the ACE**: confirm it was skipped and not lost).
 | D-079, D-080, D-083 | ACE | WP14, RS3 and WP15 approved | scope files | none |
 | D-081 | ACE | WP14 scope corrected; the ACE's calls on the WP16 impact map | `work-packages/impact/WP16.md`, section 8 | none |
 | D-082 | ACE | WP14 accepted; a private name redacted from an old log entry (the one edit to a past record) | grep of the repository, outside `decisions/`, finds nothing | none |
-| D-084 | Yours | The chat route for v0.1 is the coder's own machine behind a tunnel; governed compute after v0.1 | his typed words | none |
+| D-084 | Yours | The chat route for v0.1 is the coder's own machine, reached from the chat service; governed compute after v0.1 | his typed words | none |
 | D-085 | ACE + yours | WP15 accepted; architecture approved (R-22); rule 4; the IDE path's `set-status` residual risk | three reviewers; `research/architecture/review.md` | none |
 | D-086 | ACE | WP16 approved | scope file | `divergence/D-086` |
-| D-087 | ACE | WP16 scope fixed; the tunnel pick for the chat route | PM's scope check | none |
+| D-087 | ACE | WP16 scope fixed; the connection method for the chat route | PM's scope check | none |
 | D-088 | ACE | The layout: a narrative is one page with an "Edges told" table; edges one per pair, built by the tool; index pages are Bases | `research/layout/review.md` | none |
 | D-089 | ACE | WP16 PM's defaults confirmed; `schema_version` 2; machine-interface page cut to 600 words; glossary gains "cap" | the entry's six rulings | none |
 | D-090 | Yours + ACE | RS3 lab run worked; the MCP server runs in a container; permissions for the run | `research/chat-path/` notes on `spike/chat-path`, summarised in `research/chat-path/readout.md` | none |
@@ -284,9 +302,10 @@ written (**flag for the ACE**: confirm it was skipped and not lost).
 | D-092 | ACE | WP17 (the views) approved; dependencies in an optional extra or the template | scope file | `divergence/D-091` |
 | D-093 | ACE | WP17 held on a guard refusal (WP17-U3b); 45 future-stamped metrics records to be corrected; two check gaps | the entry; `work-packages/morning-list.md` item 1b | `divergence/D-093` |
 | D-094 | ACE | WP18 (the chat path) and WP19 (the range vault) approved | scope files | `divergence/D-093` |
-| D-095 | ACE | WP17 follow-ups landed: metrics corrected, two check gaps closed (two tests changed with the behaviour); two items left for WP20 | `check_metrics.py` passes on 536 records; CI green | none |
-| D-096 | ACE | Rulings on the PM's defaults; **Docker Desktop is the documented container runtime**, untested here; the launcher never changes tailnet settings | the entry | `divergence/D-096` |
-| D-097 | ACE | WP19 accepted; WP18 built, waiting on its live run; WP20 approved | `check_metrics.py --accept WP19`; `research/range/koi/` | `divergence/D-096` |
+| D-095 | ACE | WP17 follow-ups landed: metrics corrected, two check gaps closed (two tests changed with the behaviour); two items left for WP20 (the views item is now done, WP20-U1) | `check_metrics.py` passes on 536 records; CI green | none |
+| D-096 | ACE | Rulings on the PM's defaults; **Docker Desktop is the documented container runtime**, untested here; the launcher never changes the coder's network account settings | the entry | `divergence/D-096` |
+| D-097 | ACE | WP19 accepted; WP18 built, waiting on its live run; WP20 approved | `check_metrics.py --accept WP19`; `research/range/` | `divergence/D-096` |
+| D-098 | ACE | WP20 mid-way rulings: the template branch may be pushed by URL to the template's `dev`; the stray "Remove the example" commit is not published (the pin is rebased and the pushed tree checked); five docs gaps are defects against R-9, R-10, R-11 and G9, fixed by a docs unit before the pin is redone; the chat path's UA-A has three testers (two Haiku, one Sonnet), run by the ACE in your sittings | the entry; WP20-U1 on `dev` at 92b64d7 | none |
 | WP10 default | ACE | `SCAT-DRAFT-FIELD` fires at `stub` for a field with a value set, so a fresh stub warns until `timeframe` is filled. An ACE default, for you to confirm | `contracts/rule-catalogue.md` | none |
 
 Your own decisions or directions that the ACE only recorded and applied are marked "Yours" above. D-015 and D-016 are
@@ -348,6 +367,16 @@ To see each edit as text: `git log -p --follow -- GLOSSARY.md`, or `git show a83
 
 **Entry point.** The list. Each item names the file or log entry that backs it.
 
+**Closed since D-095**
+
+- **Whole-vault views and unreadable frontmatter (D-095's carried item, WP20-U1, on `dev` at 92b64d7).** A whole-vault
+  view now refuses on a page whose frontmatter cannot be read and names the file, where it had left the narrative out
+  silently. The two architecture sentences that needed the new refusals are in `contracts/architecture.md`. Evidence:
+  `tests/views/test_views_unreadable_frontmatter.py`; D-098 gives the 2,264-test run.
+
+**Carried over, still true:** WP17-U3b is still held (item 1); Docker Desktop is still untested (item 3); the
+live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
+
 **Open and needs your answer**
 
 1. **WP17-U3b is held (D-093, D-095).** `scat draw --out` can write a drawing outside the vault; the machine-interface
@@ -382,9 +411,12 @@ To see each edit as text: `git log -p --follow -- GLOSSARY.md`, or `git show a83
 8. **Obsidian and the rendered pages are unseen by agents.** No agent opened Obsidian (the ACE's walk in D-091 is the
    exception for the layout). The rendered phrase tables and JSON blocks (F-6), and the WP17 to WP19 pages at desktop
    and 375 px, were measured without a browser. Your sitting 2 is the first look.
-9. **The two items carried from D-095, for WP20's cleanup (WP20-G6).** A narrative with unparsable frontmatter is
-   still left out of whole-vault views silently, and two sentences in `contracts/architecture.md` need the new refusals.
-   **Status: not done as of this guide;** the PM updates this line when the cleanup lands.
+9. **Five docs defects wait on a docs unit (D-098, ruling 3).** The reviewers found, against R-9, R-10, R-11 and G9:
+   the fingerprint view's command contradicts itself between the coding guide and the analysis guide; no command is
+   shown to run the notebook; the solo trial (J2) has no section of its own; no way is shown to see which commit a tag
+   pins; and the chat path has no no-terminal route for clone, commit, push and removing the example (GitHub Desktop,
+   D-087). **Status: pending.** The unit lands before the candidate is pinned and UA-A runs; the PM updates this item
+   then.
 10. **The play-test findings file is stale.** `acceptance/playtest-findings.md` still lists F-1 to F-8 with proposed
     dispositions. The board says WP16-U13 and U7f took F-1, F-3, F-5 and F-7; F-4 became R-16; F-8 became WP12 and WP13;
     F-2 (docs theme end of life, 5 May 2027) is a later package; F-6 is your sitting 2. I did not verify the fixes.
@@ -428,8 +460,9 @@ the table rules came after the audit.
 
 ### 4d. UA-A results
 
-**To be filled from `acceptance/reports/` after round N.** The PM fills this section; nobody writes a result here
-before a report exists. One row per tester per round, with the report file linked. The pass bar is in `MISSION.md`
+**Not yet run (D-098).** UA-A manual round 1 has not been run; a later unit fills the manual rows from
+`acceptance/reports/`. The chat path has three testers, two Haiku and one Sonnet, whose sessions the ACE runs in your
+sittings. Nobody writes a result here before a report exists. One row per tester per round, with the report file linked. The pass bar is in `MISSION.md`
 ("User acceptance", "Pass bar"): every tester reaches the end with a clean check and a hand-over, every finding is
 dispositioned, and the last round leaves no blocking finding.
 
@@ -438,8 +471,9 @@ dispositioned, and the last round leaves no blocking finding.
 | N | p1 facilitator-analyst, REPL | Haiku | manual | | | | | |
 | N | p2 newcomer, CLI | Haiku | manual | | | | | |
 | N | p3 facilitator-analyst, REPL (control) | Sonnet | manual | | | | | |
-| N | chat tester 1 | | chat | | | | | |
-| N | chat tester 2 | | chat | | | | | |
+| N | chat tester 1 | Haiku | chat | | | | | |
+| N | chat tester 2 | Haiku | chat | | | | | |
+| N | chat tester 3 | Sonnet | chat | | | | | |
 
 - Rounds run: to be filled.
 - Candidate commit each round ran against: to be filled.
