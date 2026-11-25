@@ -11,13 +11,15 @@ terminal. Obsidian stays where you read and decide.
     lab run with lab material only. **Docker Desktop has not been tested end to end with this launcher yet**, and
     nobody has yet run the whole path as a coder following this page. Your first run is the real test. Where this
     page cannot vouch for a step, it says so. If a step fails and its message does not help, tell the person who
-    set this up for you which step and what the window said.
+    set this up for you which step and what the window said. One more thing not checked: the launcher looks for the
+    `docker` command only in `/usr/local/bin` and `/opt/homebrew/bin`. If Docker Desktop keeps it elsewhere, the
+    launcher says Docker Desktop is not installed although it is; tell the person who set this up.
 
 ## What the chat path is, and what it needs
 
 A small program, the server, runs on your own Mac and offers the tool's operations to a chat. The chat's own
 service calls the server over the internet, so the server gets a public address for the time you are working.
-Every request must carry a key; without it the server answers "unauthorised" and nothing else.
+Every request must carry a key; without it the server answers with a 401 status and a short "unauthorised" message, and nothing else.
 
 You need:
 
@@ -97,13 +99,15 @@ This page could not confirm the exact name of that menu item, so follow what you
 
 ### 3. The one-time settings in your Tailscale account
 
-The launcher never changes these itself. When one is missing, it stops, says which, and offers to open the page.
-Do not change anything it does not name.
+The launcher never changes these itself. You will meet each of these when you first click SCAT Chat (step 4): if
+one is missing, the launcher stops, says which, and offers to open the page. You may also do them now. Do not
+change anything it does not name.
 
 **HTTPS certificates.** What it does: gives your Mac a proper secure address. Why it is needed: the chat only
 talks to secure addresses. **It publishes your Mac's name in a public record that cannot be erased.** If the name
 has your name or anything private in it, rename the Mac in Tailscale first (the launcher's own words: Machines,
-then Edit machine name), and only then switch HTTPS on. The click: on the page the launcher opens, choose
+then Edit machine name; that is in Tailscale's admin page in a web browser, which the launcher's dialog opens), and
+only then switch HTTPS on. The click: on the page the launcher opens, choose
 Enable HTTPS. If it is missing the launcher says "Tailscale needs HTTPS switched on, once, before the public link
 can work." Click **Open the page**.
 
@@ -117,6 +121,9 @@ Click **Open the page**, approve it, then click SCAT Chat again.
 SCAT Chat is not signed with an Apple developer certificate, so macOS stops it the first time. It is not harmful:
 it is unsigned. What you can check is that it is the file the person who set this up gave you. Right-click (or
 Control-click) the app and choose **Open**, then **Open** again in the dialog. macOS asks only once.
+
+If macOS offers no **Open** button, open System Settings, then Privacy and Security, scroll down and look for
+SCAT Chat with an **Open Anyway** button. This page could not check your version of macOS.
 
 ## Start a session
 

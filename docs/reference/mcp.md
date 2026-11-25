@@ -58,7 +58,7 @@ The server also offers one resource, `scat://assistant-rules`, the assistant's r
 
 A refusal is a result, not an error, and says what to do instead.
 
-- **A request without the key** gets HTTP status 401 and nothing else, when a key is set.
+- **A request without the key** gets HTTP status 401 with a short "unauthorised" message and nothing else, when a key is set.
 - **`done`.** `set_status` refuses to set a page to `done` and refuses to move a page out of `done`. No other tool
   does either. The coder sets `done` in Obsidian. `record_edge` and `remove_edge` refuse a narrative that is `done`.
 - **Paths outside the vault.** A page is named by its name or its path from the vault folder; anything else is
