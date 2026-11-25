@@ -125,7 +125,7 @@ each has its own user experience:
 1. **By hand in Obsidian**, with the tools in an **interactive session**: the Python REPL (`import scat_kg`), with the
    `scat` CLI as an equal path to the same operations and messages. The docs lead with the REPL, because CLI commands
    get long when run through uv.
-2. **Through a chat with an MCP server**, editing in Obsidian. This user may never open a terminal.
+2. **Through a chat with an MCP server**, editing in Obsidian. This user must not be required to open a terminal.
 3. **Through an IDE with agents**, such as Cursor, or VS Code with an agent.
 
 Whatever the path, the machine does mechanical work only, such as transcription and conformance checking. The interpretive
