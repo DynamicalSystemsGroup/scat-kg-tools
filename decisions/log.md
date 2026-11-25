@@ -2157,3 +2157,11 @@ control (Cmd-Shift-Y; "This chat won't appear in your history and will be delete
 Outcome: C8 is named the "leave no trace" life cycle. Its walkthrough runs the coding session in a temporary chat, and
 it is presented as the way to meet one of the stricter policy options. It is not a recommendation: the guide says
 projects that prefer lower friction need not follow it.
+
+## D-108 | 2026-11-25 | The uv gap: test the installer once
+
+Asked whether to accept the uv gap (D-040, D-041) or test uv's official installer once. The chief engineer chose
+"Test the installer once". One fresh tester runs uv's official install script before release. Agent's default: the
+clean environment is a throwaway home folder on this Mac with uv removed from `PATH` (v0.1 is Mac only; a separate
+macOS user account would need the chief engineer's admin password); the installer is uv's own script from its
+official site, run once.
