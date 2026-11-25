@@ -84,7 +84,9 @@ again.
 
 **A finished model.** The exercise is finished when four things hold: the knowledge graph is conformant, the vault is
 navigable in Obsidian, the views are generated, and the coder who interpreted the field notes states that the model
-is a good representation of what those notes contain.
+is a good representation of what those notes contain. That statement is made outside the tool, the way work is
+handed over: the coder decides the model is finished, locks a version, and hands it over, as in a contract delivery, a
+paper submission or a class project hand-in. The docs show how to lock a version on each path.
 
 Most narratives are one of two types, which look at the same knowledge graph from opposite sides. This is an important heuristic
 for facilitating, capturing and coding, though a narrative may be neither.
@@ -400,7 +402,7 @@ from the docs site, set up, code one narrative from their own notes, see its fin
 | J4 Plan | plans a facilitation event: which sessions elicit scenarios and which elicit architectures, who takes part in each, the participation terms agreed for the event, and stakeholder groups within the cap | planning guide |
 | J5 Capture | during the event, records field notes | the two facilitation guides |
 | J6 Code | afterwards, in an interactive session (the Python REPL or the `scat` CLI), drafts narratives from the field notes and codes them into SCAT pages and edges, moving pages from stub through draft to done and fixing each problem from its message | coding guide; API and CLI reference |
-| J7 Finish | reaches a clean whole-vault check, generates the views, navigates the vault in Obsidian, commits and pushes, and signs off a finished model | coding guide |
+| J7 Finish | reaches a clean whole-vault check, generates the views, navigates the vault in Obsidian, commits and pushes, then decides the model is finished, locks a version and hands it over | coding guide |
 
 **The chat journey** is written with the chat path (G14): from the input material uploaded to the chat, through coding
 in the chat and in Obsidian, to a clean check of a private repository and a signed-off finished model, with no
@@ -430,7 +432,10 @@ terminal.
 - **Reporting.** Testers may not read `src/` or `tests/`, and every claim comes with pasted output or a screenshot. A
   report first answers what style or reference the docs evoke. Then, stage by stage, it says where the tester got
   stuck, what it had to guess, and where the docs left it with nowhere to go.
-- **Pass bar.** Every tester, the Haiku testers included, reaches the end of its journey with a clean check. Every
+- **Pass bar.** Every tester, the Haiku testers included, reaches the end of its journey with a clean check. Testers
+  on the manual and chat journeys end as a hand-over: given a stated hand-over case (a contract delivery, a paper
+  submission or a class project hand-in), they decide the model is finished, lock a version and hand it over, and the
+  report shows the locked version. Every
   guess (any action the docs did not literally state) counts as a finding. A finding is **blocking** if it stopped the
   tester short of the end, or if a docs command doesn't work as shown. Every finding is dispositioned: either fixed and
   re-tested by a fresh tester, or accepted with a reason and listed in the reviewer's guide. The final round leaves no
