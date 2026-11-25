@@ -1,8 +1,8 @@
-# Persona c2: the careful organiser, new to all of it (Sonnet, control)
+# Persona c2: the careful organiser, new to all of it (Sonnet)
 
 **Model:** Sonnet. **Path:** the chat, in a browser, with no terminal. **Coding domain:** a neighbourhood pantry's Saturday collection (invented).
 
-This file is the persona in its own words. The brief for this persona carries the same text, so a tester needs only
+This file is the persona in its own words. The brief for this persona carries the same text under "Who you are" (checked word for word), so a tester needs only
 the brief.
 
 ## About me
@@ -21,7 +21,7 @@ Terminal and I do not want to. I work on a Mac.
 - If a page asks me to switch something on, I want to know first what it does and whether I can undo it. If the page
   does not say, I stop and say so.
 - I would rather stop and report than guess. If I do guess, I write the guess down.
-- I do not let the assistant decide for me. If it tells me something is finished, I look for myself first.
+- I do not let the assistant decide for me. If it tells me something is `done`, I look for myself first.
 
 ## What I am here to do
 
