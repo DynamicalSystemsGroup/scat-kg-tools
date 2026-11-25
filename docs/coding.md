@@ -453,16 +453,18 @@ refused [SCAT-DONE-REFUSED] narrative/monday-at-the-desk.md: 3 error(s) would st
     2. leave the page at `draft`: run `scat set-status monday-at-the-desk draft` (REPL: `scat_kg.set_status("monday-at-the-desk", "draft")`)
 ```
 
-Apply the first fix to each: link the name, swap the two ends, and link the existing concern in place of the misspelt one. Swapping the ends of row 2 gave it the same pair as row 1, and the check says so:
+Apply the first fix to each: link the name, swap the two ends, and link the existing concern in place of the misspelt one. Rows 2 and 3 now say what row 1 says, so the check reports each as a repeat:
 
 ```text
 $ uv run scat check monday-at-the-desk
 warning [SCAT-DRAFT-TABLE-DUPLICATE] narrative/monday-at-the-desk.md:17:1 row 2: tells the same edge as row 1 (`holds`, [[workshop-participants]], [[late-returns]]); a narrative tells an edge once
   Fix: delete the row `| holds | [[workshop-participants]] | [[late-returns]] | |`
-0 errors, 1 warning
+warning [SCAT-DRAFT-TABLE-DUPLICATE] narrative/monday-at-the-desk.md:18:1 row 3: tells the same edge as row 1 (`holds`, [[workshop-participants]], [[late-returns]]); a narrative tells an edge once
+  Fix: delete the row `| holds | [[workshop-participants]] | [[late-returns]] | |`
+0 errors, 2 warnings
 ```
 
-Delete the second row, and the narrative passes and can be set to `done`:
+Delete rows 2 and 3, which leaves row 1 as the one row. The narrative passes and can be set to `done`:
 
 ```text
 $ uv run scat check monday-at-the-desk

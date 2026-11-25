@@ -4,7 +4,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 
 ## The graph and its views
 
-- **node**: a group, concern, affordance or technology in the layered graph. (Obsidian's graph view also calls every page a node.)
+- **node**: a group, concern, affordance or technology of the layered graph. (Obsidian's graph view also calls every page a node.)
 - **edge**: a typed connection between nodes in neighbouring layers, one per pair: `holds` (group to concern), `is addressed by` (concern to affordance), `is provided by` (affordance to technology).
 - **element**: a node or edge.
 - **layer**: all nodes of one type: `group`, `concern`, `affordance`, `technology`, in that order.
@@ -26,7 +26,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **the ontology**: the fixed types and their rules.
 - **entry**: a node, edge, narrative or annotation as stored: a page, row or line.
 - **model**: the ontology plus a conformant vault; also the repository holding them.
-- **conformant**: passing both checks: the knowledge graph matches the pages, and obeys the ontology.
+- **conformant**: said of a vault whose knowledge graph matches its pages and obeys the ontology.
 
 ## The vault, as Obsidian shows it
 
@@ -43,7 +43,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 
 - **organiser**: the one persona: runs a facilitated elicitation, codes its data.
 - **coder, assistant, tool**: the three actors. The coder owns interpretation; the tool owns conformance; the assistant helps and holds no authority.
-- **inputs, model, analysis**: field notes; the repository; derived reports.
+- **inputs, analysis**: the field notes; reports derived from the model.
 - **field notes**: supplied material.
 - **interpreting**: reading the field notes and the views; the coder's act.
 - **authoring**: writing a narrative from the coder's interpretation.

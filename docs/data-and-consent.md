@@ -10,7 +10,7 @@ the **analysis** (derivative reports, such as documents with excerpts, data or f
 
 ## What the tool does
 
-- Coded pages name groups, not individuals. The cap on stakeholder groups, set in `scat.toml`, is enforced: the tool
+- Pages name groups, not individuals. The cap on groups, set in `scat.toml`, is enforced: the tool
   refuses a group page beyond it.
 - The `scat` commands read and write the vault folder and make no network calls. They do not read the field notes.
 - The tool cannot tell whether a person or an assistant wrote a page.
