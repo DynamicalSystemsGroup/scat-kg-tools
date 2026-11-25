@@ -27,7 +27,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP17 | The views (D-092) | all units done and landed (U8 to U10 correct the metrics and close two check gaps, D-093) except WP17-U3b (blocked: the guard refused a one-line schema edit; waits on the ACE); full suite green; template notebook on `wp17/notebook` | `WP17.md` |
 | WP18 | The chat path (D-094) | units U1 to U7 done and reviewed (U6, U7 on `pm-fix18`); waits only on WP18-R4, the live run, which is the ACE's (queued, needs the chief engineer to paste a key) | `WP18.md` |
 | WP19 | The range vault (D-094) | all units done and reviewed on `pm-wp18`; `check_metrics.py --accept WP19` passes; ready for ACE acceptance | `WP19.md` |
-| WP20 | The candidate and user acceptance (D-097) | manual path: candidate fixes of D-100 merged (U9, U10); round 2 in progress; chat-path rounds wait for the chief engineer | `WP20.md` |
+| WP20 | The candidate and user acceptance (D-097) | manual path passed UA-A round 2 (D-101); all units done except WP20-UC1 (chat-path UA-A, queued, waits on the chief engineer's sitting) | `WP20.md` |
 
 ## Units
 
@@ -252,6 +252,15 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP19-U3r | reviewer (fresh; runs the checks, reads a sample of narratives against sources), sonnet | 3 | 3 | `-` | done |  | 2026-11-25T04:23:25-05:00 | every row checked against an input sentence; found the unsupported edge and a tool gap on empty fingerprints |
 | WP19-U4 | technical writer (translation note on what ANT coding kept, lost, needed interpreting), sonnet | 2 | 3 | `wp19/u4` | done |  | 2026-11-25T04:23:25-05:00 | note written from the vault, then updated after the vault changed, then 5 review fixes |
 | WP19-U4r | reviewer (fresh; checks the note against the vault and the word cap), haiku | 1 | 2 | `-` | done |  | 2026-11-25T04:23:25-05:00 | every claim in the note tabulated against the tool and the public source; 4 wording fixes |
+| WP20-U1 | Python developer (G6: whole-vault views name an unparsable narrative), sonnet | 3 | 3 | `wp20/build` | done |  | 2026-11-25 | merged to dev 92b64d7; review PASS (53bb6f7) |
+| WP20-U1r | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25 | PASS first time (53bb6f7) |
+| WP20-U2r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25 | targeted re-review before merge 1b2a7f9 |
+| WP20-U3r | reviewer (fresh), sonnet | 2 | 3 | `-` | done |  | 2026-11-25 | three reviews; merge 21f0bf5 |
+| WP20-U4r | reviewer (fresh), sonnet | 1 | 3 | `-` | done |  | 2026-11-25 | three reviews; merge e1d3ba6 |
+| WP20-U5r | reviewer (fresh), sonnet | 2 | 3 | `-` | done |  | 2026-11-25 | three reviews; merge 7e33870 |
+| WP20-U6r | reviewer (fresh), sonnet | 2 | 3 | `-` | done |  | 2026-11-25 | three reviews; merge cb66cb2 |
+| WP20-UA1 | UA-A round 1, manual path (3 testers: 2 Haiku, 1 Sonnet), haiku | 8 | 8 | none | done |  | 2026-11-25 | reports fa6f442, W1 to W16, dispositions D-100 |
+| WP20-UC1 | UA-A chat path, three testers (2 Haiku, 1 Sonnet), run by the ACE, haiku | 5 |  | `-` | queued | the chief engineer's sitting |  |  |
 | WP20-U9 | technical writer (docs W1 to W7), sonnet | 3 | 3 | `wp20c/u1` | done |  | 2026-11-25 | first-time reviewer PASS; PM rendered check at 375 px |
 | WP20-U10 | Python developer (W9 candidates off by default, W10a, W10b), sonnet | 5 | 5 | `wp20c/u10` | done |  | 2026-11-25 | 1 push-back, 2 review rounds; 2289 tests |
 | WP20-UA2 | UA-A round 2, manual path (4 fresh testers: 3 Haiku, 1 Sonnet), haiku | 8 | 8 | none | done |  | 2026-11-25T06:49:12-05:00 | all four reached J10, no blocking finding; dispositions in D-101 |
@@ -291,6 +300,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 28 | WP20-U2 to U8 | 26 | 26 | 1.00 | 0.4 h | 65.0 |
 | 29 | WP20-U9, U10 | 8 | 8 | 1.00 | 1.0 h | 8.0 |
 | 30 | WP20-U11, WP20-UA2 | 10 | 10 | 1.00 | 0.1 h | 100.0 |
+| 31 | WP20-U1, U1r, U2r to U6r, UA1 (closed late from git: PM handovers had left them in review or queued; reviews of U2 to U6 ran as 1 to 3 rounds each) | 21 | 26 | 1.24 | 1.0 h | 26.0 |
 
 ## Velocity and forecast
 
@@ -301,6 +311,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP20 stale records closed from git (iteration 31: 21 est, 26 realized, 1.0 h, overlapping, noisy; reviews ran 1 to 3 rounds each). WP20-UC1 (chat-path UA-A, est 5) and WP18-R4 (est 5) are queued and wait on the chief engineer's sitting, so `check_metrics.py --accept WP20` fails only on WP20-UC1 and `--accept WP18` only on WP18-R4.
 
 Current: WP20 manual path passed UA-A round 2 (D-101; no round 3). U11 (X1, X5, X3 docs sentences) merged: tools `dev` 585630c, template `dev` 31667fc pinning it, docs-test pin set to 31667fc. Iteration 30 closed: 10 est, 10 realized, 0.1 h (overlapping, noisy). On estimate. `check_metrics.py --accept WP20` still lists other WP20 units not done.
 
