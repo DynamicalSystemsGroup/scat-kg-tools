@@ -4,6 +4,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 
 ## The graph and its views
 
+- **SCAT**: the four node types.
 - **node**: a group, concern, affordance or technology of the layered graph. (Obsidian's graph view also calls every page a node.)
 - **edge**: a typed connection between nodes in neighbouring layers, one per pair: `holds` (group to concern), `is addressed by` (concern to affordance), `is provided by` (affordance to technology).
 - **element**: a node or edge.
@@ -35,7 +36,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **field**: a key in a page's frontmatter.
 - **link**: an Obsidian `[[…]]` reference. Never an edge by itself.
 - **cap**: the most groups a vault may hold, set in `scat.toml` (key `stakeholder_group_cap`).
-- **index page**: the page generated for a type (`index`), listing its entries; an Obsidian Base, Obsidian 1.9 or later.
+- **index page**: the page generated for a type (`index`), listing its entries; an Obsidian Base, 1.9 or later.
 - **status**: how far an entry has got: `stub` (a name), `draft` (content, incomplete) or `done` (complete, conformant, signed off by the coder).
 - **mismatch**: a link and an edge that disagree about the same relationship, reported with a fix.
 
@@ -43,12 +44,12 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 
 - **organiser**: the one persona: runs a facilitated elicitation, codes its data.
 - **coder, assistant, tool**: the three actors. The coder owns interpretation; the tool owns conformance; the assistant helps and holds no authority.
-- **inputs, analysis**: the field notes; reports derived from the model.
+- **inputs, analysis**: the field notes; reports from the model.
 - **field notes**: supplied material.
-- **interpreting**: reading the field notes and the views; the coder's act.
+- **interpreting**: reading the field notes and views; the coder's act.
 - **authoring**: writing a narrative from the coder's interpretation.
 - **coding**: linking the nodes a narrative tells and recording its edges.
 - **reviewing**: the coder checks narrative against notes and coding against SCAT; the tool checks conformance.
-- **the coding loop**: interpreting, authoring, coding, reviewing, until the coder sets the narrative to `done`.
+- **the coding loop**: interpreting, authoring, coding, reviewing, until the coder sets it to `done`.
 - **analysing**: generating views from the knowledge graph's structure.
 - **a finished model**: conformant, navigable, with views, and the coder's statement that it represents the notes.
