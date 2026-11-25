@@ -28,3 +28,20 @@ C8, the chief engineer's words (25 November, quoted as typed; recorded by the AC
 > event that we don't want to save the conversation history we may also include using the ephemeral chat mode. and if
 > we are uploading field notes we may also want to delete/remove the collection from the AI tool as part of the tear
 > down"
+
+C8, refined by the chief engineer the same day (quoted as typed; recorded by the ACE):
+
+> "you can keep them locally on my machine. deleting them is not delete them everywhere its delete them in the
+> inference.coop environment. The point i am making is an information management lifecycle one. in the event that
+> we're in an "approved chatbot only" policy. Plus another candidate project data policy is a retention policy which
+> in our worked case i want to support an AI platform non retention policy, specifically that involves uploading a
+> collection, instancing the MCP server, uploading the field notes as a collection, performing the workflows using
+> any other agents, prompts, tools excetera that need to be configured. performing the coding work then tearing
+> everything back down. I am not suggesting that this level of facilities scrutiny is always required but we are
+> demonstrating (and testing) that it is supported"
+
+As the ACE reads it: C8 is an information-management life cycle the release should **demonstrate and test**, not
+require of every coder. Under an "AI platform non-retention" project data policy, a session sets up everything it
+needs in the chat platform (the MCP server entry, the field notes uploaded as a collection, any agents, prompts,
+skills or tools), does the coding, and then removes all of it from the platform. Local copies on the coder's machine
+are kept. It also serves an "approved chatbot only" policy.
