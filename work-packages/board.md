@@ -179,8 +179,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP16-U1 | layout designer (information designer, Obsidian), sonnet | 5 | 5 | `spike/layout` | done |  | 2026-11-24T22:51:32-05:00 | about 5 min plus one push-back round (8 defects); three variants; not opened in Obsidian |
 | WP16-U2 | fresh reviewer (opens each variant against R-21), sonnet | 3 | 3 | `spike/layout` | done |  | 2026-11-24T22:52:32-05:00 | about 3 min; checks run, Obsidian not available to it |
 | WP16-U3 | ontology designer (TBox, page contracts, example vault), sonnet | 8 | 8 | `wp16/u3` | done |  | 2026-11-24T23:10:13-05:00 | about 7 min worker plus one fix round after a fresh reviewer PASS with 3 minor defects; reviewer ran own checker; 11 flags for the ACE kept in the report |
-| WP16-U4 | rule-catalogue and machine-interface author, sonnet | 5 |  | `wp16/u4` | in flight |  |  |  |
-| WP16-U5 | Python developer (loader, graph, table reader, read-layer tests), sonnet | 8 |  | `wp16/u5` | queued | WP16-U4 |  |  |
+| WP16-U4 | rule-catalogue and machine-interface author, sonnet | 5 | 5 | `wp16/u4` | done |  | 2026-11-24T23:24:23-05:00 | about 8 min worker plus one fix round (11 reviewer defects, all fixed); second review of the fixes not run, the fixes were re-checked by the author only; 32 rules, schema v2 |
+| WP16-U5 | Python developer (loader, graph, table reader, read-layer tests), sonnet | 8 |  | `wp16/u5` | in flight |  |  |  |
 | WP16-U6 | Python developer (checks, mismatch rules, done grading), sonnet | 8 |  | `wp16/u6` | queued | WP16-U5 |  |  |
 | WP16-U7 | Python developer (operations, API, CLI, Bases index pages), sonnet | 8 |  | `wp16/u7` | queued | WP16-U5 |  |  |
 | WP16-U8 | test engineer (seeded defects, mismatch vaults, guidance case, padded tables), sonnet | 5 |  | `wp16/u8` | queued | WP16-U6, WP16-U7 |  |  |
@@ -213,6 +213,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 16 | WP15-U1 to U5 | 22 | 20 | 0.91 | 0.39 h | 51.3 |
 | 17 | RS3-U3 | 3 | 3 | 1.00 | 0.05 h | 60.0 |
 | 18 | WP16-U1, WP16-U2 | 8 | 8 | 1.00 | 0.25 h | 32.0 |
+| 19 | WP16-U3, WP16-U4 | 13 | 13 | 1.00 | 0.60 h | 21.7 |
 
 ## Velocity and forecast
 
