@@ -22,7 +22,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | RS2 | Research spike: graph analysis (outside v0.1; branch `spike/analysis`, never merged into `dev`) | readout, package, notebook and tests done | `RS2-analysis.md` |
 | WP14 | Prior-art readout (D-079) | all units done and merged; ready for ACE acceptance | `WP14.md` |
 | WP15 | Architecture document and review (D-083) | all units done and merged; ready for ACE acceptance | `WP15.md` |
-| WP16 | Ontology and layout (absorbs WP13) | build stage under way (D-088 decided; units WP16-U3 to U14 planned) | `impact/WP16.md` |
+| WP16 | Ontology and layout (absorbs WP13) | all units built and merged on `wp16/build` (iterations 20 and 21); re-sweep not clean on kept words only; pushed to `dev` once green; ready for the ACE's Obsidian walk | `impact/WP16.md` |
 | RS3 | Research spike: chat path (D-080; branch `spike/chat-path`, never merged into `dev`) | offline part done (U1 to U3, tunnel and git notes in); live part waits for the chief engineer's sign-ins | `RS3-chat-path.md` |
 
 ## Units
@@ -181,15 +181,25 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP16-U3 | ontology designer (TBox, page contracts, example vault), sonnet | 8 | 8 | `wp16/u3` | done |  | 2026-11-24T23:10:13-05:00 | about 7 min worker plus one fix round after a fresh reviewer PASS with 3 minor defects; reviewer ran own checker; 11 flags for the ACE kept in the report |
 | WP16-U4 | rule-catalogue and machine-interface author, sonnet | 5 | 5 | `wp16/u4` | done |  | 2026-11-24T23:24:23-05:00 | about 8 min worker plus one fix round (11 reviewer defects, all fixed); second review of the fixes not run, the fixes were re-checked by the author only; 32 rules, schema v2 |
 | WP16-U5 | Python developer (loader, graph, table reader, read-layer tests), sonnet | 8 | 8 | `wp16/u5` | done |  | 2026-11-24T23:40:43-05:00 | about 12 min worker (71 tool calls) plus one review fix round; fresh reviewer ran 40 own vault cases, PASS; 600-word cap test restored as a marked skip pending ACE ruling; checks and ops are import stubs for U6, U7 |
-| WP16-U6 | Python developer (checks, mismatch rules, done grading), sonnet | 8 |  | `wp16/u6` | queued | next to start (ready: U5 merged) |  |  |
-| WP16-U7 | Python developer (operations, API, CLI, Bases index pages), sonnet | 8 |  | `wp16/u7` | queued | WP16-U6 (checks and the done grading) |  |  |
-| WP16-U8 | test engineer (seeded defects, mismatch vaults, guidance case, padded tables), sonnet | 5 |  | `wp16/u8` | queued | WP16-U6, WP16-U7 |  |  |
-| WP16-U9 | technical writer (coding guide, terms page and drift test, reference pages), sonnet | 8 |  | `wp16/u9` | queued | WP16-U7 |  |  |
-| WP16-U10 | technical writer (flow page, data and consent page, WP13 passages), sonnet | 5 |  | `wp16/u10` | queued | WP16-U9 (nav, terms link) |  |  |
-| WP16-U11 | simulated user (WP13-R4 cold reader, fresh Haiku) and report filing, haiku | 2 |  | `wp16/u11` | queued | WP16-U10 |  |  |
-| WP16-U12 | template maintainer (migration one-off, case study, pins), sonnet | 8 |  | `template wp16/u12` | queued | WP16-U7 |  |  |
-| WP16-U13 | technical writer (architecture slots, acceptance kit, play-test findings F-1, F-3, F-5, F-7), sonnet | 3 |  | `wp16/u13` | queued | WP16-U7 |  |  |
-| WP16-U14 | change consultant (re-sweep of the impact map), sonnet | 3 |  | `wp16/u14` | queued | WP16-U12, WP16-U13 |  |  |
+| WP16-U6 | Python developer (checks, mismatch rules, done grading), sonnet | 8 | 8 | `wp16/u6` | done |  | 2026-11-25T01:26:12-05:00 | about 28 min worker (130 tool calls); fresh reviewer ran about 270 own vaults and 1,000 fuzz vaults, PASS with 3 minor findings fixed in U6f |
+| WP16-U6b | technical writer (machine-interface page cut to 600 words, cap test restored; added by the PM, D-089 item 1), sonnet | 2 | 2 | `wp16/mi` | done |  | 2026-11-25T01:26:13-05:00 | about 1.5 min worker; page 1,558 to 549 words, detail moved into schema descriptions and the catalogue |
+| WP16-U4b | reviewer (independent second review of U4's fixes, D-089 item 6; added by the PM), sonnet | 2 | 2 | `none (report returned as text)` | done |  | 2026-11-25T01:26:14-05:00 | about 3 min; FAIL with 3 blocking and 8 minor findings, all taken by U4c |
+| WP16-U4c | contract editor (catalogue fixes from the second review and the U6 builder's flags; added by the PM), sonnet | 2 | 2 | `wp16/cfix` | done |  | 2026-11-25T01:26:15-05:00 | about 6 min; one finding (SCAT-NAME fix kind) held for the harness line and taken in U6f |
+| WP16-U7 | Python developer (operations, API, CLI, Bases index pages), sonnet | 8 | 8 | `wp16/u7` | done |  | 2026-11-25T01:26:16-05:00 | about 12 min worker (71 tool calls); reviewer ran 20 CLI-versus-REPL twin calls, PASS with minor findings; one held-assertion file edited because it imported the removed stub_pair |
+| WP16-U6f | Python developer (fixes after the U6 review; added by the PM), sonnet | 2 | 2 | `wp16/u6f` | done |  | 2026-11-25T01:26:17-05:00 | under 2 min; three code fixes with tests |
+| WP16-U7f | Python developer (fixes after the U7 review and U8 findings; added by the PM), sonnet | 2 | 2 | `wp16/u7f` | done |  | 2026-11-25T01:26:18-05:00 | about 4.5 min; six findings fixed, goldens updated to the catalogue |
+| WP16-U8 | test engineer (seeded defects, mismatch vaults, guidance case, padded tables), sonnet | 5 | 5 | `wp16/u8` | done |  | 2026-11-25T01:26:19-05:00 | about 16 min worker; 579 tests, five mutation classes all caught, 5 findings against the tool of which 2 fixed in U7f and 3 in U6f |
+| WP16-U9 | technical writer (coding guide, terms page and drift test, reference pages), sonnet | 8 | 8 | `wp16/u9` | done |  | 2026-11-25T01:26:24-05:00 | about 21 min worker (101 tool calls); reviewer replayed transcripts: 1 blocking finding fixed in U9f |
+| WP16-U9f | technical writer (docs review fixes; added by the PM), sonnet | 2 | 3 | `wp16/u9f` | done |  | 2026-11-25T01:26:25-05:00 | about 3 min; the Monday walkthrough rewritten, wording and flow table fixes; 375 px look not verified by the worker |
+| WP16-U10 | technical writer (flow page, data and consent page, WP13 passages), sonnet | 5 | 3 | `wp16/u10` | done |  | 2026-11-25T01:26:26-05:00 | about 2.5 min worker; both pages first time, no prescriptive sentence |
+| WP16-U11 | simulated user (WP13-R4 cold reader, fresh Haiku) and report filing, haiku | 2 | 1 | `none (report filed on wp16/build)` | done |  | 2026-11-25T01:26:27-05:00 | one Haiku reader with four file reads, 30 s; report filed, last paragraph lightly trimmed |
+| WP16-U12 | template maintainer (migration one-off, case study, pins), sonnet | 8 | 5 | `template wp16/u12` | done |  | 2026-11-25T01:26:20-05:00 | about 2.5 min worker, scripted one-off; 8 old facts mapped; the repo is small so under estimate |
+| WP16-U12b | template maintainer (re-pin to the final tools commit; added by the PM), haiku | 1 | 1 | `template wp16/u12` | done |  | 2026-11-25T01:26:21-05:00 | mechanical Haiku re-pin, 25 s; clean check |
+| WP16-U13 | technical writer (architecture slots, acceptance kit, play-test findings F-1, F-3, F-5, F-7), sonnet | 3 | 3 | `wp16/u13` | done |  | 2026-11-25T01:26:22-05:00 | about 3 min; 2,368 words; F-1 and F-5 moot or done, F-3 and F-7 taken in U7f |
+| WP16-U13b | technical writer (architecture section 4 to the tool as built; added by the PM), sonnet | 2 | 2 | `wp16/u13b` | done |  | 2026-11-25T01:26:23-05:00 | under 3 min; verified by running the tool |
+| WP16-U14 | change consultant (re-sweep of the impact map), sonnet | 3 | 3 | `wp16/u14` | done |  | 2026-11-25T01:26:28-05:00 | about 4 min; re-sweep not clean: 5 stale items |
+| WP16-U14b | editor (stale hits from the re-sweep; added by the PM), sonnet | 2 | 2 | `wp16/u14b` | done |  | 2026-11-25T01:26:29-05:00 | about 2.5 min; S7 still 22 lines in 8 files, all named keeps (retired words asserted on purpose, formal ontology identifiers, a decision title) |
+| RS3-U4 | technical writer (chat-path readout, added at the ACE's call), sonnet | 3 | 2 | `rs3/u4` | done |  | 2026-11-25T01:26:30-05:00 | under 1 min, 8 tool calls; 1,409 words; no separate fresh reviewer yet |
 
 ## Iterations and velocity
 
@@ -214,6 +224,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 17 | RS3-U3 | 3 | 3 | 1.00 | 0.05 h | 60.0 |
 | 18 | WP16-U1, WP16-U2 | 8 | 8 | 1.00 | 0.25 h | 32.0 |
 | 19 | WP16-U3, WP16-U4 | 13 | 13 | 1.00 | 0.60 h | 21.7 |
+| 20 | WP16-U5 | 8 | 8 | 1.00 | 0.20 h | 40.0 |
+| 21 | WP16-U6, U6b, U4b, U4c, U7, U6f, U7f, U8, U9, U9f, U10, U11, U12, U12b, U13, U13b, U14, U14b, RS3-U4 (U6b, U4b, U4c, U6f, U7f, U9f, U12b, U13b, U14b and RS3-U4 added by the PM or the ACE) | 70 | 64 | 0.91 | 1.75 h | 36.6 |
 
 ## Velocity and forecast
 
@@ -224,6 +236,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP16 build is done on `wp16/build`: 1,770 tests pass, `python3 work-packages/check_metrics.py --accept WP16` passes. Iteration 21 closed: 70 est. pts, 64 realized (ratio 0.91), 1.75 h, raw velocity 36.6 realized pts/h. Waiting on the ACE: the Obsidian walk on the migrated template (every generated `.base`), and the cold-reader findings on the flow and consent pages (`acceptance/reports/wp16-flow-consent-cold-read.md`).
 
 Current: WP15 ready for ACE acceptance: `contracts/architecture.md` (2,499 words, cap 2,500) and `research/architecture/review.md` (the WP15-R2 table, three reviewers' reports, findings and answers). Iteration 16 closed: 22 est. pts, 20 realized (ratio 0.91), 0.39 h, raw velocity 51.3 realized pts/hour. Three reviewers, all 'not ready' on first pass (five blocking findings, mostly on M5's `done` rules and the M3/M4 split); all fixed in one revision, not re-reviewed. Over: U5 (5 against 3). Under: U1 (5 against 8). Lesson: for a spec-heavy document under a tight word cap, plan the revision unit at 5, since reviewers' fixes must be paid for with cuts.
 
