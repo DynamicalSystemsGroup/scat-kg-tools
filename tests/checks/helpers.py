@@ -195,3 +195,17 @@ def choose(*options, head="Fix, choose one:") -> list[str]:
 def line_of(text: str, needle: str) -> int:
     """The 1-based line of the first line containing `needle`."""
     return next(i for i, ln in enumerate(text.split("\n"), 1) if needle in ln)
+
+
+def uncoded(file) -> str:
+    """The SCAT-UNCODED message (WP21-G2) of a narrative that links no node page."""
+    return msg(
+        f"warning [SCAT-UNCODED] {file} body: the narrative links no node page, so it is excluded from the knowledge graph and every view",
+        *choose(
+            "link a node page where the account names one, as `[[<node-name>]]` (or list it under a "
+            "heading such as `Linked beyond the text`); a node the account names with no edge needs "
+            "only this link",
+            "or tell an edge: a row of the table whose ends are links to node pages; if the node has "
+            "no page, `scat stub <name> --type <type>` makes one",
+        ),
+    )

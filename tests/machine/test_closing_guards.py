@@ -74,7 +74,7 @@ def test_g3_a_wrong_kind_fails_and_a_named_deviation_passes():
 
 def test_g3_every_deviation_has_a_reason_and_differs_from_the_catalogue():
     kinds = h.catalogue_kinds()
-    assert len(kinds) == 33
+    assert len(kinds) == 34
     for (rule, kind), reason in h.DEVIATIONS.items():
         assert reason.strip(), (rule, kind)
         assert kinds[rule] != kind, f"{rule} {kind} is the catalogue's own kind, not a deviation"

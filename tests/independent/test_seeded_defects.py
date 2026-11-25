@@ -720,7 +720,14 @@ def test_fresh_narrative_stub_gives_exactly_one_draft_field_message(make_base):
                 "narrative/fresh.md",
                 "field `timeframe`",
                 "missing (required once the page is done)",
-            )
+            ),
+            Exp(
+                "SCAT-UNCODED",
+                W_,
+                "narrative/fresh.md",
+                "body",
+                "the narrative links no node page, so it is excluded from the knowledge graph and every view",
+            ),
         ],
     )
 
@@ -1104,7 +1111,7 @@ def _noedges():
             W_,
             NF,
             "table",
-            "the narrative is `done` and tells no edge: its fingerprint is empty",
+            "the narrative is `done` and tells no edge: its fingerprint has no edges",
             fix=("Fix, choose one:", [NOEDGES_ONE, NOEDGES_TWO]),
         )
     ]
@@ -1128,6 +1135,45 @@ def _(v, st):
 def _(v, st):
     v.edit(NF, ROW1 + "\n", "")
     v.edit(NF, ROW2 + "\n", "")
+    return []
+
+
+# ======================================================================================= uncoded (WP21-G2)
+UNCODED_ONE = (
+    "link a node page where the account names one, as `[[<node-name>]]` (or list it under a "
+    "heading such as `Linked beyond the text`); a node the account names with no edge needs "
+    "only this link"
+)
+UNCODED_TWO = (
+    "or tell an edge: a row of the table whose ends are links to node pages; if the node has "
+    "no page, `scat stub <name> --type <type>` makes one"
+)
+
+
+def _uncode(v):
+    text = v.read(NF)
+    v.write(NF, text[: text.index("\n---\n", 4) + 5] + "\nNothing here names a node.\n")
+
+
+@seed("UNCODED-no-link", ALL)
+def _(v, st):
+    _uncode(v)
+    return [
+        Exp(
+            "SCAT-UNCODED",
+            W_,
+            NF,
+            "body",
+            "the narrative links no node page, so it is excluded from the knowledge graph and every view",
+            fix=("Fix, choose one:", [UNCODED_ONE, UNCODED_TWO]),
+        )
+    ]
+
+
+@seed("UNCODED-one-account-link-is-silent", ("stub", "draft"))  # at done: SCAT-NOEDGES only
+def _(v, st):
+    _uncode(v)
+    v.edit(NF, "Nothing here names a node.", "Only the [[self-checkout]] was named.")
     return []
 
 

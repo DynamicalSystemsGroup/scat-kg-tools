@@ -41,7 +41,7 @@ Nothing outside it is promised.
 
 | Object | Fields |
 |---|---|
-| view | `narratives` (`candidates` on request), `edge_type`, `from_layer`, `to_layer`, `rows`, `nodes`, `edges`, `node`, `direction`, `up`, `down` |
+| view | `narratives` (`candidates` on request), `edge_type`, `from_layer`, `to_layer`, `rows`, `nodes`, `edges`, `node`, `direction`, `up`, `down`, `excluded` |
 | node | `name`, `type`, `status` |
 | view edge | the edge fields and `status` |
 

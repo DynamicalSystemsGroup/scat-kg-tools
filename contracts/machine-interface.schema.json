@@ -202,6 +202,7 @@
           }
         },
         "edges": { "type": "array", "items": { "$ref": "#/$defs/ViewEdge" } },
+        "excluded": { "type": "array", "items": { "$ref": "#/$defs/ViewExcluded" }, "description": "The uncoded narratives (they link no node page), which every view leaves out: all of them for a view that draws every narrative, none for a view of named narratives (which refuses an excluded name). Present on fingerprint, edges, layered and trace; absent from a document written before it was added." },
         "node": { "type": "string", "minLength": 1 },
         "direction": { "enum": ["up", "down", "both"] },
         "up": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" }, "description": "trace: nodes toward the groups." },
@@ -225,6 +226,16 @@
           "then": { "required": ["node", "direction", "up", "down", "edges"] }
         }
       ]
+    },
+    "ViewExcluded": {
+      "description": "A narrative left out of the knowledge graph and every view because it is uncoded: it links no node page.",
+      "type": "object",
+      "required": ["name", "file", "fix"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "description": "The page name of the narrative." },
+        "file": { "$ref": "#/$defs/VaultPath", "description": "Its path." },
+        "fix": { "type": "string", "minLength": 1, "description": "How to include it: link one node page." }
+      }
     },
     "Refusal": {
       "type": "object",

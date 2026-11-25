@@ -4,7 +4,8 @@
 
 The data is the view's (`edge_table`), so an export refuses where the view refuses and then writes nothing. A file
 that exists is rewritten only when its content differs; repeating the call changes nothing. Names are plain text,
-never `[[links]]`, so an export made a page, a link or a row in no vault.
+never `[[links]]`, so an export made a page, a link or a row in no vault. An uncoded narrative is excluded, as in
+the view, and the result carries a note for each.
 """
 
 import csv
@@ -68,10 +69,16 @@ def export_edges(out: str | Path, *, root: str | Path = ".") -> Result:
         return bad
     out = Path(out)
     files: list[tuple[str, str]] = []
+    notes: tuple[str, ...] = ()
     for slug in TBOX.edge_types:
         view = edge_table(slug, root=root)
         if not isinstance(view, View):
             return dataclasses.replace(view, operation=OPERATION)
+        notes = tuple(
+            f"excluded {x['name']} ({x['file']}): it links no node page, so no table has its edges; "
+            "link one node page in it to include it"
+            for x in view.data["excluded"]
+        )
         files += [(f"{slug}.csv", _csv(view.data["rows"])), (f"{slug}.md", _markdown(view.data))]
     if out.exists() and not out.is_dir():
         return Result(
@@ -106,10 +113,15 @@ def export_edges(out: str | Path, *, root: str | Path = ".") -> Result:
             created=tuple(created),
             changed=tuple(changed),
             unchanged=tuple(unchanged),
+            notes=notes,
             refused=(
                 Refusal(out.as_posix(), f"could not write: {e}", "check the folder's permissions"),
             ),
         )
     return Result(
-        OPERATION, created=tuple(created), changed=tuple(changed), unchanged=tuple(unchanged)
+        OPERATION,
+        created=tuple(created),
+        changed=tuple(changed),
+        unchanged=tuple(unchanged),
+        notes=notes,
     )

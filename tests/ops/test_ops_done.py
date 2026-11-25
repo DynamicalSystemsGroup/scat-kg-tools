@@ -80,7 +80,11 @@ def test_a_narrative_with_only_warnings_at_done_is_set(make_vault):
             "narrative/n.md": fm("narrative", "N", "draft", NARR_OK, "A quick checkout here.\n"),
         }
     )
-    assert [p.rule for p in scat_kg.check("n", root=root).problems] == ["SCAT-MENTION"]
+    # the narrative links no node page: SCAT-UNCODED (WP21-G2) is a warning too
+    assert [p.rule for p in scat_kg.check("n", root=root).problems] == [
+        "SCAT-UNCODED",
+        "SCAT-MENTION",
+    ]
     assert set_status("n", "done", root=root).ok
 
 

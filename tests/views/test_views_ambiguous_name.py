@@ -25,7 +25,7 @@ DUPLICATES = {
 def dup_page(path):
     kind = path.split("/")[0]
     return (
-        narrative("Dup", "x", None, "draft", "scenario")
+        narrative("Dup", "x [[farmers]]", None, "draft", "scenario")  # coded: else it is excluded
         if kind == "narrative"
         else page(kind, "Dup")
     )

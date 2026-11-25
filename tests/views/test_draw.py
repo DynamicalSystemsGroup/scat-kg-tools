@@ -118,11 +118,11 @@ def test_an_empty_drawing_is_a_labelled_frame_saying_no_nodes(vault):
     assert "no nodes" in [x for _, _, x in texts(draw.layered([], root=vault).svg())]
 
 
-def test_a_fingerprint_with_no_nodes_says_so(make):
+def test_an_uncoded_narrative_has_no_fingerprint_to_draw_and_says_it_is_excluded(make):
+    # a narrative that links no node page is excluded (WP21-G2), so there is no drawing of "no nodes" for it
     v = make({"narrative/bare.md": narrative("Bare", "Nothing is linked.")})
-    svg = draw.fingerprint("bare", root=v).svg()
-    assert "no nodes" in [x for _, _, x in texts(svg)]
-    assert PNG == draw.fingerprint("bare", root=v).png()[:8]
+    refused = draw.fingerprint("bare", root=v)
+    assert not refused.ok and "excluded" in refused.to_dict()["refused"][0]["why"]
 
 
 def test_same_call_twice_gives_equal_bytes(vault):

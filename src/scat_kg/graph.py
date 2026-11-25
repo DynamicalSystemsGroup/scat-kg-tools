@@ -441,6 +441,14 @@ class Skipped:
 
 
 @dataclass(frozen=True)
+class Excluded:
+    """An uncoded narrative (it links no node page): left out of the graph and every view, and reported."""
+
+    narrative: str  # the narrative's name
+    path: str
+
+
+@dataclass(frozen=True)
 class Unreadable:
     """A page whose frontmatter cannot be read: its type is unknown, so the graph leaves it out."""
 
@@ -460,6 +468,7 @@ class Graph:
     refusal: Any = None  # a `Refusal` (scat_kg.ops.result) when the folder is missing; else None
     skipped: tuple[Skipped, ...] = ()  # rows that tell no edge, by narrative path, then row
     unreadable: tuple[Unreadable, ...] = ()  # pages left out for frontmatter that cannot be read
+    excluded: tuple[Excluded, ...] = ()  # uncoded narratives, left out, by path
 
     @property
     def ok(self) -> bool:
@@ -479,6 +488,7 @@ class Graph:
         return {
             "nodes": {layer: len(ns) for layer, ns in self.nodes.items()},
             "narratives": len(self.narratives),
+            "excluded": len(self.excluded),
             "edges": len(self.edges),
             "edge_status": {s: sum(e.status == s for e in self.edges) for s in TBOX.statuses},
             "candidates": len(self.candidates),
@@ -563,9 +573,16 @@ def load(root: str | Path) -> Graph:
     told: dict[EdgeKey, list[Telling]] = {}
     candidates: list[Candidate] = []
     skipped: list[Skipped] = []
+    excluded: list[Excluded] = []
     table_type = TBOX.table_type.slug
     for p in vault.pages:
         if p.type != table_type or p.frontmatter_error is not None:
+            continue
+        linked = {n.name: n for l in p.links if (n := node_of(l.target)) is not None}
+        if (
+            not linked
+        ):  # uncoded: no node page linked anywhere in the body, so no row can tell an edge
+            excluded.append(Excluded(p.name, p.path))
             continue
         reading = read_table(p.body.split("\n"), p.body_line)
         table = reading.table
@@ -600,7 +617,6 @@ def load(root: str | Path) -> Graph:
             own.setdefault(key, Telling(p.name, p.path, row.n, row.line, row.note, status))
         for key, telling in own.items():
             told.setdefault(key, []).append(telling)
-        linked = {n.name: n for l in p.links if (n := node_of(l.target)) is not None}
         fingerprint = sorted(linked.values(), key=lambda n: (layer_index[n.type], n.name))
         edge_keys = tuple(sorted(own, key=lambda k: (type_index[k.type], k.from_node, k.to_node)))
         narratives.append(
@@ -656,6 +672,7 @@ def load(root: str | Path) -> Graph:
         links=links,
         vault=vault,
         skipped=tuple(skipped),
+        excluded=tuple(excluded),
         unreadable=tuple(
             Unreadable(p.path, p.frontmatter_error.reason)
             for p in vault.pages

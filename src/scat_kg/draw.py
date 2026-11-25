@@ -92,7 +92,14 @@ def _layered_mark(data: dict) -> _Mark:
         title,
         _columns(data["nodes"]),
         tuple((e["from"], e["to"], False) for e in data["edges"]),
-        "line: an edge a row of a drawn narrative tells.",
+        "line: an edge a row of a drawn narrative tells."
+        + (
+            " excluded (no node page linked): "
+            + ", ".join(x["name"] for x in data["excluded"])
+            + "."
+            if data.get("excluded")
+            else ""
+        ),
     )
 
 
