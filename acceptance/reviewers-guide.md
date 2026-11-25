@@ -1,351 +1,460 @@
 # Reviewer's guide for the chief engineer (D-6)
 
-*Four short sittings, taken one at a time.*
+*Four sittings, taken one at a time. Draft for this release: the PM and the ACE finish the parts marked below.*
 
-Read one sitting, tick its boxes, stop. Each sitting has one entry point. Nothing here asks you to trust a claim: every
-claim names a command to run or a file to open. Paths are from the root of `scat-kg-tools`. Facts were checked on `dev`
-at `32150b0`; later commits change only this guide, the pin test, the log and `work-packages/`. The tools' candidate
-commit (the last commit that changed `src/` or `docs/`) is `32150b0`, and the template's `dev` is `5a7290f`, which pins
-it. Check both before you start: `git log --first-parent -1 --format=%h -- src docs` prints `32150b0`,
-`git diff 32150b0 dev -- src docs` prints nothing, and
-`git ls-remote https://github.com/DynamicalSystemsGroup/scat-kg-template refs/heads/dev` shows `5a7290f`.
+Read one sitting, tick its boxes, stop. Each sitting has an entry point, a short list of what to look at, and one
+decision that is yours. Nothing here asks you to trust a claim: each claim names a command to run or a file to open.
+Paths are from the root of `scat-kg-tools` unless they say otherwise.
 
-Terms: J1 to J7 (the user journey), UA-A and UA-M (the AI tests and your walkthrough) are in `MISSION.md`, "User
-acceptance". R-1 to R-16 are in `MISSION.md`, "Requirements". The ACE and your sign-offs are in `MISSION.md`,
-"Governance". The PM (project manager agent) is in `ORG.md`.
+Terms: J1 to J10 (the journey), UA-A and UA-M (the AI tests and your walkthroughs), and R-1 to R-23 (the requirements)
+are in `MISSION.md`, "User acceptance" and "Requirements". The ACE and your two sign-offs are in `MISSION.md`,
+"Governance". The PM is in `ORG.md`. Words follow `GLOSSARY.md`.
 
-| Sitting | Entry point |
-|---|---|
-| 1. The end-to-end walkthrough | `acceptance/walkthrough.md` |
-| 2. The docs site | https://dynamicalsystemsgroup.github.io/scat-kg-tools/ |
-| 3. The tools and checks | the command block at the head of sitting 3 |
-| 4a. The ACE's calls | the table in sitting 4a |
-| 4b. What is known to be weak | the list in sitting 4b |
-| 4c. The checkpoint, the conformance principle and the rule audit | the section "Sitting 4c" |
+## Before you start: the candidate
 
-Sittings 4a, 4b and 4c are one sitting in three parts.
+> **To be filled by the PM when the candidate is staged (WP20-G1).** The three values below are not known yet. Until
+> they are written here, treat every "result when written" in this guide as stale.
+>
+> - Tools candidate commit (the last commit that changed `src/` or `docs/`): `<hash>`
+> - Template `dev`, which pins it: `<hash>`
+> - Pages URL: https://dynamicalsystemsgroup.github.io/scat-kg-tools/ (pre-release banner on)
+
+Check them yourself:
+
+```text
+git log --first-parent -1 --format=%h -- src docs
+git diff <candidate> dev -- src docs
+git ls-remote https://github.com/DynamicalSystemsGroup/scat-kg-template refs/heads/dev
+```
+
+The first prints the tools candidate, the second prints nothing, the third shows the template's `dev` commit. The
+results quoted in this guide were taken on `dev` at `66d8dc3`, before the candidate existed (the last commit that
+changed `src/` or `docs/` was `84fd58b`); the PM refreshes them at staging.
+
+| Sitting | Entry point | The decision you make |
+|---|---|---|
+| 1. The walkthroughs (UA-M) | `acceptance/walkthrough.md`, then `docs/chat-path.md` | Do you pass UA-M on each path? |
+| 2. The docs site | the Pages URL above | Are the docs clear and navigable, and is the style light enough (R-15)? |
+| 3. The tools and checks | the command block at the head of sitting 3 | Is each requirement R-1 to R-23 accepted, or noted? |
+| 4. The ACE's calls, the glossary, what is weak | the table in 4a | Which calls do you keep or revert, and what do you do about each weak item? |
 
 ---
 
-## Sitting 1. The end-to-end walkthrough (UA-M)
+## Sitting 1. The end-to-end walkthroughs (UA-M)
 
-**Entry point.** `acceptance/walkthrough.md`. It starts at https://dynamicalsystemsgroup.github.io/scat-kg-tools/ and
-tells you, for each stage, where to enter, what "done" looks like, what to note if it fails, and a resume check.
+**Entry point.** `acceptance/walkthrough.md`. It starts at the Pages URL and gives, for each stage, where to enter,
+what "done" looks like, what to note if it fails, and a resume check. The chat-path script is a second file written for
+WP20-G4 (**PM fills in its path here when it exists**: `acceptance/<file>.md`); its entry point is `docs/chat-path.md`.
 
-You run J1 to J7 yourself, from the docs, without help, on a small elicitation of your own: at least one scenario and
-one architecture, in your own words and group names. The nine stages:
+**What to look at.**
 
-1. Find (J1): read the home page and say what style it evokes before you read the section that explains the name.
-2. Create (J2): make your repository from the template, private, and clone it.
-3. Set up (J3): install uv, run the one setup command, get a working `scat_kg`.
-4. Obsidian (J3): open the folder as a vault, then clear the example before you add any page of your own.
-5. Plan and capture (J4, J5): plan an event, then write scenario and architecture notes.
-6. Code in the REPL (J6): turn the notes into narratives with their edges.
-7. Code with the CLI (J6): the same operations, as `scat` commands.
-8. Clean check, commit, push (J7): whole-vault check to 0 errors, then commit and push.
-9. The graph in Obsidian (J7): backlinks, graph view and index pages.
-
-**What only you can do.** No agent did these (log D-040, D-044): create a real private repository from the template
-(stage 2), run uv's installer (stage 3), push (stage 8), and open Obsidian (stages 4 and 9). Agents tested the same
-journey from files, with uv already installed and a clone that has no remote.
+- **Manual path (J1 to J10).** You run it yourself from the docs, without help, on a small elicitation of your own: at
+  least one scenario and one architecture, in your own words and group names. Real steps only you can do (no agent
+  did them, log D-040 and D-044): create a real private repository from the template, run uv's installer, push, and
+  open Obsidian.
+- **Chat path (J1 to J10, G14).** You run it as you would use it: the field notes uploaded to the chat as a
+  collection, the coding loop in the chat and in Obsidian, views through the MCP server, ending with the launcher
+  torn down and the key rotated. This needs your sign-ins and a key you paste; it is also WP18-R4 (the live run),
+  which has not been done (see 4c, item 2).
+- **Hand-over (J10).** Each path ends with you deciding the model is finished and locking a version with a tag.
 
 **Split and resume.** Each stage ends in a state you can stop in. To resume, run that stage's "Resume check". If a
-stage fails, do not work around it. Note the page, the step, what you typed and what printed. Fixes go on `dev`, the
-candidate is refreshed, and you resume from the affected stage.
+stage fails, do not work around it: note the page, the step, what you typed and what printed. Fixes go on `dev`, the
+candidate is refreshed, the ACE decides and logs whether UA-A reruns (`MISSION.md`, Governance), and you resume from
+the affected stage.
 
 **Checklist.**
 
-- [ ] Stage 1: the home page told me what SCAT is for and how to start.
-- [ ] Stage 1: I wrote down the style I thought it evoked, before the page explained the name.
-- [ ] Stage 2: my repository exists and is private.
-- [ ] Stage 3: uv installed from the docs' command, and `uv sync` finished.
-- [ ] Stage 4: Obsidian opened the vault, and the example is cleared before my own pages.
-- [ ] Stage 5: I wrote notes for one scenario and one architecture.
-- [ ] Stage 6: I coded in the Python REPL.
-- [ ] Stage 7: I coded with the CLI.
-- [ ] Stage 8: `uv run scat check` ends `0 errors`, and the commit is on GitHub.
-- [ ] Stage 9: I navigated the graph in Obsidian without help.
+- [ ] Manual path: I reached a clean whole-vault check (`uv run scat check` ends `0 errors`), the commit is on GitHub,
+  and my repository is still private.
+- [ ] Manual path: I navigated the graph and the index pages in Obsidian without help (R-21).
+- [ ] Manual path: I locked a version with a tag and named what it pins and who receives it.
+- [ ] Chat path: the coding loop ran in the chat, a clean check followed, the launcher ended torn down, and the key
+  was rotated.
+- [ ] Anything I flagged is written down with its stage.
 
-**Done looks like.** All nine ticked, the repository still private, and your judgement in your own words: is the
-documentation clear and navigable, and is the journey clear? That is the UA-M pass in `MISSION.md`.
+**Your decision.** Pass UA-M, or name the stage that failed. The pass (`MISSION.md`) is that you complete the journey
+on both paths from the documentation without help, and judge the documentation clear and navigable and the journeys
+clear.
 
 ---
 
 ## Sitting 2. The docs site
 
-**Entry point.** https://dynamicalsystemsgroup.github.io/scat-kg-tools/ (marked "Pre-release candidate.", deployed from
-`dev`).
+**Entry point.** The Pages URL, marked "Pre-release candidate.", deployed from `dev`.
 
-From a checkout of `scat-kg-tools` on `dev` (needed for the checks below): `git clone https://github.com/DynamicalSystemsGroup/scat-kg-tools && cd scat-kg-tools && git checkout dev && uv sync --all-groups`. `--all-groups` installs the `dev` and `docs` groups that `pyproject.toml` defines.
+For the checks below, from a checkout: `git clone https://github.com/DynamicalSystemsGroup/scat-kg-tools && cd scat-kg-tools && git checkout dev && uv sync --all-groups`.
 
-**The eight pages.** Home; Getting started; Planning; Facilitating, with Scenarios and Architectures; Coding;
-Reference, with Python API and CLI. Source: `docs/` and `mkdocs.yml`.
-
-**What to look at.** Open each page at desktop width and at phone width (browser developer tools, 375 px wide).
-Look for:
+**What to look at.** Open each page at desktop width and at phone width (browser developer tools, 375 px). The site
+has 19 pages (`mkdocs.yml`, `nav`): Home; The flow; Data, rights and consent; Getting started; Planning; Facilitating
+(Scenarios, Architectures); Coding; Coding in a chat; Coding in an IDE; Analysis; Reference (Python API, CLI, MCP
+server, Terms, Architecture). Look for:
 
 - the banner;
-- a "Your next step" box at the top and a "Where next" section at the foot;
-- REPL and CLI shown side by side;
-- no page-level sideways scroll at 375 px (long code lines scroll inside their block);
-- no dead link.
+- a "Your next step" box at the top and a "Where next" section at the foot of each journey page (R-10, R-11);
+- the REPL and the CLI side by side (R-8);
+- no page-level sideways scroll at 375 px (long code lines may scroll inside their block);
+- no dead link;
+- the rendered tables of past and future phrases and the JSON blocks on the CLI and API reference pages, which no
+  reviewer has seen in a browser (play-test finding F-6; the reviewers measured the DOM only);
+- no step that ranks, votes on or judges stories or architectures (R-14), and no page that prescribes a data policy
+  (`docs/data-and-consent.md` names each activity as a dependency and gives "for example" answers, D-069 to D-073).
 
-**The checks behind the docs.** Run from the tools repository.
+**The checks behind the docs.**
 
 | Check | Command | Result when written |
 |---|---|---|
-| Strict build, which fails on a broken link | `uv run --group docs mkdocs build --strict` | built, no warning |
-| Every `bash` and `python` block runs | `uv run pytest tests/docs -q` | 23 passed (needs network: it clones the template) |
-| CLI reference equals `--help` | `uv run pytest tests/docs/test_docs.py::test_cli_reference_matches_help -q` | passes (inside the 23) |
-
-**The five docs requirements, in plain terms.**
-
-- **R-10.** No dead ends. Each page says what you need first and where to go next.
-- **R-11.** One obvious way to make each page: `scat stub`. You never hand-write structure the tools can make.
-- **R-12.** Repositories made from the template are private, and the docs and the template README say so.
-- **R-14.** The guides use "yes, and" and "from this perspective", and contain no step that ranks, votes on or
-  judges stories or architectures.
-- **R-15.** The style is music and improvisation, kept light and never at the cost of clarity: the music-note logo and
-  one brief aside on improvisation (the "yes, and" stance), with plain words elsewhere (D-052). The cold-read bar gave
-  way to your own judgement, see sitting 4c.
+| Strict build, which fails on a broken link | `uv run --group docs mkdocs build --strict` | clean (re-run at the candidate) |
+| Every `bash` and `python` block runs | `uv run pytest tests/docs -q` | passes; needs network (it clones the template). **Only `bash` and `python` blocks run** (D-043); `text` and `json` blocks do not |
+| CLI reference equals `--help` | `uv run pytest tests/docs/test_docs.py::test_cli_reference_matches_help -q` | passes |
+| The Terms page agrees with the glossary and the ontology | `uv run pytest tests/docs/test_terms.py -q` | passes |
 
 **Checklist.**
 
-- [ ] All eight pages opened at desktop width.
-- [ ] All eight pages opened at 375 px.
-- [ ] Every page has "Your next step" and "Where next".
+- [ ] All 19 pages opened at desktop width, and at 375 px.
+- [ ] Every journey page has "Your next step" and "Where next".
 - [ ] I ran the strict build and the docs test.
-- [ ] I found no step that ranks or adjudicates (R-14).
-- [ ] I read `docs/reference/terms.md` ("Terms", under Reference) as a project manager who coordinates an event. It is the glossary added for field finding F-8 (log D-068), 600 words, and a drift test, `tests/docs/test_terms.py`, checks that every vault name it uses is in the TBox.
-- [ ] The style is light and nothing in it gets in the way of an instruction (R-15, your own judgement, D-052).
+- [ ] I found no step that ranks or adjudicates, and no policy the pages choose for the organiser.
+- [ ] I read `docs/reference/terms.md` as a project manager who coordinates an event (field finding F-8).
+- [ ] I looked at the rendered phrase tables and the two JSON blocks (F-6).
+- [ ] The style is light, and nothing in it gets in the way of an instruction (R-15, your judgement, D-052).
 - [ ] I wrote down my list of changes.
 
-**Done looks like.** Every box ticked, and a list of anything you would change.
+**Your decision.** Are the docs clear and navigable (R-10, R-11, R-14), and is the style acceptable (R-15)? Every box
+ticked, with a list of anything you would change.
 
 ---
 
 ## Sitting 3. The tools and checks
 
-**Entry point.** From the checkout of `dev` set up in sitting 2 (`uv sync --all-groups`), with network:
+**Entry point.** From the checkout set up in sitting 2 (`uv sync --all-groups`), with network:
 
 ```text
 uv run pytest -q && uv lock --check && uv run ruff check && uv run ruff format --check && uv run --group docs mkdocs build --strict
 ```
 
-Result when written: 982 passed in 78 s; lock check clean; ruff clean on 79 files; strict build clean. The benchmark
-alone: `uv run pytest tests/bench -s -q` printed page 245 ms, neighborhood 249 ms, vault 293 ms, against 1, 2 and 5 s.
+Result when written (on `dev` at `66d8dc3`, not the candidate): see the line below; the PM re-runs the block at the
+candidate and replaces it.
+
+```text
+uv run pytest -q: 2258 passed, 107 warnings in 171 s (pytest only; lock, ruff and strict build not re-run for this draft)
+```
+
+The benchmark alone is `uv run pytest tests/bench -s -q` (R-5).
+
+**What to look at.** The table. For each row you doubt, open the named file or run the named command. Status is the
+PM's and the ACE's reading, not yours.
 
 | Req | Requirement | Evidence you can run or open | Status |
 |---|---|---|---|
-| R-1 | Errors block, warnings don't; every rule has id and severity | `uv run python tests/scripts/rules_without_tests.py` lists none (exit 0); 32 rule ids in `contracts/rule-catalogue.md` (the v0.1 audit of 28 is in sitting 4c); `tests/checks/` | met |
-| R-2 | Messages name file, field, rule id and an exact fix | `tests/checks/test_wp8_u2_messages.py`; `tests/test_paths.py` | met; golden tests pin id, file, field and fix, not full prose (D-032) |
-| R-3 | Unfinished pages are never errors; links checked always | `tests/checks/test_status_rules.py`, `tests/checks/test_link_rules.py` | met |
+| R-1 | Conformance checks structure, never content; errors block, warnings don't; every rule has an id and severity | `uv run python tests/scripts/rules_without_tests.py` lists none (exit 0); `contracts/rule-catalogue.md`; `tests/checks/`; the audit in sitting 4c's note (D-052, D-053) | met |
+| R-2 | Messages name file, field, rule id and an exact fix | `tests/checks/test_end_rules.py`, `tests/test_paths.py`; `tests/independent/test_all_fixes_apply.py` | met; golden tests pin id, file, field and fix, not full prose (D-032) |
+| R-3 | Unfinished pages are never errors; links and edge ends checked always | `tests/checks/test_link_rules.py`, `tests/checks/test_done_check.py` | met |
 | R-4 | Checks never write; writes are explicit operations | `tests/test_r4_snapshots.py` | met |
-| R-5 | 500 pages: page under 1 s, neighborhood 2 s, vault 5 s | `tests/bench/test_r5_thresholds.py` | met; one laptop, plus Linux CI |
-| R-6 | Fresh template clone, one setup command, clean check | board rows WP8-U9, U12, U15, U15b, U15c, U15d; my rerun: clone of the template at `5a7290f`, `uv run scat check`: `no problems` | met with a caveat: uv was preinstalled and the uv installer, `gh` and website creation were never run by agents (D-040); no U9 or U12 report file exists, only board rows |
-| R-7 | Both repositories commit `uv.lock`; CI runs on every push | `gh run list --commit <sha>`: tools CI run `45443000810` on the candidate commit `32150b0`; template CI run `45443217957` on `5a7290f`; both repos hold `uv.lock` | met |
-| R-8 | REPL and CLI are equal paths with the same messages | `tests/test_paths.py` (same message, files, exit code; every operation covered); docs test runs both | met |
-| R-9 | Docs snippets run as shown; CLI reference matches `--help` | `uv run pytest tests/docs -q` | met with a caveat: only `bash` and `python` blocks run (D-043), and the `json` blocks do not (4b (n)) |
-| R-10 | No broken links or dead ends | strict build clean; the 5 distinct external links I fetched returned 200; your sitting 2 | met with a caveat: the ACE's browser pass (D-039) predates the U11 to U14 edits, and I ran no browser |
-| R-11 | One obvious way to make each page | `acceptance/reports/r1-p1.md` to `acceptance/reports/r3-p1.md`: all reached a clean check; D-043 removed the page templates | met with a caveat: the coding guide is long (about 5,600 words), see 4b (k) |
-| R-12 | Template repos private; docs recommend it | `docs/getting-started.md` step 1; template `README.md` step 1; `gh api repos/DynamicalSystemsGroup/scat-kg-template --jq '{default_branch,is_template}'` gives `dev`, `true` | met with a caveat: the website path relies on you choosing Private (the page calls it a choice you confirm); only your stage 2 exercises either path |
-| R-13 | The TBox is the one schema source | `tests/test_r7_tbox_equality.py` (named for WP5-R7); tools read `ontology/scat.ttl` at load (D-033) | met |
-| R-14 | Guides hold the stance and never rank or adjudicate | `grep -n 'ranked, voted on' docs/planning.md docs/facilitate-*.md` (3 disclaimers); `research/facilitation/readout.md` | met with a caveat: grep and reading only, no test |
-| R-15 | The style is music and improvisation, never at the cost of clarity | log D-052; the docs after WP9-U3 (logo, one aside, plain words); earlier cold reads `acceptance/reports/r3-cold-read.md`, `r4-cold-read.md`, `r5-cold-read.md`, kept as history | the cold-read bar gave way to your own judgement (D-052), so there is no bar to meet here: the judgement is yours, in sitting 2; the cold-read briefs are retained for reference only |
-| R-16 | A stable machine interface: every result is versioned data on the CLI and in Python, with a written contract and versioning rule, and a fix is data | contract `contracts/machine-interface.md` and schema `contracts/machine-interface.schema.json` (`schema_version` is an integer, now 1; adding a field keeps it); on a seeded defect (the one-letter link typo on `docs/reference/cli.md`, "scat check") `uv run scat check --json` exits 1 and prints one document with `SCAT-LINK-DANGLING` and a `fix` of two options, one a `set-field` edit and one a `command`; `uv run pytest tests/machine -q` (R1: `test_ops_json.py` validates every operation, refusals included, against the schema, and `test_harness_coverage.py::test__every_catalogue_rule_was_validated` covers every rule id; R2: `test_harness_r2.py` runs each fix command and checks it clears its problem, and `test_fix_data*.py` pins the fixes); the built wheel (`uv build --wheel`, then `*.dist-info/METADATA`) lists `Requires-Dist: pydantic`, `pyyaml`, `rdflib` and nothing else; the pages `docs/reference/cli.md` and `docs/reference/api.md` show each form; log D-060 to D-063, D-065 and D-066 | met with caveats: 4b (n) and (o); `tests/machine` alone skips one coverage test, `uv run pytest -q` runs it |
+| R-5 | 500 pages: page under 1 s, neighbourhood 2 s, vault 5 s | `tests/bench/test_r5_thresholds.py` | met on one laptop and Linux CI when last written (D-063); re-run at the candidate |
+| R-6 | Fresh template clone, one setup command, clean check | the WP20-R1 clean-clone trial (**PM pastes its output into `acceptance/reports/` and links it here**) | **open until WP20-R1 runs.** Caveats: uv was preinstalled and the uv installer, `gh` and website creation were never run by agents (D-040, D-041); see 4c items 3 and 4 |
+| R-7 | Both repositories commit `uv.lock`; CI runs on every push | `gh run list --commit <sha>` on each repository; `.github/workflows/ci.yml` | **open until the candidate exists** (CI green on `dev` at 3686a14 per D-097) |
+| R-8 | REPL and CLI are equal paths with the same messages | `tests/test_paths.py`; the docs test runs both | met |
+| R-9 | Docs snippets run as shown; CLI reference matches `--help` | sitting 2's checks | met with a caveat: only `bash` and `python` blocks run (D-043) |
+| R-10 | No dead ends or broken links | strict build; your sitting 2 | **needs your sitting 2.** The ACE's browser pass predates the new pages (the WP18 and WP17 pages were reviewed without a browser, board note on WP18) |
+| R-11 | One obvious way to make each page | UA-A reports (section "UA-A results" in sitting 4); `scat stub`; `acceptance/reports/r1-p1.md` to `r3-p1.md` are the earlier release's history | **open until UA-A reports are in** |
+| R-12 | Template repositories are private; docs recommend it | `docs/getting-started.md` step 1; the template README; `gh api repos/DynamicalSystemsGroup/scat-kg-template --jq '{default_branch,is_template}'` gives `dev`, `true` | met with a caveat: the website path relies on you choosing Private; only your sitting 1 exercises it |
+| R-13 | The TBox is the one schema source | `tests/test_r7_tbox_equality.py`; `ontology/scat.ttl` | met |
+| R-14 | Guides hold the stance and never rank or adjudicate | your sitting 2; `research/facilitation/readout.md` | met on reading only; no test |
+| R-15 | A light musical reference, clarity first | D-052; `docs/index.md` (the logo and one aside) | your judgement (sitting 2); no cold-read bar since D-052 |
+| R-16 | A stable machine interface | `contracts/machine-interface.md` and `.schema.json`; `uv run pytest tests/machine -q`; `uv run scat check --json` on a seeded defect; the built wheel lists only `pydantic`, `pyyaml`, `rdflib` (D-066) | met at `schema_version` 1; **`schema_version` 2 since WP16** (D-089): re-run the wheel check at the candidate. One part is held: WP17-U3b (4c item 1) |
+| R-17 | The notebook runs on the template's vault; fingerprint view, three edge tables, traces | `tests/views/`; the template's CI artifact `analysis-executed` (board, WP17 note) | **not accepted: WP17 is held on WP17-U3b** (D-093, D-095). Tests pass on `dev`; the notebook is on the template's branch `wp17/notebook` per the board, and **the PM confirms at staging that it is on template `dev`** |
+| R-18 | Ripple-complete changes: an impact map before approval, a clean sweep before acceptance | `work-packages/impact/WP16.md`, `work-packages/impact/file-map.md`; the re-sweep in D-091 | met for WP16 (22 remaining hits are named keeps, D-091); no other package changed a term, contract or rule since |
+| R-19 | Manual first: every step can be done by hand, no LLM | UA-M manual path; the docs test, which runs with no LLM | met in tests; **your sitting 1** is the walk |
+| R-20 | The chat path works, at lab and range level | automated: `uv run pytest tests/mcp_server tests/deploy -q`; lab run: `research/chat-path/readout.md` (D-090); range vault: `research/range/koi/` (D-097) | **open.** The automated part and the lab run are met. The live run in the chat on the shipped launcher (WP18-R4) has not been done, and the range-level run depends on it |
+| R-21 | Coding happens in Obsidian | `research/layout/review.md`, "Acceptance walk" (D-088, D-091); your sitting 1 | met by the ACE's walk; yours is the one that counts |
+| R-22 | Architecture before detailed design | `contracts/architecture.md`; `research/architecture/review.md` (three reviewers); D-085 | met |
+| R-23 | Links and edges reconcile | `tests/checks/`, `tests/independent/test_mismatch_pairs.py`, `tests/independent/test_coding_order.py`, `tests/independent/test_done_refused.py` | met; the ACE's Obsidian walk covers the incremental coding session (D-091) |
+
+**Also look at.** The research readouts exist: `research/ontology/`, `research/toolchain/`, `research/facilitation/`,
+`research/prior-art/readout.md`, `research/chat-path/readout.md`. The ontology's four class definitions are marked
+`unverified` in `ontology/scat.ttl` (D-032).
 
 **Checklist.**
 
 - [ ] The command block ran green on my machine.
 - [ ] I opened one evidence file per row I doubt.
-- [ ] I read each caveat and accept it, or I note it.
-- [ ] Research readouts exist: `research/ontology/readout.md`, `research/toolchain/readout.md`, `research/facilitation/readout.md`.
+- [ ] I read each "open" or caveat and accept it, or I note it.
 
-**Done looks like.** The block ends green, and each row is accepted, or has a note from you.
+**Your decision.** Each row accepted, or noted. The rows marked "open" are not ready for acceptance; they close when
+the PM or you finish the step they name.
 
 ---
 
-## Sitting 4a. The ACE's calls
+## Sitting 4. The ACE's calls, the glossary, and what is weak
 
-**Entry point.** The table. Each call is a log entry in `decisions/log.md`. To revert one, check out its tag, for
-example `git checkout divergence/D-030`. The checkpoint tag `checkpoint/v0.1-rc1` is the revert point for D-052 (sitting 4c). The tags exist: tools has D-030, D-031, D-034, D-035, D-041, D-057, D-060; the template has
-D-037 and D-043 (`git ls-remote --tags <repo> | grep divergence`).
+Four parts. 4a is the calls, 4b the glossary changes, 4c what is known to be weak, 4d the UA-A results, 4e the ACE's
+calls on those results.
 
-| Log | The call | Evidence | Revert tag |
-|---|---|---|---|
-| D-002 | The mission's defaults are the ACE's sign-off | his standing instruction | none |
-| D-004 | Adopt tradespace's branches, chain of command, tiered review | its history, read | none |
-| D-005 | Add candidate stage; read "terminal/repl" as REPL plus CLI | D-007 confirms | none |
-| D-009, D-012, D-019, D-020 | Mission cruft and drift passes, including cross-type links as warnings | cold-reader passes | none |
-| D-010 | No group stands for one identifiable person | the ACE's reading of his Chatham House statement | none |
-| D-014 | Seven changes against the two heuristics | his answer, item 2 reversed | none |
-| D-017 | Scenario links S, C, A; architecture links C, A, T | his sketch | none |
-| D-023 | Approve WP1 to WP3; pin models by alias | fresh PM's 12 fixes | none |
-| D-024, D-025, D-026, D-027 | Hourly report; smoothing weight 0.5; log holds observations only | his requests | none |
-| D-028 | Accept WP1 to WP3; stack C; conflict is a relation (its warning was removed, D-052) | spike rerun; readouts | none |
-| D-029 | Approve WP4; no new axiom for missing link types | fresh PM's 6 fixes | none |
-| D-030 | Namespace `w3id.org/scat#`; relations stay page types | his brief | `divergence/D-030` |
-| D-031 | Relation pages only for pairs the author names | options a to c in entry | `divergence/D-031` |
-| D-032 | Accept WP4; four class definitions unverified, accepted | catalogue and examples rerun | none |
-| D-033 | rdflib runtime dependency; README stub on template `main` | scope check | none |
-| D-034 | Tools skip the Obsidian template folder and `.obsidian/` | WP6-U1 block | `divergence/D-034` |
-| D-035 | Rule four WP5 gaps; test edits authorised by you | your typed "Yes, authorise" | `divergence/D-035` |
-| D-037 | Accept WP5; case study paraphrased, no verbatim quotes | 490 tests; clean clone | `divergence/D-037` (template) |
-| D-038 | Accept WP6; docs address fixed; docs test pins template | greps on `f446a02` | none |
-| D-039 | Accept WP7; R-15 residue and four tool gaps to WP8 | 513 tests; browser pass | none |
-| D-040 | Testers use existing uv; no installer, no repositories created | permission rule | none |
-| D-041 | Approve WP8; define candidate commit; D-040 left to you | fresh PM's 8 fixes | `divergence/D-041` |
-| D-042 | Enable Pages; hold WP8-U1 for you | reviewed workflow; deploy | none |
-| D-043 | Template flag, `dev` default; remove Obsidian page templates | `gh api` read-back | `divergence/D-043` (template) |
-| D-044 | J7 for agents is clean check plus local commit | `acceptance/reports/r1-findings.md` | none |
-| D-045 | Merge U11 on re-run greps; epigraph is framing | reviewer's greps | none |
-| D-046 | R-15 unmet in round 2; style only in framing | `acceptance/reports/r2-findings.md` | none |
-| D-047 | Keep framing sentences; read R-15 as about style elements | `acceptance/reports/r3-findings.md` | none |
-| D-048 | Fix style inside `Do:` lines (U14c); no cold reads after round 5 | `acceptance/reports/r4-findings.md` | none |
-| D-049 | Fix T1; accept T2 and T3 as known-weak; R-15 recorded met | `acceptance/reports/r5-findings.md` | none |
-| D-050 | Candidate verified; round-3 findings accepted; local paths redacted from public records (still in git history; removing them needs a force-push, your call) | ACE reruns; re-grep returns 0 | none |
-| D-052 | Checkpoint rc1; conformance checks structure, never content; jazz toned down; WP9; two research spikes | your two corrections, quoted in sitting 4c | `checkpoint/v0.1-rc1` on both repositories |
-| D-053 | Rule audit: 22 rules clearly structural, four borderline rules kept, one removed | the audit summary in sitting 4c | none |
-| D-054 | The spikes may continue into feature development on their branches, outside v0.1 | your typed direction | none |
-| D-057 | Grounding axis (past, future, mixed) goes into v0.1; the play test pauses | your typed "Into v0.1" | `divergence/D-057` |
-| D-058 | Amendment 3 merged; WP10 approved; test edits authorised | your typed "Yes, authorise" | `divergence/D-057` |
-| D-060 | A stable machine interface before the first release (Amendment 4, R-16) | your typed words in the log entry | `divergence/D-060` |
-| D-061 | The estimation data is an operational requirement, checked in CI | your typed words in the log entry; `python3 work-packages/check_metrics.py` | none |
-| D-062 | Amendment 4 merged; WP11 approved and queued behind WP10 | PR #6, merge `519ff5a` | none |
-| D-063 | WP10 accepted; the ACE's rulings on the PM's flags | `check_metrics.py --accept WP10`; 560 tests | none |
-| D-064 | The trial phrase names its intended outcome ("in order to stop drills going missing"); the ACE's own one-row edit | your typed words in the log entry | none |
-| D-065 | The template pin edit in `tests/docs/conftest.py` authorised for WP11 | your typed "yes, authorise the pin edit" | none |
-| D-066 | WP11 accepted; the ACE's rulings on the PM's flags | `check_metrics.py --accept WP11`; 982 tests | `divergence/D-060` |
-| WP10 default | `SCAT-DRAFT-FIELD` also fires at `stub` for a field with a value set, so a fresh stub warns until `timeframe` is filled. An ACE default, for you to confirm | `contracts/rule-catalogue.md`, rule `SCAT-DRAFT-FIELD` | none |
+### 4a. The ACE's calls
 
-Your own decisions or directions, which the ACE only recorded and applied: D-001, D-003, D-006, D-007, D-008, D-011,
-D-013, D-018, D-021, D-022, D-036. D-015 and D-016 were rolled back with `dev` (see D-017), so no entry
-exists for them.
+**Entry point.** The table. Each row is an entry in `decisions/log.md`; the log gives the full text and, for each call,
+the chief engineer's words or the ACE's evidence. "Yours" marks an entry where you gave the direction and the ACE
+recorded and applied it (you may still change it); "ACE" marks a ruling the ACE made under `MISSION.md`, Governance.
+
+**To revert a call.** Check out its tag: `git checkout divergence/D-030`. Reverting to a tag returns `dev` to that
+point and so undoes the call and everything on `dev` after it, which is coarse; ask the ACE for a narrower revert if
+you want one call undone. The tags are listed in the second table below, with what each marks.
+
+The log has no entries D-015, D-016 and D-075. D-015 and D-016 were rolled back with `dev` (see D-017). D-075 was never
+written (**flag for the ACE**: confirm it was skipped and not lost).
+
+| Log | Who | The call | Evidence | Revert tag |
+|---|---|---|---|---|
+| D-001 | Yours | Repositories are public under the group; the mission is approved by merging its PR | his typed answer in the entry | none |
+| D-002 | ACE, on his standing instruction | The mission's defaults are the ACE's sign-off; only intent gaps escalate | his standing instruction in the entry | none |
+| D-003 | Yours | Repository names and the four-concept framing (the repositories were later renamed) | his typed words | none |
+| D-004 | ACE | Adopt a sibling project's branches, chain of command and tiered review; reviewer's guide in sittings by output | the entry lists each adopted item | none |
+| D-005 | ACE + yours | Add the candidate stage; read "terminal/repl" as REPL plus CLI; licence Apache-2.0 (yours) | D-007 confirms the reading; his typed licence answer | none |
+| D-006 | Yours | Haiku testers; "make the right way the easy way" | his typed words | none |
+| D-007 | Yours | CLI and REPL are equal paths | his typed words | none |
+| D-008 | Yours | The user pattern is documented | his typed request | none |
+| D-009, D-012, D-019, D-020 | ACE | Mission cruft and drift passes, including making cross-type links warnings (D-012 also: no licence handling for standards, yours) | cold-reader passes recorded in each entry | none |
+| D-010 | ACE | No stakeholder group stands for one identifiable person | his Chatham House statement, read | none |
+| D-011 | Yours | No date until velocity; story points | his typed words | none |
+| D-013 | Yours | The two core heuristics | his typed words | none |
+| D-014 | ACE | Seven changes against the two heuristics; REPL leads in the docs | his answer, item 2 reversed | none |
+| D-017 | ACE + yours | Amendment 1: SCAT; scenarios behavioural, architectures structural; roll back and restart | his typed intent; the entry names what was rolled back | none |
+| D-018 | Yours | The improvisational-jazz stance and holding disagreement; the facilitation research brief | his typed words (**the entry quotes private document titles: flagged, not repeated here**) | none |
+| D-021 | Yours | macOS supported, CI on Linux, nothing that risks later Linux or Windows | his typed words | none |
+| D-022 | Yours + ACE | Amendment 1 approved; branches cleaned up periodically | merge commit named in the entry | none |
+| D-023 | ACE | Approve WP1 to WP3; models pinned by alias | a fresh PM's 12 fixes | none |
+| D-024, D-025, D-026, D-027 | Yours | Hourly report; estimated and realized points; raw then smoothed velocity; a JSON log of the planning data | his typed requests | none |
+| D-028 | ACE | Accept WP1 to WP3; stack C chosen; conflict is a relation (its warning was removed, D-052) | the spike rerun and the readouts | none |
+| D-029 | ACE | Approve WP4; no new axiom for missing link types | a fresh PM's 6 fixes | none |
+| D-030 | ACE | Namespace `w3id.org/scat#`; relations are page types (reshaped by WP16, D-088) | his brief | `divergence/D-030` |
+| D-031 | ACE | Relation pages only for pairs the author names (replaced by edges, D-088) | options a to c in the entry | `divergence/D-031` |
+| D-032 | ACE | Accept WP4; four class definitions unverified, accepted | catalogue and examples rerun | none |
+| D-033 | ACE | rdflib as a runtime dependency; README stub on template `main` | scope check | none |
+| D-034 | ACE | Tools skip the Obsidian template folder and `.obsidian/` | WP6-U1 block | `divergence/D-034` |
+| D-035 | ACE + yours | Rule on four WP5 gaps; test-fixture edits authorised by you | his typed authorisation | `divergence/D-035` |
+| D-036 | Yours | Append-only posture; autonomous overnight operation; `divergence` tags before direction changes | his typed words; `ORG.md` | none |
+| D-037 | ACE | Accept WP5; case study paraphrased, no verbatim quotes | 490 tests; clean clone | `divergence/D-037` (template repository) |
+| D-038 | ACE | Accept WP6; docs address fixed; docs test pins the template | greps on the candidate commit | none |
+| D-039 | ACE | Accept WP7; R-15 residue and four tool gaps to WP8 | 513 tests; browser pass | none |
+| D-040 | ACE | Testers use the existing uv; no installer, no repositories created | permission rule | none |
+| D-041 | ACE | Approve WP8; define the candidate commit; D-040 left to you | fresh PM's 8 fixes | `divergence/D-041` |
+| D-042 | ACE | Enable Pages; hold WP8-U1 for you | reviewed workflow; deploy | none |
+| D-043 | ACE | Template flag set, `dev` default; Obsidian page templates removed | `gh api` read-back | `divergence/D-043` (template repository) |
+| D-044 | ACE | J7 for agents is a clean check plus a local commit | `acceptance/reports/r1-findings.md` | none |
+| D-045 | ACE | Merge U11 on re-run greps; epigraph is framing | reviewer's greps | none |
+| D-046, D-047, D-048, D-049 | ACE | R-15 rounds 2 to 5: placement rule, style elements only, stop rule; T1 fixed, T2 and T3 accepted | `acceptance/reports/r2-findings.md` to `r5-findings.md` | none (superseded by D-052) |
+| D-050 | ACE | Candidate verified; round-3 findings accepted; local paths redacted from public records (still in git history) | ACE reruns; re-grep returns 0 | none |
+| D-051 | ACE | Release PRs opened (later closed, D-074) | CI green on both heads | none |
+| D-052 | Yours + ACE | Checkpoint rc1; conformance checks structure, never content; jazz toned down; WP9; two research spikes | your typed corrections, quoted in the entry | `checkpoint/v0.1-rc1` on both repositories |
+| D-053 | ACE | Rule audit of 28 ids: 22 structural, 4 borderline kept, 1 removed | the entry's B1 to B4 | none |
+| D-054 | Yours | The spikes may continue on their branches, outside v0.1 | his typed direction | none |
+| D-055 | ACE | WP9 accepted; feature branches tried; Amendment 2 drafted | 522 tests; clean clones | none |
+| D-056 | ACE | Each layer brings only the dependencies it uses | wheel built from `dev` lists three dependencies | none |
+| D-057 | Yours | The past/future grounding axis goes into v0.1; play test paused | his typed answers | `divergence/D-057` |
+| D-058 | Yours + ACE | Amendment 3 merged; WP10 approved; test edits authorised; architecture phrases | "Yes, authorise" | `divergence/D-057` |
+| D-059 | Yours | The play test runs on the template mid-WP10 | his typed words | none |
+| D-060 | Yours | A stable machine interface before release (Amendment 4, R-16) | his typed words | `divergence/D-060` |
+| D-061 | Yours | The estimation data is an operational requirement, checked in CI | `python3 work-packages/check_metrics.py` | none |
+| D-062 | ACE | Amendment 4 merged; WP11 approved behind WP10 | PR #6, merge `519ff5a` | `divergence/D-060` |
+| D-063 | ACE | WP10 accepted; rulings on the PM's flags | `check_metrics.py --accept WP10`; 560 tests | none |
+| D-064 | Yours | The trial phrase names its intended outcome ("in order to stop drills going missing") | his typed words | none |
+| D-065 | Yours | The template pin edit in `tests/docs/conftest.py` authorised for WP11 | his typed words | none |
+| D-066 | ACE | WP11 accepted; rulings on the PM's flags | `check_metrics.py --accept WP11`; 982 tests | `divergence/D-060` |
+| D-067 | Yours + ACE | A terms reference for the project manager, first as a mission amendment (superseded by D-068) | his typed words | none |
+| D-068 | Yours + ACE | The terms page is a fix for field finding F-8, not a mission change; WP12 approved | his typed words | none |
+| D-069 | Yours + ACE | Two more pages for F-8: the flow, and data, rights and consent (WP13) | his typed words | none |
+| D-070 | Yours + ACE | Chatham House and personal attribution are example policies, not the rule | his typed words | `divergence/D-070` |
+| D-071, D-072, D-073 | Yours + ACE | WP13 widened: AI use, publication levels and licence, follow-through, three classes of material, a "Before you start" checklist | his typed words in each entry | none |
+| D-074 | Yours + ACE | WP12-U5 corrections made by the ACE; stale release PRs closed | his typed instruction | none |
+| D-076 | Yours + ACE | Amendment 5 merged (mission rewritten, `GLOSSARY.md` added); `dev` synced | merge `0e74f19` | `divergence/D-076` |
+| D-077 | ACE | WP12 accepted; terms page to be rewritten in WP16 | `check_metrics.py --accept WP12` | none |
+| D-078 | ACE | Team set up for Amendment 5 (two new roles, impact maps); Pages deploys trimmed to save runner minutes | `ORG.md`, `.claude/agents/` | none |
+| D-079, D-080, D-083 | ACE | WP14, RS3 and WP15 approved | scope files | none |
+| D-081 | ACE | WP14 scope corrected; the ACE's calls on the WP16 impact map | `work-packages/impact/WP16.md`, section 8 | none |
+| D-082 | ACE | WP14 accepted; a private name redacted from an old log entry (the one edit to a past record) | grep of the repository, outside `decisions/`, finds nothing | none |
+| D-084 | Yours | The chat route for v0.1 is the coder's own machine behind a tunnel; governed compute after v0.1 | his typed words | none |
+| D-085 | ACE + yours | WP15 accepted; architecture approved (R-22); rule 4; the IDE path's `set-status` residual risk | three reviewers; `research/architecture/review.md` | none |
+| D-086 | ACE | WP16 approved | scope file | `divergence/D-086` |
+| D-087 | ACE | WP16 scope fixed; the tunnel pick for the chat route | PM's scope check | none |
+| D-088 | ACE | The layout: a narrative is one page with an "Edges told" table; edges one per pair, built by the tool; index pages are Bases | `research/layout/review.md` | none |
+| D-089 | ACE | WP16 PM's defaults confirmed; `schema_version` 2; machine-interface page cut to 600 words; glossary gains "cap" | the entry's six rulings | none |
+| D-090 | Yours + ACE | RS3 lab run worked; the MCP server runs in a container; permissions for the run | `research/chat-path/` notes on `spike/chat-path`, summarised in `research/chat-path/readout.md` | none |
+| D-091 | ACE | WP16 and RS3 accepted; glossary gains "SCAT" | `research/layout/review.md`, "Acceptance walk"; 1,770 tests | `divergence/D-091` |
+| D-092 | ACE | WP17 (the views) approved; dependencies in an optional extra or the template | scope file | `divergence/D-091` |
+| D-093 | ACE | WP17 held on a guard refusal (WP17-U3b); 45 future-stamped metrics records to be corrected; two check gaps | the entry; `work-packages/morning-list.md` item 1b | `divergence/D-093` |
+| D-094 | ACE | WP18 (the chat path) and WP19 (the range vault) approved | scope files | `divergence/D-093` |
+| D-095 | ACE | WP17 follow-ups landed: metrics corrected, two check gaps closed (two tests changed with the behaviour); two items left for WP20 | `check_metrics.py` passes on 536 records; CI green | none |
+| D-096 | ACE | Rulings on the PM's defaults; **Docker Desktop is the documented container runtime**, untested here; the launcher never changes tailnet settings | the entry | `divergence/D-096` |
+| D-097 | ACE | WP19 accepted; WP18 built, waiting on its live run; WP20 approved | `check_metrics.py --accept WP19`; `research/range/koi/` | `divergence/D-096` |
+| WP10 default | ACE | `SCAT-DRAFT-FIELD` fires at `stub` for a field with a value set, so a fresh stub warns until `timeframe` is filled. An ACE default, for you to confirm | `contracts/rule-catalogue.md` | none |
+
+Your own decisions or directions that the ACE only recorded and applied are marked "Yours" above. D-015 and D-016 are
+absent (see above).
+
+**The tags.** All exist on `origin` for the tools repository. Check with
+`git ls-remote --tags origin | grep divergence` (13 lines expected), and for the template repository with
+`git ls-remote --tags https://github.com/DynamicalSystemsGroup/scat-kg-template | grep -E 'divergence|checkpoint'`.
+
+| Tag | Commit | Marks (the commit's subject) |
+|---|---|---|
+| `divergence/D-030` | `9f47ce6` | WP4: U1 done; U2 and U3 in flight |
+| `divergence/D-031` | `4b2d2be` | WP4: U2 and U3 reworking against merged TBox |
+| `divergence/D-034` | `60b506e` | WP5-U2: vault reader and TBox-built page models |
+| `divergence/D-035` | `5b251fe` | Board and metrics: WP5-U2 to U4 and U9, WP6-U1 done; WP5-U5 blocked |
+| `divergence/D-041` | `b26fb57` | Morning list: D-039, D-040 |
+| `divergence/D-057` | `6f54c0c` | Log: D-056 header in the log's format (the point before the grounding axis) |
+| `divergence/D-060` | `a3edae4` | WP10 accepted (log D-063); findings F-5, F-6 (the point before WP11) |
+| `divergence/D-070` | `8071d8d` | a merge of `dev`, the commit before D-070's ruling |
+| `divergence/D-076` | `778e070` | WP12-U5 persona counts and items (log D-074); the `dev` commit before Amendment 5 |
+| `divergence/D-086` | `456f2f4` | WP16 layout review in Obsidian and the layout decision (log D-088) |
+| `divergence/D-091` | `1c6c9f3` | WP16 and RS3 accepted; glossary gains SCAT (log D-091) |
+| `divergence/D-093` | `171baaf` | WP17 held on a guard refusal; metrics correction and check gaps (log D-093) |
+| `divergence/D-096` | `3686a14` | WP18-U7f: make the missing-docker launcher test hermetic; WP20's named revert point |
+| `divergence/D-037`, `divergence/D-043` | template repository | the template before D-037 and D-043 |
+| `checkpoint/v0.1-rc1` | tools `169061b`, template `9e9bad8` | the first candidate, the revert point for D-052 |
+
+A flag for the ACE: `divergence/D-086` and `divergence/D-096` point at commits that sit later in time than their
+entry's own ruling (the first at the layout decision, D-088; the second at the head when WP18 and WP19 were midway).
+The log's text names them as revert points (D-092, D-097), so they are listed as such.
 
 **Checklist.**
 
 - [ ] I read every row, and I name the calls I reverse.
 - [ ] I checked one revert tag with `git ls-remote`.
 
-**Done looks like.** Every call is kept or reverted.
+**Your decision.** Every call is kept or reverted.
 
----
+### 4b. The glossary changes, for your review
 
-## Sitting 4b. What is known to be weak
+`MISSION.md` (Governance, "The glossary") says a glossary change is a logged ACE call, listed for your review at
+acceptance.
 
-**Entry point.** The list below, items (a) to (p). Each names the file or log entry that backs it.
+| Change | Log | What it is |
+|---|---|---|
+| The glossary itself | D-076 | Added with Amendment 5 (PR #8, merge `0e74f19`), which you merged. Its drafting commits (plain terms mapped once to formal concepts, then wording rounds on model, layout, layered graph, coding, fingerprint, loop, tool and MCP server) were reviewed in that PR's thread, not in the log. **Flag for the ACE: the log holds no list of those wording changes.** |
+| **cap** added | D-089, ruling 2 | "The most stakeholder groups one vault may hold, set by the organiser in the vault's `scat.toml`." An addition, not a change of sense; the sweep for "cap" found it used only in that sense. The key `stakeholder_group_cap` keeps its name. |
+| **SCAT** added | D-091 | The four node types, with a nod to scat singing. An addition: the docs expanded the name and the glossary did not. |
+| "index page" for what a user sees | D-081, call 4 | Messages, docs, the folder and the `type` value say "index page"; the ontology's own identifiers may keep formal names. Not a glossary edit; a use rule. |
 
-- **(a) uv.** UA-A testers had uv preinstalled. No agent ran uv's installer (D-040, D-041). `MISSION.md` UA-A says "uv
-  not installed". This departure is yours to disposition. Close it with one fresh tester rerun after you permit the
-  official installer, or with your own stage 3.
-- **(b) Push.** For agents J7 is a clean check plus a local commit. Testers' clones have no remote, so no agent pushed
-  (D-044). Your stage 8 covers it.
-- **(c) Output blocks.** The docs test runs only `bash` and `python` blocks. The `text` blocks that show tool output
-  are pinned by reviewers' real runs, not CI (D-043).
-- **(d) Obsidian.** No agent opened it. Stages 4 and 9 are the first time.
-- **(e) WP8-U1 is held.** Branch `wp8/u1`, commits `3ed3163`, `9e6ca44`. It needs your authorisation to change two
-  assertions in `tests/ops/test_ops_stub.py` (`not r.ok` becomes `r.ok and r.unchanged == ("concern/a.md",)`, and the
-  same-type refusal row becomes a different-type row). Until it lands, `set-status done` exits 0 even when the page
-  fails its check. When it lands, `src/` changes, the pins move, UA-A's rerun is the ACE's call (WP8-R8), and these
-  docs spots change: `docs/coding.md`, the section "Status, and set-status" and message 7, and `docs/reference/api.md`, the `set_status` and `stub`
-  sections.
-- **(f) R-15 history.** (Superseded by D-052: the cold-read bar gave way to your own judgement. What follows is what the cold reads found.) Round 1 named jazz (from a phrase later removed) and listed 2 places; round 2 did not
-  ("improv theatre"), 7 places; round 3 named it, 5 places; round 4 named it, 4 style places, and reader D glimpsed a
-  home-page fragment in the search index (it says it did not use it; the PM tightened the fetch rule); round 5 named it
-  with no home page seen, and left T1 to T3. Rules: placement (D-046), style elements only (D-047), stop rule (D-048).
-  D-049 fixed T1 and accepted T2 and T3 as known-weak, for you to judge: T2 is the term "Yes, and", the mission's own
-  stance, defined on the page; T3 is the CLI epigraph "The same tune at the command line". Every reader is Haiku and
-  has named something each round. No reader saw the final wording (U14d).
-- **(g) Clone history.** The template clone shows internal commit subjects (for example "WP8-U15 ...") to testers.
-  Accepted in D-046 on the claim that a repository made from the template starts with fresh history. I did not
-  verify that. Run `git log --oneline` in your new repository at stage 2.
-- **(h) Review shortcuts.** The PM verified small deltas without a second full review: U11 (D-045), U14, U18, WP5-U10 and
-  the last WP4-U3 round (D-032). The PM merged WP8-U8c locally after a guard refused a worker's push.
-- **(i) Accepted findings.**
-  - r1 A, C: no agent could push at J7 (D-044); long relation names are cut (documented).
-  - r2 P3: internal commit subjects in clone history, as (g).
-  - r2 P4, P5: the "Tuning up" epigraph; tester environment artefacts (terminals, piped REPL, refused push, network).
-  - r2 P6: judgement left to the facilitator: story or concern line, pair choice, relation text (R-14).
-  - r2 P7: relation file names cut at 64 characters, documented in `docs/coding.md`.
-  - r4 S2, S4: planning epigraph; "Yes, and" (D-048).
-  - r3 C3, C4, C5: planning epigraph fragment, minor wording, one more word choice (D-047).
-  - r3 persona findings (16, in `acceptance/reports/r3-p1.md`): accepted by the ACE (D-050), for the reasons D-046
-    gives for the same kinds (judgement calls in coding, environment artefacts, internal commit subjects in the clone's
-    history, no rule for a concern with no answering affordance). The "clear the example" timing was fixed in U14.
-- **(j) Found while verifying.**
-  - `docs/getting-started.md` says "Both paths below set it for you, and the website path shows it as a choice you
-    confirm". The `gh` command passes `--private`, but the website path relies on you choosing Private. Only your stage 2
-    exercises it.
-  - The four class definitions are marked `unverified` in `ontology/scat.ttl` (D-032).
-  - A conflict between two concerns was an explicit `conflicts` link (D-028) and its warning was removed (D-052). The `conflicts` field is gone now; a relationship annotation, a body line with a link, records it, and the tool attaches no meaning to it.
-  - My R-6 rerun used my own home and uv cache, so it is weaker than UA-A.
-- **(k) Coding guide length.** The coding guide is long (about 5,600 words) and no ruling splits it. The Haiku
-  testers in rounds 1 to 3 all finished it.
-- **(l) w3id.** `https://w3id.org/scat` is unregistered. `acceptance/w3id-registration.md` holds the pull request for you to
-  submit after the release merge. `ontology/scat.ttl` still says the IRI base is unregistered until release.
-- **(m) The `timeframe` tags (WP10).** The tag is an author's judgement; nothing checks it against the text. The two
-  architecture pitches in the case study are tagged `future`, and a fresh reviewer would have tagged them `mixed`.
-- **(n) The JSON blocks (WP11).** The docs test does not run the `json` blocks on `docs/reference/cli.md` and
-  `docs/reference/api.md`: they are output only, so a change to the data would not fail it. I re-ran the nine CLI
-  examples in order on a fresh clone of the template at `5a7290f`, and all nine equal their blocks. The visual check of the
-  JSON blocks on the two reference pages was measured by DOM only, not by eye.
-- **(o) An edge refusal stays a manual fix (WP11).** `scat stub` refuses an edge and names
-  `scat record-edge <type> <from> <to> --told-by <narrative>` (and the refusal for the cap is manual too). The fix is
-  `manual`, not a command a tool can run, because the contract allows one `author_slot` per command and this needs
-  three values. A plugin shows the text and you type the command.
-- **(p) The Terms page (WP12).** Fresh Haiku testers cold-read it four times (`acceptance/reports/wp12-r3-round1.md` to
-  `wp12-r3-round4.md`). The PM fixed one page defect after each of rounds 1 to 3. In round 4 the only blocking mark,
-  the size of the stakeholder-group cap, which is set per vault in `scat.toml`, is accepted as not a page defect; the
-  remaining findings ask for teaching the guides carry. Read the reports for the answers and guesses themselves. The
-  page's `Stage` is one value per entry, so Status is placed at capture, which is the PM's judgement.
+To see each edit as text: `git log -p --follow -- GLOSSARY.md`, or `git show a8356a8 -- GLOSSARY.md` (cap) and
+`git show 1c6c9f3 -- GLOSSARY.md` (SCAT).
 
-**Checklist.**
+- [ ] I read the two additions and accept them, or I note the entry I would change.
 
-- [ ] I gave (a) my answer.
-- [ ] I gave (e) my answer.
-- [ ] I read (b) to (d) and (f) to (p) and accept each, or I note it.
+**Your decision.** Accept the two additions and the one use rule, or name the one you would change.
 
-**Done looks like.** (a) and (e) each have your answer, and every other item is accepted or noted.
+### 4c. What is known to be weak
 
----
+**Entry point.** The list. Each item names the file or log entry that backs it.
 
-## Sitting 4c. The checkpoint, the conformance principle and the rule audit
+**Open and needs your answer**
 
-**Entry point.** Log entries D-052 and D-053 in `decisions/log.md`, and the table below.
+1. **WP17-U3b is held (D-093, D-095).** `scat draw --out` can write a drawing outside the vault; the machine-interface
+   schema lets only `export-edges` report such a path. A permission guard refused the one-line edit to
+   `contracts/machine-interface.schema.json` twice. Two ways on: (a) you allow the edit (add `draw` beside
+   `export-edges` in `OperationResult`'s path rule); or (b) the ACE rules that `draw` writes only inside the vault,
+   as the chat path already keeps views there (D-090), and the code changes. Until then WP17 is not accepted, and so
+   R-17 is not met. Everything else in WP17 is on `dev` and green (board; `work-packages/morning-list.md` item 1b).
+   **Your answer:** (a) or (b).
+2. **The live chat-path run, WP18-R4, has not been done.** It needs you to paste a key and sign in. WP18 is built
+   and green but cannot be accepted until it runs (D-097). It is also R-20's end-to-end part. It is the chat half of
+   your sitting 1.
+3. **Docker Desktop is untested (D-096).** The chat path's documented container runtime, chosen because it has a
+   graphical installer, has never been installed or run here. The container itself ran under Colima (D-090). Installing
+   Docker Desktop needs your permission (`work-packages/morning-list.md` item 2c). **Your answer:** permit one install
+   and a local test, or accept the gap.
+4. **The uv gap (D-040, D-041).** UA-A testers had uv preinstalled; `MISSION.md` says "uv not installed". No agent ran
+   uv's installer. The docs' install step is exercised only by you (sitting 1). **Your answer:** accept the gap, or
+   permit one fresh tester to run the official installer in a UA-A round (morning list item 4).
+5. **WP8-U1 is held since D-042.** Branch `wp8/u1`. It needs your authorisation to change two assertions in
+   `tests/ops/test_ops_stub.py` (`not r.ok` becomes `r.ok and r.unchanged == ("concern/a.md",)`, and the same-type
+   refusal row becomes a different-type row). The file still holds the old assertions (checked on `dev`). **Your
+   answer:** authorise or refuse (morning list item 3). **Flag for the ACE:** that file and the docs it touches
+   (`docs/coding.md`, `docs/reference/api.md`) changed in WP16; confirm the held branch still applies.
 
-**The checkpoint.** `checkpoint/v0.1-rc1` is tagged on both repositories: tools `169061b`, template `9e9bad8`. It is the
-revert point if you want the first candidate back. Check with `git ls-remote --tags <repo> | grep checkpoint`. D-052
-names no `divergence` tags, so there are none for it.
+**Known gaps, for you to accept or note**
 
-**Your two corrections (D-052).**
+6. **Push is unreachable for agents (D-044).** Testers' clones have no remote. For agents, J7 is a clean check plus a
+   local commit (and J10 locks a version with `git tag`). Only your sitting 1 pushes.
+7. **The docs test runs only `bash` and `python` blocks (D-043).** The `text` blocks that show tool output, and the
+   `json` blocks on the CLI and API reference pages, are pinned by reviewers' real runs, not CI.
+8. **Obsidian and the rendered pages are unseen by agents.** No agent opened Obsidian (the ACE's walk in D-091 is the
+   exception for the layout). The rendered phrase tables and JSON blocks (F-6), and the WP17 to WP19 pages at desktop
+   and 375 px, were measured without a browser. Your sitting 2 is the first look.
+9. **The two items carried from D-095, for WP20's cleanup (WP20-G6).** A narrative with unparsable frontmatter is
+   still left out of whole-vault views silently, and two sentences in `contracts/architecture.md` need the new refusals.
+   **Status: not done as of this guide;** the PM updates this line when the cleanup lands.
+10. **The play-test findings file is stale.** `acceptance/playtest-findings.md` still lists F-1 to F-8 with proposed
+    dispositions. The board says WP16-U13 and U7f took F-1, F-3, F-5 and F-7; F-4 became R-16; F-8 became WP12 and WP13;
+    F-2 (docs theme end of life, 5 May 2027) is a later package; F-6 is your sitting 2. I did not verify the fixes.
+11. **History holds things you asked to keep out (`work-packages/morning-list.md` items 1, 1a, 5; D-050, D-081,
+    D-082).** A line in `main`'s history (commit `c58113b`), private repository names in `dev` (`20ff07a`), one old
+    log entry, and local paths in older commits. The files are clean now; removing them from history needs a
+    force-push, which only you can authorise. **Your answer:** leave, or rewrite.
+12. **Your template checkout will conflict on pull** (morning list item 2b): uncommitted edits in
+    `.obsidian/core-plugins.json` and `app.json` against the migrated template.
+13. **w3id.** `w3id.org/scat` is unregistered. `acceptance/w3id-registration.md` holds the pull request for you to
+    submit after the release merge (morning list item 6).
+14. **Review shortcuts.** The PM verified small deltas without a second full review in earlier packages (D-032, D-045).
+    WP16-U4's fixes got a second, independent review (D-089, ruling 6).
+15. **WP19's review.** The range vault's narratives were coded by workers standing in for the coder; the ACE read one
+    against its source, and a review sample of at least a third was checked (D-096, D-097). A coder has not signed off
+    its content.
+16. **Rule 4 and the IDE path (D-085, call b).** An agent on the IDE path can run `set-status`; authority there holds
+    by the assistant's file and git review. The chat path holds it by construction (the MCP server never sets `done`).
+    Accepted as a residual risk.
+17. **The `timeframe` tags are an author's judgement (WP10).** Nothing checks them against the text.
+18. **An edge refusal stays a manual fix (WP11, D-066 ruling 2).** `scat stub` refuses a relation-type edge and names
+    the command, but the fix is typed `manual`.
+19. **Coding guide length.** About 5,600 words at the last count and no ruling splits it (the count predates WP16 and
+    WP18; **PM re-counts at the candidate**).
+20. **The mission's own gaps.** Four class definitions in `ontology/scat.ttl` are `unverified` (D-032).
+21. **Earlier-release weaknesses that stand only as history.** The R-15 cold-read rounds, the clone history showing
+    internal commit subjects (D-046; the check is your stage 2 `git log --oneline` in the new repository), and the
+    round 1 to 5 findings in `acceptance/reports/r1-findings.md` to `r5-findings.md` were accepted in D-044 to D-050.
+    The PM's WP12 cold reads of the Terms page are in `acceptance/reports/wp12-r3-round1.md` to `round4.md`.
 
-1. Conformance checks structure, never content. You said: "we should not be getting warnings about conflicting
-   concerns." The `conflicts` link stayed as an explicit link then, checked only for type and existence (since replaced by the relationship annotation, which the tool does not check). The warning
-   about a record that holds two conflicting concerns was removed from the rules, the contract, the tests, the docs, the walkthrough and this guide
-   (WP9-U1, U1b, U4). The checks of a correctly built model now print `no problems` on the template's worked example.
-   Where tensions are sharpest, or where concerns match or leave a gap, is analysis. It comes after conformance
-   passes and a coder signs off the content. No analysis tool is part of v0.1.
-2. The jazz framing was too heavy. You said it was "a little heavy handed", and "music note logo is good". The logo
-   and one brief aside on improvisation stay. The page epigraphs and the other jazz framing were replaced with plain
-   words (WP9-U3).
-
-**R-15 gave way to your judgement.** D-052 records that the R-15 cold-read bar gave way to your own judgement. No
-cold read is run for this release. The cold-read briefs (`acceptance/briefs/cold-read-part1.md` and `part2.md`) are
-kept, marked as retained for reference only. The old reports in `acceptance/reports/` are history and are untouched.
-
-The audit and the rulings below record the v0.1 catalogue, with its raw, coded, relation and class pages. The rules in force are in `contracts/rule-catalogue.md`.
-
-**The rule audit (D-053).** The 27 rule ids then in the catalogue were checked for any content judgement. 22 were
-unambiguously structural (they look at pages, fields, names, counts or links, never at what a note says), four
-borderline rules were kept by the ACE rulings B1 to B4, and one, the warning about a record that holds two conflicting
-concerns, was content and was removed (D-052, D-053). WP10 added one rule after the audit. The per-rule table belonged to
-that catalogue, and most of its ids are retired. The rules in force, with their ids and severities, are in
-`contracts/rule-catalogue.md`.
+**The note on the rule audit (D-052, D-053).** The audit covered the v0.1 catalogue as it stood then. The rules in
+force, with their ids and severities, are in `contracts/rule-catalogue.md`; `SCAT-NOEDGES` (G1, added in WP18-U6) and
+the table rules came after the audit.
 
 **Checklist.**
 
-- [ ] I checked that `checkpoint/v0.1-rc1` exists on both repositories.
-- [ ] I read the audit summary and the catalogue, and accept the verdicts, or I name the rule I would change.
-- [ ] I accept that R-15 rests on my own judgement (sitting 2).
+- [ ] I gave items 1, 3, 4, 5 and 11 my answer.
+- [ ] I read items 2 and 6 to 21 and accept each, or I note it.
 
-**Done looks like.** The checkpoint is confirmed, and each verdict is accepted or noted.
+**Your decision.** Items 1, 3, 4, 5 and 11 each have your answer, and every other item is accepted or noted.
+
+### 4d. UA-A results
+
+**To be filled from `acceptance/reports/` after round N.** The PM fills this section; nobody writes a result here
+before a report exists. One row per tester per round, with the report file linked. The pass bar is in `MISSION.md`
+("User acceptance", "Pass bar"): every tester reaches the end with a clean check and a hand-over, every finding is
+dispositioned, and the last round leaves no blocking finding.
+
+| Round | Persona | Model | Path | Report | Clean check | Hand-over tag, pinned commit, recipient | Blocking findings | Findings dispositioned |
+|---|---|---|---|---|---|---|---|---|
+| N | p1 facilitator-analyst, REPL | Haiku | manual | | | | | |
+| N | p2 newcomer, CLI | Haiku | manual | | | | | |
+| N | p3 facilitator-analyst, REPL (control) | Sonnet | manual | | | | | |
+| N | chat tester 1 | | chat | | | | | |
+| N | chat tester 2 | | chat | | | | | |
+
+- Rounds run: to be filled.
+- Candidate commit each round ran against: to be filled.
+- Findings accepted with a reason (these join sitting 4c): to be filled.
+- Reports that were void and rerun: to be filled.
+- Whether uv was preinstalled in each report (D-040): to be filled.
+
+### 4e. The ACE's calls on the UA-A findings
+
+**ACE to complete.** This section is a stub. The ACE writes, for each finding or group the PM brings from 4d: the
+call, its evidence (the report and line), the log entry id, and its divergence tag where one was pushed. Nothing here
+is decided by the PM or by this draft.
+
+| Log | Finding | The call | Evidence | Revert tag |
+|---|---|---|---|---|
+| ACE to complete | | | | |
+
+**Your decision.** Keep or revert each call, as in 4a.
