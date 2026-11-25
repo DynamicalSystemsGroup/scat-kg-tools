@@ -210,7 +210,7 @@ page in the `concern` folder. Click a link. Then, in Terminal in your vault fold
 says. These are the docs' commands:
 
 ```text
-git rm -r addresses affordance architecture-coded architecture-raw attributes concern heldby scenario-coded scenario-raw stakeholder-group technology
+git rm -r affordance concern group narrative technology
 uv run scat index
 uv run scat check
 git add .
@@ -220,7 +220,7 @@ git commit -m "Remove the example"
 **Done looks like.**
 
 - Obsidian opens the folder as a vault with no complaint, and you can follow links between pages.
-- `uv run scat index` prints `changed` for each of the seven class pages.
+- `uv run scat index` prints `unchanged` for each of the five Bases in `index`, or `created` for one that is missing.
 - `uv run scat check` prints:
 
 ```text
@@ -250,11 +250,11 @@ the four kinds of record were there as the docs say. For a command, note the ful
 [Facilitating architectures](https://dynamicalsystemsgroup.github.io/scat-kg-tools/facilitate-architectures/).
 
 **What you do.** You are not running a real workshop. Read the pages as a facilitator would, and make a small plan
-and raw notes of your own:
+and plain-sentence notes of your own:
 
 - From Planning: the sessions (one that elicits scenarios, one that elicits architectures), the groups in each,
   named by role and within the cap, and the Chatham House framing.
-- From the two facilitation guides: write one raw scenario and one raw architecture in plain sentences, as they
+- From the two facilitation guides: write one scenario and one architecture in plain sentences, as they
   would have been told, with groups and no individuals' names. Mark each one past, future or mixed, using the phrase
   list in the facilitation guides.
 - Keep the groups to a short list. You will name them again in stages 6 and 7.
@@ -263,19 +263,19 @@ You are checking that the pages say what to do, that nothing is ranked, voted on
 "yes, and" and "from this perspective" stance is easy to follow without obscuring an instruction.
 
 **Done looks like.** You hold, on paper or in a file outside the vault: a short plan (sessions, groups within the cap,
-the framing line) and the plain-sentence raw notes for one scenario and one architecture. You have not yet made any
+the framing line) and the plain-sentence notes for one scenario and one architecture. You have not yet made any
 pages. Stage 6 does that.
 
 **If it fails.** Note any instruction you could not follow, any term used before it was defined, and any place the
 jazz language made an instruction harder to follow. Note anything that asked you to rank or choose between stories or
 architectures, because the guides must not.
 
-**Resume check.** Find your plan and raw notes. If you have not written them, start again at Planning.
+**Resume check.** Find your plan and notes. If you have not written them, start again at Planning.
 
 **Checklist.**
 
 - [ ] I made a plan with groups within the cap.
-- [ ] I have raw notes for one scenario and one architecture, each marked past, future or mixed.
+- [ ] I have notes for one scenario and one architecture, each marked past, future or mixed.
 - [ ] No page asked me to rank, vote or adjudicate.
 - [ ] No metaphor hid an instruction.
 
@@ -283,7 +283,7 @@ architectures, because the guides must not.
 
 ## Stage 6. Code in the REPL (J6)
 
-**Entry point.** [Coding](https://dynamicalsystemsgroup.github.io/scat-kg-tools/coding/), "Where raw and coded pages come from" and "The operations, in the order
+**Entry point.** [Coding](https://dynamicalsystemsgroup.github.io/scat-kg-tools/coding/), "Where narratives and their edges come from" and "The operations, in the order
 you meet them". Every step shows the REPL spelling first and the CLI spelling beside it.
 
 **What you do.** Code your **scenario** in the Python REPL. Start it:
@@ -292,11 +292,11 @@ you meet them". Every step shows the REPL spelling first and the CLI spelling be
 uv run python
 ```
 
-Then `import scat_kg` once. In the REPL, with your own page and group names, do what the page shows: create the raw
-page (`scat_kg.stub`, type `scenario-raw`) and its coded page (type `scenario-coded`), write your notes into the raw
-page (and fill its `timeframe:`: past, future or mixed, from the facilitation guides' phrase list) and the links into the coded page, then `scat_kg.stub_pair(...)` for each pair you find (the pair order is group
-then concern, concern then affordance, affordance then technology), or `scat_kg.stub_links()` after you write the
-coded page. Move pages from stub through draft to done with `scat_kg.set_status("<page>", "draft")` and so on. After
+Then `import scat_kg` once. In the REPL, with your own page and group names, do what the page shows: create the narrative
+(`scat_kg.stub`, type `narrative`, kind `scenario`), write your notes into it with links where names appear (and fill its
+`timeframe:`: past, future or mixed, from the facilitation guides' phrase list), then `scat_kg.record_edge(...)` for each edge
+you find (type `holds` for a group and a concern, `addressed-by` for a concern and an affordance, `provided-by` for an
+affordance and a technology), or write the rows of its "Edges told" table and run `scat_kg.stub_links()`. Move pages from stub through draft to done with `scat_kg.set_status("<page>", "draft")` and so on. After
 each step, `scat_kg.check(...)` the page, then its neighbourhood (`neighborhood=True`). Fix each problem from its
 message.
 
@@ -304,9 +304,9 @@ message.
 
 - Every command prints a message that names the file, the rule and a fix. The `Fix:` line is something you can do
   literally.
-- The pages exist, with their relation pages. You wrote none of the structure by hand.
+- The pages exist, and each edge is a row in the narrative's table. You wrote none of the structure by hand.
 - At least one problem occurred and you fixed it from its message alone.
-- Your scenario's pages are `done`, and `scat_kg.check()` on the neighbourhood of the coded page shows no errors.
+- Your scenario's pages are `done`, and `scat_kg.check()` on the neighbourhood of the narrative shows no errors.
 
 **If it fails.** Note the call you typed, the message, and whether the `Fix:` line was enough. Note any time you
 had to guess, or look anywhere other than the coding page and the [Python API reference](https://dynamicalsystemsgroup.github.io/scat-kg-tools/reference/api/).
@@ -317,7 +317,7 @@ A message that is correct but unclear is a finding too. Note the status of each 
 **Checklist.**
 
 - [ ] I used the REPL for every operation in this stage.
-- [ ] I coded one scenario, raw and coded.
+- [ ] I coded one scenario as a narrative with its edges.
 - [ ] I hit at least one message and fixed it from the message alone.
 - [ ] Pages moved from stub to draft to done.
 - [ ] I did not read `src/` or `tests/`.
@@ -329,21 +329,19 @@ A message that is correct but unclear is a finding too. Note the status of each 
 **Entry point.** [Coding](https://dynamicalsystemsgroup.github.io/scat-kg-tools/coding/) again, same sections, now the **CLI** spelling beside each REPL step.
 For exact forms, [CLI reference](https://dynamicalsystemsgroup.github.io/scat-kg-tools/reference/cli/).
 
-**What you do.** Code your **architecture** with the CLI, from your raw notes. The forms are the docs' forms, with
+**What you do.** Code your **architecture** with the CLI, from your notes. The forms are the docs' forms, with
 your own names:
 
 ```text
-uv run scat stub <name> --type architecture-raw
-uv run scat stub <name>-coded --type architecture-coded
-uv run scat stub-pair <relation> <first> <second>
+uv run scat stub <name> --type narrative
+uv run scat record-edge <type> <from> <to> --told-by <name>
 uv run scat stub-links
 uv run scat set-status <page> draft
 uv run scat check <page> --neighborhood
 ```
 
-Fill `timeframe:` in the architecture's raw page (past, future or mixed, from the facilitation guides' phrase list).
-Use `addresses` and `attributes` for the relations in an architecture (a coded architecture relates concerns,
-affordances and technologies).
+Set `kind: architecture` and fill `timeframe:` in the architecture's front matter (past, future or mixed, from the facilitation guides' phrase list).
+Use `addressed-by` and `provided-by` for the edges in an architecture (it tells concerns, affordances and technologies).
 
 Then see the machine form, the one a plugin reads, in two lines (the CLI reference, "Machine-readable output"):
 
@@ -367,7 +365,7 @@ CLI reference that did not behave as shown.
 **Checklist.**
 
 - [ ] I used the CLI for every operation in this stage.
-- [ ] I coded one architecture, raw and coded.
+- [ ] I coded one architecture as a narrative with its edges.
 - [ ] The messages matched the REPL's.
 - [ ] Both `--json` lines printed one JSON document.
 - [ ] I fixed each problem from its message.
@@ -424,16 +422,16 @@ expect, and any push error with its full text.
 pages after the last index.
 
 **What you do.** Open the vault in Obsidian (or reopen it). Follow the page's four items: links, backlinks, graph
-view, class pages. Open a concern page and read its Backlinks panel. Open the graph view. Open `class/concerns.md`.
+view, index pages. Open a concern page and read its Backlinks panel. Open the graph view. Open `index/concern.base`.
 This is also where you judge whether the result reads well in Obsidian, as the mission's definition of good asks.
 
 **Done looks like.**
 
-- A concern page lists, in Backlinks, the pages that point at it (who holds it, what addresses it, which coded pages
+- A concern page lists, in Backlinks, the pages that point at it (who holds it, what addresses it, which narratives
   name it).
-- The graph view shows your pages as dots and links as lines, with a relation page sitting between a group and a
-  concern.
-- `class/concerns.md` lists every concern with its description and a link.
+- The graph view shows your pages as dots and links as lines, a group joined to a concern by the narrative that
+  links both.
+- `index/concern.base` lists every concern with its status and description.
 - You can answer "who holds this concern?" from Obsidian, without a second list.
 
 **If it fails.** Note what you expected and what Obsidian showed. Note whether the page told you where to click.
@@ -445,7 +443,7 @@ Note whether the graph was legible at this size, and any page that looked wrong.
 
 - [ ] Obsidian showed backlinks for a concern.
 - [ ] The graph view showed my pages and their links.
-- [ ] `class/concerns.md` was complete.
+- [ ] `index/concern.base` was complete.
 - [ ] I could navigate the graph without help.
 
 ---

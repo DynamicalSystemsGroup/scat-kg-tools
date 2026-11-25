@@ -23,15 +23,12 @@ def test_index_creates_every_base_in_a_vault_with_none(make_vault, snap, diff):
     assert set(diff(before, snap(root))) == {"index", *BASES}
 
 
-def test_the_example_bases_are_the_contracts_plus_the_template_filter(example_vault):
+def test_the_example_bases_are_what_the_tool_writes(example_vault):
     shutil.rmtree(example_vault / "index")
     assert index(root=example_vault).ok
     for rel in BASES:
-        mine = (example_vault / rel).read_text(encoding="utf-8").split("\n")
-        theirs = (EXAMPLES / rel).read_text(encoding="utf-8").split("\n")
-        extra = [x for x in mine if x not in theirs]
-        assert extra == ["    - '!file.inFolder(\"templates\")'"], rel
-        assert [x for x in mine if x in extra] and [x for x in mine if x not in extra] == theirs
+        mine = (example_vault / rel).read_text(encoding="utf-8")
+        assert mine == (EXAMPLES / rel).read_text(encoding="utf-8"), rel
 
 
 def test_base_text_is_lf_with_one_final_newline_and_the_columns_of_the_contract():

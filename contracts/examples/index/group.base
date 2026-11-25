@@ -1,6 +1,7 @@
 filters:
   and:
     - 'note.type == "group"'
+    - '!file.inFolder("templates")'
 views:
   - type: table
     name: "Groups"

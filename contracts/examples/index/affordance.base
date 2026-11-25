@@ -1,6 +1,7 @@
 filters:
   and:
     - 'note.type == "affordance"'
+    - '!file.inFolder("templates")'
 views:
   - type: table
     name: "Affordances"

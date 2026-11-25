@@ -1,6 +1,7 @@
 filters:
   and:
     - 'note.type == "narrative"'
+    - '!file.inFolder("templates")'
 views:
   - type: table
     name: "Narratives"

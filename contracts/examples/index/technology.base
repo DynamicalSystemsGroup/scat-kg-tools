@@ -1,6 +1,7 @@
 filters:
   and:
     - 'note.type == "technology"'
+    - '!file.inFolder("templates")'
 views:
   - type: table
     name: "Technologies"

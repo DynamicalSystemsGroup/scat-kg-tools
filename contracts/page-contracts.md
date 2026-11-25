@@ -409,8 +409,8 @@ Not a page and no fields: the Obsidian Base file the tool generates for a type (
 
 An index lists the pages of one type. It is **one Obsidian Base per type**, `index/<type>.base`, a view of the pages
 whose `type` matches. It needs Obsidian 1.9 or later. It is generated once by `scat index` and never kept up to date by
-a tool, because a Base reads the vault itself, so it cannot go stale. The loader ignores it. A Base lists every page of the type, including a page in the template folder (10) that carries
-that type (to be decided by the ACE whether the filter should exclude it).
+a tool, because a Base reads the vault itself, so it cannot go stale. The loader ignores it. A Base leaves out the pages under the
+template folder (10).
 
 `scat index` writes the five files `index/group.base`, `index/concern.base`, `index/affordance.base`,
 `index/technology.base` and `index/narrative.base`. It writes only a file that does not exist and never rewrites one
@@ -421,6 +421,7 @@ same file by hand. The content, for the type `concern`:
 filters:
   and:
     - 'note.type == "concern"'
+    - '!file.inFolder("templates")'
 views:
   - type: table
     name: "Concerns"
@@ -434,9 +435,10 @@ views:
         direction: ASC
 ```
 
-For another type, replace `concern` in the filter and the view's name with the type and its plural title: `group`
+For another type, replace `concern` in the first filter and the view's name with the type and its plural title: `group`
 and "Groups", `affordance` and "Affordances", `technology` and "Technologies". The narrative's file has two more columns
-after `note.description`: `note.kind` and `note.timeframe`.
+after `note.description`: `note.kind` and `note.timeframe`. The second filter names the vault's
+`templates_folder` (10), here the default `templates`.
 
 ## 10. Vault configuration: the group cap
 
