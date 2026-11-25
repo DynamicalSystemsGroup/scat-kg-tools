@@ -6,7 +6,8 @@ organiser, and the organisation or board the organiser answers to, decide it. Ev
 
 SCAT holds three kinds of material, and an answer can differ for each: the **inputs** (the field notes, and the
 narratives drafted from them), the **model** (the git repository: narratives, nodes, edges, the [knowledge graph](reference/terms.md)) and
-the **analysis** (derivative reports, such as documents with excerpts, data or figures).
+the **analysis** (derivative reports, such as documents with excerpts, data or figures). A narrative that quotes the field
+notes carries that text into the model, and the rules for the model then apply to it.
 
 ## What the tool does
 

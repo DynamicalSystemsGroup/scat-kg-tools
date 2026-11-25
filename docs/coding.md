@@ -790,7 +790,7 @@ git commit -m "Code the notes from my first session"
 git push
 ```
 
-Run `git status` first and read the list: it shows what the commit will hold. `git add .` stages every change in the folder, so if the list holds a change you did not mean to make, sort that out before you go on. Commit when the whole-vault check ends with zero errors. If `git status` says there is nothing to commit, your work is already saved: go on to `git push`, or to the lock below.
+Run `git status` first and read the list: it shows what the commit will hold. `git add .` stages every change in the folder that git does not ignore, so it also stages a drawing such as `fingerprint.png` and a plan file such as `plan.txt`, not only the model. To leave such a file out, name the files you want instead (`git add narrative group concern affordance technology`) or list the file in `.gitignore`; to keep it, do nothing and it goes into the commit with the rest. If the list holds any other change you did not mean to make, sort that out before you go on. Commit when the whole-vault check ends with zero errors. If `git status` says there is nothing to commit, your work is already saved: go on to `git push`, or to the lock below.
 
 ## Lock a version
 
@@ -801,7 +801,7 @@ git tag v1
 git push origin v1
 ```
 
-The tag names that commit for good; later commits do not move it. Locking is your statement that the model is finished, and `git tag` does not run the tool. Stub pages do not stop you: the architecture allows them, and the tool never faults a page for being unfinished. Run the whole-vault check first, so the version you lock is clean.
+The tag name is yours to choose: `v1` is only an example, and any name that is not already a tag will do. The tag names that commit for good; later commits do not move it. Locking is your statement that the model is finished, and `git tag` does not run the tool. Stub pages do not stop you: the architecture allows them, and the tool never faults a page for being unfinished. Run the whole-vault check first, so the version you lock is clean.
 
 ### See which commit a tag pins
 

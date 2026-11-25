@@ -314,6 +314,8 @@ git add .
 git commit -m "My first narrative"
 ```
 
+`git add .` stages everything in the folder that git does not ignore, so it also stages a drawing such as `fingerprint.png` and a plan file if you have one, not only the model. To leave one out, name the files you want instead (`git add narrative group concern affordance`) or list the file in `.gitignore`. To keep one, do nothing: it goes into the commit with the rest. Run `git status` first to see which files are in.
+
 That is the solo trial. If it worked, plan your first event in [Planning](planning.md), or code more notes with
 [Coding](coding.md). To hand a finished model over, see [Lock a version](coding.md#lock-a-version).
 
