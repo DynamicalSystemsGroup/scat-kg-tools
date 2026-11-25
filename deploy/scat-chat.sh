@@ -340,7 +340,7 @@ $RESULT"
 
 step_tools() {
     if ! have "$DOCKER"; then
-        die "SCAT Chat needs Docker Desktop, which is not installed. Install it once, as the chat-path guide shows under 'Install once', then click SCAT Chat again."
+        die "SCAT Chat needs a container runtime: Colima (recommended) or Docker Desktop. Neither is installed. Install one once, as the chat-path guide shows under 'Install once', then click SCAT Chat again."
     fi
     if have "$COLIMA"; then
         if ! "$COLIMA" status >/dev/null 2>&1; then

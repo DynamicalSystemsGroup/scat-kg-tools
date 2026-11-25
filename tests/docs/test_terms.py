@@ -2,7 +2,7 @@
 
 Two checks, both read from their source (nothing is listed here that a source could give):
 - against GLOSSARY.md: the page defines exactly the glossary's terms, each in bold, uses no retired word, and is
-  at most 600 words (WP12) with no prescriptive sentence (WP13-R3);
+  at most 820 words (WP12) with no prescriptive sentence (WP13-R3);
 - against the ontology (`ontology/scat.ttl` through `scat_kg.tbox`): every vault name the page backticks is a page
   type, field, status, value, edge type or table name of the TBox, and the page shows every one of them.
 """

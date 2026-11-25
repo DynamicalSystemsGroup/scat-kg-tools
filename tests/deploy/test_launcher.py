@@ -267,7 +267,7 @@ def test_no_published_image_builds_the_source_locally(rig):
 def test_missing_docker(rig):
     r = rig.run("start", SCAT_CHAT_DOCKER=str(rig.bin / "nope"))
     assert r.returncode == 1
-    assert "needs Docker Desktop" in r.stdout and "click SCAT Chat again" in r.stdout
+    assert "needs a container runtime" in r.stdout and "click SCAT Chat again" in r.stdout
     assert not rig.called("tailscale")
 
 
@@ -277,7 +277,7 @@ def test_docker_is_found_in_docker_desktops_own_folder(rig, tmp_path):
     shutil.copy(rig.bin / "docker", folder / "docker")
     # no SCAT_CHAT_DOCKER: the launcher must find `docker` on its own, only in the folders it was told (not the real ones on this Mac)
     r = rig.run("start", SCAT_CHAT_DOCKER=None, SCAT_CHAT_SEARCH_PATH=str(folder), **STOP)
-    assert "needs Docker Desktop" not in r.stdout
+    assert "needs a container runtime" not in r.stdout
     assert rig.called("docker build") and rig.called("docker run")
 
 
@@ -301,7 +301,7 @@ def test_docker_not_in_docker_desktops_folder_is_still_missing(rig, tmp_path):
         SCAT_CHAT_SEARCH_PATH=str(empty),
         PATH=path_without_docker(tmp_path / "nodocker"),
     )
-    assert r.returncode == 1 and "needs Docker Desktop" in r.stdout
+    assert r.returncode == 1 and "needs a container runtime" in r.stdout
     assert not rig.called("docker")
 
 
