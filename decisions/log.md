@@ -1721,3 +1721,31 @@ Scope `work-packages/RS3-chat-path.md`: five questions on the inference.coop cha
 workflow, working with no terminal, and the views; offline first, then light live use with lab material after the
 chief engineer signs in. `MISSION.md` G14 and the Agent's defaults ("The chat-path spike"). Runs beside WP15; the
 ACE drives the live part.
+
+## D-081 | 2026-11-24 | WP14 scope corrected; WP15's path; the ACE's calls on the WP16 impact map
+
+**WP14.** The PM's scope check failed WP14 (no units started). Its findings were right and are fixed: the scope named
+private repositories in this public repository (the ACE's error; the names now go only in the PM's brief, and the
+earlier commits are in history, which the chief engineer may choose to rewrite); "typed connections" is now "edges";
+an undefined acronym is replaced by plain words; the word cap excludes the source table; the source table has one
+"earlier private work" row; a definition of good is added. WP15's draft gets a definition of good, and its document
+moves to `contracts/architecture.md`, outside WP16's `docs/` edits, as the change consultant's overlap table advised.
+
+**WP16 impact map** (`work-packages/impact/WP16.md`, section 8). The ACE's calls:
+1. WP16 may run spike work (layout experiments, on a spike branch, checked in Obsidian) before WP15 is approved; its
+   decide and build stages wait for WP15 (R-22).
+2. Edge, relationship annotation and index page as page or field: decided in WP16's layout stage, in Obsidian (G15).
+3. Type slugs and the ontology's edge names: decided in WP16's design, against WP15's contracts. Renaming or removing a
+   field of the machine interface bumps `schema_version` (R-16's rule).
+4. What a user sees follows `GLOSSARY.md`: "index page" in messages, docs, the folder and the `type` value. The
+   ontology's own identifiers may keep formal names, labelled with the plain word.
+5. Migration: a one-off in the template unit and the test fixtures; no migration operation ships, since no vault has
+   been handed over on the old shape.
+6 and 7. Where an edge records its narratives, how the one-link-away scope treats edges, and the names of the
+   record-edge and remove-edge operations (R-8): WP16's design, against WP15. `stub_pair` is removed if superseded;
+   there is no released interface to keep.
+8. The terms page's drift test checks both: the page's words against `GLOSSARY.md`, and the vault names it shows
+   against the ontology.
+9. The two pins: the PM schedules them in the WP8 and WP11 pattern.
+10. `spike/analysis` and `spike/obsidian-plugin` stay as they are.
+11. WP16 runs one cold-reader round on the flow and consent pages (carried from WP13-R4).
