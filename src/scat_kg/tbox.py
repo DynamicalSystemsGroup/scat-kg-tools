@@ -8,26 +8,55 @@ from dataclasses import dataclass
 from importlib import resources
 from pathlib import Path
 
-from rdflib import RDFS, Graph, Namespace, URIRef
+from rdflib import RDFS, Graph, Namespace
 from rdflib.collection import Collection
 from rdflib.namespace import RDF, SKOS
 
 SCAT = Namespace("https://w3id.org/scat#")
-ONTOLOGY = URIRef("https://w3id.org/scat")
 
 
 @dataclass(frozen=True)
 class Field:
     key: str  # the frontmatter key
     definition: str
-    target_type: str | None  # slug of the page type every target must have (a link field)
-    single: bool  # a link field holding exactly one wikilink, not a list
     required_from: str  # status from which the field is required when listed as required
-    value_set: tuple[str, ...] | None  # allowed values, in order (status, indexes)
+    value_set: tuple[str, ...] | None  # allowed values, in order (status, timeframe, kind)
+
+
+@dataclass(frozen=True)
+class Column:
+    name: str  # the column's name in the header row
+    holds: str  # what its cells hold: "edge-type", "from", "to" or "note"
+
+
+@dataclass(frozen=True)
+class TableSpec:
+    """How a narrative's table of edges is read: the heading it sits under and its columns, in order."""
+
+    heading: str
+    columns: tuple[Column, ...]
 
     @property
-    def is_link(self) -> bool:
-        return self.target_type is not None
+    def names(self) -> tuple[str, ...]:
+        return tuple(c.name for c in self.columns)
+
+    def index_of(self, holds: str) -> int:
+        return next(i for i, c in enumerate(self.columns) if c.holds == holds)
+
+
+@dataclass(frozen=True)
+class EdgeType:
+    name: str  # the local name of the property in the TTL
+    label: str  # the plain word (rdfs:label)
+    slug: str  # its spelling in the command line and the API
+    verb: str  # the verb a row's type cell may hold
+    from_type: str  # slug of the node type at the first end
+    to_type: str  # slug of the node type at the second end
+    definition: str
+
+    @property
+    def spellings(self) -> tuple[str, str]:
+        return (self.verb, self.slug)
 
 
 @dataclass(frozen=True)
@@ -39,38 +68,53 @@ class PageType:
     carries_status: bool
     required: tuple[Field, ...]
     optional: tuple[Field, ...]
-    discouraged: tuple[Field, ...]
-    discouraged_body_links: tuple[str, ...]  # slugs of page types the body should not link to
-    endpoint_order: tuple[str, ...] | None  # relation pages: endpoint field keys, first then second
-    verb: str | None = None  # relation pages: joins the endpoint titles in a stub's title
+    table: TableSpec | None = None  # the type's table of edges, when it has one
 
     @property
     def fields(self) -> tuple[Field, ...]:
-        return self.required + self.optional + self.discouraged
+        return self.required + self.optional
 
     def field(self, key: str) -> Field | None:
         return next((f for f in self.fields if f.key == key), None)
 
 
 @dataclass(frozen=True)
-class ClassPageName:
-    name: str  # the reserved page name
-    indexes: str  # slug of the page type its table lists
-    title: str  # the default title
-
-
-@dataclass(frozen=True)
 class TBox:
     page_types: dict[str, PageType]  # by slug
-    class_pages: dict[str, ClassPageName]  # the seven class pages, by name (contract section 8)
+    edge_types: dict[str, EdgeType]  # by slug, in layer order
     statuses: tuple[str, ...]  # in lifecycle order
-    unlisted_link_level: str
-    wrong_target_level: str
+    layers: tuple[str, ...]  # the node types, in the order the edge types chain them
 
     @property
-    def relations(self) -> dict[str, tuple[str, ...]]:
-        """Relation slug -> endpoint field keys, first endpoint then second."""
-        return {s: t.endpoint_order for s, t in self.page_types.items() if t.endpoint_order}
+    def node_types(self) -> tuple[str, ...]:
+        return self.layers
+
+    @property
+    def table_type(self) -> PageType:
+        """The one page type that tells edges: the one with a table."""
+        return next(t for t in self.page_types.values() if t.table is not None)
+
+    @property
+    def table(self) -> TableSpec:
+        return self.table_type.table
+
+    def edge_type_named(self, text: str) -> EdgeType | None:
+        """The edge type whose verb or slug is `text`, compared without regard to case."""
+        low = text.casefold()
+        return next(
+            (e for e in self.edge_types.values() if low in (e.verb.casefold(), e.slug.casefold())),
+            None,
+        )
+
+    def edge_type_between(self, from_type: str, to_type: str) -> EdgeType | None:
+        return next(
+            (
+                e
+                for e in self.edge_types.values()
+                if (e.from_type, e.to_type) == (from_type, to_type)
+            ),
+            None,
+        )
 
 
 def _text(g: Graph, s, p) -> str | None:
@@ -79,7 +123,6 @@ def _text(g: Graph, s, p) -> str | None:
 
 
 def _field(g: Graph, node) -> Field:
-    target = g.value(node, SCAT.targetType)
     vs = g.value(node, SCAT.valueSet)
     values = None
     if vs is not None:
@@ -92,11 +135,57 @@ def _field(g: Graph, node) -> Field:
     return Field(
         key=_text(g, node, SCAT.key),
         definition=_text(g, node, SKOS.definition),
-        target_type=None if target is None else _text(g, target, SCAT.key),
-        single=_text(g, node, SCAT.single) == "true",
         required_from="done" if required_from is None else _text(g, required_from, SKOS.notation),
         value_set=values,
     )
+
+
+def _table(g: Graph, cls) -> TableSpec | None:
+    heading = _text(g, cls, SCAT.tableHeading)
+    columns = g.value(cls, SCAT.tableColumns)
+    if heading is None or columns is None:
+        return None
+    return TableSpec(
+        heading=heading,
+        columns=tuple(
+            Column(str(g.value(c, RDFS.label)), _text(g, c, SCAT.cellHolds))
+            for c in Collection(g, columns)
+        ),
+    )
+
+
+def _edge_types(g: Graph) -> tuple[dict[str, EdgeType], tuple[str, ...]]:
+    key_of = {c: _text(g, c, SCAT.key) for c in g.subjects(SCAT.key, None)}
+    found = []
+    for e in g.subjects(RDF.type, SCAT.EdgeType):
+        if e == SCAT.EdgeType:
+            continue
+        first, second = (key_of[n] for n in Collection(g, g.value(e, SCAT.endpointOrder)))
+        found.append(
+            EdgeType(
+                name=str(e).removeprefix(str(SCAT)),
+                label=str(g.value(e, RDFS.label)),
+                slug=_text(g, e, SCAT.slug),
+                verb=_text(g, e, SCAT.verb),
+                from_type=first,
+                to_type=second,
+                definition=_text(g, e, SKOS.definition),
+            )
+        )
+    # layer order: the edge types chain the node types, the one that is never a `to` comes first
+    by_from = {e.from_type: e for e in found}
+    tos = {e.to_type for e in found}
+    layers: list[str] = []
+    ordered: list[EdgeType] = []
+    start = sorted(t for t in by_from if t not in tos)
+    if start:
+        t = start[0]
+        layers.append(t)
+        while t in by_from:
+            ordered.append(by_from[t])
+            t = by_from[t].to_type
+            layers.append(t)
+    return {e.slug: e for e in ordered}, tuple(layers)
 
 
 def parse(g: Graph) -> TBox:
@@ -107,11 +196,8 @@ def parse(g: Graph) -> TBox:
 
     page_types = {}
     for cls in g.subjects(SCAT.key, None):
-        if (cls, SCAT.key, None) not in g or (cls, RDF.type, None) not in g:
+        if (cls, RDF.type, None) not in g or SCAT.Field in g.objects(cls, RDF.type):
             continue
-        if SCAT.Field in g.objects(cls, RDF.type):
-            continue
-        order = g.value(cls, SCAT.endpointOrder)
         carries = _text(g, cls, SCAT.carriesStatus)
         slug = _text(g, cls, SCAT.key)
         page_types[slug] = PageType(
@@ -122,33 +208,18 @@ def parse(g: Graph) -> TBox:
             carries_status=carries != "false",
             required=fields(cls, SCAT.requiredField),
             optional=fields(cls, SCAT.optionalField),
-            discouraged=fields(cls, SCAT.discouragedField),
-            discouraged_body_links=tuple(
-                sorted(_text(g, t, SCAT.key) for t in g.objects(cls, SCAT.discouragedBodyLink))
-            ),
-            endpoint_order=None
-            if order is None
-            else tuple(_text(g, f, SCAT.key) for f in Collection(g, order)),
-            verb=_text(g, cls, SCAT.verb),
+            table=_table(g, cls),
         )
-    class_pages = {
-        str(g.value(c, RDFS.label)): ClassPageName(
-            name=str(g.value(c, RDFS.label)),
-            indexes=_text(g, c, SCAT.indexesKey),
-            title=_text(g, c, SCAT.defaultTitle),
-        )
-        for c in g.subjects(RDF.type, SCAT.ClassPageName)
-    }
     status_set = g.value(SCAT.status, SCAT.valueSet) or g.value(SCAT["field-status"], SCAT.valueSet)
     statuses = tuple(
         str(g.value(m, SKOS.notation)) for m in Collection(g, g.value(status_set, SKOS.memberList))
     )
+    edge_types, layers = _edge_types(g)
     return TBox(
         page_types=dict(sorted(page_types.items())),
-        class_pages=dict(sorted(class_pages.items())),
+        edge_types=edge_types,
         statuses=statuses,
-        unlisted_link_level=_text(g, ONTOLOGY, SCAT.unlistedLinkLevel),
-        wrong_target_level=_text(g, ONTOLOGY, SCAT.wrongTargetLevel),
+        layers=layers,
     )
 
 

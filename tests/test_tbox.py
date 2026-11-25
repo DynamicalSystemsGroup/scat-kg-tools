@@ -15,9 +15,7 @@ TTL = REPO / "ontology" / "scat.ttl"
 
 def test_page_type_slugs():
     assert set(TBOX.page_types) == {
-        "stakeholder-group", "concern", "affordance", "technology",
-        "heldby", "addresses", "attributes",
-        "scenario-raw", "scenario-coded", "architecture-raw", "architecture-coded", "class",
+        "group", "concern", "affordance", "technology", "narrative", "index",
     }  # fmt: skip
 
 
@@ -28,57 +26,57 @@ def test_descriptions_come_from_the_ttl():
     assert all(t.definition for t in TBOX.page_types.values())
 
 
-def test_required_optional_discouraged_fields():
+def test_required_and_optional_fields():
     concern = TBOX.page_types["concern"]
     assert [f.key for f in concern.required] == ["description", "status", "title", "type"]
-    assert [f.key for f in concern.optional] == ["conflicts"]
-    assert concern.field("conflicts").target_type == "concern"
-    scenario = TBOX.page_types["scenario-coded"]
-    assert [f.key for f in scenario.discouraged] == ["technologies"]
-    assert scenario.discouraged_body_links == ("technology",)
-    assert TBOX.page_types["architecture-coded"].discouraged_body_links == ("stakeholder-group",)
+    assert concern.optional == ()
+    narrative = TBOX.page_types["narrative"]
+    assert [f.key for f in narrative.required] == [
+        "description", "status", "timeframe", "title", "type",
+    ]  # fmt: skip
+    assert [f.key for f in narrative.optional] == ["kind"]
+    assert narrative.field("kind").value_set == ("scenario", "architecture")
+    assert narrative.field("timeframe").value_set == ("past", "future", "mixed")
 
 
 def test_required_from():
     concern = TBOX.page_types["concern"]
     from_ = {f.key: f.required_from for f in concern.required}
     assert from_ == {"type": "stub", "status": "stub", "title": "stub", "description": "done"}
+    narrative = TBOX.page_types["narrative"]
+    assert narrative.field("timeframe").required_from == "done"
 
 
 def test_status_values_and_order():
     assert TBOX.statuses == ("stub", "draft", "done")
-    assert TBOX.page_types["class"].carries_status is False
+    assert TBOX.page_types["index"].carries_status is False
     assert TBOX.page_types["concern"].carries_status is True
+    assert TBOX.page_types["index"].fields == ()
 
 
-def test_link_rules():
-    assert TBOX.unlisted_link_level == "error"
-    assert TBOX.wrong_target_level == "error"
-    group = TBOX.page_types["heldby"].field("group")
-    assert (group.is_link, group.single, group.target_type) == (True, True, "stakeholder-group")
-    groups = TBOX.page_types["scenario-coded"].field("groups")
-    assert (groups.is_link, groups.single) == (True, False)
-    assert not TBOX.page_types["concern"].field("title").is_link
-
-
-def test_relation_endpoint_order():
-    assert TBOX.relations == {
-        "heldby": ("group", "concern"),
-        "addresses": ("concern", "affordance"),
-        "attributes": ("affordance", "technology"),
+def test_edge_types_with_slug_verb_and_ends():
+    assert {s: (e.verb, e.from_type, e.to_type, e.label) for s, e in TBOX.edge_types.items()} == {
+        "holds": ("holds", "group", "concern", "holds"),
+        "addressed-by": ("is addressed by", "concern", "affordance", "is addressed by"),
+        "provided-by": ("is provided by", "affordance", "technology", "is provided by"),
     }
-    for slug, (first, second) in TBOX.relations.items():
-        relation = TBOX.page_types[slug]
-        assert relation.field(first).single and relation.field(second).single
-    assert TBOX.page_types["concern"].endpoint_order is None
+    assert list(TBOX.edge_types) == ["holds", "addressed-by", "provided-by"]  # in layer order
+    assert TBOX.layers == ("group", "concern", "affordance", "technology")
+    assert TBOX.edge_type_named("IS  addressed by") is None  # a spelling is exact but for case
+    assert TBOX.edge_type_named("Is Addressed By").slug == "addressed-by"
+    assert TBOX.edge_type_named("provided-by").verb == "is provided by"
+    assert TBOX.edge_type_named("owns") is None
+    assert TBOX.edge_type_between("concern", "affordance").slug == "addressed-by"
+    assert TBOX.edge_type_between("group", "affordance") is None
 
 
-def test_class_page_indexes_value_set():
-    values = TBOX.page_types["class"].field("indexes").value_set
-    assert values == (
-        "stakeholder-group", "concern", "affordance", "technology",
-        "heldby", "addresses", "attributes",
-    )  # fmt: skip
+def test_the_table_is_read_from_the_narrative():
+    assert TBOX.table_type.slug == "narrative"
+    assert TBOX.table.heading == "Edges told"
+    assert [(c.name, c.holds) for c in TBOX.table.columns] == [
+        ("type", "edge-type"), ("from", "from"), ("to", "to"), ("note", "note"),
+    ]  # fmt: skip
+    assert [t.slug for t in TBOX.page_types.values() if t.table] == ["narrative"]
 
 
 def test_loader_reads_the_repo_file_in_a_checkout():

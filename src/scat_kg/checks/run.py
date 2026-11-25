@@ -1,15 +1,10 @@
-"""The three scopes: one page, its neighborhood, the whole vault. Checks read; they never write."""
+"""The three scopes: one page, its neighborhood, the whole vault. Checks read; they never write.
 
-from scat_kg.checks import (  # noqa: F401  (register the rules)
-    completeness,
-    dangling,
-    frontmatter,
-    graph,
-    links,
-    vaultwide,
-)
-from scat_kg.checks.ctx import PAGE_RULES, VAULT_RULES, Ctx
-from scat_kg.checks.problem import Problem, Report, finalize
+TODO(WP16-U6): the rules of the old model are not run; U6 rebuilds the checks for the row model.
+"""
+
+from scat_kg.ops.result import Result
+from scat_kg.ops.result import not_built as _not_built
 from scat_kg.vault import Page, Vault
 
 
@@ -24,24 +19,9 @@ def _resolve(vault: Vault, page: Page | str) -> Page:
     return found.page
 
 
-def _run(vault: Vault, pages: list[Page], whole: bool, focus: Page | None = None) -> Report:
-    ctx = Ctx(vault)
-    ctx.whole, ctx.focus = whole, focus
-    problems: list[Problem] = []
-    for p in pages:
-        for rule in PAGE_RULES:
-            problems += rule(ctx, p)
-    # the vault-level rules run at vault scope, and at the other scopes when a group page is checked
-    if whole or any(p.type_key == "stakeholder-group" for p in pages):
-        for rule in VAULT_RULES:
-            problems += rule(ctx)
-    return Report(finalize(problems))
-
-
-def check_page(vault: Vault, page: Page | str) -> Report:
-    """Every rule that reports on this page (reading other pages where a rule needs them)."""
-    found = _resolve(vault, page)
-    return _run(vault, [found], False, found)
+def check_page(vault: Vault, page: Page | str) -> Result:
+    """TODO(WP16-U6): every rule that reports on this page."""
+    return _not_built("check")
 
 
 def neighborhood(vault: Vault, page: Page | str) -> list[Page]:
@@ -55,11 +35,11 @@ def neighborhood(vault: Vault, page: Page | str) -> list[Page]:
     return [q for q in vault.pages if q.path in paths]
 
 
-def check_neighborhood(vault: Vault, page: Page | str) -> Report:
-    """The page and everything one link away, in either direction (G4)."""
-    return _run(vault, neighborhood(vault, page), False, _resolve(vault, page))
+def check_neighborhood(vault: Vault, page: Page | str) -> Result:
+    """TODO(WP16-U6): the page and everything one link away, in either direction (G4)."""
+    return _not_built("check")
 
 
-def check_vault(vault: Vault) -> Report:
-    """Every page, and the vault-level rules."""
-    return _run(vault, list(vault.pages), True)
+def check_vault(vault: Vault) -> Result:
+    """TODO(WP16-U6): every page, and the vault-level rules."""
+    return _not_built("check")

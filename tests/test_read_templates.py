@@ -1,14 +1,13 @@
 import pytest
 
-from scat_kg.checks.run import check_vault
 from scat_kg.vault import read_vault
 
 TEMPLATE = '---\ntype: concern\nstatus: draft\ntitle: ""\n---\n'
 REAL = '---\ntype: concern\nstatus: draft\ntitle: "Real"\ndescription: "A real one."\n---\n'
 
 
-def codes(root):
-    return {p.rule for p in check_vault(read_vault(root)).problems}
+def cap_problem(root):
+    return read_vault(root).config.problem
 
 
 def test_templates_folder_is_not_read(make_vault):
@@ -26,10 +25,6 @@ def test_templates_folder_is_not_read(make_vault):
     assert [p.path for p in v.pages] == ["concern/real.md"]
     assert v.non_pages == ()
     assert "concern" not in v.by_name
-    problems = check_vault(v).problems
-    # Only the expected missing-class-page INDEX-STALE warnings; nothing about templates/ or .obsidian/.
-    assert {p.rule for p in problems} == {"SCAT-INDEX-STALE"}
-    assert all(p.file.startswith("class/") for p in problems)
 
 
 def test_custom_templates_folder(make_vault):
@@ -62,10 +57,9 @@ def test_extra_key_does_not_trigger_cap_config(make_vault):
     root = make_vault({"scat.toml": 'stakeholder_group_cap = 3\ntemplates_folder = "skel"\n'})
     v = read_vault(root)
     assert v.config.problem is None and v.config.cap == 3
-    assert "SCAT-CAP-CONFIG" not in codes(root)
+    assert cap_problem(root) is None
 
 
 def test_bad_cap_still_reported_with_templates_key(make_vault):
     root = make_vault({"scat.toml": 'stakeholder_group_cap = "x"\ntemplates_folder = "skel"\n'})
-    assert read_vault(root).config.problem == "bad-value"
-    assert "SCAT-CAP-CONFIG" in codes(root)
+    assert cap_problem(root) == "bad-value"

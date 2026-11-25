@@ -1,11 +1,11 @@
 """One pydantic model per page type, built from the TBox when this module loads (R-13).
 
-No field list is written here: a model's fields are the TBox's fields for that page type, required,
-optional and discouraged alike. Each model checks the *shape* of what is written and nothing else:
+No field list is written here: a model's fields are the TBox's fields for that page type, required
+and optional alike. Each model checks the *shape* of what is written and nothing else:
 every field is optional (whether a field is required depends on the page's status, which is a rule's
-business, not the model's), a link field is the written wikilink text (`"[[name]]"`, one string or a
-list of them), a field with a value set (`status`, `indexes`) takes only its values, and `type` takes
-only the page type's slug. Keys the TBox does not list for the type are ignored, as the contract says.
+business, not the model's), a field with a value set (`status`, `timeframe`, `kind`) takes only its
+values, any other field is text, and `type` takes only the page type's slug. Keys the TBox does not list
+for the type are ignored, as the contract says.
 """
 
 from typing import Literal
@@ -18,9 +18,7 @@ from scat_kg.tbox import TBOX, Field, PageType, TBox
 def _annotation(field: Field):
     if field.value_set is not None:
         return Literal[field.value_set]
-    if not field.is_link:
-        return str
-    return str if field.single else list[str]
+    return str
 
 
 def build_model(page_type: PageType) -> type[BaseModel]:

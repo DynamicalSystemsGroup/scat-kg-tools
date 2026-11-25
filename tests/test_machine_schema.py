@@ -51,7 +51,7 @@ def problem(rule, severity, fix_, **more):
 
 
 def doc(kind, operation, ok, **more):
-    return {"schema_version": 1, "kind": kind, "operation": operation, "ok": ok} | more
+    return {"schema_version": 2, "kind": kind, "operation": operation, "ok": ok} | more
 
 
 SET_DRAFT = cmd(["set-status", "a", "draft"], 'scat_kg.set_status("a", "draft")')
@@ -316,8 +316,8 @@ def mutated(base, fn):
 
 MALFORMED = {
     "missing schema_version": mutated(CLEAN, lambda d: d.pop("schema_version")),
-    "wrong schema_version": mutated(CLEAN, lambda d: d.update(schema_version=2)),
-    "string schema_version": mutated(CLEAN, lambda d: d.update(schema_version="1")),
+    "wrong schema_version": mutated(CLEAN, lambda d: d.update(schema_version=1)),
+    "string schema_version": mutated(CLEAN, lambda d: d.update(schema_version="2")),
     "wrong kind": mutated(CLEAN, lambda d: d.update(kind="report")),
     "missing ok": mutated(CLEAN, lambda d: d.pop("ok")),
     "unknown severity": mutated(CHECK, lambda d: d["problems"][0].update(severity="fatal")),
@@ -420,8 +420,8 @@ def test_schema_does_not_enumerate_rule_ids():
     assert "enum" not in SCHEMA["$defs"]["OperationName"]
 
 
-def test_contract_page_is_at_most_600_words():
-    assert len(PAGE.split()) <= 600
+def test_contract_page_is_at_most_1600_words():  # was 600 at version 1; version 2 adds the edge operations
+    assert len(PAGE.split()) <= 1600
 
 
 def def_properties(*names: str) -> set[str]:
@@ -431,7 +431,7 @@ def def_properties(*names: str) -> set[str]:
     return out
 
 
-EDITS = ("SetField", "DeleteField", "ReplaceText", "RenameFile", "DeleteFile")
+EDITS = ("SetField", "DeleteField", "ReplaceText", "DeleteLine", "RenameFile", "DeleteFile")
 # the table's first column -> the schema objects whose properties its fields must be among
 OBJECTS = {
     "every document": ["CheckResult", "StatusResult", "OperationResult"],
@@ -440,6 +440,9 @@ OBJECTS = {
     "status": ["StatusResult"],
     "status row": ["StatusRow"],
     "operation": ["OperationResult"],
+    "record-edge, remove-edge result": ["OperationResult"],
+    "edge": ["EdgeRef"],
+    "row": ["RowRef"],
     "refusal": ["Refusal"],
     "fix": ["Fix"],
     "option": ["FixOption"],
@@ -483,8 +486,8 @@ def test_promised_fields_the_schema_requires_are_all_promised():
     """The required properties of each object are a subset of what the page promises for it."""
     table = promised()
     for obj, names in OBJECTS.items():
-        if obj in ("every document", "edit"):
-            continue
+        if obj in ("every document", "edit", "record-edge, remove-edge result"):
+            continue  # the last: an operation plus fields; its required ones are the operation row's
         required = set()
         for name in names:
             required |= set(SCHEMA["$defs"][name].get("required", []))

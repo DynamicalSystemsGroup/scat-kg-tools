@@ -17,8 +17,13 @@ from scat_kg import cli
 ROOT = Path(__file__).parents[1]
 EXAMPLES = ROOT / "contracts" / "examples"
 BAD_LINK = "[[no-such-concern]]"
-HELDBY = "heldby/volunteer-staff-holds-careful-record-keeping.md"
+HELDBY = "narrative/saturday-at-the-lending-desk.md"  # the page the defect is seeded in
 NO_FOLDER = "/no/such/scat-vault"
+
+# The calls U6 (checks) and U7 (operations) rebuild: until then each returns the standard refusal, so its
+# exit code is 1 and the tests of what it prints are skipped. TODO(WP16-U6, WP16-U7): drop this and the skips.
+UNBUILT = {"check", "index", "stub", "stub-pair", "stub-links"}
+skip_unbuilt = pytest.mark.skip(reason="TODO(WP16-U6 / WP16-U7): not built yet")
 
 
 def tree(root: Path) -> dict[str, bytes]:
@@ -176,6 +181,8 @@ def run_both(tmp_path, capsys, api, argv, defect):
 @pytest.mark.parametrize("case", CASES)
 def test__the_api_and_the_cli_give_the_same_message_files_and_exit_code(case, tmp_path, capsys):
     api, argv, exit_code, defect = CASES[case]
+    if argv[0] in UNBUILT:
+        exit_code = 1  # the refusal; the intended code is the one in CASES
     result, code, out, a, b = run_both(tmp_path, capsys, api, argv, defect)
     assert out == str(result) + "\n"
     assert repr(result) == str(result)  # at the REPL it prints as its message
@@ -189,6 +196,7 @@ def test__every_operation_is_covered():
     assert commands == {"check", "status", "set-status", "index", "stub", "stub-pair", "stub-links"}
 
 
+@skip_unbuilt
 def test__a_warning_alone_exits_zero_and_an_error_exits_nonzero(tmp_path, capsys):
     clean = make(tmp_path, "clean", False)
     assert cli.main(["check", "--root", str(clean)]) == 0
@@ -203,13 +211,16 @@ def test__a_warning_alone_exits_zero_and_an_error_exits_nonzero(tmp_path, capsys
 def test__the_vault_root_defaults_to_the_current_directory(tmp_path, capsys, monkeypatch):
     api, via_cli = make(tmp_path, "api", True), make(tmp_path, "cli", True)
     monkeypatch.chdir(api)
-    result = scat_kg.check()
+    result = scat_kg.status()
     monkeypatch.chdir(via_cli)
-    assert cli.main(["check"]) == 1
+    assert cli.main(["status"]) == 0
     assert capsys.readouterr().out == str(result) + "\n"
-    assert scat_kg.index().ok  # the default root is here for every operation
+    assert scat_kg.set_status(
+        "quick-checkout", "draft"
+    ).ok  # the default root is here for every operation
 
 
+@skip_unbuilt
 def test__the_message_is_the_one_the_catalogue_prints_and_its_fix_runs_on_both_paths(
     tmp_path, capsys
 ):
@@ -278,7 +289,7 @@ def test__a_real_scat_invocation_gives_the_same_message_and_exit_code(tmp_path):
         text=True,
         check=False,
     )
-    assert done.returncode == 1, done.stderr
+    assert done.returncode == 1, done.stderr  # a refusal for now (TODO(WP16-U6)); a defect later
     assert done.stdout == expected + "\n"
     ok = subprocess.run(
         ["uv", "run", "--locked", "scat", "set-status", "quick-checkout", "draft"],

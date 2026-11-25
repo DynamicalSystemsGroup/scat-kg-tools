@@ -4,11 +4,9 @@ import difflib
 import re
 import unicodedata
 
-from scat_kg.tbox import TBOX
-
-# Contract section 8, read from the TBox: class page name -> `indexes` value, and the default title of each.
-CLASS_PAGES = {n: c.indexes for n, c in TBOX.class_pages.items()}
-CLASS_TITLES = {n: c.title for n, c in TBOX.class_pages.items()}
+# TODO(WP16-U6): the class pages are gone (D-088), so the rules that read these are rebuilt or dropped by U6.
+CLASS_PAGES: dict[str, str] = {}
+CLASS_TITLES: dict[str, str] = {}
 RESERVED = frozenset(
     {"con", "prn", "aux", "nul"}
     | {f"com{i}" for i in range(10)}

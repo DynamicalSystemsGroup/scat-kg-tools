@@ -88,7 +88,7 @@ def _parser() -> argparse.ArgumentParser:
         metavar="TYPE",
         help="the page type key, one of: " + ", ".join(STUBBABLE),
     )
-    p = command(
+    p = command(  # TODO(WP16-U7): there are no relation pages now; record-edge replaces this
         "stub-pair",
         "Create the relation page for a pair, stubbing an endpoint that does not exist.",
         '`scat_kg.stub_pair("<relation>", "<endpoint-a>", "<endpoint-b>")`',
@@ -96,7 +96,8 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument(
         "relation",
         metavar="RELATION",
-        help="one of: " + ", ".join(f"{r} ({a} then {b})" for r, (a, b) in TBOX.relations.items()),
+        help="one of: "
+        + ", ".join(f"{s} ({e.from_type} then {e.to_type})" for s, e in TBOX.edge_types.items()),
     )
     p.add_argument("endpoint_a", metavar="ENDPOINT-A")
     p.add_argument("endpoint_b", metavar="ENDPOINT-B")
