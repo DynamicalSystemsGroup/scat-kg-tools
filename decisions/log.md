@@ -1957,3 +1957,13 @@ case from `mzargham/ant-rdf` as a SCAT range vault, coded by hand through the to
 by side, under one PM, after the WP17 correction unit (D-093) lands, since that unit also touches `src/` and the
 metrics log. Neither touches `contracts/machine-interface.*`, where WP17-U3b is held. Revert point
 `divergence/D-093`.
+
+## D-095 | 2026-11-25 | WP17 follow-ups landed: metrics corrected, two check gaps closed
+
+`dev` ed08bdc, CI green; `check_metrics.py` passes on the whole log (536 records), and now refuses a timestamp more than
+five minutes ahead. The 45 future-stamped records are corrected by appended records carrying `corrects` (lines 476 to
+520); iteration 23 is restated at 1.04 h. The two check gaps are closed: a view refuses, naming the row, rather than
+omit a broken row; a duplicate node name behind a row end is named with both files. Two existing tests that asserted
+the old silent omission changed with that behaviour, as D-093 decided; both are listed in the unit report. Left for
+WP20's cleanup: a narrative with unparsable frontmatter is still left out of whole-vault views silently, and two
+sentences in the architecture document need the new refusals. WP17 stays unaccepted only on WP17-U3b.
