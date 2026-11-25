@@ -9,6 +9,8 @@ the team; each item waits for you when you have a moment.
    not a squash, so its branch's early commit `c58113b` (since corrected by `74e36ba`) is in `main`'s history.
    Removing it means rewriting `main` with a force-push, which only you can authorise. Leaving it is also fine; the
    current text is clean.
+1a. **The same applies to commit `20ff07a` on `dev`:** WP14's first scope named six private repositories. The file is
+   corrected (D-081); the names stay in `dev`'s history unless you choose a rewrite.
 2. **Sign-ins for the chat-path spike (RS3), when it reaches live use:** inference.coop and GitHub in the browser
    pane. Use stays light and human-paced. I'll ask in chat when the spike is ready, not before.
 3. **WP8-U1, held since D-042:** a test edit only you can authorise. Two assertions in `tests/ops/test_ops_stub.py`
