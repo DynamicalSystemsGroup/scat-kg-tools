@@ -2181,3 +2181,28 @@ again on the right facts: in `tests/ops/test_ops_stub.py`, (1) `not r.ok` become
 ("concern/a.md",)` (stub on an existing page of the same type is a no-op, D-039), and (2) the same-type refusal row
 becomes a different-type row (`affordance`), still refused. The chief engineer chose "Allow both changes". The ACE
 applies exactly these two changes (fixes on `wp8/u1`, `3ed3163`, `9e6ca44`) and nothing else in the test.
+
+## D-111 | 2026-11-25 | WP17 accepted
+
+WP17-U3b applied after D-104 (tools `dev` b739347; full suite 2289 passed; ruff clean). Every WP17 unit is done and
+reviewed; `check_metrics.py --accept WP17` passes. The ACE accepts WP17. Iteration 32 (WP17-U3b, WP18-R4): 6 est,
+9 realized, 2.6 h, 3.46 pts/h raw; WP18-R4 ran over (setting up the chat's skill and agent, the browser pane's
+file-dialog limit, a stall on the paste step).
+
+## D-112 | 2026-11-25 | The uv gap is closed (D-108)
+
+One fresh Haiku tester followed "Getting started" steps 1 to 3 in a throwaway home folder with no uv anywhere on its
+path, running uv's official installer. The installer added itself to `~/.zshrc` and `~/.profile`; `uv sync` and
+`uv run scat check` gave "no problems". The tester reported FAIL at "open a new Terminal window", but both causes were
+the test harness, not the docs: its shells were non-interactive (they skip `~/.zshrc`, so `uv` was not found) and
+started outside the home folder. The ACE checked that an interactive login shell in the same home finds `uv`. The
+docs' steps hold; no change. D-040/D-041's gap is closed.
+
+## D-113 | 2026-11-25 | History rewrites (D-109) held: the problem is bigger than asked
+
+Before force-pushing, the ACE sized D-109. Commit c58113b is in `dev` as well as `main`, so removing it re-hashes
+about 754 commits on `dev` and 59 on `main`; 20ff07a alone re-hashes 248 on `dev`. That orphans the template's pinned
+tools commit (pyproject `rev`), the 23 `divergence/` revert tags, and the commit hashes cited throughout the decision
+log, board and metrics; and GitHub keeps the old commits reachable through PR #8's head ref regardless. The question
+put to the chief engineer did not state these costs, so D-109 is not acted on and the question goes back to him (morning
+list).
