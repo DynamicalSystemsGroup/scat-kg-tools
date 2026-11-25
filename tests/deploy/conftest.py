@@ -1,4 +1,4 @@
-"""Stand-ins for the programs the launcher calls (docker, colima, tailscale, openssl, pbcopy, caffeinate),
+"""Stand-ins for the programs the launcher calls (docker, colima, tailscale, openssl, security, osascript, pbcopy, caffeinate),
 a fake server on a free port, and a runner for deploy/scat-chat.sh. No real docker, colima or tailscale runs."""
 
 import http.server
@@ -21,7 +21,8 @@ image) [ -f "$S/image" ] ;;
 pull) if [ -n "${STUB_PUBLISHED:-}" ]; then touch "$S/image"; else echo "manifest unknown" >&2; exit 1; fi ;;
 build) if [ -n "${STUB_FAIL_BUILD:-}" ]; then echo "no network"; exit 1; fi; touch "$S/image" ;;
 rm) rm -f "$S/container" ;;
-run) if [ -n "${STUB_FAIL_RUN:-}" ]; then echo "port in use" >&2; exit 125; fi; touch "$S/container"; echo abc123 ;;
+run) case "$*" in *"--env-file /dev/stdin"*) cat > "$S/env-in" ;; esac
+     if [ -n "${STUB_FAIL_RUN:-}" ]; then echo "port in use" >&2; exit 125; fi; touch "$S/container"; echo abc123 ;;
 ps) [ -f "$S/container" ] && echo abc123 ;;
 logs) echo "log line" ;;
 esac
@@ -50,6 +51,54 @@ n=$((n + 1))
 echo $n > "$STUB_STATE/openssl-n"
 printf '%064d\n' "$n"
 """,
+    # The keychain: items are files in $STUB_STATE/keychain (outside the launcher's state folder). Only argv is
+    # logged, as the real tool shows it; a command read from stdin (-i) is logged by verb and service, never by value.
+    "security": r"""#!/bin/sh
+echo "security $*" >> "$CALLS"
+D="$STUB_STATE/keychain"
+mkdir -p "$D"
+run() { # verb then its flags; -w takes a value for add, is a bare flag for find
+    verb=$1; shift
+    svc=""; val=""
+    while [ $# -gt 0 ]; do
+        case "$1" in
+        -s) svc=$2; shift ;;
+        -a) shift ;;
+        -w) if [ "$verb" = add-generic-password ]; then val=$2; shift; fi ;;
+        esac
+        shift
+    done
+    [ -n "$svc" ] || return 2
+    [ -z "${FROM_STDIN:-}" ] || echo "security(stdin) $verb -s $svc" >> "$CALLS"
+    case "$verb" in
+    add-generic-password) [ -z "${STUB_FAIL_KEYCHAIN:-}" ] || return 36
+        printf '%s' "$val" > "$D/$svc"; printf '%s\n' "$val" >> "$STUB_STATE/keys-seen" ;;
+    find-generic-password) [ -f "$D/$svc" ] || return 44; if [ "$WANT_W" = 1 ]; then cat "$D/$svc"; fi ;;
+    delete-generic-password) [ -f "$D/$svc" ] || return 44; rm -f "$D/$svc" ;;
+    *) return 2 ;;
+    esac
+}
+WANT_W=0
+case "$*" in *" -w") WANT_W=1 ;; esac
+if [ "$1" = "-i" ]; then
+    FROM_STDIN=1
+    while IFS= read -r line; do
+        eval "set -- $line"
+        run "$@" || exit $?
+    done
+else
+    run "$@"
+fi
+""",
+    "osascript": r"""#!/bin/sh
+echo "osascript $*" >> "$CALLS"
+case "$*" in
+*"Copy key"*) q="$STUB_STATE/osa-answers"
+    if [ -s "$q" ]; then head -n 1 "$q"; sed 1d "$q" > "$q.new"; mv "$q.new" "$q"; else echo Stop; fi ;;
+esac
+""",
+    # curl is the real one (it talks to the fake server); the stand-in only records its arguments
+    "curl": '#!/bin/sh\necho "curl $*" >> "$CALLS"\nexec /usr/bin/curl "$@"\n',
     "pbcopy": '#!/bin/sh\ncat > "$STUB_STATE/clip"\n',
     "pbpaste": '#!/bin/sh\ncat "$STUB_STATE/clip" 2>/dev/null\n',
     "caffeinate": "#!/bin/sh\n# caffeinate stand-in\nwhile :; do sleep 1; done\n",
@@ -80,7 +129,7 @@ STATUS_STOPPED = '{"BackendState": "NeedsLogin"}\n'
 
 
 class FakeServer:
-    """Answers 401 to a POST to /mcp without the key in the key file, 200 with it."""
+    """Answers 401 to a POST to /mcp without the key in the stand-in keychain, 200 with it."""
 
     def __init__(self, keyfile: Path):
         self.keyfile = keyfile
@@ -89,10 +138,7 @@ class FakeServer:
         class H(http.server.BaseHTTPRequestHandler):
             def do_POST(self):
                 self.rfile.read(int(self.headers.get("Content-Length", 0)))
-                key = ""
-                for line in outer.keyfile.read_text().splitlines():
-                    if line.startswith("SCAT_MCP_KEY="):
-                        key = line.split("=", 1)[1]
+                key = outer.keyfile.read_text() if outer.keyfile.exists() else ""
                 ok = self.headers.get("Authorization") == f"Bearer {key}" and key
                 self.send_response(200 if ok and self.path == "/mcp" else 401)
                 self.send_header("Content-Length", "0")
@@ -127,7 +173,7 @@ class Rig:
             p.chmod(0o755)
         (self.stub / "ts-status.json").write_text(STATUS_OK)
         self.state = self.home / "Library" / "Application Support" / "SCAT Chat"
-        self.keyfile = self.state / "key.env"
+        self.keyfile = self.stub / "keychain" / "scat-chat"  # the stand-in keychain's one item
         self.state.mkdir(parents=True)
         self.server = FakeServer(self.keyfile)
         self.vault = tmp / "vault"
@@ -148,7 +194,8 @@ class Rig:
         for var, name in [
             ("DOCKER", "docker"), ("COLIMA", "colima"), ("TAILSCALE", "tailscale"),
             ("OPENSSL", "openssl"), ("PBCOPY", "pbcopy"), ("PBPASTE", "pbpaste"),
-            ("CAFFEINATE", "caffeinate"), ("OPEN", "open"),
+            ("CAFFEINATE", "caffeinate"), ("OPEN", "open"), ("SECURITY", "security"),
+            ("OSASCRIPT", "osascript"), ("CURL", "curl"),
         ]:  # fmt: skip
             self.env[f"SCAT_CHAT_{var}"] = str(self.bin / name)
 
@@ -174,8 +221,16 @@ class Rig:
     def called(self, prefix: str) -> list[int]:
         return [i for i, c in enumerate(self.calls_list()) if c.startswith(prefix)]
 
+    def item(self) -> bool:
+        """The session key is in the stand-in keychain."""
+        return self.keyfile.exists()
+
     def key(self) -> str:
-        return self.keyfile.read_text().strip().split("=", 1)[1]
+        return self.keyfile.read_text()
+
+    def keys_seen(self) -> list[str]:
+        p = self.stub / "keys-seen"
+        return p.read_text().split() if p.exists() else []
 
     def clip(self) -> str:
         p = self.stub / "clip"
@@ -184,6 +239,7 @@ class Rig:
     def nothing_left(self):
         assert not (self.stub / "container").exists(), "container left"
         assert not (self.stub / "funnel-on").exists(), "tunnel left on"
+        assert not self.item(), "key left in the keychain"
         assert not (self.state / "session").exists()
         assert not (self.state / "caffeinate.pid").exists()
 
