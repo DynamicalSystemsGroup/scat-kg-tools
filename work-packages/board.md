@@ -240,6 +240,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP18-U6r | reviewer (fresh; runs the checks, tries to break the rule), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T04:47:55-05:00 | PASS first time; schema validation and break attempts run |
 | WP18-U7 | shell and test engineer (launcher docker path, docs sentence), sonnet | 2 | 3 | `-` | done |  | 2026-11-25T04:47:55-05:00 | first test design hit the real docker on the Mac; made the search path overridable and the tests hermetic |
 | WP18-U7r | reviewer (fresh; runs the checks, mutates a copy), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T04:47:55-05:00 | PASS first time; mutation on a scratch copy; strict docs build run |
+| WP18-U7f | Python developer (test engineer: make the launcher's missing-docker test hermetic), sonnet | 1 | 1 | `pm-ci18` | done |  | 2026-11-25T05:00:01-05:00 | CI red on dev faa5996: real docker in /usr/bin on the runner; the test now sets its own PATH without docker; first-time PASS |
+| WP18-U7fr | reviewer (fresh; runs the test, fake docker on PATH, mutated copy), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T05:00:01-05:00 | PASS; old test fails and new passes with a fake docker on the rig PATH |
 | WP18-R4 | the ACE's live run in the chat with lab material, the chief engineer pasting the key; recorded step by step, sonnet | 5 |  | `-` | queued | the ACE (live run; needs the chief engineer to paste a key) |  |  |
 | WP19-U1 | research engineer (range material: source texts from the public KOI case), sonnet | 5 | 8 | `wp19/u1` | done |  | 2026-11-25T04:23:25-05:00 | first review FAIL (invented bridges), re-review PASS, then fixes for 4 files, a koi-03 sentence and a koi-09 sentence found by two later reviews |
 | WP19-U1r | reviewer (fresh; reads inputs against ant-rdf, greps for person names), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T03:47:56-05:00 | 2 reviews (first FAIL: invented bridges; re-review PASS with 3 minor fixes open) |
@@ -280,6 +282,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 24 | WP17-U8, U8r, U9, U9r, U10, U10r (added by the PM after D-093) | 15 | 15 | 1.00 | 0.26 h | 57.7 |
 | 25 | WP18-U1 to U5 and their reviews, WP19-U1 to U4 and their reviews (WP18-R4 queued, the ACE's) | 64 | 78 | 1.22 | 1.26 h | 61.9 |
 | 26 | WP18-U6, U6r, U7, U7r (added by the ACE: the zero-edge warning of G1, and the Docker Desktop path) | 7 | 10 | 1.43 | 0.25 h | 40.0 |
+| 27 | WP18-U7f, U7fr (CI fix: the launcher's missing-docker test made hermetic) | 2 | 2 | 1.00 | 0.1 h | 20.0 |
 
 ## Velocity and forecast
 

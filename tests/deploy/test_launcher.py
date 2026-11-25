@@ -178,10 +178,26 @@ def test_docker_is_found_in_docker_desktops_own_folder(rig, tmp_path):
     assert rig.called("docker build") and rig.called("docker run")
 
 
+def path_without_docker(folder):
+    """A folder of links to every program in /usr/bin and /bin except docker, so a real docker cannot be found."""
+    folder.mkdir()
+    for src in ("/usr/bin", "/bin"):
+        for name in os.listdir(src):
+            p = os.path.join(src, name)
+            if name != "docker" and os.access(p, os.X_OK) and not (folder / name).exists():
+                (folder / name).symlink_to(p)
+    return str(folder)
+
+
 def test_docker_not_in_docker_desktops_folder_is_still_missing(rig, tmp_path):
     empty = tmp_path / "empty"
     empty.mkdir()
-    r = rig.run("start", SCAT_CHAT_DOCKER=None, SCAT_CHAT_SEARCH_PATH=str(empty))
+    r = rig.run(
+        "start",
+        SCAT_CHAT_DOCKER=None,
+        SCAT_CHAT_SEARCH_PATH=str(empty),
+        PATH=path_without_docker(tmp_path / "nodocker"),
+    )
     assert r.returncode == 1 and "needs Docker Desktop" in r.stdout
     assert not rig.called("docker")
 
