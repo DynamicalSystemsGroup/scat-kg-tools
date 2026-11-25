@@ -32,7 +32,7 @@
     },
     "StringList": { "type": "array", "items": { "type": "string" } },
     "PathList": { "type": "array", "items": { "$ref": "#/$defs/VaultPath" } },
-    "AnyPathList": { "description": "export-edges only: a path inside the vault is vault-relative with /; a folder outside it is written as given.", "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "AnyPathList": { "description": "export-edges and draw only: a path inside the vault is vault-relative with /; a folder outside it is written as given.", "type": "array", "items": { "type": "string", "minLength": 1 } },
 
     "CheckResult": {
       "description": "What check returns when it ran. A check that could not run (not a vault, page not found, ...) is an OperationResult with ok false.",
@@ -109,8 +109,8 @@
       },
       "allOf": [
         {
-          "description": "Every operation but export-edges lists vault paths.",
-          "if": { "properties": { "operation": { "const": "export-edges" } }, "required": ["operation"] },
+          "description": "Every operation but export-edges and draw lists vault paths.",
+          "if": { "properties": { "operation": { "enum": ["export-edges", "draw"] } }, "required": ["operation"] },
           "else": { "properties": { "created": { "$ref": "#/$defs/PathList" }, "changed": { "$ref": "#/$defs/PathList" }, "unchanged": { "$ref": "#/$defs/PathList" } } }
         },
         {
