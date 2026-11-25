@@ -2079,3 +2079,37 @@ own) are docs sentences, fixed. X3: a narrative that quotes the field notes carr
 rules then apply to it; the consent page says so in one sentence, as fact. The rest are accepted as the PM proposed.
 Under `MISSION.md` Governance ("the ACE decides, and logs, whether UA-A reruns"), UA-A does not rerun for three docs
 sentences after a passing round; the pin moves and CI, R-6 and R-9 rerun.
+
+## D-102 | 2026-11-25 | Release scope: the chat-path run's candidates C1 to C8
+
+The chief engineer's answer, asked as one question about C1 to C8 (`work-packages/candidates.md`), quoted as typed and
+recorded by the ACE:
+
+> "C1 is 0.1, C2 needs to be split, having at least one node is conformance requirement but we accomplish it be
+> excluding narratives with no coding programatically. and mark them as excluded. they can only become included if
+> they are coded. guidance on descriptions is normative (same guidance regardless of whether the author/review is
+> human or LLM). probably need to split the rules from the norms into separate concerns here. all that is 0.1
+> C3, C4 and C5 all normative guidance probably gets implemented as documentation and skill files that complement cli
+> tools already built.
+> C6 is really the higher level approach to addressing the above.
+> C7 can you use secret management for this. not sure what the right tools are, you can spike. but we want to follow
+> better security practices and we want our spin up to tear lifecycle walkthough documentation to describe good
+> security practices. Keep in mind we are not telling people they MUST do a build up to tear down loop, we're telling
+> them they MAY, and showing them how with the walk through. In the process we're also testing / proving to ourselves
+> that we can do just that.
+> C8 this is one of the policy options not a recommendation that you should adopt this policy; however its an area of
+> concern for our stakeholders so we're going through the effort to ensure the option is actionable."
+
+Outcome as recorded:
+- **C1** in v0.1.
+- **C2** split, in v0.1. (a) A rule: a narrative with no coded node is excluded from the graph by the tool and marked
+  excluded, and becomes included only once coded. (b) Norms: guidance on descriptions (and the like) is the same
+  whether the author or reviewer is a person or an LLM. Rules and norms become separate concerns.
+- **C3, C4, C5**: normative guidance, implemented as documentation and skill files that complement the CLI tools.
+- **C6**: the higher-level approach for the norms above (skill and agent).
+- **C7**: a spike on secret management for the session key; the life-cycle walkthrough describes good security
+  practice.
+- **C8**: one policy option, not a recommendation, made actionable. The walkthrough shows the full set-up-to-teardown
+  loop as a MAY and runs it, testing that it is supported.
+
+Release timing for C3 to C8 is put to the chief engineer as one follow-up (D-103).
