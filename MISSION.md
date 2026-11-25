@@ -532,7 +532,9 @@ The chief engineer has accepted by merging the release PRs.
   - no AI attribution on commits, PRs or documents;
   - **Platforms:** macOS is the supported user platform for v0.1, and CI runs on Linux. Nothing may be built in a
     way known to put later Linux or Windows support at risk: no platform-specific paths, shells, line endings or
-    tools in the package, and anything unavoidably platform-specific is isolated and recorded.
+    tools in the package, and anything unavoidably platform-specific is isolated and recorded. The chat path's
+    launcher is macOS-only by design; its macOS tools (among them `security`, for the session key in the keychain)
+    sit behind its own functions.
 - **Until the release,** nothing in `scat-kg-tools` or `scat-kg-template` is merged to `main`, tagged or published, with two exceptions:
   - changes to this mission;
   - the **candidate stage** that UA-M needs:
@@ -546,7 +548,8 @@ The chief engineer has accepted by merging the release PRs.
   1. The ACE opens one release PR from `dev` to `main` in each repository, and no one else does.
   2. The chief engineer's walkthroughs run against them, and his merges, as merge commits, are the acceptance.
   3. The ACE then tags `v0.1.0` on the merge commit in each repository, redeploys the site from `main` without the
-     pre-release mark, and restores `main` as the template's default branch. The template's pin stays on the
+     pre-release mark, publishes the MCP server's container image from the tools tag, and restores `main` as the
+     template's default branch. The template's pin stays on the
      accepted candidate commit, whose content the tag marks.
 - **How the team runs** is set out in `ORG.md`.
 

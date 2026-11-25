@@ -2234,3 +2234,28 @@ a test stand-in. The ACE decides:
 - The mission's Platforms list should name `security` among the isolated macOS tools: a mission edit, proposed to the
   chief engineer with D-106's, not made.
 U8 is unblocked.
+
+## D-116 | 2026-11-25 | Mission edits made; history stays; chat clean-up; template scratch edits discarded; w3id after release
+
+The chief engineer, quoted as typed and recorded by the ACE:
+
+> "i approve the small mission edits. i don't think you need to do history rewrites but you are welcome to make a
+> case. i am not worried about deleting conversations on inference.coop since what we're doing now is not sensitive
+> we're doing testing to make sure we have processes developed and tested that can be used on sensitive cases in the
+> future. you can discard my obsidian edits we were doing scratch work as part of testing. if i had wanted to keep
+> those edits i would have needed to commit them via git. we may want to make that a more explicit trigger for
+> telling the system to read our written content and update the data in the knowledge graph accordingly. i'll defer
+> the w3id PR to after the release so i can point back to the release to justify the PR"
+
+Outcomes:
+- **Mission edits made on `dev`:** Release step 3 also publishes the MCP server's container image from the tools tag
+  (D-106; the repository variable `SCAT_PUBLISH_IMAGE` is set at release); Platforms names the chat path's launcher as
+  macOS-only by design, with its macOS tools (among them `security`) behind its own functions (D-115).
+- **History rewrites dropped.** D-109 is withdrawn; the ACE makes no case for them (D-113's costs outweigh the gain,
+  and GitHub keeps the old commits reachable regardless).
+- **No further clean-up in inference.coop is needed.** The remaining lab conversation stays: this is testing of
+  processes for later sensitive cases, not sensitive material.
+- **The chief engineer's template checkout:** its uncommitted `.obsidian/` edits are discarded by the ACE, on his
+  instruction. The checkout has no `origin` remote and sits at 5a7290f; a fresh clone is simpler than a pull.
+- **Commit as the trigger** for reading written content into the knowledge graph: a candidate (C9), not scoped.
+- **The w3id namespace registration PR** is deferred until after the release, so it can cite the release.

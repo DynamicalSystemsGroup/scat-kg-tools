@@ -47,3 +47,9 @@ require of every coder. Under an "AI platform non-retention" project data policy
 needs in the chat platform (the MCP server entry, the field notes uploaded as a collection, any agents, prompts,
 skills or tools), does the coding, and then removes all of it from the platform. Local copies on the coder's machine
 are kept. It also serves an "approved chatbot only" policy.
+
+## From the chief engineer, 25 November (D-116)
+
+| ID | Candidate | What it touches | Source |
+|---|---|---|---|
+| C9 | **A commit is the trigger to read written content into the knowledge graph.** Uncommitted edits are scratch work; committing them via git is the explicit signal that the content should be read and the knowledge graph updated. Not in v0.1 unless the chief engineer says so. | The coding guide and norms, the views (what they read: working tree or committed state), the chat-path life cycle | D-116 |
