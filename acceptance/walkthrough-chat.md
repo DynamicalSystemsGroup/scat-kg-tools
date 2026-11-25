@@ -25,7 +25,7 @@ new finding; once it is, it is.
    from the release on github.com (J10 step 4).
 5. The no-terminal route is [Your vault with no
    terminal](../docs/chat-path.md#your-vault-with-no-terminal-github-desktop): clone, remove the example, commit and push
-   with GitHub Desktop and Finder (J5, J6, J10). The page says its steps were not run, so each is a thing to record.
+   with GitHub Desktop and Finder (J5, J10). The page says its steps were not run, so each is a thing to record.
 
 ## How to split the walk into sittings and resume
 
@@ -67,7 +67,7 @@ No agent has run this path as a coder, and Docker Desktop has not been tried end
 
 **Held gap in the docs** (docs fix 5): [Your vault with no
 terminal](../docs/chat-path.md#your-vault-with-no-terminal-github-desktop) says its GitHub Desktop and Finder steps
-were not run. Follow them for the clone (J5), removing the example (J6) and committing and pushing (J10), and record
+were not run. Follow them for the clone (J5), removing the example (J5) and committing and pushing (J10), and record
 every name or button that differed on your screen.
 
 ---
@@ -143,8 +143,11 @@ it needs](../docs/chat-path.md#what-the-chat-path-is-and-what-it-needs), [Instal
    repository**, set the visibility to **Private**. Get the vault onto your Mac with GitHub Desktop, as [Your vault with no
    terminal](../docs/chat-path.md#your-vault-with-no-terminal-github-desktop) says (docs fix 5), and record how.
    Keep it outside Documents, Desktop, Downloads and iCloud.
-2. Open the folder in Obsidian as a vault (**Open folder as vault**, version 1.9 or later). Keep the example for now;
-   J6 uses it.
+2. Remove the example, as the page's [Remove the
+   example](../docs/chat-path.md#your-vault-with-no-terminal-github-desktop) says (the assistant deletes nothing; you
+   do): Show in Finder, drag `affordance`, `concern`, `group`, `narrative` and `technology` to the Trash, then commit
+   and push in GitHub Desktop. Record how, and anything the page leaves out.
+   Then open the folder in Obsidian as a vault (**Open folder as vault**, version 1.9 or later).
 3. Install once, in the page's order: SCAT Chat.app (step 0), a container runtime (step 1; Docker Desktop is the one
    with no terminal), the public-link service and its command line (step 2), its two account settings (step 3), the
    first open of the app (step 4).
@@ -156,9 +159,9 @@ it needs](../docs/chat-path.md#what-the-chat-path-is-and-what-it-needs), [Instal
 6. Ask the assistant for a check of the whole vault. The page does not give this sentence; record the words you used.
 
 **Done.**
-- The repository is private on GitHub, and the folder is open as a vault in Obsidian.
+- The repository is private on GitHub, the example is removed and pushed, and the folder is open as a vault in Obsidian.
 - A window says "SCAT Chat is running." and shows an address, a key and your vault.
-- The assistant's reply to the check quotes the tool's result, `no problems`, for the vault with the example in it.
+- The assistant's reply to the check quotes the tool's result, `no problems`, for the vault with the example removed and pushed.
 
 **Record.** Every step the page could not vouch for (it says so), each launcher message you saw and whether the page's
 table covered it, and the exact words of any failure. Anything you guessed.
@@ -170,21 +173,19 @@ server entry, and ask for the check again. The one-time installs are not redone.
 
 **Enter.** [`planning.md`](../docs/planning.md).
 
-**Steps.** As the [manual script's J6](walkthrough-manual.md#j6-plan), with your J4 answers: sessions, groups within the
+**Steps.** As the [manual script's J6](walkthrough-manual.md#j6-plan) without its step 5 (the example is already removed), with your J4 answers: sessions, groups within the
 cap in `scat.toml`, participation terms, how the notes are kept, `plan.txt` in the vault folder. The cap demo
 ([Groups and the cap](../docs/planning.md#groups-and-the-cap)) is a command; in a session ask the assistant to make a
-new group page named `harbour-crews` while the example's three groups fill the cap of 3, and expect it to be refused
-and to quote the page's message. The page does not give this chat form; record what happened. When the plan is done,
-clear the example with Finder and GitHub Desktop, as [Remove the
-example](../docs/chat-path.md#your-vault-with-no-terminal-github-desktop) says (the assistant deletes nothing; you do),
-commit it, and record how.
+new group page named `harbour-crews` once three group pages exist (the example's three are already removed in J5, so
+first ask for three groups from your J4 answers), and expect it to be refused and to quote the page's message. The page
+does not give this chat form; record what happened.
 
 **Done.** `plan.txt` exists and names the sessions, the groups within the cap, the participation terms and how the notes
-are kept; the cap refusal appeared and nothing was created; the example is cleared and the check prints `no problems`.
+are kept; the cap refusal appeared and nothing was created.
 
-**Record.** As the manual script's J6, and how you cleared the example.
+**Record.** As the manual script's J6.
 
-**Resume.** `plan.txt` exists in the vault folder, and the example's pages are gone.
+**Resume.** `plan.txt` exists in the vault folder.
 
 ## J7 Capture
 
