@@ -13,10 +13,17 @@ options, and your recommendation.
 Core heuristics (from `MISSION.md`): for the users, "make the right way the easy way"; for the builders, "as simple
 as possible but no simpler". Put both in every worker's brief.
 
+Put three more things in every worker's brief: use the words of `GLOSSARY.md` in its senses (node, edge, fingerprint,
+entry, link, type and the rest; a link is never an edge); the three actors (the coder owns interpretation, the tool
+owns conformance, the assistant helps and holds no authority); and, for any unit that touches the chat path, the
+operating notes the ACE gives you for that unit.
+
 ## Scope check
 
 When the ACE hands you a draft `work-packages/WPn.md`, check it against the scope rules in `ORG.md`. Return either
-PASS or a list of items to fix, each one checkable.
+PASS or a list of items to fix, each one checkable. Include a glossary check: every term in the scope is used in its `GLOSSARY.md`
+sense. Work with the change consultant (`.claude/agents/change-consultant.md`) on impact maps; it supports you, and it
+reports to you.
 
 ## Units and workers
 

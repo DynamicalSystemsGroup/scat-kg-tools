@@ -2,23 +2,44 @@
 
 The ordered work packages. Owned by the ACE, and revised at each package acceptance within the orderings that
 `MISSION.md` (Governance, "The plan") sets. The chief engineer does not approve this file; changes are logged in
-`decisions/log.md`.
+`decisions/log.md`. Words follow `GLOSSARY.md`.
 
-1. **WP1 Ontology research sprint.** Survey existing ontologies for each SCAT class and relation, including the
-   patterns in `concept-definition-stage`. Run the trade study (adopt and thin, or author), and assess easy-win axioms
-   and options for holding disagreement. Produces: the ontology part of D-5.
-2. **WP2 Toolchain spike.** In parallel with WP1. Try OKF, oxigraph, pydantic and the rule-language options on a
-   throwaway mini-vault, and measure them. Produces: the toolchain decision, and the toolchain part of D-5.
-3. **WP3 Facilitation research spike.** In parallel with WP1. Work through the sources `MISSION.md` G11 names.
-   Produces: the facilitation strategy, input to WP4 on holding disagreement, and the facilitation part of D-5.
-4. **WP4 Ontology and page contracts.** From WP1 to WP3: the TBox in Turtle, the fields, page types, linking rules,
-   status rules, how disagreement is held, and the rule catalogue with ids, severities and message wording.
-   Produces: D-1 and the vault conventions.
-5. **WP5 Conformance tools.** Sets up the `scat-kg-tools` package and its CI. Builds the tools on WP2's toolchain and
-   WP4's contracts. Produces: D-2.
-6. **WP6 Template and case study.** Starts once WP4 is accepted, in parallel with WP5, and is accepted after WP5.
-   Sets up `scat-kg-template` and its CI. Produces: D-3.
-7. **WP7 Docs and Pages.** Written journey-first (J1–J7), with the facilitation guides built on WP3. Accepted after
-   WP5 and WP6. Produces: D-4.
-8. **WP8 Candidate and user acceptance.** Integration, the candidate stage, UA-A rounds to the pass bar, the
-   reviewer's guide and the walkthrough script. Produces: D-6 and D-7.
+## Done
+
+WP1 to WP11 built and accepted the first candidate (ontology research, toolchain, facilitation research, ontology and
+page contracts, conformance tools, template and case study, docs and Pages, candidate and user acceptance, cleanup,
+the stable machine interface). WP12 added the terms page (accepted, log D-077). The release PRs for that candidate
+were closed unmerged (log D-074): the mission has since changed, and the next candidate replaces it.
+
+## Next, in order (from `MISSION.md` as merged at 0e74f19)
+
+1. **WP14 Prior-art readout.** The INCOSE paper's split between AI assistant and human operator; the AICC loops and
+   model–view–control in `ant-rdf`; the knowledge-complex repositories; and the Obsidian-and-git vaults delivered to
+   clients. Read as a way of thinking, not parts to carry over; private sources for principles only; the readout
+   cites only published work. Produces: the prior-art part of D-5, and input to WP15.
+2. **WP15 Architecture document and review** (G16, R-22). Model (the ontology plus a conformant vault), views (the
+   Obsidian layout, the fingerprint view, the edge tables, the layered view, traces) and control plane (Obsidian, git
+   and GitHub, the CLI and REPL, the MCP server, IDE agents): modules, interface contracts, responsibilities. Reviewed
+   by architecture reviewers, one on Opus for the cross-cutting contracts and links and edges (G17). Produces: the
+   architecture document (D-2). Gate: no further package starts detailed design before it is approved.
+3. **RS3 Chat-path spike** (G14), side by side with WP15. Designs and tries the chat workflow with lab material: how
+   the inference.coop chat reaches the tool (MCP), where that service runs, how a coder locks a version with no
+   terminal, and what the views look like there. Live use waits for the chief engineer to sign in, and stays light.
+   Produces: the chat-path readout (D-5) and the route to build.
+4. **WP16 Ontology and layout** (G1, G15, G17, R-21, R-23), staged: spike, decide, build, quality control, integrate,
+   cascade review. One page per narrative with status as its coding state; nodes and edges as base types; edges that
+   name their narratives; fingerprints; relationship annotations replacing `conflicts`; mismatch detection with
+   fixes; recording and removing an edge (G4); the Obsidian layout redesigned and checked in Obsidian. Absorbs WP13
+   (the flow page and the data, rights and consent page) and rewrites the terms page against `GLOSSARY.md`, so the
+   shared docs are edited once. Needs its impact map first (R-18).
+5. **WP17 Views** (G12, R-17). One view generator in the tool, shared by the notebook and the MCP server; the public
+   vault loader; the template notebook with the fingerprint view, edge tables, layered view and traces.
+6. **WP18 Chat path** (G14, R-20). The MCP server with its tools, prompts and skills, on the route RS3 chose; views
+   through the shared generator; the chat-path guide and the IDE note with its setup skill.
+7. **WP19 Range vault** (R-20). The public KOI case in `mzargham/ant-rdf`, rebuilt as a SCAT model with groups, not
+   named people; the lab and range runs.
+8. **WP20 Candidate and user acceptance.** The whole journey, J1 to J10, on both paths: UA-A rounds to the pass bar,
+   the walkthrough scripts, the reviewer's guide, the candidate stage and new release PRs.
+
+The order of WP17 and WP18 may change with the architecture document. Open play-test findings (F-1, F-3, F-5, F-7)
+go into whichever package touches their files.

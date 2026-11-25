@@ -19,6 +19,8 @@ Workers report to the PM, the PM reports to the ACE, and the ACE reports to the 
 | **Chief engineer** | `mzargham` | — |
 | **ACE** (assistant to the chief engineer, the driver) | The main Claude session | the main session's model |
 | **PM** | One persistent subagent (`.claude/agents/pm.md`), spawned and managed by the ACE. It is swapped for a fresh PM when it slows or its context grows large. | Sonnet |
+| **Change consultant** | A subagent (`.claude/agents/change-consultant.md`) that supports the PM: it builds each impact map before the ACE approves a scope, re-runs the sweep before acceptance, and keeps the file map of packages in flight (`MISSION.md`, R-18 and Governance). | Sonnet |
+| **Architecture reviewers** | Fresh subagents (`.claude/agents/architecture-reviewer.md`) that review the architecture document before detailed design (R-22), one of them focused on links and edges (G17). | Sonnet; one on Opus for the cross-cutting contracts and G17 |
 | **Workers** | Fresh subagents the PM instantiates per unit, each with one bounded task: spike, design, build, test, write, user-test, review | Sonnet, or Haiku for mechanical work. User testers run on the models UA-A sets. Opus only on the ACE's word, for a named reason. |
 
 ## Who answers what
@@ -48,8 +50,10 @@ bare problem.
 
 ## The loop
 
-1. The ACE writes a one-page scope for the next work package (`work-packages/WPn.md`, `scope-of-work` shape). The PM
-   checks it against the scope rules below. The ACE approves it and logs the approval.
+1. The ACE writes a one-page scope for the next work package (`work-packages/WPn.md`, `scope-of-work` shape). If the
+   package changes a term, contract, rule or the mission, the change consultant first builds its impact map (R-18),
+   and the scope's blast radius comes from that map. The PM checks the scope against the scope rules below. The ACE
+   approves it and logs the approval.
 2. The PM splits the package into **units** and gives each one story points. Each unit has one tight scope and one
    set of files, and units with disjoint files run in parallel. The PM keeps `work-packages/board.md` current: every unit, its owner, branch,
    state and points; the velocity per iteration; and the forecast to the candidate (`MISSION.md`, Timeline).
@@ -58,7 +62,8 @@ bare problem.
    anyone.
 4. The PM checks that the unit works with the rest, merges it into `dev` and pushes. Nothing waits uncommitted or
    unpushed. A red head on `dev` is fixed forward straight away by the unit that owns it.
-5. The ACE verifies the package independently, accepts it, and revises `work-packages/plan.md` if the package taught
+5. The change consultant re-runs the package's sweep and reports anything unmarked or still saying the old thing.
+   The ACE verifies the package independently, accepts it, and revises `work-packages/plan.md` if the package taught
    something.
 6. When the packages are in, the ACE runs the candidate stage (`MISSION.md`, Governance) and the UA-A rounds to their pass
    bar, writes the reviewer's guide (D-6), and opens the release PRs (`dev` → `main`). The chief engineer then does his
@@ -74,7 +79,15 @@ Each scope must have:
 - requirements, each with a check a reviewer can run;
 - a definition of good, and a concrete definition of good enough;
 - a **blast radius**: the files it owns, and nothing else;
-- nothing outside `MISSION.md`.
+- nothing outside `MISSION.md`;
+- the words of `GLOSSARY.md`, each in its sense; a word from outside the glossary for a sense it defines is a defect;
+- an impact map (R-18) when it changes a term, contract, rule or the mission;
+- for a package after the architecture document, the modules and interface contracts it builds on, from that
+  document (R-22).
+
+**The glossary.** `GLOSSARY.md` is changed only as a logged ACE call: the change consultant's sweep finds every use
+first, every use is brought in line in the same package, and the change is listed for the chief engineer's review at
+acceptance.
 
 Bigger changes (a new mechanism, an ontology change, a new tool) are scoped in stages: spike, decide (the ACE),
 build, quality control, integrate, and review the cascade to a clean merged state.

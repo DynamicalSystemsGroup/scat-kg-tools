@@ -1690,3 +1690,20 @@ Rulings on the PM's flags:
 - Status placed at "capture", and guide-derived claims outside the drift test: accepted for v0.1's current page;
   the rewrite revisits both.
 - The page at its 600-word cap, and the U4 filing without a separate reviewer: accepted.
+
+## D-078 | 2026-11-24 | The team set up for Mission Amendment 5; Pages deploys trimmed
+
+ACE outcome:
+- `ORG.md`: two new roles (the change consultant, the architecture reviewers); the loop adds the impact map before
+  approval and the re-sweep before acceptance; the scope rules add `GLOSSARY.md`'s words, an impact map for any change
+  to a term, contract, rule or the mission, and, after WP15, the architecture's modules and contracts; glossary
+  changes are a swept, logged ACE call.
+- Role files `.claude/agents/change-consultant.md` and `.claude/agents/architecture-reviewer.md`; the PM's role puts
+  the glossary and the three actors in every brief.
+- `work-packages/plan.md` rewritten for the mission as merged: WP14 prior art, WP15 architecture, RS3 chat-path
+  spike, WP16 ontology and layout (absorbing WP13), WP17 views, WP18 chat path, WP19 range vault, WP20 candidate.
+- Pages: the chief engineer asked to save runner minutes ("try not to run quite so many deployments. you will eat up
+  all our runner minutes", with a screenshot of 161 deployments). The Pages workflow now runs only when what the site
+  is built from changes (`docs/`, `mkdocs.yml`, `src/`, `pyproject.toml`, `uv.lock`, the workflow), and a newer
+  deploy cancels an older one. CI still runs on every push (R-7); the team batches pushes, so records-only commits
+  ride along with real work.
