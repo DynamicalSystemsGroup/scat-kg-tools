@@ -285,7 +285,8 @@ matters without claiming to be exhaustive. No particular project's choices appea
   - **By hand in Obsidian** is the base: LLM use is never assumed (R-19).
   - **The chat path** is the priority for design and testing in v0.1. The first field deployment may use one private
     LLM service, inference.coop, through its browser chat, which reaches outside tools only through MCP servers. The
-    open-source service is built for it: an MCP server with its tools, prompts and skills, depending on `scat-kg`. A
+    open-source service is built for it: an MCP server with its tools, prompts and skills, depending on `scat-kg`. It
+    also generates the views (G12), so a chat-path coder reaches a finished model without a terminal. A
     workable chat workflow is a UX design problem in its own right: the input material is uploaded to the chat as a
     collection, files are created and downloaded, kept in a private git repository and edited in Obsidian, with
     copying and pasting where it can't be avoided. It is kept simple, and its setup, git and checks work without a
