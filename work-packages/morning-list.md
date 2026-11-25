@@ -21,6 +21,8 @@ the team; each item waits for you when you have a moment.
    edit (add `draw` beside `export-edges` in `OperationResult`'s path rule), or (b) I rule that `draw` writes only
    inside the vault, as the chat path already keeps views there, and the code changes instead. Until then WP17 stays
    unaccepted; everything else in it is on `dev` and green.
+2c. **Permission to install Docker Desktop (D-096)**, to test the chat path's graphical container runtime (Colima,
+   which we used, has no graphical installer). One install, then a local test; nothing published.
 2b. **Your template checkout will conflict on pull.** The migrated template on `dev` adds `bases: true` to
    `.obsidian/`; your uncommitted edits in `scat-kg-template/.obsidian/` (`core-plugins.json`, `app.json`) were left
    untouched, so a `git pull` there will stop on them. Commit, stash or discard them as you prefer before pulling.
