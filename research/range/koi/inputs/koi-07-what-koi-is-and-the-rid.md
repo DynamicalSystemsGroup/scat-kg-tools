@@ -6,8 +6,8 @@ Field note, architectural view. KOI stands for Knowledge Organization Infrastruc
 
 The infrastructure performs six functions of identification. The sources name the six as a set but do not list them in the pages the facilitator read. It works over Resource Identifiers, called RIDs.
 
-The RID is the stable handle the infrastructure gives a resource. With it a resource can be referred to, related to other things, updated and forgotten across subnets, and no single source of truth is needed for that. That is what the RID is for: the same handle is used to refer to the resource wherever it is met.
+The RID is the stable handle the infrastructure assigns so a resource can be referenced, related, updated, and forgotten across subnets without a single source of truth.
 
-Alongside RIDs the doctrine uses FUN signals. There are three: new, update and forget. These are how a change to a resource is sent through the infrastructure. They connect what people want to do with a resource (add it, change it, withdraw it) to the protocol. The forget signal is the one that figures in the forget incident.
+FUN signals: new, update and forget. The forget signal is the one that figures in the forget incident.
 
 The doctrine also names per-relationship discipline. The sources give no more detail on it in the pages read.
