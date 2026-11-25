@@ -7,7 +7,7 @@ description: "The architectural and ethnographic views read the same integration
 timeframe: past
 ---
 
-Source: inputs/koi-05-integration-teams-at-a-site.md
+Source: research/range/koi/inputs/koi-05-integration-teams-at-a-site.md
 
 Integration teams adapt KOI and deploy it at specific field sites; they are the use-case implementers. The notes give two readings of this role, and no sequence of events for any particular site. Both readings are about one matter, [[what-integration-does-to-the-protocol|what integration does to the protocol]].
 
@@ -16,6 +16,8 @@ From the architectural side, held here by the [[technical-team|technical team]] 
 From the ethnographers' side, held here by the [[ethnographers|ethnographers]], the account runs the other way. Looking at the field site, they see integration teams carrying KOI's logic into the field faithfully and without changing it, passing things on.
 
 The two groups read the same teams differently, and the comparison record lists integration teams among the places where the views diverge. The source does not say which reading is right: it records that the difference depends on who is looking and what for, the protocol's design or the ethnographic practice at the site. The vault holds both and does not resolve them.
+
+Thin spots: the input tells no sequence of events for any site, so scenario is the nearest type.
 
 ## Edges told
 
