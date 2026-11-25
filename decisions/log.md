@@ -2041,3 +2041,26 @@ Rulings:
 - **The uv gap** (a pre-installed uv on PATH): it stays declared in the kit's README and in each report until the
   chief engineer rules (D-040, D-041; on the morning list).
 - **Chat-path testers:** three (D-098) meets the mission's "at least two"; no text changes.
+
+## D-100 | 2026-11-25 | UA-A round 1 (manual path): dispositions
+
+Round 1 (reports `acceptance/reports/wp20-r1-p1.md` to `-p3.md`, findings `wp20-r1-findings.md`): three testers (two
+Haiku, one Sonnet control) each reached J10 with a clean check, a locked version, the pinned commit and the recipient;
+no blocking finding; no report void. The candidate on `dev` is green in both repositories, and R-6 holds on a fresh
+template clone (uv pre-installed, declared).
+
+The ACE's dispositions:
+- **Fix (docs, then a re-pin): W1 to W7**, as the PM proposed.
+- **W9, fingerprint candidates are noisy (three of three testers):** a defect against R-11 and G17's guidance. The
+  fingerprint view shows the fingerprint; candidates appear only when asked for (an option in the view, its CLI and
+  REPL twins, and the notebook shows how). D-085's intent holds; only the default changes.
+- **W10a, `SCAT-MENTION` on an architecture page asks for a group link** that the linking rules discourage there:
+  a defect (contradictory guidance). The mention rule does not suggest a link of a type the page type discourages.
+- **W10b, a hyphenated group title not offered:** investigated; fixed if the mention matching misses a title it
+  should match.
+- **W15, work-package commits and `divergence/` tags in a clone's history:** accepted. The documented path makes a
+  repository with GitHub's "Use this template", which starts with fresh history; the testers cloned directly.
+- **W11** (no documented rename or delete of a node page): accepted for v0.1, listed in the reviewer's guide as known
+  weak. **W8, W12 to W14, W16:** accepted as the PM proposed.
+
+Then a re-pin and round 2 with fresh testers on the manual path.
