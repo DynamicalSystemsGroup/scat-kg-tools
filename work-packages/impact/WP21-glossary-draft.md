@@ -24,7 +24,7 @@ named above its table. Nothing here decides for the ACE beyond one recommendatio
 | Term | Definition | Example use | Formal concept and source |
 |---|---|---|---|
 | **rule, norm** | A rule is what conformance requires and the tool enforces: the catalogue's rules, whose breach the check reports. A norm is guidance to coders and assistants, the same for a person as for an LLM, carried in the docs and in skill files; the tool does not enforce it. | "A narrative with no node link is excluded by a rule; a brief description is a norm." | Rule and norm (authored in SCAT); rule: conformance checking (rule catalogue); norm: guidance of practice (deontic, not enforced) |
-| **skill** | A package of instructions that the chat loads for the assistant to follow, such as the norms and the edge grammar. The assistant is still the actor and holds no authority. | "Load the SCAT skill before the first reply." | Skill (a feature of the chat; Claude's Agent Skills) |
+| **skill** | A package of instructions that the chat loads for the assistant to follow, The assistant is still the actor and holds no authority. | "Load the SCAT skill before the first reply." | Skill (a feature of the chat; Claude's Agent Skills) |
 | **saved agent** | The chat's feature that keeps an assistant set up for a purpose (its instructions, skills and tools) so a new chat starts from it. The assistant is still the actor and holds no authority. | "Start the session from the saved agent for SCAT." | Saved agent (a feature of the chat platform) |
 | **session key** | The key the coder pastes into the chat for one session, so the chat reaches the tool. It is kept in the login keychain and deleted at Stop. | "The session key was deleted at Stop." | Bearer token for one session (access control); macOS login keychain |
 | **leave no trace** | The strict data-policy option of the chat path's life cycle: a temporary chat, the field notes uploaded as a collection, and the server entry, agents, prompts and skills set up for the session removed from the platform at the end, local copies kept. One option among policies, not a recommendation. | "A project under a non-retention policy may choose the leave no trace life cycle." | Authored in SCAT (WP21-G7); data minimisation (privacy practice) |
@@ -66,7 +66,7 @@ settle a collision nothing yet shows. The ACE decides.
 ## 4. Proposed `decisions/log.md` entry (the ACE sets the number and date)
 
 ```
-## D-nnn | 2026-11-25 | WP21-G9: the glossary gains nine terms; SCAT-MENTION moves behind an opt-in
+## D-nnn | 2026-11-25 | WP21-G9: the glossary gains eleven terms; SCAT-MENTION moves behind an opt-in
 
 The change consultant's sweep (R-18; `work-packages/impact/WP21-glossary-draft.md`) found every use of the words
 below. `GLOSSARY.md` gains: coded and uncoded (a narrative is coded when it links at least one node page anywhere in
@@ -80,7 +80,7 @@ one type) is settled by <A: the new term stands and edge table is unchanged | B:
 brought in line in this package: <list from the sweep: the assistant's "rules" wording, MISSION.md:74, bare "the key"
 in deploy/README.md, "an agent" in docs/chat-path.md>. The same package moves SCAT-MENTION, a link suggestion, out of
 the default check: `scat.toml` key `link_suggestions = true` turns it on (default off), and a value that is not a
-boolean is refused by SCAT-SUGGEST-CONFIG; the way fingerprint candidates are off by default (D-101), so a "may" is
+boolean is refused by SCAT-SUGGEST-CONFIG; off by default like fingerprint candidates (D-101), but a persistent `scat.toml` switch where the candidates are a per-call option, so a "may" is
 not graded as a warning. Each change is listed for the chief engineer's review at acceptance.
 ```
 
@@ -94,10 +94,10 @@ a cap of 600 words, no prescriptive sentence (should, must, need to, do not, you
 
 After the ACE applies the draft:
 
-1. `terms.md` needs one bullet each for `coded, uncoded`, `excluded`, `Edges told`, `rule, norm`, `skill`,
+1. `terms.md` needs one bullet per row (`test_terms.py` splits `a, b` rows into separate terms, so eleven terms: coded, uncoded, excluded, Edges told, rule, norm, skill, saved agent, session key, leave no trace, range vault; 2 + 1 + 1 + 2 + 1 + 1 + 1 + 1 + 1 = 11 from nine rows) for `coded, uncoded`, `excluded`, `Edges told`, `rule, norm`, `skill`,
    `saved agent`, `session key`, `leave no trace`, `range vault` (the headings follow the glossary's sections). Until
    they exist `test_terms.py` fails with "the glossary term ... is not defined on the page".
-2. `terms.md` is exactly 600 words today, so the nine bullets exceed the cap. The ACE chooses: raise `WORD_CAP` (a
+2. `terms.md` is exactly 600 words today, so the eleven terms exceed the cap. The ACE chooses: raise `WORD_CAP` (a
    decision, as WP12 set it), or trim existing bullets. The test needs one line changed in the first case.
 3. The bullets must avoid prescriptive words (write "a norm is guidance", not "you should") and the phrase
    "coded scenario"/"coded architecture". Backticking `Edges told` is allowed (a TBox table heading).

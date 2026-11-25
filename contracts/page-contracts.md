@@ -460,7 +460,7 @@ stakeholder_group_cap = 3
 ```
 
 - The value is a TOML integer of 1 or more (a float such as `3.0` is a configuration problem). The tools read this key
-  and ignore any other key in the file, except `templates_folder`: the vault-relative folder of the Obsidian page
+  and ignore any other key in the file, except `link_suggestions` (below) and `templates_folder`: the vault-relative folder of the Obsidian page
   templates, which the tools do not read as pages (1). It is a string; if the key is absent, empty or not a string, the
   folder is `templates`.
 - `link_suggestions` turns the link suggestions on (SCAT-MENTION, in the catalogue): a TOML boolean, `true` or
