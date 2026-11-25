@@ -6,7 +6,7 @@
 
 The chat path lets you code a narrative by talking to an assistant in a chat window in your browser, with no
 terminal in the coding itself. Obsidian stays where you read and decide. This page walks one session from start to
-clean-up. Each numbered step is one action and says where you do it: **In the chat**, **In SCAT Chat** (the launcher
+clean-up. Each numbered step names one outcome and says where you do it: **In the chat**, **In SCAT Chat** (the launcher
 app), **In Finder**, **In GitHub Desktop**, **In Obsidian**, **In Tailscale** or **In a terminal**.
 
 !!! warning "What has and has not been tried"
@@ -60,8 +60,8 @@ Finder. **These steps were not run for this page.** They use the app's standard 
 wording on your version may differ. If a name here is not on your screen, use the nearest one and tell the person
 who set this up what you saw.
 
-**Create your private repository first, on the website.** Do step 1 of [Getting started](getting-started.md), the
-**On the GitHub website** path: **Use this template**, then **Create a new repository**, with visibility **Private**.
+**Create your private repository first, on the website.** Do the **On the GitHub website** path of [Getting started](getting-started.md)
+(creating your private repository): **Use this template**, then **Create a new repository**, with visibility **Private**.
 Your notes are about real groups of people.
 
 **Clone it.** Cloning downloads your repository to your Mac.
@@ -260,7 +260,7 @@ choose the new entry in the agent's tools again. This was not yet tried.
 
 ## Use
 
-1. **In the chat:** start a chat with your saved agent (steps 16 and 17 of "Set up the skill and the saved agent").
+1. **In the chat:** start a chat with your saved agent (steps 16 and 17 below, in "Set up the skill and the saved agent").
    If you have no saved agent, start a chat with the model and the server entry instead, and say in your first
    message to follow the coding loop and the assistant's rules from the `scat-kg` server.
 2. **In the chat:** attach your field notes with the paperclip (or drag and drop).

@@ -21,8 +21,7 @@ PLACES = (
     "In any app",
 )
 STEP = re.compile(r"^\s*\d+\. (.*)$")
-# One action per step: no joined actions, and one place label only.
-JOINED = (" and then ", ", then ", " and click ", " and choose ", " and save", " and confirm")
+# One place per step (D-119: a step names where it is done and one outcome).
 LABEL = re.compile(r"\*\*(In [^*:]+):\*\*")
 MARK = re.compile(r"^\*\*(" + "|".join(re.escape(p) for p in PLACES) + r"):\*\* \S")
 CHAT_HEADINGS = [
@@ -87,12 +86,8 @@ def test_chat_path_steps_name_a_place():
 
 
 def _one_action(steps):
-    bad = []
-    for s in steps:
-        labels = LABEL.findall(s)
-        if len(set(labels)) > 1 or any(j in s for j in JOINED):
-            bad.append(s)
-    return bad
+    """Steps that carry two different place labels."""
+    return [s for s in steps if len(set(LABEL.findall(s))) > 1]
 
 
 def test_leave_no_trace_steps_name_a_place():
@@ -147,3 +142,12 @@ def test_every_numbered_step_in_the_chat_path_names_a_place():
     bad = [s for s in steps if not MARK.match(s)]
     assert not bad, f"steps with no place: {bad}"
     assert not _one_action(steps)
+
+
+def test_no_step_refers_to_a_step_of_another_page():
+    """D-119: a step refers to no step on another page by number or range."""
+    ref = re.compile(r"\bsteps? \d+", re.I)
+    steps = _steps(LNT, "The walkthrough", "What is removed and what stays")
+    assert not [s for s in steps if ref.search(s) or "same section" in s]
+    assert not ref.search(LNT.read_text(encoding="utf-8"))
+    assert not re.search(r"(?i)steps? \d+ (and|to) \d+ of", CHAT.read_text(encoding="utf-8"))

@@ -57,7 +57,7 @@ No agent has run this path as a coder, and Docker Desktop, the alternative to Co
 with the launcher ([`chat-path.md`](../docs/chat-path.md), first warning). These need you:
 
 1. **GitHub**: your account, to make the private repository and to publish a release.
-2. **Colima**: the Homebrew install (the page's step 1 under Install once). Docker Desktop is the untested alternative; use it only if told.
+2. **Colima**: the Homebrew install ("A container runtime: Colima" under Install once). Docker Desktop is the untested alternative; use it only if told.
 3. **The public-link service** ([Install once](../docs/chat-path.md#install-once) names it): signing in, and two
    one-time settings in its account. One of them publishes your Mac's name in a public record that cannot be erased;
    the page says to rename the Mac first if its name is private.
@@ -148,8 +148,8 @@ it needs](../docs/chat-path.md#what-the-chat-path-is-and-what-it-needs), [Instal
    do): Show in Finder, drag `affordance`, `concern`, `group`, `narrative` and `technology` to the Trash, then commit
    and push in GitHub Desktop. Record how, and anything the page leaves out.
    Then open the folder in Obsidian as a vault (**Open folder as vault**, version 1.9 or later).
-3. Install once, in the page's order: SCAT Chat.app (step 0), a container runtime (step 1: Colima, two commands in a terminal), the public-link service and its command line (step 2), its two account settings (step 3), the
-   first open of the app (step 4).
+3. Install once, in the page's order: SCAT Chat.app (Get SCAT Chat.app), a container runtime (Colima, a few commands in a terminal), the public-link service and its command line (Tailscale), its two one-time settings, the
+   first open of the app.
 4. Start a session, as [Start a session](../docs/chat-path.md#start-a-session) says: open SCAT Chat; choose the folder
    that holds `scat.toml` (if it is in Documents, Desktop, Downloads or iCloud the launcher offers a copy: record what
    you chose); wait for the first fetch or build.
