@@ -1,6 +1,7 @@
 """The stub operations: pages that a link or a row end entails (page contracts 6).
 
-Writes only new files, never an existing page, and only when called: checks never run it. A call that
+Writes only new files, never an existing page (a stub of a page that exists with the same type is a
+no-op, as stub-pair is), and only when called: checks never run it. A call that
 refuses creates nothing. The end of a row entails a node of the layer its type fixes; any other link entails
 a page but not its type, so `stub` makes it only when it is given the type.
 """
@@ -157,6 +158,13 @@ def stub(name: str, type: str | None = None, *, root: str | Path = ".") -> Resul
         )
     if wrong := _wrong_type(type):
         return wrong
+    same = vault.by_name.get(name, ())
+    if len(same) == 1 and same[0].type == type:
+        return Result(
+            op,
+            unchanged=(same[0].path,),
+            notes=(f"{same[0].path} already exists, so nothing was written",),
+        )
     if bad_name := name_refusal(vault, name, type=type):
         return Result(op, refused=(bad_name,))
     if cap := cap_refusal(vault, [name] if type == GROUP else []):
