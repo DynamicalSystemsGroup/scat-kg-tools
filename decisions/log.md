@@ -1918,3 +1918,12 @@ persona ("trying it first"); step 7's dependency should name step 4; a stray `co
 `ontology/scat.ttl`; the reviewer's guide's pin header (WP20 rewrites it).
 
 The glossary gains **SCAT** (an addition: the docs expand it, and the glossary did not).
+
+## D-092 | 2026-11-25 | WP17 (the views) approved
+
+Scope `work-packages/WP17.md`: the view generator in the tool (fingerprint with rule-4 candidates, edge tables,
+layered view, traces), CSV and document exports, drawings, the template notebook running in CI (R-17), an analysis
+guide, and the three items carried from WP16. Dependency call (the ACE's, `ORG.md`): drawing and notebook libraries go
+in an optional extra of `scat-kg` or in the template; the core runtime dependencies stay as they are. No impact map:
+it adds, and changes no term, contract field or rule (the change consultant checks the file map). Revert point
+`divergence/D-091`.
