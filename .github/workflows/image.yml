@@ -1,0 +1,20 @@
+name: Image
+
+# Build the MCP server's image to prove the recipe works. Never pushes (the release workflow does).
+# Runs only when the recipe or the server's source changes: GitHub Actions minutes are scarce.
+on:
+  push:
+    paths:
+      - "deploy/**"
+      - "src/scat_kg/mcp_server/**"
+      - ".github/workflows/image.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -f deploy/Dockerfile -t scat-kg-tools:ci .

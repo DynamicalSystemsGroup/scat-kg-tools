@@ -18,6 +18,7 @@ S="$STUB_STATE"
 case "$1" in
 info) [ -f "$S/colima-up" ] ;;
 image) [ -f "$S/image" ] ;;
+pull) if [ -n "${STUB_PUBLISHED:-}" ]; then touch "$S/image"; else echo "manifest unknown" >&2; exit 1; fi ;;
 build) if [ -n "${STUB_FAIL_BUILD:-}" ]; then echo "no network"; exit 1; fi; touch "$S/image" ;;
 rm) rm -f "$S/container" ;;
 run) if [ -n "${STUB_FAIL_RUN:-}" ]; then echo "port in use" >&2; exit 125; fi; touch "$S/container"; echo abc123 ;;

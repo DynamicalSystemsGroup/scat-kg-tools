@@ -45,6 +45,8 @@ OSASCRIPT=${SCAT_CHAT_OSASCRIPT:-osascript}
 OPEN=${SCAT_CHAT_OPEN:-open}
 
 IMAGE=scat-chat-mcp
+# The published image (WP21-G6): one per package version, read from the pyproject.toml that travels with the launcher.
+REGISTRY_IMAGE=ghcr.io/dynamicalsystemsgroup/scat-kg-tools
 CONTAINER=scat-chat
 KEYFILE=$STATE/key.env
 FUNNEL_POLICY_PAGE=https://login.tailscale.com/f/funnel
@@ -389,7 +391,7 @@ Make the copy now?" "Copy" "Cancel")
     printf '%s\n' "$VAULT" >"$STATE/vault"
 }
 
-src_tag() { # a tag that changes when the source, or the uid, changes
+src_tag() { # a tag that changes when the source changes (the image runs as any user: --user is set at run time)
     st_hash=$(
         cd "$CTX" || exit 1
         {
@@ -399,18 +401,35 @@ src_tag() { # a tag that changes when the source, or the uid, changes
             echo deploy/Dockerfile
         } | LC_ALL=C sort | tr '\n' '\0' | xargs -0 cat | shasum -a 256 | cut -c1-12
     )
-    printf '%s:%s-u%s' "$IMAGE" "$st_hash" "$HOST_UID"
+    printf '%s:%s' "$IMAGE" "$st_hash"
+}
+
+pkg_version() { # default: the first `version = "..."` line of pyproject.toml; empty when there is none
+    sed -n 's/^version *= *"\([^"]*\)".*/\1/p' "$CTX/pyproject.toml" 2>/dev/null | head -n 1
 }
 
 step_image() {
+    # Use the published image of this version when there is one; build the source here only when there is none,
+    # so a candidate works before its release.
     TAG=$(src_tag)
-    [ -f "$CTX/deploy/Dockerfile" ] || die "The server's recipe is missing from this copy of SCAT Chat. Download the app again."
-    if ! "$DOCKER" image inspect "$TAG" >/dev/null 2>&1; then
-        ui_progress "Building the server, once. The first time takes a few minutes."
-        if ! "$DOCKER" build -f "$CTX/deploy/Dockerfile" --build-arg "UID=$HOST_UID" -t "$TAG" "$CTX" >"$STATE/build.log" 2>&1; then
-            die "Building the server failed. The last lines say: $(tail -n 5 "$STATE/build.log" | tr '\n' ' ')
-Check that you are online, then click SCAT Chat again."
+    PUBLISHED=$REGISTRY_IMAGE:$(pkg_version)
+    if [ -n "$(pkg_version)" ] && "$DOCKER" image inspect "$PUBLISHED" >/dev/null 2>&1; then
+        TAG=$PUBLISHED
+        return 0
+    fi
+    "$DOCKER" image inspect "$TAG" >/dev/null 2>&1 && return 0
+    if [ -n "$(pkg_version)" ]; then
+        ui_progress "Fetching the server, once."
+        if "$DOCKER" pull "$PUBLISHED" >"$STATE/build.log" 2>&1; then
+            TAG=$PUBLISHED
+            return 0
         fi
+    fi
+    [ -f "$CTX/deploy/Dockerfile" ] || die "The server's recipe is missing from this copy of SCAT Chat. Download the app again."
+    ui_progress "Building the server, once. The first time takes a few minutes."
+    if ! "$DOCKER" build -f "$CTX/deploy/Dockerfile" -t "$TAG" "$CTX" >"$STATE/build.log" 2>&1; then
+        die "Building the server failed. The last lines say: $(tail -n 5 "$STATE/build.log" | tr '\n' ' ')
+Check that you are online, then click SCAT Chat again."
     fi
 }
 
@@ -418,7 +437,7 @@ step_server() {
     write_key "$(new_key)"
     [ "$(read_key | wc -c | tr -d ' ')" -ge 33 ] || die "I could not make a new key. Restart your Mac, then click SCAT Chat again."
     "$DOCKER" rm -f "$CONTAINER" >/dev/null 2>&1
-    "$DOCKER" run -d --name "$CONTAINER" --read-only --tmpfs /tmp \
+    "$DOCKER" run -d --name "$CONTAINER" --read-only --tmpfs /tmp --user "$HOST_UID:$HOST_GID" \
         --security-opt no-new-privileges --cap-drop ALL \
         -p "127.0.0.1:$PORT:8765" -v "$VAULT:/vault" --env-file "$KEYFILE" "$TAG" >/dev/null 2>"$STATE/run.log" ||
         die "The server would not start: $(tail -n 3 "$STATE/run.log" | tr '\n' ' ')
@@ -495,6 +514,7 @@ cmd_start() {
 
     HOME_REAL=$(cd "$HOME" && pwd -P)
     HOST_UID=$(id -u)
+    HOST_GID=$(id -g)
 
     step_tools
     step_vault
