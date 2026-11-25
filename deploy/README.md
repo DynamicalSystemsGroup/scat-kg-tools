@@ -2,11 +2,11 @@
 
 What is here:
 
-- `Dockerfile` (+ `Dockerfile.dockerignore`): the MCP server (`scat-mcp`) as a read-only image. Non-root user with
-  the host's uid (build arg `UID`, default 501); writes only to `/tmp` (tmpfs) and the mounted `/vault`.
+- `Dockerfile` (+ `Dockerfile.dockerignore`): the MCP server (`scat-mcp`) as a read-only image. Unprivileged
+  by default; the launcher sets the host's uid and gid at run time (`--user`), so the image carries no uid; writes only to `/tmp` (tmpfs) and the mounted `/vault`.
 - `scat-chat.sh`: the launcher logic, `start`, `stop`, `status`, `change-vault`. Start checks the container runtime (Docker Desktop, or Colima), and
   Tailscale, refuses a vault macOS hides from the container (Documents, Desktop, Downloads, iCloud) and offers a
-  copy to `~/SCAT/vault`, builds the image once, makes a fresh key, runs the container on `127.0.0.1`, opens the
+  copy to `~/SCAT/vault`, uses the published image of its package version (`ghcr.io/dynamicalsystemsgroup/scat-kg-tools`), or builds one once when none is published, makes a fresh key, runs the container on `127.0.0.1`, opens the
   Funnel link, keeps the Mac awake, and shows the address and key. Stop (also on quit or any failure) turns it all
   off, replaces the key and clears the clipboard.
 - `SCAT Chat.applescript`, `build-app.sh`: a thin applet; `deploy/build-app.sh` writes `deploy/build/SCAT Chat.app`

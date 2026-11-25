@@ -1,0 +1,30 @@
+name: Release image
+
+# GATED: every job runs only when the repository variable SCAT_PUBLISH_IMAGE is 'true' (unset by default). Publishing
+# the image is a release step the chief engineer has not yet approved (MISSION, Release step 3 must be amended to
+# include it). If the amendment is declined, delete this file; the launcher then always builds.
+on:
+  push:
+    tags: ["v*"]
+
+permissions: {}
+
+jobs:
+  publish:
+    if: ${{ vars.SCAT_PUBLISH_IMAGE == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE: ghcr.io/dynamicalsystemsgroup/scat-kg-tools
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tag must equal the package version
+        run: |
+          version=$(sed -n 's/^version *= *"\([^"]*\)".*/\1/p' pyproject.toml | head -n 1)
+          test "v$version" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME is not v$version" >&2; exit 1; }
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+      - run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+      - run: docker build -f deploy/Dockerfile -t "$IMAGE:$VERSION" .
+      - run: docker push "$IMAGE:$VERSION"

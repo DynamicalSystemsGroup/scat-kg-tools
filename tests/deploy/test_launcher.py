@@ -35,7 +35,8 @@ def test_start_order_flags_and_stop_button(rig):
         f"-p 127.0.0.1:{rig.server.port}:8765", f"-v {rig.vault.resolve()}:/vault", "--env-file",
     ]:  # fmt: skip
         assert flag in run, (flag, run)
-    assert "--build-arg UID=" + str(os.getuid()) in calls[rig.called("docker build")[0]]
+    assert "UID" not in calls[rig.called("docker build")[0]]  # no host uid baked into the image
+    assert f"--user {os.getuid()}:{os.getgid()}" in run  # the user is set at run time
     assert "Stopped." in r.stdout
     rig.nothing_left()
 
@@ -159,6 +160,37 @@ def test_colima_not_started_when_already_running_and_image_built_once(rig):
     n = len(rig.called("docker build"))
     rig.run("start", **STOP)
     assert len(rig.called("docker build")) == n  # the image is there: not built again
+
+
+PUBLISHED = "ghcr.io/dynamicalsystemsgroup/scat-kg-tools:"
+
+
+def package_version():
+    return next(
+        line.split('"')[1] for line in (REPO / "pyproject.toml").read_text().splitlines()
+        if line.startswith("version")
+    )  # fmt: skip
+
+
+def test_published_image_is_pulled_and_not_built(rig):
+    r = rig.run("start", STUB_PUBLISHED="1", **STOP)
+    assert r.returncode == 0, r.stdout
+    ref = PUBLISHED + package_version()
+    assert rig.called(f"docker pull {ref}")
+    assert not rig.called("docker build")
+    assert rig.calls_list()[rig.called("docker run")[0]].endswith(f" {ref}")
+
+
+def test_no_published_image_builds_the_source_locally(rig):
+    r = rig.run("start", **STOP)
+    assert r.returncode == 0, r.stdout
+    assert rig.called(f"docker pull {PUBLISHED}{package_version()}")  # tried first
+    assert len(rig.called("docker build")) == 1
+    assert rig.called("docker pull")[0] < rig.called("docker build")[0]
+    assert rig.calls_list()[rig.called("docker run")[0]].endswith(
+        " scat-chat-mcp:"
+        + rig.calls_list()[rig.called("docker build")[0]].split("-t scat-chat-mcp:")[1].split()[0]
+    )
 
 
 def test_missing_docker(rig):
@@ -306,7 +338,7 @@ def test_script_syntax():
 
 def test_dockerfile_contract():
     d = (REPO / "deploy" / "Dockerfile").read_text()
-    assert "ARG UID=501" in d and "USER scat" in d and "[mcp]" in d
+    assert "UID" not in d and "useradd" not in d and "USER 65534:65534" in d and "[mcp]" in d
     assert '"scat-mcp", "--vault", "/vault", "--host", "0.0.0.0", "--port", "8765"' in d
     ig = (REPO / "deploy" / "Dockerfile.dockerignore").read_text().splitlines()
     assert ig[1] == "*" or "*" in ig  # allow-list: only what the Dockerfile copies
