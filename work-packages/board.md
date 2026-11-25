@@ -25,7 +25,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP16 | Ontology and layout (absorbs WP13) | all units built and merged on `wp16/build` (iterations 20 and 21); re-sweep not clean on kept words only; pushed to `dev` once green; ready for the ACE's Obsidian walk | `impact/WP16.md` |
 | RS3 | Research spike: chat path (D-080; branch `spike/chat-path`, never merged into `dev`) | offline part done (U1 to U3, tunnel and git notes in); live part waits for the chief engineer's sign-ins | `RS3-chat-path.md` |
 | WP17 | The views (D-092) | all units done and landed (U8 to U10 correct the metrics and close two check gaps, D-093) except WP17-U3b (blocked: the guard refused a one-line schema edit; waits on the ACE); full suite green; template notebook on `wp17/notebook` | `WP17.md` |
-| WP18 | The chat path (D-094) | units U1 to U5 done and reviewed on `pm-wp18`; waits only on WP18-R4, the live run, which is the ACE's (queued, needs the chief engineer to paste a key) | `WP18.md` |
+| WP18 | The chat path (D-094) | units U1 to U7 done and reviewed (U6, U7 on `pm-fix18`); waits only on WP18-R4, the live run, which is the ACE's (queued, needs the chief engineer to paste a key) | `WP18.md` |
 | WP19 | The range vault (D-094) | all units done and reviewed on `pm-wp18`; `check_metrics.py --accept WP19` passes; ready for ACE acceptance | `WP19.md` |
 
 ## Units
@@ -236,6 +236,10 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP18-U4r | reviewer (fresh; follows the guide cold, opens the pages), sonnet | 2 | 3 | `-` | done |  | 2026-11-25T04:23:25-05:00 | two reviews (first PASS with 4 fixes, second PASS with nits); link checker and quote scripts; no browser by ACE rule |
 | WP18-U5 | technical writer (IDE setup skill in the template), sonnet | 2 | 3 | `wp18/u5` | done |  | 2026-11-25T04:23:25-05:00 | two review rounds: A8 missing, set-status gap, hand-over wording; skill trimmed to the 450-word cap |
 | WP18-U5r | reviewer (fresh; runs U5's checks), haiku | 1 | 2 | `-` | done |  | 2026-11-25T04:23:25-05:00 | two reviews; mutation of set-status gap checked in the pinned tool |
+| WP18-U6 | Python developer (rule SCAT-NOEDGES, catalogue, tests, koi note), sonnet | 3 | 5 | `-` | done |  | 2026-11-25T04:47:55-05:00 | new rule with catalogue, seeds, golden and REPL/CLI tests; three existing tests had to follow the requirement (count, no-row test, header-alone fix variant); reviewer PASS first time |
+| WP18-U6r | reviewer (fresh; runs the checks, tries to break the rule), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T04:47:55-05:00 | PASS first time; schema validation and break attempts run |
+| WP18-U7 | shell and test engineer (launcher docker path, docs sentence), sonnet | 2 | 3 | `-` | done |  | 2026-11-25T04:47:55-05:00 | first test design hit the real docker on the Mac; made the search path overridable and the tests hermetic |
+| WP18-U7r | reviewer (fresh; runs the checks, mutates a copy), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T04:47:55-05:00 | PASS first time; mutation on a scratch copy; strict docs build run |
 | WP18-R4 | the ACE's live run in the chat with lab material, the chief engineer pasting the key; recorded step by step, sonnet | 5 |  | `-` | queued | the ACE (live run; needs the chief engineer to paste a key) |  |  |
 | WP19-U1 | research engineer (range material: source texts from the public KOI case), sonnet | 5 | 8 | `wp19/u1` | done |  | 2026-11-25T04:23:25-05:00 | first review FAIL (invented bridges), re-review PASS, then fixes for 4 files, a koi-03 sentence and a koi-09 sentence found by two later reviews |
 | WP19-U1r | reviewer (fresh; reads inputs against ant-rdf, greps for person names), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T03:47:56-05:00 | 2 reviews (first FAIL: invented bridges; re-review PASS with 3 minor fixes open) |
@@ -275,6 +279,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 23 | WP17-U1, U1r, U2, U2r, U3, U3r, U4, U4r, U5, U5r, U6, U6r, U7, U7r (U3b blocked, not in it) | 41 | 40 | 0.98 | 1.04 h | 38.5 |
 | 24 | WP17-U8, U8r, U9, U9r, U10, U10r (added by the PM after D-093) | 15 | 15 | 1.00 | 0.26 h | 57.7 |
 | 25 | WP18-U1 to U5 and their reviews, WP19-U1 to U4 and their reviews (WP18-R4 queued, the ACE's) | 64 | 78 | 1.22 | 1.26 h | 61.9 |
+| 26 | WP18-U6, U6r, U7, U7r (added by the ACE: the zero-edge warning of G1, and the Docker Desktop path) | 7 | 10 | 1.43 | 0.25 h | 40.0 |
 
 ## Velocity and forecast
 
