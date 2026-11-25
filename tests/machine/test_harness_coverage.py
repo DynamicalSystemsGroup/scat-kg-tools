@@ -55,8 +55,7 @@ def test__every_catalogue_rule_was_validated(request, capsys):
         print(
             f"\nharness: {len(h.rules_validated & set(rows))} of {len(rows)} rule ids validated; "
             f"{h.problems_validated} problems validated; fix commands: "
-            f"{h.commands_run} run, {h.commands_parsed} parsed (of which {h.commands_unbuilt} only because the "
-            f"operation is not built yet); closing guards: "
+            f"{h.commands_run} run, {h.commands_parsed} parsed; closing guards: "
             f"{len(h.rules_guarded)} rules, {h.problems_guarded} problems, "
             f"{h.options_with_edits} options with edits, {len(h.DEVIATIONS)} named kind deviations"
         )

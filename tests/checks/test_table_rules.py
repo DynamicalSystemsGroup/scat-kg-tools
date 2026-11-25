@@ -624,3 +624,14 @@ def test__scat_draft_table_duplicate__the_delete_edit_is_a_delete_line_guarded_b
     r = report_of(make_vault, with_rows("draft", GOOD, GOOD))
     edit = r.problems[0].fix_data.options[0].edits[0]
     assert (edit.action, edit.line, edit.find) == ("delete-line", 17, GOOD)
+
+
+@STATUSES
+def test__scat_draft_table_header__a_separator_with_no_leading_bar_is_one_message(
+    make_vault, status
+):
+    r = report_of(
+        make_vault,
+        with_section(status, table(GOOD, header="| type | from | to |", sep="---|---|---|---")),
+    )
+    assert rules_of(r) == [f"SCAT-{'DONE' if status == 'done' else 'DRAFT'}-TABLE-HEADER"]

@@ -525,3 +525,19 @@ def base_files():
     from helpers import base
 
     return base()
+
+
+def test__scat_link_dangling_body__two_links_on_one_line_are_listed_in_position_order(make_vault):
+    r = report_of(make_vault, body("[[zeta]] then [[alpha]]."))
+    assert [p.where for p in r.problems] == ["link [[zeta]]", "link [[alpha]]"]
+
+
+def test__scat_mention__in_a_table_cell_the_alias_bar_is_escaped(make_vault):
+    rows = (
+        *DESK_ROWS[:2],
+        row("is addressed by", "quick-checkout", "self-checkout", "after a BRIEFING"),
+    )
+    r = report_of(make_vault, {DESK: narrative(rows=rows)})
+    (p,) = r.problems
+    assert p.fix == "Fix: on line 18 replace `BRIEFING` with `[[briefing\\|BRIEFING]]`"
+    assert p.fix_data.options[0].edits[0].replace == "[[briefing\\|BRIEFING]]"

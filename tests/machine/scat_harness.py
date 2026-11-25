@@ -49,7 +49,7 @@ DEVIATIONS: dict[tuple[str, str], str] = {
     ("SCAT-FM-STATUS", "exact"): _NEAR,
     ("SCAT-FM-TIMEFRAME", "exact"): _NEAR,
     ("SCAT-FM-SHAPE", "exact"): "a one-item list, a boolean or a number has its one exact reading",
-    ("SCAT-NAME", "manual"): "no legal name can be derived, so the author chooses one",
+    ("SCAT-NAME", "exact"): "no legal name can be derived, so the author chooses one",
     (
         "SCAT-LINK-DANGLING-BODY",
         "exact",
@@ -78,9 +78,6 @@ severities_seen: dict[str, str] = {}  # rule id -> severity of the problems vali
 problems_validated = 0
 commands_run = 0
 commands_parsed = 0
-commands_unbuilt = (
-    0  # always 0 now: every operation is built (kept for test_harness_coverage's report line)
-)
 _samples: Counter = Counter()
 _tmp: tempfile.TemporaryDirectory | None = None
 _busy = False  # True while the harness itself runs a check or a command
