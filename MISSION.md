@@ -86,7 +86,9 @@ again.
 navigable in Obsidian, the views are generated, and the coder who interpreted the field notes states that the model
 is a good representation of what those notes contain. That statement is made outside the tool, the way work is
 handed over: the coder decides the model is finished, locks a version, and hands it over, as in a contract delivery, a
-paper submission or a class project hand-in. The docs show how to lock a version on each path.
+paper submission or a class project hand-in. Locking a version means tagging a commit in git; the docs show how on
+each path, using GitHub's own features. A project may have several coders and reviewers, like the authors and
+reviewers of a paper; git records who coded what, and SCAT adds nothing of its own for sign-off or release control.
 
 Most narratives are one of two types, which look at the same knowledge graph from opposite sides. This is an important heuristic
 for facilitating, capturing and coding, though a narrative may be neither.
@@ -339,6 +341,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
   or which stories should be focal.
 - Analysis tooling beyond the template notebook's views (G12). The earlier analysis spike stays on its branch, `spike/analysis`.
 - Legal advice, consent-form templates, or recommended data-use policies.
+- A sign-off or release-control mechanism of SCAT's own; git and GitHub provide it.
 - Publishing to PyPI.
 
 ## Deliverables
