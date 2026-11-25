@@ -1,14 +1,14 @@
 # Planning
 
 !!! tip "Your next step"
-    Cluster the people you expect into stakeholder groups that fit under your cap.
+    Cluster the people you expect into groups that fit under your cap.
 
 Planning settles who takes part, and in what order, before the sessions start, so that every group gets a turn.
 
 You are planning a facilitation event. Write your event plan: who takes part, in which session, in what order. Save it as a plain text file named `plan.txt` in your vault folder, outside the page folders. It is not a SCAT page, and the check does not read it. By the end you will have a short plan: which sessions hear stories, which hear
 architectures, which groups are in the room, and how the notes will be kept.
 
-Two words come up below. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. The [home page](index.md) defines these and the other two kinds of thing, groups and technologies.
+Settle the participation terms first: what the notes may be used for, and who may touch them. [Data, rights and consent](data-and-consent.md) lists the questions. Two words come up below. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. The [home page](index.md) defines these and the other two kinds of thing, groups and technologies.
 
 Nothing here is ranked, voted on or adjudicated. Your plan adds topics and voices; it never trades one off against
 another.
@@ -29,7 +29,7 @@ session.
 | Told by | actors: users, sponsors and other stakeholders | technologists: researchers, developers and operators |
 | Technology | stays in the background; what is heard is what it lets people do | is the subject |
 | People | are the subject | are set aside; a concern may come from several groups, and nobody can say who will adopt the design |
-| Becomes | a raw scenario page | a raw architecture page |
+| Becomes | a narrative page, `kind` scenario | a narrative page, `kind` architecture |
 
 "Actors" and "technologists" are a device for running a session, not a split of people. Most people are both. The same
 person may tell a story in one session and pitch a design in the other, speaking from a different perspective each time.
@@ -38,9 +38,9 @@ Neither kind is the "real" one. The order you run them in is a choice about the 
 
 Take past and future at separate times too. Run one session or block for what has happened and another for what could or will happen, each with its own block of scenarios and architectures. The [phrase list](facilitate-scenarios.md#past-or-future-one-at-a-time) shows how to tell them apart.
 
-## Stakeholder groups and the cap
+## Groups and the cap
 
-Every vault sets a cap on the number of stakeholder groups. It is one line in `scat.toml`, at the top of the vault
+Every vault sets a cap on the number of groups. It is one line in `scat.toml`, at the top of the vault
 folder. The example vault sets it to 3:
 
 ```text
@@ -55,7 +55,7 @@ Cluster the people you expect into groups that fit under the cap:
 1. List who is likely to come, by role. Never by name.
 2. Group them by shared standpoint: what they look at the world from. Do not group by size or by who is loudest.
 3. If more standpoints appear than the cap allows, widen a group's description so it holds them. Do not drop a
-   standpoint. If widening still leaves more standpoints than the cap, your plan decides: you may raise `stakeholder_group_cap` in `scat.toml` if the plan allows it. See [a new group over the cap](coding.md#8-a-new-group-over-the-cap-scat-cap) for the exact steps.
+   standpoint. If widening still leaves more standpoints than the cap, your plan decides: you may raise `stakeholder_group_cap` in `scat.toml` if the plan allows it, as the message below says.
 4. If a role is filled by one identifiable person, widen the group around it. A group of one is a person.
 5. Where it is unclear which group someone belongs to, ask them. A person may speak from more than one group.
 
@@ -82,13 +82,13 @@ The cap is a decision about the whole event, taken before it. The tools do not w
 group beyond the cap, this command refuses and prints the message below, and creates nothing:
 
 ```text
-uv run scat stub --type stakeholder-group harbour-crews
+uv run scat stub --type group harbour-crews
 ```
 
 It prints:
 
 ```text
-refused scat.toml field `stakeholder_group_cap`: the vault is at its cap of 3 stakeholder groups, so a new group page (harbour-crews) would break SCAT-CAP; choose an existing group
+refused scat.toml field `stakeholder_group_cap`: the vault is at its cap of 3 groups, so a new group page (harbour-crews) would break SCAT-CAP; choose an existing group
   Fix: either link an existing group, or write `stakeholder_group_cap = 4` in scat.toml (the cap protects against identifying individuals; raise it only if the plan allows)
 ```
 
@@ -106,10 +106,10 @@ Invite every group, and give each one room to speak in every session.
 When an invitee asks for a topic or a session, add it. Do not trade it off against another. Your own questions
 as you plan add ("who else sees it this way?"); they do not test ("is that really a group?").
 
-## Say Chatham House, aloud and on the page
+## State the participation terms, aloud and on the page
 
-Frame every session under the Chatham House rule, and do it twice: say it at the start, and write it on the page the
-notes go on. Say this, or something like it:
+Frame every session under the participation terms agreed for the event, and do it twice: say them at the start, and write them on the page the
+notes go on. The worked example's terms are the Chatham House rule, so its script reads like this; yours says what you agreed:
 
 ```text
 Whatever is said here can be used. Nobody is named, and
@@ -131,7 +131,7 @@ listen for. They are not conflicts to prevent or to settle. Write them as questi
 
 ## Prepare the notes
 
-Raw notes are kept apart from any later reading of them. Capture comes first, and meaning comes later.
+Field notes are kept apart from any later coding of them. Capture comes first, and meaning comes later.
 
 - **The vault.** Cloned, private, and passing its check:
 
@@ -153,9 +153,9 @@ Raw notes are kept apart from any later reading of them. Capture comes first, an
 - **A note-taker for each session.** Someone other than the facilitator, so the facilitator can listen. They write
   what was offered, in the speaker's words, headed by the group, with a rough time. Never a name. Both facilitation
   guides show what the notes look like.
-- **One raw page for each story told or design pitched.** You make it with one command, after the session, from the
+- **One narrative page for each story told or design pitched.** You make it with one command, after the session, from the
   notes. The guides show how: [scenarios](facilitate-scenarios.md), [architectures](facilitate-architectures.md).
-- **A line on the notes page**: "Chatham House: groups, not individuals."
+- **A line on the notes page** naming the participation terms, for example "Chatham House: groups, not individuals."
 
 ## Where next
 

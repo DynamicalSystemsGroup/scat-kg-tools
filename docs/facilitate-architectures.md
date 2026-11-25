@@ -1,13 +1,13 @@
 # Facilitating architectures
 
 !!! tip "Your next step"
-    Open the session by reading the Chatham House lines aloud, then ask the first proposer how the parts fit together and what the whole lets people do.
+    Open the session by reading the participation terms aloud, then ask the first proposer how the parts fit together and what the whole lets people do.
 
 Each proposer's design is heard in full, one at a time, and none is set against another.
 
 An architecture session is a round of designs, one proposer at a time. It hears how a proposed assembly of tools is put together, and which concerns it addresses. You
 run the session. You ask the questions, say whose turn it is, and listen. In each proposer's turn, you listen to the design, write it down as offered, then ask a question that adds to it. A note-taker writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. You may skip a script line if the group has already answered it; otherwise keep the order. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a
-raw architecture page.
+narrative page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a design, and you never ask a
 proposer to defend a design against another.
@@ -42,7 +42,7 @@ Anyone with a design to pitch is a technologist for this session. That is a role
 
 ### 1. Opening
 
-Do: say the Chatham House frame aloud. The Chatham House frame means that whatever is said here can be used, and nobody is named. Say that today is for designs and the concerns they answer, and that several
+Do: say aloud the participation terms agreed for the event. The script below uses the Chatham House rule, the worked example's choice: whatever is said here can be used, and nobody is named. Say that today is for designs and the concerns they answer, and that several
 designs may answer one concern.
 
 Say the lines under "Say" in the order given. Use your own words if you like, but say "Yes, and" exactly as written, and where a line names a group, use the name of your own group.
@@ -55,7 +55,7 @@ worry each one is for. Yes, and: several designs can
 answer one concern, and we will write down all of them.
 ```
 
-Note-taker writes: the date, the session, and "Chatham House: groups, not individuals."
+Note-taker writes: the date, the session, and the participation terms, for example "Chatham House: groups, not individuals."
 
 ### 2. Eliciting
 
@@ -167,9 +167,9 @@ Yes, and we haven't yet heard what that looks like from
 your side.
 ```
 
-## Take the notes into a raw architecture page
+## Take the notes into a narrative page
 
-Notes are taken under Chatham House: groups, no individuals, no attribution. A good set of notes looks like this:
+Notes are taken under the participation terms agreed for the event (the worked example's are the Chatham House rule): groups, no individuals, no attribution. A good set of notes looks like this:
 
 ```text
 Chatham House: groups, not individuals.
@@ -189,57 +189,57 @@ Pitch: a monthly report from the sheet.
 Borrowers: no account offered.
 ```
 
-One raw page holds one pitch, with the accounts of every group that spoke to it, each under its own group, as in the notes above. A different pitch gets its own raw page.
+One narrative page holds one pitch, with the accounts of every group that spoke to it, each under its own group, as in the notes above. A different pitch gets its own page.
 
 Keep to the rules the notes carry:
 
 - the group heads every pitch, and no name appears;
 - technologies and parts are named freely, because this is structure;
 - concerns are in the speaker's words, one per line;
-- do not link other pages with `[[...]]`, and do not describe who will use a design as a conclusion. Coding adds the
-  links.
+- do not link other pages with `[[...]]` yet, and do not describe who will use a design as a conclusion. Coding adds the
+  links and records the edges.
 
-Make the raw page with `scat stub`. It checks the name for you and writes the front matter, so you never hand-write
+Make the page with `scat stub`. It checks the name for you and writes the front matter, so you never hand-write
 structure. Give it a name of lowercase letters, digits and hyphens.
 
 === "Python"
 
     ```python
     import scat_kg
-    scat_kg.stub("booking-sheet-pitch", type="architecture-raw")
+    scat_kg.stub("booking-sheet-pitch", type="narrative")
     ```
 
 === "CLI"
 
     ```text
-    uv run scat stub --type architecture-raw booking-sheet-pitch
+    uv run scat stub booking-sheet-pitch --type narrative
     ```
 
 The tool prints:
 
 ```text
-created architecture-raw/booking-sheet-pitch.md
+created narrative/booking-sheet-pitch.md
 ```
 
 The page is made, with status `stub`:
 
 ```text
 ---
-type: architecture-raw
+type: narrative
 status: stub
 title: "Booking sheet pitch"
 timeframe: # past | future | mixed
 ---
 ```
 
-Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Set `timeframe:` too. Then
+Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Add the line `kind: architecture`, and set `timeframe:` too. Then
 mark the page as a draft and check it:
 
 === "Python"
 
     ```python
     scat_kg.set_status("booking-sheet-pitch", "draft")
-    scat_kg.check()
+    scat_kg.check("booking-sheet-pitch")
     ```
 
 === "CLI"
@@ -249,25 +249,30 @@ mark the page as a draft and check it:
     ```
 
     ```bash
-    uv run scat check
+    uv run scat check booking-sheet-pitch
     ```
 
 Setting the status prints two lines:
 
 ```text
-changed architecture-raw/booking-sheet-pitch.md
+changed narrative/booking-sheet-pitch.md
 note: `status` set to draft (was stub)
 ```
 
-The check prints this, from either tab:
+The check prints this, from either tab, while `timeframe:` is still empty:
 
 ```text
-warning [SCAT-DRAFT-FIELD] architecture-raw/booking-sheet-pitch.md field `description`: missing (required once the page is done)
+warning [SCAT-DRAFT-FIELD] narrative/booking-sheet-pitch.md field `description`: missing (required once the page is done)
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
-0 errors, 1 warning
+warning [SCAT-DRAFT-FIELD] narrative/booking-sheet-pitch.md field `timeframe`: missing (required once the page is done)
+  Fix, choose one before you set status: done:
+    1. replace the line `timeframe: # past | future | mixed` with `timeframe: past` (author)
+    2. replace the line `timeframe: # past | future | mixed` with `timeframe: future` (author)
+    3. replace the line `timeframe: # past | future | mixed` with `timeframe: mixed` (author)
+0 errors, 2 warnings
 ```
 
-This warning is a nudge, not a fault. The page is a draft. It is finished when you code it.
+These warnings are nudges, not faults. The page is a draft. It is finished when you code it.
 See [Coding](coding.md).
 
 `scat stub` is the one way to create a page, because it refuses a bad name and says why.
@@ -276,5 +281,5 @@ See [Coding](coding.md).
 
 Where to go from here:
 
-- [Coding](coding.md), to turn the raw page into a coded architecture.
+- [Coding](coding.md), to link the nodes the narrative names and record the edges it tells.
 - [Planning](planning.md), for the next event.

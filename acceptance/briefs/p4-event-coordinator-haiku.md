@@ -41,12 +41,12 @@ coding and the analysis.
 Ask yourself these five questions, exactly as written, one at a time, and answer each from the page only.
 
 1. What must I have in place before a session?
-2. What must a raw page hold before it can be coded?
+2. What must a narrative hold before it can be coded?
 3. What does "done" mean for a page, and who decides it?
 4. What must be true before analysis can start?
 5. How does a concern reach a technology?
 
-(The words "raw page", "done", "concern" and "technology" are quoted from the questions. Treat them as words you meet
+(The words "narrative", "done", "concern" and "technology" are quoted from the questions. Treat them as words you meet
 for the first time and find out what the page says about them.)
 
 For each question, report:

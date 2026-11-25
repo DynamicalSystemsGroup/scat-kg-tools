@@ -1,12 +1,12 @@
 # Facilitating scenarios
 
 !!! tip "Your next step"
-    Open the session by reading the Chatham House lines aloud, then ask the first group for a story that starts at a concrete moment.
+    Open the session by reading the participation terms aloud, then ask the first group for a story that starts at a concrete moment.
 
 The stance is "yes, and": you accept what each group offers as it is, and add to it.
 
 A scenario session is a set of stories, one turn per group. It hears what people do in a situation, in time, and what comes of it. You run the session. You ask the questions, say whose turn it is, and listen. In each group's turn, you listen to its story, write it down as offered, then ask a question that adds to it. A note-taker
-writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. You may skip a script line if the group has already answered it; otherwise keep the order. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a raw scenario page.
+writes. The lines under "Say" are your script. Their order is fixed: say them in the order given. You may skip a script line if the group has already answered it; otherwise keep the order. Their wording is yours: say a line as written or in your own words, except "Yes, and", which you say exactly as written. Where a line names a group, use the name of your own group. This page runs you through the session stage by stage, then turns the notes into a narrative page.
 
 Nothing here is ranked, voted on or adjudicated. You never ask the room to pick a story, and you never ask anyone to
 concede one.
@@ -32,7 +32,7 @@ them doing. That is an affordance. When a technology comes up, ask what the tool
 
 ## Past or future, one at a time
 
-Each raw page carries a `timeframe:` line: `past`, `future` or `mixed`. The rule: anything real that can be narrated is past, and anything being done with intention but not yet realized is future. The present is not a separate value; it folds into one of these. The mark is about whether what is told is real, not the verb tense.
+Each narrative page carries a `timeframe:` line: `past`, `future` or `mixed`. The rule: anything real that can be narrated is past, and anything being done with intention but not yet realized is future. The present is not a separate value; it folds into one of these. The mark is about whether what is told is real, not the verb tense.
 
 | | Past | Future |
 |---|---|---|
@@ -83,7 +83,7 @@ Use `mixed` when an account blurs the two and you cannot cleanly separate them, 
 
 ### 1. Opening
 
-Do: say the Chatham House frame aloud. The Chatham House frame means that whatever is said here can be used, and nobody is named. Say that today is for stories, and that accounts can differ.
+Do: say aloud the participation terms agreed for the event. The script below uses the Chatham House rule, the worked example's choice: whatever is said here can be used, and nobody is named. Say that today is for stories, and that accounts can differ.
 
 Say the lines under "Say" in the order given. Use your own words if you like, but say "Yes, and" exactly as written, and where a line names a group, use the name of your own group.
 
@@ -95,7 +95,7 @@ Where two stories differ, we write both. Yes, and:
 whatever you tell us will be written down and added to.
 ```
 
-Note-taker writes: the date, the session, and "Chatham House: groups, not individuals."
+Note-taker writes: the date, the session, and the participation terms, for example "Chatham House: groups, not individuals."
 
 ### 2. Eliciting
 
@@ -200,9 +200,9 @@ Yes, and we haven't yet heard what that looks like from
 your side.
 ```
 
-## Take the notes into a raw scenario page
+## Take the notes into a narrative page
 
-Notes are taken under Chatham House: groups, no individuals, no attribution. A good set of notes looks like this:
+Notes are taken under the participation terms agreed for the event (the worked example's are the Chatham House rule): groups, no individuals, no attribution. A good set of notes looks like this:
 
 ```text
 Chatham House: groups, not individuals.
@@ -221,56 +221,56 @@ Tension: Operators want a check before a tool leaves. Borrowers want it in hand 
 Trustees and funders: no account offered.
 ```
 
-One raw page holds one story, with the accounts of every group that spoke to it, each under its own group, as in the notes above. A different story gets its own raw page.
+One narrative page holds one story, with the accounts of every group that spoke to it, each under its own group, as in the notes above. A different story gets its own page.
 
 Keep to the rules the notes carry:
 
 - the group heads every account, and no name appears;
 - tools appear only as what they let people do;
 - concerns are in the speaker's words, one per line;
-- do not link other pages with `[[...]]`. Coding adds the links.
+- do not link other pages with `[[...]]` yet. Coding adds the links and records the edges.
 
-Make the raw page with `scat stub`. It checks the name for you and writes the front matter, so you never hand-write
+Make the page with `scat stub`. It checks the name for you and writes the front matter, so you never hand-write
 structure. Give it a name of lowercase letters, digits and hyphens.
 
 === "Python"
 
     ```python
     import scat_kg
-    scat_kg.stub("lending-desk-saturday", type="scenario-raw")
+    scat_kg.stub("lending-desk-saturday", type="narrative")
     ```
 
 === "CLI"
 
     ```text
-    uv run scat stub --type scenario-raw lending-desk-saturday
+    uv run scat stub lending-desk-saturday --type narrative
     ```
 
 The tool prints:
 
 ```text
-created scenario-raw/lending-desk-saturday.md
+created narrative/lending-desk-saturday.md
 ```
 
 The page is made, with status `stub`:
 
 ```text
 ---
-type: scenario-raw
+type: narrative
 status: stub
 title: "Lending desk saturday"
 timeframe: # past | future | mixed
 ---
 ```
 
-Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Set `timeframe:` to `past`, `future` or `mixed`. Then
+Open the page in Obsidian or any text editor and paste your notes under the front matter, as they were taken. Do not tidy them. Add the line `kind: scenario`, and set `timeframe:` to `past`, `future` or `mixed`. Then
 mark the page as a draft and check it:
 
 === "Python"
 
     ```python
     scat_kg.set_status("lending-desk-saturday", "draft")
-    scat_kg.check()
+    scat_kg.check("lending-desk-saturday")
     ```
 
 === "CLI"
@@ -280,25 +280,30 @@ mark the page as a draft and check it:
     ```
 
     ```bash
-    uv run scat check
+    uv run scat check lending-desk-saturday
     ```
 
 Setting the status prints two lines:
 
 ```text
-changed scenario-raw/lending-desk-saturday.md
+changed narrative/lending-desk-saturday.md
 note: `status` set to draft (was stub)
 ```
 
-The check prints this, from either tab:
+The check prints this, from either tab, while `timeframe:` is still empty:
 
 ```text
-warning [SCAT-DRAFT-FIELD] scenario-raw/lending-desk-saturday.md field `description`: missing (required once the page is done)
+warning [SCAT-DRAFT-FIELD] narrative/lending-desk-saturday.md field `description`: missing (required once the page is done)
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
-0 errors, 1 warning
+warning [SCAT-DRAFT-FIELD] narrative/lending-desk-saturday.md field `timeframe`: missing (required once the page is done)
+  Fix, choose one before you set status: done:
+    1. replace the line `timeframe: # past | future | mixed` with `timeframe: past` (author)
+    2. replace the line `timeframe: # past | future | mixed` with `timeframe: future` (author)
+    3. replace the line `timeframe: # past | future | mixed` with `timeframe: mixed` (author)
+0 errors, 2 warnings
 ```
 
-This warning is a nudge, not a fault. The page is a draft. It is finished when you code it.
+These warnings are nudges, not faults. The page is a draft. It is finished when you code it.
 See [Coding](coding.md).
 
 `scat stub` is the one way to create a page, because it refuses a bad name and says why.
@@ -308,4 +313,4 @@ See [Coding](coding.md).
 Where to go from here:
 
 - [Facilitating architectures](facilitate-architectures.md)
-- [Coding](coding.md), to turn the raw page into a coded scenario.
+- [Coding](coding.md), to link the nodes the narrative names and record the edges it tells.

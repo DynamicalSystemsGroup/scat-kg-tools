@@ -42,6 +42,8 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - The flow: flow.md
+  - Data, rights and consent: data-and-consent.md
   - Getting started: getting-started.md
   - Planning: planning.md
   - Facilitating:
@@ -52,3 +54,4 @@ nav:
       - Python API: reference/api.md
       - CLI: reference/cli.md
       - Terms: reference/terms.md
+      - Architecture: architecture.md

@@ -1,117 +1,54 @@
 # Terms
 
-Where each term enters your plan, field notes, coding and analysis. Each entry gives a definition, its vault page
-type (the vault is your folder of linked pages), its stage (plan, capture, code or analyse) and a check. Guides:
-[Planning](../planning.md), [scenarios](../facilitate-scenarios.md),
-[architectures](../facilitate-architectures.md), [Coding](../coding.md).
+Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 
-## Elicitation
+## The graph and its views
 
-A facilitated event: [groups](#stakeholder-group) tell stories and pitch designs.
+- **node**: a group, concern, affordance or technology in the layered graph. (Obsidian's graph view also calls every page a node.)
+- **edge**: a typed connection between nodes in neighbouring layers, one per pair: `holds` (group to concern), `is addressed by` (concern to affordance), `is provided by` (affordance to technology).
+- **element**: a node or edge.
+- **layer**: all nodes of one type: `group`, `concern`, `affordance`, `technology`, in that order.
+- **layered graph**: nodes and edges, in four layers.
+- **knowledge graph**: the nodes, edges and narratives built from a vault.
+- **narrative**: one account of the field notes, on one `narrative` page, marked `past`, `future` or `mixed`. Each edge it tells is a row of its `Edges told` table.
+- **scenario**: a narrative (`kind` `scenario`) about people doing things over time; it tells groups, concerns and affordances.
+- **architecture**: a narrative (`kind` `architecture`) about parts put together into tools; it tells concerns, affordances and technologies.
+- **fingerprint**: the nodes a narrative links and the edges that name it.
+- **edge table**: all edges of one type, as a table.
+- **layered view**: the union of chosen narratives' fingerprints, drawn as the four layers.
+- **trace**: following edges from a node up or down the layers.
+- **view**: a picture or table made from a conformant knowledge graph.
+- **relationship annotation**: a remark between two entries of one type, written as a body line with a link. Not an edge; in no view.
 
-- **Vault:** none. The notes become [raw records](#raw-and-coded-records).
-- **Stage:** plan.
-- **Check:** before a session, have a written plan, your
-  [stakeholder groups](#stakeholder-group), a note-taker per session, and a vault that passes its [clean check](#clean-check).
+## The ontology underneath
 
-## Scenario
+- **type**: a defined category, named in a page's `type` field.
+- **the ontology**: the fixed types and their rules.
+- **entry**: a node, edge, narrative or annotation as stored: a page, row or line.
+- **model**: the ontology plus a conformant vault; also the repository holding them.
+- **conformant**: passing both checks: the knowledge graph matches the pages, and obeys the ontology.
 
-A story of people doing things over time.
+## The vault, as Obsidian shows it
 
-- **Vault:** `scenario-raw`, `scenario-coded`. [Coded](#raw-and-coded-records), it links [groups](#stakeholder-group),
-  [concerns](#concern), [affordances](#affordance).
-- **Stage:** plan.
+- **vault**: the folder of Markdown files Obsidian opens; one git repository.
+- **page**: a Markdown file with a `type` in its frontmatter.
+- **field**: a key in a page's frontmatter.
+- **link**: an Obsidian `[[…]]` reference. Never an edge by itself.
+- **cap**: the most groups a vault may hold, set in `scat.toml` (key `stakeholder_group_cap`).
+- **index page**: the page generated for a type (`index`), listing its entries; an Obsidian Base, Obsidian 1.9 or later.
+- **status**: how far an entry has got: `stub` (a name), `draft` (content, incomplete) or `done` (complete, conformant, signed off by the coder).
+- **mismatch**: a link and an edge that disagree about the same relationship, reported with a fix.
 
-## Architecture
+## The work
 
-An assembly of parts into tools that offer [affordances](#affordance).
-
-- **Vault:** `architecture-raw`, `architecture-coded`. [Coded](#raw-and-coded-records), it links [concerns](#concern), [affordances](#affordance),
-  [technologies](#technology).
-- **Stage:** plan.
-
-## Stakeholder group
-
-A group the notes come from, named by role, never a person.
-
-- **Vault:** `stakeholder-group`.
-- **Stage:** plan.
-- **Check:** the groups fit under the vault's cap, the most groups it allows.
-
-## Concern
-
-What a group cares about.
-
-- **Vault:** `concern`.
-- **Stage:** code.
-
-## Affordance
-
-What a tool or arrangement lets someone do.
-
-- **Vault:** `affordance`.
-- **Stage:** code.
-
-## Technology
-
-The thing that provides an affordance.
-
-- **Vault:** `technology`.
-- **Stage:** code.
-
-## The three links
-
-Each is one fact, on its own page.
-
-- **Holds:** a group holds a concern. `heldby`, with `group` and `concern`.
-- **Addressed by:** a concern is addressed by an affordance. `addresses`, with `concern` and `affordance`.
-- **Attributed to:** an affordance is attributed to a technology. `attributes`, with `affordance` and `technology`.
-
-So a concern reaches a technology only through an affordance: addressed by it, then attributed to the technology.
-
-- **Stage:** code.
-- **Check:** one page per pair; a [coded page](#raw-and-coded-records)'s lists do not make them.
-
-## Conflict between concerns
-
-Two concerns that pull against each other, recorded and never settled.
-
-- **Vault:** the `conflicts` field on a `concern` page. One side counts for both.
-- **Stage:** code.
-- **Check:** each tension in the notes appears as a `conflicts` link.
-
-## Raw and coded records
-
-A raw record is the notes as told. A coded record restates them in plain words and links what they name.
-
-- **Vault:** `scenario-raw` or `architecture-raw`; `scenario-coded` or `architecture-coded`. `raw` links a coded
-  page to its raw page; `coded` links back.
-- **Stage:** raw at capture; coded at code.
-- **Check:** before coding, a raw page holds the notes as told, each account under its group, no names or links,
-  and the [past or future mark](#past-or-future-mark).
-
-## Status
-
-How finished a page is: `stub` (just started), `draft` (being written) or `done` (the sign-off).
-
-- **Vault:** the `status` field of every page except the index tables.
-- **Stage:** capture.
-- **Check:** the person who wrote or coded the page sets `done`, not the tool, which only checks that the
-  page type's required fields and links are present: `description` always, [`timeframe`](#past-or-future-mark) on a raw page, `raw` and the lists of what it names
-  on a coded page.
-
-## Past or future mark
-
-Whether an account is real (`past`), intended but not yet real (`future`), or both (`mixed`).
-
-- **Vault:** the `timeframe` field on `scenario-raw` and `architecture-raw`.
-- **Stage:** capture.
-- **Check:** every raw page has it.
-
-## Clean check
-
-A whole-vault read with zero errors. Warnings do not stop it.
-
-- **Vault:** none.
-- **Stage:** from the start, rechecked after coding; a gate before analyse.
-- **Check:** analysis needs a clean check and every page you made `done`. It tests structure, not content. Run: uv run scat check.
+- **organiser**: the one persona: runs a facilitated elicitation, codes its data.
+- **coder, assistant, tool**: the three actors. The coder owns interpretation; the tool owns conformance; the assistant helps and holds no authority.
+- **inputs, model, analysis**: field notes; the repository; derived reports.
+- **field notes**: supplied material.
+- **interpreting**: reading the field notes and the views; the coder's act.
+- **authoring**: writing a narrative from the coder's interpretation.
+- **coding**: linking the nodes a narrative tells and recording its edges.
+- **reviewing**: the coder checks narrative against notes and coding against SCAT; the tool checks conformance.
+- **the coding loop**: interpreting, authoring, coding, reviewing, until the coder sets the narrative to `done`.
+- **analysing**: generating views from the knowledge graph's structure.
+- **a finished model**: conformant, navigable, with views, and the coder's statement that it represents the notes.
