@@ -1990,3 +1990,20 @@ The ACE's rulings:
   launcher the first time (right-click, Open).
 - The launcher never changes tailnet settings itself (HTTPS, the Funnel policy, the machine name); it tells the coder
   which click does it and why. Confirmed.
+
+## D-097 | 2026-11-25 | WP19 accepted; WP18 built, waiting on its live run; WP20 approved
+
+**WP19 accepted.** `check_metrics.py --accept WP19` passes (600 records). The range vault (`research/range/koi/`)
+rebuilds the public KOI case as nine narratives and 27 edges, groups only, cited to `mzargham/ant-rdf`; it checks with
+0 errors and one warning, `SCAT-NOEDGES` on the narrative that tells no edge, as G1 asks. The ACE read a narrative
+against its source: it keeps both readings of a disputed event without choosing, and names where the source is thin.
+
+**WP18 built.** On `dev`, CI green (3686a14): the MCP server (13 tools, 3 prompts, never sets `done`), the assistant's
+file, the image and launcher (Docker Desktop's folder searched too), the chat-path guide and IDE note, and the
+template's IDE setup skill. The zero-edge warning G1 asks for was missing and is added (`SCAT-NOEDGES`). A new launcher
+test assumed a runner without `docker` and turned `dev` red; a guard refused deleting it, and the test was made
+independent of the runner instead, with its assertions unchanged. WP18 waits only on WP18-R4, the live run, which
+needs the chief engineer to paste a key.
+
+**WP20 approved** (`work-packages/WP20.md`): the candidate, UA-A on the manual path now, UA-A on the chat path in the
+chief engineer's sittings, the walkthrough scripts and the reviewer's guide. Revert point `divergence/D-096`.
