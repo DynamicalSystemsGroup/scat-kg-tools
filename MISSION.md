@@ -20,7 +20,7 @@ stakeholders–concerns, concerns–affordances, and affordances–technologies.
 The result is a navigable, interpretable dataset, and that dataset is the data product. Its conformance to a fixed
 ontology is what makes it analysable. It is scaled to a human note-taker: just enough structure to make the data
 interpretable, but mostly a formal structure for arranging Obsidian notes. The git repository is the authoritative copy of the data,
-and the graph is derived from it.
+and the knowledge graph is derived from it.
 
 The practices it supports, eliciting, capturing and coding narratives and holding disagreement without adjudicating
 it, were co-developed with Ellie Rennie in the actor-network coding work of `ant-rdf`
@@ -71,22 +71,22 @@ and the docs use the glossary's words in its senses (see Governance, "The glossa
 
 A **narrative** is one account drawn from the field notes, kept on one page that moves through the three statuses (G3):
 a **stub** has a name and perhaps some metadata; a **draft** holds the account, possibly as plain text with no coding
-yet; and it is **done** when it is coded: every node the account refers to is identified and linked, so it has a valid fingerprint
-(G1), the coding is conformant, and the coder has judged that it interprets the field notes appropriately. Setting
+yet; and it is **done** when it is coded: every node the account refers to is identified and linked and every edge it tells is recorded, so it has a
+valid fingerprint (G1), the coding is conformant, and the coder has judged that it interprets the field notes appropriately. Setting
 `done` is the coder's attestation of that judgement; the tools check only the structure. Done is not
 frozen: the repository is git, and a narrative can keep evolving.
 
 **The coding loop.** The coder works each narrative round a loop: interpreting the field notes, authoring the
 narrative, coding it, and reviewing it, until in reviewing they confirm that the narrative is aligned with the field
-notes and that the coding is a correct use of SCAT, both in their interpretation. That confirmation sets the narrative
-to `done`. It is the coder interpreting and coding even when the work is machine-aided. Analysing comes after: it
+notes and that the coding is a correct use of SCAT, both in their interpretation. When the tool's check passes and the coder confirms both, they set the narrative to `done`. It is the coder interpreting and coding even when the work is machine-aided. Analysing comes after: it
 generates the views, and the coder's reading of the views can send them back to the field notes and round the loop
 again.
 
-**A finished model.** The exercise is done when four things hold: the knowledge graph is conformant, the vault is
+**A finished model.** The exercise is finished when four things hold: the knowledge graph is conformant, the vault is
 navigable in Obsidian, the views are generated, and the coder who interpreted the field notes states that the model
-is a good representation of what those notes contain. Most
-narratives are one of two types, which look at the same graph from opposite sides. This is an important heuristic
+is a good representation of what those notes contain.
+
+Most narratives are one of two types, which look at the same knowledge graph from opposite sides. This is an important heuristic
 for facilitating, capturing and coding, though a narrative may be neither.
 
 - **Scenarios are behavioural.** They tell the story of people within an action situation doing things, through which
@@ -169,22 +169,24 @@ stakeholder groups it holds, and participants are clustered into groups that fit
 about how their contributions are used is the event's own agreed policy, decided by the organisers up front and the
 same for everyone: for example, the Chatham House rule or personal attribution.
 
-**Three classes of material.** A SCAT project holds three classes of material (inputs, model, analysis), each with its own rules for who and
+**Three kinds of material.** A SCAT project holds three kinds of material (inputs, model, analysis), each with its own rules for who and
 what may touch it, where it is kept, and how far it is released:
 - **the inputs:** the supplied materials: the field notes, in whatever form they arrive, which need not follow the
   ontology;
 - **the model:** the git repository, holding the narratives at every stage and the full knowledge graph;
 - **the analysis:** derivative reports, such as notebooks and documents written with excerpts, data or figures.
 
-The docs present each class's rules as choices, each shown with 2 or 3 reasonable answers that demonstrate the choice
+The docs present each kind's rules as choices, each shown with 2 or 3 reasonable answers that demonstrate the choice
 matters without claiming to be exhaustive. No particular project's choices appear as such.
 
 ## Goals
 
 - **G1. A fixed ontology.** Designed through G10's research, then fixed for v0.1. In Turtle files, it defines:
+  - nodes and edges as its two base types, the lowest dimensions of the knowledge-complex pattern (see the glossary);
   - the four node types (stakeholder group, concern, affordance, technology) and the three edge types between
     neighbouring layers: holds (group → concern), is addressed by (concern → affordance) and is provided by
-    (affordance → technology). Names may follow an adopted ontology. Each edge between a given pair appears once, and
+    (affordance → technology). These are plain readings; the ontology's own names may follow an adopted ontology, and
+    the docs map each reading to its name. Each edge between a given pair appears once, and
     names the narratives that tell it;
   - that a link is not an edge: a link from a narrative to a node records only that the narrative refers to it, and
     never creates an edge;
@@ -203,22 +205,22 @@ matters without claiming to be exhaustive. No particular project's choices appea
   - one generic **relationship annotation** between two entries of the same type: a free-text remark with a place in
     the vault, whose only rule is that both ends share a type. It is optional, the tool gives it no meaning, and the
     views leave it out. No typed edges between nodes of the same type are defined (see Non-goals).
-- **G2. Vault ↔ graph.** Markdown pages with YAML frontmatter are read into the knowledge graph, which is checked
+- **G2. Vault ↔ knowledge graph.** Markdown pages with YAML frontmatter are read into the knowledge graph, which is checked
   against the ontology. Every type has an index page: a description, plus a table of its entries (name, short
   description, link) that the tool generates from the entries' pages.
 - **G3. Entry lifecycle.** Every entry carries a status, wherever it is stored, `stub → draft → done`. Index pages are
   generated, so they carry none. For a narrative, `done` means coded (see "Narratives"); for a node or edge, its
-  required fields and links, as the ontology's linking rules set them, are complete and the coder has signed it off. The tools create any page the ontology entails that doesn't exist yet, as a `stub`, so the graph is
+  required fields and links, as the ontology's linking rules set them, are complete and the coder has signed it off; for a relationship annotation, its two ends exist and share a type. The tools create any page the ontology entails that doesn't exist yet, as a `stub`, so the graph is
   never incomplete, only unfinished.
 - **G4. Operations**, in the Python API and the `scat` CLI, usable in an interactive session:
-  - check conformance at three scopes: one page, its neighborhood (the page plus everything one link away, in either
-    direction), and the whole vault;
+  - check conformance at three scopes: one page, the page with every page one link away in either
+    direction, and the whole vault;
   - read status at the same three scopes, and set a page's status;
   - regenerate the index pages;
   - create entailed missing pages as stubs;
   - record an edge, and remove one, so neither the coder nor the assistant hand-writes its structure (R-11).
 
-  The local and neighborhood checks act as a fast linter during working sessions.
+  The one-page and one-link-away checks act as a fast linter during working sessions.
 - **G5. Two repositories.** `scat-kg-tools` is a slim, separately maintained package with the ontology, the tools and the
   docs site. `scat-kg-template` is the vault to clone, which installs a pinned version of the tools. Both builds are
   reproducible with uv.
@@ -231,7 +233,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
   each stage of the manual journey (J1–J7): getting started, a planning guide, a scenario facilitation guide, an architecture
   facilitation guide and a coding guide, a guide for the chat path, and a short note on the IDE path. It summarises the end-to-end flow on one
   page, makes data storage, rights and consent explicit, and gives a reference for the terms, the Python API and the
-  CLI. Each operational choice (participation terms, AI use, where each class of material is kept, who it is released
+  CLI. Each operational choice (participation terms, AI use, where each kind of material is kept, who it is released
   to and under what licence, and how commitments to participants are kept) is named as a dependency, with "for
   example" answers and no judgement about which to choose. A short checklist of questions an organiser answers and
   documents before a project starts closes the consent page.
@@ -244,7 +246,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
 
   Each choice is recorded with its evidence.
 - **G9. Clear user journeys.** A technically savvy user who isn't a developer can get from the docs site to a new
-  repository made from the template, through a working session, to a clean, navigable graph, using only the
+  repository made from the template, through a working session, to a clean, navigable vault, using only the
   documentation, by the manual path and by the chat path.
 - **G10. Ontology by evidence: import, don't mint.** A research sprint surveys existing ontologies for each node type
   and edge type. Examples: ISO/IEC/IEEE 42010 for stakeholders and concerns, the SEBoK and INCOSE canon that
@@ -268,7 +270,8 @@ matters without claiming to be exhaustive. No particular project's choices appea
     concern, affordance, technology) with the edges between neighbouring columns;
   - the **edge tables**: each of the three edge types as a table, exported as CSV and used to generate documents, which
     is how people navigating the data already think of it;
-  - the **layered view**: the nodes and edges of the vault, or of a chosen set of narratives, drawn as the four layers,
+  - the **layered view**: the union of the fingerprints of a chosen set of narratives, up to the whole vault, drawn as
+    the four layers,
     for reasoning about the big picture;
   - **traces**: following edges from any node up or down the layers. Tracing a concern goes one layer up to the groups
     that hold it, one down to the affordances that address it, and two down to the technologies that provide those
@@ -294,19 +297,19 @@ matters without claiming to be exhaustive. No particular project's choices appea
     providers that follow the same standard, though v0.1 tests no other. Testing with Claude would be cheating, since
     Claude is the development team.
   - **The IDE path** is supported, not the priority.
-- **G15. A usable Obsidian projection.** The vault as Obsidian shows it is where the human coder codes and checks that
+- **G15. A usable Obsidian layout.** The vault as Obsidian shows it is where the human coder codes and checks that
   meaning is preserved. Each narrative is one page, nothing is duplicated, and the layout uses what Obsidian offers rather
   than folders of near-empty pages. The design may decide which other entries are pages and which are fields, and so
   how G2's index pages and G3's stubs are realised, but not what the graph means; narratives stay pages. It is checked in Obsidian itself, not
   reasoned about from the files.
-- **G16. A shared architecture.** The system is model, view and control. The **model** is the knowledge graph: the
-  ontology and a conformant vault. The **views** are purposeful views built from a conformant model: the Obsidian
-  projection, the fingerprint view, the edge tables, the layered view and traces. The **control plane** is how people and LLMs act on the model:
+- **G16. A shared architecture.** The system is model, view and control. The **model** is the ontology plus a
+  conformant vault. The **views** are purposeful views built from a conformant model: the Obsidian
+  layout, the fingerprint view, the edge tables, the layered view and traces. The **control plane** is how people and LLMs act on the model:
   Obsidian, git and GitHub, the CLI and REPL, the MCP server and the agents in an IDE. One architecture document gives
   this common picture, with the modules, their interface contracts and who is responsible for what. It is planned
   from a prior-art readout and reviewed before detailed design starts.
 
-- **G17. Links and edges stay in step (a known pitfall).** Many relationships appear in two forms: "this page
+- **G17. Links and edges stay in step (a known pitfall).** Much of the coding appears in two forms: "this page
   references that page" in Obsidian, and "this node is connected to that node" in the knowledge graph. Making
   the two feel like one thing has a large bearing on the coder's experience, and part of why there is code at all is
   to detect when they diverge and to reconcile them. Coding is incremental: stub, fill in, stub further, fill in
@@ -353,11 +356,11 @@ Requirements state outcomes. How each is met is decided in the work packages.
 
 | ID | Requirement | Checked by |
 |---|---|---|
-| R-1 | Conformance checks structure, never content: types, fields, links, names, status, the cap and index freshness. What the content says (tensions, matches, gaps) is for analysis, after conformance passes and the coder signs off the content. Conformance problems are graded: errors block and warnings don't. Errors cover the ontology's constraints (required fields and types, the ends of edges, the linking rules), the stakeholder-group cap, valid status, and links to pages that don't exist. The rule catalogue gives every rule an id and a severity. | Seeded-defect tests, at least one per rule |
+| R-1 | Conformance checks structure, never content: types, fields, links, names, status, the cap and whether index pages are up to date. What the content says (tensions, matches, gaps) is for analysis, after conformance passes and the coder signs off the content. Conformance problems are graded: errors block and warnings don't. Errors cover the ontology's constraints (required fields and types, the ends of edges, the linking rules), the stakeholder-group cap, valid status, and links to pages that don't exist. The rule catalogue gives every rule an id and a severity. | Seeded-defect tests, at least one per rule |
 | R-2 | Every message names the file, the field or link, and the rule broken (by id). It gives the fix as something a literal reader can apply: an exact command to run, or an exact field and value to write. | Golden-output tests on the seeded defects |
 | R-3 | An unfinished page is never an error just for being unfinished. The full contract applies when a page is `done`. Links and the ends of edges are checked at every status; R-23 sets when a mismatch between links and edges is an error. | Tests per status |
 | R-4 | Checks never write to the vault. Every write is an explicit operation (index, stub, set status). | Tests that snapshot the vault before and after each operation |
-| R-5 | The checks are fast enough to work as a linter. On a laptop, with a 500-page vault: one page under 1 s, a neighborhood under 2 s, the whole vault under 5 s *(ACE's thresholds)*. | Benchmark over a generated 500-page vault |
+| R-5 | The checks are fast enough to work as a linter. On a laptop, with a 500-page vault: one page under 1 s, a page with the pages one link away under 2 s, the whole vault under 5 s *(ACE's thresholds)*. | Benchmark over a generated 500-page vault |
 | R-6 | On the manual path, starting from a clean user environment with only the documented prerequisites: a fresh clone of the template, then one documented setup command, after which `check` on the whole vault passes on the worked example. | Clean-environment trial |
 | R-7 | Both repositories commit `uv.lock`, and CI runs the tests and checks on every push. | CI runs |
 | R-8 | The Python REPL and the `scat` CLI are equal paths: every operation is available on both, with the same messages. The docs lead with the REPL and show the CLI equivalent alongside it. | Tests on both paths; the docs test runs both |
@@ -375,7 +378,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-20 | **The chat path works, at two test levels.** The MCP server's tools pass automated tests, and the chat path (G14) is run end to end in the inference.coop browser chat at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents, which stand in for field notes. The field test comes after v0.1 and is not part of this repository. Other providers are not tested in v0.1. | The automated tests in CI; each end-to-end run recorded step by step with screenshots in the acceptance record |
 | R-21 | **Coding happens in Obsidian.** A coder can code a narrative and review its fingerprint in Obsidian alone, without the same content held on two pages, and without opening pages that carry no content of their own. | A review in Obsidian with screenshots in the record; UA-M |
 | R-22 | **Architecture before detailed design.** The architecture document names the model, the views and the control plane, each module's interface contract and responsibilities, and is reviewed by architecture reviewers before any further package starts detailed design. | The review record; the ACE's approval, logged |
-| R-23 | **Links and edges reconcile.** The forms that must agree are a closed list: a narrative's link to a node, an edge's entry, and an edge's references to its nodes and to its narratives. Links outside these forms carry no graph meaning and are checked only as links (R-1). The tool detects each mismatch between these forms and give a fix that reconciles it. A mismatch that involves a narrative is a warning while the narrative is a draft and an error once it is `done`; an edge cannot be `done` unless every narrative it names links both its nodes. Incremental coding, breadth first or depth first, never leaves a mismatch the tool can't see. The docs show both ways of working. | Tests that generate divergent vaults and check each mismatch is reported with a working fix; a named architecture reviewer for this area; a UX review in Obsidian of an incremental coding session, with screenshots |
+| R-23 | **Links and edges reconcile.** The forms that must agree are a closed list: a narrative's link to a node, an edge's entry, and an edge's references to its nodes and to its narratives. Links outside these forms carry no graph meaning and are checked only as links (R-1). The tool detects each mismatch between these forms and gives a fix that reconciles it. A mismatch that involves a narrative is a warning while the narrative is a draft and an error once it is `done`; an edge cannot be `done` unless every narrative it names links both its nodes. Incremental coding, breadth first or depth first, never leaves a mismatch the tool can't see. The docs show both ways of working. | Tests that generate vaults with mismatches and check each mismatch is reported with a working fix; a named architecture reviewer for this area; a UX review in Obsidian of an incremental coding session, with screenshots |
 
 ## User acceptance
 
@@ -383,7 +386,7 @@ Acceptance is judged by people using the product, not only by tests. It covers t
 journey and the chat journey. The IDE path is tested by the team only.
 
 **The solo-trial journey** comes first, because an organiser who can't make the tools work alone won't adopt them:
-from the docs site, set up, code one narrative from their own notes, see its fingerprint, and sign it off as `done`. It runs on the manual path
+from the docs site, set up, code one narrative from their own notes, see its fingerprint in Obsidian, and sign it off as `done`. It runs on the manual path
 *(default)*, and is short enough to finish in one sitting.
 
 **The manual journey:**
@@ -596,10 +599,10 @@ serves this mission as written; a change that would alter the mission goes to th
   The ontology-and-layout package settles how edges are written and shown, checked in Obsidian (G15).
 - **The IDE setup skill** in the template (D-3) is a short skill file that helps an AI coding assistant set itself up
   for the vault; the docs point to it.
-- **The relationship annotation** has only the same-type rule; it is never entailed, never required and never in an index's
-  required links. Whether it is a page or a field is decided by the projection design (G15). The earlier typed
+- **The relationship annotation** has only the same-type rule; it is never entailed, never required and never in an index page's
+  required links. Whether it is a page or a field is decided by the layout design (G15). The earlier typed
   `conflicts` field between concerns, and its rule `SCAT-CONFLICT-SELF`, leave the release; existing values migrate to
-  relationships.
+  relationship annotations.
 - **Test edits.** Tests that encode `conflicts`, the separate raw and coded page types, or the current layout may change, each change listed
   in the review record.
 - **The notebook** reads the vault through the tools' public data (R-16) where it can, through a public vault loader.
