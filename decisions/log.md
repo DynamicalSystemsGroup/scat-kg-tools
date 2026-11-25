@@ -1769,3 +1769,40 @@ the three actors and two authorities, modules with contracts, links and edges, t
 across modules, and what is left open; three architecture reviewers (two Sonnet, one Opus for the cross-cutting
 contracts and links and edges). WP14 is accepted, so the ordering in `MISSION.md` (Governance, "The plan") holds.
 RS3 runs beside it; its live part waits for the chief engineer's sign-ins.
+
+## D-084 | 2026-11-24 | The chat route: the coder's own machine now, governed compute after v0.1
+
+RS3's live check (the ACE in the browser pane, signed in by the chief engineer; no message sent, nothing created):
+members of the inference.coop chat (LibreChat) can add their own MCP server at a public `https://` address, over
+Streamable HTTPS or SSE, with no authentication, an API key or OAuth; Agent Builder offers a model, instructions,
+tools, skills and file context. A server on the coder's own machine is not reachable without a public tunnel. Notes on
+`spike/chat-path` (`research/chat-path/notes-live.md`).
+
+The chief engineer's decision (chat, typed by the ACE; names of colleagues cut, marked [...]): "own machine now.
+governed compute later. deferred because i need [...] to set that up. we do prefer that mcp via governed computer
+later just put it after v0.1".
+
+ACE outcome: for v0.1 the MCP server runs on the coder's machine behind a tunnel; MCP on governed compute is the
+preferred long-term route, after v0.1, and is listed for after the release. RS3 continues: which tunnel, set up with
+no terminal (the chat-path user must not be required to open one), and terminal-free git. Installing any tunnel
+software on the chief engineer's machine for the lab run needs his explicit permission first.
+
+## D-085 | 2026-11-24 | WP15 accepted; the architecture document approved (R-22); three calls
+
+Evidence: `check_metrics.py --accept WP15` passes (369 records); the document is 2,499 words (cap 2,500); three fresh
+reviewers (two Sonnet, one Opus for the cross-cutting contracts and links and edges) each said "not ready" on the first
+pass with five blocking findings in all, which one revision fixed, with about 28 further findings answered in
+`research/architecture/review.md`; tier 1: 990 passed. The ACE read sections 2 to 6.
+
+The calls the document left to the ACE:
+- (a) Rule 4: a narrative that links both ends of an edge without naming it gets no message; the fingerprint view lists
+  such edges as candidates. The chief engineer's words decide it: an edge in a narrative is "about the relationship
+  being in the narrative not just the vertices on the ends (thats why its okay to not have edges)", and R-1 keeps
+  content out of conformance.
+- (b) On the IDE path an agent can run `set-status`; authority there holds by the assistant's file and git review, and
+  the docs say so. Accepted as a residual risk; the chat path holds it by construction.
+- (c) The prior-art readout's guidance-versus-example gap becomes a WP16 test case.
+- The PM's note: WP16's impact map adds `docs/coding.md`, `tests/ops/test_ops_status.py` and the fix-harness tests,
+  because the `done` refusal and the edge operations change today's unchecked `set-status`.
+
+The architecture document is approved (R-22): WP16's decide and build stages may start.

@@ -83,7 +83,7 @@ error): one problem per mismatch per anchor.
 |---|---|---|---|---|
 |**L–N**|An edge names n and ends at x; n does not link x.|Rule 3.|Link x in n: exact `replace-text` where the account names x, else manual (L); or drop n from the edge (T).|Depth first: edge first, link later; the write's result warns. Breadth first: nothing names n yet.|
 |**L–T**|An edge names n, but n links neither end.|Rule 3.|Drop n from the edge (T), or link both ends (L).|Depth first: the edge names n before n is written; n's check warns until it links.|
-|**L–E**|n links both ends of an edge and does not name it. Not a mismatch under G1.|Rule 4; severity **[OPEN: ACE]**.|Name n in the edge (T), or leave it.|Breadth first: edges recorded after linking; n's check lists candidates.|
+|**L–E**|n links both ends of an edge and does not name it. Not a mismatch under G1.|Rule 4: no message; a candidate in the fingerprint view (D-085).|Name n in the edge (T), or leave it.|Breadth first: edges recorded after linking; n's check lists candidates.|
 |**E–N**|An end is missing, in the wrong layer, or two entries join one pair. Conformance.|Rule 1; missing end: R-1, an error at every status.|Stub the missing node (M5), or relink if renamed; retype; merge duplicates.|Recording stubs absent ends; only a hand edit leaves one missing, and it shows at once.|
 |**E–T**|An edge names no narrative, or one absent or not a narrative. Conformance.|Rule 2: none named warns until the edge is `done`; an absent page is a dangling link (R-1).|Name a narrative, stubbed if absent (M5), or remove the edge.|Depth first: recording an edge stubs a narrative not yet written.|
 |**N–T**|The edge is `done` but a narrative it names lacks a link.|Rule 3, error id, on the edge.|Rule 3's fixes, or the coder sets the edge to `draft` (M7).|M5 refuses `done` while this holds; a later edit to the narrative breaks it, shown on the edge.|
@@ -149,9 +149,7 @@ interface, GitHub Desktop, an Obsidian git plugin), not M8.
 - **[OPEN: WP17] The graph document's shape and each view's parameters.** Constraints: R-17; notebook and M8 return equal
   view data (R-20).
 - **[OPEN: WP18] Tool, prompt and skill names; the assistant's file; the view folder.**
-- **[OPEN: RS3] The chat route, and how terminal-free git is done.** RS3's notes: the chat is LibreChat, which reaches a
-  remote MCP server from its own server over streamable HTTP; a tool on the coder's machine is not reachable; the route
-  is not yet shown to work. M8's contract is unchanged either way.
-- **[OPEN: ACE] Three calls, none decided here.** (a) Rule 4: A, nothing, candidates in the fingerprint view; B, a warning
-  while draft, silent at `done`; C, a warning at `done` only. (b) The IDE path's residual authority risk. (c) The
-  readout's guidance-versus-example gap as a WP16 test case.
+- **Decided (D-084): the chat route.** v0.1: M8 on the coder's machine, behind a tunnel with an API key. Later:
+  governed compute. RS3 picks the tunnel and terminal-free git; M8's contract is unchanged.
+- **Decided (D-085).** (a) Rule 4: no message (content, R-1); the fingerprint view lists candidates. (b) The IDE
+  path's authority risk is accepted; the docs say so. (c) The guidance-versus-example gap is a WP16 test case.
