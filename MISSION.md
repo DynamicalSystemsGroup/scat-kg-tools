@@ -625,7 +625,8 @@ serves this mission as written; a change that would alter the mission goes to th
   per change, run with `git grep` over both repositories and the live branches, so the same sweep runs at scoping and
   at acceptance.
 - **The chat-path spike** runs on a side branch with its readout in `research/`. The ACE drives the inference.coop
-  browser chat after the chief engineer signs in; the agent never enters credentials, and only lab and range material
+  browser chat after the chief engineer signs in, and uses his GitHub account, signed in by him, with a private
+  scratch repository under his account or DSG's; the agent never enters credentials, and only lab and range material
   (R-20) goes to it. The R-20 end-to-end runs are made on demand, not on every push.
 - **Architecture reviewers** are fresh agents, on Sonnet with one on Opus for a named reason (the cross-cutting
   contracts, and the link-edge correspondence of G17), that review the architecture document before detailed design
