@@ -2165,3 +2165,10 @@ Asked whether to accept the uv gap (D-040, D-041) or test uv's official installe
 clean environment is a throwaway home folder on this Mac with uv removed from `PATH` (v0.1 is Mac only; a separate
 macOS user account would need the chief engineer's admin password); the installer is uv's own script from its
 official site, run once.
+
+## D-109 | 2026-11-25 | Rewrite both histories
+
+Asked whether to rewrite `main` (c58113b, the pilot line), `dev` (20ff07a, private repository names), both, or
+neither. The chief engineer chose "Rewrite both": the ACE rewrites those commits, force-pushes `main` and `dev`,
+verifies that the text is gone from every reachable commit, and records the old and new heads. This is the chief
+engineer's authorisation for those two force-pushes only.
