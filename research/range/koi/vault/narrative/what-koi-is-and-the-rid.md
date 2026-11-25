@@ -17,11 +17,10 @@ The doctrine also names per-relationship discipline; the source gives no more of
 
 This is read as the baseline, what exists: the account is in the present tense of a thing that is there.
 
-Thin spots: the source lists neither the six functions nor the detail of per-relationship discipline, and says nothing of ASoT and MOSA beyond the abbreviations. It names subnets and coordinator nodes as where KOI runs but does not say that they, or anything else, provide the RID, so no technology is coded. It names no group, and the doctrine is linked here but no edge is coded for it, since the source says it frames the assembly and not that it addresses a concern. The new and update signals have no node of their own.
+Thin spots: the source lists neither the six functions nor the detail of per-relationship discipline, and says nothing of ASoT and MOSA beyond the abbreviations. It names subnets and coordinator nodes as where KOI runs but does not say that they, or anything else, provide the RID, so no technology is coded. It names no group, and the doctrine is linked here but no edge is coded for it, since the source says it frames the assembly and not that it addresses a concern. The FUN signals (new, update, forget) are listed beside the RID, not tied to it: the forget signal is linked but no edge is coded for it, and the new and update signals have no node of their own.
 
 ## Edges told
 
 | type | from | to | note |
 |---|---|---|---|
 | is addressed by | [[resources-referable-across-subnets]] | [[resource-identifier]] | The RID is the stable handle so a resource can be referenced, related, updated and forgotten without a single source of truth. |
-| is addressed by | [[resources-referable-across-subnets]] | [[forget-signal]] | Reading: the FUN signals (new, update, forget) are set beside the handle's referencing, updating and forgetting; the source does not say the signal answers the concern. |
