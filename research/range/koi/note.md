@@ -17,30 +17,30 @@ Workers coded the texts by hand through the tool (`stub`, `record-edge`, `set-st
 
 ## What translating kept
 
-- **Two readings of one matter.** The source shows the architectural and ethnographic views diverging on how members figure in KOI and on what integration does to the protocol. Each is one concern, held by two groups, with the contrast in the row notes. The disagreement stays visible: two *holds* edges meet on one concern.
+- **Two readings of one matter.** The source shows the architectural and ethnographic perspectives diverging on how members figure in KOI and on what integration does to the protocol. Each is one concern, held by two groups, with the contrast in the row notes. The disagreement stays visible: two *holds* edges meet on one concern.
 - **Tools help but cannot close the loop.** Kept as the concern "closing the loop", addressed by durable shared records, provided by Obsidian and Telescope.
 - **The club good.** The data set's integrity matters to every member together; one concern, held by community members.
-- **One affordance, two sides.** The forget signal is coded as the answer to the right to be forgotten in the forget incident (the scenario); the architecture (koi-07) links it as routine designed use but codes no edge for it. It is one affordance on two pages.
+- **One affordance, two sides.** The forget signal is coded as the answer to the right to be forgotten in the forget incident (the scenario); the architecture (koi-08) tells its routine designed use, and koi-07 links it only as one of the FUN signals, with no edge. It is one affordance on two pages.
 - **The doctrine** addresses vendor lock-in (scenario) and requisite variety (architecture).
 
 ## What translating lost
 
 - ANT's translation moments (problematization, interessement, enrolment, mobilization) and obligatory passage points. SCAT has no element for them.
 - Multiple enactments of one actant, and the mediator versus intermediary distinction.
-- **Outcomes.** A tool decayed, one was decommissioned, one is new. Edges carry no outcome, so this survives only in row notes and prose. A view will not show it.
-- The operative versus constitutive layer, and the tensions between views. Prose only.
+- **Outcomes.** One tool decayed and was decommissioned; another is new. Edges carry no outcome, so this survives only in row notes and prose. A view will not show it.
+- The operative versus constitutive layer, and the tensions between perspectives. Prose only.
 - Paradigm versus instances: the doctrine is an affordance, the deployments are not coded.
 - Any edge type for turning an affordance against its own configuration.
 
 ## What needed interpreting
 
-- **Readings coded as concerns.** The inputs speak of "views", not groups, and a view is not a want. To hold a disagreement, the workers coded each reading as a concern ("how members figure in KOI", "what integration does to the protocol") and let two groups hold it.
-- **Views mapped to groups, then clustered to the cap.** Architectural view to technical-team, ethnographic view to ethnographers; integration teams went into technical-team, Metagov members into community-members. Research collaborators and the implementation team have no group (the cap is full) and appear unlinked. Ethics committees stayed a group although they are an oversight gate; that is a judgement.
+- **Readings coded as concerns.** The inputs speak of perspectives, not groups, and a perspective is not a want. To hold a disagreement, the workers coded each reading as a concern ("how members figure in KOI", "what integration does to the protocol") and let two groups hold it.
+- **Perspectives mapped to groups, then clustered to the cap.** Architectural perspective to technical-team, ethnographic to ethnographers; integration teams went into technical-team, Metagov members into community-members. Research collaborators and the implementation team have no group (the cap is full) and appear unlinked. Ethics committees stayed a group although they are an oversight gate; that is a judgement.
 - **Two tools typed as affordances.** The chatbot and Ask Metagov are affordances because the inputs name no technology beneath them.
 - **Architectures carry no technologies.** The three *is provided by* edges come only from two scenarios (the ethnographic loop and consent).
-- **Scenario as nearest type.** koi-05 and koi-06 tell no sequence of events.
+- **Scenario as nearest type.** koi-04, koi-05 and koi-06 tell no sequence of events.
 - **All narratives are `past`.**
-- **Edges marked as the coder's reading.** Two rows in parts-and-deployment carry "Reading:": the technical team holding "requisite variety", and the doctrine addressing it. Four concerns have no *is addressed by* edge: the two readings, "protocol design integrity" (the source does not say the doctrine or the chief engineer answers it) and the club-good integrity concern.
+- **Edges marked as the worker's reading.** Two rows in parts-and-deployment carry "Reading:": the technical team holding "requisite variety", and the doctrine addressing it. Four concerns have no *is addressed by* edge: the two readings, "protocol design integrity" (the source does not say the doctrine or the chief engineer answers it) and the club-good integrity concern.
 
 ## What review taught
 
@@ -48,7 +48,7 @@ A review removed edges whose only support was that two things sit next to each o
 
 ## What it means for the coding guide
 
-1. **Clustering to a cap is a coding act.** With four groups, source "views", roles and teams must be folded. The guide should say that a fold is recorded in the narrative's own words (a "here part of" clause), because the tool will not.
+1. **Clustering to a cap is a coding act.** With four groups, source perspectives, roles and teams must be folded. The guide should say that a fold is recorded in the narrative's own words (a "here part of" clause), because the tool will not.
 2. **Readings versus wants.** A concern is not only what a group wants. Where sources record a difference of reading, coding it as a concern held by both groups works, but the guide should state it as a pattern and warn that the concern's name must be neutral.
 3. **Outcomes live in notes.** An edge says a thing addresses a concern, not whether it worked. Tell coders to put outcomes in the row note and the prose, and to expect no view to show them.
 4. **Silence is a result.** A concern with no *is addressed by* edge, or an architecture with no technology, is correct when the source says nothing; say so in "Thin spots", as these narratives do.
