@@ -249,3 +249,7 @@ def test_importing_the_core_does_not_import_the_server_or_mcp():
         "assert not [m for m in sys.modules if m == 'mcp' or m.startswith('mcp.') or 'mcp_server' in m]"
     )
     assert subprocess.run([sys.executable, "-c", code], check=False).returncode == 0
+
+
+def test_w9_the_review_prompt_asks_the_fingerprint_for_its_candidates():
+    assert "Call fingerprint with candidates true" in prompts.REVIEW_BEFORE_DONE

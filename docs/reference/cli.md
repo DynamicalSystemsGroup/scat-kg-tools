@@ -49,9 +49,9 @@ positional arguments:
     remove-edge   Remove an edge: delete its rows, from the narratives named
                   by --told-by or, without it, from every narrative that tells
                   it. Leaves the links. Refuses a narrative that is done.
-    fingerprint   Show a narrative's fingerprint: its nodes by layer, the
-                  edges its rows tell, and the links that have no row
-                  (candidates). NARRATIVE is a name; without it, every
+    fingerprint   Show a narrative's fingerprint: its nodes by layer and the
+                  edges its rows tell; with --candidates, also the links that
+                  have no row. NARRATIVE is a name; without it, every
                   narrative. Writes nothing.
     edges         Show every edge of one type, with the narratives that tell
                   it and its status. Writes nothing.
@@ -863,23 +863,25 @@ $ uv run scat remove-edge study-circle reading-shelf --json
 ## scat fingerprint
 
 ```text
-usage: scat fingerprint [-h] [--root ROOT] [--json] [NARRATIVE]
+usage: scat fingerprint [-h] [--root ROOT] [--json] [--candidates] [NARRATIVE]
 
-Show a narrative's fingerprint: its nodes by layer, the edges its rows tell, and the links that have no row (candidates). NARRATIVE is a name; without it, every narrative. Writes nothing.
+Show a narrative's fingerprint: its nodes by layer and the edges its rows tell; with --candidates, also the links that have no row. NARRATIVE is a name; without it, every narrative. Writes nothing.
 
 positional arguments:
-  NARRATIVE    show this narrative only
+  NARRATIVE     show this narrative only
 
 options:
-  -h, --help   show this help message and exit
-  --root ROOT  the vault folder, the one with scat.toml (default: here)
-  --json       print the result as one JSON document (machine-interface
-               contract), nothing else
+  -h, --help    show this help message and exit
+  --root ROOT   the vault folder, the one with scat.toml (default: here)
+  --json        print the result as one JSON document (machine-interface
+                contract), nothing else
+  --candidates  also show the candidates: links between two nodes that have no
+                row
 
-REPL: `scat_kg.fingerprint()`, `scat_kg.fingerprint("<narrative>")`
+REPL: `scat_kg.fingerprint()`, `scat_kg.fingerprint("<narrative>", candidates=True)`
 ```
 
-Shows what one narrative tells: its nodes by layer, the edges its rows tell (each with its status and every narrative that tells it), and the candidates, which are links between two nodes that an edge type fits and that have no row. Without `NARRATIVE` it shows every narrative, in path order. It writes nothing and never shows a relationship annotation.
+Shows what one narrative tells: its nodes by layer, the edges its rows tell (each with its status and every narrative that tells it), and, with `--candidates`, the candidates, which are links between two nodes that an edge type fits and that have no row. Without the option the fingerprint shows no candidates. Without `NARRATIVE` it shows every narrative, in path order. It writes nothing and never shows a relationship annotation.
 
 It refuses, writing nothing, when the name is not a narrative, when two pages share the name, and when a page it draws has an error: the refusal carries those problems with their fixes.
 
@@ -977,12 +979,13 @@ $ uv run scat fingerprint groups-under-a-cap-pitch --json
           ],
           "status": "done"
         }
-      ],
-      "candidates": []
+      ]
     }
   ]
 }
 ```
+
+With `--candidates` each narrative also has a `candidates` list (here `"candidates": []`); without the option the key is absent.
 
 ## scat edges
 
@@ -1376,8 +1379,9 @@ Draw a view as an image, four columns in layer order. Needs the extra `draw`: `p
 positional arguments:
   <drawing>
     fingerprint  Draw a narrative's fingerprint: its nodes and edges in four
-                 columns, its candidates (links with no row) dashed. Refuses
-                 where `scat fingerprint` would, and then writes nothing.
+                 columns; with --candidates, the links that have no row
+                 dashed. Refuses where `scat fingerprint` would, and then
+                 writes nothing.
     layered      Draw the layered view of the narratives named by --narrative
                  or, without it, of every narrative. Refuses where `scat
                  layered` would, and then writes nothing.
@@ -1388,7 +1392,7 @@ options:
 REPL: `from scat_kg import draw`, then `draw.fingerprint(...)` or `draw.layered(...)`
 ```
 
-Draws a view as an image in four columns, one for each layer, in layer order, with the layer's name at the top. Each node is a box labelled with its name, and with its status in brackets when that is not `done`; each edge is a line between neighbouring columns. Within a column the nodes are in order of name. `scat draw fingerprint` draws one narrative's fingerprint and shows its candidates (links with no row) as dashed lines. `scat draw layered` draws the layered view of the narratives you name with `--narrative`, or of every narrative.
+Draws a view as an image in four columns, one for each layer, in layer order, with the layer's name at the top. Each node is a box labelled with its name, and with its status in brackets when that is not `done`; each edge is a line between neighbouring columns. Within a column the nodes are in order of name. `scat draw fingerprint` draws one narrative's fingerprint and shows no candidates unless you add `--candidates`, which draws the links with no row as dashed lines. `scat draw layered` draws the layered view of the narratives you name with `--narrative`, or of every narrative.
 
 Drawing needs the extra `draw`: `pip install "scat-kg[draw]"`. Without it, the command refuses and says so. The same command gives the same image, byte for byte.
 
@@ -1399,22 +1403,25 @@ Exit codes: 0, or 1 for a refusal.
 ### scat draw fingerprint
 
 ```text
-usage: scat draw fingerprint [-h] [--root ROOT] [--json] --out FILE NARRATIVE
+usage: scat draw fingerprint [-h] [--root ROOT] [--json] [--candidates] --out
+                             FILE
+                             NARRATIVE
 
-Draw a narrative's fingerprint: its nodes and edges in four columns, its candidates (links with no row) dashed. Refuses where `scat fingerprint` would, and then writes nothing.
+Draw a narrative's fingerprint: its nodes and edges in four columns; with --candidates, the links that have no row dashed. Refuses where `scat fingerprint` would, and then writes nothing.
 
 positional arguments:
-  NARRATIVE    the narrative's name
+  NARRATIVE     the narrative's name
 
 options:
-  -h, --help   show this help message and exit
-  --root ROOT  the vault folder, the one with scat.toml (default: here)
-  --json       print the result as one JSON document (machine-interface
-               contract), nothing else
-  --out FILE   the image file to write, ending in `.png` or `.svg` (no
-               default)
+  -h, --help    show this help message and exit
+  --root ROOT   the vault folder, the one with scat.toml (default: here)
+  --json        print the result as one JSON document (machine-interface
+                contract), nothing else
+  --candidates  also draw the candidates: links with no row, dashed
+  --out FILE    the image file to write, ending in `.png` or `.svg` (no
+                default)
 
-REPL: `draw.fingerprint("<narrative>").save("<file>")`
+REPL: `draw.fingerprint("<narrative>", candidates=True).save("<file>")`
 ```
 
 ### scat draw layered

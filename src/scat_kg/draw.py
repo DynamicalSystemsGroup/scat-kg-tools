@@ -1,7 +1,8 @@
 """Drawings (M6): a view drawn as four columns, one per layer, in layer order. Needs the extra `draw` (matplotlib).
 
     from scat_kg import draw
-    d = draw.fingerprint("dry-july")      # a narrative's nodes and edges, its rule-4 candidates dashed
+    d = draw.fingerprint("dry-july")      # a narrative's nodes and edges
+    d = draw.fingerprint("dry-july", candidates=True)   # and its rule-4 candidates dashed
     d = draw.layered(["dry-july"])        # the layered view; none: every narrative
     d.png(); d.svg()                      # the image, as bytes and as text; Jupyter shows `d` itself
     d.save("dry-july.png")                # the explicit write: `.png` or `.svg`
@@ -69,12 +70,13 @@ def _fingerprint_mark(data: dict) -> _Mark:
     n = data["narratives"][0]
     by_layer = {layer: [x for x in n["nodes"] if x["type"] == layer] for layer in TBOX.layers}
     lines = [(e["from"], e["to"], False) for e in n["edges"]]
-    lines += [(c["from"], c["to"], True) for c in n["candidates"]]
+    lines += [(c["from"], c["to"], True) for c in n.get("candidates", ())]
     return _Mark(
         f"{n['name']} ({n['status']})",
         _columns(by_layer),
         tuple(lines),
-        "solid line: an edge a row of this narrative tells. dashed line: a link with no row (a candidate).",
+        "solid line: an edge a row of this narrative tells."
+        + (" dashed line: a link with no row (a candidate)." if "candidates" in n else ""),
     )
 
 
@@ -263,8 +265,10 @@ def _need_matplotlib() -> Result | None:
     return None
 
 
-def fingerprint(narrative: str, *, root: str | Path = ".") -> Drawing | Result:
-    """Draw a narrative's fingerprint: its nodes and edges, its rule-4 candidates as dashed lines."""
+def fingerprint(
+    narrative: str, *, candidates: bool = False, root: str | Path = "."
+) -> Drawing | Result:
+    """Draw a narrative's fingerprint: its nodes and edges; `candidates=True` adds its rule-4 candidates dashed."""
     if bad := _need_matplotlib():
         return bad
     if not isinstance(narrative, str):
@@ -274,7 +278,7 @@ def fingerprint(narrative: str, *, root: str | Path = ".") -> Drawing | Result:
             "a drawing needs the name of one narrative",
             "pass the name of one narrative as a string",
         )
-    view = views.fingerprint(narrative, root=root)
+    view = views.fingerprint(narrative, candidates=candidates, root=root)
     if not isinstance(view, views.View):
         return view
     return Drawing(_fingerprint_mark(view.data), Path(root))

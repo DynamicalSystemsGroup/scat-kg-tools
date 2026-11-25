@@ -22,6 +22,20 @@ def run(capsys, argv):
     return code, capsys.readouterr().out
 
 
+def test_draw_fingerprint_candidates_flag_draws_the_dashed_lines(vault, capsys):
+    plain, dashed = vault / "img" / "plain.svg", vault / "img" / "dashed.svg"
+    for out, extra in ((plain, []), (dashed, ["--candidates"])):
+        code, _ = run(
+            capsys,
+            ["draw", "fingerprint", "dry", *extra, "--out", str(out), "--root", str(vault)],
+        )
+        assert code == 0
+    assert plain.read_text() == draw.fingerprint("dry", root=vault).svg()
+    assert dashed.read_text() == draw.fingerprint("dry", candidates=True, root=vault).svg()
+    assert "stroke-dasharray" not in plain.read_text()
+    assert "stroke-dasharray" in dashed.read_text()
+
+
 def valid(doc):
     errors = [e.message for e in Draft202012Validator(SCHEMA).iter_errors(doc)]
     assert not errors, errors

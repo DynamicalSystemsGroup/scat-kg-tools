@@ -122,11 +122,12 @@ def build(vault: str | Path, **settings) -> FastMCP:
 
     @mcp.tool(
         description=_OWN
-        + "View: a narrative's fingerprint (its nodes by layer, the edges its rows tell, and the links with "
-        "no row); without `narrative`, every narrative. Writes nothing. Returns the view document."
+        + "View: a narrative's fingerprint (its nodes by layer and the edges its rows tell; with `candidates` "
+        "true, also the links with no row); without `narrative`, every narrative. Writes nothing. "
+        "Returns the view document."
     )
-    def fingerprint(narrative: str | None = None) -> dict[str, Any]:
-        return _doc(scat_kg.fingerprint(narrative, root=root))
+    def fingerprint(narrative: str | None = None, candidates: bool = False) -> dict[str, Any]:
+        return _doc(scat_kg.fingerprint(narrative, candidates=candidates, root=root))
 
     @mcp.tool(
         description=_OWN

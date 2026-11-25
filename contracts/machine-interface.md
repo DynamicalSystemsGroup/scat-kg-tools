@@ -11,7 +11,7 @@ changes from version 1.
 - **Rule ids** are never renamed, only retired. New ids need no bump: match `^SCAT-[A-Z0-9]+(-[A-Z0-9]+)*$`, not a list.
 - **Streams.** Stdout holds exactly one JSON document; text for humans goes to stderr. Exit 0 when `ok`, 1 otherwise,
   2 for a command line that cannot be read.
-- **Python.** A result's `to_dict()` returns exactly the CLI's data.
+- **Python.** A result's `to_dict()` returns the CLI's data.
 - **Paths** are vault-relative (`/`, no leading `/`, no `..`), except in `export-edges` and `draw` results: outside the vault, as given. `line` and `column` count from 1, or are null.
 
 `kind` is `check`, `status`, `operation` or `view` (`fingerprint`, `edges`, `layered`, `trace`). A refusal, even by `check` or `status`, gives kind `operation` with `ok` false.
@@ -41,15 +41,14 @@ Nothing outside it is promised.
 
 | Object | Fields |
 |---|---|
-| view | `narratives`, `edge_type`, `from_layer`, `to_layer`, `rows`, `nodes`, `edges`, `node`, `direction`, `up`, `down` |
+| view | `narratives` (`candidates` on request), `edge_type`, `from_layer`, `to_layer`, `rows`, `nodes`, `edges`, `node`, `direction`, `up`, `down` |
 | node | `name`, `type`, `status` |
 | view edge | the edge fields and `status` |
 
 ## Fixes
 
 A fix's `kind` is the catalogue rule's kind (exact, options, slot, advisory, manual); each option has its own kind
-and a `text`. `options` are alternatives unless `sequence` is true: then steps in order. An option applies its `edits`,
-then its `command`.
+and a `text`. `options` are alternatives unless `sequence` is true: steps in order. An option applies `edits`, then `command`.
 
 - `exact` carries a `command`, `edits` or both; `advisory` and `manual` carry neither.
 - `slot` has an `author_slot` on an edit or on its `command`: the placeholder to replace, never written. Or it

@@ -227,10 +227,10 @@ warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `desc
 0 errors, 1 warning
 ```
 
-No message. A narrative that links both nodes of a pair but has no row for it is a **candidate**: the tool does not know whether the account tells that edge, and that is your judgement of the field notes, not a defect. The fingerprint view lists such pairs, so that you can decide for each whether to add a row. Run it for the narrative:
+No message. A narrative that links both nodes of a pair but has no row for it is a **candidate**: the tool does not know whether the account tells that edge, and that is your judgement of the field notes, not a defect. The fingerprint view shows the fingerprint (the nodes the page links and the edges it tells) and leaves such pairs out; ask for them with `--candidates` (in the REPL, `candidates=True`), so that you can decide for each whether to add a row. Run it for the narrative:
 
 ```text
-$ uv run scat fingerprint saturday-at-the-tool-library
+$ uv run scat fingerprint saturday-at-the-tool-library --candidates
 fingerprint saturday-at-the-tool-library (scenario, draft)
   group
     project-leads [stub]
@@ -246,7 +246,7 @@ fingerprint saturday-at-the-tool-library (scenario, draft)
     holds: project-leads -> tools-come-back-in-good-order
 ```
 
-The last block is the candidate: the page links `project-leads` and the concern but tells no row for the pair. Add a row if the account tells the edge, and leave it if it does not. Without a narrative name, `uv run scat fingerprint` shows every narrative. In Obsidian, the Outgoing links panel for the page shows the nodes it links, and its table shows the edges it tells. Together they are the narrative's **fingerprint**; [Analysis](analysis.md) shows the same view as a drawing.
+The last block is the candidate: the page links `project-leads` and the concern but tells no row for the pair. Add a row if the account tells the edge, and leave it if it does not. Without `--candidates` the view shows the nodes and edges only. Without a narrative name, `uv run scat fingerprint` shows every narrative. In Obsidian, the Outgoing links panel for the page shows the nodes it links, and its table shows the edges it tells. Together they are the narrative's **fingerprint**; [Analysis](analysis.md) shows the same view as a drawing.
 
 ### 6. Set it to done
 

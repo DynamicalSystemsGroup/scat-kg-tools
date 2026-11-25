@@ -164,9 +164,9 @@
       }
     },
     "ViewNarrative": {
-      "description": "One narrative's fingerprint: nodes flat in layer order then name; edges are the narrative's own rows; candidates are linked pairs that have no row.",
+      "description": "One narrative's fingerprint: nodes flat in layer order then name; edges are the narrative's own rows; candidates are linked pairs that have no row, present only when the view was asked for them (absent by default).",
       "type": "object",
-      "required": ["name", "kind", "status", "nodes", "edges", "candidates"],
+      "required": ["name", "kind", "status", "nodes", "edges"],
       "properties": {
         "name": { "type": "string", "minLength": 1 },
         "kind": { "type": ["string", "null"], "description": "scenario or architecture, as written." },

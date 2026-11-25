@@ -407,6 +407,91 @@ def test__scat_mention__a_warning_does_not_block_at_any_status(make_vault):
         assert rules_of(r) == ["SCAT-MENTION"] and r.ok
 
 
+# SCAT-MENTION: the page type (D-100, W10a) and a hyphenated title (W10b)
+
+GROUPED = "The Volunteers met afterwards.\n"  # `volunteers` is a group page the desk narrative does not link
+TECHNICAL = "They used the Booking App at the desk.\n"  # `booking-app` is a technology page
+
+
+def mentions_of(make_vault, **kw):
+    files = {"group/volunteers.md": doc("group", "Volunteers")}
+    r = report_of(make_vault, {DESK: narrative(account=kw.pop("account"), **kw), **files})
+    return [
+        p.render().split("page [[")[1].split("]]")[0]
+        for p in r.problems
+        if p.rule == "SCAT-MENTION"
+    ]
+
+
+def test__scat_mention__an_architecture_is_not_offered_a_link_to_a_group(make_vault):
+    got = mentions_of(make_vault, kind="architecture", account=GROUPED)
+    assert "volunteers" not in got
+
+
+def test__scat_mention__a_scenario_is_not_offered_a_link_to_a_technology(make_vault):
+    assert "booking-app" not in mentions_of(make_vault, kind="scenario", account=TECHNICAL)
+
+
+def test__scat_mention__a_scenario_naming_a_group_keeps_the_warning(make_vault):
+    assert "volunteers" in mentions_of(make_vault, kind="scenario", account=GROUPED)
+
+
+def test__scat_mention__an_architecture_naming_a_technology_keeps_the_warning(make_vault):
+    assert "booking-app" in mentions_of(make_vault, kind="architecture", account=TECHNICAL)
+
+
+def test__scat_mention__a_narrative_with_no_kind_keeps_both(make_vault):
+    assert {"volunteers", "booking-app"} <= set(
+        mentions_of(make_vault, kind=None, account=GROUPED + TECHNICAL)
+    )
+
+
+def test__scat_mention__a_node_page_naming_a_group_keeps_the_warning(make_vault):
+    seeded(
+        make_vault,
+        {C: doc("concern", "Safe handling", body="\nAsk the Staff.\n")},
+        mention(C, 8, 9, "Staff", "staff", "group"),
+    )
+
+
+GROUP_PAGE = {"group/walk-in-customers.md": doc("group", "Walk in customers")}
+
+
+@pytest.mark.parametrize(
+    "written", ["Walk-in customers", "walk in customers", "walk-in-customers", "WALK-IN CUSTOMERS"]
+)
+def test__scat_mention__words_match_across_a_space_or_a_hyphen(make_vault, written):
+    page = doc("concern", "Safe handling", body=f"\nSee {written} today.\n")
+    r = report_of(make_vault, {C: page, **GROUP_PAGE})
+    link = (
+        "[[walk-in-customers]]"
+        if written == "walk-in-customers"
+        else f"[[walk-in-customers|{written}]]"
+    )
+    assert [p.render() for p in r.problems] == [
+        mention(C, 8, 5, written, "walk-in-customers", "group", link)
+    ]
+
+
+def test__scat_mention__a_hyphen_or_space_mix_matches_and_other_cuts_do_not(make_vault):
+    for body_, hit in (
+        ("walk-in customers", True),
+        ("walk - in customers", True),
+        ("walkin customers", False),
+        ("walk-in customer", False),
+        ("a walk-in-customerss", False),
+    ):
+        page = doc("concern", "Safe handling", body=f"\n{body_}\n")
+        r = report_of(make_vault, {C: page, **GROUP_PAGE})
+        assert ("SCAT-MENTION" in rules_of(r)) is hit, body_
+
+
+def test__scat_mention__a_title_with_no_word_characters_names_nothing(make_vault):
+    files = {"group/dashes.md": doc("group", "-----"), **body("A line ----- and more.")}
+    r = report_of(make_vault, files)
+    assert "SCAT-MENTION" not in rules_of(r)
+
+
 # SCAT-CAP and SCAT-CAP-CONFIG
 
 CAP_HEAD = "error [SCAT-CAP] scat.toml field `stakeholder_group_cap`: the vault holds {n} group pages, over the cap of {cap}: {names}"
