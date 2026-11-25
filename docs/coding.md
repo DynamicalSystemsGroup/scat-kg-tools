@@ -227,7 +227,26 @@ warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `desc
 0 errors, 1 warning
 ```
 
-No message. A narrative that links both nodes of a pair but has no row for it is a **candidate**: the tool does not know whether the account tells that edge, and that is your judgement of the field notes, not a defect. The fingerprint view lists such pairs, so that you can decide for each whether to add a row. That view is not one of the `scat` commands yet. Until it arrives, Obsidian's Outgoing links panel for the page shows the nodes it links, and its table shows the edges it tells. Together they are the narrative's **fingerprint**.
+No message. A narrative that links both nodes of a pair but has no row for it is a **candidate**: the tool does not know whether the account tells that edge, and that is your judgement of the field notes, not a defect. The fingerprint view lists such pairs, so that you can decide for each whether to add a row. Run it for the narrative:
+
+```text
+$ uv run scat fingerprint saturday-at-the-tool-library
+fingerprint saturday-at-the-tool-library (scenario, draft)
+  group
+    project-leads [stub]
+    workshop-participants [stub]
+  concern
+    tools-come-back-in-good-order [stub]
+  affordance
+    sign-out-sheet [stub]
+  edges
+    holds: workshop-participants -> tools-come-back-in-good-order [draft; told by saturday-at-the-tool-library]
+    addressed-by: tools-come-back-in-good-order -> sign-out-sheet [draft; told by saturday-at-the-tool-library]
+  candidates (linked, no row)
+    holds: project-leads -> tools-come-back-in-good-order
+```
+
+The last block is the candidate: the page links `project-leads` and the concern but tells no row for the pair. Add a row if the account tells the edge, and leave it if it does not. Without a narrative name, `uv run scat fingerprint` shows every narrative. In Obsidian, the Outgoing links panel for the page shows the nodes it links, and its table shows the edges it tells. Together they are the narrative's **fingerprint**; [Analysis](analysis.md) shows the same view as a drawing.
 
 ### 6. Set it to done
 
@@ -783,6 +802,37 @@ git push origin v1
 ```
 
 The tag names that commit for good; later commits do not move it.
+
+### See which commit a tag pins
+
+To read off the commit a tag names, ask git. `git rev-parse` prints the full commit hash, and `git show --stat` shows that commit's message and the files it changed:
+
+```text
+$ git rev-parse v1^{commit}
+31da04dc8bf6416a2328384572727a044a58fbf1
+$ git show --stat v1
+commit 31da04dc8bf6416a2328384572727a044a58fbf1
+Author: t <t@example.com>
+Date:   Wed Nov 25 05:25:20 2026 -0500
+
+    Code the notes from my first session
+
+ affordance/sign-out-sheet.md              |   5 +++++
+ concern/tools-come-back-in-good-order.md  |   5 +++++
+ fingerprint.png                           | Bin 0 -> 22130 bytes
+ group/workshop-participants.md            |   5 +++++
+ narrative/saturday-at-the-tool-library.md |  21 +++++++++++++++++++++
+ 5 files changed, 36 insertions(+)
+```
+
+Your hash, author, date and files will differ. To see the commit you have, `git log --oneline --decorate -3` marks the tag beside it. To see that the tag reached GitHub and names the same commit, ask the remote:
+
+```text
+$ git ls-remote --tags origin v1
+31da04dc8bf6416a2328384572727a044a58fbf1	refs/tags/v1
+```
+
+The two hashes match when the tag you pushed is the tag you locked.
 
 ## Look at it in Obsidian
 

@@ -1,7 +1,7 @@
 # Analysis
 
 !!! tip "Your next step"
-    In your vault, open `analysis.ipynb` and run all cells.
+    In your vault folder, run `uv run jupyter lab analysis.ipynb`, then choose **Run**, then **Run All Cells**.
 
 A **view** is a purposeful picture or table made from a conformant vault. The tool generates it. You interpret it: a view never says that a story, a group or an architecture is better.
 
@@ -24,7 +24,22 @@ A **view** is a purposeful picture or table made from a conformant vault. The to
 
 ## The notebook
 
-The vault template holds `analysis.ipynb` at its root. It shows each view with a short paragraph and exports the three edge tables. Run all cells, then read.
+The vault template holds `analysis.ipynb` at its root. It shows each view with a short paragraph and exports the three edge tables. Its tools are already installed: the one setup command, `uv sync`, installs JupyterLab and what the notebook needs, so there is nothing more to install. Run it from your vault folder, in Terminal:
+
+```text
+uv run jupyter lab analysis.ipynb
+```
+
+JupyterLab opens the notebook in your browser and keeps running in Terminal until you press Control and C there. In the browser, choose **Run**, then **Run All Cells**, then read. A cell that stops with an `AssertionError` means the picture and the pages disagree: run `uv run scat check`. If the browser does not open, copy the address that starts `http://localhost:` from Terminal into it.
+
+To get the finished notebook as a page to read, with no browser session to keep open, run it from Terminal:
+
+```text
+uv run jupyter nbconvert --to html --execute analysis.ipynb --output-dir executed
+open executed/analysis.html
+```
+
+The first command runs every cell and writes `executed/analysis.html`; the second opens it. The `executed` folder is ignored by git, as is `exports`, where the edge tables are written.
 
 The same views are one call away in the REPL and one command away on the CLI:
 

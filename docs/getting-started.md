@@ -198,10 +198,123 @@ git commit -m "Remove the example"
 Your vault now holds no example pages. You do not write the folders or pages for your own content by hand. The tools
 create each one as a stub, as you will see in the [coding guide](coding.md).
 
+## The solo trial
+
+Try SCAT alone, on your own notes, before you plan an event with others. The trial fits in one sitting. By the end,
+one narrative is coded, you have seen its fingerprint, and it is `done`. Nothing leaves your private repository.
+
+The commands below use a made-up account, `saturday-at-the-tool-library`, a Saturday at a community tool library.
+Use your own names wherever you see it, and your own group, concern and affordance. Names are lower-case letters,
+digits and single hyphens. Your vault holds at most the number of groups that `scat.toml` allows (3 in the
+template), so name a broad group such as `workshop-participants`, never a person.
+
+**1. Set up.** Do steps 1 to 5 above: create your private repository, run `uv sync`, run `uv run scat check`, open the
+folder in Obsidian, and remove the example. Stay in your vault folder in Terminal for everything below.
+
+**2. Make the page for your narrative.** One command makes the empty page:
+
+```text
+uv run scat stub saturday-at-the-tool-library --type narrative
+```
+
+It prints `created narrative/saturday-at-the-tool-library.md`.
+
+**3. Write the account.** Open that page in Obsidian and write one account from your notes, as it was told, under the
+front matter. Set `kind` to `scenario`, set `timeframe` to `past`, set `status` to `draft` and add a one-sentence
+`description`. The page then reads:
+
+```text
+---
+type: narrative
+kind: scenario
+status: draft
+title: "Saturday at the tool library"
+description: "Loans go unrecorded when the sheet runs out."
+timeframe: past
+---
+
+From the point of view of Workshop participants (about 10:20)
+
+- Saturday, desk opens at 9. Three people ask for the same drill.
+- Concern: "tools must come back in good order."
+- The sign-out sheet lets us see who has what. It stops us seeing tools that are late.
+```
+
+**4. Record the edges.** An edge the account tells is a row on the page. These two commands write the rows and make
+the group, concern and affordance pages they name, as stubs. You do not write the rows or the pages by hand:
+
+```text
+uv run scat record-edge holds workshop-participants tools-come-back-in-good-order --told-by saturday-at-the-tool-library --note "Said twice in the first hour."
+uv run scat record-edge addressed-by tools-come-back-in-good-order sign-out-sheet --told-by saturday-at-the-tool-library
+```
+
+Each prints `created ...`, `changed ...` and a `note:` line saying which row it added. Then, in Obsidian, link each
+name where the account says it, as `[[workshop-participants|Workshop participants]]`,
+`[[tools-come-back-in-good-order|tools must come back in good order]]` and `[[sign-out-sheet|The sign-out sheet]]`.
+[Coding](coding.md#4-link-the-names) shows the page with its links. Then check:
+
+```text
+uv run scat check
+```
+
+It prints `no problems`.
+
+**5. See its fingerprint.** The fingerprint is the nodes the narrative links and the edges it tells:
+
+```text
+uv run scat fingerprint saturday-at-the-tool-library
+```
+
+```text
+fingerprint saturday-at-the-tool-library (scenario, draft)
+  group
+    workshop-participants [stub]
+  concern
+    tools-come-back-in-good-order [stub]
+  affordance
+    sign-out-sheet [stub]
+  edges
+    holds: workshop-participants -> tools-come-back-in-good-order [draft; told by saturday-at-the-tool-library]
+    addressed-by: tools-come-back-in-good-order -> sign-out-sheet [draft; told by saturday-at-the-tool-library]
+```
+
+To see it in Obsidian, draw it into your vault and open the picture there:
+
+```text
+uv run scat draw fingerprint --out fingerprint.png saturday-at-the-tool-library
+```
+
+It prints `created fingerprint.png`. In Obsidian, open `fingerprint.png` from the file list. The narrative page's
+Outgoing links panel shows the same nodes as a list. A dashed line in the picture would be a link with no row; this
+narrative has none.
+
+**6. Set it done.** `done` means you have read the account against your notes and it is complete, and it is your call,
+not the tool's. When you decide it is, run:
+
+```text
+uv run scat set-status saturday-at-the-tool-library done
+uv run scat check
+```
+
+The first prints `changed narrative/saturday-at-the-tool-library.md` and a note that `status` was set to `done`. The
+second prints `no problems`. The group, concern and affordance pages are still stubs. That does not stop a clean check,
+and you fill them in as you code more narratives.
+
+**7. Save it.** Commit the work in your vault folder:
+
+```text
+git add .
+git commit -m "My first narrative"
+```
+
+That is the solo trial. If it worked, plan your first event in [Planning](planning.md), or code more notes with
+[Coding](coding.md). To hand a finished model over, see [Lock a version](coding.md#lock-a-version).
+
 ## Where next
 
 Set up? Then pick where to go next:
 
+- [The solo trial](#the-solo-trial): code one narrative of your own, start to finish, in one sitting.
 - [Planning](planning.md): decide your sessions, your groups and your framing, before the event.
 - [Coding](coding.md): when you already have field notes.
 - [Home](index.md): what SCAT is and why it has its name.
