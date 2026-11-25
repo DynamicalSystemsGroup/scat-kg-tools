@@ -16,7 +16,11 @@ the team; each item waits for you when you have a moment.
    pane. Use stays light and human-paced. I'll ask in chat when the spike is ready, not before.
 2a. **Done: RS3's lab run worked end to end** (D-090). Tailscale stays installed and signed in; HTTPS and the Funnel
    policy stay enabled on your tailnet; Funnel itself is off and the lab MCP entry is deleted.
-3. **WP8-U1, held since D-042:** a test edit only you can authorise. Two assertions in `tests/ops/test_ops_stub.py`
+2b. **Your template checkout will conflict on pull.** The migrated template on `dev` adds `bases: true` to
+   `.obsidian/`; your uncommitted edits in `scat-kg-template/.obsidian/` (`core-plugins.json`, `app.json`) were left
+   untouched, so a `git pull` there will stop on them. Commit, stash or discard them as you prefer before pulling.
+3. **WP8-U1, held since D-042:** a test edit only you can authorise. (WP16 had to touch the file to drop a removed
+   import; the held assertions are byte-identical.) Two assertions in `tests/ops/test_ops_stub.py`
    assert old behaviour (`stub` on an existing page of the same type is now a no-op; `set-status done` reports the
    page's check). The intended edits are as strong as before: `not r.ok` becomes
    `r.ok and r.unchanged == ("concern/a.md",)`, and the same-type refusal row becomes a different-type row. Fixes are
