@@ -408,7 +408,7 @@ The launcher's messages, and what to do.
 
 | The window says | Do this |
 |---|---|
-| "SCAT Chat needs Docker Desktop, which is not installed." | The launcher found no `docker` command. Install Colima and docker as under "Install once", step 1 (or Docker Desktop), then click SCAT Chat. The message names Docker Desktop even when you use Colima. |
+| "SCAT Chat needs a container runtime: Colima (recommended) or Docker Desktop. Neither is installed." | Install Colima as shown under "Install once" (or Docker Desktop, untested), then click SCAT Chat. |
 | "Docker Desktop is not running." | You use Docker Desktop. Open it from your Applications folder, wait until it says it is running, then click SCAT Chat. |
 | "Colima would not start." | Restart your Mac, then click SCAT Chat again. If it repeats, tell the person who set this up. |
 | "Docker does not answer." | Restart your Mac, then click SCAT Chat again. |
