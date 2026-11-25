@@ -2118,3 +2118,9 @@ Release timing for C3 to C8 is put to the chief engineer as one follow-up (D-103
 
 Asked as one follow-up to D-102 (are C3 to C8 also in v0.1?). The chief engineer chose "Yes, all in v0.1". All of
 C1 to C8 are built before the release PRs.
+
+## D-104 | 2026-11-25 | WP17-U3b: the schema edit is allowed
+
+Asked whether `scat draw --out` may save outside the vault (the one-line machine-interface schema edit, guard-refused
+and held, D-093) or drawings stay inside the vault. The chief engineer chose "Allow the schema edit". The schema gains
+`draw` beside `export-edges`; the code is unchanged.
