@@ -10,11 +10,11 @@ section of `contracts/architecture.md`.
 
 | Q | Recommendation (short) | Decision | Reason, or where taken up |
 |---|---|---|---|
-| Q1 | Make the coder's authority something the tool enforces: only the coder's act sets `done`, no tool command or assistant path writes it, the tool refuses `done` while the check fails; the assistant's permitted and forbidden acts in one short file. | **Taken up in part.** The refusal and the one file are taken; "no tool command writes `done`" is taken for the MCP server only. | Refusal: M5 refuses `done` while the page has an error (section 3). The one file: section 2, written under `contracts/` by WP18. MCP: M8 offers no way to set `done` (sections 2, 3). Set aside for the CLI and REPL: G4 gives the coder a set-status operation, and an IDE agent can run it, so there the guard is the file and the refusal. Also set aside: a required field naming who confirmed, and an identity whitelist (the organiser starts alone; git records who). |
+| Q1 | Make the coder's authority something the tool enforces: only the coder's act sets `done`, no tool command or assistant path writes it, the tool refuses `done` while the check fails; the assistant's permitted and forbidden acts in one short file. | **Taken up in part.** The graded refusal, the coder-only transitions and the one file are taken; "no tool command writes `done`" is taken for the MCP server only. | Refusal: M5 grades the page as it would stand at `done`, one link away, rule 3 and the edges it names included, and refuses on an error; this is new (WP16), and section 3 names the docs and tests it changes. Transitions: only M7's set status crosses `done`, in both directions; M8 crosses it in neither (sections 2, 3). The one file: section 2, written under `contracts/` by WP18. Set aside for the CLI and REPL: G4 gives the coder a set-status operation and an IDE agent can run it, so there the guard is the file, git review and the refusal; the residual risk goes to the ACE (section 6). Also set aside: a required field naming who confirmed, and an identity whitelist (the organiser starts alone; git records who).
 | Q2 | State model, view and control in a table; make the ontology file the single source from which checks are generated; regenerate every view after each passing check; add a regenerate-and-diff gate to the tool's tests. | **Taken up in part.** | Table: section 1. Single source: M0 is the one source of types, fields and ends (R-13). Not taken: generating every check from the ontology. The toolchain readout chose pydantic and plain Python with no rule language, and the mismatch rules compare forms, which the ontology does not express; they are code that uses M0's terms. Views: M6 refuses unless the checks pass, and its output is deterministic, so diffing a regeneration is a test (section 1, rule 2). The two return paths of the loop (tool failure to coding, doubt to interpreting) are in section 5. The CI step on the template's views belongs to WP17. |
 | Q3 | Context, not an action; meanwhile: file name equals id, a page never restates what another page's fields hold, index pages generated, every mismatch in R-23's list reported with a fix; give WP16 the guidance-versus-example gap as a test case. | **Taken up.** The page-or-field option stays open for WP16. | File name equals link target: already the page contracts' rule (section 2 of `page-contracts.md`), kept. No restating: a constraint on WP16 (section 6, R-21). Index pages: written by M5, never read by the loader (section 1). Every link resolves: M3. Mismatches with fixes: section 4. The test case is for the ACE to put into WP16's scope; this document cannot, and no module depends on it. |
-| Q4 | Keep the tool's report and the coder's confirmation in different places with different writers; no rule reads content or infers from a name; option: a waiver mechanism. | **Taken up, except the waiver.** | Writers: M3 and M4 never write (R-4) and `done` is the coder's act (section 2). Inference: M4 reads only the four forms (section 4), never names or prose; the existing basic mention warning stays under the mission's non-goal. Waiver set aside: no requirement traces to it, it adds a stored field, and R-1 already separates errors that block from warnings that do not. The one place it would pay is a repeating link-without-edge warning; section 6 hands that to the ACE. |
-| Q5 | Build the smallest set that carries the three actors and two checks; record deferrals; fail loudly on unbuilt features; regression tests before any change touching many entries; the assistant never rewrites a `done` entry. | **Taken up.** The three process traces (every documented command exists; scratch outside tracked content; one audience per doc tree) are set aside. | Smallest set: eleven modules, no graph store, the MCP server built on M7 (section 3). Deferrals are the mission's non-goals. Unbuilt calls refuse (section 3 introduction). Regression tests: operation snapshot tests (R-4) and the generator test of section 4. `done`: M5 never changes an entry that is `done` and never writes a narrative's text. Set aside: the command test is R-9's, and the other two concern repository and docs hygiene, which are not architecture and trace only to the builders' heuristic. |
+| Q4 | Keep the tool's report and the coder's confirmation in different places with different writers; no rule reads content or infers from a name; option: a waiver mechanism. | **Taken up, except the waiver.** | Writers: M3 and M4 never write (R-4) and `done` is the coder's act (section 2). Inference: M3 and M4 detect from the four forms (section 4) and never from names or prose; the existing basic mention warning stays under the mission's non-goal, and locating where an account names a node, to offer a link fix, reads the account but detects nothing. Waiver set aside: no requirement traces to it, it adds a stored field, and R-1 already separates errors that block from warnings that do not. The one place it would pay is a repeating link-without-edge warning; section 6 hands the choice for that rule to the ACE. |
+| Q5 | Build the smallest set that carries the three actors and two checks; record deferrals; fail loudly on unbuilt features; regression tests before any change touching many entries; the assistant never rewrites a `done` entry. | **Taken up.** The three process traces (every documented command exists; scratch outside tracked content; one audience per doc tree) are set aside. | Smallest set: eleven modules, no graph store, the MCP server built on M7 (section 3). Deferrals are the mission's non-goals. Unbuilt calls refuse (section 3 introduction). Regression tests: operation snapshot tests (R-4) and the generator test of section 4. `done`: M5 never writes a narrative's text, and record and remove edge refuse when the edge or a narrative they add or drop is `done`, naming the coder's step (section 3). Set aside: the command test is R-9's, and the other two concern repository and docs hygiene, which are not architecture and trace only to the builders' heuristic. |
 
 ## Reviews
 
@@ -75,3 +75,63 @@ Fragments (document notation): **F1 L-N.** `n1 draft links: allocation`; `holds(
 **Verdict C: not ready for detailed design.** Findings 1 and 2 are blocking, each a small edit to M5's contract.
 
 ## Findings and answers
+
+"Fixed" cites the section of `contracts/architecture.md` that now holds the answer. "Answered" means no change, with the
+reason. "ACE" means the item is a slot in section 6 with options, not a decision. The document is at 2,499 words, so
+some fixes are short and some answers sit here.
+
+### Reviewer A
+
+| # | Blocking | Answer | Reason |
+|---|---|---|---|
+| 1 | BLOCKING | Fixed (3, 2) | Record and remove edge, the `done` refusal and the problems a write leaves are marked new (WP16). Only M7's set status crosses `done`, both ways, so "set the edge to `draft`" is the coder's step. No module applies a fix to a narrative's text; the coder does, in Obsidian (5). |
+| 2 | BLOCKING | Fixed (3, 4) | M5 grades the page as it would stand at `done`, one link away. N–T now says M5 refuses `done` while the case holds, and a later edit breaks it on the edge. |
+| 3 | BLOCKING | Fixed (3, 4) | M3 owns rules 1 and 2 (conformance); M4 owns rules 3 and 4 and alone is job (i); a round-trip test covers M1; E–N and E–T are labelled conformance. |
+| 4 | | Fixed (3, 4) | "One problem per mismatch per anchor", with paired rule ids (a warning id and an error id). |
+| 5 | | Fixed (4, 6) | Property 2 now covers rules 1 to 3; rule 4's severity is the ACE's call. |
+| 6 | | Fixed in part (1, 3) | "Only operations write through the tool". Stored output (index pages, view files) is generated by M5 and ignored by the loader, so it is not an entry or a view. The Obsidian layout is a view realised by M5's index pages and M10's settings, with WP16 designing it; it has no module of its own. |
+| 7 | | Fixed (4) | The fragment is retyped (scenario, architecture), `dry-july` links `allocation` only, Case 1 is L–N with the drop-from-edge fix, and rule 3 is said to outrank the discouraged-link warning. |
+| 8 | | Fixed in part (4, 5) | Editing stays in Obsidian and the coder runs the check. J2's fingerprint in Obsidian is the layout, not a module (see 6). |
+| 9 | | Fixed (2, 3, 6) | Authority holds by construction on the chat path and by file and git review on the IDE path; the residual risk is ACE item (b). M3 names the mention warning as its one reading of content. |
+| 10 | | Fixed in part (5, 6) | Terminal-free git is a named step; J10 chat ends with it. The RS3 notes are on a side branch until RS3 reports, and the slot quotes them. Provider-neutral prompts and skills: answered, M8's contract is the tool calls and WP18 owns the rest. |
+
+### Reviewer B
+
+| # | Blocking | Answer | Reason |
+|---|---|---|---|
+| 1 | BLOCKING | Fixed (3) | Transitions into and out of `done` are the coder's; M7 keeps both, M8 offers neither; M5's two edge operations refuse on `done` entries. The rule fits "done is not frozen": the coder sets `draft`, edits, sets `done`. |
+| 2 | BLOCKING | Fixed (3) | Graded as at `done`, marked new (WP16); `docs/coding.md`, `tests/ops/test_ops_status.py` and the fix-harness tests are named as changed. R-18's impact map is the PM's for WP16. |
+| 3 | BLOCKING | Fixed (3, 5, 6) | M8 holds one clone fixed at setup and reads it afresh on each call; an edit elsewhere shows once git brings it. Terminal-free git (clone, commit, push, tag, keeping the clone current) is owned by the coder's tools; RS3 stays open only on how it is done. Who may call the server stays in the RS3 route (authentication is transport). |
+| 4 | | Fixed (2, 6) | Stated as by construction on the chat path and by convention on the IDE path; the ACE accepts or not (item b). |
+| 5 | | Fixed (5) | "No module writes a narrative's text"; a future apply-fix must not either. |
+| 6 | | Fixed in part (1, 3, 6) | Stored views sit in one folder, stamped with the commit, ignored by the loader, written by M5. Equality is on view data (WP17 slot). A text form Obsidian renders is WP18's, with the folder's name; accepted, residual. |
+| 7 | | Answered | A result size limit, prompt support and tool-calling models are RS3 and WP18 evidence, not architecture; M8's contract is the tool calls and M2 documents. Accepted, residual. |
+| 8 | | Fixed in part (5) | J9 manual names M7's view calls; J8 chat says narrative text arrives by paste or download. The inputs boundary and J4's AI-use choice are the docs' (deliverable D-4); answered. |
+
+### Reviewer C
+
+| # | Blocking | Answer | Reason |
+|---|---|---|---|
+| 1 | BLOCKING | Fixed (3, 4) | M5 grades as at `done`. The test the reviewer asks for (an edge naming a narrative that lacks an end; setting the edge to `done` is refused) is WP16's, listed with the changed tests. |
+| 2 | BLOCKING | Fixed (3, 4) | Only M7's set status crosses `done`; record and remove edge refuse when the edge, or a narrative they add or drop, is `done`, naming the coder's step. Case 3 shows it. |
+| 3 | | Fixed (3) | The refusal, the problems a write leaves, the missing-folder refusal and the name refusal are marked new, or M7's. |
+| 4 | | Fixed (3, 4) | Paired rule ids; "one problem per mismatch per anchor". |
+| 5 | | Fixed (6) | "M1 hides the choice" is gone. The slot now says recording an edge writes no other entry and one seam reads the storage and builds edits. |
+| 6 | | Fixed (2, 4) | A fix no edit can express is manual (L–N's link where the name does not appear); drop-n-from-the-edge is added to L–N; locating where the account names a node only locates (Q4 row). |
+| 7 | | Fixed (4) | A forgotten edge is stated as graded by no rule, the fingerprint view shows it, and rule 4 on other narratives is two links away and shows on their own check or the vault scope. Reviewer C's neighbourhood case (from the unlinked end) is covered by anchoring on the narrative, whose page check reads the graph. |
+| 8 | | Fixed in part (4, 6) | A rename's fix is relinking, not stubbing (E–N). Severities of rule 1, including a duplicate pair, are the rule catalogue's, WP16's; the slot says recording on an existing pair adds its narratives. |
+| 9 | | Fixed (3) | M6 refuses only on errors in the pages it draws, and takes M3's report as input. |
+| 10 | | ACE (6) | Slot (a) lists options A, B and C; the document decides none, and section 4 says rule 4's severity follows the ACE. |
+
+Reviewer C's fragments: F1 and F2 are covered by M5's grading; F3 by the E–T row (recording stubs the narrative; by
+hand it is a dangling link); F4 by the E–N row; F5 and F6 by the WP16 and ACE slots; F7 and F8 by M5's refusal on a
+wrong layer, whose arguments are WP16's.
+
+### Items for the ACE
+
+1. Rule 4 (link without edge): options A, B or C (section 6, slot a).
+2. The IDE path's residual authority risk (slot b).
+3. The readout's guidance-versus-example gap, carried into WP16's scope as a test case (slot c).
+4. Not in the ACE's slot but worth a look: the `done` refusal and the two edge operations' refusals change today's
+   behaviour (`set_status` is unchecked) and need WP16's impact map to list `docs/coding.md`,
+   `tests/ops/test_ops_status.py` and the fix-harness tests.
