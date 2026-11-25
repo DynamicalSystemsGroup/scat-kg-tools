@@ -529,9 +529,17 @@ serves this mission as written; a change that would alter the mission goes to th
 - **The past/future mark** is a field on the narrative page.
   Working field name `timeframe`, with the values `past`, `future` and `mixed`. Like every required field (R-3), a missing
   value is an error on a `done` page and a warning before.
-- **Coding in place.** A narrative is coded by linking the concepts it names where they appear in its text, so the
-  account keeps its words; edges that the text doesn't name inline are recorded on the page. The schema-and-projection
-  package settles the details, checked in Obsidian (G15).
+- **Links are not edges.** An Obsidian link is a reference in a Markdown file; an edge is a typed fact in the model.
+  The tools read the links and decide what they mean, and nothing else does:
+  - a link from a narrative to a vertex says the narrative mentions it (coding in place: names are linked where they
+    appear, so the account keeps its words);
+  - an edge is its own record, naming its two vertices and the narratives that refer to it; a link from a narrative to
+    a vertex never creates an edge;
+  - the checks hold the two in step: every edge's endpoints have the right classes (R-1), and an edge that names a
+    narrative has both its vertices mentioned by that narrative, so a support is always a closed subgraph. A narrative
+    that breaks this cannot be `done`.
+
+  The schema-and-projection package settles how edges are written and shown, checked in Obsidian (G15).
 - **The relationship** has only the same-class rule; it is never entailed, never required and never in an index's
   required links. Whether it is a page or a field is decided by the projection design (G15). The earlier typed
   `conflicts` link between concerns, and its rule `SCAT-CONFLICT-SELF`, leave the release; existing values migrate to
