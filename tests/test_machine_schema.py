@@ -103,7 +103,7 @@ STEPS = fix(
         option(
             "exact",
             "delete the file",
-            edits=[{"action": "delete-file", "file": "heldby/x.md"}],
+            edits=[{"action": "delete-file", "file": "narrative/x.md"}],
             command=cmd(["index"], "scat_kg.index()"),
         ),
         option(
@@ -130,8 +130,8 @@ STEPS = fix(
     sequence=True,
 )
 
-# SCAT-REL-DUPLICATE: the notes merge (author), then delete the file, then run index, then fix the links
-REL_DUPLICATE = fix(
+# SCAT-DRAFT-TABLE-DUPLICATE: the notes merge (author), then delete the file, then run index, then fix the links
+TABLE_DUPLICATE = fix(
     "exact",
     [
         option(
@@ -140,7 +140,7 @@ REL_DUPLICATE = fix(
             edits=[
                 {
                     "action": "set-field",
-                    "file": "heldby/kept.md",
+                    "file": "narrative/kept.md",
                     "field": "notes",
                     "value": "<the two notes, joined>",
                     "author_slot": "<the two notes, joined>",
@@ -148,7 +148,9 @@ REL_DUPLICATE = fix(
             ],
         ),
         option(
-            "exact", "delete the page", edits=[{"action": "delete-file", "file": "heldby/dup.md"}]
+            "exact",
+            "delete the page",
+            edits=[{"action": "delete-file", "file": "narrative/dup.md"}],
         ),
         option("exact", "run `scat index`", command=cmd(["index"], "scat_kg.index()")),
         option(
@@ -168,30 +170,30 @@ REL_DUPLICATE = fix(
     head="Fix, steps in this order:",
     sequence=True,
 )
-# SCAT-RAW-UNCODED: the author chooses the name that appears in the command
-RAW_UNCODED = fix(
+# SCAT-DRAFT-TABLE-TYPE: the author chooses the name that appears in the command
+TABLE_TYPE_SLOT = fix(
     "slot",
     [
         option(
             "slot",
-            "add the coded link (author: choose the name)",
+            "name the node the row end links to (author: choose the name)",
             edits=[
                 {
                     "action": "set-field",
-                    "file": "raw/r.md",
-                    "field": "coded",
-                    "value": ["[[<coded-page-name>]]"],
-                    "author_slot": "<coded-page-name>",
+                    "file": "narrative/n.md",
+                    "field": "description",
+                    "value": "<node-name>",
+                    "author_slot": "<node-name>",
                 }
             ],
         ),
         option(
             "slot",
-            "run `scat stub <coded-page-name> --type concern`",
+            "run `scat stub <node-name> --type concern`",
             command=cmd(
-                ["stub", "<coded-page-name>", "--type", "concern"],
-                'scat_kg.stub("<coded-page-name>", type="concern")',
-                author_slot="<coded-page-name>",
+                ["stub", "<node-name>", "--type", "concern"],
+                'scat_kg.stub("<node-name>", type="concern")',
+                author_slot="<node-name>",
             ),
         ),
     ],
@@ -209,9 +211,9 @@ CHECK = doc(
         problem("SCAT-DONE-FIELD", "error", SLOT, field="description"),
         problem("SCAT-NOTE-X", "warning", ADVISORY, line=None, column=None, field=None),
         problem("SCAT-FM-PARSE", "error", MANUAL, repeat=2),
-        problem("SCAT-REL-DUPLICATE", "warning", STEPS),
-        problem("SCAT-REL-DUPLICATE", "warning", REL_DUPLICATE, file="heldby/dup.md"),
-        problem("SCAT-RAW-UNCODED", "warning", RAW_UNCODED, file="raw/r.md"),
+        problem("SCAT-DRAFT-TABLE-DUPLICATE", "warning", STEPS),
+        problem("SCAT-DRAFT-TABLE-DUPLICATE", "warning", TABLE_DUPLICATE, file="narrative/dup.md"),
+        problem("SCAT-DRAFT-TABLE-TYPE", "warning", TABLE_TYPE_SLOT, file="narrative/n.md"),
     ],
 )
 CLEAN = doc("check", "check", True, problems=[])

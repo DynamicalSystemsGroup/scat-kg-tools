@@ -75,6 +75,7 @@ def test_stub_twice_changes_nothing_the_second_time(make_vault, snap):
         ("x" * 65, "concern", "64"),
         ("a", "holds", "record-edge"),
         ("a", "index", "scat index"),
+        # retired on purpose: the removed relation type is refused
         ("a", "heldby", "use one of"),
         ("a", "nonsense", "use one of"),
         ("taken", "concern", "already"),

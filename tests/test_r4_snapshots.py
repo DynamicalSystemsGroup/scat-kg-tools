@@ -15,7 +15,7 @@ import scat_kg
 from scat_kg import cli
 
 EXAMPLES = Path(__file__).parents[1] / "contracts" / "examples"
-HELDBY = "narrative/saturday-at-the-lending-desk.md"  # the page the defect is seeded in
+SEEDED_NARRATIVE = "narrative/saturday-at-the-lending-desk.md"  # the page the defect is seeded in
 
 
 def snapshot(root: Path) -> dict[str, tuple]:
@@ -45,7 +45,7 @@ def seeded_vault(tmp_path: Path, name: str) -> Path:
     """The examples with one dangling link and a missing index file."""
     root = tmp_path / name
     shutil.copytree(EXAMPLES, root)
-    page = root / HELDBY
+    page = root / SEEDED_NARRATIVE
     page.write_text(
         page.read_text(encoding="utf-8").replace("[[careful-record-keeping]]", "[[ghost]]"),
         encoding="utf-8",
@@ -59,17 +59,25 @@ NONE: dict[str, str] = {}
 # name -> (API call, the same as CLI arguments, the paths it may write and how)
 CASES = {
     "check-vault": (lambda r: scat_kg.check(root=r), ["check"], NONE),
-    "check-page": (lambda r: scat_kg.check(HELDBY, root=r), ["check", HELDBY], NONE),
+    "check-page": (
+        lambda r: scat_kg.check(SEEDED_NARRATIVE, root=r),
+        ["check", SEEDED_NARRATIVE],
+        NONE,
+    ),
     "check-neighborhood": (
-        lambda r: scat_kg.check(HELDBY, neighborhood=True, root=r),
-        ["check", HELDBY, "--neighborhood"],
+        lambda r: scat_kg.check(SEEDED_NARRATIVE, neighborhood=True, root=r),
+        ["check", SEEDED_NARRATIVE, "--neighborhood"],
         NONE,
     ),
     "status-vault": (lambda r: scat_kg.status(root=r), ["status"], NONE),
-    "status-page": (lambda r: scat_kg.status(HELDBY, root=r), ["status", HELDBY], NONE),
+    "status-page": (
+        lambda r: scat_kg.status(SEEDED_NARRATIVE, root=r),
+        ["status", SEEDED_NARRATIVE],
+        NONE,
+    ),
     "status-neighborhood": (
-        lambda r: scat_kg.status(HELDBY, neighborhood=True, root=r),
-        ["status", HELDBY, "--neighborhood"],
+        lambda r: scat_kg.status(SEEDED_NARRATIVE, neighborhood=True, root=r),
+        ["status", SEEDED_NARRATIVE, "--neighborhood"],
         NONE,
     ),
     "set-status": (
@@ -113,8 +121,8 @@ CASES = {
         {"concern/ghost.md": "created"},
     ),
     "stub-links-page": (
-        lambda r: scat_kg.stub_links(HELDBY, root=r),
-        ["stub-links", HELDBY],
+        lambda r: scat_kg.stub_links(SEEDED_NARRATIVE, root=r),
+        ["stub-links", SEEDED_NARRATIVE],
         {"concern/ghost.md": "created"},
     ),
     # refusals write nothing
