@@ -121,8 +121,8 @@ Fixed (ACE):
 - **Wording:** "demo vault" becomes "worked example"; "neighbourhood" becomes "neighborhood", to match the CLI flag.
 - **Header:** the ACE row now says "escalates only intent gaps".
 - **Breakdown:** D-1 (the Turtle) is fixed by WP2, not WP3. WP3 now names the Python API.
-- **Defaults:** dropped an unverified claim that bike-share differs from every DSG domain (`eBike-GDS-documentation`
-  exists).
+- **Defaults:** dropped an unverified claim that bike-share differs from every DSG domain (an earlier private
+  bike-domain repository exists; its name redacted under D-082).
 - **Open decisions:** the section was stale (it only cited D-001 and D-002) and now points to the log.
 - **ORG.md and pm.md:** the duplicated tester rules are replaced by a pointer to UA-A; testers' models follow UA-A;
   loop step 6 now follows the candidate → UA-A → guide → PRs → walkthrough sequence.
@@ -1749,3 +1749,23 @@ moves to `contracts/architecture.md`, outside WP16's `docs/` edits, as the chang
 9. The two pins: the PM schedules them in the WP8 and WP11 pattern.
 10. `spike/analysis` and `spike/obsidian-plugin` stay as they are.
 11. WP16 runs one cold-reader round on the flow and consent pages (carried from WP13-R4).
+
+## D-082 | 2026-11-24 | WP14 accepted; a private name redacted from an old entry
+
+**WP14 accepted.** Evidence, re-run by the ACE: the readout's body is 1,735 words (cap 1,800, source table excluded);
+a grep of the whole repository for each private repository's name, outside `decisions/`, finds nothing; the reviewer's
+second round passed R1 to R3; `check_metrics.py --accept WP14` passes (358 records); 990 tests passed on the PM's
+tier-1 run. The five recommendations go to WP15 (WP15-R2 takes each up or sets it aside with a reason).
+
+**Redaction.** The PM flagged that an early entry of this log named a private repository. The chief engineer's rule
+keeps private names out of the public repositories, so that entry now reads "an earlier private bike-domain repository
+exists; its name redacted under D-082". This is the one edit to a past record, made by this decision. The name stays
+in git history; the morning list carries it with the other history items.
+
+## D-083 | 2026-11-24 | WP15 (architecture document and review) approved
+
+`work-packages/WP15.md`, as drafted and corrected in D-081: `contracts/architecture.md` with model, views and control,
+the three actors and two authorities, modules with contracts, links and edges, the coding loop and the journey traced
+across modules, and what is left open; three architecture reviewers (two Sonnet, one Opus for the cross-cutting
+contracts and links and edges). WP14 is accepted, so the ordering in `MISSION.md` (Governance, "The plan") holds.
+RS3 runs beside it; its live part waits for the chief engineer's sign-ins.
