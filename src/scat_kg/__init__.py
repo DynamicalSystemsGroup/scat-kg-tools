@@ -72,6 +72,11 @@ class CheckResult:
     __repr__ = __str__
 
 
+def _wrap(report: Report | Result) -> CheckResult | Result:
+    # TODO(WP16-U6): the checks return the standard refusal until they are rebuilt.
+    return report if isinstance(report, Result) else CheckResult(report)
+
+
 def check(
     page: str | None = None, *, neighborhood: bool = False, root: str | Path = "."
 ) -> CheckResult | Result:
@@ -85,12 +90,12 @@ def check(
             return refused(
                 op, "neighborhood", "this scope needs a page", "give the page's name or path"
             )
-        return CheckResult(check_vault(vault))
+        return _wrap(check_vault(vault))
     found, bad = find_page(op, vault, page)
     if bad:
         return bad
     run = check_neighborhood if neighborhood else check_page
-    return CheckResult(run(vault, found))
+    return _wrap(run(vault, found))
 
 
 def status(

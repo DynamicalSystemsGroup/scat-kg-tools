@@ -72,6 +72,19 @@ def refused(operation: str, subject: str, why: str, fix: str) -> Result:
     return Result(operation, refused=(Refusal(subject, why, fix),))
 
 
+NOT_BUILT = "not built yet (WP16-U6 / WP16-U7)"
+
+
+def not_built(operation: str) -> Result:
+    """The standard refusal of a call that is not rebuilt for the row model yet (WP16-U6 checks, WP16-U7 operations)."""
+    return refused(
+        operation,
+        operation,
+        NOT_BUILT,
+        "read the vault with `scat_kg.graph.load` until the call is rebuilt",
+    )
+
+
 def run_option(text: str, argv: tuple[str, ...], repl: str, slot: str | None = None) -> FixOption:
     """An option that is a command: exact, or a slot when argv holds a placeholder the author replaces."""
     return FixOption("exact" if slot is None else "slot", text, Command(argv, repl, slot))

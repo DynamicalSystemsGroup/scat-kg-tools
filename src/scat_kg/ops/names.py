@@ -1,29 +1,19 @@
-"""Page names and titles: the contract's section 2, and the class pages' names (section 8)."""
+"""Page names and titles: the contract's section 2."""
 
 import re
 import unicodedata
 
 from scat_kg.tbox import TBOX
 
-# Section 8: the seven class pages, name -> (indexes value, default title), read from the TBox. The
-# default descriptions are the TBox's `pageDescription` of the `indexes` type.
-CLASS_PAGES = {n: (c.indexes, c.title) for n, c in TBOX.class_pages.items()}
-
 RESERVED = frozenset(
-    {"con", "prn", "aux", "nul"}
-    | {f"com{i}" for i in range(10)}
-    | {f"lpt{i}" for i in range(10)}
-    | set(CLASS_PAGES)
+    {"con", "prn", "aux", "nul"} | {f"com{i}" for i in range(10)} | {f"lpt{i}" for i in range(10)}
 )
 
 MAX_NAME = 64
 _SLUG = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 
-# Page types a stub operation may create for a given name: the four classes and the four records.
-# (Relation pages come only from a named pair, class pages only from the index operation.)
-STUBBABLE = tuple(
-    s for s, t in TBOX.page_types.items() if t.endpoint_order is None and s != "class"
-)
+# Page types a stub operation may create for a given name: the node types and the narrative (from the TBox).
+STUBBABLE = (*TBOX.layers, TBOX.table_type.slug)
 
 
 def name_problem(name: str) -> str | None:

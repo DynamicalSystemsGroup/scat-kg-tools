@@ -4,7 +4,7 @@ from pathlib import Path
 
 from scat_kg.models import MODELS
 from scat_kg.tbox import TBOX
-from scat_kg.vault import LINK_KEYS, read_vault
+from scat_kg.vault import read_vault
 
 EXAMPLES = Path(__file__).parents[1] / "contracts" / "examples"
 
@@ -30,15 +30,14 @@ def snapshot(root: Path) -> dict[str, tuple]:
 
 def test_example_vault_pages_and_types():
     v = read_vault(EXAMPLES)
-    assert len(v.pages) == 25
+    assert len(v.pages) == 13
     assert Counter(p.type for p in v.pages) == {
-        "stakeholder-group": 3, "concern": 3, "affordance": 1, "technology": 1,
-        "heldby": 4, "addresses": 1, "attributes": 1,
-        "scenario-raw": 1, "scenario-coded": 1, "architecture-raw": 1, "architecture-coded": 1,
-        "class": 7,
+        "group": 3, "concern": 3, "affordance": 2, "technology": 2, "narrative": 3,
     }  # fmt: skip
-    assert set(Counter(p.type for p in v.pages)) == set(TBOX.page_types)
-    assert v.non_pages == ("README.md",)
+    assert set(Counter(p.type for p in v.pages)) == set(TBOX.page_types) - {
+        "index"
+    }  # an index is no page
+    assert v.non_pages == ("README.md",)  # the `index/*.base` files are not read at all
     assert all(p.frontmatter_error is None and p.model_error is None for p in v.pages)
     assert all(p.model is not None for p in v.pages)
 
@@ -46,7 +45,7 @@ def test_example_vault_pages_and_types():
 def test_example_vault_every_link_resolves():
     v = read_vault(EXAMPLES)
     assert v.dangling() == ()
-    assert sum(len(p.links) for p in v.pages) == 39
+    assert sum(len(p.links) for p in v.pages) == 38
     for p in v.pages:
         for link in p.links:
             assert len(v.by_name[link.target]) == 1
@@ -54,35 +53,38 @@ def test_example_vault_every_link_resolves():
 
 def test_example_vault_links_backlinks_and_config():
     v = read_vault(EXAMPLES)
-    heldby = v.address("volunteer-staff-holds-safe-handling-of-tools").page
-    assert {k: [l.target for l in ls] for k, ls in heldby.fm_links.items()} == {
-        "group": ["volunteer-staff"],
-        "concern": ["safe-handling-of-tools"],
-    }
-    assert heldby.fm_links["group"][0].line == heldby.field_lines["group"] == 6
     careful = v.address("careful-record-keeping").page
-    assert careful.fm_links["conflicts"][0].target == "quick-checkout"
-    sources = {(b.source, b.field) for b in v.inbound("quick-checkout")}
-    assert ("concern/careful-record-keeping.md", "conflicts") in sources
-    assert ("class/concerns.md", None) in sources
+    assert [(l.target, l.line) for l in careful.body_links] == [("quick-checkout", 8)]
+    sources = {b.source for b in v.inbound("quick-checkout")}
+    assert "concern/careful-record-keeping.md" in sources
+    assert "narrative/self-service-kiosk-pitch.md" in sources
+    # a link in a table cell is a link of the page: the alias and the escaped bar are read as the name
+    pitch = v.address("self-service-kiosk-pitch").page
+    assert "self-checkout" in {l.target for l in pitch.body_links}
     assert v.config.cap == 3 and v.config.problem is None
-    assert [p.name for p in v.of_type("stakeholder-group")] == [
-        "borrowers", "funders", "volunteer-staff",
-    ]  # fmt: skip
+    assert [p.name for p in v.of_type("group")] == ["borrowers", "funders", "volunteer-staff"]
+
+
+def test_non_markdown_files_are_ignored(make_vault):
+    root = make_vault({
+        "index/concern.base": "filters:\n  and:\n    - 'note.type == \"concern\"'\n",
+        "notes.txt": "---\ntype: concern\n---\n",
+        "concern/a.md": page("concern"),
+    })  # fmt: skip
+    v = read_vault(root)
+    assert [p.path for p in v.pages] == ["concern/a.md"] and v.non_pages == ()
 
 
 def test_models_come_from_the_tbox():
     assert set(MODELS) == set(TBOX.page_types)
     for slug, t in TBOX.page_types.items():
         assert set(MODELS[slug].model_fields) == {f.key for f in t.fields} | {"type"}
-    assert LINK_KEYS == {"group", "concern", "affordance", "technology", "conflicts", "groups",
-                         "concerns", "affordances", "technologies", "raw", "coded"}  # fmt: skip
 
 
 def test_model_shape_errors_are_data(make_vault):
     root = make_vault({
-        "concern/a.md": page("concern", extra="conflicts: \"[[b]]\"\n"),  # a list field, written scalar
-        "heldby/h.md": page("heldby", extra="group:\n  - \"[[a]]\"\n"),  # single field, written list
+        "narrative/a.md": page("narrative", extra="timeframe: someday\n"),  # outside its value set
+        "narrative/h.md": page("narrative", extra="kind: report\n"),  # outside its value set
         "concern/s.md": "---\ntype: concern\nstatus: soon\ntitle: x\n---\n",
         "concern/ok.md": page("concern", extra="color: red\n"),  # unlisted plain key is ignored
     })  # fmt: skip
@@ -95,13 +97,12 @@ def test_model_shape_errors_are_data(make_vault):
 
 
 def test_crlf_reads_like_lf(make_vault):
-    lf = page("concern", extra='conflicts:\n  - "[[quick]]"\n', body="See [[other]].\nmore\n")
+    lf = page("concern", body="See [[other]].\nmore\n")
     root = make_vault({"a/lf.md": lf, "a/crlf.md": lf.replace("\n", "\r\n").encode()})
     v = read_vault(root)
     lf_page, crlf_page = v.address("lf").page, v.address("crlf").page
     assert crlf_page.frontmatter_error is None
     assert crlf_page.fields == lf_page.fields
-    assert crlf_page.fm_links == lf_page.fm_links
     assert crlf_page.body_links == lf_page.body_links
     assert crlf_page.body == lf_page.body and "\r" not in crlf_page.body
 
@@ -187,57 +188,41 @@ def test_link_extraction(make_vault):
         "    indented [[l]]\n"
         "bad case [[Safety Briefing]]\n"
     )
-    root = make_vault({"a.md": page("scenario-raw", body=body)})
+    root = make_vault({"a.md": page("narrative", body=body)})
     p = read_vault(root).address("a").page
     assert [(l.target, l.line) for l in p.body_links] == [
         ("a", 6), ("b", 6), ("c", 6), ("d", 6), ("e", 6),
         ("i", 8), ("l", 15), ("Safety Briefing", 16),
     ]  # fmt: skip
-    assert all(l.field is None for l in p.body_links)
+    assert p.body_links[0].column == 7 and p.body_links[1].column == 17  # 1-based, of the `[[`
+    assert p.body_links[4].column == 63  # the `[[` of an embed, not its `!`
 
 
-def test_frontmatter_links_keep_what_is_written(make_vault):
-    fm = (
-        'groups:\n  - "[[g1]]"\n  - "[[g2]]"\n'
-        'concerns: ["[[c1]]", "[[c2]]"]\n'
-        "affordances: []\n"
-        'concern: "[[Single]]"\n'
-        'raw:\n  - "[[a|alias]]"\n  - plain\n'
-        'note: "[[ignored]]"\n'
-    )
-    root = make_vault({"a.md": page("scenario-coded", extra=fm, body="[[g1]]\n")})
-    p = read_vault(root).address("a").page
-    seen = {k: [(l.target, l.line) for l in ls] for k, ls in p.fm_links.items()}
-    assert seen == {
-        "groups": [("g1", 6), ("g2", 7)],
-        "concerns": [("c1", 8), ("c2", 8)],
-        "affordances": [],
-        "concern": [("Single", 10)],
-        "raw": [("a|alias", 12)],  # as written: not a bare name, so it will not resolve
-    }
-    assert p.fields["raw"] == ["[[a|alias]]", "plain"]
-    assert p.fields["groups"] == ["[[g1]]", "[[g2]]"]
-    assert "note" not in p.fm_links
-    assert [b.field for b in read_vault(root).inbound("g1")] == ["groups", None]
+def test_links_in_the_frontmatter_are_never_read(make_vault):
+    fm = 'concerns:\n  - "[[g1]]"\nconcern: "[[Single]]"\nnote: "[[ignored]]"\n'
+    root = make_vault({"a.md": page("narrative", extra=fm, body="[[g1]]\n")})
+    v = read_vault(root)
+    p = v.address("a").page
+    assert [(l.target, l.line) for l in p.links] == [("g1", 10)] and p.links == p.body_links
+    assert p.fields["concerns"] == ["[[g1]]"]  # kept as the YAML read it
+    assert [(b.source, b.line) for b in v.inbound("g1")] == [("a.md", 10)]
+    assert v.inbound("Single") == () and v.inbound("ignored") == ()
 
 
-def test_nested_list_from_unquoted_link_is_kept_raw(make_vault):
-    root = make_vault({"a.md": page("concern", extra="conflicts: [[x]]\n")})
-    p = read_vault(root).address("a").page
-    assert p.fields["conflicts"] == [["x"]] and p.fm_links["conflicts"] == ()
+def test_spaces_and_an_escaped_bar_in_a_link_are_read_as_the_name(make_vault):
+    body = "| a | [[ spaced ]] | [[cell\\|alias]] | [[ x \\| y ]] |\n"
+    p = read_vault(make_vault({"a.md": page("narrative", body=body)})).address("a").page
+    assert [l.target for l in p.body_links] == ["spaced", "cell", "x"]
 
 
 def test_dangling_and_case(make_vault):
     root = make_vault({
-        "a.md": page("concern", extra="conflicts:\n  - \"[[Safety]]\"\n  - \"[[b]]\"\n", body="[[gone]]\n"),
+        "a.md": page("concern", body="[[Safety]] [[b]] [[gone]]\n"),
         "b.md": page("concern"),
         "safety.md": page("concern"),
     })  # fmt: skip
     v = read_vault(root)
-    assert [(p.name, l.target, l.field) for p, l in v.dangling()] == [
-        ("a", "Safety", "conflicts"),
-        ("a", "gone", None),
-    ]
+    assert [(p.name, l.target) for p, l in v.dangling()] == [("a", "Safety"), ("a", "gone")]
 
 
 def test_config(make_vault, tmp_path):

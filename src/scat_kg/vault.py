@@ -2,8 +2,8 @@
 
 Reading never writes, and never raises for what is wrong in a vault: a frontmatter that cannot be read,
 a missing or malformed `scat.toml`, a name that is ambiguous or absent are all represented in the result,
-for the checks (a later unit) to grade. The contract is `contracts/page-contracts.md`; "section N" below
-means its sections.
+for the checks to grade. The contract is `contracts/page-contracts.md`; "section N" below means its sections.
+This is the page reader behind the public loader (`scat_kg.graph.load`).
 """
 
 import os
@@ -19,10 +19,6 @@ from pydantic import BaseModel, ValidationError
 from scat_kg.models import MODELS
 from scat_kg.tbox import TBOX
 
-# The keys of the eleven link fields (section 3), whatever page type lists them.
-LINK_KEYS = frozenset(f.key for t in TBOX.page_types.values() for f in t.fields if f.is_link)
-
-_FRONT_LINK = re.compile(r"\[\[(.*)\]\]", re.DOTALL)
 _BODY_LINK = re.compile(r"\[\[([^\[\]\n]*)\]\]")
 _CODE_SPAN = re.compile(r"(`+)(?!`)((?:(?!\n[ \t]*\n).)*?)(?<!`)\1(?!`)", re.DOTALL)
 _FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
@@ -35,11 +31,9 @@ DEFAULT_TEMPLATES_FOLDER = "templates"
 
 @dataclass(frozen=True)
 class Link:
-    target: (
-        str  # the name inside the brackets; in frontmatter exactly as written, in a body stripped
-    )
+    target: str  # the page name inside the brackets, trimmed, alias, heading and block reference stripped
     line: int  # 1-based line in the file
-    field: str | None  # the frontmatter key it was written under; None for a body link
+    column: int  # 1-based column of the first `[` of the link
 
 
 @dataclass(frozen=True)
@@ -55,10 +49,11 @@ class Page:
     fields: dict[str, Any]  # the frontmatter mapping as YAML read it; {} when unreadable
     field_lines: dict[str, int]  # 1-based file line of each top-level key
     frontmatter_error: FrontmatterError | None
-    fm_links: dict[str, tuple[Link, ...]]  # per link-field key present, items in file order
     body: str  # everything after the closing `---`, with LF line endings
     body_line: int  # 1-based file line of the first body line
-    body_links: tuple[Link, ...]  # page links in the body, in file order (section 3)
+    body_links: tuple[
+        Link, ...
+    ]  # page links in the body, in file order (section 3): the only links
     model: (
         BaseModel | None
     )  # the page type's model of the fields; None if type unknown or shape wrong
@@ -81,7 +76,8 @@ class Page:
 
     @property
     def links(self) -> tuple[Link, ...]:
-        return tuple(l for ls in self.fm_links.values() for l in ls) + self.body_links
+        """Every page link: frontmatter links are never read (section 3)."""
+        return self.body_links
 
 
 @dataclass(frozen=True)
@@ -97,8 +93,8 @@ class VaultConfig:
 @dataclass(frozen=True)
 class Backlink:
     source: str  # path of the page that links
-    field: str | None  # the frontmatter key; None for a body link
     line: int
+    column: int
 
 
 @dataclass(frozen=True)
@@ -137,7 +133,7 @@ class Vault:
         return self.backlinks.get(name, ())
 
     def dangling(self) -> tuple[tuple[Page, Link], ...]:
-        """Every page link (frontmatter or body) whose target is not the name of a page."""
+        """Every page link whose target is not the name of a page."""
         return tuple((p, l) for p in self.pages for l in p.links if l.target not in self.by_name)
 
     def address(self, ref: str) -> Lookup:
@@ -194,31 +190,6 @@ def _key_lines(lines: list[str], close: int) -> dict[str, int]:
     return found
 
 
-def _frontmatter_links(
-    fields: dict, field_lines: dict[str, int], lines: list[str], close: int
-) -> dict[str, tuple[Link, ...]]:
-    ordered = sorted(field_lines.values())
-    found = {}
-    for key, value in fields.items():
-        if key not in LINK_KEYS or key not in field_lines:
-            continue
-        items = value if isinstance(value, list) else [value]
-        start = field_lines[key]  # 1-based line of the key
-        later = [n for n in ordered if n > start]
-        end = (later[0] if later else close + 1) - 1  # last line that belongs to the key
-        cursor, links = start, []
-        for item in items:
-            m = _FRONT_LINK.fullmatch(item) if isinstance(item, str) else None
-            if not m:
-                continue
-            written = f"[[{m.group(1)}]]"
-            line = next((n for n in range(cursor, end + 1) if written in lines[n - 1]), start)
-            cursor = line + (1 if lines[line - 1].lstrip().startswith("-") else 0)
-            links.append(Link(m.group(1), line, key))
-        found[key] = tuple(links)
-    return found
-
-
 def blank_code(body: str) -> str:
     """The body with fenced code blocks and code spans turned to spaces (line breaks kept)."""
     out, fence = [], None
@@ -237,13 +208,46 @@ def blank_code(body: str) -> str:
     return _CODE_SPAN.sub(lambda m: re.sub(r"[^\n]", " ", m.group(0)), text)
 
 
+def link_target(inner: str) -> str | None:
+    """The page name a link's text (between the brackets) reaches, or None when it is not a page link.
+
+    The alias, heading and block reference are stripped, an escaped bar (`\\|`, as in a table cell) with
+    them, and the name is read trimmed (section 3).
+    """
+    target = re.split(r"[|#^]", inner, maxsplit=1)[0].rstrip("\\").strip()
+    if not target or "." in target or "/" in target:
+        return None
+    return target
+
+
+def fenced_lines(lines: list[str]) -> list[bool]:
+    """For each line, whether it is part of a fenced code block (its fence lines included)."""
+    out, fence = [], None
+    for line in lines:
+        m = _FENCE.match(line)
+        if fence is None and m:
+            fence = (m.group(1)[0], len(m.group(1)))
+            out.append(True)
+        elif fence is not None:
+            if m and m.group(1)[0] == fence[0] and len(m.group(1)) >= fence[1]:
+                fence = None
+            out.append(True)
+        else:
+            out.append(False)
+    return out
+
+
 def _body_links(body: str, first_line: int) -> tuple[Link, ...]:
+    blanked = blank_code(body)
     links = []
-    for m in _BODY_LINK.finditer(blank_code(body)):
-        target = re.split(r"[|#^]", m.group(1), maxsplit=1)[0]
-        if not target or "." in target or "/" in target:
+    for m in _BODY_LINK.finditer(blanked):
+        target = link_target(m.group(1))
+        if target is None:
             continue
-        links.append(Link(target, first_line + body.count("\n", 0, m.start()), None))
+        line_start = blanked.rfind("\n", 0, m.start()) + 1
+        links.append(
+            Link(target, first_line + body.count("\n", 0, m.start()), m.start() - line_start + 1)
+        )
     return tuple(links)
 
 
@@ -258,10 +262,9 @@ def _read_page(path: Path, rel: str) -> Page | None:
     if error is None and "type" not in fields:
         return None
     body, body_line = "", len(lines) + 1
-    field_lines, fm_links, body_links = {}, {}, ()
+    field_lines, body_links = {}, ()
     if error is None:
         field_lines = _key_lines(lines, close)
-        fm_links = _frontmatter_links(fields, field_lines, lines, close)
         body, body_line = "\n".join(lines[close + 1 :]), close + 2
         body_links = _body_links(body, body_line)
     model, model_error = None, None
@@ -276,7 +279,6 @@ def _read_page(path: Path, rel: str) -> Page | None:
         fields=fields,
         field_lines=field_lines,
         frontmatter_error=error,
-        fm_links=fm_links,
         body=body,
         body_line=body_line,
         body_links=body_links,
@@ -329,7 +331,7 @@ def read_vault(root: str | Path) -> Vault:
     for p in pages:
         by_name.setdefault(p.name, []).append(p)
         for l in p.links:
-            inbound.setdefault(l.target, []).append(Backlink(p.path, l.field, l.line))
+            inbound.setdefault(l.target, []).append(Backlink(p.path, l.line, l.column))
     return Vault(
         root=root,
         pages=tuple(pages),
