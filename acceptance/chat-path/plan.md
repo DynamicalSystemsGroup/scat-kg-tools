@@ -83,12 +83,13 @@ only after teardown if a session was opened.
    WP18's docs:** the window's words are the evidence; paste them. If a step fails, see "If a docs step fails".
 2. The key is on his clipboard. **He** pastes it into the chat's server form (address, Streamable HTTPS, API key); the
    hands and the tester never see or type it. The hands fill the other fields as the tester asks.
-3. J5: the tester reasons from the page; the hands get the repository onto the Mac. **Relies on WP18's docs:** the
-   chat-path page names GitHub Desktop but gives no clicks and does not say where on the Mac to clone. If the tester says the page does
-   not say how, that is a finding. The chief engineer then clones the repository into a folder outside Documents,
-   Desktop, Downloads and iCloud (for example `~/SCAT/`), recorded as "a person, because the page left nowhere to
-   go". The hands open the folder as a vault in Obsidian (computer use, if he has granted it; otherwise he does).
-   Obsidian itself is UA-M's: the opening is shown by a listing of the folder, which holds the Obsidian settings.
+3. J5: the tester reasons from the page; the hands get the repository onto the Mac as the page says (GitHub Desktop's
+   Clone, with the Local path set outside Documents, Desktop, Downloads and iCloud). **Relies on WP18's docs:** the
+   chat-path page's GitHub Desktop section. If the tester says the page does not say how, or a step fails as written,
+   that is a finding; the chief engineer then does that step, recorded as "a person, because the page left nowhere to
+   go". The vault is wherever the Local path points. The hands open that folder as a vault in Obsidian (computer use,
+   if he has granted it; otherwise he does). Obsidian itself is UA-M's: the opening is shown by a listing of the folder,
+   which holds the Obsidian settings.
 4. J5's check runs on the untouched template through the chat: one message from the tester, the answer pasted. Then
    the chief engineer clicks **Stop** and the teardown below runs. J6 and J7 need no session.
 5. J6: the hands write the tester's plan words into the file `planning` names, in the vault folder.
@@ -110,9 +111,9 @@ only after teardown if a session was opened.
 3. J9: the four views are asked of the assistant; the tester's reading is two sentences each; the written tables are
    shown in the vault folder (the hands list the folder). If a view sends the tester back to J8, it goes back.
 4. J10: clean whole-vault check through the chat. **Relies on WP18's docs:** saving and pushing from the Mac without a
-   terminal: the page names GitHub Desktop and gives no clicks. If the tester says the page does not say how, that is a
-   finding; the chief engineer then saves and pushes the work in GitHub Desktop at the tester's word. The hand-over is
-   a locked version: the hands then draw the tag as the page gives, on github.com: Releases, Draft a new release, a new
+   terminal, as the page's GitHub Desktop section says. If the tester says the page does not say how, or a step fails
+   as written, that is a finding; the chief engineer then saves and pushes the work in GitHub Desktop at the tester's
+   word. The hand-over is a locked version: the hands then draw the tag as the page gives, on github.com: Releases, Draft a new release, a new
    tag of the tester's name, Publish. No terminal is used. The hands read the tag and the commit it points at, note the
    recipient the hand-over case names (from the tester's words), and paste them back, with a screenshot, for the
    report. The tester stops the session by asking the person; the chief engineer clicks Stop. The deletions the page
@@ -143,8 +144,8 @@ The whole run is light and human-paced. These are the limits *(defaults)*:
 - At most 40 messages to the assistant per tester over the whole journey. Reaching 35 is a signal to stop and
   reckon: the tester says what is left, and the ACE ends the run honestly at the stage reached rather than exceed it.
 - At most one file attachment batch per conversation (the lab notes), small text files only.
-- A pause of at least 15 minutes, with teardown done, between one tester's last sitting and the next tester's first
-  session. No two testers are run on the same day *(default)*, so the three are spread over at least three days.
+- No two testers are run on the same day, so the three are spread over at least three days *(default)*. Each
+  tester's last sitting ends with teardown recorded before the next tester's first session.
 - Each tester has its own sittings in the chief engineer's time; the ACE runs them as the hands and no other person
   or agent drives the chat.
 - No load testing, no retry storms, no use of the chat for anything but the journey.
@@ -239,7 +240,10 @@ list is kept from testers) and the checks below. A hit in a name the tester chos
 
 Run these before the first sitting (the output pasted into the ACE's record):
 
-1. The personas hold no tool vocabulary: a grep of `personas/` for the vocabulary list is empty.
+1. The personas hold no tool vocabulary. The list, run as written, over `personas/` (and the briefs' "Who you are"
+   text): `grep -n -i -w -E 'scat|scat-kg|node|edge|fingerprint|frontmatter|scenario|architecture|narrative|affordance|concern|technology|coder|vault|status|schema|mcp|cli|repl|clone|commit|push|branch|tag|pull request' personas/*`.
+   It must be empty. Words natural to the person are allowed only because the persona states them: repository,
+   GitHub, Obsidian, Terminal, link, page.
 2. Each brief has J1 to J10, each with a "Done:" line, and names a hand-over case with its recipient.
 3. The void grep of `acceptance/README.md`, run against each brief, is empty (the briefs must not use the
    worked example's names).
@@ -258,5 +262,5 @@ Run these before the first sitting (the output pasted into the ACE's record):
 - Not yet shown by anyone, so each is a place the run can fail and the failure is evidence: the container runtime app with the
   launcher; the page's command-line step for the public link; whether the chat accepts the server's address; whether the chat
   offers a collection; whether the chat offers the server's prompts; how fast Obsidian shows what the server wrote;
-  getting the repository onto the Mac without a terminal; committing and pushing from GitHub Desktop; the GitHub
+  getting the repository onto the Mac without a terminal; committing and pushing from GitHub Desktop (the page's section for it was not run when written); the GitHub
   Release as the page describes it. These are open questions the run answers, not defects in the plan.

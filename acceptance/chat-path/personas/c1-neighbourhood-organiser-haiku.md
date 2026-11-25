@@ -2,7 +2,7 @@
 
 **Model:** Haiku. **Path:** the chat, in a browser, with no terminal. **Coding domain:** watering young street trees in a dry summer, for a residents' association (invented).
 
-This file is the persona in its own words. The brief for this persona carries the same text, so a tester needs only
+This file is the persona in its own words. The brief for this persona carries the same text under "Who you are" (checked word for word), so a tester needs only
 the brief.
 
 ## About me

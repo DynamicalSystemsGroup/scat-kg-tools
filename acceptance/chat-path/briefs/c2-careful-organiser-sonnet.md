@@ -123,7 +123,7 @@ Do these in order. For each, its "Done" line is what you should be able to show 
    line. If no page says where to keep them, write that, and keep them in your report.
 5. **J5, set up.** Using the chat-path page, work out what must be in place and what a person does at each step:
    what is installed once, how a session starts, what you should see at each step. Then, with your hands and the
-   person at the Mac: get your repository onto the Mac, outside the folders the page says to avoid (if the page does
+   person at the Mac: get your repository onto the Mac as the page says, outside the folders it says to avoid (if the page does
    not say how without a terminal, say so, and ask a person only after saying so), open the folder as a vault in
    Obsidian, start a session as the page says, add the server to the chat as the page says, and ask the assistant to
    check the vault. Then stop the session as the page says. Done: the chat's answer to the check, pasted, on your
@@ -150,8 +150,8 @@ Do these in order. For each, its "Done" line is what you should be able to show 
    you, and whether any view sends you back to the coding loop; if it does, go back. Done: each view shown in the
    chat, pasted; the written tables shown to be in the vault folder; your reading of each.
 10. **J10, hand over.** Reach a clean check of the whole vault and the written views. Decide, with the reason, whether
-    your model is finished for the hand-over case below. If it is, save your work to GitHub (the chat-path page names GitHub Desktop for this and gives no clicks:
-    if it does not say how, say so, and ask a person only after saying so), lock a version without a terminal as the
+    your model is finished for the hand-over case below. If it is, save your work to GitHub (as the chat-path page says, with GitHub Desktop;
+    if it does not say how, that is a finding: say so, and ask a person only after saying so), lock a version without a terminal as the
     chat-path page allows (a release on GitHub's website, done by your hands), and name the tag. Stop the session as
     the page says. Ask your hands to delete what the page says to delete: the assistant never deletes anything, and
     every deletion is done by your hands, on your word. Done: a
