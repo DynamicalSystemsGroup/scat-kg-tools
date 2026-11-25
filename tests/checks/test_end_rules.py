@@ -14,8 +14,8 @@ from helpers import (
     narrative,
     pair,
     report_of,
-    rules_of,
     row,
+    rules_of,
     seeded,
     stub,
     table,
@@ -178,7 +178,9 @@ def test__scat_draft_end_nolink__more_than_five_candidates_are_counted(make_vaul
     account = "A [[staff]]. " + " ".join(f"[[{n}]]" for n in names) + "\n"
     files = {**pages, **with_rows(status, "| holds | [[staff]] | zzz | |", account=account)}
     (p,) = report_of(make_vault, files).problems
-    assert len(p.fix_data.options) == 5 + 1 + 1  # five shown, the stub of the derived name `zzz`, the delete
+    assert (
+        len(p.fix_data.options) == 5 + 1 + 1
+    )  # five shown, the stub of the derived name `zzz`, the delete
     assert p.fix.split("\n")[-1] == "(+2 more not shown)"
 
 
@@ -250,7 +252,9 @@ def test__scat_draft_end_nopage__a_file_without_a_type_gets_the_lines_that_make_
         make_vault,
         files,
         msg(
-            nopage(status, 23, "to", "notes", "notes.md exists but has no `type`, so it is not a page"),
+            nopage(
+                status, 23, "to", "notes", "notes.md exists but has no `type`, so it is not a page"
+            ),
             *choose(
                 "put these lines in a block between two `---` lines at the very top of notes.md: "
                 '`type: concern`, `status: stub`, `title: "Notes"`',
@@ -262,7 +266,10 @@ def test__scat_draft_end_nopage__a_file_without_a_type_gets_the_lines_that_make_
 
 @STATUSES
 def test__scat_draft_end_nopage__a_group_stub_is_withheld_at_the_cap(make_vault, status):
-    files = {**with_rows(status, "| holds | [[ghost]] | [[safe-handling]] | |"), "group/third.md": doc("group", "Third")}
+    files = {
+        **with_rows(status, "| holds | [[ghost]] | [[safe-handling]] | |"),
+        "group/third.md": doc("group", "Third"),
+    }
     (p,) = report_of(make_vault, files).problems
     assert [o.text for o in p.fix_data.options] == [DELETE]
     assert p.fix.split("\n")[-1].startswith("(the vault is at its cap of 3 groups")
@@ -285,12 +292,19 @@ def test__scat_draft_end_nopage__a_row_whose_type_is_unknown_gets_the_variants_w
 
 def notnode(status, col, holds, target, what, n=1):
     return end_head(
-        "END-NOTNODE", status, n, col, holds, f"[[{target}]] is {what}, not a node; a row joins two nodes"
+        "END-NOTNODE",
+        status,
+        n,
+        col,
+        holds,
+        f"[[{target}]] is {what}, not a node; a row joins two nodes",
     )
 
 
 @STATUSES
-def test__scat_draft_end_notnode__a_narrative_with_candidates_the_narrative_links_elsewhere(make_vault, status):
+def test__scat_draft_end_notnode__a_narrative_with_candidates_the_narrative_links_elsewhere(
+    make_vault, status
+):
     seeded(
         make_vault,
         with_rows(status, "| holds | [[kiosk-pitch]] | [[safe-handling]] | |"),
@@ -306,8 +320,14 @@ def test__scat_draft_end_notnode__a_narrative_with_candidates_the_narrative_link
 
 
 @STATUSES
-def test__scat_draft_end_notnode__a_narrative_with_no_candidate_offers_an_author_slot(make_vault, status):
-    page = narrative(status=status, rows=("| holds | [[kiosk-pitch]] | [[safe-handling]] | |",), account="A [[safe-handling]].\n")
+def test__scat_draft_end_notnode__a_narrative_with_no_candidate_offers_an_author_slot(
+    make_vault, status
+):
+    page = narrative(
+        status=status,
+        rows=("| holds | [[kiosk-pitch]] | [[safe-handling]] | |",),
+        account="A [[safe-handling]].\n",
+    )
     r = seeded(
         make_vault,
         {DESK: page},
@@ -327,10 +347,8 @@ def test__scat_draft_end_notnode__a_page_with_an_invalid_type_is_this_message_an
     odd = "concern/odd.md"
     files = {odd: doc("gadget", "Odd"), **with_rows(status, "| holds | [[staff]] | [[odd]] | |")}
     r = report_of(make_vault, files)
-    assert [p.rule for p in r.problems] == [
-        "SCAT-FM-TYPE",
-        pair("END-NOTNODE", status, "").split(" ")[1].strip("[]"),
-    ]
+    done = "DONE" if status == "done" else "DRAFT"
+    assert [p.rule for p in r.problems] == ["SCAT-FM-TYPE", f"SCAT-{done}-END-NOTNODE"]
     assert r.problems[1].what == (
         "[[odd]] is a page with the invalid type `gadget`, not a node; a row joins two nodes"
     )
@@ -350,7 +368,11 @@ def test__scat_draft_end_notnode__a_page_that_is_not_a_node_in_a_row_of_an_unkno
 
 def test__a_pair_is_a_warning_before_done_and_an_error_at_done(make_vault):
     row_ = "| holds | [[staff]] | [[ghost]] | |"
-    for status, severity, ok in (("stub", "warning", True), ("draft", "warning", True), ("done", "error", False)):
+    for status, severity, ok in (
+        ("stub", "warning", True),
+        ("draft", "warning", True),
+        ("done", "error", False),
+    ):
         r = report_of(make_vault, with_rows(status, row_))
         assert [(p.severity, p.rule.split("-")[1]) for p in r.problems] == [
             (severity, "DONE" if status == "done" else "DRAFT")
@@ -358,7 +380,9 @@ def test__a_pair_is_a_warning_before_done_and_an_error_at_done(make_vault):
         assert r.ok is ok
 
 
-def test__a_narrative_with_no_status_or_an_invalid_one_gets_the_status_error_and_no_pair_rule(make_vault):
+def test__a_narrative_with_no_status_or_an_invalid_one_gets_the_status_error_and_no_pair_rule(
+    make_vault,
+):
     ghost = row("holds", "staff", "ghost")
     for status, rule in ((None, "SCAT-FM-REQUIRED"), ("finished", "SCAT-FM-STATUS")):
         r = report_of(make_vault, {DESK: narrative(status=status, rows=(ghost,))})
@@ -384,12 +408,16 @@ def test__rule_4_a_narrative_that_links_both_ends_of_a_pair_and_has_no_row_gets_
 
 
 @STATUSES
-def test__rule_4_a_narrative_with_no_row_at_all_tells_no_edge_and_gets_no_message(make_vault, status):
+def test__rule_4_a_narrative_with_no_row_at_all_tells_no_edge_and_gets_no_message(
+    make_vault, status
+):
     seeded(make_vault, {DESK: narrative(status=status, rows=())})
     seeded(make_vault, {DESK: narrative(status=status, section="")})  # no table, no heading
 
 
-def test__rule_4_the_fingerprint_view_lists_the_pair_as_a_candidate_and_the_check_does_not(make_vault):
+def test__rule_4_the_fingerprint_view_lists_the_pair_as_a_candidate_and_the_check_does_not(
+    make_vault,
+):
     from helpers import vault
 
     from scat_kg.graph import load
@@ -402,7 +430,12 @@ def test__rule_4_the_fingerprint_view_lists_the_pair_as_a_candidate_and_the_chec
 
 
 def test__rule_4_a_row_alone_with_both_ends_linked_is_conformant(make_vault):
-    page = narrative(account="A [[staff]], and [[safe-handling]].\n", rows=(row("holds", "staff", "safe-handling"),))
+    page = narrative(
+        account="A [[staff]], and [[safe-handling]].\n",
+        rows=(row("holds", "staff", "safe-handling"),),
+    )
     seeded(make_vault, {DESK: page})
-    only_the_row = narrative(account="No links in the account.\n", rows=(row("holds", "staff", "safe-handling"),))
+    only_the_row = narrative(
+        account="No links in the account.\n", rows=(row("holds", "staff", "safe-handling"),)
+    )
     seeded(make_vault, {DESK: only_the_row})

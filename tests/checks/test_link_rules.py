@@ -1,12 +1,31 @@
 """SCAT-LINK-DANGLING-BODY, SCAT-MENTION, SCAT-CAP and SCAT-CAP-CONFIG. Test names carry the rule id."""
 
 import pytest
-from helpers import DESK, DESK_ROWS, ACCOUNT, choose, doc, msg, narrative, report_of, rules_of, row, seeded, stub
+from helpers import (
+    ACCOUNT,
+    DESK,
+    DESK_ROWS,
+    choose,
+    doc,
+    msg,
+    narrative,
+    report_of,
+    row,
+    rules_of,
+    seeded,
+    stub,
+)
 
 C = "concern/safe-handling.md"
 LINE = 8  # the first body line of a page made by `doc` with a body that starts with a blank line
 TYPES = ("affordance", "concern", "group", "narrative", "technology")
-ARTICLE = {"affordance": "an affordance", "concern": "a concern", "group": "a group", "narrative": "a narrative", "technology": "a technology"}
+ARTICLE = {
+    "affordance": "an affordance",
+    "concern": "a concern",
+    "group": "a group",
+    "narrative": "a narrative",
+    "technology": "a technology",
+}
 
 
 def body(text):
@@ -41,7 +60,9 @@ def test__scat_link_dangling_body__a_name_no_row_end_names_offers_the_five_types
     )
 
 
-def test__scat_link_dangling_body__a_name_a_row_end_names_offers_the_layer_that_row_fixes(make_vault):
+def test__scat_link_dangling_body__a_name_a_row_end_names_offers_the_layer_that_row_fixes(
+    make_vault,
+):
     rows = (*DESK_ROWS, row("holds", "borrowers", "ghost"))
     files = {**body("See [[ghost]]."), DESK: narrative(rows=rows)}
     r = report_of(make_vault, files)
@@ -57,7 +78,11 @@ def test__scat_link_dangling_body__a_name_a_row_end_names_offers_the_layer_that_
 
 
 def test__scat_link_dangling_body__a_name_two_row_ends_name_in_two_layers_offers_both(make_vault):
-    rows = (*DESK_ROWS, row("holds", "borrowers", "ghost"), row("is provided by", "ghost", "booking-app"))
+    rows = (
+        *DESK_ROWS,
+        row("holds", "borrowers", "ghost"),
+        row("is provided by", "ghost", "booking-app"),
+    )
     r = report_of(make_vault, {**body("See [[ghost]]."), DESK: narrative(rows=rows)})
     assert r.problems[0].render() == dangling(
         "ghost",
@@ -82,7 +107,9 @@ def test__scat_link_dangling_body__near_match_comes_first(make_vault):
     )
 
 
-def test__scat_link_dangling_body__wrong_case_is_variant_c_and_replaces_with_the_derived_name(make_vault):
+def test__scat_link_dangling_body__wrong_case_is_variant_c_and_replaces_with_the_derived_name(
+    make_vault,
+):
     seeded(
         make_vault,
         body("See [[Safe-Handling]]."),
@@ -164,11 +191,15 @@ def test__scat_link_dangling_body__file_without_type_is_variant_b(make_vault):
     )
 
 
-def test__scat_link_dangling_body__file_with_frontmatter_but_no_type_lists_the_missing_keys(make_vault):
+def test__scat_link_dangling_body__file_with_frontmatter_but_no_type_lists_the_missing_keys(
+    make_vault,
+):
     files = {**body("See [[notes]]."), "notes.md": "---\ntitle: Notes\n---\n"}
     r = report_of(make_vault, files)
     (p,) = r.problems
-    assert "add these lines to the frontmatter of notes.md: `type: concern`, `status: stub`" in p.fix
+    assert (
+        "add these lines to the frontmatter of notes.md: `type: concern`, `status: stub`" in p.fix
+    )
     assert '`title: "Notes"`' not in p.fix  # the key it has stays
 
 
@@ -202,8 +233,12 @@ def test__scat_link_dangling_body__a_row_end_is_graded_by_the_end_rule_and_not_t
     assert rules_of(report_of(make_vault, {DESK: narrative(rows=rows)})) == ["SCAT-DONE-END-NOPAGE"]
 
 
-def test__scat_link_dangling_body__links_in_a_table_with_a_malformed_header_are_body_links(make_vault):
-    page = narrative(status="draft").replace("| type | from | to | note |", "| kind | from | to | note |")
+def test__scat_link_dangling_body__links_in_a_table_with_a_malformed_header_are_body_links(
+    make_vault,
+):
+    page = narrative(status="draft").replace(
+        "| type | from | to | note |", "| kind | from | to | note |"
+    )
     page = page.replace("[[safe-handling]] | |", "[[ghost]] | |")
     r = report_of(make_vault, {DESK: page})
     assert rules_of(r) == ["SCAT-DRAFT-TABLE-HEADER", "SCAT-LINK-DANGLING-BODY"]
@@ -235,7 +270,9 @@ def test__scat_link_dangling_body__block_reference_names_the_page_before_the_car
     assert r.problems[0].fix_data.options[-1].edits[0].find == "[[ghost^abc123]]"
 
 
-def test__scat_link_dangling_body__an_alias_is_kept_by_a_replacement_and_a_drop_keeps_the_alias_words(make_vault):
+def test__scat_link_dangling_body__an_alias_is_kept_by_a_replacement_and_a_drop_keeps_the_alias_words(
+    make_vault,
+):
     r = report_of(make_vault, body("See [[safe-handlin|the briefing]]."))
     (p,) = r.problems
     first, *_, last = p.fix_data.options
@@ -245,7 +282,9 @@ def test__scat_link_dangling_body__an_alias_is_kept_by_a_replacement_and_a_drop_
     assert (first.edits[0].line, first.edits[0].column) == (LINE, 5)
 
 
-def test__scat_link_dangling_body__same_link_twice_on_a_line_is_one_message_with_a_count(make_vault):
+def test__scat_link_dangling_body__same_link_twice_on_a_line_is_one_message_with_a_count(
+    make_vault,
+):
     r = report_of(make_vault, body("See [[ghost]] and [[ghost]]."))
     assert len(r.problems) == 1 and r.problems[0].repeat == 2
     assert "(x2)" in r.problems[0].render().split("\n")[0]
@@ -309,7 +348,10 @@ def test__scat_mention__reported_once_at_the_first_occurrence(make_vault):
 
 
 def test__scat_mention__in_a_note_cell_one_message(make_vault):
-    rows = (*DESK_ROWS[:2], row("is addressed by", "quick-checkout", "self-checkout", "after a briefing"))
+    rows = (
+        *DESK_ROWS[:2],
+        row("is addressed by", "quick-checkout", "self-checkout", "after a briefing"),
+    )
     seeded(
         make_vault,
         {DESK: narrative(rows=rows)},
@@ -334,7 +376,9 @@ def test__scat_mention__plain_text_in_a_from_cell_is_not_this_rules(make_vault):
         "booking-apps",
     ],
 )
-def test__scat_mention__linked_in_code_in_a_wikilink_or_not_a_whole_word_gives_none(make_vault, text):
+def test__scat_mention__linked_in_code_in_a_wikilink_or_not_a_whole_word_gives_none(
+    make_vault, text
+):
     seeded(make_vault, body(text))
 
 
@@ -349,7 +393,9 @@ def test__scat_mention__short_names_are_not_matched(make_vault):
 
 def test__scat_mention__a_warning_does_not_block_at_any_status(make_vault):
     for status in ("stub", "draft", "done"):
-        r = report_of(make_vault, {DESK: narrative(status=status, account=ACCOUNT + "\nA Briefing.\n")})
+        r = report_of(
+            make_vault, {DESK: narrative(status=status, account=ACCOUNT + "\nA Briefing.\n")}
+        )
         assert rules_of(r) == ["SCAT-MENTION"] and r.ok
 
 
@@ -449,13 +495,19 @@ def test__scat_cap_config__bad_value_is_replaced(make_vault, written):
 
 def test__scat_cap_config__no_groups_drops_the_at_least_clause(make_vault):
     files = {p: t for p, t in base_files().items() if not p.startswith("group/")}
-    r = report_of(make_vault, {}, remove=[p for p in base_files() if p.startswith("group/")] + [DESK, "narrative/kiosk-pitch.md"])
+    r = report_of(
+        make_vault,
+        {},
+        remove=[p for p in base_files() if p.startswith("group/")]
+        + [DESK, "narrative/kiosk-pitch.md"],
+    )
     assert r.problems == () or rules_of(r) == []
     del files
     r = report_of(
         make_vault,
         {"scat.toml": "stakeholder_group_cap = 0\n"},
-        remove=[p for p in base_files() if p.startswith("group/")] + [DESK, "narrative/kiosk-pitch.md"],
+        remove=[p for p in base_files() if p.startswith("group/")]
+        + [DESK, "narrative/kiosk-pitch.md"],
     )
     (p,) = r.problems
     assert p.fix.endswith("(the vault has 0 group pages now)")

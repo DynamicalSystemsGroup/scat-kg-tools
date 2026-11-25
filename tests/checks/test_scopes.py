@@ -68,7 +68,9 @@ def test__scopes__a_defect_in_a_neighbor_is_in_the_neighborhood_not_the_page(mak
     near = check_neighborhood(v, DESK)
     assert [(p.rule, p.file) for p in near.problems] == [("SCAT-DONE-FIELD", STAFF)]
     assert not near.ok
-    assert messages(check_page(v, STAFF)) == messages(near)  # the same page gives the same message at every scope
+    assert messages(check_page(v, STAFF)) == messages(
+        near
+    )  # the same page gives the same message at every scope
 
 
 def test__scopes__a_defect_two_links_away_is_outside_the_neighborhood(make_vault):
@@ -76,7 +78,9 @@ def test__scopes__a_defect_two_links_away_is_outside_the_neighborhood(make_vault
     # the desk-day narrative links no technology; the kiosk pitch links the booking app
     assert check_neighborhood(v, DESK).problems == ()
     assert [p.file for p in check_neighborhood(v, KIOSK).problems] == [TECH]
-    assert check_neighborhood(v, "self-checkout").problems == ()  # a node reached only through the narrative's rows
+    assert (
+        check_neighborhood(v, "self-checkout").problems == ()
+    )  # a node reached only through the narrative's rows
 
 
 def test__scopes__the_neighborhood_follows_links_in_both_directions(make_vault):
@@ -130,13 +134,17 @@ def test__scopes__vault_rules_run_at_page_scope_only_for_a_group_page(make_vault
     v = vault(make_vault, {"scat.toml": "stakeholder_group_cap = 1\n"})
     assert rules_of(check_page(v, STAFF)) == ["SCAT-CAP"]
     assert rules_of(check_page(v, "concern/safe-handling.md")) == []
-    assert rules_of(check_neighborhood(v, DESK)) == ["SCAT-CAP"]  # the narrative's neighborhood holds groups
+    assert rules_of(check_neighborhood(v, DESK)) == [
+        "SCAT-CAP"
+    ]  # the narrative's neighborhood holds groups
     assert rules_of(check_neighborhood(v, "concern/careful-keeping.md")) == []
     assert rules_of(check_vault(v)) == ["SCAT-CAP"]
 
 
 def test__errors_block_and_warnings_do_not(make_vault):
-    warn = report_of(make_vault, {DESK: narrative(status="draft", rows=(row("holds", "staff", "ghost"),))})
+    warn = report_of(
+        make_vault, {DESK: narrative(status="draft", rows=(row("holds", "staff", "ghost"),))}
+    )
     assert warn.ok and len(warn.warnings) == 1 and not warn.errors
     err = report_of(make_vault, {DESK: narrative(rows=(row("holds", "staff", "ghost"),))})
     assert not err.ok and len(err.errors) == 1 and not err.warnings
@@ -148,22 +156,39 @@ def test__every_rule_has_one_severity_and_none_is_deferred():
     assert SEVERITY == stated
     assert DEFERRED == {}
     assert PAGE_RULES and VAULT_RULES
-    for stem in ("TABLE-HEADER", "TABLE-ROW", "TABLE-TYPE", "TABLE-LAYERS", "TABLE-SECOND", "TABLE-DUPLICATE"):
-        assert (SEVERITY[f"SCAT-DRAFT-{stem}"], SEVERITY[f"SCAT-DONE-{stem}"]) == ("warning", "error")
+    for stem in (
+        "TABLE-HEADER",
+        "TABLE-ROW",
+        "TABLE-TYPE",
+        "TABLE-LAYERS",
+        "TABLE-SECOND",
+        "TABLE-DUPLICATE",
+    ):
+        assert (SEVERITY[f"SCAT-DRAFT-{stem}"], SEVERITY[f"SCAT-DONE-{stem}"]) == (
+            "warning",
+            "error",
+        )
     for stem in ("END-NOLINK", "END-NOPAGE", "END-NOTNODE"):
-        assert (SEVERITY[f"SCAT-DRAFT-{stem}"], SEVERITY[f"SCAT-DONE-{stem}"]) == ("warning", "error")
+        assert (SEVERITY[f"SCAT-DRAFT-{stem}"], SEVERITY[f"SCAT-DONE-{stem}"]) == (
+            "warning",
+            "error",
+        )
     assert not [r for r in stated if "REFUSED" in r]  # an operation rule: no `scat check` prints it
 
 
 def test__retired_ids_are_never_printed(make_vault):
-    retired = re.findall(r"\| (SCAT-[A-Z-]+)(?:, (SCAT-[A-Z-]+))? \| retired \|", CATALOGUE.read_text())
+    retired = re.findall(
+        r"\| (SCAT-[A-Z-]+)(?:, (SCAT-[A-Z-]+))? \| retired \|", CATALOGUE.read_text()
+    )
     ids = {i for pair in retired for i in pair if i}
     assert "SCAT-INDEX-STALE" in ids and "SCAT-CONFLICT-SELF" in ids and not ids & set(SEVERITY)
 
 
 def test__messages_are_in_the_catalogues_order_and_format(make_vault):
     files = {
-        "concern/safe-handling.md": doc("concern", "Safe handling", body="\nSee [[ghost]] and [[ghost2]].\n"),
+        "concern/safe-handling.md": doc(
+            "concern", "Safe handling", body="\nSee [[ghost]] and [[ghost2]].\n"
+        ),
         "affordance/self-checkout.md": doc("affordance", "Self checkout", description=None),
         DESK: narrative(
             status="draft",
@@ -172,9 +197,20 @@ def test__messages_are_in_the_catalogues_order_and_format(make_vault):
         ),
     }
     report = report_of(make_vault, files)
-    keys = [(p.file.encode(), -1 if p.line is None else p.line, -1 if p.column is None else p.column, p.rule) for p in report.problems]
+    keys = [
+        (
+            p.file.encode(),
+            -1 if p.line is None else p.line,
+            -1 if p.column is None else p.column,
+            p.rule,
+        )
+        for p in report.problems
+    ]
     assert keys == sorted(keys)
-    assert [p.file for p in report.problems][:2] == ["affordance/self-checkout.md", "concern/safe-handling.md"]
+    assert [p.file for p in report.problems][:2] == [
+        "affordance/self-checkout.md",
+        "concern/safe-handling.md",
+    ]
     heads = [m.split("\n")[0] for m in messages(report)]
     assert all(re.match(r"(error|warning) \[SCAT-[A-Z-]+\] [^ ]+ ", h) for h in heads)
     # the same line and column sort by rule id: the two ghosts on one line of the concern page
@@ -186,8 +222,13 @@ def test__messages_are_in_the_catalogues_order_and_format(make_vault):
 
 def test__line_and_column_appear_in_the_location_only_where_the_catalogue_gives_them(make_vault):
     files = {
-        "concern/safe-handling.md": doc("concern", "Safe handling", status=None, body="\nSee [[ghost]] and a briefing.\n"),
-        DESK: narrative(status="draft", rows=("| holds | [[staff]] | [[safe-handling]]", "| holds | [[staff]] | ghost | |")),
+        "concern/safe-handling.md": doc(
+            "concern", "Safe handling", status=None, body="\nSee [[ghost]] and a briefing.\n"
+        ),
+        DESK: narrative(
+            status="draft",
+            rows=("| holds | [[staff]] | [[safe-handling]]", "| holds | [[staff]] | ghost | |"),
+        ),
     }
     report = report_of(make_vault, files)
     shown = {p.rule: p.render().split(" ")[2] for p in report.problems}
@@ -210,7 +251,9 @@ def test__examples__no_errors_and_only_the_two_warnings_the_readme_names():
     for page in v.pages:
         mine = [m.render() for m in report.problems if m.file == page.path]
         assert messages(check_page(v, page)) == mine
-        assert [m.render() for m in check_neighborhood(v, page).problems if m.file == page.path] == mine
+        assert [
+            m.render() for m in check_neighborhood(v, page).problems if m.file == page.path
+        ] == mine
 
 
 def test__checks_leave_the_directory_unchanged(make_vault):

@@ -11,6 +11,7 @@ from jsonschema import Draft202012Validator
 import scat_kg
 from scat_kg.checks.problem import Problem
 from scat_kg.checks.text import choose, one, steps
+from scat_kg.contract import SCHEMA_VERSION
 from scat_kg.fix import Command, Edit, Fix, FixOption
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -118,7 +119,7 @@ def test_typed_fix_validates_and_renders():
     )
     assert fix.render() == "Fix, choose one:\n  1. run it\n  2. write it"
     doc = {
-        "schema_version": 1,
+        "schema_version": SCHEMA_VERSION,
         "kind": "check",
         "operation": "check",
         "ok": False,

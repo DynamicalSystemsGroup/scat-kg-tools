@@ -10,14 +10,22 @@ PARSE_FIX = (
     "at the very top of the file; start from the first line the parser rejected"
 )
 FIVE = (
-    "`type: affordance` (One page per affordance: what is offered. The technologies that provide it "
-    "are told by narratives.)",
-    "`type: concern` (One page per concern: what the interest is. Who holds it and what addresses it "
-    "are told by narratives.)",
-    "`type: group` (One page per group: who the group is, in the group's own terms. The concerns it "
-    "holds are told by narratives.)",
-    "`type: narrative` (A narrative: the account in the page body, with links where names appear, "
-    "and under the heading Edges told a table with one row for each edge the account tells.)",
+    (
+        "`type: affordance` (One page per affordance: what is offered. "
+        "The technologies that provide it are told by narratives.)"
+    ),
+    (
+        "`type: concern` (One page per concern: what the interest is. "
+        "Who holds it and what addresses it are told by narratives.)"
+    ),
+    (
+        "`type: group` (One page per group: who the group is, in the group's own terms. "
+        "The concerns it holds are told by narratives.)"
+    ),
+    (
+        "`type: narrative` (A narrative: the account in the page body, with links where names appear, "
+        "and under the heading Edges told a table with one row for each edge the account tells.)"
+    ),
     "`type: technology` (One page per technology: what the part is.)",
 )
 
@@ -68,7 +76,9 @@ def test__scat_fm_parse__clean_cases_give_none(make_vault):
     crlf = (
         '---\r\ntype: concern\r\nstatus: done\r\ntitle: "S"\r\ndescription: "D"\r\n---\r\nbody\r\n'
     )
-    seeded(make_vault, {C: crlf, "README.md": "# Not a page\n", "notes/loose.md": "no frontmatter\n"})
+    seeded(
+        make_vault, {C: crlf, "README.md": "# Not a page\n", "notes/loose.md": "no frontmatter\n"}
+    )
     # frontmatter with no `type` is no page either
     seeded(make_vault, {"notes/typeless.md": "---\ntitle: x\n---\n"})
 
@@ -84,9 +94,7 @@ TITLE = (
     "the page name with each - replaced by a space and the first letter upper case; "
     "reword it if you like"
 )
-STATUS_FIX = (
-    f"Fix: run {set_status('safe-handling')}; use `stub` or `done` instead of `draft` if that is the truth"
-)
+STATUS_FIX = f"Fix: run {set_status('safe-handling')}; use `stub` or `done` instead of `draft` if that is the truth"
 
 
 def test__scat_fm_required__status_missing(make_vault):
@@ -186,7 +194,9 @@ def test__scat_fm_type__an_empty_type_lists_the_five(make_vault, line):
     )
 
 
-def test__scat_fm_type__index_is_a_wrong_type_and_the_note_says_where_an_index_comes_from(make_vault):
+def test__scat_fm_type__index_is_a_wrong_type_and_the_note_says_where_an_index_comes_from(
+    make_vault,
+):
     page = doc("index", "Safe handling")
     r = report_of(make_vault, {K: page})
     first = r.problems[0]
@@ -404,7 +414,11 @@ def test__scat_fm_shape__a_number_is_quoted(make_vault):
 
 
 def test__scat_fm_shape__timeframe_and_kind_on_a_narrative_are_checked_too(make_vault):
-    page = narrative().replace("timeframe: past", "timeframe: 1").replace("kind: scenario", "kind: yes")
+    page = (
+        narrative()
+        .replace("timeframe: past", "timeframe: 1")
+        .replace("kind: scenario", "kind: yes")
+    )
     r = report_of(make_vault, {DESK: page})
     assert [(p.rule, p.where) for p in r.problems] == [
         ("SCAT-FM-SHAPE", "field `kind`"),
@@ -513,7 +527,9 @@ def test__scat_name__names_that_differ_only_by_case_are_one_message_on_the_illeg
         },
         msg(
             name_head(
-                "affordance/Safety.md", "Safety", "is not legal (it contains `S`, outside a-z, 0-9 and -)"
+                "affordance/Safety.md",
+                "Safety",
+                "is not legal (it contains `S`, outside a-z, 0-9 and -)",
             ),
             name_fix("Safety", "safety-2"),
         ),
@@ -521,7 +537,10 @@ def test__scat_name__names_that_differ_only_by_case_are_one_message_on_the_illeg
 
 
 def test__scat_name__same_name_in_two_folders_reports_the_later_path(make_vault):
-    path, other = "concern/quick-checkout.md", "affordance/quick-checkout.md"  # `affordance/` sorts first
+    path, other = (
+        "concern/quick-checkout.md",
+        "affordance/quick-checkout.md",
+    )  # `affordance/` sorts first
     seeded(
         make_vault,
         {other: doc("affordance", "Quick checkout")},
@@ -537,7 +556,9 @@ def test__scat_name__same_name_in_two_folders_reports_the_later_path(make_vault)
 def test__scat_name__the_edits_rename_the_file_then_every_link_of_the_old_name(make_vault):
     path = "concern/Safe Tool.md"
     page = doc("concern", "Safe Tool")
-    link_page = doc("concern", "Other thing", body="\nSee [[Safe Tool|the tool]] and [[ Safe Tool ]].\n")
+    link_page = doc(
+        "concern", "Other thing", body="\nSee [[Safe Tool|the tool]] and [[ Safe Tool ]].\n"
+    )
     r = report_of(make_vault, {path: page, "concern/other-thing.md": link_page})
     (p,) = [p for p in r.problems if p.rule == "SCAT-NAME"]
     (option,) = p.fix_data.options

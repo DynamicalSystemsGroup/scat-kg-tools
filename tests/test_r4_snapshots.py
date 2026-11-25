@@ -6,7 +6,7 @@ snapshotted before and after (bytes, size and mtime of every file and folder), a
 are compared with exactly the set the operation is meant to write. A refusal writes nothing.
 """
 
-# TODO(WP16-U6/U7) lift: UNBUILT makes the unbuilt calls expect no writes; restore the intended expectations.
+# TODO(WP16-U7) lift: UNBUILT makes the unbuilt calls expect no writes; restore the intended expectations.
 
 import shutil
 from pathlib import Path
@@ -19,10 +19,10 @@ from scat_kg import cli
 EXAMPLES = Path(__file__).parents[1] / "contracts" / "examples"
 HELDBY = "narrative/saturday-at-the-lending-desk.md"  # the page the defect is seeded in
 
-# The calls U6 (checks) and U7 (operations) rebuild return the standard refusal until then, which writes
-# nothing: for these the expected changes below are the intended ones and are asserted only once built.
-# TODO(WP16-U6, WP16-U7): drop UNBUILT.
-UNBUILT = {"check", "index", "stub", "stub-pair", "stub-links"}
+# The calls U7 (operations) rebuilds return the standard refusal until then, which writes nothing: for these
+# the expected changes below are the intended ones and are asserted only once built.
+# TODO(WP16-U7): drop UNBUILT.
+UNBUILT = {"index", "stub", "stub-pair", "stub-links"}
 
 
 def snapshot(root: Path) -> dict[str, tuple]:

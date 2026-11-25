@@ -57,13 +57,11 @@ def test__scat_done_field__timeframe_missing_or_empty_at_done_offers_the_three_v
 ):
     page = narrative(timeframe=None)
     if empty is not None:
-        page = page.replace("description: \"D\"\n", f'description: "D"\ntimeframe: {empty}\n'.replace(": \n", ":\n"))
+        page = page.replace(
+            'description: "D"\n', f'description: "D"\ntimeframe: {empty}\n'.replace(": \n", ":\n")
+        )
     shown = "" if empty in (None, "") else f" {empty}"
-    verb = (
-        "add the line"
-        if empty is None
-        else f"replace the line `timeframe:{shown}` with"
-    )
+    verb = "add the line" if empty is None else f"replace the line `timeframe:{shown}` with"
     seeded(
         make_vault,
         {DESK: page},
@@ -113,10 +111,10 @@ def test__scat_draft_field__timeframe_missing_before_done_is_a_warning(make_vaul
     assert r.ok and r.problems[0].severity == "warning"
 
 
-def test__scat_draft_field__a_freshly_stubbed_narrative_gives_exactly_the_timeframe_message(make_vault):
-    page = (
-        '---\ntype: narrative\nstatus: stub\ntitle: "Desk day"\ntimeframe: # past | future | mixed\n---\n'
-    )
+def test__scat_draft_field__a_freshly_stubbed_narrative_gives_exactly_the_timeframe_message(
+    make_vault,
+):
+    page = '---\ntype: narrative\nstatus: stub\ntitle: "Desk day"\ntimeframe: # past | future | mixed\n---\n'
     seeded(
         make_vault,
         {DESK: page},

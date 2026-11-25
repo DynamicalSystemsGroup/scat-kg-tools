@@ -53,13 +53,22 @@ DEVIATIONS: dict[tuple[str, str], str] = {
     ("SCAT-FM-TIMEFRAME", "exact"): _NEAR,
     ("SCAT-FM-SHAPE", "exact"): "a one-item list, a boolean or a number has its one exact reading",
     ("SCAT-NAME", "manual"): "no legal name can be derived, so the author chooses one",
-    ("SCAT-LINK-DANGLING-BODY", "exact"): "no page can replace the link: dropping it is the only option",
+    (
+        "SCAT-LINK-DANGLING-BODY",
+        "exact",
+    ): "no page can replace the link: dropping it is the only option",
 }
 for _p in _PAIR:
-    DEVIATIONS[(f"SCAT-{_p}-TABLE-HEADER", "exact")] = "a wrong name or a missing separator has one exact fix"
-    DEVIATIONS[(f"SCAT-{_p}-TABLE-ROW", "exact")] = "a missing note or closing bar has one exact fix"
+    DEVIATIONS[(f"SCAT-{_p}-TABLE-HEADER", "exact")] = (
+        "a wrong name or a missing separator has one exact fix"
+    )
+    DEVIATIONS[(f"SCAT-{_p}-TABLE-ROW", "exact")] = (
+        "a missing note or closing bar has one exact fix"
+    )
     DEVIATIONS[(f"SCAT-{_p}-TABLE-SECOND", "advisory")] = "a second table has the one advisory fix"
-    DEVIATIONS[(f"SCAT-{_p}-END-NOPAGE", "exact")] = "the cap withholds the stub: deleting the row is all that is left"
+    DEVIATIONS[(f"SCAT-{_p}-END-NOPAGE", "exact")] = (
+        "the cap withholds the stub: deleting the row is all that is left"
+    )
 
 # What the session saw (read by tests/machine/test_harness_coverage.py).
 tests_seen: set[str] = set()  # node ids of the check tests that ran
@@ -200,6 +209,7 @@ def assert_option_works(problem: Problem, i: int, copy: Path) -> str:
             code = cli.main([*argv, "--root", str(copy)])
         if code != 0 and NOT_BUILT in out.getvalue():
             _parses(problem, i, argv, copy)
+            commands_parsed += 1
             commands_unbuilt += 1
             return "parsed"
         if code != 0:

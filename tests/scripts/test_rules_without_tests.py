@@ -10,7 +10,7 @@ SCRIPT = Path(script.__file__)
 
 
 def test__r1__every_catalogue_rule_has_a_seeded_test_by_the_script():
-    assert len(script.catalogue_ids()) == 28
+    assert len(script.catalogue_ids()) == 32
     assert script.rules_without_tests() == []
 
 
@@ -19,6 +19,14 @@ def test__r1__the_script_prints_nothing_and_exits_zero():
         [sys.executable, str(SCRIPT)], check=False, capture_output=True, text=True
     )
     assert (done.returncode, done.stdout, done.stderr) == (0, "", "")
+
+
+def test__r1__a_done_id_is_covered_by_the_tests_of_its_draft_id(monkeypatch):
+    have = set(script.catalogue_ids()) - {"SCAT-DONE-TABLE-ROW"}
+    monkeypatch.setattr(script, "seeded_ids", lambda: have)
+    assert script.rules_without_tests() == []
+    monkeypatch.setattr(script, "seeded_ids", lambda: have - {"SCAT-DRAFT-TABLE-ROW"})
+    assert script.rules_without_tests() == ["SCAT-DRAFT-TABLE-ROW", "SCAT-DONE-TABLE-ROW"]
 
 
 def test__r1__the_script_does_list_a_rule_that_has_no_test(monkeypatch, capsys):

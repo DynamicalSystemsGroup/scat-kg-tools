@@ -42,4 +42,6 @@ def test__every_rule_has_a_seeded_test(request, capsys):
         print("without a test:", uncovered)
     assert uncovered == []
     assert DEFERRED == {}
-    assert {i.replace("-DONE-", "-DRAFT-") for i in seeded} <= {i.replace("-DONE-", "-DRAFT-") for i in ids}
+    assert {i.replace("-DONE-", "-DRAFT-") for i in seeded} <= {
+        i.replace("-DONE-", "-DRAFT-") for i in ids
+    }

@@ -20,8 +20,8 @@ def test_set_status_defaults_to_draft(name):
     assert fixes.phrase(fixes.set_status(name)) == text.set_status_cmd(name)
 
 
-@pytest.mark.parametrize("name", NAMES + ["<coded-page-name>"])
-@pytest.mark.parametrize("key", ["concern", "stakeholder-group", "raw"])
+@pytest.mark.parametrize("name", NAMES + ["<node you choose>"])
+@pytest.mark.parametrize("key", ["concern", "group", "narrative"])
 def test_stub_phrase_equals_the_old_helper(name, key):
     assert fixes.phrase(fixes.stub(name, key)) == text.stub_cmd(name, key)
 
@@ -31,22 +31,15 @@ def test_the_commands_carry_argv_and_repl():
         ("set-status", "x", "done"), 'scat_kg.set_status("x", "done")'
     )
     assert fixes.stub("x", "concern").argv == ("stub", "x", "--type", "concern")
-    assert fixes.stub_pair("heldby", "a", "b").argv == ("stub-pair", "heldby", "a", "b")
-    assert fixes.stub_pair("heldby", "a", "b").repl == 'scat_kg.stub_pair("heldby", "a", "b")'
-    assert fixes.stub_links().argv == ("stub-links",)
-    assert fixes.stub_links().repl == "scat_kg.stub_links()"
-    assert fixes.stub_links("p").argv == ("stub-links", "p")
-    assert fixes.stub_links("p").repl == 'scat_kg.stub_links("p")'
     assert fixes.index().argv == ("index",)
 
 
 def test_index_and_placeholder_phrases():
     assert fixes.phrase(fixes.index()) == "`scat index` (REPL: `scat_kg.index()`)"
-    slot = "<endpoint-a>"
     assert (
-        fixes.phrase(fixes.stub_pair("<relation>", slot, "<endpoint-b>"))
-        == "`scat stub-pair <relation> <endpoint-a> <endpoint-b>` "
-        '(REPL: `scat_kg.stub_pair("<relation>", "<endpoint-a>", "<endpoint-b>")`)'
+        fixes.phrase(fixes.stub("<node you choose>", "group", slot="<node you choose>"))
+        == "`scat stub <node you choose> --type group` "
+        '(REPL: `scat_kg.stub("<node you choose>", type="group")`)'
     )
 
 
@@ -57,7 +50,7 @@ def test_run_option_kind_follows_the_slot():
     assert slot.kind == "slot" and slot.command.author_slot == "<n>"
 
 
-def test_edit_constructors_give_the_five_actions():
+def test_edit_constructors_give_the_actions():
     assert fixes.set_field("a.md", "f", "v") == Edit("set-field", "a.md", field="f", value="v")
     assert fixes.set_field("a.md", "f", "<v>", author_slot="<v>").author_slot == "<v>"
     assert fixes.delete_field("a.md", "f").to_dict() == {
@@ -79,6 +72,22 @@ def test_edit_constructors_give_the_five_actions():
         "to": "b.md",
     }
     assert fixes.delete_file("a.md").to_dict() == {"action": "delete-file", "file": "a.md"}
+    assert fixes.delete_line("a.md", 4, "| x |").to_dict() == {
+        "action": "delete-line",
+        "file": "a.md",
+        "line": 4,
+        "find": "| x |",
+    }
+    slot = fixes.replace_text("a.md", 3, "x", "<y>", column=2, author_slot="<y>")
+    assert slot.to_dict()["author_slot"] == "<y>"
+
+
+def test_one_option_left_is_the_fix_and_two_or_more_are_options():
+    a = fixes.option("exact", "do a", fixes.delete_file("a.md"))
+    b = fixes.option("exact", "do b", fixes.delete_file("b.md"))
+    assert fixes.alternatives([a]).kind == "exact"  # the schema wants two or more for `options`
+    assert fixes.alternatives([a], None, ("(note)",)).render() == "Fix: do a\n(note)"
+    assert fixes.alternatives([a, b]).kind == "options"
 
 
 def test_single_takes_the_option_kind_and_alternatives_are_options():
@@ -103,9 +112,6 @@ def test_inline_reads_on_one_line():
     [
         fixes.set_status("x", "done"),
         fixes.stub("x", "concern"),
-        fixes.stub_pair("heldby", "a", "b"),
-        fixes.stub_links(),
-        fixes.stub_links("p"),
         fixes.index(),
     ],
 )
