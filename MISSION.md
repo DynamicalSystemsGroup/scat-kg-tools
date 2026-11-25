@@ -140,8 +140,10 @@ each has its own user experience:
   represents their coding;
 - the **tool** (the Python package) is the conformance authority, with two jobs: (i) the knowledge graph matches the
   Markdown, and (ii) the knowledge graph conforms to the ontology;
-- the **assistant** (an LLM, where the project allows one) helps the coder produce and review the text in the Markdown,
-  and helps drive the tool's calls for (i) and (ii). It holds no authority of its own.
+- the **assistant** (an LLM, where the project allows one) assists and orchestrates: it helps the coder produce and
+  review the text in the Markdown, drafting narratives from the field notes included, and helps drive the tool's calls
+  for (i) and (ii). It is the one non-critical role of the three: the coder owns interpretation even where the
+  assistant helps, and the tool owns conformance even where the assistant helps. Without it, nothing is lost but speed.
 
 **The people in the data** are stakeholder **groups**, never individuals. Each vault sets a cap on how many
 stakeholder groups it holds, and participants are clustered into groups that fit under it. What participants are told
