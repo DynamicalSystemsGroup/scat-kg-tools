@@ -33,8 +33,8 @@
 #             and the source, authored and verification annotations. scat:discouragedField and scat:targetType are
 #             declared but no type uses them now; they stay so the reader needs small edits only.
 #   Removed:  the relation page types, the scenario and architecture raw and coded record types and their fields, the
-#             class pages and scat:ClassPageName with its two properties, the fields conflicts, notes, indexes, group
-#             and its siblings, the properties conflictsWith, involves and coded, scat:single, scat:discouragedBodyLink,
+#             class pages and scat:ClassPageName with its two properties, the fields notes, indexes, group
+#             and its siblings, the old conflict field and property (a relationship annotation now says it), involves and coded, scat:single, scat:discouragedBodyLink,
 #             and the ontology-level scat:unlistedLinkLevel and scat:wrongTargetLevel (there is no link field to grade).
 #
 # Provenance of wording (every term below carries one of these)
