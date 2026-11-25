@@ -307,6 +307,9 @@ written (**flag for the ACE**: confirm it was skipped and not lost).
 | D-096 | ACE | Rulings on the PM's defaults; **Docker Desktop is the documented container runtime**, untested here; the launcher never changes the coder's network account settings | the entry | `divergence/D-096` |
 | D-097 | ACE | WP19 accepted; WP18 built, waiting on its live run; WP20 approved | `check_metrics.py --accept WP19`; `research/range/` | `divergence/D-096` |
 | D-098 | ACE | WP20 mid-way rulings: the template branch may be pushed by URL to the template's `dev`; the stray "Remove the example" commit is not published (the pin is rebased and the pushed tree checked); five docs gaps are defects against R-9, R-10, R-11 and G9, fixed by a docs unit before the pin is redone; the chat path's UA-A has three testers (two Haiku, one Sonnet), run by the ACE in your sittings | the entry; WP20-U1 on `dev` at 92b64d7 | none |
+| D-099 | ACE | A stop rule for reviews of the test kits, scripts and guide: no checkable defect against a stated requirement; targeted re-reviews, at most two rounds | the entry | none |
+| D-100 | ACE | UA-A round 1 dispositions: seven docs fixes; fingerprint candidates off by default; the mention rule no longer suggests a discouraged link; history in clones and no rename/delete of node pages accepted | `acceptance/reports/wp20-r1-findings.md` | none |
+| D-101 | ACE | UA-A round 2 passes on the manual path; three docs sentences fixed after it without a round 3 | `acceptance/reports/wp20-r2-findings.md` | none |
 | WP10 default | ACE | `SCAT-DRAFT-FIELD` fires at `stub` for a field with a value set, so a fresh stub warns until `timeframe` is filled. An ACE default, for you to confirm | `contracts/rule-catalogue.md` | none |
 
 Your own decisions or directions that the ACE only recorded and applied are marked "Yours" above. D-015 and D-016 are
@@ -471,35 +474,43 @@ the table rules came after the audit.
 
 ### 4d. UA-A results
 
-**Not yet run (D-098).** UA-A manual round 1 has not been run; a later unit fills the manual rows from
-`acceptance/reports/`. The chat path has three testers, two Haiku and one Sonnet, whose sessions the ACE runs in your
-sittings. Nobody writes a result here before a report exists. One row per tester per round, with the report file linked. The pass bar is in `MISSION.md`
-("User acceptance", "Pass bar"): every tester reaches the end with a clean check and a hand-over, every finding is
-dispositioned, and the last round leaves no blocking finding.
+The pass bar is in `MISSION.md` ("User acceptance", "Pass bar"): every tester reaches the end with a clean check and a
+hand-over, every finding is dispositioned, and the last round leaves no blocking finding. **The manual path meets it
+after round 2.** The chat path's rounds run in your sittings (D-098), so their rows are empty until then.
 
-| Round | Persona | Model | Path | Report | Clean check | Hand-over tag, pinned commit, recipient | Blocking findings | Findings dispositioned |
+| Round | Persona | Model | Path | Report | Clean check | Hand-over | Blocking | Dispositioned |
 |---|---|---|---|---|---|---|---|---|
-| N | p1 facilitator-analyst, REPL | Haiku | manual | | | | | |
-| N | p2 newcomer, CLI | Haiku | manual | | | | | |
-| N | p3 facilitator-analyst, REPL (control) | Sonnet | manual | | | | | |
-| N | chat tester 1 | Haiku | chat | | | | | |
-| N | chat tester 2 | Haiku | chat | | | | | |
-| N | chat tester 3 | Sonnet | chat | | | | | |
+| 1 | p1, the organiser, Python session | Haiku | manual | `reports/wp20-r1-p1.md` | yes | tag, commit, recipient | none | yes (D-100) |
+| 1 | p2, the organiser, command line | Haiku | manual | `reports/wp20-r1-p2.md` | yes | tag, commit, recipient | none | yes (D-100) |
+| 1 | p3, control | Sonnet | manual | `reports/wp20-r1-p3.md` | yes | tag, commit, recipient | none | yes (D-100) |
+| 2 | p1, Python session (fresh tester) | Haiku | manual | `reports/wp20-r2-p1.md` | yes | tag, commit, recipient | none | yes (D-101) |
+| 2 | p1b, Python session (fresh tester) | Haiku | manual | `reports/wp20-r2-p1b.md` | yes | tag, commit, recipient | none | yes (D-101) |
+| 2 | p2, command line (fresh tester) | Haiku | manual | `reports/wp20-r2-p2.md` | yes | tag, commit, recipient | none | yes (D-101) |
+| 2 | p3, control (fresh tester) | Sonnet | manual | `reports/wp20-r2-p3.md` | yes | tag, commit, recipient | none | yes (D-101) |
+| | chat tester 1 | Haiku | chat | your sitting | | | | |
+| | chat tester 2 | Haiku | chat | your sitting | | | | |
+| | chat tester 3 | Sonnet | chat | your sitting | | | | |
 
-- Rounds run: to be filled.
-- Candidate commit each round ran against: to be filled.
-- Findings accepted with a reason (these join sitting 4c): to be filled.
-- Reports that were void and rerun: to be filled.
-- Whether uv was preinstalled in each report (D-040): to be filled.
+- Rounds run on the manual path: two. Round 1 against template a8f7287; round 2 against template 826bc99 (tools
+  7d17534). The last docs fixes after round 2 move the pin without a rerun (D-101).
+- No report was void. In round 1, p1 ran some tool steps on the command line against its brief, so round 2 added a
+  second Haiku tester in the Python session through J10.
+- uv was pre-installed for every tester and every report says so (D-040, D-041): a gap only you can waive.
 
 ### 4e. The ACE's calls on the UA-A findings
 
-**ACE to complete.** This section is a stub. The ACE writes, for each finding or group the PM brings from 4d: the
-call, its evidence (the report and line), the log entry id, and its divergence tag where one was pushed. Nothing here
-is decided by the PM or by this draft.
-
-| Log | Finding | The call | Evidence | Revert tag |
-|---|---|---|---|---|
-| ACE to complete | | | | |
+| Log | Finding | The call | Evidence |
+|---|---|---|---|
+| D-100 | W1 to W7: docs gaps (the solo-trial command, the example's folders, a link, the Analysis page's output folder, answers between the terms examples, nothing to commit at hand-over, stubs and the lock) | Fixed in the docs | `reports/wp20-r1-findings.md` |
+| D-100 | W9: fingerprint candidates are noisy (three of three testers) | A defect against R-11: candidates off by default, an option everywhere | the same |
+| D-100 | W10a: the mention rule asked for a group link on an architecture page | A defect: no suggestion of a discouraged link | the same |
+| D-100 | W10b: a hyphenated title not offered | A defect (a literal title compare): fixed | the same |
+| D-100 | W11: no documented rename or delete of a node page | Accepted for v0.1; listed in 4c | the same |
+| D-100 | W15: work-package commits and tags in a clone's history | Accepted: "Use this template" starts fresh history | the same |
+| D-100 | W8, W12 to W14, W16 | Accepted as the PM proposed (wording, visual polish, expected behaviour) | the same |
+| D-101 | X1: `git add .` sweeps in drawings and plan files (three of four testers) | Fixed in the docs, without prescribing | `reports/wp20-r2-findings.md` |
+| D-101 | X5: the tag name is the organiser's own | Fixed in the docs | the same |
+| D-101 | X3: a narrative quoting the notes | Fixed: the consent page says, as fact, that quoted text enters the model and its rules | the same |
+| D-101 | The rest of round 2 | Accepted as the PM proposed | the same |
 
 **Your decision.** Keep or revert each call, as in 4a.
