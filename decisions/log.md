@@ -2026,3 +2026,18 @@ The ACE's rulings:
    unit fixes them before the pin is redone and UA-A runs.
 4. The chat path's UA-A has three testers, two on Haiku and one on Sonnet ("most on Haiku"). Their sessions are run by
    the ACE, light and spaced, in the chief engineer's sittings.
+
+## D-099 | 2026-11-25 | WP20: a stop rule for kit reviews; answers to the PM
+
+State: template `dev` pinned to the candidate (d6fa2af, CI green; the stray commit is not in its history). WP20-U2 to U6
+and U8 (the docs unit for D-098's five defects, reviewed PASS) are on backup branches, not yet on tools `dev`; small
+open defects remain in U3 to U6. UA-A round 1 has not run.
+
+Rulings:
+- **The bar for the test kits, scripts and guide** is no checkable defect against a stated requirement (the mission's
+  UA-A, the docs as they stand, the glossary), not "no defects". Each re-review checks only the defects the previous
+  review listed, so the loop converges; a unit gets at most two review rounds, and anything still open after the second
+  comes to the ACE. This is the stop rule the ACE's memory records for test loops, applied to reviews.
+- **The uv gap** (a pre-installed uv on PATH): it stays declared in the kit's README and in each report until the
+  chief engineer rules (D-040, D-041; on the morning list).
+- **Chat-path testers:** three (D-098) meets the mission's "at least two"; no text changes.
