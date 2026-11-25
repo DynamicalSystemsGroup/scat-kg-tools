@@ -24,6 +24,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP15 | Architecture document and review (D-083) | all units done and merged; ready for ACE acceptance | `WP15.md` |
 | WP16 | Ontology and layout (absorbs WP13) | all units built and merged on `wp16/build` (iterations 20 and 21); re-sweep not clean on kept words only; pushed to `dev` once green; ready for the ACE's Obsidian walk | `impact/WP16.md` |
 | RS3 | Research spike: chat path (D-080; branch `spike/chat-path`, never merged into `dev`) | offline part done (U1 to U3, tunnel and git notes in); live part waits for the chief engineer's sign-ins | `RS3-chat-path.md` |
+| WP17 | The views (D-092) | approved; units planned (iteration 23 on); units integrate on `pm-wp17`, backed up to `origin/wp17/build`, one push to `dev` when green | `WP17.md` |
 
 ## Units
 
@@ -202,6 +203,20 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP16-U15 | technical writer (flow and consent page fixes, reader guesses, coding guide, reviewer's guide; added by the PM), sonnet | 3 | 3 | `pm-wp16fix` | done |  | 2026-11-25T09:30:00-05:00 | five disagreements fixed (nine choices, nine checklist items); flow 499 words, consent 731; docs test, strict build, terms drift test green |
 | WP16-U15r | reviewer (fresh; added by the PM), sonnet | 2 | 1 | `pm-wp16fix` | done |  | 2026-11-25T09:30:00-05:00 | PASS, two non-blocking notes |
 | RS3-U4 | technical writer (chat-path readout, added at the ACE's call), sonnet | 3 | 2 | `rs3/u4` | done |  | 2026-11-25T01:26:30-05:00 | under 1 min, 8 tool calls; 1,409 words; no separate fresh reviewer yet |
+| WP17-U1 | Python developer (view generator M6: views, loader export, hand-computed tests), sonnet | 8 |  | `wp17/u1` | queued | nothing |  |  |
+| WP17-U1r | reviewer (fresh; runs U1's checks), sonnet | 2 |  | `-` | queued | U1 |  |  |
+| WP17-U2 | Python developer (exports, CLI twins, machine-interface additions, architecture slot), sonnet | 5 |  | `wp17/u2` | queued | U1 |  |  |
+| WP17-U2r | reviewer (fresh; runs U2's checks), sonnet | 2 |  | `-` | queued | U2 |  |  |
+| WP17-U3 | Python developer (drawings in the optional extra draw, with CLI twin), sonnet | 5 |  | `wp17/u3` | queued | U1 |  |  |
+| WP17-U3r | reviewer (fresh; runs U3's checks, looks at the drawings), sonnet | 2 |  | `-` | queued | U3 |  |  |
+| WP17-U4 | Python and notebook developer (template notebook, CI step, pins), sonnet | 5 |  | `wp17/u4 (template)` | queued | U2, U3 pushed to `origin/wp17/build` |  |  |
+| WP17-U4r | reviewer (fresh; runs U4's checks, opens the executed notebook), sonnet | 2 |  | `-` | queued | U4 |  |  |
+| WP17-U5 | technical writer (analysis guide, API reference), sonnet | 3 |  | `wp17/u5` | queued | U2, U3 |  |  |
+| WP17-U5r | reviewer (fresh; runs U5's checks, opens the pages), sonnet | 2 |  | `-` | queued | U5 |  |  |
+| WP17-U6 | technical writer (the three carried fixes and the terms page's SCAT entry), sonnet | 2 |  | `wp17/u6` | queued | nothing |  |  |
+| WP17-U6r | reviewer (fresh; runs U6's checks), haiku | 1 |  | `-` | queued | U6 |  |  |
+| WP17-U7 | change consultant (file-map check at start and before acceptance), sonnet | 1 |  | `wp17/u7` | queued | nothing |  |  |
+| WP17-U7r | reviewer (fresh; checks U7's map against the diff), haiku | 1 |  | `-` | queued | U7 |  |  |
 
 ## Iterations and velocity
 
