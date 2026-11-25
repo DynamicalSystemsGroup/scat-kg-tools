@@ -247,14 +247,30 @@ This was read in GitHub's documentation, not run by a coder, and GitHub's wordin
 
 ## Stop
 
-Click **Stop** in the window, or quit SCAT Chat. Either does the same thing: the public link goes off, the server
-is removed, your Mac may sleep again, the key is replaced, and your clipboard is cleared of the key. A message then
-says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was replaced, and
-your clipboard holds no key."
+Stopping has three parts: stop the session on your Mac, check that it stopped, and delete the server entry in your
+chat. Do all three each time; an assistant driving your screen can do them for you, except that you confirm the
+delete in the chat.
 
-If it says "Stopped, but I could not confirm:" followed by something, click SCAT Chat again, then Stop, or
-restart your Mac. If it says the public link may still be on, open Tailscale and switch Funnel off. Delete the
-server entry in your chat too; it no longer works.
+**1. Stop the session.** Click **Stop** in the SCAT Chat window, or quit SCAT Chat. Either does the same thing: the
+public link goes off, the server is removed, your Mac may sleep again, the key is replaced, and your clipboard is
+cleared of the key. A message then says "Stopped. The public link is off, the server is removed, your Mac may sleep
+again, the key was replaced, and your clipboard holds no key."
+
+If it says "Stopped, but I could not confirm:" followed by something, click SCAT Chat again, then Stop, or restart
+your Mac. If it says the public link may still be on, open Tailscale and switch Funnel off.
+
+**2. Check that it stopped.** Open the address that ended in `/mcp` in your browser. It should not load. If it does,
+do step 1 again.
+
+**3. Delete the server entry in your chat.** The entry holds the old key and no longer works, so delete it rather
+than leave it. In inference.coop's chat (lab run, 25 November):
+
+1. In the bar of icons on the left, click **MCP Settings** (the last icon above your initials).
+2. Next to the server you added (for example "Scat Lab"), click **Edit**.
+3. At the bottom left of the form, click the red **delete** button, and confirm.
+
+Delete only the server entry. A skill or an agent you set up for SCAT stays. Next session, add the new entry; if an
+agent uses the server, check that the agent still lists it, and add it to the agent again if not (not yet tried).
 
 Closing Docker Desktop is up to you; Stop does not quit it.
 
