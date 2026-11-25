@@ -12,7 +12,7 @@ A **view** is a purposeful picture or table made from a conformant vault. The to
 
 ## The four views
 
-**Fingerprint.** What does this narrative touch? It shows the nodes the narrative links and the edges it tells, in four columns, one for each layer. A dashed line is a link with no row. It does not mean the narrative is complete or wrong.
+**Fingerprint.** What does this narrative touch? It shows the nodes the narrative links and the edges it tells, in four columns, one for each layer. It does not mean the narrative is complete or wrong.
 
 **Edge table.** Which edges of one type exist, and who tells them? Read it as a table, one row per edge. Exported as CSV, it feeds documents. It does not rank the edges.
 

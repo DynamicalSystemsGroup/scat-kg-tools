@@ -8,6 +8,16 @@ from scat_kg.vault import Page, blank_code
 
 _WIKILINK = re.compile(r"!?\[\[[^\[\]\n]*\]\]")
 
+# A narrative's `kind` discourages a link to one node type (GLOSSARY: "an architecture rarely names a
+# group", "a scenario rarely names a technology"): the rule suggests no link of that type there.
+_DISCOURAGED = {"architecture": "group", "scenario": "technology"}
+
+
+def _pattern(text: str) -> re.Pattern[str]:
+    """The text at word boundaries, its words separated by a space or a hyphen in any mix."""
+    words = [w for w in re.split(r"[ \-]+", text) if w]
+    return re.compile(rf"(?<!\w){'[ -]+'.join(map(re.escape, words))}(?!\w)", re.IGNORECASE)
+
 
 def _mentions(ctx: Ctx) -> list[tuple[Page, list[str]]]:
     """The pages a body could mention, with the texts (title, name; 4 characters or more) that name them."""
@@ -51,17 +61,16 @@ def mention(ctx: Ctx, page: Page):
     if not ctx.typed(page) or not page.body:
         return []
     plain = _plain(ctx, page)
-    low = plain.lower()
     linked = {l.target for l in page.body_links}
+    kind = page.fields.get("kind") if page.type_key == "narrative" else None
+    discouraged = _DISCOURAGED.get(kind) if isinstance(kind, str) else None
     out = []
     for target, texts in _mentions(ctx):
-        if target is page or target.name in linked:
+        if target is page or target.name in linked or target.type_key == discouraged:
             continue
         best = None
         for text in texts:
-            if text.lower() not in low:
-                continue
-            m = re.search(rf"(?<!\w){re.escape(text)}(?!\w)", plain, re.IGNORECASE)
+            m = _pattern(text).search(plain)
             if m and (best is None or m.start() < best.start()):
                 best = m
         if best is None:

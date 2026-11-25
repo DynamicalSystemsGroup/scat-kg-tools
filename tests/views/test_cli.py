@@ -12,6 +12,14 @@ from scat_kg.cli import main
 TWINS = {
     "fingerprint": (["fingerprint"], lambda r: scat_kg.fingerprint(root=r)),
     "fingerprint-one": (["fingerprint", "dry"], lambda r: scat_kg.fingerprint("dry", root=r)),
+    "fingerprint-candidates": (
+        ["fingerprint", "dry", "--candidates"],
+        lambda r: scat_kg.fingerprint("dry", candidates=True, root=r),
+    ),
+    "fingerprint-all-candidates": (
+        ["fingerprint", "--candidates"],
+        lambda r: scat_kg.fingerprint(candidates=True, root=r),
+    ),
     "edges": (["edges", "holds"], lambda r: scat_kg.edge_table("holds", root=r)),
     "layered": (["layered"], lambda r: scat_kg.layered(None, root=r)),
     "layered-some": (
@@ -47,6 +55,20 @@ def test_json_equals_to_dict_and_text_equals_str(vault, capsys, name):
     code, out = run(capsys, [*argv, "--root", str(vault)])
     assert out == str(want) + "\n"
     assert code == (0 if want.ok else 1)
+
+
+def test_fingerprint_candidates_only_with_the_flag(vault, capsys):
+    _, out = run(capsys, ["fingerprint", "dry", "--root", str(vault), "--json"])
+    assert "candidates" not in json.loads(out)["narratives"][0]
+    assert "candidate" not in run(capsys, ["fingerprint", "dry", "--root", str(vault)])[1]
+    _, out = run(capsys, ["fingerprint", "dry", "--candidates", "--root", str(vault), "--json"])
+    assert json.loads(out)["narratives"][0]["candidates"] == [
+        {"type": "holds", "from": "towns", "to": "water"}
+    ]
+    assert (
+        "candidates (linked, no row)"
+        in run(capsys, ["fingerprint", "dry", "--candidates", "--root", str(vault)])[1]
+    )
 
 
 def test_layered_without_the_flag_is_the_whole_vault_not_an_empty_view(vault, capsys):

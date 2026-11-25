@@ -76,6 +76,11 @@ SEQUENCE = [
         {"narrative": "funders-meeting"},
         lambda r: scat_kg.fingerprint("funders-meeting", root=r),
     ),
+    (
+        "fingerprint",
+        {"narrative": "funders-meeting", "candidates": True},
+        lambda r: scat_kg.fingerprint("funders-meeting", candidates=True, root=r),
+    ),
     ("fingerprint", {"narrative": "nope"}, lambda r: scat_kg.fingerprint("nope", root=r)),
     ("edge_table", {"type": "holds"}, lambda r: scat_kg.edge_table("holds", root=r)),
     ("edge_table", {"type": "bogus"}, lambda r: scat_kg.edge_table("bogus", root=r)),

@@ -20,6 +20,8 @@ VIEWS = {
     "fingerprint-all": lambda r: scat_kg.fingerprint(root=r),
     "fingerprint-one": lambda r: scat_kg.fingerprint("dry", root=r),
     "fingerprint-empty": lambda r: scat_kg.fingerprint("empty", root=r),
+    "fingerprint-candidates": lambda r: scat_kg.fingerprint("dry", candidates=True, root=r),
+    "fingerprint-all-candidates": lambda r: scat_kg.fingerprint(candidates=True, root=r),
     "edges-holds": lambda r: scat_kg.edge_table("holds", root=r),
     "edges-addressed-by": lambda r: scat_kg.edge_table("addressed-by", root=r),
     "edges-provided-by": lambda r: scat_kg.edge_table("provided-by", root=r),

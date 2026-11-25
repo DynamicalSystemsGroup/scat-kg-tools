@@ -28,7 +28,7 @@
 | [`scat_kg.stub_links`](#scat_kgstub_links) | [`scat stub-links`](cli.md#scat-stub-links) | Create the node pages that the ends of rows link and the vault lacks. |
 | [`scat_kg.set_status`](#scat_kgset_status) | [`scat set-status`](cli.md#scat-set-status) | Set a page's status. |
 | [`scat_kg.load`](#scat_kgload) | none | Read the vault into its knowledge graph. Writes nothing. |
-| [`scat_kg.fingerprint`](#scat_kgfingerprint) | [`scat fingerprint`](cli.md#scat-fingerprint) | View: a narrative's nodes, edges and candidates. |
+| [`scat_kg.fingerprint`](#scat_kgfingerprint) | [`scat fingerprint`](cli.md#scat-fingerprint) | View: a narrative's nodes and edges (candidates when asked). |
 | [`scat_kg.edge_table`](#scat_kgedge_table) | [`scat edges`](cli.md#scat-edges) | View: every edge of one type. |
 | [`scat_kg.layered`](#scat_kglayered) | [`scat layered`](cli.md#scat-layered) | View: the union of fingerprints, in four layers. |
 | [`scat_kg.trace`](#scat_kgtrace) | [`scat trace`](cli.md#scat-trace) | View: what a node reaches, up or down the layers. |
@@ -822,14 +822,15 @@ The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `la
 ## scat_kg.fingerprint
 
 ```text
-fingerprint(narrative=None, *, root=".")
+fingerprint(narrative=None, *, candidates=False, root=".")
 ```
 
-Shows the fingerprint of a narrative: the nodes it links, the edges its rows tell, and its candidates (links between two nodes that an edge type fits and that have no row). CLI twin: [`scat fingerprint`](cli.md#scat-fingerprint).
+Shows the fingerprint of a narrative: the nodes it links, the edges its rows tell, and, with `candidates=True`, its candidates (links between two nodes that an edge type fits and that have no row; without the option the view shows none). CLI twin: [`scat fingerprint`](cli.md#scat-fingerprint).
 
 | Parameter | Meaning |
 |---|---|
 | `narrative` | A narrative name. Without it, every narrative, in path order. |
+| `candidates` | `True` to add the candidates. Default `False`. CLI: `--candidates`. |
 | `root` | The vault folder. |
 
 It refuses when the name is not a narrative, when two pages share it, and on an error in a page it draws.
@@ -1033,10 +1034,10 @@ A drawing shows a view as four columns, one for each layer, in layer order, with
 ### scat_kg.draw.fingerprint
 
 ```text
-draw.fingerprint(narrative, *, root=".")
+draw.fingerprint(narrative, *, candidates=False, root=".")
 ```
 
-Draws a narrative's fingerprint, with its candidates as dashed lines. Returns a `Drawing`. `narrative` is required: one name. CLI twin: [`scat draw fingerprint`](cli.md#scat-draw-fingerprint).
+Draws a narrative's fingerprint; with `candidates=True` its candidates are added as dashed lines. Returns a `Drawing`. `narrative` is required: one name. `candidates` is `False` unless you pass `True` (CLI: `--candidates`). CLI twin: [`scat draw fingerprint`](cli.md#scat-draw-fingerprint).
 
 ### scat_kg.draw.layered
 

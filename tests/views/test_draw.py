@@ -78,10 +78,20 @@ def test_each_edge_is_one_line_between_neighbouring_columns(vault):
         assert abs(col_x.index(a) - col_x.index(b)) == 1
 
 
+def test_fingerprint_draws_no_candidates_and_no_legend_for_them_unless_asked(vault):
+    svg = draw.fingerprint("dry", root=vault).svg()
+    drawn = lines(svg)
+    assert drawn and not any(dashed for *_, dashed in drawn)
+    assert len(drawn) == 3
+    said = " ".join(t for _, _, t in texts(svg))
+    assert "dashed" not in said and "candidate" not in said
+    assert "solid line" in said
+
+
 def test_fingerprint_shows_name_status_and_candidates_dashed(vault):
-    d = draw.fingerprint("dry", root=vault)
+    d = draw.fingerprint("dry", candidates=True, root=vault)
     svg = d.svg()
-    view = scat_kg.fingerprint("dry", root=vault).to_dict()["narratives"][0]
+    view = scat_kg.fingerprint("dry", candidates=True, root=vault).to_dict()["narratives"][0]
     assert "dry (draft)" in [t for _, _, t in texts(svg)]
     assert "dashed line" in " ".join(t for _, _, t in texts(svg))
     drawn = lines(svg)

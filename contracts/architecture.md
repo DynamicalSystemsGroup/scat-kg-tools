@@ -82,7 +82,7 @@ anchored on the narrative: each a warning until it is `done`, then an error (R-2
 |Pair|What disagrees|Detection|Fix (form edited)|Incremental case|
 |---|---|---|---|---|
 |**L–N**|A row's end is plain text, not a link.|Rule 3.|Replace the text with the link (L); or delete the row (T).|Only a hand edit leaves one.|
-|**L–E**|n links both ends of an edge and has no row for it. Not a mismatch under G1.|Rule 4: no message; a candidate in the fingerprint view (D-085).|Add a row to n (T), or leave it.|Breadth first: rows recorded after linking.|
+|**L–E**|n links both ends of an edge and has no row for it. Not a mismatch under G1.|Rule 4: no message; a candidate in the fingerprint view when asked for (D-085, D-100).|Add a row to n (T), or leave it.|Breadth first: rows recorded after linking.|
 |**E–N**|An end is not a node, is in the wrong layer or direction, or the type is unknown. Conformance.|Rule 1; an end that is no page is graded likewise.|`stub-links` makes the missing node (M5); relink if renamed, retype or turn the row.|Recording stubs absent ends; only a hand edit leaves one.|
 |**E–T**|A narrative tells a pair twice. Conformance.|Rule 2.|Merge the rows.|Recording an existing pair is "unchanged".|
 
@@ -145,11 +145,11 @@ interface, GitHub Desktop, an Obsidian git plugin), not M8.
   line with a link, no meaning to the tool (the old field leaves). Bases need Obsidian 1.9 or later. `schema_version` is 2.
 - **Decided (WP17): the view document.** Kind `view`; `operation` is `fingerprint`, `edges`, `layered` or `trace`, each a
   `scat` command with a REPL twin; `schema_version` stays 2. Nodes are `{name, type, status}`; an edge names every
-  narrative that tells it; the fingerprint adds rule-4 candidates. A view refuses, as an operation with `problems`, on an
+  narrative that tells it; the fingerprint adds rule-4 candidates only when asked for (`candidates`, D-100; default off). A view refuses, as an operation with `problems`, on an
   error in a page it draws, and on a skipped row in a narrative it draws, naming the row; a whole-vault view also refuses on a
   page whose frontmatter cannot be read, naming the file and why. A duplicate node name behind a row end is named with both files. `export-edges --out DIR` is the only writer (R-4). Shape: `machine-interface.schema.json`.
 - **[OPEN: WP18] Tool, prompt and skill names; the assistant's file; the view folder.**
 - **Decided (D-084): the chat route.** v0.1: M8 on the coder's machine, behind a tunnel with an API key. Later:
   governed compute. RS3 picks the tunnel and terminal-free git; M8's contract is unchanged.
-- **Decided (D-085).** (a) Rule 4: no message (content, R-1); the fingerprint view lists candidates. (b) The IDE
+- **Decided (D-085).** (a) Rule 4: no message (content, R-1); the fingerprint view lists candidates when asked for (D-100). (b) The IDE
   path's authority risk is accepted; the docs say so. (c) The guidance-versus-example gap is a WP16 test case.

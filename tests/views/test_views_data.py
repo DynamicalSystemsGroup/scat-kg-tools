@@ -52,7 +52,7 @@ def doc(view, operation):
 
 
 def test_fingerprint_of_a_narrative_with_edges_and_a_candidate(vault):
-    d = doc(scat_kg.fingerprint("dry", root=vault), "fingerprint")
+    d = doc(scat_kg.fingerprint("dry", candidates=True, root=vault), "fingerprint")
     assert d["narratives"] == [
         {
             "name": "dry",
@@ -67,7 +67,7 @@ def test_fingerprint_of_a_narrative_with_edges_and_a_candidate(vault):
 
 
 def test_fingerprint_of_a_narrative_with_no_edges(vault):
-    d = doc(scat_kg.fingerprint("empty", root=vault), "fingerprint")
+    d = doc(scat_kg.fingerprint("empty", candidates=True, root=vault), "fingerprint")
     assert d["narratives"] == [
         {
             "name": "empty",
@@ -81,7 +81,7 @@ def test_fingerprint_of_a_narrative_with_no_edges(vault):
 
 
 def test_fingerprint_that_is_disconnected(vault):
-    d = doc(scat_kg.fingerprint("split", root=vault), "fingerprint")
+    d = doc(scat_kg.fingerprint("split", candidates=True, root=vault), "fingerprint")
     (f,) = d["narratives"]
     assert f["nodes"] == [TOWNS, COST, ALERT, RADIO]
     # two groups of nodes, {towns, cost} and {alert, radio}, with no edge between them
@@ -91,8 +91,8 @@ def test_fingerprint_that_is_disconnected(vault):
 
 
 def test_an_edge_told_by_two_narratives_is_in_both_fingerprints(vault):
-    dry = scat_kg.fingerprint("dry", root=vault).to_dict()["narratives"][0]
-    wet = scat_kg.fingerprint("wet", root=vault).to_dict()["narratives"][0]
+    dry = scat_kg.fingerprint("dry", candidates=True, root=vault).to_dict()["narratives"][0]
+    wet = scat_kg.fingerprint("wet", candidates=True, root=vault).to_dict()["narratives"][0]
     assert F_WATER in dry["edges"] and F_WATER in wet["edges"]
     assert wet["nodes"] == [FARMERS, WATER, ALERT]
     assert wet["edges"] == [F_WATER, W_ALERT]
@@ -101,7 +101,7 @@ def test_an_edge_told_by_two_narratives_is_in_both_fingerprints(vault):
 
 
 def test_fingerprint_of_every_narrative_in_path_order(vault):
-    d = doc(scat_kg.fingerprint(root=vault), "fingerprint")
+    d = doc(scat_kg.fingerprint(candidates=True, root=vault), "fingerprint")
     assert [f["name"] for f in d["narratives"]] == ["diamond", "dry", "empty", "split", "wet"]
     diamond = d["narratives"][0]
     assert diamond["nodes"] == [FARMERS, COST, SENSOR]
@@ -110,7 +110,7 @@ def test_fingerprint_of_every_narrative_in_path_order(vault):
 
 
 def test_fingerprint_text_groups_by_layer(vault):
-    text = str(scat_kg.fingerprint("dry", root=vault))
+    text = str(scat_kg.fingerprint("dry", candidates=True, root=vault))
     assert text == lines(
         "fingerprint dry (scenario, draft)",
         "  group",
@@ -129,6 +129,31 @@ def test_fingerprint_text_groups_by_layer(vault):
         "  candidates (linked, no row)",
         "    holds: towns -> water",
     )
+
+
+def test_fingerprint_shows_no_candidates_unless_asked(vault):
+    d = doc(scat_kg.fingerprint("dry", root=vault), "fingerprint")
+    (f,) = d["narratives"]
+    assert "candidates" not in f
+    assert f["edges"] == [F_WATER, W_SENSOR, S_PROBE]  # the rest of the fingerprint is the same
+    everyone = doc(scat_kg.fingerprint(root=vault), "fingerprint")
+    assert all("candidates" not in x for x in everyone["narratives"])
+    asked = doc(scat_kg.fingerprint("dry", candidates=True, root=vault), "fingerprint")
+    assert asked["narratives"][0]["candidates"] == [
+        {"type": "holds", "from": "towns", "to": "water"}
+    ]
+    assert {k: v for k, v in asked["narratives"][0].items() if k != "candidates"} == f
+
+
+def test_fingerprint_text_names_no_candidates_unless_asked(vault):
+    text = str(scat_kg.fingerprint("dry", root=vault))
+    assert "candidate" not in text and "towns -> water" not in text
+    assert text.endswith("provided-by: sensor -> probe [draft; told by dry]")
+
+
+def test_fingerprint_refuses_a_candidates_value_that_is_not_a_bool(vault):
+    r = scat_kg.fingerprint("dry", candidates="yes", root=vault)
+    assert r.ok is False
 
 
 # ---------------------------------------------------------------- edge tables

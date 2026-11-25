@@ -134,11 +134,16 @@ def _parser() -> argparse.ArgumentParser:
     scope = "Writes nothing"
     p = command(
         "fingerprint",
-        "Show a narrative's fingerprint: its nodes by layer, the edges its rows tell, and the "
-        f"links that have no row (candidates). NARRATIVE is a name; without it, every narrative. {scope}.",
-        '`scat_kg.fingerprint()`, `scat_kg.fingerprint("<narrative>")`',
+        "Show a narrative's fingerprint: its nodes by layer and the edges its rows tell; with "
+        f"--candidates, also the links that have no row. NARRATIVE is a name; without it, every narrative. {scope}.",
+        '`scat_kg.fingerprint()`, `scat_kg.fingerprint("<narrative>", candidates=True)`',
     )
     p.add_argument("narrative", nargs="?", metavar="NARRATIVE", help="show this narrative only")
+    p.add_argument(
+        "--candidates",
+        action="store_true",
+        help="also show the candidates: links between two nodes that have no row",
+    )
     p = command(
         "edges",
         f"Show every edge of one type, with the narratives that tell it and its status. {scope}.",
@@ -199,12 +204,17 @@ def _parser() -> argparse.ArgumentParser:
     out_help = "the image file to write, ending in `.png` or `.svg` (no default)"
     p = command(
         "fingerprint",
-        "Draw a narrative's fingerprint: its nodes and edges in four columns, its candidates "
-        "(links with no row) dashed. Refuses where `scat fingerprint` would, and then writes nothing.",
-        '`draw.fingerprint("<narrative>").save("<file>")`',
+        "Draw a narrative's fingerprint: its nodes and edges in four columns; with --candidates, the "
+        "links that have no row dashed. Refuses where `scat fingerprint` would, and then writes nothing.",
+        '`draw.fingerprint("<narrative>", candidates=True).save("<file>")`',
         which,
     )
     p.add_argument("narrative", metavar="NARRATIVE", help="the narrative's name")
+    p.add_argument(
+        "--candidates",
+        action="store_true",
+        help="also draw the candidates: links with no row, dashed",
+    )
     p.add_argument("--out", required=True, metavar="FILE", help=out_help)
     p = command(
         "layered",
@@ -245,7 +255,7 @@ def run(args: argparse.Namespace):
         case "stub-links":
             return scat_kg.stub_links(args.page, root=root)
         case "fingerprint":
-            return scat_kg.fingerprint(args.narrative, root=root)
+            return scat_kg.fingerprint(args.narrative, candidates=args.candidates, root=root)
         case "edges":
             return scat_kg.edge_table(args.type, root=root)
         case "layered":
@@ -256,7 +266,7 @@ def run(args: argparse.Namespace):
             return scat_kg.export_edges(args.out, root=root)
         case "draw":
             made = (
-                draw.fingerprint(args.narrative, root=root)
+                draw.fingerprint(args.narrative, candidates=args.candidates, root=root)
                 if args.drawing == "fingerprint"
                 else draw.layered(args.narrative, root=root)
             )

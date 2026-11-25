@@ -1,6 +1,7 @@
 """The view generator (M6): the data of each view, built once for every front end.
 
-    scat_kg.fingerprint("dry-july")      # a narrative's nodes, edges and rule-4 candidates; none: every narrative
+    scat_kg.fingerprint("dry-july")      # a narrative's nodes and edges; none: every narrative
+    scat_kg.fingerprint("dry-july", candidates=True)   # and its rule-4 candidates
     scat_kg.edge_table("holds")          # every edge of one type
     scat_kg.layered(["dry-july"])        # the union of fingerprints, as four layers; none: the whole vault
     scat_kg.trace("farmers", "down")     # what a node reaches, up, down or both
@@ -207,12 +208,19 @@ def _text(op: str, value: object, what: str) -> Refused | None:
     return _refuse(op, repr(value), f"{what} must be a string", f"pass {what} as a string")
 
 
-def fingerprint(narrative: str | None = None, *, root: str | Path = ".") -> View | Result:
-    """A narrative's fingerprint: its nodes, the edges its rows tell, and its rule-4 candidates.
+def fingerprint(
+    narrative: str | None = None, *, candidates: bool = False, root: str | Path = "."
+) -> View | Result:
+    """A narrative's fingerprint: its nodes and the edges its rows tell.
 
-    With no name: the fingerprint of every narrative, in path order.
+    With `candidates=True` it adds the rule-4 candidates (linked pairs with no row). With no name:
+    the fingerprint of every narrative, in path order.
     """
     op = "fingerprint"
+    if not isinstance(candidates, bool):
+        return _refuse(
+            op, repr(candidates), "candidates must be True or False", "pass True or False"
+        )
     g, bad = _open(op, root)
     if bad:
         return bad
@@ -227,20 +235,20 @@ def fingerprint(narrative: str | None = None, *, root: str | Path = ".") -> View
     items, nodes, edges = [], set(), []
     for nar in chosen:
         es = [by_key[k] for k in nar.edges]
-        items.append(
-            {
-                "name": nar.name,
-                "kind": nar.kind,
-                "status": nar.status,
-                "nodes": [_node(n) for n in _nodes(g, nar.nodes)],
-                "edges": [_edge(e) for e in es],
-                "candidates": [
-                    {"type": c.type, "from": c.from_node, "to": c.to_node}
-                    for c in g.candidates
-                    if c.narrative == nar.name
-                ],
-            }
-        )
+        item = {
+            "name": nar.name,
+            "kind": nar.kind,
+            "status": nar.status,
+            "nodes": [_node(n) for n in _nodes(g, nar.nodes)],
+            "edges": [_edge(e) for e in es],
+        }
+        if candidates:
+            item["candidates"] = [
+                {"type": c.type, "from": c.from_node, "to": c.to_node}
+                for c in g.candidates
+                if c.narrative == nar.name
+            ]
+        items.append(item)
         nodes |= set(nar.nodes)
         edges += es
     names = [n.name for n in chosen]
@@ -394,7 +402,7 @@ def _text_fingerprint(d: dict) -> list[str]:
         out += _layer_lines(n["nodes"])
         if n["edges"]:
             out += ["  edges", *map(_edge_line, n["edges"])]
-        if n["candidates"]:
+        if n.get("candidates"):
             out.append("  candidates (linked, no row)")
             out += [f"    {c['type']}: {c['from']} -> {c['to']}" for c in n["candidates"]]
     return out or ["fingerprint: no narratives"]
