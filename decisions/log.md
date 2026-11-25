@@ -2172,3 +2172,9 @@ Asked whether to rewrite `main` (c58113b, the pilot line), `dev` (20ff07a, priva
 neither. The chief engineer chose "Rewrite both": the ACE rewrites those commits, force-pushes `main` and `dev`,
 verifies that the text is gone from every reachable commit, and records the old and new heads. This is the chief
 engineer's authorisation for those two force-pushes only.
+
+## D-110 | 2026-11-25 | WP8-U1: the held test edit is allowed
+
+Asked whether to allow the held edit to `tests/ops/test_ops_stub.py` (D-042; the test's setup only, assertions
+unchanged) or drop it. The chief engineer chose "Allow the edit". The ACE applies it as held, and checks that no
+assertion changed.
