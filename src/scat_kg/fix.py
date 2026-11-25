@@ -18,17 +18,19 @@ class Command:
 
 @dataclass(frozen=True)
 class Edit:
-    """One change a tool can apply. `action` is one of set-field, delete-field, replace-text, rename-file,
-    delete-file; the other fields are the ones that action takes, and absent ones stay None."""
+    """One change a tool can apply. `action` is one of set-field, delete-field, replace-text, delete-line,
+    rename-file, delete-file; the other fields are the ones that action takes, and absent ones stay None."""
 
     action: str
     file: str
     field: str | None = None  # set-field, delete-field
     value: object = None  # set-field: a string, number, boolean or list
-    author_slot: str | None = None  # set-field: the placeholder in value the author must replace
-    line: int | None = None  # replace-text
+    author_slot: str | None = (
+        None  # set-field, replace-text: the placeholder the author must replace
+    )
+    line: int | None = None  # replace-text, delete-line
     column: int | None = None  # replace-text
-    find: str | None = None  # replace-text
+    find: str | None = None  # replace-text; delete-line: the whole line as written (a guard)
     replace: str | None = None  # replace-text
     to: str | None = None  # rename-file
 

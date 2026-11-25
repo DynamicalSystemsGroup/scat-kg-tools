@@ -4,16 +4,9 @@ import difflib
 import re
 import unicodedata
 
-# TODO(WP16-U6): the class pages are gone (D-088), so the rules that read these are rebuilt or dropped by U6.
-CLASS_PAGES: dict[str, str] = {}
-CLASS_TITLES: dict[str, str] = {}
 RESERVED = frozenset(
-    {"con", "prn", "aux", "nul"}
-    | {f"com{i}" for i in range(10)}
-    | {f"lpt{i}" for i in range(10)}
-    | set(CLASS_PAGES)
+    {"con", "prn", "aux", "nul"} | {f"com{i}" for i in range(10)} | {f"lpt{i}" for i in range(10)}
 )
-LINK_ITEM = re.compile(r"\[\[([^\[\]|#^\n]+)\]\]")  # exactly `[[page-name]]`
 
 
 def is_missing(value) -> bool:
@@ -21,7 +14,7 @@ def is_missing(value) -> bool:
     return value is None or (isinstance(value, str) and not value.strip()) or value == []
 
 
-def name_problem(name: str, reserved_ok: bool = False) -> str | None:
+def name_problem(name: str) -> str | None:
     """Why `name` is not a legal page name (contract section 2), or None when it is legal."""
     bad = next((c for c in name if not ("a" <= c <= "z" or "0" <= c <= "9" or c == "-")), None)
     if bad is not None:
@@ -34,7 +27,7 @@ def name_problem(name: str, reserved_ok: bool = False) -> str | None:
         return "it has two hyphens in a row"
     if len(name) > 64:
         return "it is longer than 64 characters"
-    if name in RESERVED and not (reserved_ok and name in CLASS_PAGES):
+    if name in RESERVED:
         return "it is a reserved name"
     return None
 
@@ -104,23 +97,6 @@ def stub_cmd(name: str, type_key: str) -> str:
     return (
         f'`scat stub {name} --type {type_key}` (REPL: `scat_kg.stub("{name}", type="{type_key}")`)'
     )
-
-
-def lines_phrase(targets: list[str]) -> str:
-    items = [f'`- "[[{t}]]"`' for t in targets]
-    return ("the line " if len(items) == 1 else "the lines ") + ", ".join(items)
-
-
-def block(first: str, *rest: str) -> str:
-    """Lines of a YAML block inside a fix, indented as the catalogue shows them."""
-    return "\n".join(["       " + first] + ["       " + r for r in rest])
-
-
-def yaml_list(field: str, targets: list[str], more: int = 0) -> str:
-    rows = [f"{field}:"] + [f'  - "[[{t}]]"' for t in targets]
-    if more:
-        rows.append(f"(+{more} more)")
-    return block(*rows)
 
 
 def one(text: str) -> str:

@@ -4,7 +4,7 @@ the same fixture, gives the same message, the same files and the exit code the C
 The CLI is run through `cli.main(argv)` (no subprocess), and once for real as `uv run scat`.
 """
 
-# TODO(WP16-U6/U7) lift: UNBUILT, the forced exit code 1 for unbuilt commands, and the two skipped tests.
+# TODO(WP16-U7) lift: UNBUILT and the forced exit code 1 for unbuilt commands.
 
 import os
 import shutil
@@ -22,10 +22,9 @@ BAD_LINK = "[[no-such-concern]]"
 HELDBY = "narrative/saturday-at-the-lending-desk.md"  # the page the defect is seeded in
 NO_FOLDER = "/no/such/scat-vault"
 
-# The calls U6 (checks) and U7 (operations) rebuild: until then each returns the standard refusal, so its
-# exit code is 1 and the tests of what it prints are skipped. TODO(WP16-U6, WP16-U7): drop this and the skips.
-UNBUILT = {"check", "index", "stub", "stub-pair", "stub-links"}
-skip_unbuilt = pytest.mark.skip(reason="TODO(WP16-U6 / WP16-U7): not built yet")
+# The calls U7 (operations) rebuilds: until then each returns the standard refusal, so its exit code is 1.
+# TODO(WP16-U7): drop this.
+UNBUILT = {"index", "stub", "stub-pair", "stub-links"}
 
 
 def tree(root: Path) -> dict[str, bytes]:
@@ -198,16 +197,16 @@ def test__every_operation_is_covered():
     assert commands == {"check", "status", "set-status", "index", "stub", "stub-pair", "stub-links"}
 
 
-@skip_unbuilt
 def test__a_warning_alone_exits_zero_and_an_error_exits_nonzero(tmp_path, capsys):
     clean = make(tmp_path, "clean", False)
     assert cli.main(["check", "--root", str(clean)]) == 0
     assert "warning [SCAT-DRAFT-FIELD]" in capsys.readouterr().out
     bad = make(tmp_path, "bad", True)
     assert cli.main(["check", "--root", str(bad)]) == 1
-    assert "error [SCAT-LINK-DANGLING]" in capsys.readouterr().out
+    assert "error [SCAT-LINK-DANGLING-BODY]" in capsys.readouterr().out
     assert scat_kg.check(root=clean).ok and not scat_kg.check(root=bad).ok
-    assert len(scat_kg.check(root=clean).warnings) == 1 and not scat_kg.check(root=clean).errors
+    # the draft narrative has no `description` and no `timeframe`: two warnings, no error
+    assert len(scat_kg.check(root=clean).warnings) == 2 and not scat_kg.check(root=clean).errors
 
 
 def test__the_vault_root_defaults_to_the_current_directory(tmp_path, capsys, monkeypatch):
@@ -222,7 +221,6 @@ def test__the_vault_root_defaults_to_the_current_directory(tmp_path, capsys, mon
     ).ok  # the default root is here for every operation
 
 
-@skip_unbuilt
 def test__the_message_is_the_one_the_catalogue_prints_and_its_fix_runs_on_both_paths(
     tmp_path, capsys
 ):
@@ -291,7 +289,7 @@ def test__a_real_scat_invocation_gives_the_same_message_and_exit_code(tmp_path):
         text=True,
         check=False,
     )
-    assert done.returncode == 1, done.stderr  # a refusal for now (TODO(WP16-U6)); a defect later
+    assert done.returncode == 1, done.stderr  # the seeded defect is an error
     assert done.stdout == expected + "\n"
     ok = subprocess.run(
         ["uv", "run", "--locked", "scat", "set-status", "quick-checkout", "draft"],

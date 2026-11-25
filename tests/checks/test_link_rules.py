@@ -1,440 +1,527 @@
-"""Seeded defects for the link rules on frontmatter fields: shape, unlisted, endpoint, discouraged."""
+"""SCAT-LINK-DANGLING-BODY, SCAT-MENTION, SCAT-CAP and SCAT-CAP-CONFIG. Test names carry the rule id."""
 
 import pytest
 from helpers import (
-    AC,
-    ATTR,
-    HELDBY,
-    SC,
+    ACCOUNT,
+    DESK,
+    DESK_ROWS,
     choose,
-    coded,
     doc,
-    line_of,
-    lines,
-    links,
-    region_for,
+    msg,
+    narrative,
     report_of,
+    row,
+    rules_of,
     seeded,
+    stub,
 )
 
-SHAPE = "SCAT-LINK-SHAPE"
-FIELD = "field `concerns`"
+C = "concern/safe-handling.md"
+LINE = 8  # the first body line of a page made by `doc` with a body that starts with a blank line
+TYPES = ("affordance", "concern", "group", "narrative", "technology")
+ARTICLE = {
+    "affordance": "an affordance",
+    "concern": "a concern",
+    "group": "a group",
+    "narrative": "a narrative",
+    "technology": "a technology",
+}
 
 
-def rebuilt(*items):
-    return "Fix: replace the whole field with\n" + lines("concerns:", *[f"  {i}" for i in items])
+def body(text):
+    return {C: doc("concern", "Safe handling", body=f"\n{text}\n")}
 
 
-def test__scat_link_shape__scalar_value(make_vault):
+def dangling(target, reason, *fix, file=C, line=LINE, link=None):
+    return msg(
+        f"error [SCAT-LINK-DANGLING-BODY] {file}:{line} link [[{target}]]: does not reach a page ({reason})",
+        *fix,
+    )
+
+
+def stubs(name, keys=TYPES):
+    return [f"run {stub(name, k)} to create {ARTICLE[k]} page" for k in keys]
+
+
+def drop(literal, shown, line=LINE):
+    return f"on line {line} replace `{literal}` with `{shown}` to keep the words and drop the link"
+
+
+# SCAT-LINK-DANGLING-BODY
+
+
+def test__scat_link_dangling_body__a_name_no_row_end_names_offers_the_five_types(make_vault):
     seeded(
         make_vault,
-        {SC: coded(concerns='concerns: "[[safe-handling]]"\n')},
-        (SHAPE, SC, FIELD, rebuilt('- "[[safe-handling]]"')),
-    )
-
-
-def test__scat_link_shape__unquoted_wikilink_is_a_nested_list(make_vault):
-    seeded(
-        make_vault,
-        {SC: coded(concerns="concerns:\n  - [[safe-handling]]\n")},
-        (SHAPE, SC, FIELD, rebuilt('- "[[safe-handling]]"')),
-    )
-
-
-def test__scat_link_shape__alias_item(make_vault):
-    seeded(
-        make_vault,
-        {SC: coded(concerns='concerns:\n  - "[[safe-handling|Safe]]"\n')},
-        (SHAPE, SC, FIELD, rebuilt('- "[[safe-handling]]"')),
-    )
-
-
-def test__scat_link_shape__heading_item(make_vault):
-    seeded(
-        make_vault,
-        {SC: coded(concerns='concerns:\n  - "[[safe-handling#Part]]"\n')},
-        (SHAPE, SC, FIELD, rebuilt('- "[[safe-handling]]"')),
-    )
-
-
-def test__scat_link_shape__number_item_cannot_be_read(make_vault):
-    r = seeded(
-        make_vault,
-        {SC: coded(concerns="concerns:\n  - 5\n")},
-        (SHAPE, SC, FIELD, rebuilt('- "[[<one page you choose>]]" (author)')),
-    )
-    assert "could not be read" in r.problems[0].what
-
-
-def test__scat_link_shape__line_is_the_field_line(make_vault):
-    text = coded(concerns='concerns: "[[safe-handling]]"\n')
-    r = seeded(make_vault, {SC: text}, (SHAPE, SC, FIELD, rebuilt('- "[[safe-handling]]"')))
-    assert r.problems[0].line == line_of(text, "concerns:")
-
-
-def test__scat_link_shape__single_field_as_one_item_list_is_exact(make_vault):
-    page = doc("heldby", "H", extra='group:\n  - "[[staff]]"\nconcern: "[[safe-handling]]"')
-    fix = 'Fix: replace the whole field with the line `group: "[[staff]]"`'
-    seeded(make_vault, {HELDBY: page}, (SHAPE, HELDBY, "field `group`", fix))
-
-
-def test__scat_link_shape__single_field_as_two_item_list_is_a_choice(make_vault):
-    page = doc(
-        "heldby",
-        "H",
-        extra='group:\n  - "[[staff]]"\n  - "[[borrowers]]"\nconcern: "[[safe-handling]]"',
-    )
-    fix = choose(
-        'keep this one: replace the whole field with the line `group: "[[staff]]"`',
-        'keep this one: replace the whole field with the line `group: "[[borrowers]]"`',
-    )
-    r = seeded(make_vault, {HELDBY: page}, (SHAPE, HELDBY, "field `group`", fix))
-    assert "create more relation pages" in r.problems[0].what
-
-
-UNLISTED = "SCAT-LINK-UNLISTED"
-
-
-def test__scat_link_unlisted__groups_on_a_concern_page(make_vault):
-    path = "concern/quick-checkout.md"
-    page = doc("concern", "Q", extra=links("groups", "staff"))
-    r = seeded(
-        make_vault,
-        {path: page},
-        (UNLISTED, path, "field `groups`", "Fix: delete `groups:` and its list items"),
-    )
-    assert "its link fields are: conflicts" in r.problems[0].what
-    assert r.problems[0].line == line_of(page, "groups:")
-
-
-def test__scat_link_unlisted__concern_on_a_coded_scenario(make_vault):
-    page = coded(extra='concern: "[[safe-handling]]"\n')
-    r = seeded(
-        make_vault,
-        {SC: page},
-        (UNLISTED, SC, "field `concern`", "Fix: delete `concern:` and its list items"),
-    )
-    assert "affordances, concerns, groups, raw, technologies" in r.problems[0].what
-
-
-def test__scat_link_unlisted__empty_value_and_stale_first_member_key_give_none(make_vault):
-    seeded(
-        make_vault,
-        {
-            "concern/quick-checkout.md": doc("concern", "Q", extra="groups: []\n"),
-            "stakeholder-group/staff.md": doc(
-                "stakeholder-group", "Staff", extra=links("heldby", "x")
-            ),
-        },
-    )
-
-
-ENDPOINT = "SCAT-LINK-ENDPOINT"
-
-
-def test__scat_link_endpoint__affordance_under_concerns_offers_a_move(make_vault):
-    page = coded(concerns=links("concerns", "safe-handling", "briefing"))
-    fix = (
-        choose(
-            'move the item line `- "[[briefing]]"` from `concerns` to `affordances`: delete it from `concerns`, '
-            'then add under `affordances:` the line `- "[[briefing]]"`',
-            'delete the item line `- "[[briefing]]"` under `concerns`',
-        )
-        + "\n(no existing concern page was found to replace it with)"
-    )
-    r = seeded(make_vault, {SC: page}, (ENDPOINT, SC, FIELD, fix))
-    assert r.problems[0].line == line_of(page, "briefing")
-
-
-def test__scat_link_endpoint__move_into_a_missing_key_and_a_flow_list(make_vault):
-    page = coded(concerns='concerns: ["[[safe-handling]]", "[[briefing]]"]\n', affordances="")
-    r = report_of(make_vault, {SC: page})
-    fix = next(p.fix for p in r.problems if p.rule == ENDPOINT)
-    assert (
-        'move the item line `- "[[briefing]]"` from `concerns` to `affordances`: delete it from `concerns` '
-        "(in a flow list delete that one entry and its comma, leaving `[]` if it was the only one), "
-        'then add `affordances:` and under it the line `- "[[briefing]]"`'
-    ) in fix
-
-
-def test__scat_link_endpoint__move_into_an_empty_list(make_vault):
-    page = coded(
-        concerns=links("concerns", "safe-handling", "briefing"), affordances="affordances: []\n"
-    )
-    r = report_of(make_vault, {SC: page})
-    fix = next(p.fix for p in r.problems if p.rule == ENDPOINT)
-    assert (
-        "then replace the line `affordances: []` with `affordances:` and under it "
-        'the line `- "[[briefing]]"`'
-    ) in fix
-
-
-def test__scat_link_endpoint__replacements_in_two_tiers_then_delete(make_vault):
-    # self-checkout is already under `affordances`, so there is no move. quick-checkout shares an
-    # `addresses` page with it (tier 1); careful-keeping is linked from the body (tier 2).
-    page = coded(
-        concerns=links("concerns", "safe-handling", "self-checkout"),
-        body="See [[careful-keeping]].\n",
-    )
-    fix = choose(
-        'replace `- "[[self-checkout]]"` with `- "[[quick-checkout]]"`',
-        'replace `- "[[self-checkout]]"` with `- "[[careful-keeping]]"`',
-        'delete the item line `- "[[self-checkout]]"` under `concerns`',
-    )
-    seeded(make_vault, {SC: page}, (ENDPOINT, SC, FIELD, fix))
-
-
-def test__scat_link_endpoint__more_than_five_replacements_are_counted(make_vault):
-    files = {f"concern/c{i}.md": doc("concern", f"C{i}") for i in range(7)}
-    files |= {
-        f"addresses/a{i}.md": doc(
-            "addresses", f"A{i}", extra=f'concern: "[[c{i}]]"\naffordance: "[[self-checkout]]"'
-        )
-        for i in range(7)
-    }
-    files[SC] = coded(concerns=links("concerns", "safe-handling", "self-checkout"))
-    r = report_of(make_vault, files)
-    fix = next(p.fix for p in r.problems if p.rule == ENDPOINT)
-    options = [ln for ln in fix.split("\n") if ln.startswith("  ") and "replace" in ln]
-    assert [o.split("[[")[2].split("]]")[0] for o in options] == ["c0", "c1", "c2", "c3", "c4"]
-    assert fix.endswith("\n(+3 more not shown)")  # c5, c6 and quick-checkout
-
-
-def test__scat_link_endpoint__relation_endpoint_replaced_through_a_sharing_page(make_vault):
-    # `affordance` holds a technology. briefing shares an `attributes` page with that technology.
-    other = "attributes/briefing-attributed-to-booking-app.md"
-    files = {
-        ATTR: doc(
-            "attributes", "A", extra='affordance: "[[booking-app]]"\ntechnology: "[[booking-app]]"'
-        ),
-        other: doc(
-            "attributes", "B", extra='affordance: "[[briefing]]"\ntechnology: "[[booking-app]]"'
-        ),
-    }
-    fix = 'Fix: replace `affordance: "[[booking-app]]"` with `affordance: "[[briefing]]"`'
-    seeded(make_vault, files, (ENDPOINT, ATTR, "field `affordance`", fix))
-
-
-def test__scat_link_endpoint__relation_endpoint_with_no_candidate_is_by_hand(make_vault):
-    page = doc(
-        "attributes", "A", extra='affordance: "[[booking-app]]"\ntechnology: "[[booking-app]]"'
-    )
-    r = seeded(
-        make_vault,
-        {ATTR: page},
-        (
-            ENDPOINT,
-            ATTR,
-            "field `affordance`",
-            (
-                "Fix: change the pair by hand: no existing affordance page was found, and "
-                "`affordance` is required at every status"
-            ),
+        body("See [[ghost]]."),
+        dangling(
+            "ghost", "no page is named ghost", *choose(*stubs("ghost"), drop("[[ghost]]", "ghost"))
         ),
     )
-    assert not r.ok
-
-
-def test__scat_link_endpoint__swapped_relation_endpoints_are_one_message(make_vault):
-    page = doc("heldby", "H", extra='group: "[[safe-handling]]"\nconcern: "[[staff]]"')
-    fix = (
-        "Fix: replace the two lines\n"
-        + lines('group: "[[safe-handling]]"', 'concern: "[[staff]]"')
-        + "\n     with\n"
-        + lines('group: "[[staff]]"', 'concern: "[[safe-handling]]"')
-    )
-    r = seeded(make_vault, {HELDBY: page}, (ENDPOINT, HELDBY, "fields `group` and `concern`", fix))
-    assert r.problems[0].line == line_of(page, "group:")
-
-
-def test__scat_link_endpoint__swap_names_the_field_that_comes_first_in_the_file(make_vault):
-    page = doc("heldby", "H", extra='concern: "[[staff]]"\ngroup: "[[safe-handling]]"')
-    r = report_of(make_vault, {HELDBY: page})
-    assert [p.where for p in r.problems] == ["fields `concern` and `group`"]
 
 
 @pytest.mark.parametrize("status", ["stub", "draft", "done"])
-def test__scat_link_endpoint__same_message_at_each_status(make_vault, status):
-    page = coded(status=status, concerns=links("concerns", "safe-handling", "briefing"))
-    r = report_of(make_vault, {SC: page})
-    assert [(p.rule, p.severity) for p in r.problems] == [(ENDPOINT, "error")]
+def test__scat_link_dangling_body__links_are_checked_at_every_status(make_vault, status):
+    page = doc("concern", "Safe handling", status=status, body="\nSee [[ghost]].\n")
+    r = report_of(make_vault, {C: page})
+    assert rules_of(r) == ["SCAT-LINK-DANGLING-BODY"] and r.problems[0].severity == "error"
+    assert not r.ok
 
 
-def test__scat_link_endpoint__class_page_is_a_page_of_type_class(make_vault):
-    files = {
-        "class/concerns.md": doc("class", "Concerns", status=None, extra="indexes: concern")
-        + region_for(make_vault, "concerns"),
-        SC: coded(concerns=links("concerns", "safe-handling", "concerns")),
-    }
-    # the class page now carries its table, so the replacements the rule collects are no longer empty
-    fix = choose(
-        'replace `- "[[concerns]]"` with `- "[[careful-keeping]]"`',
-        'replace `- "[[concerns]]"` with `- "[[quick-checkout]]"`',
-        'delete the item line `- "[[concerns]]"` under `concerns`',
-    )
-    r = seeded(make_vault, files, (ENDPOINT, SC, FIELD, fix))
-    assert "is a class page" in r.problems[0].what
-
-
-def test__scat_link_endpoint__target_with_an_invalid_type_is_not_endpoint_checked(make_vault):
-    files = {"concern/safe-handling.md": doc("gadget", "S")}
+def test__scat_link_dangling_body__a_name_a_row_end_names_offers_the_layer_that_row_fixes(
+    make_vault,
+):
+    rows = (*DESK_ROWS, row("holds", "borrowers", "ghost"))
+    files = {**body("See [[ghost]]."), DESK: narrative(rows=rows)}
     r = report_of(make_vault, files)
-    assert [p.rule for p in r.problems] == ["SCAT-FM-TYPE"]
-
-
-def test__scat_link_endpoint__no_candidates_leaves_the_delete(make_vault):
-    page = coded(raw=links("raw", "desk-day", "kiosk-pitch"))
-    fix = (
-        'Fix: delete the item line `- "[[kiosk-pitch]]"` under `raw`\n'
-        "(no existing scenario-raw page was found to replace it with)"
+    assert [(p.rule, p.file) for p in r.problems] == [
+        ("SCAT-LINK-DANGLING-BODY", C),
+        ("SCAT-DONE-END-NOPAGE", DESK),
+    ]
+    assert r.problems[0].render() == dangling(
+        "ghost",
+        "no page is named ghost",
+        *choose(*stubs("ghost", ["concern"]), drop("[[ghost]]", "ghost")),
     )
-    seeded(make_vault, {SC: page}, (ENDPOINT, SC, "field `raw`", fix))
 
 
-DISC = "SCAT-LINK-DISCOURAGED"
-GROUP_WHY = "an architecture relates concerns, affordances and technologies; stakeholders are abstracted away"
-TECH_WHY = (
-    "a scenario relates groups, concerns and affordances; technologies stay in the background"
-)
-
-
-def test__scat_link_discouraged__technologies_on_a_coded_scenario_with_suggestions(make_vault):
-    page = coded(
-        affordances=links("affordances", "briefing"), extra=links("technologies", "booking-app")
+def test__scat_link_dangling_body__a_name_two_row_ends_name_in_two_layers_offers_both(make_vault):
+    rows = (
+        *DESK_ROWS,
+        row("holds", "borrowers", "ghost"),
+        row("is provided by", "ghost", "booking-app"),
     )
-    fix = choose(
-        "delete `technologies:` and its list items",
-        "keep the point by linking what they offer, in `affordances` (suggestions you confirm): "
-        'add under `affordances:` the line `- "[[self-checkout]]"`',
+    r = report_of(make_vault, {**body("See [[ghost]]."), DESK: narrative(rows=rows)})
+    assert r.problems[0].render() == dangling(
+        "ghost",
+        "no page is named ghost",
+        *choose(*stubs("ghost", ["affordance", "concern"]), drop("[[ghost]]", "ghost")),
     )
-    r = seeded(make_vault, {SC: page}, (DISC, SC, "field `technologies`", fix))
-    assert r.ok and r.problems[0].severity == "warning" and TECH_WHY in r.problems[0].what
-    assert r.problems[0].line == line_of(page, "technologies:")
 
 
-def test__scat_link_discouraged__technologies_without_suggestions(make_vault):
-    page = coded(extra=links("technologies", "booking-app"))
+def test__scat_link_dangling_body__near_match_comes_first(make_vault):
     seeded(
         make_vault,
-        {SC: page},
-        (DISC, SC, "field `technologies`", "Fix: delete `technologies:` and its list items"),
+        body("See [[safe-handlin]]."),
+        dangling(
+            "safe-handlin",
+            "no page is named safe-handlin",
+            *choose(
+                f"on line {LINE} replace `[[safe-handlin]]` with `[[safe-handling]]`",
+                *stubs("safe-handlin"),
+                drop("[[safe-handlin]]", "safe-handlin"),
+            ),
+        ),
     )
 
 
-def test__scat_link_discouraged__groups_on_a_coded_architecture_with_suggestions(make_vault):
-    page = doc(
-        "architecture-coded",
-        "K",
-        extra=links("raw", "kiosk-pitch")
-        + links("concerns", "quick-checkout")
-        + links("affordances", "self-checkout")
-        + links("technologies", "booking-app")
-        + links("groups", "staff"),
-    )
-    fix = choose(
-        "delete `groups:` and its list items",
-        "keep the point by linking what they offer, in `concerns` (suggestions you confirm): "
-        'add under `concerns:` the line `- "[[safe-handling]]"`',
-    )
-    r = seeded(make_vault, {AC: page}, (DISC, AC, "field `groups`", fix))
-    assert GROUP_WHY in r.problems[0].what
-
-
-def test__scat_link_discouraged__groups_without_suggestions(make_vault):
-    page = doc(
-        "architecture-coded",
-        "K",
-        extra=links("raw", "kiosk-pitch")
-        + links("concerns", "quick-checkout")
-        + links("affordances", "self-checkout")
-        + links("technologies", "booking-app")
-        + links("groups", "borrowers"),
-    )
+def test__scat_link_dangling_body__wrong_case_is_variant_c_and_replaces_with_the_derived_name(
+    make_vault,
+):
     seeded(
         make_vault,
-        {AC: page},
-        (DISC, AC, "field `groups`", "Fix: delete `groups:` and its list items"),
+        body("See [[Safe-Handling]]."),
+        dangling(
+            "Safe-Handling",
+            "Safe-Handling is not a legal page name: it contains `S`, outside a-z, 0-9 and -",
+            *choose(
+                f"on line {LINE} replace `[[Safe-Handling]]` with `[[safe-handling]]`",
+                drop("[[Safe-Handling]]", "Safe-Handling"),
+            ),
+        ),
     )
 
 
-def test__scat_link_discouraged__the_allowed_direction_gives_none(make_vault):
-    # technologies on a coded architecture and groups on a coded scenario are what those types are for
-    seeded(make_vault, {})
-
-
-def test__scat_link_discouraged__still_dangling_checked(make_vault):
-    page = coded(extra=links("technologies", "ghost"))
-    rules = [p.rule for p in report_of(make_vault, {SC: page}).problems]
-    assert rules == [
-        "SCAT-LINK-DISCOURAGED",
-        "SCAT-LINK-DANGLING",
-    ]  # by line: the key, then the item
-
-
-BODY = "SCAT-LINK-DISCOURAGED-BODY"
-
-
-def test__scat_link_discouraged_body__technology_in_a_coded_scenario_body(make_vault):
-    page = coded(body="It runs on [[booking-app]].\n")
-    n = line_of(page, "It runs")
-    fix = choose(
-        f"on line {n} replace `[[booking-app]]` with `booking-app` to keep the words and drop the link",
-        f"on line {n} replace `[[booking-app]]` with `[[self-checkout]]`",
+def test__scat_link_dangling_body__illegal_name_with_no_page_replaces_then_stubs(make_vault):
+    seeded(
+        make_vault,
+        body("See [[Safety briefing]]."),
+        dangling(
+            "Safety briefing",
+            "Safety briefing is not a legal page name: it contains `S`, outside a-z, 0-9 and -",
+            *choose(
+                *[
+                    f"on line {LINE} replace `[[Safety briefing]]` with `[[safety-briefing]]`, then "
+                    f"{s}"
+                    for s in stubs("safety-briefing")
+                ],
+                drop("[[Safety briefing]]", "Safety briefing"),
+            ),
+        ),
     )
-    seeded(make_vault, {SC: page}, (BODY, SC, "link [[booking-app]]", fix))
 
 
-def test__scat_link_discouraged_body__technology_in_a_raw_scenario_body(make_vault):
-    path = "scenario-raw/desk-day.md"
-    page = doc(
-        "scenario-raw",
-        "D",
-        extra="timeframe: past\n" + links("coded", "desk-day-coded"),
-        body="It runs on [[booking-app]].\n",
+def test__scat_link_dangling_body__a_derived_name_that_is_a_page_is_a_plain_replacement(make_vault):
+    seeded(
+        make_vault,
+        body("See [[Careful keeping]]."),
+        dangling(
+            "Careful keeping",
+            "Careful keeping is not a legal page name: it contains `C`, outside a-z, 0-9 and -",
+            *choose(
+                f"on line {LINE} replace `[[Careful keeping]]` with `[[careful-keeping]]`",
+                drop("[[Careful keeping]]", "Careful keeping"),
+            ),
+        ),
     )
-    n = line_of(page, "It runs")
-    fix = choose(
-        f"on line {n} replace `[[booking-app]]` with `booking-app` to keep the words and drop the link",
-        f"on line {n} replace `[[booking-app]]` with `[[self-checkout]]`",
+
+
+def test__scat_link_dangling_body__non_latin_name_needs_a_hand_choice(make_vault):
+    seeded(
+        make_vault,
+        body("See [[Привет]]."),
+        dangling(
+            "Привет",
+            "Привет is not a legal page name: it contains `П`, outside a-z, 0-9 and -",
+            "Fix: " + drop("[[Привет]]", "Привет"),
+            "choose a legal page name by hand (contract section 2), then write the link with it",
+        ),
     )
-    seeded(make_vault, {path: page}, (BODY, path, "link [[booking-app]]", fix))
+
+
+def test__scat_link_dangling_body__file_without_type_is_variant_b(make_vault):
+    files = {**body("See [[notes]]."), "notes.md": "no type\n"}
+    seeded(
+        make_vault,
+        files,
+        dangling(
+            "notes",
+            "notes.md exists but has no `type`, so it is not a page",
+            *choose(
+                *[
+                    "put these lines in a block between two `---` lines at the very top of notes.md: "
+                    f'`type: {k}`, `status: stub`, `title: "Notes"`'
+                    for k in TYPES
+                ],
+                drop("[[notes]]", "notes"),
+            ),
+        ),
+    )
+
+
+def test__scat_link_dangling_body__file_with_frontmatter_but_no_type_lists_the_missing_keys(
+    make_vault,
+):
+    files = {**body("See [[notes]]."), "notes.md": "---\ntitle: Notes\n---\n"}
+    r = report_of(make_vault, files)
+    (p,) = r.problems
+    assert (
+        "add these lines to the frontmatter of notes.md: `type: concern`, `status: stub`" in p.fix
+    )
+    assert '`title: "Notes"`' not in p.fix  # the key it has stays
+
+
+def test__scat_link_dangling_body__group_at_the_cap_withholds_the_group_option(make_vault):
+    files = {**body("See [[ghost]]."), "group/third.md": doc("group", "Third")}
+    r = report_of(make_vault, files)
+    (p,) = r.problems
+    assert [o.text for o in p.fix_data.options] == [
+        *stubs("ghost", [k for k in TYPES if k != "group"]),
+        drop("[[ghost]]", "ghost"),
+    ]
+    assert p.fix.split("\n")[-1] == (
+        "(the vault is at its cap of 3 groups, so a new group page would break SCAT-CAP; "
+        "choose an existing group)"
+    )
+
+
+def test__scat_link_dangling_body__group_under_the_cap_offers_the_group_option(make_vault):
+    (p,) = report_of(make_vault, body("See [[ghost]].")).problems
+    assert any("--type group" in o.text for o in p.fix_data.options)
+
+
+def test__scat_link_dangling_body__a_link_in_a_note_cell_is_a_body_link(make_vault):
+    rows = (*DESK_ROWS, row("holds", "staff", "quick-checkout", "See [[ghost]]"))
+    r = report_of(make_vault, {DESK: narrative(rows=rows)})
+    assert [(p.rule, p.file, p.line) for p in r.problems] == [("SCAT-LINK-DANGLING-BODY", DESK, 19)]
+
+
+def test__scat_link_dangling_body__a_row_end_is_graded_by_the_end_rule_and_not_this_one(make_vault):
+    rows = (*DESK_ROWS, row("holds", "staff", "ghost"))
+    assert rules_of(report_of(make_vault, {DESK: narrative(rows=rows)})) == ["SCAT-DONE-END-NOPAGE"]
+
+
+def test__scat_link_dangling_body__links_in_a_table_with_a_malformed_header_are_body_links(
+    make_vault,
+):
+    page = narrative(status="draft").replace(
+        "| type | from | to | note |", "| kind | from | to | note |"
+    )
+    page = page.replace("[[safe-handling]] | |", "[[ghost]] | |")
+    r = report_of(make_vault, {DESK: page})
+    assert rules_of(r) == ["SCAT-DRAFT-TABLE-HEADER", "SCAT-LINK-DANGLING-BODY"]
 
 
 @pytest.mark.parametrize(
-    ("path", "page"),
+    "text",
     [
-        (
-            AC,
-            doc(
-                "architecture-coded",
-                "K",
-                extra=links("raw", "kiosk-pitch")
-                + links("concerns", "quick-checkout")
-                + links("affordances", "self-checkout")
-                + links("technologies", "booking-app"),
-                body="Staff like [[staff]].\n",
-            ),
-        ),
-        (
-            "architecture-raw/kiosk-pitch.md",
-            doc(
-                "architecture-raw",
-                "K",
-                extra="timeframe: future\n" + links("coded", "kiosk-pitch-coded"),
-                body="Staff like [[staff]].\n",
-            ),
-        ),
+        "[[photo.png]]",
+        "[[v1.2-notes]]",
+        "[[#Heading]]",
+        "[[folder/file]]",
+        "`[[ghost]]`",
+        "[[^blk]]",
+        "[ghost](ghost)",
     ],
 )
-def test__scat_link_discouraged_body__group_in_an_architecture_body(make_vault, path, page):
-    n = line_of(page, "Staff like")
-    fix = choose(
-        f"on line {n} replace `[[staff]]` with `staff` to keep the words and drop the link",
-        f"on line {n} replace `[[staff]]` with `[[safe-handling]]`",
+def test__scat_link_dangling_body__names_that_are_not_page_links_give_none(make_vault, text):
+    seeded(make_vault, body(f"See {text}."))
+
+
+def test__scat_link_dangling_body__a_link_in_a_fenced_code_block_gives_none(make_vault):
+    seeded(make_vault, body("```\n[[ghost]]\n```"))
+
+
+def test__scat_link_dangling_body__block_reference_names_the_page_before_the_caret(make_vault):
+    r = report_of(make_vault, body("See [[ghost^abc123]]."))
+    assert [p.where for p in r.problems] == ["link [[ghost]]"]
+    assert r.problems[0].fix_data.options[-1].edits[0].find == "[[ghost^abc123]]"
+
+
+def test__scat_link_dangling_body__an_alias_is_kept_by_a_replacement_and_a_drop_keeps_the_alias_words(
+    make_vault,
+):
+    r = report_of(make_vault, body("See [[safe-handlin|the briefing]]."))
+    (p,) = r.problems
+    first, *_, last = p.fix_data.options
+    assert first.edits[0].find == "[[safe-handlin|the briefing]]"
+    assert first.edits[0].replace == "[[safe-handling|the briefing]]"
+    assert last.edits[0].replace == "the briefing"
+    assert (first.edits[0].line, first.edits[0].column) == (LINE, 5)
+
+
+def test__scat_link_dangling_body__same_link_twice_on_a_line_is_one_message_with_a_count(
+    make_vault,
+):
+    r = report_of(make_vault, body("See [[ghost]] and [[ghost]]."))
+    assert len(r.problems) == 1 and r.problems[0].repeat == 2
+    assert "(x2)" in r.problems[0].render().split("\n")[0]
+
+
+# SCAT-MENTION
+
+
+def mention(file, line, column, written, name, kind, link=None):
+    link = link or (f"[[{name}]]" if written == name else f"[[{name}|{written}]]")
+    return msg(
+        f"warning [SCAT-MENTION] {file}:{line}:{column} text `{written}`: names the {kind} page "
+        f"[[{name}]] but does not link it",
+        f"Fix: on line {line} replace `{written}` with `{link}`",
     )
-    seeded(make_vault, {path: page}, (BODY, path, "link [[staff]]", fix))
 
 
-def test__scat_link_discouraged_body__the_same_links_on_a_concern_page_give_none(make_vault):
-    page = doc("concern", "S", body="[[booking-app]] and [[staff]]\n")
-    seeded(make_vault, {"concern/safe-handling.md": page})
+def test__scat_mention__title_in_plain_text_on_a_narrative(make_vault):
+    seeded(
+        make_vault,
+        {DESK: narrative(account=ACCOUNT + "\nThe volunteers gave a Briefing first.\n")},
+        mention(DESK, 12, 23, "Briefing", "briefing", "affordance"),
+    )
+
+
+def test__scat_mention__a_node_page_mentioning_another_nodes_title(make_vault):
+    seeded(
+        make_vault,
+        body("Needs a briefing before use."),
+        mention(C, 8, 9, "briefing", "briefing", "affordance"),
+    )
+
+
+def test__scat_mention__case_is_ignored_and_the_text_is_kept_as_written(make_vault):
+    seeded(
+        make_vault,
+        body("Needs a BRIEFING."),
+        mention(C, 8, 9, "BRIEFING", "briefing", "affordance", "[[briefing|BRIEFING]]"),
+    )
+
+
+def test__scat_mention__the_page_name_gets_a_plain_link_and_the_title_an_alias(make_vault):
+    page = doc("concern", "Safe handling", body="\nSee booking-app and the Booking App.\n")
+    r = report_of(make_vault, {C: page})
+    assert [p.fix.split("`") for p in r.problems] == [
+        ["Fix: on line 8 replace ", "booking-app", " with ", "[[booking-app]]", ""]
+    ]
+
+
+def test__scat_mention__a_title_with_a_space_is_matched_as_written(make_vault):
+    seeded(
+        make_vault,
+        body("Use the booking app."),
+        mention(C, 8, 9, "booking app", "booking-app", "technology"),
+    )
+
+
+def test__scat_mention__reported_once_at_the_first_occurrence(make_vault):
+    r = report_of(make_vault, body("A briefing, then a briefing."))
+    assert [(p.line, p.column) for p in r.problems] == [(8, 3)]
+
+
+def test__scat_mention__in_a_note_cell_one_message(make_vault):
+    rows = (
+        *DESK_ROWS[:2],
+        row("is addressed by", "quick-checkout", "self-checkout", "after a briefing"),
+    )
+    seeded(
+        make_vault,
+        {DESK: narrative(rows=rows)},
+        mention(DESK, 18, 70, "briefing", "briefing", "affordance"),
+    )
+
+
+def test__scat_mention__plain_text_in_a_from_cell_is_not_this_rules(make_vault):
+    rows = (*DESK_ROWS, "| holds | briefing | [[quick-checkout]] | |")
+    r = report_of(make_vault, {DESK: narrative(rows=rows)})
+    assert "SCAT-MENTION" not in rules_of(r)
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "A briefing, see [[briefing]].",
+        "`briefing` in code",
+        "```\nbriefing\n```",
+        "[[quick-checkout|briefing]]",
+        "the brief",
+        "booking-apps",
+    ],
+)
+def test__scat_mention__linked_in_code_in_a_wikilink_or_not_a_whole_word_gives_none(
+    make_vault, text
+):
+    seeded(make_vault, body(text))
+
+
+def test__scat_mention__the_pages_own_title_gives_none(make_vault):
+    seeded(make_vault, body("Safe handling matters; so does safe-handling."))
+
+
+def test__scat_mention__short_names_are_not_matched(make_vault):
+    files = {"technology/app.md": doc("technology", "App"), **body("Open the app.")}
+    seeded(make_vault, files)
+
+
+def test__scat_mention__a_warning_does_not_block_at_any_status(make_vault):
+    for status in ("stub", "draft", "done"):
+        r = report_of(
+            make_vault, {DESK: narrative(status=status, account=ACCOUNT + "\nA Briefing.\n")}
+        )
+        assert rules_of(r) == ["SCAT-MENTION"] and r.ok
+
+
+# SCAT-CAP and SCAT-CAP-CONFIG
+
+CAP_HEAD = "error [SCAT-CAP] scat.toml field `stakeholder_group_cap`: the vault holds {n} group pages, over the cap of {cap}: {names}"
+CAP_FIX = choose(
+    "cluster {k} group(s) into the others, by shared standpoint: move their standpoints into another "
+    "group's `description`, change every link to them to point at that group, and delete those pages",
+    "or, only if the plan allows more groups, write `stakeholder_group_cap = {n}` in scat.toml "
+    "(the cap protects against identifying individuals)",
+)
+
+
+def cap_message(n, cap, names):
+    fix = [line.format(k=n - cap, n=n) for line in CAP_FIX]
+    return msg(CAP_HEAD.format(n=n, cap=cap, names=names), *fix)
+
+
+GROUPS = {f"group/g-{n}.md": doc("group", f"Group {n}") for n in ("one", "two")}  # with the two: 4
+
+
+def test__scat_cap__four_groups_over_a_cap_of_three(make_vault):
+    seeded(make_vault, GROUPS, cap_message(4, 3, "borrowers, g-one, g-two, staff"))
+
+
+def test__scat_cap__a_stub_group_still_counts(make_vault):
+    files = {"group/third.md": doc("group", "Third", status="stub", description=None), **GROUPS}
+    files.pop("group/g-two.md")
+    seeded(make_vault, files, cap_message(4, 3, "borrowers, g-one, staff, third"))
+
+
+def test__scat_cap__at_the_cap_gives_none(make_vault):
+    seeded(make_vault, {"group/third.md": doc("group", "Third")})
+
+
+def test__scat_cap__runs_at_page_scope_only_for_a_group_page(make_vault):
+    from scat_kg.checks import check_page
+
+    v = vault_with(make_vault, GROUPS)
+    assert rules_of(check_page(v, "group/staff.md")) == ["SCAT-CAP"]
+    assert rules_of(check_page(v, "concern/safe-handling.md")) == []
+
+
+def vault_with(make_vault, files):
+    from helpers import vault
+
+    return vault(make_vault, files)
+
+
+CONFIG_HEAD = "error [SCAT-CAP-CONFIG] scat.toml field `stakeholder_group_cap`: {what}"
+
+
+def config_fix(verb, groups=2):
+    least = f", so choose at least {groups}" if groups >= 1 else ""
+    return (
+        f"Fix: {verb} `stakeholder_group_cap = <number you choose>` (author) in scat.toml; choose a whole "
+        f"number of 1 or more (the vault has {groups} group pages now{least})"
+    )
+
+
+def test__scat_cap_config__file_missing(make_vault):
+    seeded(
+        make_vault,
+        {},
+        msg(CONFIG_HEAD.format(what="the file is missing"), config_fix("add the line")),
+        remove=("scat.toml",),
+    )
+
+
+def test__scat_cap_config__invalid_toml(make_vault):
+    r = report_of(make_vault, {"scat.toml": "stakeholder_group_cap = \n"})
+    (p,) = r.problems
+    assert p.rule == "SCAT-CAP-CONFIG" and p.what.startswith("the file is not valid TOML: ")
+    assert p.fix == config_fix("add the line")
+
+
+def test__scat_cap_config__key_missing(make_vault):
+    seeded(
+        make_vault,
+        {"scat.toml": "other = 1\n"},
+        msg(CONFIG_HEAD.format(what="the key is missing"), config_fix("add the line")),
+    )
+
+
+@pytest.mark.parametrize("written", ['"three"', "0", "2.5", "3.0", "-1", "true"])
+def test__scat_cap_config__bad_value_is_replaced(make_vault, written):
+    seeded(
+        make_vault,
+        {"scat.toml": f"stakeholder_group_cap = {written}\n"},
+        msg(
+            CONFIG_HEAD.format(what=f"the value `{written}` is not a TOML integer of 1 or more"),
+            config_fix(f"replace the line `stakeholder_group_cap = {written}` with"),
+        ),
+    )
+
+
+def test__scat_cap_config__no_groups_drops_the_at_least_clause(make_vault):
+    files = {p: t for p, t in base_files().items() if not p.startswith("group/")}
+    r = report_of(
+        make_vault,
+        {},
+        remove=[p for p in base_files() if p.startswith("group/")]
+        + [DESK, "narrative/kiosk-pitch.md"],
+    )
+    assert r.problems == () or rules_of(r) == []
+    del files
+    r = report_of(
+        make_vault,
+        {"scat.toml": "stakeholder_group_cap = 0\n"},
+        remove=[p for p in base_files() if p.startswith("group/")]
+        + [DESK, "narrative/kiosk-pitch.md"],
+    )
+    (p,) = r.problems
+    assert p.fix.endswith("(the vault has 0 group pages now)")
+
+
+def base_files():
+    from helpers import base
+
+    return base()

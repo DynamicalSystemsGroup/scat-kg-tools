@@ -1,15 +1,16 @@
-"""Links that reach no page: SCAT-LINK-DANGLING (frontmatter) and SCAT-LINK-DANGLING-BODY (body).
+"""Links that reach no page: SCAT-LINK-DANGLING-BODY here, and the repairs SCAT-*-END-NOPAGE shares.
 
-Three variants share the id (catalogue, SCAT-LINK-DANGLING): (a) a legal name and no such file; (b) a legal
+Three variants share the id (catalogue, SCAT-LINK-DANGLING-BODY): (a) a legal name and no such file; (b) a legal
 name for which a Markdown file exists that has no `type`; (c) a name that is not legal.
 """
 
 import re
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from scat_kg.checks import fixes
-from scat_kg.checks.ctx import Ctx, page_rule
-from scat_kg.checks.links import body_swap, link_value, list_with, offer
+from scat_kg.checks.ctx import NODE_TYPES, PAGE_TYPES, Ctx, page_rule
+from scat_kg.checks.linkedit import literal
 from scat_kg.checks.text import (
     article,
     derived_name,
@@ -20,10 +21,8 @@ from scat_kg.checks.text import (
     title_from_name,
 )
 from scat_kg.fix import Fix, FixOption
-from scat_kg.tbox import TBOX
-from scat_kg.vault import Link, Page
+from scat_kg.vault import Page
 
-CLASS_KEYS = ("stakeholder-group", "concern", "affordance", "technology")
 HAND = "choose a legal page name by hand (contract section 2), then write the link with it"
 
 
@@ -54,7 +53,7 @@ def classify(ctx: Ctx, target: str) -> Dangle | None:
 
 def cap_note(ctx: Ctx) -> str:
     return (
-        f"(the vault is at its cap of {ctx.vault.config.cap} stakeholder groups, so a new group "
+        f"(the vault is at its cap of {ctx.vault.config.cap} groups, so a new group "
         "page would break SCAT-CAP; choose an existing group)"
     )
 
@@ -95,13 +94,6 @@ def typeless_edit(ctx: Ctx, path: str, type_key: str, name: str) -> FixOption:
     )
 
 
-def _fix(opts: list[FixOption], notes: list[str]) -> Fix:
-    notes = list(dict.fromkeys(notes))
-    if opts:
-        return offer(opts, tuple(notes))
-    return fixes.single(FixOption("manual", " ".join(notes) or HAND))
-
-
 def then(first: FixOption, made: FixOption) -> FixOption:
     """Two things in one option, in order: `first`, then `made` (its edits follow, its command runs last)."""
     if first.kind == "manual":  # the replacement cannot be placed, so neither can what follows it
@@ -119,107 +111,21 @@ def derive(ctx: Ctx, target: str) -> str | None:
     return d
 
 
-@page_rule
-def link_dangling(ctx: Ctx, page: Page):
-    if not ctx.typed(page):
-        return []
-    out = []
-    for f in TBOX.page_types[page.type_key].fields:
-        if not f.is_link:
-            continue
-        for link in ctx.links(page, f.key):
-            d = classify(ctx, link.target)
-            if d is not None:
-                out.append(_front_problem(ctx, page, f.key, f.target_type, link, d))
-    return out
+def inferred_types(ctx: Ctx, name: str) -> tuple[list[str], bool]:
+    """The types a body link to `name` may be stubbed as (catalogue, "Inferred types"), and whether they
+    are inferred from the row ends that name it (else the five page types)."""
+    found = ctx.row_layers.get(name)
+    if found:
+        return sorted(found), True
+    return list(PAGE_TYPES), False
 
 
-def _front_problem(ctx: Ctx, page: Page, key: str, expected: str, link: Link, d: Dangle):
-    target = link.target
-    item = ctx.item(page, key, target)
-    single = TBOX.page_types[page.type_key].field(key).single
-    group_capped = expected == "stakeholder-group" and ctx.at_cap
-    opts: list[FixOption] = []
-    notes: list[str] = []
-    near = near_match(target, ctx.names_of_type(expected))
-
-    def swap(name: str, tail: str = "") -> FixOption:
-        value = link_value(name) if single else list_with(page, key, link, name)
-        return fixes.option(
-            "exact",
-            f"replace `{item}` with `{ctx.item(page, key, name)}`{tail}",
-            fixes.set_field(page.path, key, value),
-        )
-
-    def create(name: str) -> FixOption | None:
-        """What creates a page `name` of the expected type; None when the cap withholds it."""
-        if group_capped:
-            notes.append(cap_note(ctx))
-            return None
-        if name in ctx.typeless:
-            return typeless_edit(ctx, ctx.typeless[name], expected, name)
-        return fixes.run_option(fixes.stub(name, expected), suffix=" to create it as a stub")
-
-    if d.kind in ("a", "b"):
-        if near:
-            opts.append(swap(near, f" (the closest existing {expected} page)"))
-        made = create(target)
-        if made:
-            opts.append(made)
-    else:
-        derived = derive(ctx, target)
-        names = [n for n in dict.fromkeys([near, derived]) if n]
-        if not names:
-            notes.append(HAND)
-        for n in names:
-            existing = ctx.page(n)
-            if existing is not None:
-                if existing.type_key == expected:
-                    opts.append(swap(n))
-                else:
-                    notes.append(
-                        f"(`{n}` is {article(existing.type_key)} {existing.type_key} page, so replacing the link with it "
-                        "would only trade this error for SCAT-LINK-ENDPOINT)"
-                    )
-            elif n in ctx.typeless or n.lower() not in ctx.taken:
-                made = create(n)
-                if made:
-                    opts.append(then(swap(n), made))
-    return ctx.problem(
-        "SCAT-LINK-DANGLING",
-        page.path,
-        f"field `{key}`",
-        f"[[{target}]] does not reach a page ({d.reason})",
-        _fix(opts, notes),
-        line=link.line,
-        pos=ctx.pos(page, key),
-        target=target,
-        on=key,
-    )
-
-
-def inferred_types(ctx: Ctx, page: Page, name: str) -> tuple[list[str], list[str]]:
-    """The class types a body link to `name` may be stubbed as, and those left out (catalogue decision 3)."""
-    found = set()
-    for p in ctx.vault.pages:
-        if not ctx.typed(p):
-            continue
-        for key, links in p.fm_links.items():
-            f = TBOX.page_types[p.type_key].field(key)
-            if f and f.target_type in CLASS_KEYS and any(l.target == name for l in links):
-                found.add(f.target_type)
-    types = sorted(found) if found else list(CLASS_KEYS)
-    discouraged = TBOX.page_types[page.type_key].discouraged_body_links if ctx.typed(page) else ()
-    return [k for k in types if k not in discouraged], [k for k in types if k in discouraged]
-
-
-def _creations(ctx: Ctx, page: Page, name: str) -> tuple[list[FixOption], list[str]]:
-    """What creates a page `name` from a body link: one option per inferred type, and the notes."""
-    types, left = inferred_types(ctx, page, name)
-    ptype = page.type_key
-    notes = [f"({k} left out: {article(ptype)} {ptype} page should not link to it)" for k in left]
-    if "stakeholder-group" in types and ctx.at_cap:
-        types.remove("stakeholder-group")
+def creations(ctx: Ctx, name: str, types: list[str]) -> tuple[list[FixOption], list[str]]:
+    """What creates a page `name`: one option per type, and the notes (the cap withholds a group)."""
+    notes = []
+    types = list(types)
+    if NODE_TYPES[0] in types and ctx.at_cap:
+        types.remove(NODE_TYPES[0])
         notes.append(cap_note(ctx))
     if name in ctx.typeless:
         return [typeless_edit(ctx, ctx.typeless[name], k, name) for k in types], notes
@@ -229,43 +135,98 @@ def _creations(ctx: Ctx, page: Page, name: str) -> tuple[list[FixOption], list[s
     ], notes
 
 
+def repairs(
+    ctx: Ctx,
+    target: str,
+    d: Dangle,
+    *,
+    pool: list[str],
+    types: list[str],
+    only_types: set[str] | None,
+    swap: Callable[[str], FixOption],
+) -> tuple[list[FixOption], list[str]]:
+    """The replacement and creation options for a link to `target` that reaches no page (variants a, b, c).
+
+    `pool` is where the near match is looked for; `types` the types a page may be created as; `only_types`, when
+    given, the types of an existing page a replacement may name (a page of another type would link the wrong page).
+    """
+    opts: list[FixOption] = []
+    notes: list[str] = []
+    near = near_match(target, pool)
+
+    def fits(name: str) -> bool:
+        if only_types is None:
+            return True
+        page = ctx.page(name)
+        return page is not None and ctx.type_key(page) in only_types
+
+    if d.kind in ("a", "b"):
+        if near and fits(near):
+            opts.append(swap(near))
+        made, more = creations(ctx, target, types)
+        opts += made
+        notes += more
+    else:
+        names = [n for n in dict.fromkeys([near, derive(ctx, target)]) if n]
+        if not names:
+            notes.append(HAND)
+        for n in names:
+            if n in ctx.vault.by_name:
+                if fits(n):
+                    opts.append(swap(n))
+            elif n in ctx.typeless or n.lower() not in ctx.taken:
+                made, more = creations(ctx, n, types)
+                opts += [then(swap(n), m) for m in made]
+                notes += more
+    return opts, notes
+
+
+def fix_of(opts: list[FixOption], notes: list[str]) -> Fix:
+    """Alternatives (kind `options`), or manual when there is nothing to offer; the notes follow, once each."""
+    notes = list(dict.fromkeys(notes))
+    if opts:
+        return fixes.alternatives(opts, None, tuple(notes))
+    return fixes.single(FixOption("manual", " ".join(notes) or HAND))
+
+
 @page_rule
 def link_dangling_body(ctx: Ctx, page: Page):
     out = []
     pool = sorted(ctx.vault.by_name, key=lambda s: s.encode())
+    ends = ctx.row_ends(page)
     for link in page.body_links:
+        if (link.line, link.column) in ends and ctx.is_narrative(page):
+            continue  # a row end: SCAT-*-END-NOPAGE grades it
         d = classify(ctx, link.target)
         if d is None:
             continue
-        target, line = link.target, link.line
+        target = link.target
+        lit = literal(ctx, page, link)
 
-        def swap(name: str, link: Link = link) -> FixOption:
-            return body_swap(ctx, page, link, link_value(name))
+        def swap(name: str, link=link, lit=lit) -> FixOption:
+            new = lit.with_name(name)
+            return fixes.option(
+                "exact",
+                f"on line {link.line} replace `{lit.text}` with `{new}`",
+                fixes.replace_text(page.path, link.line, lit.text, new, column=link.column),
+            )
 
-        opts: list[FixOption] = []
-        notes: list[str] = []
-        near = near_match(target, pool)
-        if d.kind in ("a", "b"):
-            if near:
-                opts.append(swap(near))
-            made, more = _creations(ctx, page, target)
-            opts += made
-            notes += more
-        else:
-            names = [n for n in dict.fromkeys([near, derive(ctx, target)]) if n]
-            if not names:
-                notes.append(HAND)
-            for n in names:
-                if n in ctx.vault.by_name:
-                    opts.append(swap(n))
-                elif n in ctx.typeless or n.lower() not in ctx.taken:
-                    made, more = _creations(ctx, page, n)
-                    opts += [then(swap(n), m) for m in made]
-                    notes += more
-        opts.append(body_swap(ctx, page, link, target, " to keep the words and drop the link"))
-        notes.append(
-            "(you can also name the page in the right link field of this page, which entails its "
-            "stub with that type)"
+        types, inferred = inferred_types(ctx, target)
+        opts, notes = repairs(
+            ctx,
+            target,
+            d,
+            pool=pool,
+            types=types,
+            only_types=set(types) if inferred else None,
+            swap=swap,
+        )
+        opts.append(
+            fixes.option(
+                "exact",
+                f"on line {link.line} replace `{lit.text}` with `{lit.shown}` to keep the words and drop the link",
+                fixes.replace_text(page.path, link.line, lit.text, lit.shown, column=link.column),
+            )
         )
         out.append(
             ctx.problem(
@@ -273,8 +234,8 @@ def link_dangling_body(ctx: Ctx, page: Page):
                 page.path,
                 f"link [[{target}]]",
                 f"does not reach a page ({d.reason})",
-                _fix(opts, notes),
-                line=line,
+                fix_of(opts, notes),
+                line=link.line,
                 target=target,
             )
         )

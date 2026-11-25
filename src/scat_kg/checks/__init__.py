@@ -8,12 +8,19 @@
     report.problems    # in the catalogue's order; each has rule, severity, file, where, what, fix
 
 A rule is one small function in a module of this package, registered with `@page_rule` (reports on one page)
-or `@vault_rule` (reports on the vault). `DEFERRED` lists the catalogue rules not implemented here yet.
+or `@vault_rule` (reports on the vault). `DEFERRED` lists the catalogue rules not implemented here: none.
+`check_page_at_done` is the done check: the page judged as it would stand at `done`.
 """
 
 from scat_kg.checks.ctx import DEFERRED, PAGE_RULES, VAULT_RULES, page_rule, vault_rule
 from scat_kg.checks.problem import SEVERITY, Problem, Report
-from scat_kg.checks.run import check_neighborhood, check_page, check_vault, neighborhood
+from scat_kg.checks.run import (
+    check_neighborhood,
+    check_page,
+    check_page_at_done,
+    check_vault,
+    neighborhood,
+)
 
 __all__ = [
     "DEFERRED",
@@ -24,6 +31,7 @@ __all__ = [
     "Report",
     "check_neighborhood",
     "check_page",
+    "check_page_at_done",
     "check_vault",
     "neighborhood",
     "page_rule",

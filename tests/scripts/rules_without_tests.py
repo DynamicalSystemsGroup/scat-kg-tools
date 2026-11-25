@@ -3,8 +3,9 @@
     uv run python tests/scripts/rules_without_tests.py
 
 A seeded-defect test is a test function named `test__<rule id, lower case, - as _>__<what is seeded>`
-(the convention in tests/checks/test_coverage.py). This reads the catalogue's section 3 table and the test
-files' function names (no test is run), prints one id per line, and exits 1 when any is listed.
+(the convention in tests/checks/test_coverage.py). A pair (a `SCAT-DRAFT-X` and a `SCAT-DONE-X`) has one seed set
+run at each status, so its tests carry the DRAFT id and cover both. This reads the catalogue's section 3 table and
+the test files' function names (no test is run), prints one id per line, and exits 1 when any is listed.
 """
 
 import ast
@@ -35,7 +36,9 @@ def seeded_ids() -> set[str]:
 
 def rules_without_tests() -> list[str]:
     have = seeded_ids()
-    return [i for i in catalogue_ids() if i not in have]
+    return [
+        i for i in catalogue_ids() if i not in have and i.replace("-DONE-", "-DRAFT-") not in have
+    ]
 
 
 def main() -> int:

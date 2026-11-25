@@ -4,12 +4,9 @@ import datetime
 import posixpath
 
 from scat_kg.checks import fixes
-from scat_kg.checks.ctx import Ctx, page_rule
-from scat_kg.checks.fixes import put_line as put_line  # noqa: PLC0414  (completeness.py imports it from here)
+from scat_kg.checks.ctx import PAGE_TYPES, Ctx, page_rule
+from scat_kg.checks.linkedit import literal
 from scat_kg.checks.text import (
-    CLASS_PAGES,
-    CLASS_TITLES,
-    article,
     free_name,
     is_missing,
     name_problem,
@@ -17,15 +14,12 @@ from scat_kg.checks.text import (
     quote,
     title_from_name,
 )
-from scat_kg.fix import FixOption
+from scat_kg.fix import Fix, FixOption
 from scat_kg.tbox import TBOX
 from scat_kg.vault import Page
 
-TEXT_KEYS = ("status", "title", "description", "indexes", "timeframe", "notes")
-# Contract section 5: the title a relation page's stub gets.
-RELATION_TITLE = {
-    r: (keys[0], TBOX.page_types[r].verb, keys[1]) for r, keys in TBOX.relations.items()
-}
+# Fields that hold one line of text (page contracts 8): checked for shape on every page that lists them.
+TEXT_KEYS = ("status", "title", "description", "timeframe", "kind")
 
 
 @page_rule
@@ -43,29 +37,6 @@ def fm_parse(ctx: Ctx, page: Page):
     return [ctx.problem("SCAT-FM-PARSE", page.path, "frontmatter", e.reason, fix, line=e.line)]
 
 
-def default_title(ctx: Ctx, page: Page) -> tuple[str, str]:
-    """The title a missing `title` should get, and where it comes from."""
-    if page.type_key == "class" and page.name in CLASS_TITLES:
-        return CLASS_TITLES[page.name], f"the default title of the `{page.name}` class page"
-    if page.type_key in RELATION_TITLE:
-        first, verb, second = RELATION_TITLE[page.type_key]
-        titles = []
-        for f in (first, second):
-            links = ctx.links(page, f)
-            p = ctx.page(links[0].target) if len(links) == 1 else None
-            t = p.fields.get("title") if p else None
-            titles.append(t if isinstance(t, str) and t.strip() else None)
-        if all(titles):
-            return f"{titles[0]} {verb} {titles[1]}", "the title a stub of this pair gets"
-    return (
-        title_from_name(page.name),
-        (
-            "the page name with each - replaced by a space and the first letter upper case; "
-            "reword it if you like"
-        ),
-    )
-
-
 @page_rule
 def fm_required(ctx: Ctx, page: Page):
     if not ctx.typed(page):
@@ -73,11 +44,11 @@ def fm_required(ctx: Ctx, page: Page):
     t = TBOX.page_types[page.type_key]
     out = []
     for f in t.required:
-        if f.key == "type" or f.is_link or f.required_from != "stub":
+        if f.key == "type" or f.required_from != "stub":
             continue
         if not is_missing(page.fields.get(f.key)):
             continue
-        key, pos = f.key, ctx.pos(page, f.key)
+        key = f.key
         if key == "status":
             fix = fixes.single(
                 fixes.run_option(
@@ -85,18 +56,17 @@ def fm_required(ctx: Ctx, page: Page):
                     suffix="; use `stub` or `done` instead of `draft` if that is the truth",
                 )
             )
-        elif key == "title":
-            title, why = default_title(ctx, page)
-            line = f"title: {quote(title)}"
-            fix = fixes.single(fixes.put_field(ctx, page, "title", title, line, tail=f" ({why})"))
-        else:  # indexes
-            if page.name in CLASS_PAGES:
-                value = CLASS_PAGES[page.name]
-                fix = fixes.single(fixes.put_field(ctx, page, key, value, f"indexes: {value}"))
-            else:
-                fix = fixes.alternatives(
-                    [fixes.put_field(ctx, page, key, k, f"indexes: {k}") for k in f.value_set]
+        else:  # title
+            title = title_from_name(page.name)
+            why = (
+                "the page name with each - replaced by a space and the first letter upper case; "
+                "reword it if you like"
+            )
+            fix = fixes.single(
+                fixes.put_field(
+                    ctx, page, "title", title, f"title: {quote(title)}", tail=f" ({why})"
                 )
+            )
         out.append(
             ctx.problem(
                 "SCAT-FM-REQUIRED",
@@ -104,7 +74,7 @@ def fm_required(ctx: Ctx, page: Page):
                 f"field `{key}`",
                 "missing",
                 fix,
-                pos=pos,
+                pos=ctx.pos(page, key),
                 on=key,
             )
         )
@@ -117,22 +87,27 @@ def fm_type(ctx: Ctx, page: Page):
     empty = "type" in page.fields and is_missing(
         v
     )  # present but null or blank (log D-035 ruling 3)
-    if page.frontmatter_error or not (empty or isinstance(v, str)) or v in TBOX.page_types:
+    if page.frontmatter_error or not (empty or isinstance(v, str)) or v in PAGE_TYPES:
         return []
-    near = None if empty else near_match(v, TBOX.page_types)
+    near = None if empty else near_match(v, PAGE_TYPES)
+    notes: tuple[str, ...] = ()
     if near:
         fix = fixes.single(_change_to(page, "type", near))
     else:
-        fix = fixes.alternatives(
+        if v == "index":
+            notes = ("(an index is generated by `scat index`; it is a Base file and not a page)",)
+        fix = Fix.choose(
+            "options",
             [
                 fixes.option(
                     "exact",
-                    f"`type: {k}` ({t.description})",
+                    f"`type: {k}` ({TBOX.page_types[k].description})",
                     fixes.set_field(page.path, "type", k),
                 )
-                for k, t in sorted(TBOX.page_types.items())
+                for k in sorted(PAGE_TYPES)
             ],
-            head="Fix, choose the one that describes this page:",
+            "Fix, choose the one that describes this page:",
+            notes,
         )
     what = "the value is empty, which is not a page type" if empty else f"`{v}` is not a page type"
     return [
@@ -149,38 +124,8 @@ def fm_type(ctx: Ctx, page: Page):
 
 
 @page_rule
-def fm_required_link(ctx: Ctx, page: Page):
-    if not ctx.typed(page):
-        return []
-    t = TBOX.page_types[page.type_key]
-    out = []
-    for key in t.endpoint_order or ():
-        if not is_missing(page.fields.get(key)):
-            continue
-        expected = t.field(key).target_type
-        what = f"missing; {article(t.slug)} {t.slug} page names exactly one {expected} page here, at every status"
-        line = f'{key}: "[[<one {expected} page you choose>]]"'
-        slot = f"<one {expected} page you choose>"
-        fix = fixes.single(
-            fixes.put_field(ctx, page, key, f"[[{slot}]]", line, tail=" (author)", slot=slot)
-        )
-        out.append(
-            ctx.problem(
-                "SCAT-FM-REQUIRED-LINK",
-                page.path,
-                f"field `{key}`",
-                what,
-                fix,
-                pos=ctx.pos(page, key),
-                on=key,
-            )
-        )
-    return out
-
-
-@page_rule
 def fm_status(ctx: Ctx, page: Page):
-    if not ctx.typed(page) or not TBOX.page_types[page.type_key].carries_status:
+    if not ctx.typed(page):
         return []
     v = page.status
     if not isinstance(v, str) or v in TBOX.statuses or is_missing(v):
@@ -214,58 +159,52 @@ def fm_status(ctx: Ctx, page: Page):
     ]
 
 
-@page_rule
-def fm_indexes(ctx: Ctx, page: Page):
-    if page.type_key != "class":
+def _value_set_problem(ctx: Ctx, page: Page, key: str, rule: str, what: str):
+    """The problem for a field of a value set (`timeframe`, `kind`) whose value is outside it, or none."""
+    if not ctx.is_narrative(page):
         return []
-    v = page.fields.get("indexes")
-    keys = TBOX.page_types["class"].field("indexes").value_set
-    if not isinstance(v, str) or is_missing(v) or v in keys:
+    f = TBOX.page_types[page.type_key].field(key)
+    v = page.fields.get(key)
+    if f is None or not isinstance(v, str) or is_missing(v) or v in f.value_set:
         return []
-    near = near_match(v, keys)
-    fix = (
-        fixes.single(_change_to(page, "indexes", near))
-        if near
-        else fixes.alternatives([_pick(page, "indexes", k) for k in keys])
-    )
+    near = near_match(v, f.value_set)
+    if near:
+        options = [_change_to(page, key, near)]
+    else:
+        options = [_pick(page, key, k) for k in f.value_set]
+    if (
+        key == "kind"
+    ):  # optional: a narrative that is neither a scenario nor an architecture leaves it out
+        options.append(
+            fixes.option(
+                "exact",
+                f"delete the line `kind: {v}`: a narrative that is neither a scenario nor an "
+                "architecture leaves `kind` out",
+                fixes.delete_field(page.path, key),
+            )
+        )
+    fix = fixes.single(options[0]) if len(options) == 1 else fixes.alternatives(options)
     return [
         ctx.problem(
-            "SCAT-FM-INDEXES",
+            rule,
             page.path,
-            "field `indexes`",
-            f"`{v}` is not a class",
+            f"field `{key}`",
+            f"`{v}` is not {what}",
             fix,
-            pos=ctx.pos(page, "indexes"),
-            on="indexes",
+            pos=ctx.pos(page, key),
+            on=key,
         )
     ]
 
 
 @page_rule
 def fm_timeframe(ctx: Ctx, page: Page):
-    if not ctx.typed(page):
-        return []
-    f = TBOX.page_types[page.type_key].field("timeframe")
-    v = page.fields.get("timeframe")
-    if f is None or not isinstance(v, str) or is_missing(v) or v in f.value_set:
-        return []
-    near = near_match(v, f.value_set)
-    fix = (
-        fixes.single(_change_to(page, "timeframe", near))
-        if near
-        else fixes.alternatives([_pick(page, "timeframe", k) for k in f.value_set])
-    )
-    return [
-        ctx.problem(
-            "SCAT-FM-TIMEFRAME",
-            page.path,
-            "field `timeframe`",
-            f"`{v}` is not a timeframe",
-            fix,
-            pos=ctx.pos(page, "timeframe"),
-            on="timeframe",
-        )
-    ]
+    return _value_set_problem(ctx, page, "timeframe", "SCAT-FM-TIMEFRAME", "a timeframe")
+
+
+@page_rule
+def fm_kind(ctx: Ctx, page: Page):
+    return _value_set_problem(ctx, page, "kind", "SCAT-FM-KIND", "a kind")
 
 
 def _change_to(page: Page, key: str, value: str) -> FixOption:
@@ -305,7 +244,7 @@ def fm_shape(ctx: Ctx, page: Page):
     if page.frontmatter_error:
         return []
     keys = ["type"]
-    if page.type_key:
+    if ctx.typed(page):
         listed = {f.key for f in TBOX.page_types[page.type_key].fields}
         keys += [k for k in TEXT_KEYS if k in listed]
     out = []
@@ -322,13 +261,12 @@ def fm_shape(ctx: Ctx, page: Page):
             fix = fixes.single(
                 FixOption("manual", "replace the field with one line of text you write")
             )
-        what = f"expected one line of text, found {kind}"
         out.append(
             ctx.problem(
                 "SCAT-FM-SHAPE",
                 page.path,
                 f"field `{key}`",
-                what,
+                f"expected one line of text, found {kind}",
                 fix,
                 pos=ctx.pos(page, key),
                 on=key,
@@ -341,28 +279,21 @@ def fm_shape(ctx: Ctx, page: Page):
 def name_rule(ctx: Ctx, page: Page):
     if page.frontmatter_error:
         return []
-    t, name = page.type_key, page.name
-    # a class page name is a reserved name the class page is entitled to; with no valid type, not checked
-    reason = name_problem(name, reserved_ok=name in CLASS_PAGES and t in ("class", None))
+    name = page.name
+    reason = name_problem(name)
     same = ctx.vault.by_name[name]
-    indexes = page.fields.get("indexes")
-    table = {v: k for k, v in CLASS_PAGES.items()}
     if reason:
-        what, new_is_table = f"is not legal ({reason})", None
+        what = f"is not legal ({reason})"
     elif len(same) > 1 and page is not same[0]:
-        what, new_is_table = f"is also the name of {same[0].path}", None
-    elif t == "class" and isinstance(indexes, str) and indexes in table and name != table[indexes]:
-        what, new_is_table = f"is not the name of the {indexes} class page", table[indexes]
+        what = f"is also the name of {same[0].path}"
     else:
         return []
     what = f"the page name `{name}` {what}"
-    new = new_is_table
-    if new is None:
-        title = page.fields.get("title")
-        taken = set(ctx.taken)
-        if not ctx.shares_name(page):
-            taken.discard(name.lower())  # renaming this file only frees its own name
-        new = free_name(title, taken) if isinstance(title, str) else None
+    title = page.fields.get("title")
+    taken = set(ctx.taken)
+    if not ctx.shares_name(page):
+        taken.discard(name.lower())  # renaming this file only frees its own name
+    new = free_name(title, taken) if isinstance(title, str) else None
     if new is None:
         fix = fixes.single(FixOption("manual", "choose a legal name by hand (contract section 2)"))
     else:
@@ -370,11 +301,29 @@ def name_rule(ctx: Ctx, page: Page):
             f"change the file name to `{new}.md`, then change the links that meant this page "
             f"from `[[{name}]]` to `[[{new}]]`"
         )
-        if len(same) > 1:
+        edits = [
+            fixes.rename_file(page.path, posixpath.join(posixpath.dirname(page.path), f"{new}.md"))
+        ]
+        if (
+            len(same) > 1
+        ):  # two pages share the name: only the author knows which links meant this one
             text += (
                 f" (two pages share the name: change only the links that meant this page; "
                 f"the links meant for the other page keep `[[{name}]]`)"
             )
-        to = posixpath.join(posixpath.dirname(page.path), f"{new}.md")
-        fix = fixes.single(fixes.option("exact", text, fixes.rename_file(page.path, to)))
+        else:
+            for source in ctx.vault.pages:
+                for link in source.links:
+                    if link.target == name:
+                        lit = literal(ctx, source, link)
+                        edits.append(
+                            fixes.replace_text(
+                                source.path,
+                                link.line,
+                                lit.text,
+                                lit.with_name(new),
+                                column=link.column,
+                            )
+                        )
+        fix = fixes.single(fixes.option("exact", text, *edits))
     return [ctx.problem("SCAT-NAME", page.path, "frontmatter", what, fix)]

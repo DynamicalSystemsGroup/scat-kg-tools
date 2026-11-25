@@ -8,6 +8,7 @@ import pytest
 from jsonschema import Draft202012Validator
 
 from scat_kg.checks import check_vault, fixes
+from scat_kg.contract import SCHEMA_VERSION
 from scat_kg.fix import Fix
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -44,7 +45,7 @@ def test_inline_head_is_used():
 
 def check_doc(p):
     d = {
-        "schema_version": 1,
+        "schema_version": SCHEMA_VERSION,
         "kind": "check",
         "operation": "check",
         "ok": p.severity != "error",
