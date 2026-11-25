@@ -17,6 +17,8 @@ Uptake was uneven. At Metagov it came late and the first attempts were not reall
 
 The two wishes at Metagov, providing for itself and having IT that just works, are both coded and left side by side. Uptake was strongest on the chief engineer's own technical team, which helps provide, maintain and use its infrastructure, including recording, transcription and search; applying the doctrine to vendor tools has allowed migrations that would have been very hard otherwise. No edge is coded for that, since the notes name no separate concern or affordance for it.
 
+Thin spots: the input gives no sequence of dated events, so scenario is the nearest type. It says nothing of what other groups wanted.
+
 ## Edges told
 
 | type | from | to | note |
@@ -27,5 +29,3 @@ The two wishes at Metagov, providing for itself and having IT that just works, a
 | is addressed by | [[self-provided-platforms]] | [[ask-metagov]] | Looks more successful but is new; people outside the team have not yet used its features. |
 | holds | [[community-members]] | [[it-that-just-works]] | People wanted the technical team invisible, as vendor tools are. |
 | is addressed by | [[it-that-just-works]] | [[koi-pond-chatbot]] | Decayed for lack of participation in maintenance and curation; decommissioned. |
-
-Thin spots: the input gives no sequence of dated events, so scenario is the nearest type. It says nothing of what other groups wanted.
