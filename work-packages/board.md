@@ -25,8 +25,8 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP16 | Ontology and layout (absorbs WP13) | all units built and merged on `wp16/build` (iterations 20 and 21); re-sweep not clean on kept words only; pushed to `dev` once green; ready for the ACE's Obsidian walk | `impact/WP16.md` |
 | RS3 | Research spike: chat path (D-080; branch `spike/chat-path`, never merged into `dev`) | offline part done (U1 to U3, tunnel and git notes in); live part waits for the chief engineer's sign-ins | `RS3-chat-path.md` |
 | WP17 | The views (D-092) | all units done and landed (U8 to U10 correct the metrics and close two check gaps, D-093) except WP17-U3b (blocked: the guard refused a one-line schema edit; waits on the ACE); full suite green; template notebook on `wp17/notebook` | `WP17.md` |
-| WP18 | The chat path (D-094) | planned (scope check PASS, two defaults noted); units queued; PM branch `pm-wp18`, backup `origin/wp18/build`; the live run (WP18-R4) is the ACE's | `WP18.md` |
-| WP19 | The range vault (D-094) | planned (scope check PASS, two defaults noted); units queued; runs beside WP18 on `pm-wp18` | `WP19.md` |
+| WP18 | The chat path (D-094) | units U1 to U5 done and reviewed on `pm-wp18`; waits only on WP18-R4, the live run, which is the ACE's (queued, needs the chief engineer to paste a key) | `WP18.md` |
+| WP19 | The range vault (D-094) | all units done and reviewed on `pm-wp18`; `check_metrics.py --accept WP19` passes; ready for ACE acceptance | `WP19.md` |
 
 ## Units
 
@@ -230,20 +230,21 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP18-U1r | reviewer (fresh; runs U1's checks), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T03:44:02-05:00 | PASS; 2 nits |
 | WP18-U2 | Python developer (MCP server M8: tools, prompts, key gate, tests, optional extra), sonnet | 8 | 8 | `wp18/u2` | done |  | 2026-11-25T03:44:02-05:00 | 137 tests, mutation proven; first-time review PASS, 4 notes |
 | WP18-U2r | reviewer (fresh; runs U2's checks, drives the server over HTTP), sonnet | 3 | 3 | `-` | done |  | 2026-11-25T03:44:02-05:00 | PASS; live HTTP run, mutation, export refusals |
-| WP18-U3 | Python and macOS packaging developer (image, launcher app, teardown, key rotation, tests with stand-in tunnel), sonnet | 8 |  | `wp18/u3` | in review | 1 wording fix (scat-chat.sh line 286); guide pointer resolved by U4 |  |  |
+| WP18-U3 | Python and macOS packaging developer (image, launcher app, teardown, key rotation, tests with stand-in tunnel), sonnet | 8 | 8 | `wp18/u3` | done |  | 2026-11-25T04:23:25-05:00 | 1 wording fix and a D-096 runtime-wording change (Docker Desktop first) with two pinned assertions edited per D-096; src precedence claims found by review and fixed |
 | WP18-U3r | reviewer (fresh; runs U3's checks, builds the image, runs the launcher locally), sonnet | 3 | 3 | `-` | done |  | 2026-11-25T03:47:56-05:00 | PASS; own real run on Colima with a stand-in tunnel; 2 minor wording defects (U3 fix open) |
-| WP18-U4 | technical writer (chat-path guide, IDE note, reference, nav), sonnet | 5 |  | `wp18/u4` | queued | planned by the PM |  |  |
-| WP18-U4r | reviewer (fresh; follows the guide cold, opens the pages), sonnet | 2 |  | `-` | queued | planned by the PM |  |  |
-| WP18-U5 | technical writer (IDE setup skill in the template), sonnet | 2 |  | `wp18/u5` | queued | planned by the PM |  |  |
-| WP18-U5r | reviewer (fresh; runs U5's checks), haiku | 1 |  | `-` | queued | planned by the PM |  |  |
-| WP19-U1 | research engineer (range material: source texts from the public KOI case), sonnet | 5 |  | `wp19/u1` | in review | 3 minor wording fixes from re-review |  |  |
+| WP18-U4 | technical writer (chat-path guide, IDE note, reference, nav), sonnet | 5 | 8 | `wp18/u4` | done |  | 2026-11-25T04:23:25-05:00 | two follow-ups after the launcher messages changed, then 4 review fixes (macOS first open, order, 401 wording, Docker PATH risk); ran over |
+| WP18-U4r | reviewer (fresh; follows the guide cold, opens the pages), sonnet | 2 | 3 | `-` | done |  | 2026-11-25T04:23:25-05:00 | two reviews (first PASS with 4 fixes, second PASS with nits); link checker and quote scripts; no browser by ACE rule |
+| WP18-U5 | technical writer (IDE setup skill in the template), sonnet | 2 | 3 | `wp18/u5` | done |  | 2026-11-25T04:23:25-05:00 | two review rounds: A8 missing, set-status gap, hand-over wording; skill trimmed to the 450-word cap |
+| WP18-U5r | reviewer (fresh; runs U5's checks), haiku | 1 | 2 | `-` | done |  | 2026-11-25T04:23:25-05:00 | two reviews; mutation of set-status gap checked in the pinned tool |
+| WP18-R4 | the ACE's live run in the chat with lab material, the chief engineer pasting the key; recorded step by step, sonnet | 5 |  | `-` | queued | the ACE (live run; needs the chief engineer to paste a key) |  |  |
+| WP19-U1 | research engineer (range material: source texts from the public KOI case), sonnet | 5 | 8 | `wp19/u1` | done |  | 2026-11-25T04:23:25-05:00 | first review FAIL (invented bridges), re-review PASS, then fixes for 4 files, a koi-03 sentence and a koi-09 sentence found by two later reviews |
 | WP19-U1r | reviewer (fresh; reads inputs against ant-rdf, greps for person names), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T03:47:56-05:00 | 2 reviews (first FAIL: invented bridges; re-review PASS with 3 minor fixes open) |
-| WP19-U2 | coder (range vault, scenarios: draft and code by hand through the tool), sonnet | 8 |  | `wp19/u2` | queued | planned by the PM |  |  |
-| WP19-U2r | reviewer (fresh; runs the checks, reads a sample of narratives against sources), sonnet | 3 |  | `-` | queued | planned by the PM |  |  |
-| WP19-U3 | coder (range vault, architectures: draft and code by hand through the tool), sonnet | 5 |  | `wp19/u3` | queued | planned by the PM |  |  |
-| WP19-U3r | reviewer (fresh; runs the checks, reads a sample of narratives against sources), sonnet | 3 |  | `-` | queued | planned by the PM |  |  |
-| WP19-U4 | technical writer (translation note on what ANT coding kept, lost, needed interpreting), sonnet | 2 |  | `wp19/u4` | queued | planned by the PM |  |  |
-| WP19-U4r | reviewer (fresh; checks the note against the vault and the word cap), haiku | 1 |  | `-` | queued | planned by the PM |  |  |
+| WP19-U2 | coder (range vault, scenarios: draft and code by hand through the tool), sonnet | 8 | 8 | `wp19/u2` | done |  | 2026-11-25T04:23:25-05:00 | six scenarios coded by hand through the tool; one review round with prose fixes (an unsupported word, titles, a gloss) |
+| WP19-U2r | reviewer (fresh; runs the checks, reads a sample of narratives against sources), sonnet | 3 | 3 | `-` | done |  | 2026-11-25T04:23:25-05:00 | all six narratives read against inputs; fingerprints diffed before and after the fixes |
+| WP19-U3 | coder (range vault, architectures: draft and code by hand through the tool), sonnet | 5 | 8 | `wp19/u3` | done |  | 2026-11-25T04:23:25-05:00 | three architectures; review FAIL on an unsupported edge, two weak edges, then a wording pass (worker versus coder); ran over |
+| WP19-U3r | reviewer (fresh; runs the checks, reads a sample of narratives against sources), sonnet | 3 | 3 | `-` | done |  | 2026-11-25T04:23:25-05:00 | every row checked against an input sentence; found the unsupported edge and a tool gap on empty fingerprints |
+| WP19-U4 | technical writer (translation note on what ANT coding kept, lost, needed interpreting), sonnet | 2 | 3 | `wp19/u4` | done |  | 2026-11-25T04:23:25-05:00 | note written from the vault, then updated after the vault changed, then 5 review fixes |
+| WP19-U4r | reviewer (fresh; checks the note against the vault and the word cap), haiku | 1 | 2 | `-` | done |  | 2026-11-25T04:23:25-05:00 | every claim in the note tabulated against the tool and the public source; 4 wording fixes |
 
 ## Iterations and velocity
 
@@ -273,6 +274,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 22 | WP16-U15, WP16-U15r (added by the PM) | 5 | 4 | 0.80 | 0.4 h | 10.0 |
 | 23 | WP17-U1, U1r, U2, U2r, U3, U3r, U4, U4r, U5, U5r, U6, U6r, U7, U7r (U3b blocked, not in it) | 41 | 40 | 0.98 | 1.04 h | 38.5 |
 | 24 | WP17-U8, U8r, U9, U9r, U10, U10r (added by the PM after D-093) | 15 | 15 | 1.00 | 0.26 h | 57.7 |
+| 25 | WP18-U1 to U5 and their reviews, WP19-U1 to U4 and their reviews (WP18-R4 queued, the ACE's) | 64 | 78 | 1.22 | 1.26 h | 61.9 |
 
 ## Velocity and forecast
 
@@ -283,6 +285,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP18 and WP19 built on `pm-wp18` (not yet on `dev` until the push): WP18 U1 to U5 and WP19 U1 to U4 done, each reviewed by a fresh reviewer, review fixes re-checked. Iteration 25 closed: 64 est. pts, 78 realized (ratio 1.22), 1.26 h, raw velocity 61.9 realized pts/h (overlapping units, noisy). `check_metrics.py --accept WP19` passes; `--accept WP18` fails only on WP18-R4 (queued, waiting on the ACE: the live run). Over: WP18-U4 (8 against 5: the launcher messages changed under D-096 after the docs were written, then review fixes), WP19-U1 (8 against 5), WP19-U3 (8 against 5: a review removed unsupported edges). Lesson: when a ruling changes the launcher's own wording, plan the guide's quote check as part of the same unit, and for coding by hand brief 'an edge is a claim the account tells, not adjacency in the source' up front. Waiting on the ACE: the live run (WP18-R4), a visual desktop and 375 px pass of the new docs pages (reviewers had no browser), Docker Desktop untested end to end, and the tool gap that a `done` narrative with no edges gets no warning though MISSION.md G1 says it should (found by a WP19 review; the range vault's koi-08 is such a narrative).
 
 Current: WP17 corrections (D-093) done: the 45 future-stamped records are corrected from git, `check_metrics.py` refuses a timestamp more than 5 minutes ahead, views refuse naming each skipped row, a duplicate node name behind a row end is named. Iteration 24: 15 est, 15 realized, 0.26 h, 57.7 pts/h; iteration 23 restated at 1.04 h, 38.5. Earlier: WP17 built and landed on `pm-wp17`: 1,943 tests pass, ruff and lock clean. Iteration 23 closed: 41 est. pts, 40 realized (ratio 0.98), 1.07 h, raw velocity 37.4 realized pts/h. `check_metrics.py --accept WP17` fails only on WP17-U3b (blocked on the ACE, not done). Waiting on the ACE: allow the one-line schema edit (U3b), run the notebook and look at its drawings (`docs/assets/layered-case-study.png`, the template CI artifact `analysis-executed`).
 
