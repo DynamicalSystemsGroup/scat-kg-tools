@@ -22,7 +22,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | RS2 | Research spike: graph analysis (outside v0.1; branch `spike/analysis`, never merged into `dev`) | readout, package, notebook and tests done | `RS2-analysis.md` |
 | WP14 | Prior-art readout (D-079) | all units done and merged; ready for ACE acceptance | `WP14.md` |
 | WP15 | Architecture document and review (D-083) | all units done and merged; ready for ACE acceptance | `WP15.md` |
-| WP16 | Ontology and layout (absorbs WP13) | approved (D-086); scope fixed (D-087); layout spike built on `spike/layout`, waiting for the ACE's Obsidian review | `impact/WP16.md` |
+| WP16 | Ontology and layout (absorbs WP13) | build stage under way (D-088 decided; units WP16-U3 to U14 planned) | `impact/WP16.md` |
 | RS3 | Research spike: chat path (D-080; branch `spike/chat-path`, never merged into `dev`) | offline part done (U1 to U3, tunnel and git notes in); live part waits for the chief engineer's sign-ins | `RS3-chat-path.md` |
 
 ## Units
@@ -178,6 +178,18 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | RS3-U3 | research engineer (tunnel options and terminal-free git), sonnet | 3 | 3 | `spike/chat-path` | done |  | 2026-11-24T22:43:02-05:00 | about 3 min, 46 tool calls, docs only; note 1,111 words against 900 target; no separate fresh reviewer; Funnel on the Mac apps unverified |
 | WP16-U1 | layout designer (information designer, Obsidian), sonnet | 5 | 5 | `spike/layout` | done |  | 2026-11-24T22:51:32-05:00 | about 5 min plus one push-back round (8 defects); three variants; not opened in Obsidian |
 | WP16-U2 | fresh reviewer (opens each variant against R-21), sonnet | 3 | 3 | `spike/layout` | done |  | 2026-11-24T22:52:32-05:00 | about 3 min; checks run, Obsidian not available to it |
+| WP16-U3 | ontology designer (TBox, page contracts, example vault), sonnet | 8 |  | `wp16/u3` | queued |  |  |  |
+| WP16-U4 | rule-catalogue and machine-interface author, sonnet | 5 |  | `wp16/u4` | queued | WP16-U3 |  |  |
+| WP16-U5 | Python developer (loader, graph, table reader, read-layer tests), sonnet | 8 |  | `wp16/u5` | queued | WP16-U4 |  |  |
+| WP16-U6 | Python developer (checks, mismatch rules, done grading), sonnet | 8 |  | `wp16/u6` | queued | WP16-U5 |  |  |
+| WP16-U7 | Python developer (operations, API, CLI, Bases index pages), sonnet | 8 |  | `wp16/u7` | queued | WP16-U5 |  |  |
+| WP16-U8 | test engineer (seeded defects, mismatch vaults, guidance case, padded tables), sonnet | 5 |  | `wp16/u8` | queued | WP16-U6, WP16-U7 |  |  |
+| WP16-U9 | technical writer (coding guide, terms page and drift test, reference pages), sonnet | 8 |  | `wp16/u9` | queued | WP16-U7 |  |  |
+| WP16-U10 | technical writer (flow page, data and consent page, WP13 passages), sonnet | 5 |  | `wp16/u10` | queued | WP16-U9 (nav, terms link) |  |  |
+| WP16-U11 | simulated user (WP13-R4 cold reader, fresh Haiku) and report filing, haiku | 2 |  | `wp16/u11` | queued | WP16-U10 |  |  |
+| WP16-U12 | template maintainer (migration one-off, case study, pins), sonnet | 8 |  | `template wp16/u12` | queued | WP16-U7 |  |  |
+| WP16-U13 | technical writer (architecture slots, acceptance kit, play-test findings F-1, F-3, F-5, F-7), sonnet | 3 |  | `wp16/u13` | queued | WP16-U7 |  |  |
+| WP16-U14 | change consultant (re-sweep of the impact map), sonnet | 3 |  | `wp16/u14` | queued | WP16-U12, WP16-U13 |  |  |
 
 ## Iterations and velocity
 
