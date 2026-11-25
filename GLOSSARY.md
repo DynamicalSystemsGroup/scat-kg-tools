@@ -17,6 +17,7 @@ the same package. Each change is listed for the chief engineer's review at accep
 
 | Term | Definition | Example use | Formal concept and source |
 |---|---|---|---|
+| **SCAT** | The four node types, stakeholder groups, concerns, affordances and technologies; the name also nods to scat singing in improvised jazz. | "SCAT codes each narrative into its four node types." | Authored in SCAT |
 | **node** | One group, concern, affordance or technology in the layered graph. One exception, always spelled out: Obsidian's graph view draws every page as a node; there, say "a node in Obsidian's graph view", which is a page. | "`watershed-stewards` is a group node." | Vertex (graph theory); a 0-simplex (knowledge complex) |
 | **edge** | A typed connection between two nodes in neighbouring layers. There are three types, read as "holds" (group → concern), "is addressed by" (concern → affordance) and "is provided by" (affordance → technology). At most one per pair. | "Farm irrigators *hold* guaranteed irrigation allocation." | Edge (graph theory); a 1-simplex (knowledge complex); in the TBox, Heldby, Addresses and Attributes |
 | **element** | Any node or edge. | "Coding identifies every element the account tells." | Simplex (knowledge complex) |

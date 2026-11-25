@@ -1897,3 +1897,24 @@ ACE outcome: the container is part of the v0.1 chat route (WP18 ships the image 
 tunnel. WP18 takes the findings: Colima cannot read `~/Documents` under macOS privacy rules; Funnel needs the tailnet's
 HTTPS and Funnel policy set once, and the machine renamed before HTTPS; the coder pastes the key; the only terminal
 step was installing Tailscale. RS3's readout remains to be written (RS3-R1), from its four notes.
+
+## D-091 | 2026-11-25 | WP16 (ontology and layout) accepted; RS3 accepted; the glossary gains "SCAT"
+
+Evidence, checked by the ACE:
+- CI and Pages green on tools `dev` 41d1efb; template `dev` 3cdbe60 CI green; the PM's full run 1,770 passed, 0
+  skipped; `check_metrics.py --accept WP16` passes (435 records); RS3 likewise.
+- The acceptance walk in Obsidian on a fresh template clone (`research/layout/review.md`, "Acceptance walk"):
+  narrative pages, all five Bases index pages, and an incremental coding session with the tool, including the `done`
+  refusal and the refusal to change a `done` narrative.
+- The cold reader's five disagreements between the flow and consent pages are fixed (WP16-U15, reviewer PASS); the
+  flow page renders at 375 px.
+- The re-sweep's 22 remaining hits are named keeps in the impact map (tests that keep retired words retired, ontology
+  identifiers, a decision title).
+
+RS3's readout (`research/chat-path/readout.md`) and its lab run (D-090) meet RS3-R1 to R4.
+
+Carried to the next package, none blocking: the flow page's "Two readers" heading should follow the mission's one
+persona ("trying it first"); step 7's dependency should name step 4; a stray `conflicts` comment in
+`ontology/scat.ttl`; the reviewer's guide's pin header (WP20 rewrites it).
+
+The glossary gains **SCAT** (an addition: the docs expand it, and the glossary did not).
