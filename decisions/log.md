@@ -2007,3 +2007,22 @@ needs the chief engineer to paste a key.
 
 **WP20 approved** (`work-packages/WP20.md`): the candidate, UA-A on the manual path now, UA-A on the chat path in the
 chief engineer's sittings, the walkthrough scripts and the reviewer's guide. Revert point `divergence/D-096`.
+
+## D-098 | 2026-11-25 | WP20 mid-way: rulings on the PM's questions
+
+State: WP20-U1 on `dev` (92b64d7: whole-vault views refuse a page whose frontmatter cannot be read, naming the file;
+the architecture's sentences added; 2,264 tests passed). U3 to U6 wait on fixes and fresh re-reviews; U2 (the pin)
+and U7 (tester provisioning) wait; UA-A round 1 has not run.
+
+The ACE's rulings:
+1. The template branch may be pushed by URL to `DynamicalSystemsGroup/scat-kg-template` `dev`, as the candidate
+   stage needs.
+2. The stray commit "Remove the example" on the template work branch is not published: the pin commit is rebased onto
+   the template's `dev` first, and the reviewer checks the pushed tree.
+3. The five docs gaps the reviewers found are defects against stated requirements (R-9, R-10, R-11, G9): the
+   fingerprint view's command contradiction between the coding guide and the analysis guide; no command to run the
+   notebook; the solo trial (J2) without a section of its own; no way shown to see which commit a tag pins; and no
+   no-terminal route on the chat path for clone, commit, push and removing the example (GitHub Desktop, D-087). A docs
+   unit fixes them before the pin is redone and UA-A runs.
+4. The chat path's UA-A has three testers, two on Haiku and one on Sonnet ("most on Haiku"). Their sessions are run by
+   the ACE, light and spaced, in the chief engineer's sittings.
