@@ -151,7 +151,7 @@ repository". The solo trial has its own section there, [The solo trial](../docs/
    finish"](../docs/coding.md#a-narrative-start-to-finish), steps 1 to 5, with the REPL or the CLI as you prefer. Fix
    each problem from its message.
 7. In Obsidian, open your narrative and look at its Outgoing links panel. With its `Edges told` table, those are its
-   fingerprint (step 5 of the same section, which now also gives `uv run scat fingerprint <your-narrative>`; docs fix 1).
+   fingerprint (step 5 of the same section; without a narrative name, `uv run scat fingerprint` shows every narrative; docs fix 1).
 8. Set the narrative to `done` (step 6 of the same section).
 
 **Done.**
@@ -376,8 +376,8 @@ words, what one view told you and whether it sent you back. The page does not te
 you did not read it that way.
 
 **Record.** How you opened the notebook and whether the page said how; whether the commands matched the page; whether
-[`coding.md`](../docs/coding.md#5-a-link-without-a-row) ("That view is not one of the `scat` commands yet") and
-`analysis.md` (a `fingerprint` command) agree (docs fix 1); what the views read like.
+[`coding.md`](../docs/coding.md#5-a-link-without-a-row), step 5, and `analysis.md` both give `uv run scat fingerprint`
+(docs fix 1); what the views read like.
 
 **Resume.** `exports` exists with files in it, and `uv run scat check` shows no errors. The notebook can be run
 again at any time: it writes nothing into your pages.
