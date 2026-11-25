@@ -1947,3 +1947,13 @@ uniform).
 **Check gaps** (the WP17 PM's flags): a narrative's broken row is reported only when that narrative is checked, so a
 view drawing other pages silently leaves it out; and a duplicate node name behind a row end silently drops that edge.
 Both are defects against R-1 and R-23: the correction unit's PM fixes them, with tests, in the tool.
+
+## D-094 | 2026-11-25 | WP18 (the chat path) and WP19 (the range vault) approved
+
+Scopes `work-packages/WP18.md` and `work-packages/WP19.md`. WP18 builds the MCP server as an optional extra, the
+assistant's file, the container and a no-terminal launcher that always ends torn down with the key rotated, the
+chat-path guide and the IDE note; its live run needs the chief engineer to paste a key. WP19 rebuilds the public KOI
+case from `mzargham/ant-rdf` as a SCAT range vault, coded by hand through the tool. They share no files and run side
+by side, under one PM, after the WP17 correction unit (D-093) lands, since that unit also touches `src/` and the
+metrics log. Neither touches `contracts/machine-interface.*`, where WP17-U3b is held. Revert point
+`divergence/D-093`.
