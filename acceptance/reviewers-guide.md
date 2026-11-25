@@ -54,8 +54,8 @@ Pages URL and gives, for each stage J1 to J10, where to enter, the steps, what "
 where to resume. `acceptance/walkthrough-chat.md` is the chat path, J1 to J10 with no terminal from J5 on; its docs
 entry is `docs/chat-path.md`. (The older single `acceptance/walkthrough.md` is gone.) Each script splits its walk into
 its own sittings and says where you may stop: the manual script has five (A solo trial J1-J2; B terms and set-up
-J3-J5; C plan and capture J6-J7; D code J8; E analyse and hand over J9-J10) and the chat script has four (A once-only
-installs; B discover to plan J1-J4, J6-J7; C code J8; D analyse and hand over J9-J10). These are walk sittings inside
+J3-J5; C plan and capture J6-J7; D code J8; E analyse and hand over J9-J10) and the chat script has five (A discover to
+terms J1-J4; B set up J5; C plan and capture J6-J7; D code J8; E analyse and hand over J9-J10). These are walk sittings inside
 this guide's sitting 1.
 
 **What to look at.**
@@ -103,7 +103,7 @@ clear.
 For the checks below, from a checkout: `git clone https://github.com/DynamicalSystemsGroup/scat-kg-tools && cd scat-kg-tools && git checkout dev && uv sync --all-groups`.
 
 **What to look at.** Open each page at desktop width and at phone width (browser developer tools, 375 px). The site
-has 19 pages (`mkdocs.yml`, `nav`): Home; The flow; Data, rights and consent; Getting started; Planning; Facilitating
+has 16 pages (`mkdocs.yml`, `nav`): Home; The flow; Data, rights and consent; Getting started; Planning; Facilitating
 (Scenarios, Architectures); Coding; Coding in a chat; Coding in an IDE; Analysis; Reference (Python API, CLI, MCP
 server, Terms, Architecture). Look for:
 
@@ -128,7 +128,7 @@ server, Terms, Architecture). Look for:
 
 **Checklist.**
 
-- [ ] All 19 pages opened at desktop width, and at 375 px.
+- [ ] All 16 pages opened at desktop width, and at 375 px.
 - [ ] Every journey page has "Your next step" and "Where next".
 - [ ] I ran the strict build and the docs test.
 - [ ] I found no step that ranks or adjudicates, and no policy the pages choose for the organiser.
