@@ -67,7 +67,7 @@ this guide's sitting 1.
   open Obsidian.
 - **Chat path (J1 to J10, G14).** You run it as you would use it: the field notes uploaded to the chat as a
   collection, the coding loop in the chat and in Obsidian, views through the MCP server, ending with the launcher
-  torn down and the key rotated. This needs your sign-ins and a key you paste; it is also WP18-R4 (the live run),
+  torn down and the key deleted. This needs your sign-ins and a key you paste; it is also WP18-R4 (the live run),
   which has not been done (see 4c, item 2). Its UA-A is three testers, two on Haiku and one on Sonnet, run by the ACE
   in these sittings.
 - **Hand-over (J10).** Each path ends with you deciding the model is finished and locking a version with a tag.
@@ -88,7 +88,7 @@ the affected stage.
 - [ ] Manual path: I navigated the graph and the index pages in Obsidian without help (R-21).
 - [ ] Manual path: I locked a version with a tag and named what it pins and who receives it.
 - [ ] Chat path: the coding loop ran in the chat, a clean check followed, the launcher ended torn down, and the key
-  was rotated.
+  was deleted.
 - [ ] Anything I flagged is written down with its stage.
 
 **Your decision.** Pass UA-M, or name the stage that failed. The pass (`MISSION.md`) is that you complete the journey
@@ -393,7 +393,8 @@ live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
 2. **The live chat-path run, WP18-R4, has not been done.** It needs you to paste a key and sign in. WP18 is built
    and green but cannot be accepted until it runs (D-097). It is also R-20's end-to-end part. It is the chat half of
    your sitting 1.
-3. **Docker Desktop is untested (D-096).** The chat path's documented container runtime, chosen because it has a
+3. **Docker Desktop is untested (D-096; superseded by D-105: Colima is now the documented runtime and Docker Desktop the
+   untested alternative; see item 25).** The chat path's documented container runtime, chosen because it has a
    graphical installer, has never been installed or run here. The container itself ran under Colima (D-090). Installing
    Docker Desktop needs your permission (`work-packages/morning-list.md` item 2c). **Your answer:** permit one install
    and a local test, or accept the gap.
@@ -460,6 +461,12 @@ live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
     git URL.
 24. **A clone of the template shows work-package commits and `divergence/` tags (W15; D-100).** Accepted: the
     documented path ("Use this template") starts with fresh history; the UA-A testers cloned directly.
+25. **WP21 chat-path life cycle: not verified, left to the chief engineer's sitting or the release (D-115, D-116).** (a)
+    A keychain prompt when the launcher runs from the built app, or with a locked login keychain. (b) Whether the key's
+    keychain item syncs to iCloud Keychain. (c) Docker Desktop, the untested alternative to Colima. (d) R4: the
+    `scat-coding` skill loading in the chat, and the saved agent. (e) R7: the leave-no-trace walkthrough
+    (`docs/leave-no-trace.md`), including the chat's Temporary Chat setting and collections, neither tried. (f) R6: the
+    first push of the published image, which also waits on the mission's Release step 3.
 
 **The note on the rule audit (D-052, D-053).** The audit covered the v0.1 catalogue as it stood then. The rules in
 force, with their ids and severities, are in `contracts/rule-catalogue.md`; `SCAT-NOEDGES` (G1, added in WP18-U6) and
@@ -468,7 +475,7 @@ the table rules came after the audit.
 **Checklist.**
 
 - [ ] I gave items 1, 3, 4, 5 and 11 my answer.
-- [ ] I read items 2 and 6 to 24 and accept each, or I note it.
+- [ ] I read items 2 and 6 to 25 and accept each, or I note it.
 
 **Your decision.** Items 1, 3, 4, 5 and 11 each have your answer, and every other item is accepted or noted.
 

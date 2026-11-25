@@ -35,6 +35,7 @@ Nine, made before the first session. Each is a dependency: a later step is plann
 5. **Whether AI is used, and which tools may touch which data.** Coding (step 8) depends on it, and the answer is
    matched to what participants were told. On the chat path the field notes go to the chat provider's service. For
    example: no AI; an approved service on the inputs only; an approved service on the model, not the inputs.
+   If the answer is a strict policy (nothing may stay on the AI platform), one option for it is [Leave no trace](leave-no-trace.md).
 6. **Who the material is released to, and in what form.** Hand-over (step 10) depends on it. Release has levels between
    private and public. Publishing the analysis and publishing the field notes are separate questions. For example:
    contributors only; the analysis public, the inputs private; nothing released.
