@@ -1,4 +1,6 @@
-"""SCAT-MENTION: a body that names an existing node page in plain text and does not link it."""
+"""SCAT-MENTION: a body that names an existing node page in plain text and does not link it.
+
+A link suggestion, so off unless `scat.toml` says `link_suggestions = true`."""
 
 import re
 
@@ -58,7 +60,7 @@ def _in_cell(ctx: Ctx, page: Page, line: int, column: int) -> bool:
 
 @page_rule
 def mention(ctx: Ctx, page: Page):
-    if not ctx.typed(page) or not page.body:
+    if not ctx.vault.config.link_suggestions or not ctx.typed(page) or not page.body:
         return []
     plain = _plain(ctx, page)
     linked = {l.target for l in page.body_links}

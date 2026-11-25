@@ -92,7 +92,7 @@ def narrative(
 def base() -> dict[str, str]:
     """A small vault with a page of every type, all `done`, and no message from any rule."""
     return {
-        "scat.toml": "stakeholder_group_cap = 3\n",
+        "scat.toml": "stakeholder_group_cap = 3\nlink_suggestions = true\n",
         "group/staff.md": doc("group", "Staff"),
         "group/borrowers.md": doc("group", "Borrowers"),
         "concern/safe-handling.md": doc("concern", "Safe handling"),

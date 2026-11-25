@@ -88,6 +88,8 @@ class VaultConfig:
     detail: str | None  # the parser's reason (invalid-toml); the value as TOML shows it (bad-value)
     cap: int | None  # stakeholder_group_cap when usable
     templates_folder: str = DEFAULT_TEMPLATES_FOLDER  # vault-relative folder the reader skips
+    link_suggestions: bool = False  # true turns SCAT-MENTION on
+    link_suggestions_bad: str | None = None  # the value as TOML shows it when it is not a boolean
 
 
 @dataclass(frozen=True)
@@ -299,12 +301,14 @@ def _read_config(root: Path) -> VaultConfig:
     if not isinstance(folder, str) or not folder.strip("/ "):
         folder = DEFAULT_TEMPLATES_FOLDER
     folder = folder.strip("/ ")
+    suggest = data.get("link_suggestions", False)
+    extra = (suggest, None) if isinstance(suggest, bool) else (False, repr(suggest))
     if "stakeholder_group_cap" not in data:
-        return VaultConfig("key-missing", None, None, folder)
+        return VaultConfig("key-missing", None, None, folder, *extra)
     value = data["stakeholder_group_cap"]
     if isinstance(value, int) and not isinstance(value, bool) and value >= 1:
-        return VaultConfig(None, None, value, folder)
-    return VaultConfig("bad-value", repr(value), None, folder)
+        return VaultConfig(None, None, value, folder, *extra)
+    return VaultConfig("bad-value", repr(value), None, folder, *extra)
 
 
 def read_vault(root: str | Path) -> Vault:

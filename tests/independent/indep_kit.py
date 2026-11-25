@@ -182,7 +182,7 @@ def narrative_text(
 def build_base(root: Path, status: str = "done", cap: int = 3) -> Vault:
     """The clean fixture vault: zero messages at every status of the narrative."""
     v = Vault(root)
-    v.write("scat.toml", f"stakeholder_group_cap = {cap}\n")
+    v.write("scat.toml", f"stakeholder_group_cap = {cap}\nlink_suggestions = true\n")
     for type_, items in NODES.items():
         for name, title in items:
             v.write(f"{type_}/{name}.md", page_text(type_, title))

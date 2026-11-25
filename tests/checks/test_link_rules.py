@@ -626,3 +626,46 @@ def test__scat_mention__in_a_table_cell_the_alias_bar_is_escaped(make_vault):
     (p,) = r.problems
     assert p.fix == "Fix: on line 18 replace `BRIEFING` with `[[briefing\\|BRIEFING]]`"
     assert p.fix_data.options[0].edits[0].replace == "[[briefing\\|BRIEFING]]"
+
+
+# SCAT-MENTION is a link suggestion: off unless scat.toml says `link_suggestions = true` (WP21-G9, R10)
+
+SUGGEST = "link_suggestions = true\n"
+
+
+def test__scat_mention__is_off_by_default_and_reported_with_the_switch_on(make_vault):
+    files = {DESK: narrative(account=ACCOUNT + "\nThe volunteers gave a Briefing first.\n")}
+    default = {"scat.toml": "stakeholder_group_cap = 3\n", **files}
+    assert "SCAT-MENTION" not in rules_of(report_of(make_vault, default))
+    for off in ("link_suggestions = false\n", ""):
+        text = {"scat.toml": "stakeholder_group_cap = 3\n" + off, **files}
+        assert "SCAT-MENTION" not in rules_of(report_of(make_vault, text))
+    on = {"scat.toml": "stakeholder_group_cap = 3\n" + SUGGEST, **files}
+    assert rules_of(report_of(make_vault, on)) == ["SCAT-MENTION"]
+
+
+SUGGEST_HEAD = "error [SCAT-SUGGEST-CONFIG] scat.toml field `link_suggestions`: {what}"
+
+
+@pytest.mark.parametrize("written", ['"yes"', "1", "0", "'true'"])
+def test__scat_suggest_config__a_value_that_is_not_a_boolean_is_refused(make_vault, written):
+    seeded(
+        make_vault,
+        {"scat.toml": f"stakeholder_group_cap = 3\nlink_suggestions = {written}\n"},
+        msg(
+            SUGGEST_HEAD.format(
+                what=f"the value `{written}` is not a TOML boolean, `true` or `false`"
+            ),
+            *choose(
+                f"replace the line `link_suggestions = {written}` with `link_suggestions = true` "
+                "(show the link suggestions)",
+                "or with `link_suggestions = false` (the default: no link suggestions)",
+            ),
+        ),
+    )
+
+
+def test__scat_suggest_config__a_boolean_or_no_key_is_not_a_problem(make_vault):
+    for text in ("link_suggestions = true\n", "link_suggestions = false\n", ""):
+        r = report_of(make_vault, {"scat.toml": f"stakeholder_group_cap = 3\n{text}"})
+        assert "SCAT-SUGGEST-CONFIG" not in rules_of(r)

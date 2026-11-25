@@ -31,6 +31,7 @@ SEVERITY = {
     "SCAT-LINK-DANGLING-BODY": "error",
     "SCAT-CAP": "error",
     "SCAT-CAP-CONFIG": "error",
+    "SCAT-SUGGEST-CONFIG": "error",
     "SCAT-MENTION": "warning",
     "SCAT-NOEDGES": "warning",
     "SCAT-UNCODED": "warning",
