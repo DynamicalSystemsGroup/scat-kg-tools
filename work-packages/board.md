@@ -20,6 +20,9 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP12 | The terms reference (F-8; D-068) | all units done (WP12-U5 by the ACE under D-074); WP12 ready for ACE acceptance | `WP12.md` |
 | RS1 | Research spike: Obsidian plugin (outside v0.1; branch `spike/obsidian-plugin`, never merged into `dev`) | readout, installable plugin and tests done | `RS1-obsidian-plugin.md` |
 | RS2 | Research spike: graph analysis (outside v0.1; branch `spike/analysis`, never merged into `dev`) | readout, package, notebook and tests done | `RS2-analysis.md` |
+| WP14 | Prior-art readout (D-079) | scope check returned to the ACE with fixes; no unit planned | `WP14.md` |
+| WP16 | Ontology and layout (absorbs WP13) | impact map and file map done (WP16-U0); scope not yet written | `impact/WP16.md` |
+| RS3 | Research spike: chat path (D-080; branch `spike/chat-path`, never merged into `dev`) | offline part done (U1, U2); live part waits for the chief engineer's sign-ins | `RS3-chat-path.md` |
 
 ## Units
 
@@ -158,6 +161,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP12-U9 | simulated user (R3 round 3, fresh Haiku tester) and report filing; added by the PM, haiku | 2 | 2 | `wp12/u9` | done |  | 2026-11-24T15:19:41-05:00 | round 3 fresh Haiku tester, report filed; one self-inflicted defect (F3) fixed by U10; merged 5e7b7c1 |
 | WP12-U10 | technical writer (fix from the R3 round 3 finding F3: every page versus the index tables; added by the PM), sonnet | 1 | 1 | `wp12/u10` | done |  | 2026-11-24T15:19:41-05:00 | small fix, reviewer FAIL on a hairsplit ruled not a defect (index tables are not pages you made); merged bb7e4c9 |
 | WP12-U11 | simulated user (R3 round 4, fresh Haiku tester) and report filing; added by the PM, haiku | 2 | 2 | `wp12/u11` | done |  | 2026-11-24T15:19:41-05:00 | round 4 fresh Haiku tester, report filed; no new page defect; the loop stopped here; merged 917d815 |
+| WP16-U0 | change consultant (impact map, file map), sonnet | 5 | 5 | `wp16/u0` | done |  | 2026-11-24T21:35:00-05:00 | clean first time; PM re-ran the sweep, output matched; 11 open questions for the ACE; merged d972831 |
+| RS3-U1 | research engineer (chat documentation), sonnet | 3 | 3 | `spike/chat-path` | done |  | 2026-11-24T21:35:01-05:00 | docs only, no use of inference.coop; chat is LibreChat, not Open WebUI; note over its word target |
+| RS3-U2 | Python developer (throwaway MCP server), sonnet | 5 | 3 | `spike/chat-path` | done |  | 2026-11-24T21:35:02-05:00 | 4 tests pass (PM re-ran); scat_kg.check(page) already exists, so easier than estimated |
 
 ## Iterations and velocity
 
@@ -176,6 +182,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 11 | WP11-U1 to U11, U5b, U7b, U7c (U5b, U7b, U7c added by the PM) | 52 | 51 | 0.98 | 2.14 h | 23.8 |
 | 12 | WP12-U1 to U4, U6 to U11 (U6 to U11 added by the PM; U5 blocked) | 18 | 20 | 1.11 | 0.84 h | 23.8 |
 | 13 | WP12-U5 (done by the ACE under D-074 after a guard block) | 1 | 2 | 2.00 | 5.79 h | 0.35 |
+| 14 | WP16-U0, RS3-U1, RS3-U2 | 13 | 11 | 0.85 | 0.40 h | 27.5 |
 
 ## Velocity and forecast
 
