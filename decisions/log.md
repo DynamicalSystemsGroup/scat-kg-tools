@@ -2206,3 +2206,12 @@ tools commit (pyproject `rev`), the 23 `divergence/` revert tags, and the commit
 log, board and metrics; and GitHub keeps the old commits reachable through PR #8's head ref regardless. The question
 put to the chief engineer did not state these costs, so D-109 is not acted on and the question goes back to him (morning
 list).
+
+## D-114 | 2026-11-25 | WP21 approved
+
+WP21 (`work-packages/WP21.md`: rules and norms, the chat path's life cycle, the published image) takes C1 to C8
+(D-102, D-103) with D-104 to D-107 and D-110. The PM's scope check ran two rounds (nine fixes, then six, all applied);
+under D-099 there is no third round. The change consultant's impact map is `work-packages/impact/WP21.md`, with its
+template and branch facts corrected by the ACE (WP18 and WP20 are merged into `dev`; the template's `dev` is 31667fc).
+The image push at release waits on the chief engineer's mission amendment (morning list); without it the launcher
+keeps building locally. Revert point `divergence/D-114` on `dev`. The ACE approves WP21.

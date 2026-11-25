@@ -5,6 +5,8 @@ scopes a package starts here, reads the source each item points to (the chief en
 full, as typed), and turns the items into goals, requirements and non-goals at the approval gate. Words follow
 `GLOSSARY.md`. Add items as they come up; strike an item through when a scope takes it, naming the package.
 
+**C1 to C8 are taken by WP21 (D-114), all in v0.1 (D-102, D-103).**
+
 ## From the chat-path live run, 25 November (`acceptance/chat-path/live-run-wp18-r4.md`)
 
 | ID | Candidate | What it touches | Source |
