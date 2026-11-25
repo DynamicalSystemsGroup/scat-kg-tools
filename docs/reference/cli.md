@@ -11,6 +11,8 @@
 
 The blocks below hold the exact output of `--help`. If your window is narrower or wider than 80 columns, your own `--help` wraps the lines differently.
 
+The MCP server offers the same operations to a chat: see the [MCP server reference](mcp.md).
+
 ## Machine-readable output
 
 Every command takes `--json`. It prints exactly one JSON document on stdout and nothing else, and the exit code is the same as without it. A program such as a plugin reads that document instead of the message. The Python twins return the same data from `to_dict()` (see the [Python API reference](api.md#machine-readable-output)). The fields, and the rule for when `schema_version` changes, are in the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md).
