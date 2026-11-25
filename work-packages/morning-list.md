@@ -24,8 +24,10 @@ Before the release PRs: WP21 built and accepted, WP18 accepted, the chat-path si
 2. **One more lab conversation in inference.coop.** This run's uploaded note and its two conversations are deleted
    there (local copies kept). A third conversation, "Vault Check Results Summary", is from the overnight server test,
    with lab material only. Delete it too?
-3. **A one-line mission edit for D-106:** Release step 3 would also publish the MCP server image when the ACE tags
-   `v0.1.0`. The mission is yours to change; I'll draft the sentence for your merge.
+3. **Two small mission edits, both yours to make:** (a) for D-106, Release step 3 also publishes the MCP server image
+   when the ACE tags `v0.1.0` (then set the repository variable `SCAT_PUBLISH_IMAGE=true`; until then nothing is
+   pushed and the launcher builds locally); (b) for D-115, Platforms names macOS's `security` (the keychain) among
+   the isolated macOS tools. I'll draft both sentences for your merge.
 4. **A chat-path sitting (after WP21):** the three chat-path user tests (D-098), the "leave no trace" walkthrough run,
    and loading the skill package. You sign in and paste each key; I drive.
 5. **Your template checkout:** a `git pull` will stop on your uncommitted `.obsidian/` edits (`core-plugins.json`,

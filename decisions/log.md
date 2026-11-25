@@ -2215,3 +2215,22 @@ under D-099 there is no third round. The change consultant's impact map is `work
 template and branch facts corrected by the ACE (WP18 and WP20 are merged into `dev`; the template's `dev` is 31667fc).
 The image push at release waits on the chief engineer's mission amendment (morning list); without it the launcher
 keeps building locally. Revert point `divergence/D-114` on `dev`. The ACE approves WP21.
+
+## D-115 | 2026-11-25 | The session key: keychain, never in arguments, deleted at Stop (WP21-U7 decided)
+
+The spike (`research/chat-path/secrets.md`) found the cause of F15/C7: the launcher's dialog passes its text, key
+included, to `osascript` as an argument. It recommends keeping the key in the macOS login keychain, written on stdin
+(never `-w VALUE`), read with `find-generic-password -w`, passed to the container with `--env-file /dev/stdin`, on the
+clipboard only from a "Copy key" button, and deleted at Stop; the `security` calls isolated behind four functions with
+a test stand-in. The ACE decides:
+- **Keychain, as recommended.** The chief engineer asked for secret management and better security practice (D-102);
+  the 0600 file would meet R5's letter, but the keychain keeps the key off disk in plain text, which is the practice
+  the life-cycle guide should show. The macOS-specific part is isolated as the note proposes (MISSION, Platforms).
+- **The dialog shows the address and a "Copy key" button, never the key.** Needed with either store.
+- **Deleting the item at Stop is enough.** A key exists for one session only and the next Start makes a new one, so
+  there is nothing left to rotate; the Stop message and the guide say "the key was deleted".
+- Not verified, for U8 and the reviewer's guide: a keychain prompt from the built app or a locked keychain, iCloud
+  Keychain sync of the item, Docker Desktop.
+- The mission's Platforms list should name `security` among the isolated macOS tools: a mission edit, proposed to the
+  chief engineer with D-106's, not made.
+U8 is unblocked.
