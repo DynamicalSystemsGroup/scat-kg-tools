@@ -27,6 +27,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP17 | The views (D-092) | all units done and landed (U8 to U10 correct the metrics and close two check gaps, D-093) except WP17-U3b (blocked: the guard refused a one-line schema edit; waits on the ACE); full suite green; template notebook on `wp17/notebook` | `WP17.md` |
 | WP18 | The chat path (D-094) | units U1 to U7 done and reviewed (U6, U7 on `pm-fix18`); waits only on WP18-R4, the live run, which is the ACE's (queued, needs the chief engineer to paste a key) | `WP18.md` |
 | WP19 | The range vault (D-094) | all units done and reviewed on `pm-wp18`; `check_metrics.py --accept WP19` passes; ready for ACE acceptance | `WP19.md` |
+| WP20 | The candidate and user acceptance (D-097) | manual path: candidate fixes of D-100 merged (U9, U10); round 2 in progress; chat-path rounds wait for the chief engineer | `WP20.md` |
 
 ## Units
 
@@ -251,6 +252,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP19-U3r | reviewer (fresh; runs the checks, reads a sample of narratives against sources), sonnet | 3 | 3 | `-` | done |  | 2026-11-25T04:23:25-05:00 | every row checked against an input sentence; found the unsupported edge and a tool gap on empty fingerprints |
 | WP19-U4 | technical writer (translation note on what ANT coding kept, lost, needed interpreting), sonnet | 2 | 3 | `wp19/u4` | done |  | 2026-11-25T04:23:25-05:00 | note written from the vault, then updated after the vault changed, then 5 review fixes |
 | WP19-U4r | reviewer (fresh; checks the note against the vault and the word cap), haiku | 1 | 2 | `-` | done |  | 2026-11-25T04:23:25-05:00 | every claim in the note tabulated against the tool and the public source; 4 wording fixes |
+| WP20-U9 | technical writer (docs W1 to W7), sonnet | 3 | 3 | `wp20c/u1` | done |  | 2026-11-25 | first-time reviewer PASS; PM rendered check at 375 px |
+| WP20-U10 | Python developer (W9 candidates off by default, W10a, W10b), sonnet | 5 | 5 | `wp20c/u10` | done |  | 2026-11-25 | 1 push-back, 2 review rounds; 2289 tests |
+| WP20-UA2 | UA-A round 2, manual path (4 fresh testers: 3 Haiku, 1 Sonnet), haiku | 8 |  | none | in flight | push, re-pin, CI, R-6 first |  |  |
 
 ## Iterations and velocity
 
