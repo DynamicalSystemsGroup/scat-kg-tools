@@ -14,11 +14,9 @@ the team; each item waits for you when you have a moment.
    repository; it is redacted in the file (D-082) and stays in history.
 2. **Sign-ins for the chat-path spike (RS3), when it reaches live use:** inference.coop and GitHub in the browser
    pane. Use stays light and human-paced. I'll ask in chat when the spike is ready, not before.
-2a. **Tailscale: your permission is recorded; the install needs your password.** The official app
-   (`brew install --cask tailscale-app`) runs a macOS installer that asks for your administrator password, which I
-   don't enter. To finish: run that command yourself (or install Tailscale from tailscale.com), sign in to Tailscale,
-   and allow its system extension when macOS asks. RS3's lab run continues from there (one light session, lab
-   material only). Funnel may also need switching on for your tailnet in Tailscale's admin console.
+2a. **Tailscale is installed (1.104.7; thank you).** What's left is yours: open Tailscale, sign in, and allow its
+   system extension when macOS asks; Funnel may also need switching on for your tailnet in Tailscale's admin console.
+   RS3's lab run (one light session, lab material only) continues from there.
 3. **WP8-U1, held since D-042:** a test edit only you can authorise. Two assertions in `tests/ops/test_ops_stub.py`
    assert old behaviour (`stub` on an existing page of the same type is now a no-op; `set-status done` reports the
    page's check). The intended edits are as strong as before: `not r.ok` becomes
