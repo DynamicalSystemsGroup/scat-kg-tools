@@ -1707,3 +1707,10 @@ ACE outcome:
   is built from changes (`docs/`, `mkdocs.yml`, `src/`, `pyproject.toml`, `uv.lock`, the workflow), and a newer
   deploy cancels an older one. CI still runs on every push (R-7); the team batches pushes, so records-only commits
   ride along with real work.
+
+## D-079 | 2026-11-24 | WP14 (prior-art readout) approved
+
+Scope `work-packages/WP14.md`: a readout of at most 1,800 words in `research/prior-art/`, answering five questions for
+WP15 and WP16, with public sources cited and private ones read for principles only. Mission item 6 (prior-art readout
+as input) and Governance ("the prior-art readout comes before the architecture document"). No impact map: it changes
+no term, contract, rule or mission text.
