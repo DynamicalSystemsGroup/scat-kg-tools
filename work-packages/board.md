@@ -22,7 +22,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | RS2 | Research spike: graph analysis (outside v0.1; branch `spike/analysis`, never merged into `dev`) | readout, package, notebook and tests done | `RS2-analysis.md` |
 | WP14 | Prior-art readout (D-079) | all units done and merged; ready for ACE acceptance | `WP14.md` |
 | WP15 | Architecture document and review (D-083) | all units done and merged; ready for ACE acceptance | `WP15.md` |
-| WP16 | Ontology and layout (absorbs WP13) | approved (D-086); PM scope check found items to fix; spike units queued | `impact/WP16.md` |
+| WP16 | Ontology and layout (absorbs WP13) | approved (D-086); scope fixed (D-087); layout spike built on `spike/layout`, waiting for the ACE's Obsidian review | `impact/WP16.md` |
 | RS3 | Research spike: chat path (D-080; branch `spike/chat-path`, never merged into `dev`) | offline part done (U1 to U3, tunnel and git notes in); live part waits for the chief engineer's sign-ins | `RS3-chat-path.md` |
 
 ## Units
@@ -176,8 +176,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP15-U4 | architecture reviewer C (links and edges, cross-cutting contracts), opus | 5 | 5 | none (report returned as text)  | done |  | 2026-11-24T21:57:00-05:00 | about 5 min, 22 tool calls; ran the code on scratch copies; 2 blocking findings, 8 fragments; went over the word cap with reason; recorded |
 | WP15-U5 | software architect (revision), sonnet | 3 | 5 | `wp15/u1`  | done |  | 2026-11-24T22:04:34-05:00 | about 5 min, 27 tool calls; 5 blocking findings fixed inside a 2,500-word cap and about 28 findings answered in a table; one reword for the attribution grep; over estimate because the three reports disagreed on the same two M5 rules and the cap forced cuts |
 | RS3-U3 | research engineer (tunnel options and terminal-free git), sonnet | 3 | 3 | `spike/chat-path` | done |  | 2026-11-24T22:43:02-05:00 | about 3 min, 46 tool calls, docs only; note 1,111 words against 900 target; no separate fresh reviewer; Funnel on the Mac apps unverified |
-| WP16-U1 | layout designer (information designer, Obsidian), sonnet | 5 |  | `spike/layout` | queued | WP16 scope check (items to fix) |  |  |
-| WP16-U2 | fresh reviewer of the variants against R-21, sonnet | 3 |  | `spike/layout` | queued | WP16-U1 |  |  |
+| WP16-U1 | layout designer (information designer, Obsidian), sonnet | 5 | 5 | `spike/layout` | done |  | 2026-11-24T22:51:32-05:00 | about 5 min plus one push-back round (8 defects); three variants; not opened in Obsidian |
+| WP16-U2 | fresh reviewer (opens each variant against R-21), sonnet | 3 | 3 | `spike/layout` | done |  | 2026-11-24T22:52:32-05:00 | about 3 min; checks run, Obsidian not available to it |
 
 ## Iterations and velocity
 
@@ -200,6 +200,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 15 | WP14-U1 to U5 | 14 | 16 | 1.14 | 0.1 h | 160.0 |
 | 16 | WP15-U1 to U5 | 22 | 20 | 0.91 | 0.39 h | 51.3 |
 | 17 | RS3-U3 | 3 | 3 | 1.00 | 0.05 h | 60.0 |
+| 18 | WP16-U1, WP16-U2 | 8 | 8 | 1.00 | 0.25 h | 32.0 |
 
 ## Velocity and forecast
 
