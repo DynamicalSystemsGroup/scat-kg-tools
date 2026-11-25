@@ -1806,3 +1806,11 @@ The calls the document left to the ACE:
   because the `done` refusal and the edge operations change today's unchecked `set-status`.
 
 The architecture document is approved (R-22): WP16's decide and build stages may start.
+
+## D-086 | 2026-11-24 | WP16 (ontology and layout) approved
+
+Scope `work-packages/WP16.md`, built on the approved architecture (D-085) and the impact map (WP16-U0, with D-081's
+calls and D-085's additions). Staged: a layout spike on `spike/layout` (two or three candidate layouts of one lab vault,
+reviewed by the ACE in Obsidian with screenshots), then the decide stage (logged), then build, quality control,
+integrate (both pins) and the cascade review (the change consultant's re-sweep). Absorbs WP13. The chief engineer is
+away overnight: anything that needs him goes on the morning list and does not stop the package.
