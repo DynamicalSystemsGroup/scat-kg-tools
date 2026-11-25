@@ -10,7 +10,8 @@ the team; each item waits for you when you have a moment.
    Removing it means rewriting `main` with a force-push, which only you can authorise. Leaving it is also fine; the
    current text is clean.
 1a. **The same applies to commit `20ff07a` on `dev`:** WP14's first scope named six private repositories. The file is
-   corrected (D-081); the names stay in `dev`'s history unless you choose a rewrite.
+   corrected (D-081); the names stay in `dev`'s history unless you choose a rewrite. Likewise one early log entry named a private
+   repository; it is redacted in the file (D-082) and stays in history.
 2. **Sign-ins for the chat-path spike (RS3), when it reaches live use:** inference.coop and GitHub in the browser
    pane. Use stays light and human-paced. I'll ask in chat when the spike is ready, not before.
 3. **WP8-U1, held since D-042:** a test edit only you can authorise. Two assertions in `tests/ops/test_ops_stub.py`
@@ -29,7 +30,8 @@ the team; each item waits for you when you have a moment.
 - **Mission:** Amendment 5 merged (0e74f19) with `GLOSSARY.md`; `dev` synced (D-076); revert point
   `divergence/D-076`.
 - **Accepted:** WP12, the terms page (D-077).
-- **In flight:** WP14, the prior-art readout (D-079); the change consultant's impact map for WP16.
+- **Accepted since:** WP14, the prior-art readout (D-082). WP16's impact map and RS3's offline part are done.
+- **In flight:** WP15, the architecture document and its review (D-083).
 - **Next:** WP15 architecture document and review, with the chat-path spike (RS3) beside it; then WP16 ontology and
   layout. See `work-packages/plan.md`.
 - **Hourly status reports** come in chat at about :07 past each hour.
