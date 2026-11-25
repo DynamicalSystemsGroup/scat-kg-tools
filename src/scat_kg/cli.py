@@ -73,40 +73,63 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("status", metavar="STATUS", help="stub, draft or done")
     command(
         "index",
-        "Rewrite the generated table of every class page, creating a missing class page.",
+        "Write the Base file `index/<type>.base` of each type that has none. Never rewrites one.",
         "`scat_kg.index()`",
     )
     p = command(
         "stub",
-        "Create a stub page (a concern, affordance, technology, stakeholder-group or record page).",
-        '`scat_kg.stub("<page-name>", type="<type-key>")`',
+        "Create a stub page: a node (group, concern, affordance or technology) or a narrative.",
+        '`scat_kg.stub("<page-name>", type="<type>")`',
     )
     p.add_argument("name", metavar="NAME", help="the new page's name: a-z, 0-9 and hyphens")
     p.add_argument(
         "--type",
         required=True,
         metavar="TYPE",
-        help="the page type key, one of: " + ", ".join(STUBBABLE),
+        help="the page's type, one of: " + ", ".join(STUBBABLE),
     )
-    p = command(  # TODO(WP16-U7): there are no relation pages now; record-edge replaces this
-        "stub-pair",
-        "Create the relation page for a pair, stubbing an endpoint that does not exist.",
-        '`scat_kg.stub_pair("<relation>", "<endpoint-a>", "<endpoint-b>")`',
-    )
-    p.add_argument(
-        "relation",
-        metavar="RELATION",
-        help="one of: "
-        + ", ".join(f"{s} ({e.from_type} then {e.to_type})" for s, e in TBOX.edge_types.items()),
-    )
-    p.add_argument("endpoint_a", metavar="ENDPOINT-A")
-    p.add_argument("endpoint_b", metavar="ENDPOINT-B")
     p = command(
         "stub-links",
-        "Create the pages that link fields name and the vault lacks. PAGE limits it to one page.",
+        "Create the node pages that the ends of rows link and the vault lacks. PAGE limits it to one page.",
         '`scat_kg.stub_links()`, `scat_kg.stub_links("<page>")`',
     )
     p.add_argument("page", nargs="?", metavar="PAGE", help="look at this page's links only")
+    p = command(
+        "record-edge",
+        "Record an edge: add its row to each narrative named by --told-by that has none, stubbing a "
+        "missing node or narrative. Leaves the links as they are. Refuses a narrative that is done.",
+        '`scat_kg.record_edge("<type>", "<from>", "<to>", ["<narrative>"], note="<text>")`',
+    )
+    p.add_argument(
+        "type",
+        metavar="TYPE",
+        help="one of: "
+        + ", ".join(f"{s} ({e.from_type} then {e.to_type})" for s, e in TBOX.edge_types.items()),
+    )
+    p.add_argument("from_node", metavar="FROM", help="the name of the node at the first end")
+    p.add_argument("to_node", metavar="TO", help="the name of the node at the second end")
+    p.add_argument(
+        "--told-by",
+        action="append",
+        required=True,
+        metavar="NARRATIVE",
+        help="the narrative that tells the edge; repeat it for each narrative",
+    )
+    p.add_argument("--note", default="", metavar="TEXT", help="the row's note (default: none)")
+    p = command(
+        "remove-edge",
+        "Remove an edge: delete its rows, from the narratives named by --told-by or, without it, from "
+        "every narrative that tells it. Leaves the links. Refuses a narrative that is done.",
+        '`scat_kg.remove_edge("<from>", "<to>")`, `scat_kg.remove_edge("<from>", "<to>", ["<narrative>"])`',
+    )
+    p.add_argument("from_node", metavar="FROM", help="the name of the node at the first end")
+    p.add_argument("to_node", metavar="TO", help="the name of the node at the second end")
+    p.add_argument(
+        "--told-by",
+        action="append",
+        metavar="NARRATIVE",
+        help="remove the rows of this narrative only; repeat it for each narrative",
+    )
     return top
 
 
@@ -123,8 +146,12 @@ def run(args: argparse.Namespace):
             return scat_kg.index(root=root)
         case "stub":
             return scat_kg.stub(args.name, args.type, root=root)
-        case "stub-pair":
-            return scat_kg.stub_pair(args.relation, args.endpoint_a, args.endpoint_b, root=root)
+        case "record-edge":
+            return scat_kg.record_edge(
+                args.type, args.from_node, args.to_node, args.told_by, args.note, root=root
+            )
+        case "remove-edge":
+            return scat_kg.remove_edge(args.from_node, args.to_node, args.told_by, root=root)
         case "stub-links":
             return scat_kg.stub_links(args.page, root=root)
     raise AssertionError(args.command)  # argparse requires a command

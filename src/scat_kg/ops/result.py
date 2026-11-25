@@ -17,15 +17,29 @@ _COMMAND_NAME = {"read-status": "status"}
 class Refusal:
     subject: str  # the file, field or name the refusal is about
     why: str
-    fix: str  # exact next-step text
+    fix: str  # exact next-step text; with a `rule`, the whole fix block, from "Fix" on
     fix_data: Fix | None = None  # the same fix as data; None means one manual option holding `fix`
+    rule: str | None = (
+        None  # the catalogue rule that gives the refusal (SCAT-DONE-REFUSED); else None
+    )
+    problems: tuple = ()  # the problems that make it, each a `Problem`, with its own fix
 
     def to_dict(self) -> dict:
         fix = self.fix_data or Fix.legacy(self.fix)
-        return {"subject": self.subject, "why": self.why, "fix": fix.to_dict()}
+        out = {"subject": self.subject, "why": self.why, "fix": fix.to_dict()}
+        if self.rule is not None:
+            out["rule"] = self.rule
+            out["problems"] = [p.to_dict() for p in self.problems]
+        return out
 
     def __str__(self) -> str:
-        return f"refused {self.subject}: {self.why}\n  Fix: {self.fix}"
+        if self.rule is None:
+            return f"refused {self.subject}: {self.why}\n  Fix: {self.fix}"
+        lines = [f"refused [{self.rule}] {self.subject}: {self.why}"]
+        for p in self.problems:
+            lines += ["  " + ln for ln in p.render().split("\n")]
+        lines += ["  " + ln for ln in self.fix.split("\n")]
+        return "\n".join(lines)
 
 
 @dataclass(frozen=True)
@@ -72,17 +86,57 @@ def refused(operation: str, subject: str, why: str, fix: str) -> Result:
     return Result(operation, refused=(Refusal(subject, why, fix),))
 
 
-NOT_BUILT = "not built yet (WP16-U6 / WP16-U7)"
+@dataclass(frozen=True)
+class RowRef:
+    """One row of a narrative's table that an operation added or removed."""
+
+    narrative: str  # the narrative's name
+    file: str  # its path
+    line: int  # the row's line: in the file as written (added), or before the write (removed)
+    note: str = ""
+
+    def to_dict(self) -> dict:
+        return {
+            "narrative": self.narrative,
+            "file": self.file,
+            "line": self.line,
+            "note": self.note,
+        }
 
 
-def not_built(operation: str) -> Result:
-    """The standard refusal of a call that is not rebuilt for the row model yet (WP16-U6 checks, WP16-U7 operations)."""
-    return refused(
-        operation,
-        operation,
-        NOT_BUILT,
-        "read the vault with `scat_kg.graph.load` until the call is rebuilt",
-    )
+@dataclass(frozen=True)
+class EdgeRef:
+    """The edge as an operation leaves it: one per (type, from, to), with every narrative that tells it."""
+
+    type: str  # the edge type's slug
+    from_node: str
+    to_node: str
+    narratives: tuple[str, ...] = ()  # in byte order; empty once the last row is gone
+
+    def to_dict(self) -> dict:
+        return {
+            "type": self.type,
+            "from": self.from_node,
+            "to": self.to_node,
+            "narratives": list(self.narratives),
+        }
+
+
+@dataclass(frozen=True)
+class EdgeResult(Result):
+    """What record-edge and remove-edge return: an operation, and when it ran, the edge and the rows it wrote."""
+
+    edge: EdgeRef | None = None
+    rows_added: tuple[RowRef, ...] = ()
+    rows_removed: tuple[RowRef, ...] = ()
+
+    def to_dict(self) -> dict:
+        out = super().to_dict()
+        if self.ok and self.edge is not None:
+            out["edge"] = self.edge.to_dict()
+            out["rows_added"] = [r.to_dict() for r in self.rows_added]
+            out["rows_removed"] = [r.to_dict() for r in self.rows_removed]
+        return out
 
 
 def run_option(text: str, argv: tuple[str, ...], repl: str, slot: str | None = None) -> FixOption:

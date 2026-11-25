@@ -9,7 +9,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from scat_kg.checks import check_page_at_done, fixes
 from scat_kg.contract import SCHEMA_VERSION
+from scat_kg.fix import FixOption
 from scat_kg.ops.common import find_page, open_vault
 from scat_kg.ops.files import NotUtf8, join_lines, line_ending, read_lines, replace_file
 from scat_kg.ops.result import Refusal, Result, refused
@@ -27,17 +29,15 @@ class StatusRow:
     path: str
     name: str
     type: Any  # as written; None when the page has no readable type
-    status: Any  # as written; None when missing, or on a class page, which carries none
+    status: Any  # as written; None when missing
 
     def to_dict(self) -> dict:
-        """A type or status that is not a string is null; a class page carries no status."""
+        """A type or status that is not a string is null."""
         return {
             "path": self.path,
             "name": self.name,
             "type": self.type if isinstance(self.type, str) else None,
-            "status": self.status
-            if isinstance(self.status, str) and self.type != "class"
-            else None,
+            "status": self.status if isinstance(self.status, str) else None,
         }
 
 
@@ -48,12 +48,10 @@ class StatusReport(Result):
 
     @property
     def counts(self) -> dict[str, int]:
-        """Pages per status; `other` is a missing or invalid status, `none` a class page (no status)."""
-        counts = {s: 0 for s in TBOX.statuses} | {"other": 0, "none": 0}
+        """Pages per status; `other` is a missing or invalid status."""
+        counts = {s: 0 for s in TBOX.statuses} | {"other": 0}
         for r in self.rows:
-            if r.type == "class":
-                counts["none"] += 1
-            elif isinstance(r.status, str) and r.status in TBOX.statuses:
+            if isinstance(r.status, str) and r.status in TBOX.statuses:
                 counts[r.status] += 1
             else:
                 counts["other"] += 1
@@ -78,8 +76,7 @@ class StatusReport(Result):
             return super().lines()
         out = []
         for r in self.rows:
-            shown = "(no status: class page)" if r.type == "class" else _shown(r.status)
-            out.append(f"{shown:<12} {r.path}")
+            out.append(f"{_shown(r.status):<12} {r.path}")
         out.append(", ".join(f"{n} {k}" for k, n in self.counts.items() if n) or "no pages")
         return out + [f"note: {n}" for n in self.notes]
 
@@ -130,6 +127,29 @@ def _continues(lines: list[tuple[str, str]], first: int, stop: int) -> bool:
     return any(t.strip() and not t.lstrip().startswith("#") for t, _ in lines[first:stop])
 
 
+def _done_refusal(page: Page, errors) -> Refusal:
+    """SCAT-DONE-REFUSED (catalogue section 5): the errors the page would have at `done`, and the two ways on."""
+    n = len(errors)
+    draft = fixes.set_status(page.name, "draft")
+    fix = fixes.alternatives(
+        [
+            FixOption(
+                "advisory",
+                f"fix the problems above, then run `scat set-status {page.name} done` again",
+            ),
+            fixes.run_option(draft, prefix="leave the page at `draft`: run "),
+        ]
+    )
+    return Refusal(
+        page.path,
+        f"{n} error(s) would stand at status done; status unchanged",
+        fix.render(),
+        fix,
+        "SCAT-DONE-REFUSED",
+        tuple(errors),
+    )
+
+
 def set_status(name: str, status: str, *, root: str | Path = ".") -> Result:
     op = "set-status"
     if status not in TBOX.statuses:
@@ -137,8 +157,8 @@ def set_status(name: str, status: str, *, root: str | Path = ".") -> Result:
             op,
             f"status `{status}`",
             "this is not a status",
-            f"use one of: {', '.join(TBOX.statuses)} (stub: just started, draft: being written, "
-            "done: finished)",
+            f"use one of: {', '.join(TBOX.statuses)} (stub: a name, perhaps some metadata; draft: "
+            "content, not yet complete; done: complete, conformant and signed off by the coder)",
         )
     vault, bad = open_vault(op, root)
     if bad:
@@ -156,20 +176,18 @@ def set_status(name: str, status: str, *, root: str | Path = ".") -> Result:
             "at the top), then run this again",
         )
     ptype = TBOX.page_types.get(page.type) if isinstance(page.type, str) else None
-    if ptype is None:
+    if ptype is None or not ptype.carries_status:
+        types = ", ".join(k for k, t in TBOX.page_types.items() if t.carries_status)
         return refused(
             op,
             page.path,
-            f"its `type` is {page.type!r}, which is not a page type",
-            f"set `type:` to one of: {', '.join(TBOX.page_types)}, then run this again",
+            f"its `type` is {page.type!r}, which is not the type of a page",
+            f"set `type:` to one of: {types}, then run this again",
         )
-    if not ptype.carries_status:
-        return refused(
-            op,
-            page.path,
-            f"a `{ptype.slug}` page carries no status",
-            "nothing to do: only content pages have a status",
-        )
+    if status == "done" and page.status != "done":
+        report = check_page_at_done(vault, page)
+        if report.errors:
+            return Result(op, refused=(_done_refusal(page, report.errors),))
     try:
         lines, bom = read_lines(path)
     except NotUtf8 as e:

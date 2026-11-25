@@ -9,8 +9,9 @@
     scat_kg.set_status("x", "draft")
     scat_kg.index()
     scat_kg.stub("x", type="concern")
-    scat_kg.stub_pair("heldby", "a", "b")
     scat_kg.stub_links()                # or stub_links("x")
+    scat_kg.record_edge("holds", "a", "b", ["narrative-name"], note="")
+    scat_kg.remove_edge("a", "b")       # or remove_edge("a", "b", ["narrative-name"])
 
 Each call takes `root=` (the vault folder; default: the current directory) and returns an object whose
 `str()` is the message the `scat` command prints, and which prints as that message. `.ok` is False when
@@ -21,13 +22,22 @@ from pathlib import Path
 
 from scat_kg.checks import Report, check_neighborhood, check_page, check_vault
 from scat_kg.contract import SCHEMA_VERSION
-from scat_kg.ops import StatusReport, index, set_status, stub, stub_links, stub_pair
+from scat_kg.ops import (
+    EdgeResult,
+    StatusReport,
+    index,
+    record_edge,
+    remove_edge,
+    set_status,
+    stub,
+    stub_links,
+)
 from scat_kg.ops import read_status as _read_status
 from scat_kg.ops.common import find_page, open_vault
 from scat_kg.ops.result import Result, refused
 
 # At the REPL the result prints as its message (R-8), not as a dataclass dump.
-for _cls in (Result, StatusReport):
+for _cls in (Result, StatusReport, EdgeResult):
     _cls.__repr__ = lambda self: str(self)
 
 
@@ -106,13 +116,15 @@ def status(
 
 __all__ = [
     "CheckResult",
+    "EdgeResult",
     "Result",
     "StatusReport",
     "check",
     "index",
+    "record_edge",
+    "remove_edge",
     "set_status",
     "status",
     "stub",
     "stub_links",
-    "stub_pair",
 ]

@@ -31,3 +31,18 @@ def changes(before: dict, after: dict) -> dict[str, str]:
 
 def fm(type_: str, title: str, status: str = "draft", extra: str = "", body: str = "") -> str:
     return f'---\ntype: {type_}\nstatus: {status}\ntitle: "{title}"\n{extra}---\n{body}'
+
+
+def narrative(
+    title: str, rows: list[str] | None = None, status: str = "draft", extra: str = ""
+) -> str:
+    """A narrative page: frontmatter, a line of account, and a table of edges with `rows` (whole row lines)."""
+    table = ""
+    if rows is not None:
+        table = "\n## Edges told\n\n| type | from | to | note |\n|---|---|---|---|\n" + "".join(
+            r + "\n" for r in rows
+        )
+    return fm("narrative", title, status, extra, "The account.\n" + table)
+
+
+CAP3 = {"scat.toml": "stakeholder_group_cap = 3\n"}

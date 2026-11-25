@@ -19,64 +19,42 @@ def _page(type_, title, extra="", body=""):
     return f'---\ntype: {type_}\nstatus: done\ntitle: "{title}"\ndescription: "{title}."\n{extra}---\n{body}'
 
 
-def _link(key, *names):
-    return f"{key}:\n" + "".join(f'  - "[[{n}]]"\n' for n in names)
+def _narrative(title, rows, timeframe="past", body=""):
+    table = "\n## Edges told\n\n| type | from | to | note |\n|---|---|---|---|\n" + "".join(
+        f"| {t} | [[{a}]] | [[{b}]] | note |\n" for t, a, b in rows
+    )
+    return _page("narrative", title, f"timeframe: {timeframe}\n", body + table)
 
 
 def generate(root):
-    """500 pages: 20 groups, 149 concerns, 100 affordances, 60 technologies, 160 relation pages,
-    4 records, and the 7 class pages `index` writes. Concern c000 is a hub, linked from many pages."""
+    """500 pages: 20 groups, 149 concerns, 100 affordances, 60 technologies and 171 narratives, each with a table of
+    edges. Concern c000 is a hub, linked from many narratives. Then `index` writes the Base files."""
     (root / "scat.toml").write_text("stakeholder_group_cap = 25\n", encoding="utf-8")
     g = [f"group-{i:03d}" for i in range(20)]
     c = [f"concern-{i:03d}" for i in range(149)]
     a = [f"affordance-{i:03d}" for i in range(100)]
     t = [f"technology-{i:03d}" for i in range(60)]
     pages = {}
-    for names, type_ in (
-        (g, "stakeholder-group"),
-        (c, "concern"),
-        (a, "affordance"),
-        (t, "technology"),
-    ):
+    for names, type_ in ((g, "group"), (c, "concern"), (a, "affordance"), (t, "technology")):
         for n in names:
-            extra = _link("conflicts", c[(c.index(n) + 1) % len(c)]) if type_ == "concern" else ""
-            pages[f"{type_}/{n}.md"] = _page(type_, n, extra)
+            body = (
+                f"Pulls against [[{c[(c.index(n) + 1) % len(c)]}]].\n" if type_ == "concern" else ""
+            )
+            pages[f"{type_}/{n}.md"] = _page(type_, n, "", body)
     hub = c[0]
-    for i in range(60):
-        n = f"heldby-{i:03d}"
-        e = f'group: "[[{g[i % 20]}]]"\nconcern: "[[{hub if i < 30 else c[i]}]]"\n'
-        pages[f"heldby/{n}.md"] = _page("heldby", n, e)
-    for i in range(55):
-        n = f"addresses-{i:03d}"
-        e = f'concern: "[[{hub if i < 25 else c[i]}]]"\naffordance: "[[{a[i]}]]"\n'
-        pages[f"addresses/{n}.md"] = _page("addresses", n, e)
-    for i in range(45):
-        n = f"attributes-{i:03d}"
-        pages[f"attributes/{n}.md"] = _page(
-            "attributes", n, f'affordance: "[[{a[i]}]]"\ntechnology: "[[{t[i]}]]"\n'
-        )
-    pages["scenario-raw/day.md"] = _page(
-        "scenario-raw", "day", "timeframe: past\n" + _link("coded", "day-coded")
-    )
-    pages["scenario-coded/day-coded.md"] = _page(
-        "scenario-coded",
-        "day-coded",
-        _link("raw", "day") + _link("groups", *g[:5]) + _link("concerns", hub, *c[1:5])
-        + _link("affordances", *a[:5]),
-    )  # fmt: skip
-    pages["architecture-raw/pitch.md"] = _page(
-        "architecture-raw", "pitch", "timeframe: future\n" + _link("coded", "pitch-coded")
-    )
-    pages["architecture-coded/pitch-coded.md"] = _page(
-        "architecture-coded",
-        "pitch-coded",
-        _link("raw", "pitch") + _link("concerns", hub, *c[1:5]) + _link("affordances", *a[:5])
-        + _link("technologies", *t[:5]),
-    )  # fmt: skip
+    for i in range(171):
+        rows = [
+            ("holds", g[i % 20], hub if i % 3 == 0 else c[i % 149]),
+            ("is addressed by", hub if i % 2 == 0 else c[(i + 1) % 149], a[i % 100]),
+            ("is provided by", a[i % 100], t[i % 60]),
+        ]
+        links = " ".join(f"[[{n}]]" for n in (g[(i + 1) % 20], c[(i + 2) % 149]))
+        n = f"narrative-{i:03d}"
+        pages[f"narrative/{n}.md"] = _narrative(n, rows, body=f"The account names {links}.\n")
     for rel, text in pages.items():
         (root / rel).parent.mkdir(parents=True, exist_ok=True)
         (root / rel).write_text(text, encoding="utf-8")
-    assert scat_kg.index(root=root).ok  # writes the seven class pages
+    assert scat_kg.index(root=root).ok  # writes the five Base files
 
 
 def timed(fn):

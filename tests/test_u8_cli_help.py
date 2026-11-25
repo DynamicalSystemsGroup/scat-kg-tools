@@ -1,4 +1,4 @@
-"""WP5-U8: `scat stub --help` lists the valid --type keys and `stub-pair --help` the relations, from the TBox."""
+"""`scat stub --help` lists the valid --type keys, `record-edge --help` the edge types, from the TBox."""
 
 import pytest
 
@@ -14,14 +14,20 @@ def help_of(command, capsys):
 
 def test_stub_help_lists_every_type_key(capsys):
     out = help_of("stub", capsys)
-    keys = [s for s, t in TBOX.page_types.items() if t.endpoint_order is None and s != "class"]
-    assert len(keys) == 8
+    keys = [s for s, t in TBOX.page_types.items() if t.carries_status]
+    assert len(keys) == 5
     for k in keys:
         assert k in out
-    assert "one of: " + ", ".join(keys) in out
+    assert "one of: " + ", ".join((*TBOX.layers, "narrative")) in out
 
 
-def test_stub_pair_help_lists_the_relations(capsys):
-    out = help_of("stub-pair", capsys)
-    for r, (a, b) in TBOX.relations.items():
-        assert f"{r} ({a} then {b})" in out
+def test_record_edge_help_lists_the_edge_types(capsys):
+    out = help_of("record-edge", capsys)
+    for slug, e in TBOX.edge_types.items():
+        assert f"{slug} ({e.from_type} then {e.to_type})" in out
+    assert "--told-by" in out and "--note" in out and "REPL: " in out
+
+
+def test_remove_edge_help_names_its_options(capsys):
+    out = help_of("remove-edge", capsys)
+    assert "FROM" in out and "TO" in out and "--told-by" in out and "REPL:" in out

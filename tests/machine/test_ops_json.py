@@ -1,4 +1,4 @@
-"""WP11-U3: every operation's result as data. Each of the seven commands, through the CLI (`--json`) and
+"""WP11-U3: every operation's result as data. Each of the nine commands, through the CLI (`--json`) and
 through the API (`to_dict()`): valid against the schema, one JSON document on stdout, equal to each other,
 and the exit code unchanged by `--json`."""
 
@@ -47,11 +47,19 @@ CASES = [
     ("set-status bad", ["set-status", "quick-checkout", "nearly"], lambda r: scat_kg.set_status("quick-checkout", "nearly", root=r), False, "operation"),
     ("index ok", ["index"], lambda r: scat_kg.index(root=r), True, "operation"),
     ("stub ok", ["stub", "fresh-idea", "--type", "concern"], lambda r: scat_kg.stub("fresh-idea", "concern", root=r), True, "operation"),
-    ("stub class", ["stub", "x", "--type", "class"], lambda r: scat_kg.stub("x", "class", root=r), False, "operation"),
-    ("stub relation", ["stub", "x", "--type", "heldby"], lambda r: scat_kg.stub("x", "heldby", root=r), False, "operation"),
+    ("stub index", ["stub", "x", "--type", "index"], lambda r: scat_kg.stub("x", "index", root=r), False, "operation"),
+    ("stub edge type", ["stub", "x", "--type", "holds"], lambda r: scat_kg.stub("x", "holds", root=r), False, "operation"),
     ("stub bad name", ["stub", "Not A Name!", "--type", "concern"], lambda r: scat_kg.stub("Not A Name!", "concern", root=r), False, "operation"),
-    ("stub-pair bad relation", ["stub-pair", "nope", "a", "b"], lambda r: scat_kg.stub_pair("nope", "a", "b", root=r), False, "operation"),
     ("stub-links ok", ["stub-links"], lambda r: scat_kg.stub_links(root=r), True, "operation"),
+    ("set-status done refused", ["set-status", "funders-meeting", "done"], lambda r: scat_kg.set_status("funders-meeting", "done", root=r), False, "operation"),
+    ("record-edge ok", ["record-edge", "holds", "borrowers", "careful-record-keeping", "--told-by", "funders-meeting", "--note", "n"], lambda r: scat_kg.record_edge("holds", "borrowers", "careful-record-keeping", ["funders-meeting"], "n", root=r), True, "operation"),
+    ("record-edge new narrative", ["record-edge", "holds", "borrowers", "fresh", "--told-by", "story"], lambda r: scat_kg.record_edge("holds", "borrowers", "fresh", "story", root=r), True, "operation"),
+    ("record-edge unchanged", ["record-edge", "holds", "borrowers", "quick-checkout", "--told-by", "saturday-at-the-lending-desk"], lambda r: scat_kg.record_edge("holds", "borrowers", "quick-checkout", "saturday-at-the-lending-desk", root=r), True, "operation"),
+    ("record-edge bad type", ["record-edge", "owns", "a", "b", "--told-by", "n"], lambda r: scat_kg.record_edge("owns", "a", "b", "n", root=r), False, "operation"),
+    ("record-edge into done", ["record-edge", "holds", "borrowers", "careful-record-keeping", "--told-by", "saturday-at-the-lending-desk"], lambda r: scat_kg.record_edge("holds", "borrowers", "careful-record-keeping", "saturday-at-the-lending-desk", root=r), False, "operation"),
+    ("remove-edge nothing to do", ["remove-edge", "funders", "quick-checkout"], lambda r: scat_kg.remove_edge("funders", "quick-checkout", root=r), True, "operation"),
+    ("remove-edge from done", ["remove-edge", "borrowers", "quick-checkout"], lambda r: scat_kg.remove_edge("borrowers", "quick-checkout", root=r), False, "operation"),
+    ("remove-edge no node", ["remove-edge", "ghost", "quick-checkout"], lambda r: scat_kg.remove_edge("ghost", "quick-checkout", root=r), False, "operation"),
     ("stub-links no page", ["stub-links", "no-such-page"], lambda r: scat_kg.stub_links("no-such-page", root=r), False, "operation"),
 ]  # fmt: skip
 
@@ -90,7 +98,8 @@ def test_operation_names_are_command_names(tmp_path, capsys):
         (["set-status", "quick-checkout", "stub"], "set-status"),
         (["index"], "index"),
         (["stub", "zed", "--type", "concern"], "stub"),
-        (["stub-pair", "nope", "a", "b"], "stub-pair"),
+        (["record-edge", "holds", "a", "b", "--told-by", "n"], "record-edge"),
+        (["remove-edge", "a", "b"], "remove-edge"),
         (["stub-links"], "stub-links"),
     ]:
         _, out = run_cli([*words, "--json", "--root", str(root)], capsys)
@@ -143,9 +152,8 @@ def test_status_rows_null_what_is_not_a_string(tmp_path):
     rows = {r["name"]: r for r in doc["rows"]}
     assert rows["odd"]["status"] is None and rows["odd"]["type"] == "concern"
     assert rows["odder"]["type"] is None
-    assert all(r["status"] is None for r in doc["rows"] if r["type"] == "class")
     assert VALIDATOR.is_valid(doc)
-    assert set(doc["counts"]) >= {"other", "none"}
+    assert set(doc["counts"]) == {"stub", "draft", "done", "other"}  # no `none` in version 2
 
 
 def option_kinds(result):
@@ -154,7 +162,7 @@ def option_kinds(result):
 
 def test_refusal_fixes_are_data(tmp_path):
     root = copies(tmp_path)[0]
-    r = scat_kg.stub("x", "class", root=root)
+    r = scat_kg.stub("x", "index", root=root)
     (refusal,) = r.to_dict()["refused"]
     (opt,) = refusal["fix"]["options"]
     assert refusal["fix"]["kind"] == opt["kind"] == "exact"
@@ -166,27 +174,51 @@ def test_refusal_fixes_are_data(tmp_path):
     assert opt["kind"] == "manual" and opt["text"] == r.refused[0].fix and "command" not in opt
 
 
-def test_index_refusal_is_two_steps(tmp_path):
+def test_the_done_refusal_has_a_rule_and_problems_and_a_plain_refusal_has_neither(tmp_path):
     root = copies(tmp_path)[0]
-    (root / "class" / "concerns.md").write_text(
-        "---\ntype: class\ntitle: [unclosed\nindexes: concern\n---\n", encoding="utf-8"
-    )
-    r = scat_kg.index(root=root)
-    doc = r.to_dict()
+    (ref,) = scat_kg.set_status("funders-meeting", "done", root=root).to_dict()["refused"]
+    assert ref["rule"] == "SCAT-DONE-REFUSED" and {p["rule"] for p in ref["problems"]} == {
+        "SCAT-DONE-FIELD"
+    }
+    assert [o["kind"] for o in ref["fix"]["options"]] == ["advisory", "exact"]
+    (plain,) = scat_kg.record_edge("owns", "a", "b", "n", root=root).to_dict()["refused"]
+    assert "rule" not in plain and "problems" not in plain
+
+
+def test_record_and_remove_edge_name_the_edge_and_the_rows(tmp_path):
+    root = copies(tmp_path)[0]
+    doc = scat_kg.record_edge("holds", "borrowers", "fresh", "story", root=root).to_dict()
+    assert doc["edge"] == {
+        "type": "holds",
+        "from": "borrowers",
+        "to": "fresh",
+        "narratives": ["story"],
+    }
+    assert doc["created"] == ["concern/fresh.md", "narrative/story.md"]
+    assert [r["narrative"] for r in doc["rows_added"]] == ["story"] and doc["rows_removed"] == []
+    gone = scat_kg.remove_edge("borrowers", "fresh", root=root).to_dict()
+    assert gone["edge"]["narratives"] == [] and gone["rows_added"] == []
+    assert [r["narrative"] for r in gone["rows_removed"]] == ["story"] and VALIDATOR.is_valid(gone)
+
+
+def test_index_refusal_is_a_refusal_with_a_fix(tmp_path):
+    root = copies(tmp_path)[0]
+    shutil.rmtree(root / "index")
+    (root / "index").write_text("a file", encoding="utf-8")
+    doc = scat_kg.index(root=root).to_dict()
     assert VALIDATOR.is_valid(doc) and not doc["ok"]
-    fix = doc["refused"][0]["fix"]
-    assert fix["sequence"] is True
-    assert [o["kind"] for o in fix["options"]] == ["manual", "exact"]
-    assert fix["options"][1]["command"]["argv"] == ["index"]
-    assert r.refused[0].fix.startswith("rename or move that file")
-    assert str(r).endswith(f"Fix: {r.refused[0].fix}")
+    assert (
+        doc["refused"][0]["subject"] == "index"
+        and "scat index" in doc["refused"][0]["fix"]["options"][0]["text"]
+    )
 
 
 def test_stub_links_two_types_gives_a_slot(tmp_path):
     root = copies(tmp_path)[0]
-    (root / "addresses" / "dual.md").write_text(
-        '---\ntype: addresses\nstatus: draft\ntitle: "D"\naffordance: "[[ghost]]"\n'
-        'concern: "[[ghost]]"\n---\n',
+    (root / "narrative" / "dual.md").write_text(
+        "---\ntype: narrative\nstatus: draft\ntitle: D\n---\n\n## Edges told\n\n"
+        "| type | from | to | note |\n|---|---|---|---|\n"
+        "| holds | [[borrowers]] | [[ghost]] | |\n| is addressed by | [[quick-checkout]] | [[ghost]] | |\n",
         encoding="utf-8",
     )
     r = scat_kg.stub_links(root=root)
@@ -196,5 +228,5 @@ def test_stub_links_two_types_gives_a_slot(tmp_path):
     assert refusal["fix"]["kind"] == "options"
     manual, slot = refusal["fix"]["options"]
     assert manual["kind"] == "manual"
-    assert slot["kind"] == "slot" and slot["command"]["author_slot"] == "<type-key>"
-    assert slot["command"]["argv"] == ["stub", "ghost", "--type", "<type-key>"]
+    assert slot["kind"] == "slot" and slot["command"]["author_slot"] == "<type>"
+    assert slot["command"]["argv"] == ["stub", "ghost", "--type", "<type>"]
