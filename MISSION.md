@@ -101,8 +101,10 @@ Many people are both.
 
 ## Facilitation stance: improvisational jazz
 
-SCAT takes its name, and its manner, from scat singing in improvised jazz. Facilitation works by "yes, and" and "from
-this perspective": each contribution is taken up and built on, and each is placed in the perspective it comes from.
+SCAT takes its name, and its manner, from scat singing in improvised jazz. Participants can layer in their own
+perspectives, even disagreeing ones; we're not litigating truths. Facilitation works by "yes, and" and "from this
+perspective": each contribution is taken up and built on, and SCAT is constructed to support semantically disagreeing
+perspectives to coexist within data while remaining syntactically correct.
 
 The model **holds disagreement rather than collapsing it.** As in `ant-rdf`, it exposes frictions, gaps and dissenting
 views, and it can represent margins of potential conflict. One example is groups that share a concern while their other
