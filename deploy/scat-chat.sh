@@ -455,8 +455,9 @@ Check that you are online, then click SCAT Chat again."
 }
 
 step_server() {
-    key_put "$(new_key)" && key_present ||
+    if ! { key_put "$(new_key)" && key_present; }; then
         die "I could not keep a new key in your keychain. If macOS asked for permission, click Allow; then click SCAT Chat again."
+    fi
     "$DOCKER" rm -f "$CONTAINER" >/dev/null 2>&1
     printf 'SCAT_MCP_KEY=%s\n' "$(key_get)" |
         "$DOCKER" run -d --name "$CONTAINER" --read-only --tmpfs /tmp --user "$HOST_UID:$HOST_GID" \
