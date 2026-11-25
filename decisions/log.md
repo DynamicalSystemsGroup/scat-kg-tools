@@ -2143,3 +2143,17 @@ tools repo (`deploy/`); what "providing the container" covers is put as one foll
 Asked whether "providing the container" means publishing a built image, documenting the local build, or both. The
 chief engineer chose "Publish a built image": CI builds the MCP server image and publishes it at each release, and the
 launcher pulls it instead of building. In v0.1, with C7 and C8 (the life cycle).
+
+## D-107 | 2026-11-25 | "Leave no trace" uses the temporary chat; it is an option, not a recommendation
+
+The chief engineer, quoted as typed and recorded by the ACE, with a screenshot of inference.coop's "Temporary Chat"
+control (Cmd-Shift-Y; "This chat won't appear in your history and will be deleted automatically"):
+
+> "the leave no trace lifecycle needs to include using the temporary chat setting in session. again this is an option
+> we're walk through to show how to handle one of the more extreme policy options not a recommendation that one needs
+> to follow that process. for projects that prefer lower friction and less security it does not make sense to jump
+> through the extra hoops to "leave no trace""
+
+Outcome: C8 is named the "leave no trace" life cycle. Its walkthrough runs the coding session in a temporary chat, and
+it is presented as the way to meet one of the stricter policy options. It is not a recommendation: the guide says
+projects that prefer lower friction need not follow it.
