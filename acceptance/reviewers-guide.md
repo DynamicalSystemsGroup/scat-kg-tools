@@ -20,11 +20,10 @@ are in `MISSION.md`, "User acceptance" and "Requirements". The ACE and your two 
 
 ## Before you start: the candidate
 
-> **To be filled by the PM when the candidate is staged (WP20-G1).** The three values below are not known yet. Until
-> they are written here, treat every "result when written" in this guide as stale.
+> **The candidate (staged 25 November, D-121).**
 >
-> - Tools candidate commit (the last commit that changed `src/` or `docs/`): `<hash>`
-> - Template `dev`, which pins it: `<hash>`
+> - Tools candidate commit (the last commit that changed `src/` or `docs/`): `c89411e` (`dev` 834490f, CI green)
+> - Template `dev`, which pins tools `7f0ed05` (same `src/` and `docs/` as `c89411e`): `271c3e9`
 > - Pages URL: https://dynamicalsystemsgroup.github.io/scat-kg-tools/ (pre-release banner on)
 
 Check them yourself:
@@ -310,6 +309,21 @@ written (**flag for the ACE**: confirm it was skipped and not lost).
 | D-099 | ACE | A stop rule for reviews of the test kits, scripts and guide: no checkable defect against a stated requirement; targeted re-reviews, at most two rounds | the entry | none |
 | D-100 | ACE | UA-A round 1 dispositions: seven docs fixes; fingerprint candidates off by default; the mention rule no longer suggests a discouraged link; history in clones and no rename/delete of node pages accepted | `acceptance/reports/wp20-r1-findings.md` | none |
 | D-101 | ACE | UA-A round 2 passes on the manual path; three docs sentences fixed after it without a round 3 | `acceptance/reports/wp20-r2-findings.md` | none |
+| D-102, D-103 | Yours | Release scope: candidates C1 to C8 from the chat-path live run all in v0.1; C2 split into a rule (uncoded narratives excluded) and norms | `work-packages/candidates.md`; `acceptance/chat-path/live-run-wp18-r4.md` | `divergence/D-114` |
+| D-104 | Yours | WP17-U3b: `draw` may write outside the vault (schema edit allowed) | tools `b739347` | none |
+| D-105, D-106 | Yours | Colima the default runtime; the MCP server image published at release | `.github/workflows/image.yml`, `release-image.yml` | `divergence/D-114` |
+| D-107 | Yours | "Leave no trace" uses the temporary chat; an option, not a recommendation | `docs/leave-no-trace.md` | `divergence/D-114` |
+| D-108, D-112 | Yours / ACE | uv's installer tested once by a fresh tester; the gap is closed (the tester's FAIL was the harness, checked by the ACE) | D-112 | none |
+| D-109, D-113, D-116 | Yours | History rewrites asked, held when their cost was sized, then dropped | D-113 | none |
+| D-110 | Yours | WP8-U1's two assertion changes allowed (first asked on a wrong description, corrected and re-asked) | tools `32bfa71` | none |
+| D-111 | ACE | WP17 accepted | `check_metrics.py --accept WP17` | none |
+| D-114 | ACE | WP21 approved after two scope-check rounds and an impact map | `work-packages/WP21.md`, `impact/WP21.md` | `divergence/D-114` |
+| D-115 | ACE | The session key in the login keychain, never in arguments, deleted at Stop | `research/chat-path/secrets.md` | `divergence/D-114` |
+| D-116 | Yours | Mission edits (image publish at release; the launcher's macOS tools); your template checkout's scratch edits discarded; C9 noted; w3id after release | `MISSION.md` | none |
+| D-117, D-118 | ACE / Yours | The glossary's eleven new terms; "Edges told" and "edge table" kept apart; done is adequately coded as the coder judges | `GLOSSARY.md` | `divergence/D-114` |
+| D-119 | ACE | WP21-R7 reworded after three reviews read it three ways; SCAT-UNCODED warns at every status | `work-packages/WP21.md` | none |
+| D-120 | Yours | Iteration 36's metrics record corrected, after the guard refused the PM | `work-packages/metrics.jsonl` | none |
+| D-121, D-122 | ACE | WP21 and WP18 accepted | D-121, D-122 | none |
 | WP10 default | ACE | `SCAT-DRAFT-FIELD` fires at `stub` for a field with a value set, so a fresh stub warns until `timeframe` is filled. An ACE default, for you to confirm | `contracts/rule-catalogue.md` | none |
 
 Your own decisions or directions that the ACE only recorded and applied are marked "Yours" above. D-015 and D-016 are
@@ -359,6 +373,7 @@ acceptance.
 | **cap** added | D-089, ruling 2 | "The most stakeholder groups one vault may hold, set by the organiser in the vault's `scat.toml`." An addition, not a change of sense; the sweep for "cap" found it used only in that sense. The key `stakeholder_group_cap` keeps its name. |
 | **SCAT** added | D-091 | The four node types, with a nod to scat singing. An addition: the docs expanded the name and the glossary did not. |
 | "index page" for what a user sees | D-081, call 4 | Messages, docs, the folder and the `type` value say "index page"; the ontology's own identifiers may keep formal names. Not a glossary edit; a use rule. |
+| Eleven terms added (WP21-G9) | D-117, D-118 | coded and uncoded, excluded, Edges told, rule and norm, skill, saved agent, session key, leave no trace, range vault. "Edges told" names a narrative's own table; "edge table" keeps its sense (the view). "Coded" is at least one node link; done means adequately coded as the coder judges. The assistant's rules are norms the server enforces only where it refuses an act. |
 
 To see each edit as text: `git log -p --follow -- GLOSSARY.md`, or `git show a8356a8 -- GLOSSARY.md` (cap) and
 `git show 1c6c9f3 -- GLOSSARY.md` (SCAT).
