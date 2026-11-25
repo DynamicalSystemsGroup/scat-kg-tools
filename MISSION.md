@@ -24,7 +24,8 @@ and the graph is derived from it.
 
 The practices it supports, eliciting, capturing and coding narratives and holding disagreement without adjudicating
 it, were co-developed with Ellie Rennie in the actor-network coding work of `ant-rdf`
-(<https://github.com/mzargham/ant-rdf>).
+(<https://github.com/mzargham/ant-rdf>) as part of the broader AOI
+(<https://anthrosource.onlinelibrary.wiley.com/doi/full/10.1111/epic.70009>) research agenda.
 
 The point of departure is the toolchain, and the Obsidian reading and review experience, described in *Formalizing
 Document Assurance* (INCOSE IS 2026; the chief engineer has a copy), together with earlier repositories:
