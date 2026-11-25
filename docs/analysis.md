@@ -7,7 +7,7 @@ A **view** is a purposeful picture or table made from a conformant vault. The to
 
 ## Before you trust a view
 
-- `uv run scat check` passes. A view refuses on any error in the pages it draws, and says which.
+- `uv run scat check` passes. A view refuses on any error in the pages it draws, and on any row of them that tells no edge, and says which.
 - You have signed off the content (`done`). A view of `draft` pages shows the draft.
 
 ## The four views

@@ -794,7 +794,7 @@ A view is a purposeful picture or table made from a conformant vault, and the fo
 
 - `str(view)` is a short text, one line per node or edge. At the REPL the view prints as that text.
 - `view.ok` is `True`. `view.to_dict()` is the document.
-- A view refuses, with the problems and their fixes, on a name that is not there or is ambiguous, an edge type or direction that does not exist, a vault folder that is missing, and any error in the pages it draws. Warnings do not refuse. Relationship annotations appear in no view.
+- A view refuses, with the problems and their fixes, on a name that is not there or is ambiguous, an edge type or direction that does not exist, a vault folder that is missing, any error in the pages it draws, and a row of a narrative it draws that tells no edge (the file and the row are named; the edge table and the trace draw every narrative). Warnings do not refuse. Relationship annotations appear in no view.
 
 The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `layered` or `trace`. This is an excerpt of `scat_kg.edge_table("holds").to_dict()`; the full documents are in the [CLI reference](cli.md#scat-fingerprint) and the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md):
 

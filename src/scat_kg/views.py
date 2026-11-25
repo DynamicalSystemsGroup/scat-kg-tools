@@ -8,7 +8,9 @@
 A view is data first: `to_dict()` is the document (`kind` `view`), `str(view)` is a short text, one line per node
 or edge. The knowledge graph is derived on every call (`load`) and nothing is written. A view refuses, as a
 `Result` that carries the problems, on a name that is unknown or ambiguous, an unknown edge type or direction, a
-missing vault folder, and on any error in the pages it draws; warnings do not refuse. Relationship annotations
+missing vault folder, on any error in the pages it draws, and on a row of a narrative it draws that tells no edge
+(one refusal for each, naming the file and the row; the edge table and the trace draw every narrative); warnings do
+not refuse. Relationship annotations
 appear in no view. Names are plain text, never `[[links]]`.
 
 Order is deterministic: layer order, then name; edges in graph order; narratives in path order.
@@ -120,6 +122,30 @@ def _check(op: str, g: Graph, narratives, nodes, edges) -> Refused | None:
     )
 
 
+def _skipped(op: str, g: Graph, names) -> Refused | None:
+    """Refuse when a row of a narrative drawn tells no edge: one refusal for each such row."""
+    names = set(names)
+    rows = [k for k in g.skipped if k.narrative in names]
+    if not rows:
+        return None
+    return Refused(
+        op,
+        refused=tuple(
+            Refusal(
+                f"{k.path} row {k.row}",
+                k.reason,
+                f"fix the row (`scat check {k.path}` says how), then run this again",
+            )
+            for k in rows
+        ),
+    )
+
+
+def _drawn(op: str, g: Graph, narratives, nodes, edges, scope) -> Refused | None:
+    """The refusals of a view: an error in a page drawn first, else a skipped row in the narratives of `scope`."""
+    return _check(op, g, narratives, nodes, edges) or _skipped(op, g, scope)
+
+
 def _open(op: str, root: str | Path) -> tuple[Graph | None, Refused | None]:
     g = load(root)
     if g.refusal is not None:
@@ -193,7 +219,8 @@ def fingerprint(narrative: str | None = None, *, root: str | Path = ".") -> View
         )
         nodes |= set(nar.nodes)
         edges += es
-    bad = _check(op, g, [n.name for n in chosen], _nodes(g, nodes), edges)
+    names = [n.name for n in chosen]
+    bad = _drawn(op, g, names, _nodes(g, nodes), edges, names)
     return bad or View(op, {"narratives": items})
 
 
@@ -215,7 +242,7 @@ def edge_table(type: str, *, root: str | Path = ".") -> View | Result:
     et = TBOX.edge_types[type]
     rows = [e for e in g.edges if e.type == type]
     ends = {x for e in rows for x in (e.from_node, e.to_node)}
-    bad = _check(op, g, [], _nodes(g, ends), rows)
+    bad = _drawn(op, g, [], _nodes(g, ends), rows, [n.name for n in g.narratives])
     return bad or View(
         op,
         {
@@ -253,11 +280,12 @@ def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> V
     keys = {k for n in chosen for k in n.edges}
     edges = [e for e in g.edges if e.key in keys]
     nodes = _nodes(g, {x for n in chosen for x in n.nodes})
-    bad = _check(op, g, [n.name for n in chosen], nodes, edges)
+    names = [n.name for n in chosen]
+    bad = _drawn(op, g, names, nodes, edges, names)
     return bad or View(
         op,
         {
-            "narratives": [n.name for n in chosen],
+            "narratives": names,
             "nodes": {layer: [_node(n) for n in nodes if n.type == layer] for layer in TBOX.layers},
             "edges": [_edge(e) for e in edges],
         },
@@ -298,7 +326,7 @@ def trace(node: str, direction: str = "both", *, root: str | Path = ".") -> View
     downs = walk(False) if direction in ("down", "both") else set()
     edges = [e for e in g.edges if e.key in walked]
     shown = _nodes(g, ups | downs | {node})
-    bad = _check(op, g, [], shown, edges)
+    bad = _drawn(op, g, [], shown, edges, [n.name for n in g.narratives])
     return bad or View(
         op,
         {

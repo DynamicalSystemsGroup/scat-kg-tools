@@ -107,12 +107,12 @@ def test_a_done_narrative_with_an_error_refuses_and_carries_the_problems(make):
 
 def test_a_draft_narrative_with_the_same_row_only_warns(make):
     root = make({"narrative/bad.md": bad_narrative("draft")})
-    view = scat_kg.fingerprint("bad", root=root)
-    assert view.ok
-    (f,) = view.to_dict()["narratives"]
-    assert [x["name"] for x in f["nodes"]] == ["water"]
-    assert f["edges"] == []  # a row with a plain-text end tells no edge
-    assert scat_kg.layered(root=root).ok
+    # the row tells no edge; the view no longer leaves it out silently but refuses, naming the row
+    # (the check stays a warning: no problems travel with this refusal)
+    d = refused(scat_kg.fingerprint("bad", root=root), "narrative/bad.md row 1")
+    assert d["problems"] == []
+    refused(scat_kg.layered(root=root), "narrative/bad.md row 1")
+    assert scat_kg.fingerprint("dry", root=root).ok
 
 
 def test_the_whole_vault_refuses_on_any_narrative_error_but_a_named_view_does_not(make):
@@ -122,8 +122,9 @@ def test_the_whole_vault_refuses_on_any_narrative_error_but_a_named_view_does_no
     # the error is in a page these views do not draw
     assert scat_kg.fingerprint("dry", root=root).ok
     assert scat_kg.layered(["dry", "wet"], root=root).ok
-    assert scat_kg.edge_table("holds", root=root).ok
-    assert scat_kg.trace("farmers", root=root).ok
+    # the edge table and the trace draw every narrative, so they refuse too
+    refused(scat_kg.edge_table("holds", root=root), "narrative/bad.md")
+    refused(scat_kg.trace("farmers", root=root), "narrative/bad.md")
 
 
 def test_an_error_on_a_node_page_in_the_result_refuses(make):

@@ -429,6 +429,17 @@ class GraphLink:
 
 
 @dataclass(frozen=True)
+class Skipped:
+    """A row of a narrative's table that tells no edge, and why (a repeat of an earlier row is not one)."""
+
+    narrative: str  # the narrative's name
+    path: str
+    row: int  # the row's number
+    line: int
+    reason: str  # plain text, no links
+
+
+@dataclass(frozen=True)
 class Graph:
     root: str
     nodes: dict[str, tuple[Node, ...]]  # by layer, in the TBox's layer order; each by name
@@ -438,6 +449,7 @@ class Graph:
     links: tuple[GraphLink, ...]  # every link of every page, by source path and place
     vault: Vault | None = field(default=None, compare=False, repr=False)
     refusal: Any = None  # a `Refusal` (scat_kg.ops.result) when the folder is missing; else None
+    skipped: tuple[Skipped, ...] = ()  # rows that tell no edge, by narrative path, then row
 
     @property
     def ok(self) -> bool:
@@ -484,6 +496,20 @@ def _empty(root: str, refusal: Any) -> Graph:
     return Graph(root, {t: () for t in TBOX.layers}, (), (), (), (), None, refusal)
 
 
+def _end_problem(vault: Vault, nodes: dict, end: str, target: str | None) -> str | None:
+    """Why a row's end reaches no node, in plain words; None when it reaches exactly one node page."""
+    if target is None:
+        return f"the `{end}` cell is empty or is not exactly one link"
+    found = vault.by_name.get(target, ())
+    if not found:
+        return f"the `{end}` end `{target}` reaches no page"
+    if len(found) > 1:
+        return f"the name `{target}` is carried by more than one page"
+    if found[0].type not in nodes:
+        return f"the `{end}` end `{target}` reaches a page that is not a node"
+    return None
+
+
 def load(root: str | Path) -> Graph:
     """Read the vault at `root` into its knowledge graph. A missing folder is a refusal, not an exception."""
     path = Path(root)
@@ -522,6 +548,7 @@ def load(root: str | Path) -> Graph:
     narratives: list[Narrative] = []
     told: dict[EdgeKey, list[Telling]] = {}
     candidates: list[Candidate] = []
+    skipped: list[Skipped] = []
     table_type = TBOX.table_type.slug
     for p in vault.pages:
         if p.type != table_type or p.frontmatter_error is not None:
@@ -532,10 +559,27 @@ def load(root: str | Path) -> Graph:
         own: dict[EdgeKey, Telling] = {}
         for row in table.rows if table else ():
             et = TBOX.edge_types.get(row.edge_type or "")
-            if et is None or not row.well_formed:
-                continue
-            a, b = node_of(row.from_target), node_of(row.to_target)
-            if a is None or b is None or (a.type, b.type) != (et.from_type, et.to_type):
+            a = b = None
+            why = None
+            if not row.well_formed:
+                why = "the row is not well-formed (four cells and a closing bar)"
+            elif et is None:
+                why = f"`{row.type_text}` is not an edge type"
+            else:
+                for end, target in (("from", row.from_target), ("to", row.to_target)):
+                    why = _end_problem(vault, nodes, end, target)
+                    if why:
+                        break
+                if why is None:
+                    a, b = node_of(row.from_target), node_of(row.to_target)
+                    if (a.type, b.type) != (et.from_type, et.to_type):
+                        why = (
+                            f"the ends are a {a.type} and a {b.type}, in the wrong direction or "
+                            f"between layers that do not neighbour; `{et.slug}` joins a "
+                            f"{et.from_type} to a {et.to_type}"
+                        )
+            if why:
+                skipped.append(Skipped(p.name, p.path, row.n, row.line, why))
                 continue
             key = EdgeKey(et.slug, a.name, b.name)
             own.setdefault(key, Telling(p.name, p.path, row.n, row.line, row.note, status))
@@ -596,6 +640,7 @@ def load(root: str | Path) -> Graph:
         candidates=tuple(candidates),
         links=links,
         vault=vault,
+        skipped=tuple(skipped),
     )
 
 
