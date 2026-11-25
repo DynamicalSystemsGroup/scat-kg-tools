@@ -19,7 +19,7 @@ def narrative(
     """A narrative page: an account, and a table of edges when `rows` (whole row lines) is given."""
     table = ""
     if rows is not None:
-        table = "\n## Edges told\n\n| type | from | to | note |\n|---|---|---|---|\n" + "".join(
+        table = "\n## Edges told\n\n| from | type | to | note |\n|---|---|---|---|\n" + "".join(
             r + "\n" for r in rows
         )
     extra = f"kind: {kind}\n" if kind else ""
@@ -27,7 +27,7 @@ def narrative(
 
 
 def row(edge_type: str, a: str, b: str) -> str:
-    return f"| {edge_type} | [[{a}]] | [[{b}]] | |"
+    return f"| [[{a}]] | {edge_type} | [[{b}]] | |"
 
 
 def write(root: Path, files: dict[str, str]) -> Path:

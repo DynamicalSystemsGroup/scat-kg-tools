@@ -57,7 +57,7 @@ def test__scat_noedges__silent_when_a_row_tells_an_edge(make_vault):
 
 
 def test__scat_noedges__silent_when_the_table_is_malformed(make_vault):
-    page = narrative(section="## Edges told\n\n| type | from | to |\n|---|---|---|\n")
+    page = narrative(section="## Edges told\n\n| from | type | to |\n|---|---|---|\n")
     r = report_of(make_vault, {DESK: page})
     assert "SCAT-NOEDGES" not in rules_of(r) and "SCAT-DONE-TABLE-HEADER" in rules_of(r)
 

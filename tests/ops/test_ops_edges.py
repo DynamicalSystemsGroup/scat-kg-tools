@@ -20,9 +20,9 @@ def vault(make_vault):
             "concern/c.md": fm("concern", "C", "done", D),
             "affordance/a.md": fm("affordance", "A", "done", D),
             "technology/t.md": fm("technology", "T", "done", D),
-            "narrative/n1.md": narrative("N1", ["| holds | [[g]] | [[c]] | first |"], "draft"),
+            "narrative/n1.md": narrative("N1", ["| [[g]] | holds | [[c]] | first |"], "draft"),
             "narrative/n2.md": narrative("N2", None, "stub"),
-            "narrative/done.md": narrative("Done", ["| holds | [[g]] | [[c]] | |"], "done", 'description: "d"\ntimeframe: past\n'),
+            "narrative/done.md": narrative("Done", ["| [[g]] | holds | [[c]] | |"], "done", 'description: "d"\ntimeframe: past\n'),
         }
     )  # fmt: skip
 
@@ -43,7 +43,7 @@ def test_record_adds_a_row_where_there_is_none_and_leaves_everything_else(vault,
     assert diff(before, snap(vault)) == {"narrative/n1.md": "changed"}
     assert (
         vault / "narrative/n1.md"
-    ).read_text() == old + "| is addressed by | [[c]] | [[a]] | Covers it. |\n"
+    ).read_text() == old + "| [[c]] | is addressed by | [[a]] | Covers it. |\n"
     assert told(vault, "addressed-by", "c", "a") == ("n1",)
     assert [x.line for x in r.rows_added] == [13] and r.rows_added[0].note == "Covers it."
     assert r.edge.narratives == ("n1",) and not r.rows_removed
@@ -68,7 +68,7 @@ def test_two_narratives_each_get_their_own_row_with_their_own_note(vault):
     r = record_edge("holds", "g", "c", ["n1", "n2"], "mine", root=vault)
     assert r.unchanged == ("narrative/n1.md",) and r.changed == ("narrative/n2.md",)
     assert r.edge.narratives == ("done", "n1", "n2")
-    assert "| holds | [[g]] | [[c]] | mine |" in (vault / "narrative/n2.md").read_text()
+    assert "| [[g]] | holds | [[c]] | mine |" in (vault / "narrative/n2.md").read_text()
     assert "mine" not in (vault / "narrative/n1.md").read_text()  # nothing is copied or overwritten
 
 
@@ -82,13 +82,13 @@ def test_record_stubs_a_missing_end_and_a_missing_narrative(vault):
     assert page.startswith(
         '---\ntype: narrative\nstatus: stub\ntitle: "Fresh story"\ntimeframe: # past | future | mixed\n---\n'
     )
-    assert "| is provided by | [[a]] | [[newtech]] | |" in page
+    assert "| [[a]] | is provided by | [[newtech]] | |" in page
     assert r.edge.type == "provided-by" and r.edge.narratives == ("fresh-story",)
     assert r.changed == ()
 
 
 def test_record_keeps_crlf_and_bom_of_an_existing_narrative(make_vault):
-    text = narrative("N", ["| holds | [[g]] | [[c]] | |"]).replace("\n", "\r\n")
+    text = narrative("N", ["| [[g]] | holds | [[c]] | |"]).replace("\n", "\r\n")
     root = make_vault(
         {
             **CAP3,
@@ -101,7 +101,7 @@ def test_record_keeps_crlf_and_bom_of_an_existing_narrative(make_vault):
     assert record_edge("holds", "g", "c2", "n", root=root).ok
     data = (root / "narrative/n.md").read_bytes()
     assert data.startswith(b"\xef\xbb\xbf---") and data.replace(b"\r\n", b"").count(b"\n") == 0
-    assert data.endswith(b"| holds | [[g]] | [[c2]] | |\r\n")
+    assert data.endswith(b"| [[g]] | holds | [[c2]] | |\r\n")
 
 
 def test_the_type_is_the_slug_or_the_verb(vault):
@@ -181,7 +181,7 @@ def test_record_refuses_a_malformed_table_and_says_where(make_vault, snap):
 
 def test_record_a_note_with_a_bar_and_a_line_break_stays_one_row(vault):
     record_edge("holds", "g", "c", "n2", "a | b\nc", root=vault)
-    assert "| holds | [[g]] | [[c]] | a \\| b c |" in (vault / "narrative/n2.md").read_text()
+    assert "| [[g]] | holds | [[c]] | a \\| b c |" in (vault / "narrative/n2.md").read_text()
     assert load(vault).edge("holds", "g", "c")
 
 
@@ -206,8 +206,8 @@ def test_remove_deletes_the_rows_of_every_narrative_that_tells_it_and_keeps_the_
         {
             "group/g.md": fm("group", "G"),
             "concern/c.md": fm("concern", "C"),
-            "narrative/n1.md": narrative("N1", ["| holds | [[g]] | [[c]] | a |", "| holds | [[g]] | [[c]] | dup |"]),
-            "narrative/n2.md": narrative("N2", ["| holds | [[g]] | [[c]] | |"], "stub"),
+            "narrative/n1.md": narrative("N1", ["| [[g]] | holds | [[c]] | a |", "| [[g]] | holds | [[c]] | dup |"]),
+            "narrative/n2.md": narrative("N2", ["| [[g]] | holds | [[c]] | |"], "stub"),
         }
     )  # fmt: skip
     before = snap(root)
@@ -220,7 +220,7 @@ def test_remove_deletes_the_rows_of_every_narrative_that_tells_it_and_keeps_the_
     assert r.edge.narratives == () and told(root, "holds", "g", "c") == ()
     assert "| holds |" not in (root / "narrative/n1.md").read_text()
     assert (
-        "| type | from | to | note |" in (root / "narrative/n1.md").read_text()
+        "| from | type | to | note |" in (root / "narrative/n1.md").read_text()
     )  # the table stays
 
 

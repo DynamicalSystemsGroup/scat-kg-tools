@@ -33,7 +33,7 @@ for stem, status in (("DRAFT", "draft"), ("DONE", "done")):
         (
             f"{stem}-header-name",
             t + "HEADER",
-            with_section(status, H.table(GOOD, header="| kind | from | to | note |")),
+            with_section(status, H.table(GOOD, header="| from | kind | to | note |")),
             (),
         ),
         (
@@ -53,57 +53,57 @@ for stem, status in (("DRAFT", "draft"), ("DONE", "done")):
             f"{stem}-header-name-and-separator",
             t + "HEADER",
             with_section(
-                status, H.table(GOOD, header="| kind | from | to | note |", sep="| a | b |")
+                status, H.table(GOOD, header="| from | kind | to | note |", sep="| a | b |")
             ),
             (),
         ),
         (
             f"{stem}-row-note",
             t + "ROW",
-            with_rows(status, "| holds | [[staff]] | [[safe-handling]] |"),
+            with_rows(status, "| [[staff]] | holds | [[safe-handling]] |"),
             (),
         ),
         (
             f"{stem}-row-bar",
             t + "ROW",
-            with_rows(status, "| holds | [[staff]] | [[safe-handling]] | n"),
+            with_rows(status, "| [[staff]] | holds | [[safe-handling]] | n"),
             (),
         ),
         (
             f"{stem}-row-both",
             t + "ROW",
-            with_rows(status, "| holds | [[staff]] | [[safe-handling]]"),
+            with_rows(status, "| [[staff]] | holds | [[safe-handling]]"),
             (),
         ),
         (
             f"{stem}-row-extra",
             t + "ROW",
-            with_rows(status, "| holds | [[staff]] | [[safe-handling]] | a | b | c |"),
+            with_rows(status, "| [[staff]] | holds | [[safe-handling]] | a | b | c |"),
             (),
         ),
-        (f"{stem}-row-few", t + "ROW", with_rows(status, "| holds | [[staff]] |"), ()),
+        (f"{stem}-row-few", t + "ROW", with_rows(status, "| [[staff]] | holds |"), ()),
         (
             f"{stem}-type-verb",
             t + "TYPE",
-            with_rows(status, "| owns | [[staff]] | [[safe-handling]] | |"),
+            with_rows(status, "| [[staff]] | owns | [[safe-handling]] | |"),
             (),
         ),
         (
             f"{stem}-type-near",
             t + "TYPE",
-            with_rows(status, "| addresed-by | [[staff]] | [[safe-handling]] | |"),
+            with_rows(status, "| [[staff]] | addresed-by | [[safe-handling]] | |"),
             (),
         ),
         (
             f"{stem}-type-empty",
             t + "TYPE",
-            with_rows(status, "|  | [[staff]] | [[safe-handling]] | |"),
+            with_rows(status, "| [[staff]] |  | [[safe-handling]] | |"),
             (),
         ),
         (
             f"{stem}-type-three",
             t + "TYPE",
-            with_rows(status, "| owns | [[staff]] | [[self-checkout]] | |"),
+            with_rows(status, "| [[staff]] | owns | [[self-checkout]] | |"),
             (),
         ),
         (
@@ -177,8 +177,8 @@ def test_a_row_with_extra_cells_escapes_each_extra_bar_right_to_left(make_vault)
 def test_an_empty_type_cell_is_the_whole_row_line_written_again(make_vault):
     e = only(make_vault, "DONE-type-empty").fix_data.options[0].edits[0]
     assert (e.find, e.replace) == (
-        "|  | [[staff]] | [[safe-handling]] | |",
-        "| holds | [[staff]] | [[safe-handling]] | |",
+        "| [[staff]] |  | [[safe-handling]] | |",
+        "| [[staff]] | holds | [[safe-handling]] | |",
     )
 
 
@@ -186,12 +186,12 @@ def test_the_swap_and_the_retype_edit_the_cells_at_their_columns(make_vault):
     e = only(make_vault, "DRAFT-layers-swap").fix_data.options[0].edits[0]
     assert (e.line, e.column, e.find, e.replace) == (
         16,
-        11,
-        "[[safe-handling]] | [[staff]]",
-        "[[staff]] | [[safe-handling]]",
+        3,
+        "[[safe-handling]] | holds | [[staff]]",
+        "[[staff]] | holds | [[safe-handling]]",
     )
     e = only(make_vault, "DONE-layers-retype").fix_data.options[0].edits[0]
-    assert (e.line, e.column, e.find, e.replace) == (16, 3, "holds", "is addressed by")
+    assert (e.line, e.column, e.find, e.replace) == (16, 23, "holds", "is addressed by")
 
 
 def test_a_second_heading_has_a_slot_option_and_a_second_table_only_an_advisory_one(make_vault):

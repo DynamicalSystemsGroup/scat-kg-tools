@@ -227,7 +227,7 @@ def test__line_and_column_appear_in_the_location_only_where_the_catalogue_gives_
         ),
         DESK: narrative(
             status="draft",
-            rows=("| holds | [[staff]] | [[safe-handling]]", "| holds | [[staff]] | ghost | |"),
+            rows=("| [[staff]] | holds | [[safe-handling]]", "| [[staff]] | holds | ghost | |"),
         ),
     }
     report = report_of(make_vault, files)
@@ -280,8 +280,8 @@ def test__no_vault_content_crashes_a_check(make_vault):
         "concern/b.md": "---\ntype: [1, 2]\n---\n",
         "concern/c.md": "---\ntype: concern\nstatus: [x]\ntitle: {a: b}\n---\n[[\n]]\n[[a]][[b]]|\n",
         "narrative/d.md": "---\ntype: narrative\nstatus: draft\ntitle: D\n---\n## Edges told\n|\n|||\n| a |\n",
-        "narrative/e.md": "---\ntype: narrative\nstatus: draft\ntitle: E\n---\n# edges TOLD #\n| type | from | to | note |\n|:-:|--|\n| x |\n",
-        "narrative/f.md": "---\ntype: narrative\nstatus: done\n---\n## Edges told\n\n| type | from | to | note |\n|---|---|---|---|\n| holds | [[ ]] | ![[c]] | `|` |\n| holds | [[c]]\n",
+        "narrative/e.md": "---\ntype: narrative\nstatus: draft\ntitle: E\n---\n# edges TOLD #\n| from | type | to | note |\n|:-:|--|\n| x |\n",
+        "narrative/f.md": "---\ntype: narrative\nstatus: done\n---\n## Edges told\n\n| from | type | to | note |\n|---|---|---|---|\n| [[ ]] | holds | ![[c]] | `|` |\n| [[c]] | holds\n",
         "bin.md": b"\xff\xfe\x00 not utf-8",
         "x/.hidden.md": "---\ntype: concern\n---\n",
     }

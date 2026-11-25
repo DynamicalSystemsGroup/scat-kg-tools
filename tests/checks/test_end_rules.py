@@ -46,9 +46,9 @@ def nolink(status, col, holds, text, n=1):
 def test__scat_draft_end_nolink__text_that_is_the_name_of_a_page_of_the_layer(make_vault, status):
     seeded(
         make_vault,
-        with_rows(status, "| holds | borrowers | [[safe-handling]] | |"),
+        with_rows(status, "| borrowers | holds | [[safe-handling]] | |"),
         msg(
-            nolink(status, 11, "from", "borrowers"),
+            nolink(status, 3, "from", "borrowers"),
             *choose(
                 "replace `borrowers` with `[[borrowers]]`",
                 "replace `borrowers` with `[[staff]]`",
@@ -62,9 +62,9 @@ def test__scat_draft_end_nolink__text_that_is_the_name_of_a_page_of_the_layer(ma
 def test__scat_draft_end_nolink__text_that_is_no_page_replaces_then_stubs(make_vault, status):
     seeded(
         make_vault,
-        with_rows(status, "| holds | Sandra's crew | [[safe-handling]] | |"),
+        with_rows(status, "| Sandra's crew | holds | [[safe-handling]] | |"),
         msg(
-            nolink(status, 11, "from", "Sandra's crew"),
+            nolink(status, 3, "from", "Sandra's crew"),
             *choose(
                 "replace `Sandra's crew` with `[[borrowers]]`",
                 "replace `Sandra's crew` with `[[staff]]`",
@@ -78,7 +78,7 @@ def test__scat_draft_end_nolink__text_that_is_no_page_replaces_then_stubs(make_v
 
 @STATUSES
 def test__scat_draft_end_nolink__an_empty_cell_has_an_author_slot(make_vault, status):
-    line = "| holds |  | [[safe-handling]] | |"
+    line = "|  | holds | [[safe-handling]] | |"
     r = seeded(
         make_vault,
         with_rows(status, line),
@@ -87,7 +87,7 @@ def test__scat_draft_end_nolink__an_empty_cell_has_an_author_slot(make_vault, st
                 "END-NOLINK",
                 status,
                 1,
-                11,
+                3,
                 "from",
                 f"the cell is empty; {NOT_LINK}",
             ),
@@ -97,7 +97,7 @@ def test__scat_draft_end_nolink__an_empty_cell_has_an_author_slot(make_vault, st
     edit = r.problems[0].fix_data.options[0].edits[0]
     assert (edit.find, edit.replace, edit.author_slot) == (
         line,
-        "| holds | [[<node you choose>]] | [[safe-handling]] | |",
+        "| [[<node you choose>]] | holds | [[safe-handling]] | |",
         "<node you choose>",
     )
 
@@ -106,9 +106,9 @@ def test__scat_draft_end_nolink__an_empty_cell_has_an_author_slot(make_vault, st
 def test__scat_draft_end_nolink__more_than_one_link_offers_each(make_vault, status):
     seeded(
         make_vault,
-        with_rows(status, "| holds | [[staff]] and [[borrowers]] | [[safe-handling]] | |"),
+        with_rows(status, "| [[staff]] and [[borrowers]] | holds | [[safe-handling]] | |"),
         msg(
-            nolink(status, 11, "from", "[[staff]] and [[borrowers]]"),
+            nolink(status, 3, "from", "[[staff]] and [[borrowers]]"),
             *choose(
                 "replace the cell with `[[staff]]`; any text beside it belongs in the `note` cell by hand",
                 "replace the cell with `[[borrowers]]`; any text beside it belongs in the `note` cell by hand",
@@ -122,7 +122,7 @@ def test__scat_draft_end_nolink__more_than_one_link_offers_each(make_vault, stat
 def test__scat_draft_end_nolink__the_same_defect_on_the_to_cell(make_vault, status):
     seeded(
         make_vault,
-        with_rows(status, "| holds | [[staff]] | quick checkout | |"),
+        with_rows(status, "| [[staff]] | holds | quick checkout | |"),
         msg(
             nolink(status, 23, "to", "quick checkout"),
             *choose(
@@ -136,12 +136,12 @@ def test__scat_draft_end_nolink__the_same_defect_on_the_to_cell(make_vault, stat
 
 @STATUSES
 def test__scat_draft_end_nolink__an_embed_and_an_alias_are_each_one_link(make_vault, status):
-    seeded(make_vault, with_rows(status, "| holds | ![[staff]] | [[safe-handling\\|safe]] | |"))
+    seeded(make_vault, with_rows(status, "| ![[staff]] | holds | [[safe-handling\\|safe]] | |"))
 
 
 @STATUSES
 def test__scat_draft_end_nolink__a_layer_not_known_offers_existing_pages_only(make_vault, status):
-    r = report_of(make_vault, with_rows(status, "| owns | borrowers | [[safe-handling]] | |"))
+    r = report_of(make_vault, with_rows(status, "| borrowers | owns | [[safe-handling]] | |"))
     nolinks = [p for p in r.problems if p.rule.endswith("END-NOLINK")]
     assert [o.text for o in nolinks[0].fix_data.options] == [
         *[
@@ -156,7 +156,7 @@ def test__scat_draft_end_nolink__a_layer_not_known_offers_existing_pages_only(ma
 @STATUSES
 def test__scat_draft_end_nolink__a_group_stub_is_withheld_at_the_cap(make_vault, status):
     files = {
-        **with_rows(status, "| holds | Sandra's crew | [[safe-handling]] | |"),
+        **with_rows(status, "| Sandra's crew | holds | [[safe-handling]] | |"),
         "group/third.md": doc("group", "Third"),
     }
     (p,) = report_of(make_vault, files).problems
@@ -176,7 +176,7 @@ def test__scat_draft_end_nolink__more_than_five_candidates_are_counted(make_vaul
     names = [f"c-{i}" for i in range(7)]
     pages = {f"concern/{n}.md": doc("concern", f"C {n}") for n in names}
     account = "A [[staff]]. " + " ".join(f"[[{n}]]" for n in names) + "\n"
-    files = {**pages, **with_rows(status, "| holds | [[staff]] | zzz | |", account=account)}
+    files = {**pages, **with_rows(status, "| [[staff]] | holds | zzz | |", account=account)}
     (p,) = report_of(make_vault, files).problems
     assert (
         len(p.fix_data.options) == 5 + 1 + 1
@@ -197,7 +197,7 @@ def nopage(status, col, holds, target, reason, n=1):
 def test__scat_draft_end_nopage__a_name_no_page_has_is_stubbed_as_the_layer(make_vault, status):
     seeded(
         make_vault,
-        with_rows(status, "| holds | [[staff]] | [[ghost]] | |"),
+        with_rows(status, "| [[staff]] | holds | [[ghost]] | |"),
         msg(
             nopage(status, 23, "to", "ghost", "no page is named ghost"),
             *choose(f"run {stub('ghost', 'concern')} to create a concern page", DELETE),
@@ -209,9 +209,9 @@ def test__scat_draft_end_nopage__a_name_no_page_has_is_stubbed_as_the_layer(make
 def test__scat_draft_end_nopage__a_near_match_among_the_pages_of_the_layer(make_vault, status):
     seeded(
         make_vault,
-        with_rows(status, "| holds | [[borrower]] | [[safe-handling]] | |"),
+        with_rows(status, "| [[borrower]] | holds | [[safe-handling]] | |"),
         msg(
-            nopage(status, 11, "from", "borrower", "no page is named borrower"),
+            nopage(status, 3, "from", "borrower", "no page is named borrower"),
             *choose(
                 "replace `[[borrower]]` with `[[borrowers]]`",
                 f"run {stub('borrower', 'group')} to create a group page",
@@ -225,7 +225,7 @@ def test__scat_draft_end_nopage__a_near_match_among_the_pages_of_the_layer(make_
 def test__scat_draft_end_nopage__an_illegal_name_is_replaced_then_stubbed(make_vault, status):
     seeded(
         make_vault,
-        with_rows(status, "| holds | [[staff]] | [[Safety briefing]] | |"),
+        with_rows(status, "| [[staff]] | holds | [[Safety briefing]] | |"),
         msg(
             nopage(
                 status,
@@ -247,7 +247,7 @@ def test__scat_draft_end_nopage__an_illegal_name_is_replaced_then_stubbed(make_v
 def test__scat_draft_end_nopage__a_file_without_a_type_gets_the_lines_that_make_it_a_page_of_the_layer(
     make_vault, status
 ):
-    files = {**with_rows(status, "| holds | [[staff]] | [[notes]] | |"), "notes.md": "no type\n"}
+    files = {**with_rows(status, "| [[staff]] | holds | [[notes]] | |"), "notes.md": "no type\n"}
     seeded(
         make_vault,
         files,
@@ -267,7 +267,7 @@ def test__scat_draft_end_nopage__a_file_without_a_type_gets_the_lines_that_make_
 @STATUSES
 def test__scat_draft_end_nopage__a_group_stub_is_withheld_at_the_cap(make_vault, status):
     files = {
-        **with_rows(status, "| holds | [[ghost]] | [[safe-handling]] | |"),
+        **with_rows(status, "| [[ghost]] | holds | [[safe-handling]] | |"),
         "group/third.md": doc("group", "Third"),
     }
     (p,) = report_of(make_vault, files).problems
@@ -279,7 +279,7 @@ def test__scat_draft_end_nopage__a_group_stub_is_withheld_at_the_cap(make_vault,
 def test__scat_draft_end_nopage__a_row_whose_type_is_unknown_gets_the_variants_without_a_stub(
     make_vault, status
 ):
-    r = report_of(make_vault, with_rows(status, "| owns | [[borrower]] | [[safe-handling]] | |"))
+    r = report_of(make_vault, with_rows(status, "| [[borrower]] | owns | [[safe-handling]] | |"))
     nopages = [p for p in r.problems if p.rule.endswith("END-NOPAGE")]
     assert [o.text for o in nopages[0].fix_data.options] == [
         "replace `[[borrower]]` with `[[borrowers]]`",
@@ -307,9 +307,9 @@ def test__scat_draft_end_notnode__a_narrative_with_candidates_the_narrative_link
 ):
     seeded(
         make_vault,
-        with_rows(status, "| holds | [[kiosk-pitch]] | [[safe-handling]] | |"),
+        with_rows(status, "| [[kiosk-pitch]] | holds | [[safe-handling]] | |"),
         msg(
-            notnode(status, 11, "from", "kiosk-pitch", "a narrative page"),
+            notnode(status, 3, "from", "kiosk-pitch", "a narrative page"),
             *choose(
                 "replace `[[kiosk-pitch]]` with `[[borrowers]]`",
                 "replace `[[kiosk-pitch]]` with `[[staff]]`",
@@ -325,14 +325,14 @@ def test__scat_draft_end_notnode__a_narrative_with_no_candidate_offers_an_author
 ):
     page = narrative(
         status=status,
-        rows=("| holds | [[kiosk-pitch]] | [[safe-handling]] | |",),
+        rows=("| [[kiosk-pitch]] | holds | [[safe-handling]] | |",),
         account="A [[safe-handling]].\n",
     )
     r = seeded(
         make_vault,
         {DESK: page},
         msg(
-            notnode(status, 11, "from", "kiosk-pitch", "a narrative page"),
+            notnode(status, 3, "from", "kiosk-pitch", "a narrative page"),
             *choose("replace `[[kiosk-pitch]]` with `[[<node you choose>]]` (author)", DELETE),
         ),
     )
@@ -345,7 +345,7 @@ def test__scat_draft_end_notnode__a_page_with_an_invalid_type_is_this_message_an
     make_vault, status
 ):
     odd = "concern/odd.md"
-    files = {odd: doc("gadget", "Odd"), **with_rows(status, "| holds | [[staff]] | [[odd]] | |")}
+    files = {odd: doc("gadget", "Odd"), **with_rows(status, "| [[staff]] | holds | [[odd]] | |")}
     r = report_of(make_vault, files)
     done = "DONE" if status == "done" else "DRAFT"
     assert [p.rule for p in r.problems] == ["SCAT-FM-TYPE", f"SCAT-{done}-END-NOTNODE"]
@@ -358,7 +358,7 @@ def test__scat_draft_end_notnode__a_page_with_an_invalid_type_is_this_message_an
 def test__scat_draft_end_notnode__a_page_that_is_not_a_node_in_a_row_of_an_unknown_type_has_no_candidates(
     make_vault, status
 ):
-    r = report_of(make_vault, with_rows(status, "| owns | [[kiosk-pitch]] | [[safe-handling]] | |"))
+    r = report_of(make_vault, with_rows(status, "| [[kiosk-pitch]] | owns | [[safe-handling]] | |"))
     notnodes = [p for p in r.problems if p.rule.endswith("NOTNODE")]
     assert [o.kind for o in notnodes[0].fix_data.options] == ["slot", "exact"]
 
@@ -367,7 +367,7 @@ def test__scat_draft_end_notnode__a_page_that_is_not_a_node_in_a_row_of_an_unkno
 
 
 def test__a_pair_is_a_warning_before_done_and_an_error_at_done(make_vault):
-    row_ = "| holds | [[staff]] | [[ghost]] | |"
+    row_ = "| [[staff]] | holds | [[ghost]] | |"
     for status, severity, ok in (
         ("stub", "warning", True),
         ("draft", "warning", True),
@@ -403,7 +403,7 @@ def test__rule_4_a_narrative_that_links_both_ends_of_a_pair_and_has_no_row_gets_
     # the account links staff and quick-checkout; no row joins them, and nothing says so at any status or scope
     page = narrative(status=status)
     assert "[[staff]]" in page and "[[quick-checkout|" in page
-    assert "| holds | [[staff]] | [[quick-checkout]]" not in page
+    assert "| [[staff]] | holds | [[quick-checkout]]" not in page
     seeded(make_vault, {DESK: page}, scope=scope, page=DESK)
 
 

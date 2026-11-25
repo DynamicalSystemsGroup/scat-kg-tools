@@ -19,7 +19,7 @@ from scat_kg.graph import Row, TableProblem, _bars, _cells
 from scat_kg.tbox import TBOX
 from scat_kg.vault import Page
 
-NAMES = ", ".join(TBOX.table.names)  # type, from, to, note
+NAMES = ", ".join(TBOX.table.names)  # from, type, to, note
 
 
 def _spellings() -> list[str]:
@@ -33,7 +33,8 @@ def _verbs() -> str:
 def _is_row(line: str) -> bool:
     """Whether the line after a header is a row (it links something or starts with an edge type), not a bad separator."""
     cells, _, _ = _cells(line, 0)
-    return "[[" in line or bool(cells and TBOX.edge_type_named(cells[0].text))
+    i = TBOX.table.index_of("edge-type")
+    return "[[" in line or bool(len(cells) > i and TBOX.edge_type_named(cells[i].text))
 
 
 def _joins_header(ctx: Ctx, page: Page, tp: TableProblem, headers: list[int]) -> bool:
@@ -61,8 +62,8 @@ def _header(ctx: Ctx, page: Page, rule: str, tp: TableProblem):
         fix = fixes.single(
             FixOption(
                 "advisory",
-                f"the columns must be {', '.join(f'`{n}`' for n in TBOX.table.names)}, in this order: "
-                "move the cells of the header and of every row; the tool never moves cells",
+                f"reorder the columns to {', '.join(f'`{n}`' for n in TBOX.table.names)}: in the "
+                "header and in every row, move the cells into this order; the tool never moves cells",
             )
         )
     elif sep_wrong and (

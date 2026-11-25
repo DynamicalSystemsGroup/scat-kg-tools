@@ -695,10 +695,16 @@ def _cell_text(text: str) -> str:
 
 
 def format_row(edge_type: str, from_node: str, to_node: str, note: str = "") -> str:
-    """A row as the tools write it: the verb, both ends as links, the note with its bars escaped."""
+    """A row as the tools write it, in the TBox's column order: the verb, both ends as links, the note with its bars escaped."""
     et = TBOX.edge_type_named(edge_type)
     verb = et.verb if et else edge_type
-    row = f"| {verb} | [[{from_node}]] | [[{to_node}]] | {_cell_text(note)} |"
+    cell = {
+        "edge-type": verb,
+        "from": f"[[{from_node}]]",
+        "to": f"[[{to_node}]]",
+        "note": _cell_text(note),
+    }
+    row = "| " + " | ".join(cell[c.holds] for c in TBOX.table.columns) + " |"
     return row.replace("|  |", "| |")
 
 

@@ -15,10 +15,10 @@ The queue was out of the door by ten. The [[volunteer-staff|volunteers]] on the 
 
 ## Edges told
 
-| type            | from                    | to                           | note                                       |
-|-----------------|-------------------------|------------------------------|--------------------------------------------|
-| holds           | [[volunteer-staff]]     | [[safe-handling-of-tools]]   | They saw the saw incident first-hand.      |
-| holds           | [[borrowers]]           | [[safe-handling-of-tools]]   | Said in passing, after being called back.  |
-| holds           | [[borrowers]]           | [[quick-checkout]]           | One left after ten minutes in the queue.   |
-| holds           | [[volunteer-staff]]     | [[careful-record-keeping]]   | Every loan written in the book.            |
-| is addressed by | [[quick-checkout]]      | [[self-checkout]]            | Asked for, not yet there.                  |
+| from                | type            | to                         | note                                      |
+|---------------------|-----------------|----------------------------|-------------------------------------------|
+| [[volunteer-staff]] | holds           | [[safe-handling-of-tools]] | They saw the saw incident first-hand.     |
+| [[borrowers]]       | holds           | [[safe-handling-of-tools]] | Said in passing, after being called back. |
+| [[borrowers]]       | holds           | [[quick-checkout]]         | One left after ten minutes in the queue.  |
+| [[volunteer-staff]] | holds           | [[careful-record-keeping]] | Every loan written in the book.           |
+| [[quick-checkout]]  | is addressed by | [[self-checkout]]          | Asked for, not yet there.                 |

@@ -136,7 +136,7 @@ interface, GitHub Desktop, an Obsidian git plugin), not M8.
 
 ## 6. What is left open
 
-- **Decided (D-088, D-089): the WP16 slots.** An edge is one row of a narrative's "Edges told" table (`type | from | to |
+- **Decided (D-088, D-089): the WP16 slots.** An edge is one row of a narrative's "Edges told" table (`from | type | to |
   note`, both ends links), the first table under that heading, any level; the graph holds one edge per (type, from, to)
   naming every narrative with a row (R-21); status derived, no edge sign-off. Page types: `group`, `concern`,
   `affordance`, `technology`, `narrative` (`kind` scenario or architecture; `timeframe` stays), `index`. Operations

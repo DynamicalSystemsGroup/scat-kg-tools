@@ -13,12 +13,12 @@ PATH = "narrative/bad.md"
 
 # name: (the row at number 2, the rule's ending, text the reason holds)
 CASES = {
-    "end-not-a-link": ("| holds | farmers | [[water]] | |", "END-NOLINK", "not exactly one link"),
+    "end-not-a-link": ("| farmers | holds | [[water]] | |", "END-NOLINK", "not exactly one link"),
     "end-reaches-no-page": (row("holds", "farmers", "ghost"), "END-NOPAGE", "reaches no page"),
     "end-is-not-a-node": (row("holds", "farmers", "dry"), "END-NOTNODE", "not a node"),
     "wrong-direction": (row("holds", "water", "farmers"), "TABLE-LAYERS", "wrong direction"),
     "unknown-type": (row("owns", "farmers", "water"), "TABLE-TYPE", "`owns` is not an edge type"),
-    "malformed-row": ("| holds | [[farmers]] | [[water]] |", "TABLE-ROW", "not well-formed"),
+    "malformed-row": ("| [[farmers]] | holds | [[water]] |", "TABLE-ROW", "not well-formed"),
 }
 
 

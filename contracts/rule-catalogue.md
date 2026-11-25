@@ -446,31 +446,31 @@ Each has a warning id and an error id (section 1, status behaviour); the message
 severity. In the sections below `[SCAT-*-X]` stands for both. **Runs at:** all. **Needs status**, narratives only.
 
 #### SCAT-*-TABLE-HEADER
-- **Reads:** its page. **Trigger:** under the heading `Edges told` (page contracts 4 rules for where) the first table's header row does not have the cells `type`, `from`, `to`, `note`, in that order, compared without regard to case and ignoring spaces at their ends; or the line after the header row is not a separator row (`|---|` with or without alignment colons), including when the table is a header row alone. One message per table, even when the header and the separator are both wrong: the header message takes precedence. The rows of such a table are checked by no row rule.
+- **Reads:** its page. **Trigger:** under the heading `Edges told` (page contracts 4 rules for where) the first table's header row does not have the cells `from`, `type`, `to`, `note`, in that order, compared without regard to case and ignoring spaces at their ends; or the line after the header row is not a separator row (`|---|` with or without alignment colons), including when the table is a header row alone. One message per table, even when the header and the separator are both wrong: the header message takes precedence. The rows of such a table are checked by no row rule.
 - **Message:**
 ```
-<severity> [SCAT-*-TABLE-HEADER] <file>:<line>:<column> table header: the header row is `<header as written>`, not `| type | from | to | note |`       (the names are wrong, or in another order)
+<severity> [SCAT-*-TABLE-HEADER] <file>:<line>:<column> table header: the header row is `<header as written>`, not `| from | type | to | note |`       (the names are wrong, or in another order)
 <severity> [SCAT-*-TABLE-HEADER] <file>:<line>:<column> table header: the line after the header row is `<line as written>`, not a separator row       (the names are right and a line follows)
 <severity> [SCAT-*-TABLE-HEADER] <file>:<line>:<column> table header: there is no separator row after the header row       (the names are right and the table is the header row alone)
-  Fix: replace the line `<header as written>` with `| type | from | to | note |`
+  Fix: replace the line `<header as written>` with `| from | type | to | note |`
   Fix: replace the line `<line as written>` with `|---|---|---|---|`
   Fix: replace the line `<header as written>` with two lines, `<header>` then `|---|---|---|---|`           (no separator row: the second line is a row, or no line follows)
 ```
-In the third fix `<header>` is the right header when the names are wrong, else the header as written. When the header and the separator are both wrong, the fix is one option of two edits, in line order: "replace the line `<header as written>` with `| type | from | to | note |` and the line `<line as written>` with `|---|---|---|---|`". When the header has the four names but in another order, the fix is **advisory** and has no edit: "the columns must be `type`, `from`, `to`, `note`, in this order: move the cells of the header and of every row; the tool never moves cells" (rewriting only the header would make every row misread).
+In the third fix `<header>` is the right header when the names are wrong, else the header as written. When the header and the separator are both wrong, the fix is one option of two edits, in line order: "replace the line `<header as written>` with `| from | type | to | note |` and the line `<line as written>` with `|---|---|---|---|`". When the header has the four names but in another order, the fix is **advisory** and has no edit: "reorder the columns to `from`, `type`, `to`, `note`: in the header and in every row, move the cells into this order; the tool never moves cells" (rewriting only the header would make every row misread). The order of the columns before WP21 (`type`, `from`, `to`, `note`) is such an order: a table in it gets this message.
 - **Fix kind:** exact when a name is wrong or missing, or the separator is missing or wrong; advisory for the order. Edits: `replace-text{line, find <the line as written>, replace}`; the third form's `replace` holds a line break.
-- **Seed:** header `| from | to | type | note |` (advisory); header `| kind | from | to | note |` (exact); header `| type | from | to |`; separator `| a | b |`; separator missing (the second line a row); a header row alone with nothing after it.
+- **Seed:** header `| from | to | type | note |` (advisory); the pre-WP21 header `| type | from | to | note |` with rows in that order (advisory); header `| from | kind | to | note |` (exact); header `| from | type | to |`; separator `| a | b |`; separator missing (the second line a row); a header row alone with nothing after it.
 
 #### SCAT-*-TABLE-ROW
 - **Reads:** its page. **Trigger:** a row of a well-formed table does not have four cells (page contracts 4, Cells), or does not end with a `|`. A cell is the text between two unescaped `|`, `\|` and a bar inside `[[ ]]` not counting. A row that is not well-formed (section 1) tells no edge, and this is the only rule that judges it.
 - **Message:**
 ```
-<severity> [SCAT-*-TABLE-ROW] <file>:<line>:<column> row <n>: the row has <k> cells, not 4 (type, from, to, note)
+<severity> [SCAT-*-TABLE-ROW] <file>:<line>:<column> row <n>: the row has <k> cells, not 4 (from, type, to, note)
 <severity> [SCAT-*-TABLE-ROW] <file>:<line>:<column> row <n>: the row does not end with `|`
   Fix: <exact fix of the variant>
 ```
-The second message is for variant (b) alone; every other variant, with or without its closing `|`, gets the first. Variants and their fix sentences, as built: (a) three cells, the closing `|` present (the note is missing): "add an empty note: replace the final `|` with `| |`"; (b) four cells and no closing `|`: "write ` |` after the last cell: replace `<last cell>` with `<last cell> |`"; (c) three cells and no closing `|` (`| holds | [[a]] | [[b]]`): "write ` | |` after the last cell, which adds the empty note and the closing bar: replace `<last cell>` with `<last cell> | |`"; (d) more than four cells, choose one: "a `|` inside the note is written `\|`: replace the `|` that opens cell 5 and the ones after it with `\|`" (one edit per bar, right to left; the extra cells are read only as the note), or "delete the row"; (e) fewer than three cells, with or without the closing `|`, choose one: "delete the row", or the advisory "write the row again with four cells and a closing `|`: `| type | from | to | note |`".
+The second message is for variant (b) alone; every other variant, with or without its closing `|`, gets the first. Variants and their fix sentences, as built: (a) three cells, the closing `|` present (the note is missing): "add an empty note: replace the final `|` with `| |`"; (b) four cells and no closing `|`: "write ` |` after the last cell: replace `<last cell>` with `<last cell> |`"; (c) three cells and no closing `|` (`| [[a]] | holds | [[b]]`): "write ` | |` after the last cell, which adds the empty note and the closing bar: replace `<last cell>` with `<last cell> | |`"; (d) more than four cells, choose one: "a `|` inside the note is written `\|`: replace the `|` that opens cell 5 and the ones after it with `\|`" (one edit per bar, right to left; the extra cells are read only as the note), or "delete the row"; (e) fewer than three cells, with or without the closing `|`, choose one: "delete the row", or the advisory "write the row again with four cells and a closing `|`: `| from | type | to | note |`".
 - **Fix kind:** exact for (a), (b) and (c); options for (d) and (e). Edits: `replace-text{line, column, find "|", replace "| |"}`; `replace-text{... find <last cell>, replace "<last cell> |"}`; `delete-line{line, find}`.
-- **Seed:** `| holds | [[a]] | [[b]] |` (a); `| holds | [[a]] | [[b]] | n` (b); `| holds | [[a]] | [[b]]` (c); `| holds | [[a]] | [[b]] | x | y |` (d); `| holds | [[a]] |` (e).
+- **Seed:** `| [[a]] | holds | [[b]] |` (a); `| [[a]] | holds | [[b]] | n` (b); `| [[a]] | holds | [[b]]` (c); `| [[a]] | holds | [[b]] | x | y |` (d); `| [[a]] | holds |` (e).
 
 #### SCAT-*-TABLE-TYPE
 - **Reads:** its page, and the pages at its ends (to fix the type from their layers). **Trigger:** the `type` cell of a well-formed row is empty, or is not the verb or the slug of one of the three edge types (`holds`, `is addressed by`, `is provided by`; `holds`, `addressed-by`, `provided-by`), compared without regard to case. The row's ends are still checked by the end rules; its layers are not judged.
@@ -485,7 +485,7 @@ The second message is for variant (b) alone; every other variant, with or withou
 ```
 For an empty cell the message reads `row <n> cell `type`: the value is empty, which is not an edge type (holds, is addressed by, is provided by)` and each option reads "replace the empty cell with `<verb>`".
 - **Fix kind:** options (a single exact option 1 is still printed with the delete option). Edits: `replace-text{line, column, find <value>, replace <verb>}` (an empty cell: the whole row line as `find`); `delete-line{line, find}`.
-- **Seed:** `| owns | [[g]] | [[c]] | |` with a group and a concern (option 1); `| holdz | ... |` (near match); an empty cell; a row of two unresolved ends (options 3 to 5).
+- **Seed:** `| [[g]] | owns | [[c]] | |` with a group and a concern (option 1); `| holdz | ... |` (near match); an empty cell; a row of two unresolved ends (options 3 to 5).
 
 #### SCAT-*-TABLE-LAYERS
 - **Reads:** its page, and the pages at its ends. **Trigger:** the `type` cell is an edge type, and at least one end resolves to a node page of a layer other than the one the type fixes for that end. It covers a pair written the wrong way round and a pair between layers that are not neighbours (a group and an affordance). One message per row, naming each wrong end.
@@ -550,7 +550,7 @@ A duplicated row, a row in the wrong direction and a row between the wrong layer
 ```
 Variant (c) uses the first message, "is not a link", though a link is there: the cell is not exactly one. When the layer is not known (the `type` cell is not an edge type, SCAT-*-TABLE-TYPE) options 2 are withheld, and 1 offers only existing pages. The cap rule of SCAT-LINK-DANGLING-BODY applies to a stub of a `group`.
 - **Fix kind:** options (a: slot among the options). Edits: `replace-text{line, column, find <text>, replace "[[<name>]]"}`; `command{stub <d> --type <layer key>}` as the second step of option 2 (`sequence` true); `delete-line{line, find}`; an empty cell: the whole row line as `find`, `author_slot` the placeholder.
-- **Seed:** `| holds | borrowers | [[c]] | |` where `borrowers` is an existing group's page name (option 1) and where it is not (option 2); `| holds | | [[c]] | |` (empty); `| holds | [[a]] and [[b]] | [[c]] | |` (c); the same defect on the `to` cell.
+- **Seed:** `| borrowers | holds | [[c]] | |` where `borrowers` is an existing group's page name (option 1) and where it is not (option 2); `|  | holds | [[c]] | |` (empty); `| [[a]] and [[b]] | holds | [[c]] | |` (c); the same defect on the `to` cell.
 
 #### SCAT-*-END-NOPAGE
 - **Reads:** its page and the vault. **Trigger:** a row end is one link whose target is not the name of any page: the variants (a), (b) and (c) of SCAT-LINK-DANGLING-BODY. The type is known from the row, so the stub is exact. A row end whose layer is unknown (the `type` cell is not an edge type) is covered by the variants without a stub.
@@ -564,7 +564,7 @@ Variant (c) uses the first message, "is not a link", though a link is there: the
 ```
 Variant (b) replaces option 2 by the lines that make the typeless file a page of the layer's type; variant (c) takes the replacement and replace-then-stub options of SCAT-LINK-DANGLING-BODY, with the layer's type as the one inferred type. The cap rule applies to a `group` layer.
 - **Fix kind:** options. Edits as SCAT-LINK-DANGLING-BODY, with `column` on the `replace-text`; `delete-line{line, find}`.
-- **Seed:** `| holds | [[ghost]] | [[c]] | |` (options 1 only if a near match, 2, delete); a near match (`[[borrower]]` for `borrowers`); `[[Safety briefing]]` (variant c); a link to a typeless file (variant b); a group stub at the cap (no group option).
+- **Seed:** `| [[ghost]] | holds | [[c]] | |` (options 1 only if a near match, 2, delete); a near match (`[[borrower]]` for `borrowers`); `[[Safety briefing]]` (variant c); a link to a typeless file (variant b); a group stub at the cap (no group option).
 
 #### SCAT-*-END-NOTNODE
 - **Reads:** its page, the vault and the target's page. **Trigger:** a row end is one link whose target is a page that is not a valid node: a page of type `narrative`, or a page whose `type` is missing from the five or invalid (that page has its own SCAT-FM-TYPE error as well; this is the mismatch, at the row). A node page of the wrong layer is SCAT-*-TABLE-LAYERS.
@@ -577,7 +577,7 @@ Variant (b) replaces option 2 by the lines that make the typeless file a page of
     n. delete the row
 ```
 - **Fix kind:** options. Edits: `replace-text{line, column, find "[[<target>]]", replace}`; `delete-line{line, find}`.
-- **Seed:** `| holds | [[a-narrative]] | [[c]] | |` with and without candidate groups the narrative links elsewhere; a link to a page with `type: gadget` (this message, and the page's own SCAT-FM-TYPE).
+- **Seed:** `| [[a-narrative]] | holds | [[c]] | |` with and without candidate groups the narrative links elsewhere; a link to a page with `type: gadget` (this message, and the page's own SCAT-FM-TYPE).
 
 ## 4. Rule 4 has no rule
 

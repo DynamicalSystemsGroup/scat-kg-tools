@@ -249,7 +249,7 @@ $ uv run scat check --json
                 "action": "delete-line",
                 "file": "narrative/groups-under-a-cap-pitch.md",
                 "line": 22,
-                "find": "| is provided by | [[groups-clustered-under-a-cap]] | [[cap-settin]] | The cap setting is what fixes the number of groups. The cap is a per-instance parameter (D-020); the example vault sets it to 3. |"
+                "find": "| [[groups-clustered-under-a-cap]] | is provided by | [[cap-settin]] | The cap setting is what fixes the number of groups. The cap is a per-instance parameter (D-020); the example vault sets it to 3. |"
               }
             ]
           }
@@ -711,7 +711,7 @@ Exit codes: 0 when it changed or found the row there, 1 for a refusal (a narrati
 
     ```text
     changed narrative/desk-notes-one.md
-    note: added `| holds | [[project-leads]] | [[reading-group]] | Said twice. |` to narrative/desk-notes-one.md at line 12
+    note: added `| [[project-leads]] | holds | [[reading-group]] | Said twice. |` to narrative/desk-notes-one.md at line 12
     ```
 
 === "CLI"
@@ -722,7 +722,7 @@ Exit codes: 0 when it changed or found the row there, 1 for a refusal (a narrati
 
     ```text
     changed narrative/desk-notes-two.md
-    note: added `| holds | [[project-leads]] | [[study-circle]] | Said twice. |` to narrative/desk-notes-two.md at line 12
+    note: added `| [[project-leads]] | holds | [[study-circle]] | Said twice. |` to narrative/desk-notes-two.md at line 12
     ```
 
 With `--json`, which adds the edge and the rows added:
@@ -746,7 +746,7 @@ $ uv run scat record-edge addressed-by study-circle reading-shelf --told-by desk
   "unchanged": [],
   "refused": [],
   "notes": [
-    "added `| is addressed by | [[study-circle]] | [[reading-shelf]] | |` to narrative/desk-notes-two.md at line 13"
+    "added `| [[study-circle]] | is addressed by | [[reading-shelf]] | |` to narrative/desk-notes-two.md at line 13"
   ],
   "edge": {
     "type": "addressed-by",

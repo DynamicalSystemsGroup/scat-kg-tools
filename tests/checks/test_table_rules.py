@@ -47,6 +47,24 @@ GOOD = row("holds", "staff", "safe-handling")
 
 
 @STATUSES
+def test__scat_draft_table_header__the_old_order_type_from_to_note_says_how_to_reorder(
+    make_vault, status
+):
+    old = "| type | from | to | note |"
+    seeded(
+        make_vault,
+        with_section(
+            status, f"## Edges told\n\n{old}\n{SEP}\n| holds | [[staff]] | [[safe-handling]] | |\n"
+        ),
+        msg(
+            header(status, f"the header row is `{old}`, not `{HEADER}`"),
+            "Fix: reorder the columns to `from`, `type`, `to`, `note`: in the header and in every row, "
+            "move the cells into this order; the tool never moves cells",
+        ),
+    )
+
+
+@STATUSES
 def test__scat_draft_table_header__the_four_names_in_another_order_is_advisory(make_vault, status):
     bad = "| from | to | type | note |"
     seeded(
@@ -54,15 +72,15 @@ def test__scat_draft_table_header__the_four_names_in_another_order_is_advisory(m
         with_section(status, table(GOOD, header=bad)),
         msg(
             header(status, f"the header row is `{bad}`, not `{HEADER}`"),
-            "Fix: the columns must be `type`, `from`, `to`, `note`, in this order: move the cells of "
-            "the header and of every row; the tool never moves cells",
+            "Fix: reorder the columns to `from`, `type`, `to`, `note`: in the header and in every row, "
+            "move the cells into this order; the tool never moves cells",
         ),
     )
 
 
 @STATUSES
 def test__scat_draft_table_header__a_wrong_name_is_one_exact_edit(make_vault, status):
-    bad = "| kind | from | to | note |"
+    bad = "| from | kind | to | note |"
     r = seeded(
         make_vault,
         with_section(status, table(GOOD, header=bad)),
@@ -77,7 +95,7 @@ def test__scat_draft_table_header__a_wrong_name_is_one_exact_edit(make_vault, st
 
 @STATUSES
 def test__scat_draft_table_header__a_header_with_three_columns(make_vault, status):
-    bad = "| type | from | to |"
+    bad = "| from | type | to |"
     seeded(
         make_vault,
         with_section(status, table(GOOD, header=bad)),
@@ -130,7 +148,7 @@ def test__scat_draft_table_header__a_header_row_alone(make_vault, status):
 def test__scat_draft_table_header__a_wrong_name_and_a_missing_separator_are_one_fix(
     make_vault, status
 ):
-    bad = "| kind | from | to | note |"
+    bad = "| from | kind | to | note |"
     r = seeded(
         make_vault,
         with_section(status, table(GOOD, header=bad, sep=None)),
@@ -146,7 +164,7 @@ def test__scat_draft_table_header__a_wrong_name_and_a_missing_separator_are_one_
 def test__scat_draft_table_header__a_wrong_name_and_a_wrong_separator_are_two_edits_of_one_fix(
     make_vault, status
 ):
-    bad = "| kind | from | to | note |"
+    bad = "| from | kind | to | note |"
     r = seeded(
         make_vault,
         with_section(status, table(GOOD, header=bad, sep="| a | b |")),
@@ -166,7 +184,7 @@ def test__scat_draft_table_header__a_wrong_name_and_a_wrong_separator_are_two_ed
 def test__scat_draft_table_header__the_rows_of_a_malformed_table_are_checked_by_no_row_rule(
     make_vault, status
 ):
-    rows = ("| owns | [[staff]] | [[safe-handling]] | |", "| holds | staff | [[safe-handling]]")
+    rows = ("| [[staff]] | owns | [[safe-handling]] | |", "| staff | holds | [[safe-handling]]")
     r = report_of(
         make_vault, with_section(status, table(*rows, header="| from | to | type | note |"))
     )
@@ -175,7 +193,7 @@ def test__scat_draft_table_header__the_rows_of_a_malformed_table_are_checked_by_
 
 @pytest.mark.parametrize(
     "compact",
-    ["|type|from|to|note|", "| TYPE | From | To | Note |", "|  type |from | to  |   note|"],
+    ["|from|type|to|note|", "| FROM | Type | To | Note |", "|  from |type | to  |   note|"],
 )
 def test__scat_draft_table_header__spacing_and_case_are_not_defects(make_vault, compact):
     seeded(make_vault, with_section("done", table(GOOD, header=compact)))
@@ -188,14 +206,14 @@ def row_head(status, n, what, line=None):
     return pair("TABLE-ROW", status, f"{F}{line or 15 + n}:1 row {n}: {what}")
 
 
-ROW_CELLS = "the row has {k} cells, not 4 (type, from, to, note)"
+ROW_CELLS = "the row has {k} cells, not 4 (from, type, to, note)"
 
 
 @STATUSES
 def test__scat_draft_table_row__three_cells_and_a_closing_bar_add_an_empty_note(make_vault, status):
     r = seeded(
         make_vault,
-        with_rows(status, "| holds | [[staff]] | [[safe-handling]] |"),
+        with_rows(status, "| [[staff]] | holds | [[safe-handling]] |"),
         msg(
             row_head(status, 1, ROW_CELLS.format(k=3)),
             "Fix: add an empty note: replace the final `|` with `| |`",
@@ -209,7 +227,7 @@ def test__scat_draft_table_row__three_cells_and_a_closing_bar_add_an_empty_note(
 def test__scat_draft_table_row__four_cells_and_no_closing_bar(make_vault, status):
     seeded(
         make_vault,
-        with_rows(status, "| holds | [[staff]] | [[safe-handling]] | n"),
+        with_rows(status, "| [[staff]] | holds | [[safe-handling]] | n"),
         msg(
             row_head(status, 1, "the row does not end with `|`"),
             "Fix: write ` |` after the last cell: replace `n` with `n |`",
@@ -221,7 +239,7 @@ def test__scat_draft_table_row__four_cells_and_no_closing_bar(make_vault, status
 def test__scat_draft_table_row__three_cells_and_no_closing_bar(make_vault, status):
     seeded(
         make_vault,
-        with_rows(status, "| holds | [[staff]] | [[safe-handling]]"),
+        with_rows(status, "| [[staff]] | holds | [[safe-handling]]"),
         msg(
             row_head(status, 1, ROW_CELLS.format(k=3)),
             "Fix: write ` | |` after the last cell, which adds the empty note and the closing bar: "
@@ -236,7 +254,7 @@ def test__scat_draft_table_row__more_than_four_cells_offers_the_escape_or_the_de
 ):
     r = seeded(
         make_vault,
-        with_rows(status, "| holds | [[staff]] | [[safe-handling]] | x | y |"),
+        with_rows(status, "| [[staff]] | holds | [[safe-handling]] | x | y |"),
         msg(
             row_head(status, 1, ROW_CELLS.format(k=5)),
             *choose(
@@ -253,7 +271,7 @@ def test__scat_draft_table_row__more_than_four_cells_offers_the_escape_or_the_de
 @STATUSES
 def test__scat_draft_table_row__each_extra_bar_is_escaped_right_to_left(make_vault, status):
     r = report_of(
-        make_vault, with_rows(status, "| holds | [[staff]] | [[safe-handling]] | a | b | c |")
+        make_vault, with_rows(status, "| [[staff]] | holds | [[safe-handling]] | a | b | c |")
     )
     first = r.problems[0].fix_data.options[0]
     assert [e.column for e in first.edits] == [49, 45]  # right to left, so each column stays right
@@ -265,12 +283,12 @@ def test__scat_draft_table_row__fewer_than_three_cells_offers_the_delete_or_a_ne
 ):
     seeded(
         make_vault,
-        with_rows(status, "| holds | [[staff]] |"),
+        with_rows(status, "| [[staff]] | holds |"),
         msg(
             row_head(status, 1, ROW_CELLS.format(k=2)),
             *choose(
                 DELETE,
-                "write the row again with four cells and a closing `|`: `| type | from | to | note |`",
+                "write the row again with four cells and a closing `|`: `| from | type | to | note |`",
             ),
         ),
     )
@@ -278,14 +296,14 @@ def test__scat_draft_table_row__fewer_than_three_cells_offers_the_delete_or_a_ne
 
 @STATUSES
 def test__scat_draft_table_row__a_bar_in_a_link_or_escaped_is_no_cell(make_vault, status):
-    rows = ("| holds | [[staff\\|the crew]] | [[safe-handling]] | a \\| b |",)
+    rows = ("| [[staff\\|the crew]] | holds | [[safe-handling]] | a \\| b |",)
     seeded(make_vault, with_rows(status, *rows))
 
 
 # SCAT-DRAFT-TABLE-TYPE
 
 
-def type_head(status, n, value, col=3, what=None):
+def type_head(status, n, value, col=15, what=None):
     what = what or f"`{value}` is not an edge type {VERBS}"
     return pair("TABLE-TYPE", status, f"{F}{15 + n}:{col} row {n} cell `type`: {what}")
 
@@ -296,7 +314,7 @@ def test__scat_draft_table_type__a_group_and_a_concern_give_the_verb_of_that_typ
 ):
     seeded(
         make_vault,
-        with_rows(status, "| owns | [[staff]] | [[safe-handling]] | |"),
+        with_rows(status, "| [[staff]] | owns | [[safe-handling]] | |"),
         msg(
             type_head(status, 1, "owns"),
             *choose("replace `owns` with `holds`", DELETE),
@@ -308,7 +326,7 @@ def test__scat_draft_table_type__a_group_and_a_concern_give_the_verb_of_that_typ
 def test__scat_draft_table_type__a_near_match_among_the_six_spellings(make_vault, status):
     seeded(
         make_vault,
-        with_rows(status, "| addresed-by | [[staff]] | [[safe-handling]] | |"),
+        with_rows(status, "| [[staff]] | addresed-by | [[safe-handling]] | |"),
         msg(
             type_head(status, 1, "addresed-by"),
             *choose(
@@ -326,14 +344,14 @@ def test__scat_draft_table_type__a_near_match_that_is_the_layer_verb_is_offered_
 ):
     seeded(
         make_vault,
-        with_rows(status, "| holdz | [[staff]] | [[safe-handling]] | |"),
+        with_rows(status, "| [[staff]] | holdz | [[safe-handling]] | |"),
         msg(type_head(status, 1, "holdz"), *choose("replace `holdz` with `holds`", DELETE)),
     )
 
 
 @STATUSES
 def test__scat_draft_table_type__an_empty_cell_takes_the_whole_row_line(make_vault, status):
-    line = "|  | [[staff]] | [[safe-handling]] | |"
+    line = "| [[staff]] |  | [[safe-handling]] | |"
     r = seeded(
         make_vault,
         with_rows(status, line),
@@ -343,14 +361,14 @@ def test__scat_draft_table_type__an_empty_cell_takes_the_whole_row_line(make_vau
         ),
     )
     (edit,) = r.problems[0].fix_data.options[0].edits
-    assert (edit.find, edit.replace) == (line, "| holds | [[staff]] | [[safe-handling]] | |")
+    assert (edit.find, edit.replace) == (line, "| [[staff]] | holds | [[safe-handling]] | |")
 
 
 @STATUSES
 def test__scat_draft_table_type__ends_that_fit_no_type_offer_the_three_verbs(make_vault, status):
     seeded(
         make_vault,
-        with_rows(status, "| owns | [[staff]] | [[self-checkout]] | |"),
+        with_rows(status, "| [[staff]] | owns | [[self-checkout]] | |"),
         msg(
             type_head(status, 1, "owns"),
             *choose(
@@ -367,7 +385,7 @@ def test__scat_draft_table_type__ends_that_fit_no_type_offer_the_three_verbs(mak
 def test__scat_draft_table_type__a_row_of_two_unresolved_ends_offers_the_three_verbs(
     make_vault, status
 ):
-    r = report_of(make_vault, with_rows(status, "| owns | [[ghost]] | [[nowhere]] | |"))
+    r = report_of(make_vault, with_rows(status, "| [[ghost]] | owns | [[nowhere]] | |"))
     types = [p for p in r.problems if p.rule.endswith("TABLE-TYPE")]
     assert [o.text for o in types[0].fix_data.options] == [
         "replace `owns` with `holds`",
@@ -386,9 +404,9 @@ def test__scat_draft_table_type__a_row_of_two_unresolved_ends_offers_the_three_v
 @STATUSES
 def test__scat_draft_table_type__the_slug_and_the_verb_in_any_case_are_types(make_vault, status):
     rows = (
-        "| Holds | [[staff]] | [[safe-handling]] | |",
-        "| IS ADDRESSED BY | [[quick-checkout]] | [[self-checkout]] | |",
-        "| provided-by | [[self-checkout]] | [[booking-app]] | |",
+        "| [[staff]] | Holds | [[safe-handling]] | |",
+        "| [[quick-checkout]] | IS ADDRESSED BY | [[self-checkout]] | |",
+        "| [[self-checkout]] | provided-by | [[booking-app]] | |",
     )
     seeded(make_vault, with_rows(status, *rows))
 
@@ -415,22 +433,22 @@ def test__scat_draft_table_layers__a_pair_written_the_wrong_way_round_is_swapped
                 "[[staff]] is a group page",
             ),
             *choose(
-                "swap the two ends: replace `[[safe-handling]] | [[staff]]` with `[[staff]] | [[safe-handling]]`",
+                "swap the two ends: replace `[[safe-handling]] | holds | [[staff]]` with `[[staff]] | holds | [[safe-handling]]`",
                 DELETE,
             ),
         ),
     )
     (edit,) = r.problems[0].fix_data.options[0].edits
-    assert (edit.line, edit.column) == (16, 11)
+    assert (edit.line, edit.column) == (16, 3)
 
 
 @STATUSES
 def test__scat_draft_table_layers__the_swap_keeps_the_padding_between_the_ends(make_vault, status):
-    line = "| holds |   [[safe-handling]]   |   [[staff]] | |"
+    line = "| [[safe-handling]] |   holds   |   [[staff]] | |"
     r = report_of(make_vault, with_rows(status, line))
     edit = r.problems[0].fix_data.options[0].edits[0]
-    assert edit.find == "[[safe-handling]]   |   [[staff]]"
-    assert edit.replace == "[[staff]]   |   [[safe-handling]]"
+    assert edit.find == "[[safe-handling]] |   holds   |   [[staff]]"
+    assert edit.replace == "[[staff]] |   holds   |   [[safe-handling]]"
 
 
 @STATUSES
@@ -573,7 +591,7 @@ def test__scat_draft_table_duplicate__two_identical_rows(make_vault, status):
 def test__scat_draft_table_duplicate__the_verb_and_the_slug_are_one_type_and_a_note_is_kept_by_hand(
     make_vault, status
 ):
-    again = "| holds | [[staff]] | [[safe-handling]] | said twice |"
+    again = "| [[staff]] | holds | [[safe-handling]] | said twice |"
     seeded(
         make_vault,
         with_rows(status, GOOD, again),
@@ -612,7 +630,7 @@ def test__scat_draft_table_duplicate__a_row_whose_ends_are_not_links_is_not_comp
     r = report_of(
         make_vault,
         with_rows(
-            status, "| holds | staff | safe-handling | |", "| holds | staff | safe-handling | |"
+            status, "| staff | holds | safe-handling | |", "| staff | holds | safe-handling | |"
         ),
     )
     assert not [x for x in rules_of(r) if "DUPLICATE" in x]
@@ -632,6 +650,6 @@ def test__scat_draft_table_header__a_separator_with_no_leading_bar_is_one_messag
 ):
     r = report_of(
         make_vault,
-        with_section(status, table(GOOD, header="| type | from | to |", sep="---|---|---|---")),
+        with_section(status, table(GOOD, header="| from | type | to |", sep="---|---|---|---")),
     )
     assert rules_of(r) == [f"SCAT-{'DONE' if status == 'done' else 'DRAFT'}-TABLE-HEADER"]

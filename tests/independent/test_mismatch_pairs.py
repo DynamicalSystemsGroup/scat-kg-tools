@@ -15,7 +15,7 @@ from indep_kit import (
     row_line,
 )
 
-HEADER = "| type | from | to | note |"
+HEADER = "| from | type | to | note |"
 SEP = "|---|---|---|---|"
 SLOTS = {
     "<node you choose>": "borrowers",
@@ -44,132 +44,132 @@ def row(v, text, n=1):
 # ----- L-N: the three end rules ---------------------------------------------------------------------------------
 @variant("text-is-a-page-name", "END-NOLINK")
 def _(v):
-    row(v, "| holds | borrowers | [[quick-checkout]] | |")
+    row(v, "| borrowers | holds | [[quick-checkout]] | |")
 
 
 @variant("text-new-name", "END-NOLINK")
 def _(v):
-    row(v, "| holds | New group | [[quick-checkout]] | |")
+    row(v, "| New group | holds | [[quick-checkout]] | |")
 
 
 @variant("empty-cell", "END-NOLINK", slots={"<node you choose>": "volunteers"})
 def _(v):
-    row(v, "| holds | | [[quick-checkout]] | |")
+    row(v, "|  | holds | [[quick-checkout]] | |")
 
 
 @variant("empty-to-cell", "END-NOLINK", slots={"<node you choose>": "safe-handling"})
 def _(v):
-    row(v, "| holds | [[borrowers]] | | |")
+    row(v, "| [[borrowers]] | holds | | |")
 
 
 @variant("two-links", "END-NOLINK")
 def _(v):
-    row(v, "| holds | [[borrowers]] and [[volunteers]] | [[quick-checkout]] | |")
+    row(v, "| [[borrowers]] and [[volunteers]] | holds | [[quick-checkout]] | |")
 
 
 @variant("to-text", "END-NOLINK")
 def _(v):
-    row(v, "| holds | [[borrowers]] | quick checkout | |")
+    row(v, "| [[borrowers]] | holds | quick checkout | |")
 
 
 @variant("no-page", "END-NOPAGE")
 def _(v):
-    row(v, "| holds | [[ghost]] | [[quick-checkout]] | |")
+    row(v, "| [[ghost]] | holds | [[quick-checkout]] | |")
 
 
 @variant("no-page-near-match", "END-NOPAGE")
 def _(v):
-    row(v, "| holds | [[borrower]] | [[quick-checkout]] | |")
+    row(v, "| [[borrower]] | holds | [[quick-checkout]] | |")
 
 
 @variant("no-page-to-end", "END-NOPAGE")
 def _(v):
-    row(v, "| is provided by | [[self-checkout]] | [[ghost-tech]] | |")
+    row(v, "| [[self-checkout]] | is provided by | [[ghost-tech]] | |")
 
 
 @variant("illegal-name", "END-NOPAGE")
 def _(v):
-    row(v, "| holds | [[Safety briefing]] | [[quick-checkout]] | |")
+    row(v, "| [[Safety briefing]] | holds | [[quick-checkout]] | |")
 
 
 @variant("typeless-file", "END-NOPAGE")
 def _(v):
     v.write("notes.md", "Just notes.\n")
-    row(v, "| holds | [[notes]] | [[quick-checkout]] | |")
+    row(v, "| [[notes]] | holds | [[quick-checkout]] | |")
 
 
 @variant("typeless-file-with-frontmatter", "END-NOPAGE")
 def _(v):
     v.write("notes.md", '---\ntitle: "Mine"\n---\nJust notes.\n')
-    row(v, "| holds | [[notes]] | [[quick-checkout]] | |")
+    row(v, "| [[notes]] | holds | [[quick-checkout]] | |")
 
 
 @variant("at-the-cap", "END-NOPAGE")
 def _(v):
     v.write("scat.toml", "stakeholder_group_cap = 2\n")
-    row(v, "| holds | [[ghost]] | [[quick-checkout]] | |")
+    row(v, "| [[ghost]] | holds | [[quick-checkout]] | |")
 
 
 @variant("narrative-page", "END-NOTNODE")
 def _(v):
     v.write("narrative/other.md", page_text("narrative", "Other", "draft", extra="timeframe: past"))
-    row(v, "| holds | [[other]] | [[quick-checkout]] | |")
+    row(v, "| [[other]] | holds | [[quick-checkout]] | |")
 
 
 @variant("narrative-page-no-candidate", "END-NOTNODE", slots={"<node you choose>": "borrowers"})
 def _(v):
     v.write("narrative/other.md", page_text("narrative", "Other", "draft", extra="timeframe: past"))
     v.edit(NF, "[[borrowers]] queued", "people queued")
-    row(v, "| holds | [[other]] | [[quick-checkout]] | |")
+    row(v, "| [[other]] | holds | [[quick-checkout]] | |")
 
 
 @variant("invalid-type-page", "END-NOTNODE")
 def _(v):
     v.write("concern/odd-page.md", page_text("gadget", "Odd page", "draft"))
-    row(v, "| holds | [[borrowers]] | [[odd-page]] | |")
+    row(v, "| [[borrowers]] | holds | [[odd-page]] | |")
 
 
 @variant("empty-type-page", "END-NOTNODE")
 def _(v):
     v.write("concern/odd-page.md", '---\ntype:\nstatus: draft\ntitle: "Odd page"\n---\n')
-    row(v, "| holds | [[borrowers]] | [[odd-page]] | |")
+    row(v, "| [[borrowers]] | holds | [[odd-page]] | |")
 
 
 # ----- L-T, nearest case: a row whose two ends are not links is two messages ---------------------------------------
 @variant("both-ends-not-links", "END-NOLINK")
 def _(v):
-    row(v, "| holds | borrowers | quick-checkout | |")
+    row(v, "| borrowers | holds | quick-checkout | |")
 
 
 # ----- E-N: other problems of the table ---------------------------------------------------------------------------
 @variant("layers-swap", "TABLE-LAYERS")
 def _(v):
-    row(v, "| holds | [[quick-checkout]] | [[borrowers]] | |")
+    row(v, "| [[quick-checkout]] | holds | [[borrowers]] | |")
 
 
 @variant("layers-retype", "TABLE-LAYERS")
 def _(v):
-    row(v, "| holds | [[safe-handling]] | [[self-checkout]] | |")
+    row(v, "| [[safe-handling]] | holds | [[self-checkout]] | |")
 
 
 @variant("layers-not-neighbours", "TABLE-LAYERS")
 def _(v):
-    row(v, "| holds | [[borrowers]] | [[self-checkout]] | |")
+    row(v, "| [[borrowers]] | holds | [[self-checkout]] | |")
 
 
 @variant("type-unknown", "TABLE-TYPE")
 def _(v):
-    row(v, "| owns | [[borrowers]] | [[quick-checkout]] | |")
+    row(v, "| [[borrowers]] | owns | [[quick-checkout]] | |")
 
 
 @variant("type-empty", "TABLE-TYPE")
 def _(v):
-    row(v, "|  | [[borrowers]] | [[quick-checkout]] | |")
+    row(v, "| [[borrowers]] |  | [[quick-checkout]] | |")
 
 
 @variant("type-near", "TABLE-TYPE")
 def _(v):
-    row(v, "| holdz | [[borrowers]] | [[quick-checkout]] | |")
+    row(v, "| [[borrowers]] | holdz | [[quick-checkout]] | |")
 
 
 @variant("duplicate", "TABLE-DUPLICATE")
@@ -180,43 +180,43 @@ def _(v):
 @variant("duplicate-verb-and-slug", "TABLE-DUPLICATE")
 def _(v):
     v.edit(
-        NF, ROW1 + "\n", ROW1 + "\n| holds | [[borrowers]] | [[quick-checkout]] | other note |\n"
+        NF, ROW1 + "\n", ROW1 + "\n| [[borrowers]] | holds | [[quick-checkout]] | other note |\n"
     )
 
 
 @variant("row-three-cells", "TABLE-ROW")
 def _(v):
-    row(v, "| holds | [[borrowers]] | [[quick-checkout]] |")
+    row(v, "| [[borrowers]] | holds | [[quick-checkout]] |")
 
 
 @variant("row-no-closing-bar", "TABLE-ROW")
 def _(v):
-    row(v, "| holds | [[borrowers]] | [[quick-checkout]] | n")
+    row(v, "| [[borrowers]] | holds | [[quick-checkout]] | n")
 
 
 @variant("row-three-cells-no-bar", "TABLE-ROW")
 def _(v):
-    row(v, "| holds | [[borrowers]] | [[quick-checkout]]")
+    row(v, "| [[borrowers]] | holds | [[quick-checkout]]")
 
 
 @variant("row-five-cells", "TABLE-ROW")
 def _(v):
-    row(v, "| holds | [[borrowers]] | [[quick-checkout]] | x | y |")
+    row(v, "| [[borrowers]] | holds | [[quick-checkout]] | x | y |")
 
 
 @variant("row-two-cells", "TABLE-ROW")
 def _(v):
-    row(v, "| holds | [[borrowers]] |")
+    row(v, "| [[borrowers]] | holds |")
 
 
 @variant("header-wrong-name", "TABLE-HEADER")
 def _(v):
-    v.edit(NF, HEADER, "| kind | from | to | note |")
+    v.edit(NF, HEADER, "| from | kind | to | note |")
 
 
 @variant("header-three-columns", "TABLE-HEADER")
 def _(v):
-    v.edit(NF, HEADER, "| type | from | to |")
+    v.edit(NF, HEADER, "| from | type | to |")
 
 
 @variant("header-bad-separator", "TABLE-HEADER")
@@ -235,7 +235,7 @@ def _(v):
 def _(v):
     v.edit(
         NF,
-        SEP + "\n" + ROW1 + "\n| is addressed by | [[quick-checkout]] | [[self-checkout]] | |\n",
+        SEP + "\n" + ROW1 + "\n| [[quick-checkout]] | is addressed by | [[self-checkout]] | |\n",
         "",
     )
 
@@ -249,7 +249,7 @@ def _(v):
         + HEADER
         + "\n"
         + SEP
-        + "\n| holds | [[volunteers]] | [[safe-handling]] | |\n",
+        + "\n| [[volunteers]] | holds | [[safe-handling]] | |\n",
     )
 
 
@@ -262,7 +262,7 @@ def _(v):
         + HEADER
         + "\n"
         + SEP
-        + "\n| holds | [[volunteers]] | [[safe-handling]] | |\n",
+        + "\n| [[volunteers]] | holds | [[safe-handling]] | |\n",
     )
 
 
@@ -273,7 +273,7 @@ def _(v):
 
 @variant("mention-in-note-cell", "MENTION", statuses=("draft",))
 def _(v):
-    row(v, "| holds | [[borrowers]] | [[quick-checkout]] | Raised safe handling here |")
+    row(v, "| [[borrowers]] | holds | [[quick-checkout]] | Raised safe handling here |")
 
 
 @variant("mention-in-body", "MENTION", statuses=("draft",))
@@ -309,7 +309,7 @@ def test_each_fix_clears_its_mismatch_and_creates_no_other(
 
 def test_every_fix_is_data_with_a_kind_and_options_are_alternatives_or_steps(make_base):
     v = make_base("done")
-    row(v, "| holds | borrowers | [[ghost]] | |")
+    row(v, "| borrowers | holds | [[ghost]] | |")
     for p in v.check():
         assert p.fix["kind"] in ("exact", "options", "slot", "advisory", "manual")
         for o in p.fix.get("options", []):
@@ -349,7 +349,7 @@ def test_E_T_a_table_on_a_concern_page_is_not_read(make_base):
             "concern",
             "Safe handling",
             "done",
-            body="## Edges told\n\n" + HEADER + "\n" + SEP + "\n| holds | ghost | [[nowhere]] | |",
+            body="## Edges told\n\n" + HEADER + "\n" + SEP + "\n| ghost | holds | [[nowhere]] | |",
         ),
     )
     # the link is an ordinary body link: only the dangling-body rule speaks, and no row rule does
@@ -360,7 +360,7 @@ def test_E_T_a_table_on_a_concern_page_is_not_read(make_base):
 # ----- N-T: a mismatch of a narrative is an error once it is done; setting done is refused -------------------------
 def test_N_T_mismatch_is_a_warning_before_done_an_error_at_done_and_blocks_done(make_base):
     v = make_base("draft")
-    row(v, "| holds | borrowers | [[quick-checkout]] | |")
+    row(v, "| borrowers | holds | [[quick-checkout]] | |")
     (p,) = v.check()
     assert (p.rule, p.severity) == ("SCAT-DRAFT-END-NOLINK", "warning")
     code, doc = v.scat("set-status", "saturday", "done")
@@ -373,7 +373,7 @@ def test_N_T_mismatch_is_a_warning_before_done_an_error_at_done_and_blocks_done(
 def test_the_mismatch_in_one_narrative_does_not_change_another_pages_messages(make_base):
     v = make_base("done")
     before = {p.file for p in v.check()}
-    row(v, "| holds | [[ghost]] | [[quick-checkout]] | |")
+    row(v, "| [[ghost]] | holds | [[quick-checkout]] | |")
     after = v.check()
     assert {p.file for p in after} == {NF} and before == set()
     for page in ("borrowers", "quick-checkout"):

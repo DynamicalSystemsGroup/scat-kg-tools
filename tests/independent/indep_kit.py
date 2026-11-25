@@ -154,8 +154,8 @@ def row_line(n: int) -> int:
     return SEPARATOR_LINE + n
 
 
-ROW1 = "| holds | [[borrowers]] | [[quick-checkout]] | Said twice. |"
-ROW2 = "| is addressed by | [[quick-checkout]] | [[self-checkout]] | |"
+ROW1 = "| [[borrowers]] | holds | [[quick-checkout]] | Said twice. |"
+ROW2 = "| [[quick-checkout]] | is addressed by | [[self-checkout]] | |"
 
 
 def narrative_text(
@@ -175,7 +175,7 @@ def narrative_text(
         'description: "A Saturday at the lending desk."\n'
         "timeframe: past\n---\n\n"
         f"{body}\n\n## Edges told\n\n"
-        "| type | from | to | note |\n|---|---|---|---|\n" + "\n".join(rows) + "\n"
+        "| from | type | to | note |\n|---|---|---|---|\n" + "\n".join(rows) + "\n"
     )
 
 
@@ -528,7 +528,7 @@ def oracle_ends(v: Vault) -> list[tuple[str, int, str, str, str]]:
             cells = [c.strip() for c in CELL_SPLIT.split(row.strip())[1:-1]]
             if len(cells) != 4:
                 continue
-            for name, cell in (("from", cells[1]), ("to", cells[2])):
+            for name, cell in (("from", cells[0]), ("to", cells[2])):
                 links = LINK.findall(cell)
                 stripped = LINK.sub("", cell).strip()
                 if len(links) != 1 or stripped:

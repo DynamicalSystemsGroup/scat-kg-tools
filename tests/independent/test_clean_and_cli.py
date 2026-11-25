@@ -19,7 +19,7 @@ def test_clean_vault_has_zero_messages(make_base, st):
 
 def test_real_process_prints_what_the_entry_point_returns(make_base):
     v = make_base("done")
-    v.edit(NARRATIVE_FILE, "| holds | [[borrowers]]", "| holds | borrowers")
+    v.edit(NARRATIVE_FILE, "| [[borrowers]] | holds", "| borrowers | holds")
     scat = Path(sys.executable).parent / "scat"
     proc = subprocess.run(
         [str(scat), "check", "--json", "--root", str(v.root)],

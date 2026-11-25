@@ -8,7 +8,7 @@ from viewutil import page, tree_hash
 import scat_kg
 from scat_kg.ops.result import Result
 
-BAD_ROW = "| holds | farmers | [[water]] | |"  # the `from` end is plain text, not a link
+BAD_ROW = "| farmers | holds | [[water]] | |"  # the `from` end is plain text, not a link
 
 
 def refused(view, subject_has=None):
