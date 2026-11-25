@@ -235,8 +235,8 @@ matters without claiming to be exhaustive. No particular project's choices appea
   each coded. Like any others, its stakeholder groups are groups: none stands for one identifiable person. It
   avoids politically loaded illustrations. It doubles as the test fixture and the documentation example.
 - **G7. Documentation on GitHub Pages**, from `scat-kg-tools`, with a light musical reference (R-15). It has a page for
-  each stage of the manual journey (J1–J7): getting started, a planning guide, a scenario facilitation guide, an architecture
-  facilitation guide and a coding guide, a guide for the chat path, and a short note on the IDE path. It summarises the end-to-end flow on one
+  each stage of the journey (J1–J10): getting started, a planning guide, a scenario facilitation guide, an architecture
+  facilitation guide, a coding guide, an analysis guide, a guide for the chat path, and a short note on the IDE path. It summarises the end-to-end flow on one
   page, makes data storage, rights and consent explicit, and gives a reference for the terms, the Python API and the
   CLI. Each operational choice (participation terms, AI use, where each kind of material is kept, who it is released
   to and under what licence, and how commitments to participants are kept) is named as a dependency, with "for
@@ -391,33 +391,36 @@ Requirements state outcomes. How each is met is decided in the work packages.
 
 ## User acceptance
 
-Acceptance is judged by people using the product, not only by tests. It covers three journeys: the solo trial, the manual
-journey and the chat journey. The IDE path is tested by the team only.
+Acceptance is judged by people using the product, not only by tests. It follows the organiser's whole journey, from
+first hearing of SCAT to handing over a finished model, on the manual path and on the chat path. The IDE path is
+tested by the team only.
 
-**The solo-trial journey** comes first, because an organiser who can't make the tools work alone won't adopt them:
-from the docs site, set up, code one narrative from their own notes, see its fingerprint in Obsidian, and sign it off as `done`. It runs on the manual path
-*(default)*, and is short enough to finish in one sitting.
+**The journey:**
 
-**The manual journey:**
-
-| Stage | The user | Docs page |
+| Stage | The organiser | Docs page |
 |---|---|---|
-| J1 Find | lands on the docs site and understands what it is for and how to start | home |
-| J2 Create | on GitHub's web interface, makes a new **private** repository from `scat-kg-template`, then clones it | getting started |
-| J3 Set up | installs the prerequisites from exact commands, runs one setup command, gets a working `scat_kg`, and opens the folder as an Obsidian vault | getting started |
-| J4 Plan | plans a facilitation event: which sessions elicit scenarios and which elicit architectures, who takes part in each, the participation terms agreed for the event, and stakeholder groups within the cap | planning guide |
-| J5 Capture | during the event, records field notes | the two facilitation guides |
-| J6 Code | afterwards, in an interactive session (the Python REPL or the `scat` CLI), drafts narratives from the field notes and codes them into SCAT pages and edges, moving pages from stub through draft to done and fixing each problem from its message | coding guide; API and CLI reference |
-| J7 Finish | reaches a clean whole-vault check, generates the views, navigates the vault in Obsidian, commits and pushes, then decides the model is finished, locks a version and hands it over | coding guide |
+| J1 Discover | finds the docs site or the repository, understands what SCAT is for, and gets interested | home |
+| J2 Try | tries it alone, on their own work and data: sets up, codes one narrative from their own notes, sees its fingerprint in Obsidian, and sets it `done` | getting started; the solo trial |
+| J3 Decide | decides to use SCAT to organise a facilitated elicitation | the flow |
+| J4 Set terms | makes and documents the up-front decisions and assumptions: participation terms, AI use, how each kind of material is kept and released, and the commitments made to participants | data, rights and consent; the "Before you start" checklist |
+| J5 Set up | on GitHub's web interface, makes a new **private** repository from `scat-kg-template`, clones it, installs the prerequisites from exact commands, runs one setup command, gets a working `scat_kg`, and opens the folder as an Obsidian vault | getting started |
+| J6 Plan | plans one or more facilitation events: which sessions elicit scenarios and which architectures, who takes part in each, the participation terms, and stakeholder groups within the cap | planning guide |
+| J7 Capture | at each event, records field notes | the two facilitation guides |
+| J8 Code | works each narrative round the coding loop (interpreting, authoring, coding, reviewing) in an interactive session (the Python REPL or the `scat` CLI) and in Obsidian, fixing each problem from its message, until it is `done` | coding guide; API and CLI reference |
+| J9 Analyse | generates the views, interprets them, and goes back round the coding loop where they send it | analysis guide; the notebook |
+| J10 Hand over | reaches a clean whole-vault check with the views generated and the vault navigable in Obsidian, commits and pushes, decides the model is finished, locks a version and hands it over. A hand-over is a release: work can continue after it, toward the next | coding guide |
 
-**The chat journey** is written with the chat path (G14): from the input material uploaded to the chat, through coding
-in the chat and in Obsidian, to a clean check of a private repository and generated views, then the coder decides the model is finished, locks
-a version and hands it over, all with no terminal.
+J1 and J2 are the **solo trial**: short enough for one sitting, because an organiser who can't make the tools work
+alone won't adopt them. J2 runs on the manual path *(default)*.
+
+**The chat journey** follows the same stages, J1 to J10, with the chat path (G14) in place of the interactive session
+from J5 on: the field notes uploaded to the chat as a collection, the coding loop in the chat and in Obsidian, views
+generated through the MCP server, and a clean check of a private repository, then the hand-over, all with no terminal.
 
 **UA-A, the AI user tests**, run by the team on the candidate before the chief engineer's walkthrough:
 
 - **Personas.** Every tester is the organiser at the solo-trial stage (see "Users"), varying only in comfort with the
-  tools. At least three for the manual journey, each of whom first runs the solo-trial journey, each written in the user's own words and never the tool's
+  tools. At least three for the manual path, each running the whole journey from J1, each written in the user's own words and never the tool's
   vocabulary. **Most run on Haiku**, so the test doesn't depend on much reasoning: if the right way needs reasoning to
   find, it isn't yet the easy way.
   - an organiser who is comfortable with a terminal, GitHub and Obsidian but is not a developer (Haiku);
@@ -430,8 +433,8 @@ a version and hands it over, all with no terminal.
   engineer signs in, with lab material only.
 - **Setup.** Each manual tester starts in a clean user environment (a fresh home directory, uv not installed), from
   the Pages preview URL, and follows only what the docs say.
-  - J2 is simulated with an isolated clone of the template that has its remote removed.
-  - The Obsidian steps (J3, J7) are checked through the files. Obsidian itself is covered by UA-M and R-21.
+  - J5's repository is simulated with an isolated clone of the template that has its remote removed.
+  - The Obsidian steps (J2, J5, J8, J10) are checked through the files. Obsidian itself is covered by UA-M and R-21.
   - Chat testers start from the Pages preview and a private repository made from the template, with no terminal.
   - Each tester codes a small elicitation in a domain of its own, different from the worked example: at least one
     scenario and one architecture, each coded.
@@ -439,7 +442,7 @@ a version and hands it over, all with no terminal.
   report first answers what style or reference the docs evoke. Then, stage by stage, it says where the tester got
   stuck, what it had to guess, and where the docs left it with nowhere to go.
 - **Pass bar.** Every tester, the Haiku testers included, reaches the end of its journey with a clean check. Testers
-  on the manual and chat journeys end as a hand-over: given a stated hand-over case (a contract delivery, a paper
+  on both paths end the journey as a hand-over: given a stated hand-over case (a contract delivery, a paper
   submission or a class project hand-in), they decide the model is finished, lock a version and hand it over; the
   report names the tag, the commit it pins and the recipient the case names. Manual testers, whose clone has no
   remote, lock with `git tag`. Every
@@ -452,13 +455,13 @@ a version and hands it over, all with no terminal.
 
 **UA-M, the chief engineer's walkthroughs** (the first sitting of the reviewer's guide, and the core of acceptance):
 
-- He runs the solo-trial journey, then the manual journey, J1 to J7, himself on the candidate. He starts from the Pages preview, makes a real
+- He runs the journey, J1 to J10, himself on the candidate, on the manual path. He starts from the Pages preview, makes a real
   repository through the documented creation path, clones it, sets up, and works through an interactive session with
   the REPL and the CLI, coding a small elicitation of his own choosing. He also runs the chat journey as he would use
   it.
 - The walkthrough scripts give each stage's entry point and what "done" looks like, so a session can be split and
   resumed.
-- **Pass:** he completes all three journeys from the documentation without help, and judges the documentation clear and
+- **Pass:** he completes the journey on both paths from the documentation without help, and judges the documentation clear and
   navigable and the journeys clear.
 - Anything he flags is fixed on `dev`, and the candidate is refreshed (see Governance, "Release"). The walkthrough
   then resumes from the affected stage.
@@ -475,7 +478,7 @@ a version and hands it over, all with no terminal.
 ## Definition of good enough
 
 - R-1 to R-23 met, with evidence.
-- UA-A passes on the candidate, for all three journeys (solo trial, manual, chat).
+- UA-A passes on the candidate, for the whole journey on both paths.
 - The candidate is staged for UA-M, with the reviewer's guide ready.
 - The ontology, toolchain, facilitation, prior-art and chat-path readouts exist, and the architecture document is
   reviewed (R-22). Every term of the ontology traces to an adopted ontology or is recorded as authored, with the trade study's
