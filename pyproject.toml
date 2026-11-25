@@ -7,16 +7,20 @@ dependencies = ["pydantic", "PyYAML", "rdflib"]
 
 [project.optional-dependencies]
 draw = ["matplotlib>=3.8"]
+mcp = ["mcp>=1.2,<2", "uvicorn"]
 
 [project.scripts]
 scat = "scat_kg.cli:main"
+scat-mcp = "scat_kg.mcp_server.__main__:main"
 
 [dependency-groups]
 dev = [
     "jsonschema>=4.26.0",
     "matplotlib>=3.8",
+    "mcp>=1.2,<2",
     "pytest",
     "ruff",
+    "uvicorn",
 ]
 docs = [
     "mkdocs-material>=9.8.2",
