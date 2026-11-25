@@ -21,8 +21,8 @@ Thin spots: the notes do not say which team is meant by "the team", so no group 
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[community-members]] | [[right-to-be-forgotten]] | The contributor's side; the notes say the contributor appears to have understood forget this way. |
-| is addressed by | [[right-to-be-forgotten]] | [[forget-signal]] | Used as advocacy; the team experienced it as subversive. |
-| holds | [[community-members]] | [[shared-data-set-integrity]] | A shared resource all participants depend on together. |
+| [[community-members]] | holds | [[right-to-be-forgotten]] | The contributor's side; the notes say the contributor appears to have understood forget this way. |
+| [[right-to-be-forgotten]] | is addressed by | [[forget-signal]] | Used as advocacy; the team experienced it as subversive. |
+| [[community-members]] | holds | [[shared-data-set-integrity]] | A shared resource all participants depend on together. |

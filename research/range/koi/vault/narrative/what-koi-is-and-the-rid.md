@@ -21,6 +21,6 @@ Thin spots: the source lists neither the six functions nor the detail of per-rel
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| is addressed by | [[resources-referable-across-subnets]] | [[resource-identifier]] | The RID is the stable handle so a resource can be referenced, related, updated and forgotten without a single source of truth. |
+| [[resources-referable-across-subnets]] | is addressed by | [[resource-identifier]] | The RID is the stable handle so a resource can be referenced, related, updated and forgotten without a single source of truth. |

@@ -21,5 +21,5 @@ Thin spots: the sources say nothing on how the infrastructure answers the integr
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|

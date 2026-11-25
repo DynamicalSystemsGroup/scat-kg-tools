@@ -21,9 +21,9 @@ Thin spots: the notes give the ethnographers' side only. They say nothing of wha
 
 ## Edges told
 
-| type | from | to | note |
+| from | type | to | note |
 |---|---|---|---|
-| holds | [[ethnographers]] | [[closing-the-loop]] | Building the loop: the study is fed back into the community it studies. |
-| is addressed by | [[closing-the-loop]] | [[durable-shared-records]] | Tools help the loop along but cannot close it; the notes name only lasting, shared records. |
-| is provided by | [[durable-shared-records]] | [[telescope]] | |
-| is provided by | [[durable-shared-records]] | [[obsidian]] | |
+| [[ethnographers]] | holds | [[closing-the-loop]] | Building the loop: the study is fed back into the community it studies. |
+| [[closing-the-loop]] | is addressed by | [[durable-shared-records]] | Tools help the loop along but cannot close it; the notes name only lasting, shared records. |
+| [[durable-shared-records]] | is provided by | [[telescope]] | |
+| [[durable-shared-records]] | is provided by | [[obsidian]] | |
