@@ -1,5 +1,5 @@
 ---
-type: stakeholder-group
+type: group
 status: stub
 title: "Funders"
 ---
