@@ -274,9 +274,10 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U3r | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T17:09:19-05:00 | fresh reviewer PASS first time, behaviour run |
 | WP21-U3g | Python developer (SCAT-MENTION opt-in, glossary draft), sonnet | 3 | 3 | `wp21/u3g` | done |  | 2026-11-25T17:09:19-05:00 | 1 push-back (3 checkable items) and a rebase onto U3, re-reviewed PASS; separate rule SCAT-SUGGEST-CONFIG; glossary change drafted for the ACE; merged 0b952b4 |
 | WP21-U3gr | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T17:09:19-05:00 | review found 3 items, re-review PASS (haiku) |
-| WP21-U3h | technical writer and Python developer (G9 glossary change as decided in D-117), sonnet | 2 |  | `wp21/u3h` | in flight |  |  |  |
-| WP21-U3hr | reviewer (fresh), sonnet | 1 |  | `-` | queued | U3h |  |  |
-| WP21-U8f | Python developer (shellcheck SC2015 in the launcher, red CI on dev; unplanned fix forward for U8), sonnet | 1 |  | `wp21/u8f` | in flight |  |  |  |
+| WP21-U3h | technical writer and Python developer (G9 glossary change as decided in D-117), sonnet | 2 | 3 | `wp21/u3h` | done |  | 2026-11-25T17:51:21-05:00 | 1 correction round (D-118), then PASS; eleven terms, one-line cap edit (820); merged 5fa3378 |
+| WP21-U3hr | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:51:21-05:00 | fresh reviewer PASS first time |
+| WP21-U8f | Python developer (shellcheck SC2015 in the launcher, red CI on dev; unplanned fix forward for U8), sonnet | 1 | 1 | `wp21/u8f` | done |  | 2026-11-25T17:51:21-05:00 | fix forward: shellcheck SC2015 red CI; uvx shellcheck-py clean; merged 61627f7 |
+| WP21-U8fr | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:51:21-05:00 | fresh reviewer PASS first time |
 | WP21-U4 | mechanical sweep (template, range vault), haiku | 2 | 2 | `wp21/template`; `wp21/u4` | done |  | 2026-11-25T17:09:19-05:00 | first-time PASS; haiku swap script, template f2a562a pushed on wp21/template; range vault 43b6b9d; merged 7e41fa6 |
 | WP21-U4r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:09:19-05:00 | fresh reviewer PASS first time, script-checked the swap |
 | WP21-U5 | technical writer (docs/norms.md), sonnet | 5 | 5 | `wp21/u5` | done |  | 2026-11-25T17:09:19-05:00 | first-time PASS; 777 words, self-audit of every must; merged 2eb1c3e |
@@ -289,7 +290,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U8r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T17:09:19-05:00 | fresh reviewer PASS first time |
 | WP21-U9 | Python developer (image CI, launcher pull, run-time user), sonnet | 5 | 5 | `wp21/u9` | done |  | 2026-11-25T15:46:40-05:00 | first-time PASS; own workflow file for the paths filter; 2 tests added, 2 edited for G6; merged 9616a24 |
 | WP21-U9r | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, built the image under Colima |
-| WP21-U10 | technical writer (life-cycle guide, leave-no-trace), sonnet | 5 |  | `wp21/u10` | in flight |  |  |  |
+| WP21-U10 | technical writer (life-cycle guide, leave-no-trace), sonnet | 5 |  | `wp21/u10` | blocked | ACE decision: R7 one-action bar, 3 review rounds (wp21/u10 43539d5) |  |  |
 | WP21-U10r | reviewer and cold reader (fresh), sonnet | 2 |  | `-` | queued | U10 |  |  |
 
 ## Iterations and velocity
@@ -329,6 +330,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 31 | WP20-U1, U1r, U2r to U6r, UA1 (closed late from git: PM handovers had left them in review or queued; reviews of U2 to U6 ran as 1 to 3 rounds each) | 21 | 26 | 1.24 | 1.0 h | 26.0 |
 | 33 | WP21-U1, U1r, U7, U7r, U9, U9r | 14 | 14 | 1.00 | 0.6 h | 23.33 |
 | 34 | WP21-U2, U2r, U3, U3r, U3g, U3gr, U4, U4r, U5, U5r, U8, U8r (U4b, a 1-point pin edit, unplanned: no separate review, the docs tests are its check) | 33 | 33 | 1.00 | 2.2 h | 15.0 |
+| 35 | WP21-U3h, U3hr, U6, U6r, U8f, U8fr (U8f, U8fr added by the PM: red CI) | 12 | 13 | 1.08 | 1.6 h | 8.13 |
 
 ## Velocity and forecast
 
@@ -339,6 +341,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP21 wave 3 landed (U3h, U6, U8f merged; iteration 35: 12 est, 13 realized, 1.6 h). U10 is blocked on the ACE: the one-action bar of R7 failed three review rounds (branch wp21/u10 at 43539d5, not merged).
 
 Current: WP21 wave 2 landed (U2, U3, U3g, U4, U4b, U5, U8 merged; tier 1 2377 passed; iteration 34: 33 est, 33 realized, 2.2 h). U6 in review, U10 in flight.
 
