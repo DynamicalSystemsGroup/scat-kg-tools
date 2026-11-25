@@ -270,11 +270,11 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U1r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, re-ran checks |
 | WP21-U2 | Python developer (table order), sonnet | 5 |  | `wp21/u2` | in flight |  |  |  |
 | WP21-U2r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U2 |  |  |
-| WP21-U3 | Python developer (exclusion, machine interface), sonnet | 5 |  | `wp21/u3` | queued | U2 |  |  |
+| WP21-U3 | Python developer (exclusion, machine interface), sonnet | 5 |  | `wp21/u3` | in flight |  |  |  |
 | WP21-U3r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U3 |  |  |
-| WP21-U3g | Python developer (SCAT-MENTION opt-in, glossary draft), sonnet | 3 |  | `wp21/u3g` | queued | U2 |  |  |
+| WP21-U3g | Python developer (SCAT-MENTION opt-in, glossary draft), sonnet | 3 |  | `wp21/u3g` | in flight |  |  |  |
 | WP21-U3gr | reviewer (fresh), sonnet | 2 |  | `-` | queued | U3g |  |  |
-| WP21-U4 | mechanical sweep (template, range vault), haiku | 2 |  | `wp21/template`; `wp21/u4` | queued | U2 |  |  |
+| WP21-U4 | mechanical sweep (template, range vault), haiku | 2 |  | `wp21/template`; `wp21/u4` | in flight |  |  |  |
 | WP21-U4r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U4 |  |  |
 | WP21-U5 | technical writer (docs/norms.md), sonnet | 5 |  | `wp21/u5` | queued | U3 |  |  |
 | WP21-U5r | reviewer and cold reader (fresh), sonnet | 2 |  | `-` | queued | U5 |  |  |
