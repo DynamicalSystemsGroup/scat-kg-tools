@@ -57,7 +57,7 @@ uv run scat fingerprint groups-under-a-cap-pitch
 uv run scat edges holds
 uv run scat layered
 uv run scat trace anonymity --direction up
-uv run scat export-edges --out edge-tables
+uv run scat export-edges --out exports
 ```
 
 A view's data is the same in the notebook, the CLI and later in chat.

@@ -790,7 +790,7 @@ git commit -m "Code the notes from my first session"
 git push
 ```
 
-Run `git status` first and read the list: it shows what the commit will hold. `git add .` stages every change in the folder, so if the list holds a change you did not mean to make, sort that out before you go on. Commit when the whole-vault check ends with zero errors.
+Run `git status` first and read the list: it shows what the commit will hold. `git add .` stages every change in the folder, so if the list holds a change you did not mean to make, sort that out before you go on. Commit when the whole-vault check ends with zero errors. If `git status` says there is nothing to commit, your work is already saved: go on to `git push`, or to the lock below.
 
 ## Lock a version
 
@@ -801,7 +801,7 @@ git tag v1
 git push origin v1
 ```
 
-The tag names that commit for good; later commits do not move it.
+The tag names that commit for good; later commits do not move it. Locking is your statement that the model is finished, and `git tag` does not run the tool. Stub pages do not stop you: the architecture allows them, and the tool never faults a page for being unfinished. Run the whole-vault check first, so the version you lock is clean.
 
 ### See which commit a tag pins
 

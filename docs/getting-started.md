@@ -195,7 +195,8 @@ If you already added narratives of your own, `git rm` leaves them where they are
 git commit -m "Remove the example"
 ```
 
-Your vault now holds no example pages. You do not write the folders or pages for your own content by hand. The tools
+Your vault now holds no example pages. The five folders went with them, so `narrative` and the others are not there
+to list: each comes back when the first stub of its type is made. You do not write the folders or pages for your own content by hand. The tools
 create each one as a stub, as you will see in the [coding guide](coding.md).
 
 ## The solo trial
@@ -203,9 +204,10 @@ create each one as a stub, as you will see in the [coding guide](coding.md).
 Try SCAT alone, on your own notes, before you plan an event with others. The trial fits in one sitting. By the end,
 one narrative is coded, you have seen its fingerprint, and it is `done`. Nothing leaves your private repository.
 
-The commands below use a made-up account, `saturday-at-the-tool-library`, a Saturday at a community tool library.
-Use your own names wherever you see it, and your own group, concern and affordance. Names are lower-case letters,
-digits and single hyphens. Your vault holds at most the number of groups that `scat.toml` allows (3 in the
+The commands below show your names in capitals: `NARRATIVE`, `GROUP`, `CONCERN` and `AFFORDANCE`. Replace each with a
+name of your own before you run the line. The pages and outputs show a made-up account, `saturday-at-the-tool-library`,
+a Saturday at a community tool library, so you can see what each step looks like. A name is lower-case letters,
+digits and single hyphens, so a command run with a capitalised name is refused and nothing is written. Your vault holds at most the number of groups that `scat.toml` allows (3 in the
 template), so name a broad group such as `workshop-participants`, never a person.
 
 **1. Set up.** Do steps 1 to 5 above: create your private repository, run `uv sync`, run `uv run scat check`, open the
@@ -214,10 +216,11 @@ folder in Obsidian, and remove the example. Stay in your vault folder in Termina
 **2. Make the page for your narrative.** One command makes the empty page:
 
 ```text
-uv run scat stub saturday-at-the-tool-library --type narrative
+uv run scat stub NARRATIVE --type narrative
 ```
 
-It prints `created narrative/saturday-at-the-tool-library.md`.
+For the made-up account it prints `created narrative/saturday-at-the-tool-library.md`. Yours prints your name in its place.
+The `narrative` folder did not exist after step 5, and this command makes it.
 
 **3. Write the account.** Open that page in Obsidian and write one account from your notes, as it was told, under the
 front matter. Set `kind` to `scenario`, set `timeframe` to `past`, set `status` to `draft` and add a one-sentence
@@ -244,9 +247,11 @@ From the point of view of Workshop participants (about 10:20)
 the group, concern and affordance pages they name, as stubs. You do not write the rows or the pages by hand:
 
 ```text
-uv run scat record-edge holds workshop-participants tools-come-back-in-good-order --told-by saturday-at-the-tool-library --note "Said twice in the first hour."
-uv run scat record-edge addressed-by tools-come-back-in-good-order sign-out-sheet --told-by saturday-at-the-tool-library
+uv run scat record-edge holds GROUP CONCERN --told-by NARRATIVE --note "Said twice in the first hour."
+uv run scat record-edge addressed-by CONCERN AFFORDANCE --told-by NARRATIVE
 ```
+
+The made-up account's two edges are `workshop-participants` holds `tools-come-back-in-good-order`, which is addressed by `sign-out-sheet`.
 
 Each prints `created ...`, `changed ...` and a `note:` line saying which row it added. Then, in Obsidian, link each
 name where the account says it, as `[[workshop-participants|Workshop participants]]`,
@@ -262,8 +267,10 @@ It prints `no problems`.
 **5. See its fingerprint.** The fingerprint is the nodes the narrative links and the edges it tells:
 
 ```text
-uv run scat fingerprint saturday-at-the-tool-library
+uv run scat fingerprint NARRATIVE
 ```
+
+For the made-up account it prints:
 
 ```text
 fingerprint saturday-at-the-tool-library (scenario, draft)
@@ -281,7 +288,7 @@ fingerprint saturday-at-the-tool-library (scenario, draft)
 To see it in Obsidian, draw it into your vault and open the picture there:
 
 ```text
-uv run scat draw fingerprint --out fingerprint.png saturday-at-the-tool-library
+uv run scat draw fingerprint --out fingerprint.png NARRATIVE
 ```
 
 It prints `created fingerprint.png`. In Obsidian, open `fingerprint.png` from the file list. The narrative page's
@@ -292,7 +299,7 @@ narrative has none.
 not the tool's. When you decide it is, run:
 
 ```text
-uv run scat set-status saturday-at-the-tool-library done
+uv run scat set-status NARRATIVE done
 uv run scat check
 ```
 
