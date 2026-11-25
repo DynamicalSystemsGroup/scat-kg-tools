@@ -16,6 +16,11 @@ the team; each item waits for you when you have a moment.
    pane. Use stays light and human-paced. I'll ask in chat when the spike is ready, not before.
 2a. **Done: RS3's lab run worked end to end** (D-090). Tailscale stays installed and signed in; HTTPS and the Funnel
    policy stay enabled on your tailnet; Funnel itself is off and the lab MCP entry is deleted.
+1b. **A guard refused a one-line schema edit (WP17-U3b, D-093).** `scat draw --out` can write a drawing outside the
+   vault; the machine-interface schema lets only `export-edges` report such a path. Two ways on: (a) you allow the
+   edit (add `draw` beside `export-edges` in `OperationResult`'s path rule), or (b) I rule that `draw` writes only
+   inside the vault, as the chat path already keeps views there, and the code changes instead. Until then WP17 stays
+   unaccepted; everything else in it is on `dev` and green.
 2b. **Your template checkout will conflict on pull.** The migrated template on `dev` adds `bases: true` to
    `.obsidian/`; your uncommitted edits in `scat-kg-template/.obsidian/` (`core-plugins.json`, `app.json`) were left
    untouched, so a `git pull` there will stop on them. Commit, stash or discard them as you prefer before pulling.

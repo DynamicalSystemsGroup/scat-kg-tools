@@ -1927,3 +1927,23 @@ guide, and the three items carried from WP16. Dependency call (the ACE's, `ORG.m
 in an optional extra of `scat-kg` or in the template; the core runtime dependencies stay as they are. No impact map:
 it adds, and changes no term, contract field or rule (the change consultant checks the file map). Revert point
 `divergence/D-091`.
+
+## D-093 | 2026-11-25 | WP17 held on a guard refusal; future-stamped metrics corrected; two check gaps
+
+**Held: WP17-U3b.** The permission guard refused, twice, a one-line edit to `contracts/machine-interface.schema.json`
+that would let `scat draw --out` report a path outside the vault (today only `export-edges` may). The team does not
+work around a guard refusal. WP17 is otherwise on `dev` (tools 500b73f, template e8c23d0, CI green, 1,943 tests
+passed) and is not accepted until this is settled. It goes to the chief engineer's morning list with two options: he
+allows the schema edit, or the ACE rules that `draw` writes only inside the vault (where D-090 already keeps views on
+the chat path) and the code changes instead.
+
+**Metrics timestamps.** 45 records (lines 431 to 475) carry times in the future: the PM of WP16-U15 stamped an
+invented 09:30, and the WP17 PM then stamped its own records 7 h 52 min ahead to keep the log in time order. Both are
+wrong; the log is observations. A correction unit appends, for each, a record with the real time taken from the
+unit's commits and a `corrects` field holding the wrong one (`metrics.md`), and `check_metrics.py` gains a rule that
+refuses a timestamp more than five minutes ahead of the clock. Elapsed hours inside WP17 are unaffected (the shift was
+uniform).
+
+**Check gaps** (the WP17 PM's flags): a narrative's broken row is reported only when that narrative is checked, so a
+view drawing other pages silently leaves it out; and a duplicate node name behind a row end silently drops that edge.
+Both are defects against R-1 and R-23: the correction unit's PM fixes them, with tests, in the tool.
