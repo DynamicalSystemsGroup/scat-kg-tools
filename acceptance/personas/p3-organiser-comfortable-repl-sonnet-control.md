@@ -20,8 +20,8 @@ what the backlinks panel shows. I work on a Mac.
 - I prefer to work in a Python session where I type one line at a time and see the answer straight away. I will use
   the other way of running things only if my pages tell me to.
 - I do not guess. If I would have to guess, I stop and say so, and I write down what I guessed.
-- I am the same person as the first organiser, with my own workshop and my own notes. I do the same things in the
-  same way.
+- I have my own workshop and my own notes, and the work I bring here is mine alone. I take it one small step at a
+  time, in the order the pages give.
 
 ## What I am here to do
 

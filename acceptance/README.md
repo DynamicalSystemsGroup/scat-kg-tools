@@ -91,6 +91,20 @@ grep -niE 'anonymity|attribution|intent-without-drift|gated-approval|groups-clus
 
 Run the same grep against each brief (`grep ... briefs/p1-*.md`) before a round: a hit in a brief is a defect in the brief, and the output must be empty.
 
+For void rule 3 (reading `src/` or `tests/`), grep the report for paths into either folder; the output must be empty, and any hit is read in context (a path quoted from a docs page is fine):
+
+```text
+grep -nE '(^|[^A-Za-z0-9_./-])(src|tests)/[A-Za-z0-9_.-]' report.md
+```
+
+For void rule 2 (a claim with no pasted output), list each stage (`### J...` heading) that has no fenced block and is not marked "not reached":
+
+```text
+awk '/^### J[0-9]/{if(h&&!f&&!nr)print FILENAME": "h": no fenced block";h=$0;f=0;nr=0;next} h&&/^```/{f=1} h&&/Reached and done\?\*\* *not reached/{nr=1} END{if(h&&!f&&!nr)print FILENAME": "h": no fenced block"}' report.md
+```
+
+A line from the awk check is a prompt to read that stage, not a verdict: a stage with no command to run may honestly have no block. It cannot tell whether a block supports the claim, so the PM still reads each claim against its block.
+
 A hit in the pasted output of the untouched example is expected. A hit in a name the tester chose, or in output after the
 example was removed, makes the report void.
 
