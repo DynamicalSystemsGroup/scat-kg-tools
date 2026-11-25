@@ -207,7 +207,7 @@ was not tried. If it does, `code-a-narrative` starts the loop.
 
 ## The coding loop, in the chat and in Obsidian
 
-This is the [coding loop](coding.md#the-coding-loop) with an assistant.
+This is the [coding loop](coding.md#the-coding-loop) with an assistant. What is a rule and what is a norm is on the [norms](norms.md) page.
 
 1. **Interpreting.** You give the field notes and name the narrative. The assistant asks about anything unclear; it
    does not decide.
