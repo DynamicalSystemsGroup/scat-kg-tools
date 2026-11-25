@@ -513,7 +513,7 @@ def test__scat_name__non_latin_title_needs_a_hand_choice(make_vault):
         {path: doc("concern", "Привет")},
         msg(
             name_head(path, "Привет", "is not legal (it contains `П`, outside a-z, 0-9 and -)"),
-            "Fix: choose a legal name by hand (contract section 2)",
+            "Fix: choose a legal name by hand (page contracts section 2)",
         ),
     )
 

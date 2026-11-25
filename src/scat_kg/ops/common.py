@@ -31,7 +31,7 @@ def find_page(operation: str, vault: Vault, ref: str) -> tuple[Page | None, Resu
             operation,
             ref,
             "no page has this name or path",
-            f"{ADDRESS_HINT}, e.g. `concern/safe-handling-of-tools.md`",
+            ADDRESS_HINT,
         )
     paths = ", ".join(p.path for p in found.pages)
     return None, refused(

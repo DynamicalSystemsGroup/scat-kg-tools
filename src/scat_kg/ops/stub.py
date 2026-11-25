@@ -47,11 +47,24 @@ def holders(vault: Vault, name: str) -> list[str]:
     return sorted(paths)
 
 
-def name_refusal(vault: Vault, name: str, subject: str | None = None) -> Refusal | None:
+def name_refusal(
+    vault: Vault, name: str, subject: str | None = None, type: str | None = None
+) -> Refusal | None:
     """Why `name` cannot be the name of a new page: not legal, or a Markdown file already has it."""
     subject = subject or f"name `{name}`"
     if problem := name_problem(name):
         hint = derive_name(name, taken_names(vault))
+        if hint and type:
+            return refusal(
+                subject,
+                problem,
+                f"run `scat stub {hint} --type {type}` (the name `{hint}` is made from it by the contract's section 2)",
+                run_option(
+                    f"run `scat stub {hint} --type {type}`",
+                    ("stub", hint, "--type", type),
+                    f'scat_kg.stub("{hint}", type="{type}")',
+                ),
+            )
         fix = (
             f"use the name `{hint}` (made from it by the contract's section 2)"
             if hint
@@ -144,7 +157,7 @@ def stub(name: str, type: str | None = None, *, root: str | Path = ".") -> Resul
         )
     if wrong := _wrong_type(type):
         return wrong
-    if bad_name := name_refusal(vault, name):
+    if bad_name := name_refusal(vault, name, type=type):
         return Result(op, refused=(bad_name,))
     if cap := cap_refusal(vault, [name] if type == GROUP else []):
         return Result(op, refused=(cap,))
@@ -246,7 +259,13 @@ def stub_links(page: str | None = None, *, root: str | Path = ".") -> Result:
             )
         )
     if cap := cap_refusal(vault, [g for _, _, g in plan if g]):
-        return Result(op, refused=(cap, *refusals), notes=tuple(notes))
+        nothing = Refusal(
+            cap.subject,
+            f"{cap.why}; the group stubs are all or none, so nothing created",
+            cap.fix,
+            cap.fix_data,
+        )
+        return Result(op, refused=(nothing, *refusals), notes=tuple(notes))
     if not plan:
         return Result(op, refused=tuple(refusals), notes=tuple(notes))
     made = write_new(op, vault, [(p, t) for p, t, _ in plan])

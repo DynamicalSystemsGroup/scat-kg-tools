@@ -148,11 +148,15 @@ def _ends_refusals(vault: Vault, et, from_: str, to: str) -> tuple[list[Refusal]
     return refusals, new
 
 
+def _a(word: str) -> str:
+    return f"an {word}" if word[:1] in "aeiou" else f"a {word}"
+
+
 def _layer_refusal(
     vault: Vault, et, label: str, name: str, page: Page, from_: str, to: str
 ) -> Refusal:
     want = et.from_type if label == "from" else et.to_type
-    why = f"{page.path} is {_what(page)}, and `{et.slug}` needs a {want} at its {label} end"
+    why = f"{page.path} is {_what(page)}, and `{et.slug}` needs {_a(want)} at its {label} end"
     a, b = vault.by_name.get(from_), vault.by_name.get(to)
     ta, tb = (a[0].type if a and len(a) == 1 else None), (b[0].type if b and len(b) == 1 else None)
     if (ta, tb) == (et.to_type, et.from_type):

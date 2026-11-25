@@ -19,7 +19,12 @@ VAULT_RULES: list[Callable[["Ctx"], list[Problem]]] = []
 DEFERRED: dict[str, str] = {}
 
 # The page types a Markdown file can have: the TBox's types that carry a status (`index` is a generated Base).
-PAGE_TYPES: tuple[str, ...] = tuple(k for k, t in TBOX.page_types.items() if t.carries_status)
+_STATUS_TYPES = {k for k, t in TBOX.page_types.items() if t.carries_status}
+# the layers in order, then the others (the catalogue's order: group, concern, affordance, technology, narrative)
+PAGE_TYPES: tuple[str, ...] = (
+    *(k for k in TBOX.layers if k in _STATUS_TYPES),
+    *sorted(_STATUS_TYPES - set(TBOX.layers)),
+)
 NODE_TYPES: tuple[str, ...] = TBOX.layers  # the four layers, in order
 NARRATIVE: str = TBOX.table_type.slug
 

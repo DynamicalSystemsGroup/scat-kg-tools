@@ -295,7 +295,9 @@ def name_rule(ctx: Ctx, page: Page):
         taken.discard(name.lower())  # renaming this file only frees its own name
     new = free_name(title, taken) if isinstance(title, str) else None
     if new is None:
-        fix = fixes.single(FixOption("manual", "choose a legal name by hand (contract section 2)"))
+        fix = fixes.single(
+            FixOption("manual", "choose a legal name by hand (page contracts section 2)")
+        )
     else:
         text = (
             f"change the file name to `{new}.md`, then change the links that meant this page "

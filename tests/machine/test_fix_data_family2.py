@@ -163,8 +163,8 @@ def only(make_vault, case_id):
 def test_a_stub_is_a_command_and_a_replace_then_stub_is_its_edit_and_then_the_command(make_vault):
     p = only(make_vault, "dangling-five-types")
     cmd = p.fix_data.options[0].command
-    assert cmd.argv == ("stub", "ghost", "--type", "affordance")
-    assert cmd.repl == 'scat_kg.stub("ghost", type="affordance")'
+    assert cmd.argv == ("stub", "ghost", "--type", "group")
+    assert cmd.repl == 'scat_kg.stub("ghost", type="group")'
     assert p.fix_data.options[0].kind == "exact" and not p.fix_data.options[0].edits
     p = only(make_vault, "DRAFT-nopage-illegal")
     first = p.fix_data.options[0]
@@ -190,7 +190,7 @@ def test_a_typeless_file_gets_set_field_edits_for_the_keys_it_lacks(make_vault):
     p = only(make_vault, "dangling-typeless-frontmatter")
     edits = p.fix_data.options[0].edits
     assert [(e.action, e.file, e.field, e.value) for e in edits] == [
-        ("set-field", "notes.md", "type", "affordance"),
+        ("set-field", "notes.md", "type", "group"),
         ("set-field", "notes.md", "status", "stub"),
     ]
 

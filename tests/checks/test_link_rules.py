@@ -18,7 +18,7 @@ from helpers import (
 
 C = "concern/safe-handling.md"
 LINE = 8  # the first body line of a page made by `doc` with a body that starts with a blank line
-TYPES = ("affordance", "concern", "group", "narrative", "technology")
+TYPES = ("group", "concern", "affordance", "technology", "narrative")
 ARTICLE = {
     "affordance": "an affordance",
     "concern": "a concern",
@@ -174,7 +174,7 @@ def test__scat_link_dangling_body__non_latin_name_needs_a_hand_choice(make_vault
             "Привет",
             "Привет is not a legal page name: it contains `П`, outside a-z, 0-9 and -",
             "Fix: " + drop("[[Привет]]", "Привет"),
-            "choose a legal page name by hand (contract section 2), then write the link with it",
+            "choose a legal page name by hand (page contracts section 2), then write the link with it",
         ),
     )
 
