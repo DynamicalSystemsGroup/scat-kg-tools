@@ -55,7 +55,7 @@ A review removed edges whose only support was that two things sit next to each o
 
 ## Finding for the chief engineer
 
-The tool gives no warning for a `done` narrative with no edges (koi-08), although MISSION.md G1 says it should. That is a tool finding, not the vault's fault.
+The tool now warns on a `done` narrative with no edges, as MISSION.md G1 says: `scat check` shows `SCAT-NOEDGES` on koi-08 (`narrative/the-data-set-and-the-two-layers.md`), a warning that does not block. It was a tool gap, found here and closed in the tool, not the vault's fault.
 
 ## What a field test would add
 

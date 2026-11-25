@@ -12,6 +12,7 @@ from scat_kg.checks import (  # noqa: F401  (register the rules)
     ends,
     frontmatter,
     mention,
+    noedges,
     table,
     vaultwide,
 )

@@ -26,10 +26,12 @@ SLOTS = {
 VARIANTS = []
 
 
-def variant(name, rule, statuses=STATUSES, slots=None):
+def variant(name, rule, statuses=STATUSES, slots=None, allow=()):
     def deco(fn):
         for st in statuses:
-            VARIANTS.append(pytest.param(fn, rule, st, slots or {}, id=f"{rule}:{name}@{st}"))
+            VARIANTS.append(
+                pytest.param(fn, rule, st, slots or {}, allow, id=f"{rule}:{name}@{st}")
+            )
         return fn
 
     return deco
@@ -227,7 +229,9 @@ def _(v):
     v.edit(NF, SEP + "\n", "")
 
 
-@variant("header-alone", "TABLE-HEADER")
+@variant(
+    "header-alone", "TABLE-HEADER", allow=("SCAT-NOEDGES",)
+)  # the mended table has no row (G1)
 def _(v):
     v.edit(
         NF,
@@ -287,9 +291,9 @@ def rules_of(rule, st):
     return {pair(rule, st)[0]}
 
 
-@pytest.mark.parametrize("fn,rule,st,slots", VARIANTS)
+@pytest.mark.parametrize("fn,rule,st,slots,allow", VARIANTS)
 def test_each_fix_clears_its_mismatch_and_creates_no_other(
-    make_base, tmp_factory, fn, rule, st, slots
+    make_base, tmp_factory, fn, rule, st, slots, allow
 ):
     v = make_base(st)
     fn(v)
@@ -299,7 +303,7 @@ def test_each_fix_clears_its_mismatch_and_creates_no_other(
     failures = []
     for p in targets:
         assert p.fix, p.brief()
-        failures += check_fix_clears(v, tmp_factory, p, before, {**SLOTS, **slots})
+        failures += check_fix_clears(v, tmp_factory, p, before, {**SLOTS, **slots}, allowed=allow)
     assert not failures, "\n".join(failures)
 
 

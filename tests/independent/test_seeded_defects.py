@@ -1082,6 +1082,55 @@ def _(v, st):
     ]
 
 
+# ======================================================================================= noedges (G1)
+NOEDGES_ONE = (
+    "record its edges: run `scat set-status saturday draft` "
+    '(REPL: `scat_kg.set_status("saturday", "draft")`), then '
+    "`scat record-edge <type> <from> <to> --told-by saturday` "
+    '(REPL: `scat_kg.record_edge("<type>", "<from>", "<to>", ["saturday"])`) '
+    "for each edge the account tells, then `scat set-status saturday done` "
+    '(REPL: `scat_kg.set_status("saturday", "done")`)'
+)
+NOEDGES_TWO = (
+    "or leave it as intended: a narrative may tell no edge, and this warning does not block; "
+    "nothing to change"
+)
+
+
+def _noedges():
+    return [
+        Exp(
+            "SCAT-NOEDGES",
+            W_,
+            NF,
+            "table",
+            "the narrative is `done` and tells no edge: its fingerprint is empty",
+            fix=("Fix, choose one:", [NOEDGES_ONE, NOEDGES_TWO]),
+        )
+    ]
+
+
+@seed("NOEDGES-header-and-separator-only", ("done",))
+def _(v, st):
+    v.edit(NF, ROW1 + "\n", "")
+    v.edit(NF, ROW2 + "\n", "")
+    return _noedges()
+
+
+@seed("NOEDGES-no-table", ("done",))
+def _(v, st):
+    text = v.read(NF)
+    v.write(NF, text[: text.index("## Edges told")])
+    return _noedges()
+
+
+@seed("NOEDGES-silent-before-done", ("stub", "draft"))
+def _(v, st):
+    v.edit(NF, ROW1 + "\n", "")
+    v.edit(NF, ROW2 + "\n", "")
+    return []
+
+
 @seed("MENTION-from-cell-is-not-mention", ("draft",))
 def _(v, st):
     set_row(v, 1, "| holds | borrowers | [[quick-checkout]] | |")

@@ -100,6 +100,12 @@ CASES = [
         {D: H.narrative(status="stub", timeframe=None)},
         (),
     ),
+    (
+        "noedges",
+        "SCAT-NOEDGES",
+        {D: H.narrative(rows=())},
+        (),
+    ),
     ("cap", "SCAT-CAP", GROUPS, ()),
     ("cap-config-missing", "SCAT-CAP-CONFIG", {}, ("scat.toml",)),
     ("cap-config-toml", "SCAT-CAP-CONFIG", {"scat.toml": "stakeholder_group_cap = \n"}, ()),

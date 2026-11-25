@@ -408,11 +408,14 @@ def test__rule_4_a_narrative_that_links_both_ends_of_a_pair_and_has_no_row_gets_
 
 
 @STATUSES
-def test__rule_4_a_narrative_with_no_row_at_all_tells_no_edge_and_gets_no_message(
+def test__rule_4_a_narrative_with_no_row_at_all_tells_no_edge_and_gets_no_message_but_the_g1_warning_at_done(
     make_vault, status
 ):
-    seeded(make_vault, {DESK: narrative(status=status, rows=())})
-    seeded(make_vault, {DESK: narrative(status=status, section="")})  # no table, no heading
+    # MISSION G1 (WP18-U6): at `done` the one message is the SCAT-NOEDGES warning; before `done`, none
+    for page in (narrative(status=status, rows=()), narrative(status=status, section="")):
+        r = report_of(make_vault, {DESK: page})
+        assert rules_of(r) == (["SCAT-NOEDGES"] if status == "done" else [])
+        assert r.ok
 
 
 def test__rule_4_the_fingerprint_view_lists_the_pair_as_a_candidate_and_the_check_does_not(

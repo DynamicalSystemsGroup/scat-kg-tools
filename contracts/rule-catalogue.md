@@ -72,6 +72,7 @@ fires on a `stub` or `draft` narrative; the `SCAT-DONE-` id is the same conditio
 | Name, frontmatter shape and values, dangling body link, cap | error | error | error |
 | Pairs: table and row problems, mismatches (narratives only) | warning | warning | error |
 | Mention | warning | warning | warning |
+| No edges (SCAT-NOEDGES) | silent | silent | warning |
 
 An unfinished page is never an error for being unfinished: nothing in the `done` column is an error before `done`.
 Setting `done` is judged as the page would stand at `done` (section 5).
@@ -152,6 +153,7 @@ because the model it checked is gone (D-088).
 | SCAT-CAP | adapted | counts `group` pages |
 | SCAT-CAP-CONFIG | kept | |
 | SCAT-MENTION | adapted | on every page, narratives included |
+| SCAT-NOEDGES | new | a `done` narrative with no row (MISSION G1); a warning, never an error |
 | SCAT-DRAFT-TABLE-HEADER, SCAT-DONE-TABLE-HEADER | new | pair |
 | SCAT-DRAFT-TABLE-ROW, SCAT-DONE-TABLE-ROW | new | pair |
 | SCAT-DRAFT-TABLE-TYPE, SCAT-DONE-TABLE-TYPE | new | pair |
@@ -193,6 +195,7 @@ because the model it checked is gone (D-088).
 | SCAT-CAP | error | vault | vault; all when a `group` page is in the set | more `group` pages than the cap | options |
 | SCAT-CAP-CONFIG | error | vault | vault; all when a `group` page is in the set | `scat.toml` or its cap missing, malformed or not a whole number of at least 1 | slot |
 | SCAT-MENTION | warning | every status | all | body names an existing node page in plain text | exact |
+| SCAT-NOEDGES | warning | done | all | a `done` narrative has a well-formed table with no rows, or no table | options |
 | SCAT-DRAFT-TABLE-HEADER | warning | stub, draft | all | the table's header or separator row is malformed | advisory |
 | SCAT-DONE-TABLE-HEADER | error | done | all | the table's header or separator row is malformed | advisory |
 | SCAT-DRAFT-TABLE-ROW | warning | stub, draft | all | a row does not have four cells and its closing `\|` | options |
@@ -423,6 +426,19 @@ In a table cell the bar of an alias link is written `\|`: the replacement is `[[
 - **Fix kind:** exact. Edits: `replace-text{line, column, find "<as written>", replace "[[<page-name>|<as written>]]"}`. Linking where a name appears is the coding the narrative needs, and a link adds no edge: only a row does.
 - **Seed:** a narrative mentioning a concern's title once in plain text (one message); once plain and once linked (none); inside a code span (none); in a `note` cell (one message); plain text in a `from` cell (none from this rule); a node page mentioning another node's title (one message); the page's own title (none).
 
+### SCAT-NOEDGES
+- **Severity:** warning. **Fires:** `done` only (MISSION G1: a `done` narrative whose fingerprint has no edges gets a warning, not an error). **Runs at:** all; reads its page.
+- **Trigger:** a narrative at `done` has no `Edges told` table, or a well-formed one with no rows, so its fingerprint has no edges. A table with a malformed header, and a narrative with any row, give nothing from this rule (the table's own rules judge what is there). A narrative may tell no edge on purpose, so the rule never blocks: the coder decides.
+- **Message:**
+```
+warning [SCAT-NOEDGES] <file> table: the narrative is `done` and tells no edge: its fingerprint is empty
+  Fix, choose one:
+    1. record its edges: run `scat set-status <page-name> draft` (REPL: ...), then `scat record-edge <type> <from> <to> --told-by <page-name>` (REPL: `scat_kg.record_edge("<type>", "<from>", "<to>", ["<page-name>"])`) for each edge the account tells, then `scat set-status <page-name> done` (REPL: ...)
+    2. or leave it as intended: a narrative may tell no edge, and this warning does not block; nothing to change
+```
+- **Fix kind:** options; both options advisory and without edits: which edges the account tells is the coder's reading, and `record-edge` refuses a `done` narrative, so the first option goes through `draft`.
+- **Seed:** a `done` narrative with no table; with a header and separator and no rows; with one row (none); at `stub` and `draft` with no rows (none); with a malformed header (none from this rule); the page judged as it would stand at `done` (the warning shows, and `set-status done` is not refused for it).
+
 ### Pairs: the table (SCAT-DRAFT-TABLE-* and SCAT-DONE-TABLE-*)
 
 These six conditions are conformance problems of a narrative's table (page contracts 4, "Other problems of the table").
@@ -609,6 +625,7 @@ in the wrong layers), carried as operation refusals with no rule id; they list n
 
 | Requirement | Rules |
 |---|---|
+| G1 a `done` narrative whose fingerprint has no edges: a warning | SCAT-NOEDGES |
 | R-2 every message names the file, the place and the rule, and gives the fix | every rule: the message format and fix of section 1, checked by the golden tests of section 3 |
 | R-1 required fields and types | SCAT-FM-PARSE, SCAT-FM-REQUIRED, SCAT-FM-TYPE, SCAT-FM-STATUS, SCAT-FM-TIMEFRAME, SCAT-FM-KIND, SCAT-FM-SHAPE, SCAT-DONE-FIELD |
 | R-1 page names (page contracts 2) | SCAT-NAME |

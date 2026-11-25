@@ -425,11 +425,13 @@ def check_fix_clears(
     before: list[Problem],
     slots: dict[str, str] | None = None,
     no_other: bool = True,
+    allowed: tuple[str, ...] = (),
 ) -> list[str]:
     """Apply every applicable option of the problem's fix, each to a fresh copy. Return the failures.
 
     A fix clears its mismatch when the count of messages of that rule drops by one, and it creates no other when no
-    rule's count rises and no rule appears that was not there.
+    rule's count rises and no rule appears that was not there, but for the rules in `allowed` (a fix that makes a
+    table with no row, for one, makes SCAT-NOEDGES true; that is the rule's own message, not a defect of the fix).
     """
     failures: list[str] = []
     want_before = rule_counts(before)
@@ -456,12 +458,17 @@ def check_fix_clears(
                 f"{got.get(problem.rule, 0)}\n      now: {[p.brief() for p in after]}"
             )
         for rule, count in got.items():
-            if no_other and rule != problem.rule and count > want_before.get(rule, 0):
+            if (
+                no_other
+                and rule != problem.rule
+                and rule not in allowed
+                and count > want_before.get(rule, 0)
+            ):
                 failures.append(
                     f"{label}: created another message ({rule} {want_before.get(rule, 0)} -> {count})\n"
                     f"      now: {[p.brief() for p in after]}"
                 )
-        extra = [r for r in got if r not in want_before and r != problem.rule]
+        extra = [r for r in got if r not in want_before and r != problem.rule and r not in allowed]
         if extra and no_other:
             failures.append(f"{label}: created messages of new rules {extra}")
     return failures
