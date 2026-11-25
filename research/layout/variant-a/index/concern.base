@@ -1,0 +1,13 @@
+filters:
+  and:
+    - 'type == "concern"'
+views:
+  - type: table
+    name: Concerns
+    order:
+      - file.name
+      - status
+      - description
+    sort:
+      - property: file.name
+        direction: ASC

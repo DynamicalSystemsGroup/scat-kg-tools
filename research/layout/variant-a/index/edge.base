@@ -1,0 +1,46 @@
+filters:
+  and:
+    - 'file.inFolder("edge")'
+views:
+  - type: table
+    name: holds
+    filters:
+      and:
+        - 'type == "holds"'
+    order:
+      - from
+      - to
+      - told_by
+      - status
+      - notes
+    sort:
+      - property: file.name
+        direction: ASC
+  - type: table
+    name: is-addressed-by
+    filters:
+      and:
+        - 'type == "is-addressed-by"'
+    order:
+      - from
+      - to
+      - told_by
+      - status
+      - notes
+    sort:
+      - property: file.name
+        direction: ASC
+  - type: table
+    name: is-provided-by
+    filters:
+      and:
+        - 'type == "is-provided-by"'
+    order:
+      - from
+      - to
+      - told_by
+      - status
+      - notes
+    sort:
+      - property: file.name
+        direction: ASC

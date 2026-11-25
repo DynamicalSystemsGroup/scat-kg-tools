@@ -1,0 +1,13 @@
+filters:
+  and:
+    - 'type == "technology"'
+views:
+  - type: table
+    name: Technologies
+    order:
+      - file.name
+      - status
+      - description
+    sort:
+      - property: file.name
+        direction: ASC

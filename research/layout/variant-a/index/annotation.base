@@ -1,0 +1,13 @@
+filters:
+  and:
+    - 'type == "relationship-annotation"'
+views:
+  - type: table
+    name: Relationship annotations
+    order:
+      - file.name
+      - between
+      - status
+    sort:
+      - property: file.name
+        direction: ASC

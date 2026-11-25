@@ -1,0 +1,17 @@
+filters:
+  and:
+    - 'file.inFolder("edge")'
+    - 'file.hasLink(this.file)'
+views:
+  - type: table
+    name: Edges that name this narrative
+    order:
+      - type
+      - from
+      - to
+      - told_by
+      - status
+      - notes
+    sort:
+      - property: file.name
+        direction: ASC
