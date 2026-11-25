@@ -16,7 +16,7 @@ run by the tools or by CI. The kit is not in the docs site's navigation.
 Each journey persona (p1 to p3) has a coding domain of its own, none of them the worked example: p1 flood readiness in a river town, p2
 stall allocation at a farmers' market, p3 parts ordering at a bicycle-repair co-operative. Each brief carries its
 domain's event notes: three groups, one story session and one design session, within the template's cap. A tester
-codes at least one story and one design proposal, each raw and coded.
+codes at least one story and one design proposal, each as a narrative with its "Edges told" table.
 
 ## How a round is run
 
@@ -91,7 +91,7 @@ example was removed, makes the report void.
 | Starts from the Pages preview URL and follows only what the docs say | each brief, "Where you start" and "Follow only the pages"; this README, "Docs source" |
 | J2 by an isolated clone with the remote removed | this README, "Clean-environment setup" and "J2" |
 | Obsidian steps (J3, J7) checked through files | each brief, J3 and J7; this README |
-| Codes a small elicitation in a domain of its own, at least one scenario and one architecture, each raw and coded | each brief, "Your event notes" and J5, J6; the domains in `personas/` |
+| Codes a small elicitation in a domain of its own, at least one scenario and one architecture, each a narrative with an "Edges told" table | each brief, "Your event notes" and J5, J6; the domains in `personas/` |
 | No reading of `src/` or `tests/` | each brief, "Follow only the pages"; `report-template.md`, void rule 3 |
 | Every claim has pasted output | each brief; `report-template.md`, section 1 and void rule 2 |
 | The report first answers what style the docs evoke (R-15) | `report-template.md`, section 0 |

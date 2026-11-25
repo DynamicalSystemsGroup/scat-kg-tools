@@ -39,11 +39,11 @@ one architecture, in your own words and group names. The nine stages:
 2. Create (J2): make your repository from the template, private, and clone it.
 3. Set up (J3): install uv, run the one setup command, get a working `scat_kg`.
 4. Obsidian (J3): open the folder as a vault, then clear the example before you add any page of your own.
-5. Plan and capture (J4, J5): plan an event, then write raw scenario and architecture notes.
-6. Code in the REPL (J6): turn the raw notes into coded pages.
+5. Plan and capture (J4, J5): plan an event, then write scenario and architecture notes.
+6. Code in the REPL (J6): turn the notes into narratives with their edges.
 7. Code with the CLI (J6): the same operations, as `scat` commands.
 8. Clean check, commit, push (J7): whole-vault check to 0 errors, then commit and push.
-9. The graph in Obsidian (J7): backlinks, graph view and class pages.
+9. The graph in Obsidian (J7): backlinks, graph view and index pages.
 
 **What only you can do.** No agent did these (log D-040, D-044): create a real private repository from the template
 (stage 2), run uv's installer (stage 3), push (stage 8), and open Obsidian (stages 4 and 9). Agents tested the same
@@ -60,7 +60,7 @@ candidate is refreshed, and you resume from the affected stage.
 - [ ] Stage 2: my repository exists and is private.
 - [ ] Stage 3: uv installed from the docs' command, and `uv sync` finished.
 - [ ] Stage 4: Obsidian opened the vault, and the example is cleared before my own pages.
-- [ ] Stage 5: I wrote raw notes for one scenario and one architecture.
+- [ ] Stage 5: I wrote notes for one scenario and one architecture.
 - [ ] Stage 6: I coded in the Python REPL.
 - [ ] Stage 7: I coded with the CLI.
 - [ ] Stage 8: `uv run scat check` ends `0 errors`, and the commit is on GitHub.
@@ -332,6 +332,8 @@ names no `divergence` tags, so there are none for it.
 **R-15 gave way to your judgement.** D-052 records that the R-15 cold-read bar gave way to your own judgement. No
 cold read is run for this release. The cold-read briefs (`acceptance/briefs/cold-read-part1.md` and `part2.md`) are
 kept, marked as retained for reference only. The old reports in `acceptance/reports/` are history and are untouched.
+
+The audit and the rulings below record the v0.1 catalogue, with its raw, coded, relation and class pages. The rules in force are in `contracts/rule-catalogue.md`.
 
 **The rule audit (D-053).** The 27 rule ids then in `contracts/rule-catalogue.md` were checked for any content judgement. A
 verdict STRUCTURE means the rule looks at pages, fields, names, counts or links, and never at what a note says. WP10 added

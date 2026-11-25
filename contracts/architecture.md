@@ -11,7 +11,7 @@ Model, view and control (MVC, in software architecture):
 |Part|What it is|Relation to the model|
 |---|---|---|
 |**Model**|The ontology (`ontology/scat.ttl`, one source, R-13) plus a conformant vault: entries as Markdown in git.|Git is authoritative.|
-|**Views**|The Obsidian layout (M5's index pages, M10's settings; WP16's design), fingerprint view, edge tables, layered view, traces.|Built from a conformant model; write no entry.|
+|**Views**|The Obsidian layout (M5's index Bases, M10's settings), fingerprint view, edge tables, layered view, traces.|Built from a conformant model; write no entry.|
 |**Control**|Obsidian, git and GitHub, the CLI and REPL, the MCP server, IDE agents.|Act through an operation, or edit pages the tool then checks.|
 
 1. **The knowledge graph is derived, never held**: rebuilt from the Markdown on every call.
@@ -52,11 +52,11 @@ flowchart LR
 |Module|Purpose, owner, status|Interface contract|Needed by|
 |---|---|---|---|
 |**M0 Ontology reader**|The one source of types, fields and ends. Owner: tool; content WP16. Exists (`tbox`, `models`).|In: `scat.ttl`. Out: types, fields, ends, statuses, read-only. Errors: an unreadable file stops the import (a build defect). R-16: result names come from here.|G1, R-1, R-13|
-|**M1 Loader**|Read a vault into entries and the knowledge graph; the one place that knows how entries are stored. Owner: tool. Page reader exists, internal (`vault`); public loader, graph new (WP17).|In: a vault folder. Out: pages as written; the graph: nodes by layer, edges by type, narratives with fingerprints, links kept apart from edges. Errors: none for vault defects (represented, not judged); a missing folder is a refusal (new: today an empty vault). R-16: a versioned graph document.|G2, G12, R-16, R-17|
-|**M2 Result and fix data**|The machine interface: one vocabulary for problems, refusals, effects and fixes, with its schema. Owner: tool. Exists (`fix`, `contract`, `ops/result`, `contracts/`).|In: what modules report. Out: documents with `schema_version`; fix kinds exact, options, slot, advisory, manual (a fix no edit can express); five edit actions. R-16: is it; adding a field keeps the version, removing or changing one bumps it.|R-2, R-8, R-16|
+|**M1 Loader**|Read a vault into entries and the knowledge graph; the one place that knows how entries are stored. Owner: tool. Page reader exists, internal (`vault`); public loader, graph new (WP17).|In: a vault folder. Out: pages as written; the graph: nodes by layer; one edge per (type, from, to), built from the rows of every narrative's "Edges told" table and naming those narratives; narratives with fingerprints; links kept apart from edges. Reads tables whitespace-tolerantly. Errors: none for vault defects (represented, not judged); a missing folder is a refusal (new: today an empty vault). R-16: a versioned graph document.|G2, G12, R-16, R-17|
+|**M2 Result and fix data**|The machine interface: one vocabulary for problems, refusals, effects and fixes, with its schema. Owner: tool. Exists (`fix`, `contract`, `ops/result`, `contracts/`).|In: what modules report. Out: documents with `schema_version` (2); fix kinds exact, options, slot, advisory, manual (a fix no edit can express); five edit actions. R-16: is it; adding a field keeps the version, removing or changing one bumps it.|R-2, R-8, R-16|
 |**M3 Checks**|Job (ii) and the engine: rules on one entry (rules 1 and 2 of section 4), at three scopes (a page, a page and every page one link away, the vault). Owner: tool. Exists (`checks`); WP16 revises rules.|In: loader output, a scope, a page. Out: a report in catalogue order; each problem: rule id, severity, file, place, message, fix as data. Errors: none; M7 refuses a name not found or ambiguous (new: the checks raise today). Never writes; reads structure, not content (but the mention warning). R-16: the check document.|G2 to G4, R-1 to R-5|
-|**M4 Mismatch**|Job (i): the rules that compare forms (rules 3 and 4, section 4), in M3's report. Owner: tool. Partly exists (link rules); rest new (WP16).|In: the graph with links and edges. Out: problems in M3's report, one per mismatch per anchor; severity by paired rule ids (a warning id, an error id); fixes that edit the right form. Errors: none. R-16: the problem shape.|G17, R-23, R-3|
-|**M5 Operations**|Every write: stubs (narrative, node, pages links entail), set status, index pages, view files, record and remove an edge. Owner: tool. Exists: stubs, set status, index. New (WP16): record and remove edge (replacing pair stubs), the `done` refusal, problems left.|In: a vault folder and the subject. Out: created, changed, unchanged, refused, notes, and the problems it leaves, one link away. Errors: a refusal with fix data, nothing written; repeating gives "unchanged". Never writes a narrative's text. Set status to `done` grades the page as at `done`, one link away (rule 3, the edges it names), and refuses on an error. Only M7's set status crosses `done`, both ways; record and remove edge refuse when the edge, or a narrative they add or drop, is `done`, naming the coder's step. R-16: the operation document.|G3, G4, R-4, R-8, R-11|
+|**M4 Mismatch**|Job (i): the rules that compare forms (rules 3 and 4, section 4), in M3's report. Owner: tool. Partly exists (link rules); rest new (WP16).|In: the graph with links and edges. Out: problems in M3's report, one per mismatch; severity by paired rule ids (a warning id, an error id); fixes that edit the right form. Errors: none. R-16: the problem shape.|G17, R-23, R-3|
+|**M5 Operations**|Every write: stubs (narrative, node, pages links entail), set status, index pages, view files, record and remove an edge. Owner: tool. Exists: stubs, set status, index (one Base per type, leaving out the template folder). New (WP16): `record_edge` and `remove_edge` (replacing pair stubs), the `done` refusal, problems left.|In: a vault folder and the subject. Out: created, changed, unchanged, refused, notes, and the problems it leaves, one link away. Errors: a refusal with fix data, nothing written; repeating gives "unchanged". Never writes a narrative's text. Set status to `done` grades the page as it would stand at `done`, one link away, and refuses on an error. Only M7's set status crosses `done`, both ways; record and remove edge add or delete a row, leave links, and refuse when a narrative they would change is `done`, naming the coder's step (set it to `draft`). R-16: the operation document.|G3, G4, R-4, R-8, R-11|
 |**M6 View generator**|Build each view once for every front end. Owner: maintainers; no authority. New (WP17).|In: the graph, M3's report, a view name, parameters (narratives, a node, a direction). Out: versioned, deterministic view data; renderings (CSV; drawings, an optional extra). Errors: refuses on errors in the pages it draws, returning those problems. R-16: view data.|G12, G14, R-17, R-20|
 |**M7 Python API and CLI**|One call per operation, check, status and view; the CLI is those calls as text or `--json`. Owner: tool. Exists (`scat_kg`, `cli`).|In: arguments (page, scope, `root`). Out: the result; text is `str(result)`, `--json` is `to_dict()`. Exit 0 ok, 1 error or refusal, 2 bad line. R-16: passed through.|G4, R-8, R-9, R-19|
 |**M8 MCP server**|The same calls for a chat with no terminal, plus prompts and skills for the coding loop. Owner: a front end, no authority. New (WP18).|In: a tool call for each M7 call but a move into or out of `done`. A call names no vault: the server holds one clone, fixed at setup, read afresh on each call; an edit elsewhere shows once git brings it. Out: M2 documents; view files through M5. Errors: refusals and problems are results. R-16: passed through. The transport is outside.|G14, R-16, R-20|
@@ -69,48 +69,47 @@ The `done` rules change today's unchecked `set_status`; WP16 owns the change to 
 ## 4. Links and edges (G17)
 
 **Four forms**, a closed list (R-23); other links have no graph meaning and are checked only as links.
-**L**: a narrative's link to a node (the narrative refers to it, nothing more). **E**: an edge's entry.
-**N**: the edge's references to its two nodes. **T**: the edge's references to its narratives. The coder writes L in the
-account. M5 writes E, N and T; the coder may edit them in Obsidian, then runs the check.
+**L**: a link in a narrative's account or table (the narrative refers to the node, nothing more). **E**: an edge, one
+per (type, from, to), never stored: built from rows. **N**: a row's two ends. **T**: the row itself, which names its
+narrative. The coder writes L and rows; M5 writes rows; Obsidian's table editor may re-pad them. The edge's type follows
+its layers: `holds` (group, concern), `is addressed by` (concern, affordance), `is provided by` (affordance,
+technology); slugs `holds`, `addressed-by`, `provided-by`. An edge is `done` when every narrative telling it is.
 
-**Four rules.** (1) *Ends*, M3: both ends exist, in the layers the type joins, one entry per pair. (2) *Names*, M3: an
-edge names at least one narrative, and each exists. These are conformance. (3) *Fingerprint*, M4: every narrative an edge
-names links both its nodes. (4) *Candidate*, M4: a narrative links both ends of an edge that does not name it. Rule 3 is
-anchored on the narrative (a warning until it is `done`, then an error: R-23) and on the edge once that is `done` (an
-error): one problem per mismatch per anchor.
+**Four rules.** (1) *Ends*, M3: a row's type is known and both ends are nodes in the layers it joins, in its direction.
+(2) *Told*, M3: no narrative has two rows for one pair. These are conformance. (3) *Fingerprint*, M4: every row end is a
+link in its narrative. (4) *Candidate*, M4: a narrative links both ends of an edge it has no row for. Rule 3 is
+anchored on the narrative: a warning until it is `done`, then an error (R-23). One problem per mismatch.
 
 |Pair|What disagrees|Detection|Fix (form edited)|Incremental case|
 |---|---|---|---|---|
-|**L–N**|An edge names n and ends at x; n does not link x.|Rule 3.|Link x in n: exact `replace-text` where the account names x, else manual (L); or drop n from the edge (T).|Depth first: edge first, link later; the write's result warns. Breadth first: nothing names n yet.|
-|**L–T**|An edge names n, but n links neither end.|Rule 3.|Drop n from the edge (T), or link both ends (L).|Depth first: the edge names n before n is written; n's check warns until it links.|
-|**L–E**|n links both ends of an edge and does not name it. Not a mismatch under G1.|Rule 4: no message; a candidate in the fingerprint view (D-085).|Name n in the edge (T), or leave it.|Breadth first: edges recorded after linking; n's check lists candidates.|
-|**E–N**|An end is missing, in the wrong layer, or two entries join one pair. Conformance.|Rule 1; missing end: R-1, an error at every status.|Stub the missing node (M5), or relink if renamed; retype; merge duplicates.|Recording stubs absent ends; only a hand edit leaves one missing, and it shows at once.|
-|**E–T**|An edge names no narrative, or one absent or not a narrative. Conformance.|Rule 2: none named warns until the edge is `done`; an absent page is a dangling link (R-1).|Name a narrative, stubbed if absent (M5), or remove the edge.|Depth first: recording an edge stubs a narrative not yet written.|
-|**N–T**|The edge is `done` but a narrative it names lacks a link.|Rule 3, error id, on the edge.|Rule 3's fixes, or the coder sets the edge to `draft` (M7).|M5 refuses `done` while this holds; a later edit to the narrative breaks it, shown on the edge.|
+|**L–N**|A row's end is not a link in its narrative.|Rule 3.|Link it where the account names it: exact `replace-text`, else manual (L); or delete the row (T).|Depth first: row first, link later; the write's result warns.|
+|**L–E**|n links both ends of an edge and has no row for it. Not a mismatch under G1.|Rule 4: no message; a candidate in the fingerprint view (D-085).|Add a row to n (T), or leave it.|Breadth first: rows recorded after linking.|
+|**E–N**|An end is not a node, is in the wrong layer or direction, or the type is unknown. Conformance.|Rule 1; an end that is no page: R-1, an error at every status.|Stub the missing node (M5), relink if renamed, retype or turn the row.|Recording stubs absent ends; only a hand edit leaves one missing.|
+|**E–T**|A narrative tells a pair twice. Conformance.|Rule 2.|Merge the rows.|Recording an existing pair is "unchanged".|
 
 **Why no order of coding hides a mismatch.**
 1. *Total and stateless.* M1 reads all four forms from the Markdown on every call; nothing stored goes stale.
 2. *Graded at every status.* Rules 1 and 2 follow R-1; rule 3 warns on unfinished work (R-3), errs once `done`; no
    order of coding reaches an ungraded state. Rule 4 follows the ACE.
-3. *Scopes.* A rule may read any page, so a page check reports every problem anchored on it; an edge and its narratives
-   are one link apart both ways, so the edge's one-link-away check covers them; rule 4 on others shows on their own
-   check or the vault scope.
+3. *Scopes.* An edge lives in its narratives' pages, so a page check reports every problem on its rows, and the
+   one-link-away check of a node covers the narratives that tell its edges; rule 4 on others shows on their own check
+   or the vault scope.
 4. *Writes report what they leave.*
 
 A forgotten edge is graded by no rule (G1); the fingerprint view shows it. A generator test builds vaults in each order
-(nodes first, edges first, one narrative at a time), injects every mismatch above, and asserts a report with a fix.
+(nodes first, rows first, one narrative at a time), injects every mismatch above, and asserts a report with a fix.
 
-**Fragment** (the four forms drawn plainly; the layout is WP16's).
+**Fragment** (the forms drawn plainly).
 ```
 dry-july      scenario draft      links: allocation
 sensor-pitch  architecture done   links: allocation, soil-sensor
-holds(farmers, allocation)        names: dry-july, sensor-pitch
+  Edges told: holds | farmers | allocation
 ```
-- *Case 1.* `sensor-pitch` names the edge but does not link `farmers`: an error on it (L–N). Rule 3 outranks the
-  discouraged-link warning a group link in an architecture draws; the usual fix drops it from the edge.
-- *Case 2.* An edge recorded first makes the result warn on `dry-july` until it links `farmers`.
-- *Case 3.* Remove edge deletes E, N and T, keeping links; it is refused while `sensor-pitch` is `done`.
-- *Case 4.* Deleting `allocation` by hand leaves dangling links and a missing end; `stub-links` restores it.
+- *Case 1.* `sensor-pitch` has the row but does not link `farmers`: an error on it (L–N). Rule 3 outranks the
+  discouraged-link warning a group link in an architecture draws; the usual fix deletes the row.
+- *Case 2.* A row recorded first makes the result warn on `dry-july` until it links `farmers`.
+- *Case 3.* Remove edge deletes its rows, keeping links; it is refused while `sensor-pitch` is `done`.
+- *Case 4.* Deleting `allocation` by hand leaves dangling links and a row end that is no node; `stub-links` restores it.
 
 ## 5. The coding loop and the journey
 
@@ -136,16 +135,13 @@ interface, GitHub Desktop, an Obsidian git plugin), not M8.
 
 ## 6. What is left open
 
-- **[OPEN: WP16] Edge as page or field.** Constraints: R-21; checked in Obsidian (G15); recording an edge writes no other
-  entry; one seam reads the storage and builds edits on it, shared by M1, M4, M5.
-- **[OPEN: WP16] Type slugs and the ontology's edge names.** Constraints: user-facing names follow the glossary; one source (R-13);
-  a field rename bumps the schema.
-- **[OPEN: WP16] Names and arguments of record-edge and remove-edge (R-8).** Constraints: REPL and CLI twins; arguments give
-  two nodes and the narratives; effects stay inside M5's contract; recording on an existing pair adds its
-  narratives; the result names an edge's narratives.
-- **[OPEN: WP16] Where an edge records its narratives.** Constraint: one entry per pair.
-- **[OPEN: WP16] How the one-link-away scope treats edges.** Constraint: an edge, its narratives and nodes are one link apart
-  both ways, wherever it is stored (section 4, property 3).
+- **Decided (D-088, D-089): the WP16 slots.** An edge is one row of a narrative's "Edges told" table (`type | from | to |
+  note`, both ends links), the first table under that heading, any level; the graph holds one edge per (type, from, to)
+  naming every narrative with a row (R-21); status derived, no edge sign-off. Page types: `group`, `concern`,
+  `affordance`, `technology`, `narrative` (`kind` scenario or architecture; `timeframe` stays), `index`. Operations
+  (R-8): `record_edge(type, from_, to, told_by, note="")`, `remove_edge(from_, to, told_by=None)`; CLI `scat
+  record-edge` and `scat remove-edge`; recording adds a row only where none exists. A relationship annotation is a body
+  line with a link, no meaning to the tool (the old field leaves). Bases need Obsidian 1.9 or later. `schema_version` is 2.
 - **[OPEN: WP17] The graph document's shape and each view's parameters.** Constraints: R-17; notebook and M8 return equal
   view data (R-20).
 - **[OPEN: WP18] Tool, prompt and skill names; the assistant's file; the view folder.**

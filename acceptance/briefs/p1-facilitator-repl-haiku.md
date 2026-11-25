@@ -69,7 +69,7 @@ Do these in order. For each, "done" is what you should be able to show with past
    check that you are in the right folder shows what the page says it should.
 3. **J3, set up.** Install what the pages say, with one exception: **skip the step that installs `uv`, and do not run the `curl ... | sh` line.** `uv` is already on your machine and on your path, so go on to the next command on the page. Then run the page's one setup command, and run the page's first check. Done: the
    check ends the way the page says a clean one does. Then open the folder as a vault in Obsidian. Obsidian is not
-   available to you, so check it through the files instead: show the Obsidian settings files in `.obsidian` and the class pages in the `class` folder.
+   available to you, so check it through the files instead: show the Obsidian settings files in `.obsidian` and the index Bases in the `index` folder.
 4. **J4, plan.** Using the planning page, plan the event described above for your domain: which of the two sessions
    gathers stories and which gathers design proposals, who takes part in each, how you will frame it as the page
    describes, and how your participants fit into the groups the page allows. Write the plan in a file in your folder.
