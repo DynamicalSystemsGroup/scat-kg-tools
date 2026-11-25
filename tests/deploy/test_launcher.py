@@ -164,13 +164,20 @@ def test_colima_not_started_when_already_running_and_image_built_once(rig):
 def test_missing_docker(rig):
     r = rig.run("start", SCAT_CHAT_DOCKER=str(rig.bin / "nope"))
     assert r.returncode == 1
-    assert "Colima and Docker" in r.stdout and "click SCAT Chat again" in r.stdout
+    assert "needs Docker Desktop" in r.stdout and "click SCAT Chat again" in r.stdout
     assert not rig.called("tailscale")
 
 
 def test_missing_colima_and_no_docker_running(rig):
     r = rig.run("start", SCAT_CHAT_COLIMA=str(rig.bin / "nope"))
-    assert r.returncode == 1 and "needs Colima" in r.stdout
+    assert r.returncode == 1 and "Docker Desktop is not running" in r.stdout
+
+
+def test_stop_that_cannot_confirm_says_what_to_click(rig):
+    rig.run("start")
+    r = rig.run("stop", SCAT_CHAT_TAILSCALE=str(rig.bin / "nope"))
+    assert "could not confirm" in r.stdout
+    assert "click SCAT Chat again, then Stop, or restart your Mac" in r.stdout
 
 
 def test_missing_tailscale(rig):

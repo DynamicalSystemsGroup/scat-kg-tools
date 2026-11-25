@@ -283,7 +283,7 @@ teardown() {
     if [ -z "$bad" ]; then
         RESULT="Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was replaced, and your clipboard holds no key."
     else
-        RESULT="Stopped, but I could not confirm:$bad Click SCAT Chat and then Stop again, or restart your Mac, to be sure."
+        RESULT="Stopped, but I could not confirm:$bad click SCAT Chat again, then Stop, or restart your Mac, to be sure."
     fi
 }
 
@@ -314,7 +314,7 @@ $RESULT"
 
 step_tools() {
     if ! have "$DOCKER"; then
-        die "SCAT Chat needs Colima and Docker's command-line tool, which are not installed. Install them once, as the chat-path guide shows under 'Install once', then click SCAT Chat again."
+        die "SCAT Chat needs Docker Desktop, which is not installed. Install it once, as the chat-path guide shows under 'Install once', then click SCAT Chat again."
     fi
     if have "$COLIMA"; then
         if ! "$COLIMA" status >/dev/null 2>&1; then
@@ -323,10 +323,10 @@ step_tools() {
                 die "Colima would not start. Restart your Mac, then click SCAT Chat again. If it still fails, tell the person who set this up that Colima's start failed."
         fi
     elif ! "$DOCKER" info >/dev/null 2>&1; then
-        die "SCAT Chat needs Colima, which is not installed, and no other Docker is running. Install Colima once, as the chat-path guide shows under 'Install once', then click SCAT Chat again."
+        die "Docker Desktop is not running. Open Docker Desktop from your Applications folder, wait until it says it is running, then click SCAT Chat again."
     fi
     "$DOCKER" info >/dev/null 2>&1 ||
-        die "Docker does not answer even though Colima is running. Restart your Mac, then click SCAT Chat again."
+        die "Docker does not answer. Restart your Mac, then click SCAT Chat again."
 
     if ! have "$TAILSCALE"; then
         die "SCAT Chat needs Tailscale, which makes the public link, and it is not installed. Install it once, as the chat-path guide shows under 'Install once', sign in, then click SCAT Chat again."
