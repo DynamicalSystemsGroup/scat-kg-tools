@@ -18,6 +18,7 @@ TOOLS = {
     "edge_table",
     "layered",
     "trace",
+    "evidence",
     "attribution",
     "export_edges",
 }
@@ -96,6 +97,12 @@ SEQUENCE = [
         "trace",
         {"node": "booking-app", "direction": "up"},
         lambda r: scat_kg.trace("booking-app", "up", root=r),
+    ),
+    ("evidence", {"node": "borrowers"}, lambda r: scat_kg.evidence("borrowers", root=r)),
+    (
+        "evidence",
+        {"node": "funders-meeting"},
+        lambda r: scat_kg.evidence("funders-meeting", root=r),
     ),
     (
         "stub",

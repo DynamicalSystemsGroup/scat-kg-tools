@@ -50,7 +50,7 @@ def test_every_narrative_by_every_contributor(tmp_path, mode):
         "attribution",
         True,
         mode,
-        2,
+        3,
     )
     assert [c["name"] for c in d["contributors"]] == sorted(PEOPLE)
     assert all(c["narratives"] == sorted(ALL) for c in d["contributors"])

@@ -1,11 +1,11 @@
-# Machine interface (schema version 2)
+# Machine interface (schema version 3)
 
 Every `scat` command takes `--json` and prints one document shaped by
 [`machine-interface.schema.json`](machine-interface.schema.json) (JSON Schema 2020-12). The schema's `description`
 fields detail each object; the rule catalogue (section 8) gives the edge operations, table problems and
 changes from version 1.
 
-- **Versioning.** `schema_version` is an integer, 2. Adding a field keeps the version. Removing, renaming or
+- **Versioning.** `schema_version` is an integer, 3. Adding a field keeps the version. Removing, renaming or
   changing a field's meaning bumps it, as does a new value in a closed list (severities, fix kinds, option kinds, edit
   actions, edge types). Ignore unknown fields.
 - **Rule ids** are never renamed, only retired. New ids need no bump: match `^SCAT-[A-Z0-9]+(-[A-Z0-9]+)*$`, not a list.
@@ -14,7 +14,7 @@ changes from version 1.
 - **Python.** A result's `to_dict()` returns the CLI's data.
 - **Paths** are vault-relative (`/`, no leading `/`, no `..`), except in `export-edges` and `draw` results: outside the vault, as given. `line` and `column` count from 1, or are null.
 
-`kind` is `check`, `status`, `operation` or `view` (`fingerprint`, `edges`, `layered`, `trace`, `attribution`). A refusal, even by `check` or `status`, gives kind `operation` with `ok` false.
+`kind` is `check`, `status`, `operation` or `view` (`fingerprint`, `edges`, `layered`, `trace`, `evidence`, `attribution`). A refusal, even by `check` or `status`, gives kind `operation` with `ok` false.
 
 ## Fields you may rely on
 
@@ -41,10 +41,14 @@ Nothing else is promised.
 
 | Object | Fields |
 |---|---|
-| view | `narratives` (`candidates` on request), `edge_type`, `from_layer`, `to_layer`, `rows`, `nodes`, `edges`, `node`, `direction`, `up`, `down`, `contributors`, `unattributed`, `excluded` |
+| view | `narratives` (`candidates` on request), `edge_type`, `from_layer`, `to_layer`, `rows`, `nodes`, `edges`, `node`, `direction`, `up`, `down`, `node_type`, `node_status`, `adjacent`, `contributors`, `unattributed`, `excluded` |
 | node | `name`, `type`, `status` |
 | view edge | the edge fields and `status` |
+| view narrative (`evidence`) | `name`, `status`, `kind`, `timeframe`, `tells_edge`, `paragraphs` (`line`, `paragraph`, `sentences`: `text`, `start`, `end`, offsets in `paragraph`) |
+| view edge (`evidence`) | the view edge fields and `tellings` (`narrative`, `note`) |
 | view contributor (`attribution`) | `name`, `title`, `status`, `narratives` (the names of the narratives that name it) |
+
+**Version 2 to 3.** The `view` operations gain `evidence`, a new value in a closed list.
 
 `attribution` is a view of the knowledge graph, not the layered graph. Where the mode is `disallowed` it is a refusal, not an empty list.
 

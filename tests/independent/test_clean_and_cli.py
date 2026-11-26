@@ -28,6 +28,6 @@ def test_real_process_prints_what_the_entry_point_returns(make_base):
         text=True,
     )
     doc = json.loads(proc.stdout)
-    assert proc.returncode == 1 and doc["schema_version"] == 2
+    assert proc.returncode == 1 and doc["schema_version"] == 3
     assert [p["text"] for p in doc["problems"]] == [p.text for p in v.check()]
     assert doc["problems"][0]["rule"] == "SCAT-DONE-END-NOLINK"

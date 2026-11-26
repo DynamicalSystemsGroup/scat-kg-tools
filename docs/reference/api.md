@@ -32,13 +32,14 @@
 | [`scat_kg.edge_table`](#scat_kgedge_table) | [`scat edges`](cli.md#scat-edges) | View: every edge of one type. |
 | [`scat_kg.layered`](#scat_kglayered) | [`scat layered`](cli.md#scat-layered) | View: the union of fingerprints, in four layers. |
 | [`scat_kg.trace`](#scat_kgtrace) | [`scat trace`](cli.md#scat-trace) | View: what a node reaches, up or down the layers. |
+| [`scat_kg.evidence`](#scat_kgevidence) | [`scat evidence`](cli.md#scat-evidence) | View: one node's narratives with the paragraph around each link, its edges and its adjacent nodes. |
 | [`scat_kg.attribution`](#scat_kgattribution) | [`scat attribution`](cli.md#scat-attribution) | View: the narratives by contributor (where the vault's attribution mode allows it). |
 | [`scat_kg.export_edges`](#scat_kgexport_edges) | [`scat export-edges`](cli.md#scat-export-edges) | Write the edge tables as CSV and Markdown. |
 | [`scat_kg.draw.fingerprint`](#scat_kgdrawfingerprint), [`scat_kg.draw.layered`](#scat_kgdrawlayered) | [`scat draw`](cli.md#scat-draw) | Draw a view as an image (needs the extra `draw`). |
 
 ## Machine-readable output
 
-`result.to_dict()` returns the data of the result as plain Python: the same document that the matching `scat` command prints with `--json` (see the [CLI reference](cli.md#machine-readable-output)). `--json` prints exactly one JSON document and nothing else, and the exit code does not change. Print it with `json.dumps(result.to_dict(), indent=2)`. The fields, and the rule for when `schema_version` changes (it is 2), are in the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md).
+`result.to_dict()` returns the data of the result as plain Python: the same document that the matching `scat` command prints with `--json` (see the [CLI reference](cli.md#machine-readable-output)). `--json` prints exactly one JSON document and nothing else, and the exit code does not change. Print it with `json.dumps(result.to_dict(), indent=2)`. The fields, and the rule for when `schema_version` changes (it is 3), are in the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md).
 
 The examples below show `to_dict()` once for each call, with the output a fresh copy of the template gives at that point in the page. These JSON blocks are for reading: they are not run by the docs test.
 
@@ -130,7 +131,7 @@ As data, on the unchanged template (`import json` first):
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "check",
   "operation": "check",
   "ok": true,
@@ -147,7 +148,7 @@ To see a problem with a fix a program can apply, change `[[cap-setting]]` to `[[
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "check",
   "operation": "check",
   "ok": false,
@@ -276,7 +277,7 @@ As data:
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "status",
   "operation": "status",
   "ok": true,
@@ -349,7 +350,7 @@ As data:
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "index",
   "ok": true,
@@ -422,7 +423,7 @@ As data:
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "stub",
   "ok": true,
@@ -484,7 +485,7 @@ As data:
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "record-edge",
   "ok": true,
@@ -567,7 +568,7 @@ As data:
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "remove-edge",
   "ok": true,
@@ -642,7 +643,7 @@ As data:
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "stub-links",
   "ok": true,
@@ -726,7 +727,7 @@ As data:
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "set-status",
   "ok": true,
@@ -750,7 +751,7 @@ A refusal has the same shape, with `ok` false and the reason in `refused` (the C
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "set-status",
   "ok": false,
@@ -807,11 +808,11 @@ A view is a purposeful picture or table made from a conformant vault, and the ca
 - `view.ok` is `True`. `view.to_dict()` is the document.
 - A view refuses, with the problems and their fixes, on a name that is not there or is ambiguous, an edge type or direction that does not exist, a vault folder that is missing, any error in the pages it draws, and a row of a narrative it draws that tells no edge (the file and the row are named; the edge table and the trace draw every narrative). Warnings do not refuse. A narrative that links no node page is excluded: left out of every view, listed under `excluded` (name, file and how to include it) by each view that draws every narrative, and refused when you name it. Relationship annotations appear in no view.
 
-The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `layered`, `trace` or `attribution`. This is an excerpt of `scat_kg.edge_table("holds").to_dict()`; the full documents are in the [CLI reference](cli.md#scat-fingerprint) and the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md):
+The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `layered`, `trace`, `evidence` or `attribution`. This is an excerpt of `scat_kg.edge_table("holds").to_dict()`; the full documents are in the [CLI reference](cli.md#scat-fingerprint) and the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md):
 
 ```text
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "view",
   "operation": "edges",
   "ok": true,
@@ -1000,6 +1001,79 @@ scat_kg.trace("anonymity", "sideways")
 ```text
 refused sideways: this is not a direction
   Fix: use one of: up, down, both
+```
+
+## scat_kg.evidence
+
+```text
+evidence(node, *, root=".")
+```
+
+Returns everything the vault says of one node page: the narratives that link it, each with the whole paragraph around every link and the sentence that holds the link marked (`start` and `end` are offsets in the paragraph); the narratives that link it and tell no edge for it, flagged (`tells_edge` is `False`); its edges, each with the narratives that tell it and the row's note; and its adjacent nodes by layer. CLI twin: [`scat evidence`](cli.md#scat-evidence).
+
+| Parameter | Meaning |
+|---|---|
+| `node` | The name of a group, concern, affordance or technology. |
+| `root` | The vault folder. |
+
+`str(view)` begins with the vault's attribution mode and puts the marked sentence between `>>` and `<<`. A link inside the `Edges told` table is not a paragraph: it shows through the edges. The view reads no `attributed_to` field and lists no contributor page. It refuses when the name is not a node page (a narrative, a contributor page, or no page), when two pages carry the name, and on an error in a page it draws.
+
+=== "Python"
+
+    ```python
+    scat_kg.evidence("anonymity")
+    ```
+
+    ```text
+    attribution mode: disallowed
+    evidence anonymity (concern, done): 2 narratives, 2 edges
+      narratives (the sentence with the link is between >> and <<)
+        groups-under-a-cap-pitch [done, architecture, future]
+          line 12
+            - [[groups-clustered-under-a-cap|The vault holds groups]], and [[cap-setting|an instance setting]] caps their number.
+            - The cap is set for each vault, in the vault's own configuration. The example vault sets it to 3.
+            - A group is named by its role. No group stands for one identifiable person.
+            - >>Reason given in the record: the people in the data are groups under the Chatham House rule, so [[anonymity|no individual is identifiable]].<<
+        notes-at-a-chatham-house-session [done, scenario, mixed]
+          line 12
+            - [[workshop-participants|Workshop participants]] tell stories in conversations. The work is sized for manual note-taking in Obsidian.
+            - [[facilitator-analysts|Facilitators]] take the field notes. >>The setting is Chatham House rule: the people in the data are groups, so [[anonymity|no individual is identifiable]].<<
+            - The vault holds groups, and [[groups-clustered-under-a-cap|an instance setting caps their number]].
+            - This vault runs in the disallowed attribution mode: the notes name groups, never individuals, and no note links to a person. A project that needs names chooses another mode when it sets up.
+            - >>[[attribution|Attribution]] and [[anonymity]] conflict as concerns, and the vault records that as a remark on one of them.<<
+      edges
+        holds: facilitator-analysts -> anonymity [done; told by notes-at-a-chatham-house-session]
+            notes-at-a-chatham-house-session: They take the field notes under the Chatham House rule, so no individual is identifiable (D-010).
+        addressed-by: anonymity -> groups-clustered-under-a-cap [done; told by groups-under-a-cap-pitch, notes-at-a-chatham-house-session]
+            groups-under-a-cap-pitch: Participants appear only as groups, so no group stands for one identifiable person.
+            notes-at-a-chatham-house-session: The mission says the people in the data are groups under the Chatham House rule, so no individual is identifiable.
+      adjacent nodes
+        group
+          facilitator-analysts [done]
+        affordance
+          groups-clustered-under-a-cap [done]
+    excluded (no node page linked; link one node page to include it)
+        desk-notes-one (narrative/desk-notes-one.md)
+        desk-notes-two (narrative/desk-notes-two.md)
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat evidence anonymity
+    ```
+
+    The same text.
+
+`view.to_dict()` is the document, the one `scat evidence anonymity --json` prints; see the [CLI reference](cli.md#scat-evidence) for all of it. A refusal prints what to do next, and nothing is written:
+
+```python
+scat_kg.evidence("nobody")
+```
+
+```text
+refused nobody: no node has this name
+  Fix: give the name of a page (the file name without `.md`) that is a group, concern, affordance or technology
 ```
 
 ## scat_kg.attribution

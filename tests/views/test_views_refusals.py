@@ -15,7 +15,7 @@ def refused(view, subject_has=None):
     assert isinstance(view, Result) and not isinstance(view, scat_kg.View)
     assert view.ok is False
     d = view.to_dict()
-    assert d["kind"] == "operation" and d["ok"] is False and d["schema_version"] == 2
+    assert d["kind"] == "operation" and d["ok"] is False and d["schema_version"] == 3
     assert len(d["refused"]) == 1
     if subject_has:
         assert subject_has in d["refused"][0]["subject"]
