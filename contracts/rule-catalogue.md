@@ -393,10 +393,8 @@ warning [SCAT-DRAFT-FIELD] <file> field `timeframe`: missing (required once the 
 
 ### The mode rule
 
-One rule differs by attribution mode, and none other does. Its wording is exact and is the same, byte for byte, in
-`docs/norms.md` and `contracts/assistant.md` when they quote it (the checks hold it as
-`scat_kg.checks.attribution.MODE_RULE`; a test compares the catalogue's quotation with it, and a later unit adds the
-comparison for those two files):
+One rule differs by attribution mode, and none other does. Its wording is exact (the checks hold it as
+`scat_kg.checks.attribution.MODE_RULE`, and a test compares the catalogue's quotation with it):
 
 > In required mode a narrative SHALL name its contributors; in disallowed mode it SHALL NOT; in optional mode it MAY. To name a contributor is to link a contributor page in the narrative's `attributed_to` field.
 

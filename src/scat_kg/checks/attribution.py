@@ -2,7 +2,7 @@
 
 The TBox says only that a narrative's `attributed_to` is optional and that a `contributor` page is a page type;
 the mode is the vault's (`scat.toml`), so the grading is stated here and nowhere else. `MODE_RULE` is its wording,
-copied byte for byte into the catalogue, the norms page and the assistant's rules.
+quoted byte for byte in the catalogue.
 
 `disallowed`: any `attributed_to` on a narrative and any contributor page is an error at every status
 (SCAT-ATTR-DISALLOWED). `required`: a narrative with no entry gets a warning before `done`, an error at `done`
