@@ -1,8 +1,10 @@
 #!/bin/sh
-# SCAT Chat launcher: start, stop, status. POSIX sh.
+# SCAT Chat launcher: start, stop, status, copy-key, copy-address, change-vault. POSIX sh.
 #
-# The coder double-clicks SCAT Chat.app, which calls this script; nobody types a command. Every message says
-# what happened and what to click next. Stop always runs: the Stop button, quitting the app, and any failure
+# The coder double-clicks SCAT Chat.app (a menu-bar item), which calls this script with these verbs only, never with
+# a value; nobody types a command. Every message says what happened and what to click next. The script keeps
+# $STATE/ui (state, vault, address, then a problem line; never the key) for the app to show.
+# Stop always runs: the menu's Stop, quitting the app, and any failure
 # after start end in the same teardown (tunnel off, container removed, Mac allowed to sleep, key deleted,
 # clipboard cleared), which is safe to run twice and when nothing is running.
 #
@@ -11,10 +13,13 @@
 #   SCAT_CHAT_PBCOPY, SCAT_CHAT_PBPASTE, SCAT_CHAT_CAFFEINATE, SCAT_CHAT_OSASCRIPT, SCAT_CHAT_OPEN,
 #   SCAT_CHAT_SECURITY (the macOS keychain tool; only the key_* functions call it)
 # Other settings: SCAT_CHAT_SEARCH_PATH (folders searched first for the programs; for tests), SCAT_CHAT_HOME (state folder), SCAT_CHAT_CONTEXT (the source to build), SCAT_CHAT_PORT,
-#   SCAT_CHAT_VAULT, SCAT_CHAT_WAIT, SCAT_CHAT_TUNNEL_WAIT, SCAT_CHAT_UI.
+#   SCAT_CHAT_WAIT, SCAT_CHAT_TUNNEL_WAIT, SCAT_CHAT_UI.
+# SCAT_CHAT_VAULT is a TEST OVERRIDE ONLY: it names the vault and skips the "Serve <vault>?" question, so it breaks
+# the rule that every start shows the coder the vault (WP22-G5). The app never sets it.
 # SCAT_CHAT_UI=plain prints instead of showing dialogs, and takes answers from SCAT_CHAT_A_<KEY> or stdin:
-#   VAULT (a folder), COPY (copy), OPEN (open), COPYKEY (copy: the Copy key button), STOP (stop). In plain mode start returns once the session is up,
-#   unless SCAT_CHAT_A_STOP=stop (the Stop button), which tears down at once.
+#   USE (Use it / Choose another: the question about the remembered vault), VAULT (a folder), COPY (copy), OPEN (open),
+#   COPYKEY (copy: the Copy key menu item), STOP (stop). In plain mode start returns once the session is up,
+#   unless SCAT_CHAT_A_STOP=stop (the Stop menu item), which tears down at once.
 
 # Where `docker` may live: Homebrew (Intel, Apple silicon) and Docker Desktop's own folder.
 SEARCH=${SCAT_CHAT_SEARCH_PATH:-/usr/local/bin:/opt/homebrew/bin:/Applications/Docker.app/Contents/Resources/bin}
@@ -60,6 +65,8 @@ FAILMSG=""
 SIGNALED=0
 DPID=""
 RESULT=""
+VAULT=""
+URL=""
 
 have() { command -v "$1" >/dev/null 2>&1; }
 
@@ -119,7 +126,7 @@ ui_folder() { # KEY message: prints the folder chosen, or nothing
     fi
 }
 
-ui_hold() { # message (never the key): the dialog with the Copy key and Stop buttons; returns when the coder clicks Stop
+hold() { # message (never the key): dialog mode waits here until a signal (the Stop verb) ends the session
     if [ "$UI" = plain ]; then
         printf '%s\n' "$1"
         if [ "$(plain_answer_env COPYKEY)" = copy ]; then
@@ -133,25 +140,33 @@ ui_hold() { # message (never the key): the dialog with the Copy key and Stop but
         CLEANUP=0
         exit 0
     fi
+    ui_progress "SCAT Chat is running. Click its dot in the menu bar: Copy address, then Copy key, and paste each into the chat."
     while :; do
-        "$OSASCRIPT" -e 'on run argv' \
-            -e 'try' \
-            -e 'return button returned of (display dialog (item 1 of argv) with title "SCAT Chat" buttons {"Copy key", "Stop"} default button "Stop")' \
-            -e 'on error' -e 'return "Stop"' -e 'end try' \
-            -e 'end run' "$1" >"$STATE/hold.out" 2>/dev/null &
+        sleep 86400 &
         DPID=$!
         wait "$DPID" 2>/dev/null
         DPID=""
-        hold_a=$(cat "$STATE/hold.out" 2>/dev/null)
-        rm -f "$STATE/hold.out"
-        [ "$hold_a" = "Copy key" ] || break
-        copy_key
-        ui_progress "The key is on your clipboard."
     done
 }
 
+ui_state() { # state [problem]: the app's state file, by a rename so the app never reads half of it (never the key)
+    us_p=$(printf '%s' "${2:-}" | tr '\n' ' ')
+    {
+        printf '%s\n%s\n%s\n' "$1" "$(printf '%s' "$VAULT" | tr '\n' ' ')" "$(printf '%s' "$URL" | tr '\n' ' ')"
+        [ -z "$us_p" ] || printf '%s\n' "$us_p"
+    } >"$STATE/ui.tmp" && mv -f "$STATE/ui.tmp" "$STATE/ui"
+}
+
+first_note() { # once per Mac (the marker is in the state folder): where the app now lives
+    [ ! -f "$STATE/menubar-note" ] || return 0
+    ui_note "SCAT Chat now lives in the menu bar, at the top of your screen, near the clock: look for a small dot (grey while it starts, green when it is running, red if there is a problem). Click the dot for its menu: Copy address, Copy key, Change vault and Stop. There is no window."
+    : >"$STATE/menubar-note"
+}
+
 copy_key() { # the only way the key reaches the clipboard: the coder asked for it
-    key_get | "$PBCOPY"
+    ck=$(key_get) || return 1
+    [ -n "$ck" ] || return 1
+    printf '%s' "$ck" | "$PBCOPY"
 }
 
 plain_answer_env() { # KEY: the environment answer only (never reads stdin)
@@ -321,16 +336,27 @@ on_exit() {
     fi
     if [ "$CLEANUP" = 1 ]; then
         teardown
-        if [ "$SIGNALED" = 0 ]; then
-            if [ -n "$FAILMSG" ]; then
+        if [ -z "$FAILMSG" ] && [ "$SIGNALED" = 0 ] && [ "$rc" != 0 ]; then
+            FAILMSG="SCAT Chat stopped unexpectedly."
+        fi
+        if [ -n "$FAILMSG" ]; then # the app shows a problem as a red dot and one alert; plain mode prints it
+            case "$RESULT" in
+            "Stopped, but"*) ui_state problem "$FAILMSG $RESULT" ;;
+            *) ui_state problem "$FAILMSG" ;;
+            esac
+        else
+            ui_state stopped
+        fi
+        if [ "$UI" = plain ]; then
+            if [ "$SIGNALED" != 0 ]; then
+                printf '%s\n' "$RESULT"
+            elif [ -n "$FAILMSG" ]; then
                 ui_note "$FAILMSG
 
 $RESULT"
             else
                 ui_note "$RESULT"
             fi
-        else
-            printf '%s\n' "$RESULT"
         fi
     fi
     exit "$rc"
@@ -339,6 +365,7 @@ $RESULT"
 # ---------------------------------------------------------------- start
 
 step_tools() {
+    ui_state starting
     if ! have "$DOCKER"; then
         die "SCAT Chat needs a container runtime: Colima (recommended) or Docker Desktop. Neither is installed. Install one once, as the chat-path guide shows under 'Install once', then click SCAT Chat again."
     fi
@@ -377,13 +404,21 @@ SCAT Chat never switches HTTPS on for you. When the name is right, click 'Open t
 }
 
 step_vault() {
-    VAULT=${SCAT_CHAT_VAULT:-}
+    ui_state starting
+    VAULT=${SCAT_CHAT_VAULT:-} # test override only (see the top of this file)
     if [ -z "$VAULT" ] && [ -f "$STATE/vault" ]; then
         VAULT=$(cat "$STATE/vault")
-    fi
-    if [ -n "$VAULT" ] && [ ! -d "$VAULT" ]; then
-        ui_note "The vault folder I remembered is gone ($VAULT). Choose it again on the next screen."
-        VAULT=""
+        if [ ! -d "$VAULT" ]; then
+            ui_note "The vault folder I remembered is gone ($VAULT). Choose it again on the next screen."
+            VAULT=""
+        else # a remembered vault is offered, never used silently (WP22-G5)
+            ans=$(ui_choice USE "Serve $VAULT?" "Use it" "Choose another")
+            case "$ans" in
+            "Use it" | use) ;;
+            "Choose another" | another) VAULT="" ;;
+            *) die "No vault was confirmed, so nothing was started. Click SCAT Chat again and say whether to use $VAULT." ;;
+            esac
+        fi
     fi
     if [ -z "$VAULT" ]; then
         VAULT=$(ui_folder VAULT "Choose your vault: the folder that holds your narratives (it has a file called scat.toml).")
@@ -430,6 +465,7 @@ pkg_version() { # default: the first `version = "..."` line of pyproject.toml; e
 }
 
 step_image() {
+    ui_state starting
     # Use the published image of this version when there is one; build the source here only when there is none,
     # so a candidate works before its release.
     TAG=$(src_tag)
@@ -455,6 +491,7 @@ Check that you are online, then click SCAT Chat again."
 }
 
 step_server() {
+    ui_state starting
     if ! { key_put "$(new_key)" && key_present; }; then
         die "I could not keep a new key in your keychain. If macOS asked for permission, click Allow; then click SCAT Chat again."
     fi
@@ -484,6 +521,7 @@ Click SCAT Chat again; if it repeats, tell the person who set this up."
 }
 
 step_tunnel() {
+    ui_state starting
     : >"$STATE/tunnel"
     ui_progress "Switching on the public link."
     "$TAILSCALE" funnel --bg "$PORT" >"$STATE/funnel.log" 2>&1 &
@@ -515,6 +553,7 @@ step_tunnel() {
 }
 
 step_awake() {
+    ui_state starting
     "$CAFFEINATE" -i -s </dev/null >/dev/null 2>&1 &
     printf '%s\n' "$!" >"$STATE/caffeinate.pid"
 }
@@ -526,11 +565,12 @@ cmd_start() {
         if [ "$UI" = dialog ] && ! kill -0 "$old" 2>/dev/null; then
             teardown # a crashed earlier session: clean up, then go on
         else
-            ui_note "SCAT Chat is already running. Click Stop in its window (or quit the app) before starting it again."
+            ui_note "SCAT Chat is already running. Click Stop in its menu (or quit the app) before starting it again."
             exit 0
         fi
     fi
     printf '%s\n' "$$" >"$STATE/session"
+    rm -f "$STATE/changing"
     CLEANUP=1
     trap on_exit EXIT
     trap 'SIGNALED=1; exit 1' INT TERM HUP
@@ -539,6 +579,8 @@ cmd_start() {
     HOST_UID=$(id -u)
     HOST_GID=$(id -g)
 
+    ui_state starting
+    first_note
     step_tools
     step_vault
     step_image
@@ -547,20 +589,21 @@ cmd_start() {
     step_awake
 
     printf '%s\n' "$URL" >"$STATE/session.txt"
-    ui_hold "SCAT Chat is running.
+    ui_state running
+    hold "SCAT Chat is running.
 
 1. In the chat, open MCP settings and add a server.
 2. Paste this address:
 $URL
-3. Choose API key as the authentication. Click Copy key below, then paste the key in the chat. The key is never shown on screen.
+3. Choose API key as the authentication. Click Copy key in the SCAT Chat menu, then paste the key in the chat. The key is never shown on screen.
 
 Vault: $VAULT
-Your Mac stays awake while this window is open. Click Stop when you are done: that switches everything off and deletes the key."
+Your Mac stays awake while SCAT Chat is open. Click Stop in its menu when you are done: that switches everything off and deletes the key."
 }
 
 # ---------------------------------------------------------------- stop, status
 
-cmd_stop() {
+do_stop() { # the teardown with the session's own process stopped first; returns 1 when it could not confirm
     mkdir -p "$STATE" || exit 1
     HOME_REAL=$(cd "$HOME" && pwd -P)
     if [ -f "$STATE/session" ]; then
@@ -571,13 +614,23 @@ cmd_stop() {
         fi
     fi
     teardown
+    VAULT=""
+    URL=""
+    ui_state stopped
     printf '%s\n' "$RESULT"
-    case "$RESULT" in "Stopped, but"*) exit 1 ;; esac
+    case "$RESULT" in "Stopped, but"*) return 1 ;; esac
+    return 0
+}
+
+cmd_stop() {
+    mkdir -p "$STATE" || exit 1
+    rm -f "$STATE/changing"
+    do_stop || exit 1
 }
 
 cmd_status() {
-    if [ -f "$STATE/session" ]; then
-        if [ -f "$STATE/session.txt" ]; then
+    if [ -f "$STATE/session" ] || [ -f "$STATE/changing" ]; then # changing: Change vault is between two sessions
+        if [ -f "$STATE/session" ] && [ -f "$STATE/session.txt" ]; then
             printf 'SCAT Chat is running at %s\n' "$(cat "$STATE/session.txt")"
         else
             printf 'SCAT Chat is starting.\n'
@@ -588,18 +641,44 @@ cmd_status() {
     exit 1
 }
 
-cmd_change_vault() {
+cmd_copy_key() {
+    if ! copy_key; then
+        printf 'There is no key: SCAT Chat is not running.\n'
+        exit 1
+    fi
+    ui_progress "The key is on your clipboard."
+}
+
+cmd_copy_address() {
+    ca=$(cat "$STATE/session.txt" 2>/dev/null)
+    if [ -z "$ca" ]; then
+        printf 'There is no address yet: SCAT Chat is not running.\n'
+        exit 1
+    fi
+    printf '%s' "$ca" | "$PBCOPY"
+    ui_progress "The address is on your clipboard."
+}
+
+cmd_change_vault() { # stop, then start again with the vault chooser; the session key is new, so the chat's server entry needs updating
+    mkdir -p "$STATE" || exit 1
+    : >"$STATE/changing"
+    if ! do_stop; then
+        rm -f "$STATE/changing"
+        exit 1
+    fi
     rm -f "$STATE/vault"
-    printf 'The next start will ask you to choose the vault folder again.\n'
+    cmd_start
 }
 
 case "${1:-}" in
 start) cmd_start ;;
 stop) cmd_stop ;;
 status) cmd_status ;;
+copy-key) cmd_copy_key ;;
+copy-address) cmd_copy_address ;;
 change-vault) cmd_change_vault ;;
 *)
-    printf 'usage: %s start | stop | status | change-vault\n' "$0" >&2
+    printf 'usage: %s start | stop | status | copy-key | copy-address | change-vault\n' "$0" >&2
     exit 2
     ;;
 esac
