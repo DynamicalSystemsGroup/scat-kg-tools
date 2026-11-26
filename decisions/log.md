@@ -2490,3 +2490,12 @@ edge grammar), with the mode rule of D-133; and `MISSION.md` (Non-goals, attribu
 (groups, concerns, affordances, technologies) record groups, never individuals. Where the mode enables attribution,
 each contributor has a page outside the four layers, and a narrative's attributed-to links resolve to those pages."
 The ACE made that edit on `dev`.
+
+## D-135 | 2026-11-26 | WP23 revised for D-133 and D-134
+
+WP23's scope is revised: the mode is a repository metaparameter that sets the rules (G2, with the one mode-dependent
+rule stated identically in the checks, the norms and the assistant's rules); contributor pages, a new type outside the
+four layers, hold the people a narrative is attributed to, and `attributed_to` links resolve to them in the knowledge
+graph, never in the four layers' edges, the cap or the layered views (G3); the deontic pass on `contracts/assistant.md`
+and the skill (C11) joins as G4. D-128's "not a node, not a link" default is replaced. U1 (rename, glossary) and U2 (the
+mode key) keep their work; U3 onward are re-planned. The PM re-checks the revised scope before U3 starts.
