@@ -8,7 +8,8 @@ the node's edges, each with the narratives that tell it and the row's note; and 
 by layer. It is a view of the four layers: it never reads a narrative's `attributed_to` and never lists a
 contributor page. A paragraph is the coder's own text, returned as written. Writes nothing.
 
-A paragraph is the lines between blank lines. A link inside the `Edges told` table is not in a paragraph (the
+A paragraph is the lines between blank lines; a line that starts with `|` (a row of any table) is a block of its own,
+whole, never cut into sentences. A link inside the `Edges told` table is not in a paragraph (the
 table's rows show through the node's edges), and neither is a table line next to one. A sentence runs to the next
 `.`, `!` or `?` that is followed by white space or the end of the paragraph (never inside a link), or to the end of
 the line before a list item; a list item's marker is no part of a sentence; so an abbreviation such as `e.g.` ends
@@ -47,6 +48,8 @@ _MARK = re.compile(r"[ \t]*(?:[-*+]|\d+[.)])[ \t]+")  # a list item's marker, at
 
 def _bounds(paragraph: str) -> list[tuple[int, int]]:
     """The sentences of a paragraph as (start, end) offsets: white space and a list item's marker left out."""
+    if paragraph.lstrip().startswith("|"):  # a table row is one unit, never cut across cells
+        return [(len(paragraph) - len(paragraph.lstrip()), len(paragraph.rstrip()))]
     cuts, skips, i = [], {}, 0
     while i < len(paragraph):
         if (i == 0 or paragraph[i - 1] == "\n") and (m := _MARK.match(paragraph, i)):
@@ -82,7 +85,14 @@ def _paragraphs(nar: Narrative, name: str, body: str, body_line: int) -> list[di
     skip = range(table.header_line - body_line, table.last_line - body_line + 1) if table else ()
     blocks, here = [], []
     for k, ln in enumerate(lines):
-        if ln.strip() and k not in skip:
+        if (
+            ln.lstrip().startswith("|") and k not in skip
+        ):  # a row of another table: a block of its own
+            if here:
+                blocks.append(here)
+            blocks.append([k])
+            here = []
+        elif ln.strip() and k not in skip:
             here.append(k)
         elif here:
             blocks.append(here)

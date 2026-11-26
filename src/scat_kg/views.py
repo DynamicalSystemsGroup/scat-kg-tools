@@ -64,7 +64,7 @@ def _refuse(
 class View:
     """What a view returns: the document's content, and the text the CLI prints."""
 
-    operation: str  # "fingerprint", "edges", "layered", "trace" or "attribution"
+    operation: str  # "fingerprint", "edges", "layered", "trace", "evidence" or "attribution"
     data: dict = field(default_factory=dict)
     mode: str | None = None  # the vault's attribution mode
 

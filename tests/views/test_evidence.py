@@ -337,3 +337,25 @@ def test_the_cli_prints_the_text_and_exits_1_on_a_refusal(built, capsys):
     assert capsys.readouterr().out.startswith("attribution mode: disallowed\nevidence water")
     assert main(["evidence", "dry", "--root", str(built)]) == 1
     assert "refused dry: no node has this name" in capsys.readouterr().out
+
+
+def test_a_row_of_another_table_is_its_own_block_and_is_not_cut_across_cells(tmp_path):
+    account = (
+        "Before the table. Still [[water]] here\n"
+        "| who | said. what |\n|---|---|\n"
+        "| [[farmers]]. Yes | [[water]]. No |\n"
+        "After the table."
+    )
+    root = write(
+        tmp_path / "v", base_files() | {"narrative/t.md": narrative("T", account, None, "draft")}
+    )
+    ps = by_name(doc(root, "water"))["t"]["paragraphs"]
+    assert [p["paragraph"] for p in ps] == [
+        "Before the table. Still [[water]] here",
+        "| [[farmers]]. Yes | [[water]]. No |",
+    ]
+    assert [s["text"] for s in ps[0]["sentences"]] == ["Still [[water]] here"]
+    assert [s["text"] for s in ps[1]["sentences"]] == ["| [[farmers]]. Yes | [[water]]. No |"]
+    assert all(
+        p["paragraph"][s["start"] : s["end"]] == s["text"] for p in ps for s in p["sentences"]
+    )

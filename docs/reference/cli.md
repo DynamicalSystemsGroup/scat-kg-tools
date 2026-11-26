@@ -1344,7 +1344,7 @@ Shows, for one node page, what the vault says of it, so that you can write the p
 - **edges**: the node's edges, each with the narratives that tell it and each row's note.
 - **adjacent nodes**: the nodes one edge away, by layer.
 
-A sentence ends at a `.`, `!` or `?` followed by a space, so an abbreviation such as `e.g.` ends one early; the paragraph is always whole. A narrative that links no node page is excluded and listed at the end, as in the other views. The command reads no `attributed_to` field and lists no contributor page. It writes nothing.
+A paragraph is the lines between blank lines; a row of any table (a line that starts with `|`) is a paragraph of its own and is never cut into sentences. A sentence ends at a `.`, `!` or `?` followed by a space, so an abbreviation such as `e.g.` ends one early; the paragraph is always whole. A narrative that links no node page is excluded and listed at the end, as in the other views. The command reads no `attributed_to` field and lists no contributor page. It writes nothing.
 
 Exit codes: 0, or 1 for a refusal (a name that is not a node page, such as a narrative or a contributor page, a name that two pages carry, a page it draws that has an error).
 
