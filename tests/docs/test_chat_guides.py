@@ -78,7 +78,6 @@ def test_chat_path_steps_name_a_place():
         ("Connect the chat", "Set up the skill and the saved agent"),
         ("Set up the skill and the saved agent", "Use"),
         ("Stop", "Clean up"),
-        ("Clean up", "What leaves your machine"),
     ):
         steps = _steps(CHAT, start, end)
         assert steps, start
@@ -235,8 +234,8 @@ def test_step_for_the_file_library_says_why():
 
 
 def test_the_saved_agents_tool_is_added_again():
-    """L10: the tool does not survive deleting the server entry."""
+    """L10, revised by D-141: editing the entry's key keeps the agent's tool; deleting the entry breaks it."""
     chat = CHAT.read_text(encoding="utf-8")
-    assert chat.count("does not survive") >= 2
-    assert "must be added again" in chat
+    assert "Editing that entry's key keeps the tie" in chat
+    assert "Deleting the entry breaks it" in chat
     assert "add the tool again" in LNT.read_text(encoding="utf-8")

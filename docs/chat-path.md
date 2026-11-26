@@ -2,7 +2,7 @@
 
 !!! tip "Your next step"
     Read "What the chat path is, and what it needs", then do "Install once". You do that one time per Mac. After that,
-    every session runs the same way: start, connect the chat, use, stop, clean up.
+    every session runs the same way: start, connect the chat, use, stop.
 
 The chat path lets you code a narrative by talking to an assistant in a chat window in your browser, with no
 terminal in the coding itself. Obsidian stays where you read and decide. This page walks one session from start to
@@ -250,8 +250,9 @@ again even though you only edited the entry.
 
 ## Connect the chat
 
-Every session you add the address and the key to the chat. The key is new each session, so an entry from an earlier
-session no longer works: you delete it at the end ("Clean up"), and add a new one now.
+The first time, you add a server entry to the chat with the address and the key. The address stays the same from
+session to session; the key is new each session. So in later sessions you keep the entry and only paste the new key
+into it: open **MCP Settings**, click **Edit** next to the entry, paste the key, and save.
 
 As an example, in inference.coop's chat (lab run, 24 and 25 November, with lab material only):
 
@@ -316,10 +317,9 @@ the step says what to look for.
     start from that Select, not from the model menu or from typing `@`.
 18. **In the chat:** use **Select** to pick the agent. A new chat starts with it.
 
-An agent's tool is tied to the server entry you chose when you saved it, and that tie does not survive deleting the
-entry. The server's address and key change each session, and each session you add a new entry (as in "Connect the
-chat"), so each session the saved agent's tool must be added again: open the agent in the Agent Builder, remove the
-tool that no longer works, add the new entry, and save. This was seen on the lab run's old agent.
+An agent's tool is tied to the server entry you chose when you saved it. Editing that entry's key keeps the tie (seen
+in the lab run of 26 November). Deleting the entry breaks it: if you delete the entry and add a new one, open the agent
+in the Agent Builder, remove the tool that no longer works, add the new entry, and save.
 
 ## Use
 
@@ -408,7 +408,7 @@ What each Stop removes, and what stays:
 
 | Removed by Stop | Stays until you remove it |
 |---|---|
-| The public link (Funnel), the server's container, the key in your keychain, the key on your clipboard, the keep-awake | The server entry in the chat (you delete it: "Clean up") |
+| The public link (Funnel), the server's container, the key in your keychain, the key on your clipboard, the keep-awake | The server entry in the chat (keep it; next session paste the new key into it) |
 | | A skill or a saved agent you set up in the chat |
 | | Your uploaded field notes, and your conversations, in the chat |
 | | Your vault, and every change in it, on your Mac |
@@ -416,8 +416,7 @@ What each Stop removes, and what stays:
 
 ## Stop
 
-Stopping has two parts here: stop the session on your Mac, and check that it stopped. Then clean up the chat
-platform (next section).
+Stopping has two parts: stop the session on your Mac, and check that it stopped.
 
 1. **In the menu bar:** open SCAT Chat's menu and click **Stop**. Stop switches off the public link, removes the server,
    lets your Mac sleep again, deletes the key from your keychain and clears your clipboard of the key. It shows the
@@ -445,29 +444,16 @@ Colima keeps running after Stop; it is not in your way. Closing Docker Desktop, 
 
 ## Clean up
 
-Clean up the chat platform each time, even in a relaxed project: the server entry holds a key that no longer works,
-so delete it rather than leave it. This section is the default flow: delete the server entry, and the rest is your
-choice. If your data policy needs everything removed from the platform, follow [Leave no
-trace](leave-no-trace.md), instead.
+Nothing has to be removed from the chat at the end of a session. Stop has already deleted the key, so the server
+entry is harmless until you paste the next key into it. Keep the entry, the skill and the saved agent for your next
+session.
 
-1. **In the chat:** in the bar of icons on the left, click **MCP Settings** (the last icon above your initials).
-2. **In the chat:** next to the server you added ("SCAT"), click **Edit**.
-3. **In the chat:** at the bottom left of the form, click the red **delete** button.
-4. **In the chat:** confirm.
+What stays in the chat account until you delete it there: the server entry, the skill, the saved agent, your uploaded
+field notes and your conversations. How long the chat provider keeps them is set by the provider: ask it, or read its
+terms. Your vault is on your Mac and is not touched.
 
-That is the clean-up the lab run did on 25 November. Delete only the server entry; the rest is optional:
-
-- **A skill or a saved agent you set up stays** unless you remove it. Leave them for the next session, or remove them
-  in the chat where you made them (look where you created
-  them).
-- **Your uploaded field notes and conversations** stay in the chat account until you delete them there. How long the chat
-  provider keeps them is set by the provider: ask it, or read its terms. To delete an uploaded file and a conversation,
-  look for a file library and the conversation's menu in the chat.
-- **Your vault** is on your Mac and is not touched.
-
-Next session, add the new server entry (see "Connect the chat"). A saved agent's tool does not survive deleting the
-server entry it was tied to, so open the saved agent in the Agent Builder, remove the tool that no longer works, add
-the new entry, and save (seen on the lab run's old agent).
+If your project's data policy asks for everything to be removed from the platform after each session, follow
+[Leave no trace](leave-no-trace.md).
 
 ## What leaves your machine
 
