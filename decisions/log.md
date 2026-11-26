@@ -2361,3 +2361,12 @@ file; the skill's comment lines are the drift test's markers and change with it;
 reviewer's dry run; candidates and glossary words set right; the spike's logged decision gates the launcher unit.
 Impact map `work-packages/impact/WP22.md` (change consultant's work, via the PM). Revert point `divergence/D-125`.
 The ACE approves WP22.
+
+## D-126 | 2026-11-26 | Attribution of narratives (C13): in v0.1, pending two problem-level points
+
+Asked whether C13 (attributing narratives to contributors, off in Chatham House mode, chosen by the organiser at
+set-up) is in v0.1 or after, the chief engineer chose "In v0.1". The ACE found two problem-level points it raises
+(raised by D-126), put to him before scoping: (1) `MISSION.md` Non-goals holds "Attributing statements to individuals in
+the ontology. The data records groups; an event's participation terms are its own policy, which the docs name without
+choosing one."; (2) the TBox's formal identifier for the affordance-to-technology edge is `scat:Attributes`, the
+source of the diagram's stale label, so freeing "attributed to" means renaming that identifier.
