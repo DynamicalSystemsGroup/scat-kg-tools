@@ -17,7 +17,7 @@ from scat_kg.tbox import TBOX
 ROOT = Path(__file__).resolve().parents[2]
 PAGE = ROOT / "docs" / "reference" / "terms.md"
 GLOSSARY = ROOT / "GLOSSARY.md"
-WORD_CAP = 820
+WORD_CAP = 850  # raised by D-131
 
 # Backticked names that are not in the TBox but are real: the vault's configuration file and its key.
 CONFIG_NAMES = {"scat.toml", "stakeholder_group_cap"}

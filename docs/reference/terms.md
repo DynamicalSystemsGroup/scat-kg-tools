@@ -6,7 +6,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 
 - **SCAT**: the four node types.
 - **node**: a group, concern, affordance or technology of the layered graph. (Obsidian's graph view also calls every page a node.)
-- **edge**: a connection between nodes in neighbouring layers, one per pair: `holds` (group to concern), `is addressed by` (concern to affordance), `is provided by` (affordance to technology).
+- **edge**: a typed connection between nodes in neighbouring layers, one per pair: `holds` (group to concern), `is addressed by` (concern to affordance), `is provided by` (affordance to technology).
 - **element**: a node or edge.
 - **layer**: all nodes of one type: `group`, `concern`, `affordance`, `technology`, in that order.
 - **layered graph**: nodes and edges, in four layers.
@@ -39,8 +39,8 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **Edges told**: the table on a `narrative` page, one row for each edge the account tells; columns `from`, `type`, `to`, `note`. Not an edge table.
 - **link**: an Obsidian `[[…]]` reference. Never an edge by itself.
 - **cap**: the most groups a vault may hold, set in `scat.toml` (key `stakeholder_group_cap`).
-- **attribution mode**: in `scat.toml`.
-- **attribution**: a narrative's people.
+- **attribution mode**: required, optional or disallowed (Chatham House rule); set in `scat.toml`.
+- **attribution**: the people a narrative is attributed to, where the mode allows; never a node or a link.
 - **index page**: the page generated for a type (`index`), listing its entries; an Obsidian Base, 1.9 or later.
 - **status**: how far an entry has got: `stub` (a name), `draft` (content, incomplete) or `done` (complete, conformant, signed off by the coder).
 - **mismatch**: a link and an edge that disagree about the same relationship, reported with a fix.
