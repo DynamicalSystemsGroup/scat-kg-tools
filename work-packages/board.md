@@ -29,7 +29,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP19 | The range vault (D-094) | all units done and reviewed on `pm-wp18`; `check_metrics.py --accept WP19` passes; ready for ACE acceptance | `WP19.md` |
 | WP20 | The candidate and user acceptance (D-097) | manual path passed UA-A round 2 (D-101); all units done except WP20-UC1 (chat-path UA-A, queued, waits on the chief engineer's sitting) | `WP20.md` |
 | WP21 | Rules and norms, the chat path's life cycle, the published image (D-114) | all units done and merged on `dev`; ready for ACE acceptance after the template pin | `WP21.md` |
-| WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | U1, U2 done; U3 (launcher) and U5 (guides) in flight after D-130; U4 tests, U6 cold read queued | `WP22.md` |
+| WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | all units done; merged into `dev`; waiting on the ACE's acceptance and the chief engineer's sitting | `WP22.md` |
 
 ## Units
 
@@ -299,13 +299,13 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP22-U1r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T11:30:00-05:00 | two fresh review rounds, re-ran the applet, plutil, codesign |
 | WP22-U2 | Python developer (skill markers, drift test), haiku | 1 | 1 | `wp22/u2` | done |  | 2026-11-26T11:30:00-05:00 | PASS first time; markers replaced by title and first G4 heading anchors; merged 7e5472b |
 | WP22-U2r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T11:30:00-05:00 | fresh reviewer PASS first time; 5 mutations caught |
-| WP22-U3 | macOS and shell developer (applet, launcher, build), sonnet | 8 |  | `wp22/u3` | in flight |  |  |  |
-| WP22-U3r | reviewer (fresh), runs the built app, sonnet | 2 |  | `-` | queued | WP22-U3 |  |  |
-| WP22-U4 | test engineer (tests/deploy), sonnet | 3 |  | `wp22/u4` | queued | WP22-U3 |  |  |
-| WP22-U4r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP22-U4 |  |  |
-| WP22-U5 | technical writer (guides, acceptance kit lines), sonnet | 5 |  | `wp22/u5` | in flight |  |  |  |
-| WP22-U5r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP22-U5 |  |  |
-| WP22-U6 | simulated user, cold read of the two guides, haiku | 2 |  | `-` | queued | WP22-U5 |  |  |
+| WP22-U3 | macOS and shell developer (applet, launcher, build), sonnet | 8 | 13 | `wp22/u3` | done |  | 2026-11-26T13:25:00-05:00 | three fix rounds after a first NOT PASS; fresh re-review PASS at 2d129c4; 99e15cf adds the next step to two messages; merged |
+| WP22-U3r | reviewer (fresh), runs the built app, sonnet | 2 | 5 | `-` | done |  | 2026-11-26T13:25:00-05:00 | three review rounds |
+| WP22-U4 | test engineer (tests/deploy), sonnet | 3 | 5 | `wp22/u4` | done |  | 2026-11-26T13:25:00-05:00 | rebased onto the final launcher; 26 new tests; applet stop path text-checked only |
+| WP22-U4r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T13:25:00-05:00 | PASS first time; 8 mutations caught |
+| WP22-U5 | technical writer (guides, acceptance kit lines), sonnet | 5 | 8 | `wp22/u5` | done |  | 2026-11-26T13:25:00-05:00 | four rounds; D-139 residue removed; cold-read fix |
+| WP22-U5r | reviewer (fresh), sonnet | 1 | 3 | `-` | done |  | 2026-11-26T13:25:00-05:00 | two rounds |
+| WP22-U6 | simulated user, cold read of the two guides, haiku | 2 | 2 | `-` | done |  | 2026-11-26T13:25:00-05:00 | two Haiku cold readers; report in acceptance/reports/wp22-chat-guides-cold-read.md |
 
 ## Iterations and velocity
 
@@ -347,6 +347,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 35 | WP21-U3h, U3hr, U6, U6r, U8f, U8fr (U8f, U8fr added by the PM: red CI) | 12 | 13 | 1.08 | 1.6 h | 8.13 |
 | 36 | WP21-U10, U10r, U10b, U10br (U10b, U10br added by the PM after D-119) | 9 | 13 | 1.44 | 1.7 h | 7.65 |
 | 37 | WP22-U1, U1r, U2, U2r | 6 | 9 | 1.50 | 0.3 h | 30.0 |
+| 38 | WP22-U3, U3r, U4, U4r, U5, U5r, U6 | 22 | 38 | 1.73 | 1.9 h | 20.0 |
 
 ## Velocity and forecast
 
@@ -357,6 +358,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP22 all units done and merged (iteration 38: 22 est, 38 realized, ratio 1.73, 1.9 h; U3 ran over: the menu-bar app's wording, stale-state and Stop paths took three fix rounds and three reviews; lesson: brief a launcher worker with every state the coder can be in (running, problem, stopped, mid-start) and what each menu item does in it, and plan the guides after the launcher is final). `check_metrics.py --accept WP22` passes. Waiting on the chief engineer's sitting: the real dot, menu and alerts, Applications, the address and key paste.
 
 Current: WP21 all units done (iteration 36: 10 est, 13 realized; U10 ran over: R7's one-action bar took three review rounds until D-119 reworded it; lesson: a per-step granularity bar needs a definition of one step before a guide is written). `check_metrics.py --accept WP21` passes. Waiting on the ACE: the template pin and merge, the sittings (R4, R7, R6).
 
