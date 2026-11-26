@@ -29,6 +29,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP19 | The range vault (D-094) | all units done and reviewed on `pm-wp18`; `check_metrics.py --accept WP19` passes; ready for ACE acceptance | `WP19.md` |
 | WP20 | The candidate and user acceptance (D-097) | manual path passed UA-A round 2 (D-101); all units done except WP20-UC1 (chat-path UA-A, queued, waits on the chief engineer's sitting) | `WP20.md` |
 | WP21 | Rules and norms, the chat path's life cycle, the published image (D-114) | all units done and merged on `dev`; ready for ACE acceptance after the template pin | `WP21.md` |
+| WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | U1 spike and U2 skill markers in flight; U3 waits on the ACE's logged decision | `WP22.md` |
 
 ## Units
 
@@ -294,6 +295,17 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U9r | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, built the image under Colima |
 | WP21-U10 | technical writer (life-cycle guide, leave-no-trace), sonnet | 5 | 8 | `wp21/u10` | done |  | 2026-11-25T18:17:21-05:00 | 3 push-backs on R7's one-action bar, D-119 reworded it; 2 cold readers; one more tiny fix round; 2401 tests; merged c89411e |
 | WP21-U10r | reviewer and cold reader (fresh), sonnet | 2 | 3 | `-` | done |  | 2026-11-25T18:17:21-05:00 | 4 fresh review rounds and 2 cold readers (hence 3 against 2) |
+| WP22-U1 | research engineer (macOS launcher UI spike), sonnet | 3 |  | `wp22/u1` | in flight |  |  |  |
+| WP22-U1r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP22-U1 |  |  |
+| WP22-U2 | Python developer (skill markers, drift test), haiku | 1 |  | `wp22/u2` | in flight |  |  |  |
+| WP22-U2r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP22-U2 |  |  |
+| WP22-U3 | macOS and shell developer (applet, launcher, build), sonnet | 8 |  | `wp22/u3` | queued | WP22-U1 and the ACE's logged decision on the mechanism |  |  |
+| WP22-U3r | reviewer (fresh), runs the built app, sonnet | 2 |  | `-` | queued | WP22-U3 |  |  |
+| WP22-U4 | test engineer (tests/deploy), sonnet | 3 |  | `wp22/u4` | queued | WP22-U3 |  |  |
+| WP22-U4r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP22-U4 |  |  |
+| WP22-U5 | technical writer (guides, acceptance kit lines), sonnet | 5 |  | `wp22/u5` | queued | WP22-U3 (final labels) |  |  |
+| WP22-U5r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP22-U5 |  |  |
+| WP22-U6 | simulated user, cold read of the two guides, haiku | 2 |  | `-` | queued | WP22-U5 |  |  |
 
 ## Iterations and velocity
 
