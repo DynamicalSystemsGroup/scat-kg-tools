@@ -2,14 +2,18 @@
 a fake server on a free port, and a runner for deploy/scat-chat.sh. No real docker, colima or tailscale runs."""
 
 import http.server
+import os
 import subprocess
 import threading
+import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import pytest
 
 REPO = Path(__file__).parents[2]
-SCRIPT = REPO / "deploy" / "scat-chat.sh"
+# The launcher under test; SCAT_CHAT_TEST_LAUNCHER names a scratch copy (a mutation check), never used otherwise.
+SCRIPT = Path(os.environ.get("SCAT_CHAT_TEST_LAUNCHER") or REPO / "deploy" / "scat-chat.sh")
 
 STANDINS = {
     "docker": r"""#!/bin/sh
@@ -41,8 +45,8 @@ case "$1 $2" in
 "status --json") cat "$S/ts-status.json" ;;
 "funnel --bg") [ -n "${STUB_FUNNEL_BLOCKED:-}" ] || touch "$S/funnel-on" ;;
 "funnel status") if [ -f "$S/funnel-on" ]; then echo "https://fake-mac.tail1234.ts.net (Funnel on):"; echo "|-- / proxy http://127.0.0.1:8765"; else echo "No serve config"; fi ;;
-"funnel --https=443") rm -f "$S/funnel-on" ;;
-"funnel reset") rm -f "$S/funnel-on" ;;
+"funnel --https=443") [ -n "${STUB_FUNNEL_STUCK:-}" ] || rm -f "$S/funnel-on" ;;
+"funnel reset") [ -n "${STUB_FUNNEL_STUCK:-}" ] || rm -f "$S/funnel-on" ;;
 esac
 """,
     "openssl": r"""#!/bin/sh
@@ -90,11 +94,13 @@ else
     run "$@"
 fi
 """,
+    # the dialogs and notifications of dialog mode: recorded; answered only when a test says so (no answer is
+    # "closed"): STUB_OSA_USE answers the "Serve <vault>?" question, STUB_OSA_FOLDER the folder chooser
     "osascript": r"""#!/bin/sh
 echo "osascript $*" >> "$CALLS"
 case "$*" in
-*"Copy key"*) q="$STUB_STATE/osa-answers"
-    if [ -s "$q" ]; then head -n 1 "$q"; sed 1d "$q" > "$q.new"; mv "$q.new" "$q"; else echo Stop; fi ;;
+*"choose folder"*) [ -z "${STUB_OSA_FOLDER:-}" ] || printf '%s\n' "$STUB_OSA_FOLDER" ;;
+*"buttons {item 3"*"Serve /"*) [ -z "${STUB_OSA_USE:-}" ] || printf '%s\n' "$STUB_OSA_USE" ;;
 esac
 """,
     # curl is the real one (it talks to the fake server); the stand-in only records its arguments
@@ -176,6 +182,7 @@ class Rig:
         self.keyfile = self.stub / "keychain" / "scat-chat"  # the stand-in keychain's one item
         self.state.mkdir(parents=True)
         self.server = FakeServer(self.keyfile)
+        self.procs: list[subprocess.Popen] = []
         self.vault = tmp / "vault"
         self.vault.mkdir()
         (self.vault / "scat.toml").write_text("x = 1\n")
@@ -199,21 +206,66 @@ class Rig:
         ]:  # fmt: skip
             self.env[f"SCAT_CHAT_{var}"] = str(self.bin / name)
 
-    def run(self, *args, input="", **env):
+    def _env(self, env):
         e = {**self.env, **{k: v for k, v in env.items() if v is not None}}
         for k, v in env.items():
             if v is None:
                 e.pop(k, None)
+        return e
+
+    def run(self, *args, input="", **env):
         return subprocess.run(
             ["/bin/sh", str(SCRIPT), *args],
             check=False,
-            env=e,
+            env=self._env(env),
             input=input,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
             timeout=60,
         )
+
+    def start_bg(self, remembered=True, **env):
+        """`start` in dialog mode (the app's mode), which waits to be stopped: returns the process once the
+        state file says running. Its output goes to a file, so no stray child can hold a pipe open.
+        Dialog mode ignores SCAT_CHAT_VAULT (WP22-G5), so the rig's vault is remembered in the state folder and the
+        osascript stand-in answers "Use it", unless the test passes remembered=False or its own answers."""
+        if remembered:
+            (self.state / "vault").write_text(f"{self.vault.resolve()}\n")
+            env.setdefault("STUB_OSA_USE", "Use it")
+        out = self.tmp / f"bg{len(self.procs)}.out"
+        proc = subprocess.Popen(
+            ["/bin/sh", str(SCRIPT), "start"],
+            env=self._env({"SCAT_CHAT_UI": "dialog", **env}),
+            stdin=subprocess.DEVNULL,
+            stdout=out.open("w"),
+            stderr=subprocess.STDOUT,
+        )
+        proc.out = out
+        self.procs.append(proc)
+        deadline = time.monotonic() + 30
+        while time.monotonic() < deadline:
+            if proc.poll() is not None:
+                raise AssertionError(
+                    f"start ended before it ran: {proc.returncode} {out.read_text()}"
+                )
+            if self.ui_lines()[:1] == ["running"]:
+                return proc
+            time.sleep(0.05)
+        raise AssertionError("start never reached running: " + out.read_text())
+
+    def stop_bg(self, proc):
+        """The Stop verb while `proc` waits; returns the verb's result. The process is waited for meanwhile, so
+        it is reaped as soon as it ends (the launcher waits for it to be gone)."""
+        with ThreadPoolExecutor(1) as ex:
+            verb = ex.submit(self.run, "stop")
+            proc.wait(timeout=30)
+            return verb.result()
+
+    def ui_lines(self) -> list[str]:
+        """The state file the app reads: state, vault, address, then a problem line when there is one."""
+        p = self.state / "ui"
+        return p.read_text().splitlines() if p.exists() else []
 
     def calls_list(self) -> list[str]:
         return self.calls.read_text().splitlines()
@@ -244,6 +296,10 @@ class Rig:
         assert not (self.state / "caffeinate.pid").exists()
 
     def close(self):
+        for proc in self.procs:
+            if proc.poll() is None:  # a failed test must not leave a waiting launcher behind
+                proc.kill()
+                proc.wait()
         self.server.close()
         pid = self.state / "caffeinate.pid"
         if pid.exists():  # a failed test must not leave the stand-in running

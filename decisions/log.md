@@ -2530,3 +2530,66 @@ The fresh WP23 PM's re-check of the revised scope found six fixes; applied:
 - `attributed_to` is a list of links to contributor pages; `contracts/architecture.md` and `contracts/examples/scat.toml`
   join the blast radius; C14 and C15 (WP25) and C12 (WP24) are named and sequenced after WP23; C11 is marked taken.
 - The impact map is re-issued for the revised design before U3 starts (the PM has the change consultant do it).
+
+## D-139 | 2026-11-26 | User-test loops after WP25, and a sweep for prompt residue, before the chief engineer's walkthrough
+
+The chief engineer, quoted as typed and recorded by the ACE:
+
+> "i want you to do a round of user testing loops after 3 before my walk through. my gut is there will be some clarity,
+> conciseness and alignment fixes between the code and the documentation that should come before my hands on keyboard
+> test.
+>
+> for one thing the documentation has some places where its clearly left over from LLM prompts. for example the "a MAY"
+> in this screenshot is residue from how i explained it to you. it doesn't really belong on the page. this a common
+> defect in LLM generated content: literal or verbatim translations of prompts. we'll need to search for and clean that
+> up."
+
+(The screenshot: the leave-no-trace page's warning box titled "This is one policy option, a MAY".)
+
+Outcomes: after WP25 (the third item before his sitting), and before his walkthrough, the ACE runs (1) a prompt-residue
+sweep of every user-facing page (docs, template README and pages, launcher messages, skill text): wording that echoes
+how the chief engineer explained something to the agents rather than what a reader needs (deontic keywords outside the
+assistant's rules, quoted instruction phrasing, "as decided", meta-commentary about options and recommendations), and
+(2) rounds of AI user tests on both paths for clarity, concision and the docs matching the code, to the UA-A pass bar,
+fixing between rounds. Planned as WP26.
+
+## D-140 | 2026-11-26 | WP23: a guard refusal held for the chief engineer; three detail calls
+
+WP23's PM reported that the auto-mode guard refused one compound command by its U1b worker ("Destructive or Unwanted
+Actions", part unnamed): reword the glossary's attribution row and commit, merge `wp23/u3c` into `wp23/u1b`, then delete
+a temporary `PENDING_TBOX_NAMES` test hack and run the tests. The PM did not retry or work around it, and asked whether
+to retry as separate steps or have the ACE do it. Retrying in pieces, or the ACE doing it, would route around the guard,
+so the ACE does neither and puts it to the chief engineer. Everything else in WP23 continues.
+
+Detail calls (ACE): the TBox's `owl:versionInfo` stays 0.3.0 (unreleased; both of WP23's ontology changes ship in one
+version); `scat status` lists contributor pages on their own row, apart from the four layers' node pages; in disallowed
+mode even an empty `attributed_to` key is an error (no bleed, D-133). U3c's three review defects are fixed as the
+reviewer says (the exact quoting fix; mode keywords only in the mode rule itself, per D-139; the byte-match claim made
+true in U4).
+
+## D-141 | 2026-11-26 | WP22 accepted; the chat-path guide's session flow corrected
+
+WP22 landed (`dev` 3b0b416; CI, Image and Pages green): SCAT Chat as a menu-bar item with a status dot, Copy address
+and Copy key, the vault confirmed at each start and changeable without a terminal, a first-start note, the walkthrough
+fixes L2 to L5, L8, L10, and the prompt-residue fix on the leave-no-trace page. Every unit had a fresh review; two late
+commits (99e15cf, 42d5a1d) were checked by the PM without a fresh review, and the ACE's own read of the guide found
+the defect below. `check_metrics.py --accept WP22` passes. The ACE accepts WP22.
+
+The ACE then corrected `docs/chat-path.md`: it said the server's address changes each session and told every coder to
+delete the server entry and rebuild the saved agent's tool. Both live runs kept one address, the 26 November run showed
+the agent keeps its tool when the entry's key is edited, and the chief engineer said full removal is an option, not
+a routine. The guide now says: keep the entry and paste the new key each session; Clean up is nothing by default;
+Leave no trace is for a strict policy. Two docs tests that pinned the old wording follow.
+
+Left for the chief engineer's sitting (the PM's list): the dot's colours, the menu and the alerts; the Stop alert in
+front; reopening after an unconfirmed Stop; the Gatekeeper prompt and copying the app to Applications; keychain
+prompts; real Colima and Tailscale; the chat's form labels. Left for WP26's sweep: the cold readers' unexplained
+jargon, step 28's two actions, "Colima left running" beside "nothing left running", and list numbering restarting per
+section.
+
+## D-142 | 2026-11-26 | The refused WP23 command may be retried as separate steps
+
+Asked whether WP23's worker may retry the guard-refused compound command (D-140) as separate steps, the chief engineer
+chose "Yes, as separate steps". The worker runs, one command each: reword the glossary and terms attribution rows and
+commit; merge `wp23/u3c` into `wp23/u1b`; remove the temporary `PENDING_TBOX_NAMES` hack; run the tests. If the guard
+refuses any single step, it stops and reports again.
