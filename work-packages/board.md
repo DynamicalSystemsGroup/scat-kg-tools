@@ -31,7 +31,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP21 | Rules and norms, the chat path's life cycle, the published image (D-114) | all units done and merged on `dev`; ready for ACE acceptance after the template pin | `WP21.md` |
 | WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | all units done; merged into `dev`; waiting on the ACE's acceptance and the chief engineer's sitting | `WP22.md` |
 | WP23 | Three disjoint attribution modes, and the edge's formal name (D-129) | all units done on `pm-wp23`; landing on `dev` with the template pin; waiting on the ACE's acceptance | `WP23.md` |
-| WP24 | Node-page help and merge (D-145) | units planned, A (U1 to U4) before B (U5 to U8); U7 waits on the ACE's logged decision after U5 | `WP24.md` |
+| WP24 | Node-page help and merge (D-145) | A (U1 to U4) done and merged on `pm-wp24`; U5 spike done, its recommendation waits on the ACE's logged decision; U7 waits on that decision | `WP24.md` |
 
 ## Units
 
@@ -328,14 +328,14 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP23-U6 | simulated user, cold read of planning and consent, haiku, haiku | 2 | 1 | `-` | done |  | 2026-11-26T14:30:00-05:00 | one Haiku reader understood the three modes; the unclear items it raised were not about the modes and are old |
 | WP23-U7 | Python developer and release engineer (template, range vault, pins), sonnet | 3 | 5 | `wp23/u7` | done |  | 2026-11-26T14:30:00-05:00 | a docs sample had to be retagged: the template is disallowed and the attribution command refuses by design |
 | WP23-U7r | reviewer (fresh), sonnet, sonnet | 1 | 2 | `-` | done |  | 2026-11-26T14:30:00-05:00 | PASS first time; rebuilt the pin chain locally |
-| WP24-U1 | test-vault builder (G6 vault, one copy per attribution mode), sonnet | 2 |  | `wp24/u1` | queued |  |  |  |
-| WP24-U1r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U1 done |  |  |
-| WP24-U2 | Python developer (evidence view: Python, CLI, MCP, schema v3, reference), sonnet | 3 |  | `wp24/u2` | queued |  |  |  |
-| WP24-U2r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U2 done |  |  |
-| WP24-U3 | technical writer and developer (node-page norm, contract, copy-share view), sonnet | 3 |  | `wp24/u3` | queued | U2 |  |  |
-| WP24-U3r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U3 done |  |  |
-| WP24-U4 | Python developer and technical writer (draft prompt, skill, rules G7, drift), sonnet | 3 |  | `wp24/u4` | queued | U2, U3 |  |  |
-| WP24-U4r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U4 done |  |  |
+| WP24-U1 | test-vault builder (G6 vault, one copy per attribution mode), sonnet | 2 | 2 | `wp24/u1` | done |  | 2026-11-26T16:48:44-05:00 | 15 narratives and three mode copies by one script; first-time PASS; est matched |
+| WP24-U1r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T16:48:44-05:00 | PASS first time; ran the seeds by hand |
+| WP24-U2 | Python developer (evidence view: Python, CLI, MCP, schema v3, reference), sonnet | 3 | 4 | `wp24/u2` | done |  | 2026-11-26T16:48:44-05:00 | evidence view plus schema 3 bump over 22 files; one fix round (tables as blocks); contract word cap raised |
+| WP24-U2r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T16:48:44-05:00 | PASS with two minor defects; mutated paragraphs by hand |
+| WP24-U3 | technical writer and developer (node-page norm, contract, copy-share view), sonnet | 3 | 3 | `wp24/u3` | done |  | 2026-11-26T16:48:44-05:00 | norm, contract text, copy-share view; first-time PASS |
+| WP24-U3r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T16:48:44-05:00 | PASS; hand-counted two shares |
+| WP24-U4 | Python developer and technical writer (draft prompt, skill, rules G7, drift), sonnet | 3 | 4 | `wp24/u4` | done |  | 2026-11-26T16:48:44-05:00 | rules, skill, two prompts, two tests; one fix round (test did not exercise set_status) |
+| WP24-U4r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T16:48:44-05:00 | FAIL once on a test-strength defect, mutation-tested the guards |
 | WP24-U5 | research engineer (homonym and synonym spike on the U1 vault), sonnet | 2 |  | `wp24/u5` | queued | U1, U4; then the ACE's logged decision |  |  |
 | WP24-U5r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U5 done |  |  |
 | WP24-U6 | Python developer (merge: plan, apply, split plan, MCP plan only), sonnet | 5 |  | `wp24/u6` | queued | U4 |  |  |
