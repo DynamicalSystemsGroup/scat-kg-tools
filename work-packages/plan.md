@@ -44,7 +44,9 @@ were closed unmerged (log D-074): the mission has since changed, and the next ca
    from the leave-no-trace run. Before WP20's chat-path UA-A.
 9. **WP23 Three disjoint attribution modes (D-127).** The mode in `scat.toml`, the `attributed_to` field, no bleeding
    into the knowledge graph; `scat:Attributes` renamed. Alongside WP22.
-10. **WP20 Candidate and user acceptance.** The whole journey, J1 to J10, on both paths: UA-A rounds to the pass bar,
+10. **WP24 Node-page help and merge (D-136).** The evidence view, the node-page norm, a drafted page; then review
+    candidates and `merge`. After WP23.
+11. **WP20 Candidate and user acceptance.** The whole journey, J1 to J10, on both paths: UA-A rounds to the pass bar,
    the walkthrough scripts, the reviewer's guide, the candidate stage and new release PRs.
 
 The order of WP17 and WP18 may change with the architecture document. Open play-test findings (F-1, F-3, F-5, F-7)
