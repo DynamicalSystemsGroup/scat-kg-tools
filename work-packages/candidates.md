@@ -98,3 +98,24 @@ The chief engineer's words, 26 November (quoted as typed; recorded by the ACE):
 > for future use to attribute narratives to contributors. the option to attribute narratives to contributors is off
 > when running in chatham house mode but i do think its something the tool should support. some groups will prefer
 > attribution over privacy. this choice is part of the set up and expectation setting stage for the organizer."
+
+## From the chief engineer, 26 November (docs)
+
+| ID | Candidate | What it touches | Source |
+|---|---|---|---|
+| C14 | **Coding approaches, as a drill-down with a walkthrough each.** The sidebar's top level is "coding approaches", with: coding by hand (no AI); coding with an AI IDE (example: Codex); coding with an AI chatbot (example: Claude); coding with a local LLM (example: Ollama running in Docker; or a better local model); and leave no trace (example: inference.coop). Different providers for the IDE, chat and leave-no-trace flows, so no tool is favoured. Each walkthrough has screenshots and makes set-up as easy as possible: fewer steps where possible, but no step removed if that would confuse; automation may remove steps, never points where a person must choose. | `mkdocs.yml` navigation, `docs/coding.md`, `docs/chat-path.md`, `docs/ide.md`, `docs/leave-no-trace.md`, new pages (local LLM, chatbot), screenshots under `docs/assets/`, the launcher or set-up scripts where automation helps | The chief engineer's words below |
+
+> C14: "the sidebar with the "coding" in chat should be a drill down. the top level is coding approaches and it should
+> have several options: coding by hand (which is the no ai option), coding with an AI IDE (like codex or claude code or
+> cursor), coding with an AI chatbot, coding with a local LLM (eg i have ollama locally), leave no trace. we can talk
+> this out a bit more if you need more guidance but the idea is to give the reader some clarity about options and
+> provide some walk throughs for each. i prefer to provide some screen shots in the walk throughs to make them
+> intuitive. our local LLM example is ollama running in docker, our chat example can be claude, leave no trace examples
+> are inference.coop and our ide example can be codex. we don't really want to bias the tools so having the IDE, the
+> chat and the leave-no-trace flows use different service providers is a good practice. we can also look at whether
+> there is a better local LLM to use. i don't usually use local LLMs on this machine because its old and they are slow
+> but that should not stop us from providing a clear path for others to use local first LLM."
+>
+> "walk throughs need screen shots and we should make sure the materials we provide are aimed at making the set up as
+> easy as possible. fewer steps where we can but not eliminating steps if it will result in confusion. automation can
+> help remove steps but should not remove points where humans need to make choices"
