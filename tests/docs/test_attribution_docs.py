@@ -23,7 +23,11 @@ def test_planning_has_the_mode_choice_and_a_script_for_each_mode():
     section = text.split("## State the participation terms", 1)[1]
     for mode in MODES:
         assert f"`{mode}`" in section, mode
-    assert text.count("```text") >= 5
+    scripts = [b for b in re.findall(r"```text\n(.*?)```", section, re.S) if "Whatever is said here" in b]
+    assert len(scripts) == 3
+    assert any("Nobody is named" in b for b in scripts)
+    assert any("name of the person who gave it" in b for b in scripts)
+    assert any("If you want your name" in b for b in scripts)
     assert "Chatham House" in text and "`scat.toml`" in text
 
 

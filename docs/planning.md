@@ -8,7 +8,7 @@ Planning settles who takes part, and in what order, before the sessions start, s
 You are planning a facilitation event. Write your event plan: who takes part, in which session, in what order. Save it as a plain text file named `plan.txt` in your vault folder, outside the page folders. It is not a SCAT page, and the check does not read it. By the end you will have a short plan: which sessions hear stories, which hear
 architectures, which groups are in the room, and how the notes will be kept.
 
-Settle the participation terms first: what the notes may be used for, and who may touch them, and the vault's attribution mode. [Data, rights and consent](data-and-consent.md) lists the questions. Two words come up below. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. The [home page](index.md) defines these and the other two kinds of thing, groups and technologies.
+Settle the participation terms first: what the notes may be used for, who may touch them, and the vault's attribution mode. [Data, rights and consent](data-and-consent.md) lists the questions. Two words come up below. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. The [home page](index.md) defines these and the other two kinds of thing, groups and technologies.
 
 Nothing here is ranked, voted on or adjudicated. Your plan adds topics and voices; it never trades one off against
 another.

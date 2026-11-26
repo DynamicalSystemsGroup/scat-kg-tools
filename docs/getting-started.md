@@ -268,7 +268,7 @@ name where the account says it, as `[[workshop-participants|Workshop participant
 uv run scat check
 ```
 
-It prints `no problems`.
+It prints the mode line, `attribution mode: disallowed`, then `no problems`.
 
 **5. See its fingerprint.** The fingerprint is the nodes the narrative links and the edges it tells:
 
@@ -309,8 +309,8 @@ uv run scat set-status NARRATIVE done
 uv run scat check
 ```
 
-The first prints `changed narrative/saturday-at-the-tool-library.md` and a note that `status` was set to `done`. The
-second prints `no problems`. The group, concern and affordance pages are still stubs. That does not stop a clean check,
+The first prints `changed narrative/saturday-at-the-tool-library.md`, a note that `status` was set to `done`, and `check of narrative/saturday-at-the-tool-library.md: no problems`. The
+second prints `attribution mode: disallowed`, then `no problems`. The group, concern and affordance pages are still stubs. That does not stop a clean check,
 and you fill them in as you code more narratives.
 
 **7. Save it.** Commit the work in your vault folder:

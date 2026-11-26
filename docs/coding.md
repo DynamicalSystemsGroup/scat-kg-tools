@@ -613,7 +613,7 @@ title: "Ada quill"
 ---
 ```
 
-Write the name as the organiser records it in the `title` (here, "Ada Quill"), and add `attributed_to: ["[[ada-quill]]"]` to the narrative. The link must reach a contributor page, as any link must reach a page:
+Write the name as the organiser records it in the `title` (here, "Ada Quill"), and add `attributed_to: ["[[ada-quill]]"]` to the narrative. A link reaches a page, or the check reports it:
 
 ```text
 $ uv run scat check saturday-at-the-tool-library

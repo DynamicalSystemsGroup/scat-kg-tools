@@ -295,6 +295,7 @@ note: `status` set to draft (was stub)
 The check prints this, from either tab, while `timeframe:` is still empty:
 
 ```text
+attribution mode: disallowed
 warning [SCAT-DRAFT-FIELD] narrative/lending-desk-saturday.md field `description`: missing (required once the page is done)
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
 warning [SCAT-DRAFT-FIELD] narrative/lending-desk-saturday.md field `timeframe`: missing (required once the page is done)

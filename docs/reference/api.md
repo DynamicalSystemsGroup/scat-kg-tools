@@ -1037,7 +1037,7 @@ It refuses in a vault whose attribution mode is `disallowed`, where no narrative
 
     The command exits with 1, as every refusal does.
 
-Where the mode is `optional`, with one contributor page, `ada-quill`, named by one narrative, the view prints:
+Take a copy of the template with `attribution = "optional"` in `scat.toml`, and the coding guide's `saturday-at-the-tool-library` narrative with `attributed_to: ["[[ada-quill]]"]`, and `ada-quill` made with `scat stub ada-quill --type contributor`. The view prints, with the template's four narratives naming no one:
 
 ```text
 attribution: narratives by contributor
