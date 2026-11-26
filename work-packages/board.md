@@ -30,7 +30,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP20 | The candidate and user acceptance (D-097) | manual path passed UA-A round 2 (D-101); all units done except WP20-UC1 (chat-path UA-A, queued, waits on the chief engineer's sitting) | `WP20.md` |
 | WP21 | Rules and norms, the chat path's life cycle, the published image (D-114) | all units done and merged on `dev`; ready for ACE acceptance after the template pin | `WP21.md` |
 | WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | all units done; merged into `dev`; waiting on the ACE's acceptance and the chief engineer's sitting | `WP22.md` |
-| WP23 | Three disjoint attribution modes, and the edge's formal name (D-129) | approved; units planned; integration branch `pm-wp23` | `WP23.md` |
+| WP23 | Three disjoint attribution modes, and the edge's formal name (D-129) | all units done on `pm-wp23`; landing on `dev` with the template pin; waiting on the ACE's acceptance | `WP23.md` |
 
 ## Units
 
@@ -311,15 +311,22 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP23-U1r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T11:54:33-05:00 | 3 review rounds incl. re-review at a7c1ed6; PASS |
 | WP23-U2 | Python developer (attribution mode in scat.toml, fixtures, machine interface), sonnet | 5 | 6 | `wp23/u2` | done |  | 2026-11-26T12:18:27-05:00 | large (54 files: fixtures); 1 small review fix; tier 1 red only on the 6 template-pin docs tests (expected until U7) |
 | WP23-U2r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T12:18:27-05:00 | 1 round, PASS with one small gap |
-| WP23-U3 | Python developer (attributed_to field, per-mode rules, no-bleed tests), sonnet | 5 |  | `wp23/u3` | blocked | paused: chief engineer changed the design (attributed_to becomes a link to contributor pages in the graph); built and unreviewed at wp23/u3 b0d6785, not merged |  |  |
-| WP23-U3r | reviewer (fresh), sonnet | 2 |  | `-` | queued | WP23-U3 |  |  |
-| WP23-U4 | Python developer (MCP mode on every result, assistant.md, skill), sonnet | 3 |  | `wp23/u4` | queued | WP23-U3 and WP22-U2 on dev |  |  |
-| WP23-U4r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP23-U4 |  |  |
-| WP23-U5 | technical writer (planning, consent, coding, norms, index, facilitate pages, reference), sonnet | 5 |  | `wp23/u5` | queued | WP23-U3 |  |  |
-| WP23-U5r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP23-U5 |  |  |
-| WP23-U6 | simulated user, cold read of planning and consent, haiku | 2 |  | `-` | queued | WP23-U5 |  |  |
-| WP23-U7 | Python developer (template, range vault, pins), sonnet | 3 |  | `wp23/u7` | queued | WP23-U2 to U5 on the integration branch |  |  |
-| WP23-U7r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP23-U7 |  |  |
+| WP23-UI | change consultant (impact map re-issued for D-133 to D-138), sonnet | 2 | 2 | `wp23/impact` | done |  | 2026-11-26T14:30:00-05:00 | one pass; listed 12 blast-radius gaps, applied to the units |
+| WP23-U3 | Python developer (old design, string-list attributed_to), sonnet | 5 | 3 | `wp23/u3` | done |  | 2026-11-26T14:30:00-05:00 | superseded by D-133; built and never merged; per-mode rules and no-bleed tests salvaged into U3c |
+| WP23-U3r | reviewer (fresh), not run, sonnet | 2 | 0 | `-` | done |  | 2026-11-26T14:30:00-05:00 | not run: U3 superseded |
+| WP23-U1b | ontology designer and writer (glossary: contributor page, knowledge graph sense, attribution row; terms cap), sonnet | 2 | 3 | `wp23/u1b` | done |  | 2026-11-26T14:30:00-05:00 | one guard refusal on a compound command, retried as separate steps after D-142; cap raised twice |
+| WP23-U1br | reviewer (fresh), sonnet, sonnet | 1 | 1 | `-` | done |  | 2026-11-26T14:30:00-05:00 | PASS first time |
+| WP23-U3c | Python developer (contributor type, attributed_to, per-mode rules), sonnet | 8 | 11 | `wp23/u3c` | done |  | 2026-11-26T14:30:00-05:00 | two review rounds plus a third wording pass; defaults decided by the worker listed in its report |
+| WP23-U3cr | reviewer (fresh), sonnet, sonnet | 2 | 3 | `-` | done |  | 2026-11-26T14:30:00-05:00 | two rounds |
+| WP23-U3b | Python developer (scat attribution, contributor stub, machine interface), sonnet | 5 | 6 | `wp23/u3b` | done |  | 2026-11-26T14:30:00-05:00 | one review round, three minor fixes |
+| WP23-U3br | reviewer (fresh), sonnet, sonnet | 2 | 2 | `-` | done |  | 2026-11-26T14:30:00-05:00 | PASS with 3 minor items |
+| WP23-U4 | technical writer and test engineer (deontic pass, mode rule, skill, norms), sonnet | 3 | 4 | `wp23/u4` | done |  | 2026-11-26T14:30:00-05:00 | PASS first time; one test wrapped-line fix by the worker |
+| WP23-U4r | reviewer (fresh), sonnet, sonnet | 1 | 2 | `-` | done |  | 2026-11-26T14:30:00-05:00 | every A-item read against the table |
+| WP23-U5 | technical writer (planning, consent, coding, index, flow, facilitate, getting-started, api), sonnet | 5 | 7 | `wp23/u5` | done |  | 2026-11-26T14:30:00-05:00 | one review round: stale output samples in three pages |
+| WP23-U5r | reviewer (fresh), sonnet, sonnet | 2 | 3 | `-` | done |  | 2026-11-26T14:30:00-05:00 | replayed samples against real output in all three modes |
+| WP23-U6 | simulated user, cold read of planning and consent, haiku, haiku | 2 | 1 | `-` | done |  | 2026-11-26T14:30:00-05:00 | one Haiku reader understood the three modes; the unclear items it raised were not about the modes and are old |
+| WP23-U7 | Python developer and release engineer (template, range vault, pins), sonnet | 3 | 5 | `wp23/u7` | done |  | 2026-11-26T14:30:00-05:00 | a docs sample had to be retagged: the template is disallowed and the attribution command refuses by design |
+| WP23-U7r | reviewer (fresh), sonnet, sonnet | 1 | 2 | `-` | done |  | 2026-11-26T14:30:00-05:00 | PASS first time; rebuilt the pin chain locally |
 
 ## Iterations and velocity
 
@@ -374,6 +381,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
 
 Current: WP22 all units done and merged (iteration 38: 22 est, 38 realized, ratio 1.73, 1.9 h; U3 ran over: the menu-bar app's wording, stale-state and Stop paths took three fix rounds and three reviews; lesson: brief a launcher worker with every state the coder can be in (running, problem, stopped, mid-start) and what each menu item does in it, and plan the guides after the launcher is final). `check_metrics.py --accept WP22` passes. Waiting on the chief engineer's sitting: the real dot, menu and alerts, Applications, the address and key paste.
+
+Current: WP23 all units done on `pm-wp23` (iteration 40: 45 est, 56 realized, ratio 1.24, about 2.8 h; U3c and U7 ran over: the contributor rules took a wording pass after two reviews, and the template's mode made one runnable docs sample refuse by design; lesson: when a command refuses in the template's own mode, tag its sample as not run at planning). `check_metrics.py --accept WP23` passes. Landing: template branch `wp23/template` (T 0a765a8) and tools `dev` in one wave; `TEMPLATE_COMMIT` already points at T. Waiting on the ACE: acceptance, and `docs/leave-no-trace.md:3` (WP22's file) still holds the word MAY in a heading.
 
 Current: WP21 all units done (iteration 36: 10 est, 13 realized; U10 ran over: R7's one-action bar took three review rounds until D-119 reworded it; lesson: a per-step granularity bar needs a definition of one step before a guide is written). `check_metrics.py --accept WP21` passes. Waiting on the ACE: the template pin and merge, the sittings (R4, R7, R6).
 
