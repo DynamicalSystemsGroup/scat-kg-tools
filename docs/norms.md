@@ -44,6 +44,12 @@ You own interpretation: that the account matches the field notes and the coding 
 it checks structure only, so a passing check does not say a narrative is correct. The assistant helps and holds no
 authority; it may not set `done` (`contracts/assistant.md`, A7).
 
+Whether a narrative names its contributors is set by the vault's attribution mode (`attribution` in `scat.toml`). In
+required mode a narrative names its contributors: it links a contributor page in its `attributed_to` field, which is a
+warning to lack before `done` (SCAT-DRAFT-ATTR) and an error at `done` (SCAT-DONE-ATTR). In disallowed mode no
+narrative names a contributor and the vault holds no contributor page (SCAT-ATTR-DISALLOWED). In optional mode a
+narrative may name its contributors or not, and nothing is required.
+
 ## Status when you leave a page
 
 *A norm.* When you stop working on a page, set its status to say where it stands: `done` if it is finished, `draft`

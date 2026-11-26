@@ -139,12 +139,12 @@ def _rule(n: int) -> str:
 
 def test_the_assistants_file_has_the_may_not_rules_this_server_is_built_to():
     key = {
-        7: "Set a narrative to `done`, or move one out of `done`.",
-        8: "Write a narrative's text through the tool.",
-        9: 'Hand-write a row of an "Edges told" table.',
-        10: "Resolve doubt about an interpretation.",
-        11: "Claim a narrative is correct because the check passed.",
-        12: "Touch the inputs (the field notes)",
+        7: "The assistant SHALL NOT set a narrative to `done`, or move one out of `done`.",
+        8: "The assistant SHALL NOT write a narrative's text through the tool.",
+        9: 'The assistant SHALL NOT hand-write a row of an "Edges told" table.',
+        10: "The assistant SHALL NOT resolve doubt about an interpretation.",
+        11: "The assistant SHALL NOT claim a narrative is correct because the check passed.",
+        12: "The assistant SHALL NOT touch the inputs (the field notes)",
     }
     for n, start in key.items():
         assert _rule(n).startswith(start), n
