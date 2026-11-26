@@ -2586,3 +2586,10 @@ front; reopening after an unconfirmed Stop; the Gatekeeper prompt and copying th
 prompts; real Colima and Tailscale; the chat's form labels. Left for WP26's sweep: the cold readers' unexplained
 jargon, step 28's two actions, "Colima left running" beside "nothing left running", and list numbering restarting per
 section.
+
+## D-142 | 2026-11-26 | The refused WP23 command may be retried as separate steps
+
+Asked whether WP23's worker may retry the guard-refused compound command (D-140) as separate steps, the chief engineer
+chose "Yes, as separate steps". The worker runs, one command each: reword the glossary and terms attribution rows and
+commit; merge `wp23/u3c` into `wp23/u1b`; remove the temporary `PENDING_TBOX_NAMES` hack; run the tests. If the guard
+refuses any single step, it stops and reports again.
