@@ -11,7 +11,7 @@ Nothing here has been run. Words follow `GLOSSARY.md`.
 | c3 | Haiku | `briefs/c3-hurried-organiser-haiku.md` | at home in chat, in a hurry, new to GitHub | a school walking bus | class project hand-in |
 
 Counts: three testers, nine sittings (A, B and C each), all run by the ACE as the tester's hands in the chief engineer's
-sittings. Each tester ends torn down, with its key rotated.
+sittings. Each tester ends torn down, with its key deleted.
 
 ## How the work is split
 
@@ -43,10 +43,11 @@ Do these once, before the first tester. Mark each as done with the real time (`d
    preview must hold `chat-path/` and `reference/mcp/`. If either page is missing, stop: the candidate is wrong.
 2. **Chief engineer, himself, once:** install what `chat-path` says, from the page and in its order, and record each
    step and what the window said. This is the first real run of the page by a coder.
-   - The container runtime app the page names first is **untested** with this launcher (the page says so). If its
-     install or the app's first start fails, record the exact words in the window. That is a WP18 finding, not a tester finding, and the
-     sitting waits for the fix. The page's other runtime is the route that was run; fall back to it only if he chooses, and record
-     that the page's default was not the one used.
+   - The container runtime is Colima, the page's default (D-105; Mac only, version 0.1), installed from a terminal
+     with Homebrew as the page shows. Docker Desktop is the page's untested alternative: he uses it only if he
+     chooses, and records that the page's default was not the one used. If Colima's install or its first start fails
+     (the launcher starts it), record the exact words in the window. That is a WP18 finding, not a tester finding, and
+     the sitting waits for the fix.
    - SCAT Chat.app is built from the repository by the person who sets up and handed over. It is not signed: the page's right-click Open step is his.
    - The public-link service's install and sign-in are his. So are its one-time certificate step (rename the machine
      to a neutral name first, because the name is published permanently) and its approval to publish. The ACE never
@@ -55,7 +56,7 @@ Do these once, before the first tester. Mark each as done with the real time (`d
 3. **Chat.** In the chat, choose the assistant model and record it. Note whether the chat offers a collection for
    files; the briefs allow either.
 4. **Evidence folder.** Create it outside this repository (see "Evidence") and start the run record.
-5. **Clean slate.** No SCAT Chat window open, no server entry in the chat, no old scratch repository for these testers. If the chat holds an old server entry from the lab run, the chief engineer deletes it by hand.
+5. **Clean slate.** No SCAT Chat window open, no server entry in the chat, no skill or saved agent from an earlier run, no old scratch repository for these testers. If the chat holds an old server entry from the lab run, the chief engineer deletes it by hand.
 6. **Brief check.** Run the checks in "Checks on the kit" below; all pass.
 7. **Fresh testers.** Prepare three fresh agents, c1, c2 and c3, one at a time. Each gets its brief and the report
    template, and nothing else: no persona file, no README, no repository, no plan.
@@ -91,24 +92,33 @@ only after teardown if a session was opened.
    gone; if the page does not say how, that is a finding and the chief engineer does the step.
 3. The hands open that folder as a vault in Obsidian (computer use, if he has granted it; otherwise he does). Obsidian
    itself is UA-M's: the opening is shown by a listing of the folder, which holds the Obsidian settings.
-4. Chief engineer: start SCAT Chat as the page says (open the container runtime app first if the page names it). **Relies on
+4. Chief engineer: start SCAT Chat as the page says (Colima needs no start by hand: the launcher starts it). **Relies on
    WP18's docs:** the window's words are the evidence; paste them. If a step fails, see "If a docs step fails". The
-   key is on his clipboard. **He** pastes it into the chat's server form (address, Streamable HTTPS, API key); the
-   hands and the tester never see or type it. The hands fill the other fields as the tester asks. J5's check runs on
-   the vault with the example removed, through the chat: one message from the tester, the answer pasted (the page says
+   window shows the address and two buttons, **Copy key** and **Stop**, and never the key. **He** clicks **Copy key**
+   and pastes the key into the chat's server form (address, Streamable HTTPS, API key), then copies a word from
+   anywhere so the clipboard no longer holds it; the hands and the tester never see or type it. The hands fill the
+   other fields as the tester asks. Then the hands set up the skill and the saved agent as the page's "Set up the skill
+   and the saved agent" says (the skill file's text is copied from the address the page gives; the agent gets the
+   server as its tool and the skill as its only skill). The page says it has not seen some button names: where a step
+   is not as written, that is a finding, and the tester says what the hands found. J5's check runs on
+   the vault with the example removed, through the chat, in a conversation started from the saved agent: one message from the tester, the answer pasted (the page says
    it should find no problems). Then the chief engineer clicks **Stop** and the teardown below runs. J6 and J7 need
    no session.
 5. J6: the hands write the tester's plan words into the file `planning` names, in the vault folder.
 6. J7: the hands turn the lab notes in the brief into files, exactly the notes and nothing else, and attach them to
-   a new conversation in the chat (a collection if the chat offers one). One message asks the assistant what it can
+   a new conversation in the chat (a collection if the chat offers one), not started from the saved agent (its server
+   entry is gone). One message asks the assistant what it can
    see. J7 needs the chat but not the server, so no session is open: the sitting ends with the J5 teardown already
    done. The server entry stays out of this conversation. The hands delete the conversation and the attached files at
    the end of the sitting, as far as the chat allows. The assistant is never asked to delete.
 
 **Sitting C: J8 to J10. The long session.**
 
-1. Chief engineer starts SCAT Chat again as the page says (this tests starting a second time). He updates the chat's
-   server entry with the new key (the page says the old one stops working), or deletes it and adds it again.
+1. Chief engineer starts SCAT Chat again as the page says (this tests starting a second time). He clicks **Copy key**
+   and pastes the new key into a new server entry, as the page's "Connect the chat" says (the old entry was deleted at
+   clean-up). If the saved agent no longer lists a working server, the hands choose the new entry in the agent's tools,
+   as the page says; the page marks this as not yet tried, so what happens is a finding. The tester starts the J8
+   conversation from the saved agent.
 2. J8: the tester takes one story and one design proposal round the coding loop. The assistant drafts in its reply;
    the tester edits it; the hands paste the tester's final words into the page in Obsidian or in the file; the
    assistant proposes and records; the check runs. **Setting a page to `done` is the tester's decision,** made after it
@@ -158,24 +168,27 @@ The whole run is light and human-paced. These are the limits *(defaults)*:
 - Lab material only. If the tester or the assistant produces anything that looks real (a real person's name, a real
   address, a key), stop and tell the chief engineer; the run is void for that stage.
 
-## Teardown and key rotation
+## Teardown and the key
 
 After **every** sitting that opened a session, and at the end of each tester (the last sitting's teardown also covers the tester's whole run):
 
 1. **Stop.** The chief engineer clicks **Stop** in the SCAT Chat window (or quits the app); the page says either does
    the same. The hands paste the stop message word for word. The expected words are the page's: "Stopped. The public
-   link is off, the server is removed, your Mac may sleep again, the key was replaced, and your clipboard holds no
+   link is off, the server is removed, your Mac may sleep again, the key was deleted, and your clipboard holds no
    key." **Relies on WP18's docs.** If it says "Stopped, but I could not confirm:", do what the page says (click
    SCAT Chat, then Stop, or restart the Mac); if the public link may still be on, the chief engineer switches the public link
-   off in the service's app, as the page says. Record all of it.
+   off in the service's app, as the page says; if it says the key could not be deleted, he opens Keychain Access and
+   deletes the item it names. Record all of it.
 2. **Confirm independently, once.** The ACE, with the chief engineer, shows that the container is gone and that the
    public link is off, with the checks the launcher's own stop message cannot give (for example the container
    runtime's list of running containers, and the public-link service's status). Paste the output. The ACE types these only as
-   checks, never to change anything. **The key is rotated** by Stop; its replacement is not needed afterwards and the
-   old one is never written down. Record that Stop reported the key replaced, and that the clipboard was cleared
+   checks, never to change anything. **The key is deleted** by Stop (D-115: one key per session, nothing to rotate); it is
+   never written down. Record that Stop reported the key deleted, and that the clipboard was cleared
    (the chief engineer pastes into a scratch text field and confirms it holds no key; the field is then emptied).
 3. **Delete the chat's server entry** (the page says to; the hands do it, in the chat's settings, never the assistant), and the tester's test conversations and attached files, as
-   far as the chat allows. Record what could not be deleted (the page for retention is silent; this is a known
+   far as the chat allows. The skill and the saved agent stay until removed: the page makes that optional, so leave
+   them for the next tester's sitting *(default)* and delete them with the last tester's last teardown, in the
+   chat, by hand. Record what could not be deleted (the page for retention is silent; this is a known
    unknown).
 4. **Leave the public-link settings as they are.** The certificate and publishing approvals stay enabled; the machine keeps its neutral name.
 5. **Clipboard and windows.** Close the SCAT Chat window; close the chat tab; leave the container runtime app to the chief engineer.
@@ -265,8 +278,7 @@ Run these before the first sitting (the output pasted into the ACE's record):
 - It relies on WP18's docs (`docs/chat-path.md`, `docs/reference/mcp.md`) and on the launcher's messages as the page
   quotes them. Where a step in this plan says "Relies on WP18's docs", a wording change in the page needs the plan's
   step read again.
-- Not yet shown by anyone, so each is a place the run can fail and the failure is evidence: the container runtime app with the
-  launcher; the page's command-line step for the public link; whether the chat accepts the server's address; whether the chat
+- Not yet shown by anyone, so each is a place the run can fail and the failure is evidence: Colima with the launcher (Docker Desktop, untested, is not part of the run); the skill and the saved agent in the chat; the page's command-line step for the public link; whether the chat accepts the server's address; whether the chat
   offers a collection; whether the chat offers the server's prompts; how fast Obsidian shows what the server wrote;
   getting the repository onto the Mac without a terminal; committing and pushing from GitHub Desktop (the page's section for it was not run when written); the GitHub
   Release as the page describes it. These are open questions the run answers, not defects in the plan.

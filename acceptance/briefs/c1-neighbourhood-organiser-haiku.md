@@ -54,7 +54,7 @@ Your hands give you back what they saw, pasted word for word, with a screenshot 
 They never explain the project to you and never tell you what to do next. If they say a step is not theirs to do,
 it is not yours either: ask a person.
 
-Only a person ever enters a password, signs in, or pastes a key. You never ask your hands to do these, and you never
+Only a person ever enters a password, signs in, clicks the app's Copy key button, or pastes a key. You never ask your hands to do these, and you never
 see a key. If a key or password appears in anything you are given, say so and do not repeat it.
 
 ## Where you start
@@ -84,6 +84,7 @@ see a key. If a key or password appears in anything you are given, say so and do
 | Facilitating scenarios | `facilitate-scenarios` |
 | Facilitating architectures | `facilitate-architectures` |
 | Coding | `coding` |
+| Norms | `norms` |
 | The chat path | `chat-path` |
 | Analysis | `analysis` |
 | The server reference | `reference/mcp` |
@@ -112,8 +113,9 @@ Do these in order. For each, its "Done" line is what you should be able to show 
    two sentences, taken from the pages.
 2. **J2, try.** Read the getting-started page and the chat-path page's opening. Make your own **private** repository
    from the template, the way a page says, on the website (your hands do the clicks; a person is already signed in to
-   GitHub for you). Choose your own repository name from your notes. Done: a screenshot of the new repository's page
-   that shows it is private, and the listing of its files shows what the page says it should.
+   GitHub for you). Choose your own repository name from your solo-trial note below. No session is open at this stage, so you do not code
+   the note here: say in two sentences what one page made from it would hold. Done: a screenshot of the new repository's
+   page that shows it is private, and the listing of its files shows what the page says it should; your two sentences.
 3. **J3, decide.** Read the flow page. Say, in your own words, why you will run a facilitated elicitation and use the
    chat path for the coding, and name the step that comes next on the flow page. Done: your reasons in three
    sentences, each from a page, and the next step named.
@@ -127,10 +129,13 @@ Do these in order. For each, its "Done" line is what you should be able to show 
    outside the folders it says to avoid (if the page does not say how without a terminal, say so, and ask a person
    only after saying so). Then remove the template's worked example before you add your own pages, as the page says:
    your hands do it (the assistant never deletes anything), and you ask for each click; the page's steps end with the
-   commit and the push. Then open the folder as a vault in Obsidian, start a session as the page says, add the server
-   to the chat as the page says, and ask the assistant to check the vault; the page says it should find no problems.
-   Then stop the session as the page says. Done: the chat's answer to the check, pasted, on your vault with the
-   example removed; the stop message pasted; the folder shown to hold the vault's settings; a listing of the folder,
+   commit and the push. Then open the folder as a vault in Obsidian, start a session as the page says (a person opens the
+   app and clicks its Copy key button, and pastes the key into the chat's form; you and your hands never see it), add the
+   server to the chat as the page says, set up the skill and the saved agent as the page says (your hands do the clicks
+   in the chat; where the page says it has not seen a button's name, say what your hands found), and, in a chat with the
+   saved agent, ask the assistant to check the vault; the page says it should find no problems. Then stop the session as
+   the page says. Done: the chat's answer to the check, pasted, on your vault with the example removed; the stop message
+   pasted, word for word; the folder shown to hold the vault's settings; a listing of the folder,
    pasted, showing the example's page folders gone.
 6. **J6, plan.** Using the planning page, plan the two sessions described below: which gathers stories and which
    gathers design proposals, who takes part, how you will state the participation terms, and how the people fit into
@@ -141,7 +146,7 @@ Do these in order. For each, its "Done" line is what you should be able to show 
    collection, if the chat offers one; if it does not, say so and use what it offers). Done: the assistant, asked
    what it can see, names both sessions and the groups, in its own words, pasted. Anything it names that is not in
    the notes counts as a finding.
-8. **J8, code.** Start a session again as the page says. Using the coding and chat-path pages, take one story and one
+8. **J8, code.** Start a session again as the page says, with a new server entry as the page says. Using the coding and chat-path pages, take one story and one
    design proposal from your notes each round the coding loop, in the chat and in Obsidian: you interpret; the
    assistant drafts in its reply; you read the draft, edit it and have your hands paste it into the page in Obsidian;
    the assistant proposes the linked names and records what you confirm; the check runs; you fix each problem from
@@ -165,7 +170,17 @@ Do these in order. For each, its "Done" line is what you should be able to show 
 If you reach a stage you cannot finish, stop at that stage. Fill in the report for every stage you reached and say
 plainly which one you stopped at. A stage you did not reach is "not reached", never skipped over.
 
-## Your field notes (lab material only: invented; use these; do not make up others)
+## Your solo-trial note (J2; lab material only: invented)
+
+This is the only material for J2. Do not make up others.
+
+A note of your own from last summer:
+
+Residents on the road with the new trees (about 6:30 pm): "I water the one by my gate when I remember, but the one
+by the bus stop I assumed was the council's." "The sapling on the corner was bone dry in August and nobody knew whose job it
+was."
+
+## Your event notes (J5 onward; lab material only: invented; use these; do not make up others)
 
 **Evening one: stories about watering the trees in the dry weeks.**
 
