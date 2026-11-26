@@ -1071,6 +1071,160 @@ def _(v, st):
     )
 
 
+def _attr(v, mode, field, pages=("ada-quill",)):
+    """The fixture narrative in a vault of `mode`, with `field` (a frontmatter line, or None) added; the named
+    contributor pages are written where the mode allows them."""
+    v.write(
+        "scat.toml", f"attribution = '{mode}'\nstakeholder_group_cap = 3\nlink_suggestions = true\n"
+    )
+    if field:
+        v.edit(NF, "timeframe: past\n", f"timeframe: past\n{field}\n")
+    if mode != "disallowed":
+        for name in pages:
+            title = name.replace("-", " ").title()
+            v.write(
+                f"contributor/{name}.md",
+                f'---\ntype: contributor\nstatus: done\ntitle: "{title}"\n---\n',
+            )
+
+
+@seed("ATTR-DISALLOWED-field", ALL)
+def _(v, st):
+    _attr(v, "disallowed", 'attributed_to: ["[[ada-quill]]"]')
+    return [
+        Exp(
+            "SCAT-ATTR-DISALLOWED",
+            E_,
+            NF,
+            "field `attributed_to`",
+            "present, and the vault's attribution mode is `disallowed`",
+            fix_has=("delete the field `attributed_to`", "`disallowed`"),
+        )
+    ]
+
+
+@seed("ATTR-DISALLOWED-empty", ALL)
+def _(v, st):
+    _attr(v, "disallowed", "attributed_to: []")
+    return [
+        Exp(
+            "SCAT-ATTR-DISALLOWED",
+            E_,
+            NF,
+            "field `attributed_to`",
+            "present, and the vault's attribution mode is `disallowed`",
+        )
+    ]
+
+
+@seed("ATTR-DISALLOWED-contributor-page", ALL)
+def _(v, st):
+    _attr(v, "disallowed", None)
+    v.write(
+        "contributor/ada-quill.md",
+        f'---\ntype: contributor\nstatus: {st}\ntitle: "Ada Quill"\n---\n',
+    )
+    return [
+        Exp(
+            "SCAT-ATTR-DISALLOWED",
+            E_,
+            "contributor/ada-quill.md",
+            "field `type`",
+            "`contributor` is a contributor page, and the vault's attribution mode is `disallowed`",
+            fix_has=("delete the file contributor/ada-quill.md",),
+        )
+    ]
+
+
+@seed("ATTR-LINK-text-optional", ALL)
+def _(v, st):
+    _attr(v, "optional", 'attributed_to: ["Ada Quill"]')
+    return [
+        Exp(
+            "SCAT-ATTR-LINK",
+            E_,
+            NF,
+            "field `attributed_to`",
+            "`Ada Quill` is not a link to a contributor page",
+            fix_has=("link the entry to a contributor page", "(drop this entry)"),
+        )
+    ]
+
+
+@seed("ATTR-LINK-dangling-required", ALL)
+def _(v, st):
+    _attr(v, "required", 'attributed_to: ["[[ghost]]"]')
+    return [
+        Exp(
+            "SCAT-ATTR-LINK",
+            E_,
+            NF,
+            "field `attributed_to`",
+            "`[[ghost]]` does not reach a page (no page is named ghost)",
+        )
+    ]
+
+
+@seed("ATTR-LINK-wrong-type", ALL)
+def _(v, st):
+    _attr(v, "optional", 'attributed_to: ["[[ada-quill]]", "[[safe-handling]]"]')
+    return [
+        Exp(
+            "SCAT-ATTR-LINK",
+            E_,
+            NF,
+            "field `attributed_to`",
+            "`[[safe-handling]]` reaches a page that is not a contributor (it is a concern page)",
+            fix_has=('`attributed_to: ["[[ada-quill]]"]` (drop this entry)',),
+        )
+    ]
+
+
+@seed("ATTR-required-absent", ALL)
+def _(v, st):
+    _attr(v, "required", None)
+    rule, sev = pair("ATTR", st)
+    return [
+        Exp(
+            rule,
+            sev,
+            NF,
+            "field `attributed_to`",
+            None,
+            fix_has=('`attributed_to: ["[[<a contributor page you link>]]"]` (author)',)
+            + ((draft_cmd("saturday"),) if st == "done" else ()),
+        )
+    ]
+
+
+@seed("ATTR-required-empty", ALL)
+def _(v, st):
+    _attr(v, "required", "attributed_to: []")
+    rule, sev = pair("ATTR", st)
+    return [
+        Exp(
+            rule,
+            sev,
+            NF,
+            "field `attributed_to`",
+            None,
+            fix_has=("replace the line `attributed_to: []`",),
+        )
+    ]
+
+
+@seed("ATTR-required-silent", ALL)
+def _(v, st):
+    _attr(v, "required", 'attributed_to: ["[[ada-quill]]"]')
+    return []
+
+
+@seed("ATTR-optional-silent", ALL)
+def _(v, st):
+    _attr(v, "optional", None)
+    return []
+
+
 @seed("SUGGEST-CONFIG-string", ("draft",))
 def _(v, st):
     v.write(

@@ -1,16 +1,17 @@
 # scat.ttl : the SCAT TBox (mission deliverable D-1), as rebuilt for the layout of D-088.
 #
 # How to read this file
-#   * Page types are the classes with a scat:key (their slug): six in all: the four node types (group, concern,
-#     affordance, technology), the narrative, and the index. Only the first five are pages of Markdown with
+#   * Page types are the classes with a scat:key (their slug): seven in all: the four node types (group, concern,
+#     affordance, technology), the narrative, the contributor and the index. Only the first six are pages of Markdown with
 #     frontmatter; an index is an Obsidian Base file the tool generates, with no frontmatter and no fields.
 #   * An edge is no page and no field. It is one row of a narrative's table. The three edge types are
 #     the properties scat:Heldby, scat:Addresses and scat:ProvidedBy (formal identifiers; their labels are the plain
 #     words "holds", "is addressed by" and "is provided by"). Each states its slug, its verb and the node types of its
 #     two ends, in order (scat:endpointOrder). A row's type is fixed by the layers of its ends.
 #   * A page type lists its fields with scat:requiredField, scat:optionalField and scat:discouragedField. Each field
-#     is a scat:Field with a frontmatter key. No page type has a link field now (no field has scat:targetType): every
-#     link is in a page's text, and the narrative's table says which links are edges.
+#     is a scat:Field with a frontmatter key. One field is a link field (it has scat:targetType): the narrative's
+#     attributed_to, a list of links to contributor pages. Every other link is in a page's text, and the narrative's
+#     table says which links are edges; a link in attributed_to is none of them.
 #   * scat:requiredField means required once the page's status is scat:done. A field's scat:requiredFrom says from
 #     which status it is required; type, status and title are required from scat:stub, so they are present at every
 #     status. Types with scat:carriesStatus false have no status: their required fields always apply.
@@ -31,7 +32,12 @@
 #   Kept:     scat:key, scat:requiredField, scat:optionalField, scat:discouragedField, scat:requiredFrom,
 #             scat:targetType, scat:valueSet, scat:carriesStatus, scat:mapsTo, scat:pageDescription, the status values,
 #             and the source, authored and verification annotations. scat:discouragedField and scat:targetType are
-#             declared but no type uses them now; they stay so the reader needs small edits only.
+#             declared; scat:discouragedField is used by no type, scat:targetType by attributed_to (WP23).
+#   WP23 (D-133, D-135): the page type scat:Contributor (key "contributor"), outside the four layers and the edge types,
+#             and the optional narrative link field scat:field-attributed_to (scat:targetType "contributor", the
+#             prov:wasAttributedTo sense); owl:versionInfo 0.3.0. Both are optional in the TBox: whether a vault may have
+#             contributor pages, and whether a narrative must name its contributors, is the vault's attribution mode,
+#             and the per-mode rule lives in the checks.
 #   Removed:  the relation page types, the scenario and architecture raw and coded record types and their fields, the
 #             class pages and scat:ClassPageName with its two properties, the fields notes, indexes, group
 #             and its siblings, the old conflict field and property (a relationship annotation now says it), involves and coded, scat:single, scat:discouragedBodyLink,
@@ -56,7 +62,7 @@
 <https://w3id.org/scat> a owl:Ontology ;
     rdfs:label "SCAT ontology" ;
     owl:versionInfo "0.3.0" ;
-    rdfs:comment "TBox for scat-kg: four SKOS-based node types, three edge types, and six page types (the four node types, the narrative and the index), with the fields of each and how a narrative's table of edges is read. The IRI base is unregistered until release." .
+    rdfs:comment "TBox for scat-kg: four SKOS-based node types, three edge types, and seven page types (the four node types, the narrative, the contributor and the index), with the fields of each and how a narrative's table of edges is read. The IRI base is unregistered until release." .
 
 ##############################################################################
 # The four node types (MISSION G1). Instances are skos:Concepts.
@@ -154,7 +160,7 @@ scat:ProvidedBy a owl:ObjectProperty, scat:EdgeType ;
     scat:endpointOrder ( scat:Affordance scat:Technology ) .
 
 ##############################################################################
-# The narrative and the index (the two page types that are not nodes)
+# The narrative, the contributor and the index (the three page types that are not nodes)
 ##############################################################################
 
 scat:Narrative a owl:Class ;
@@ -165,9 +171,18 @@ scat:Narrative a owl:Class ;
     scat:key "narrative" ;
     scat:pageDescription "A narrative: the account in the page body, with links where names appear, and under the heading Edges told a table with one row for each edge the account tells." ;
     scat:requiredField scat:field-type, scat:field-status, scat:field-title, scat:field-description, scat:field-timeframe ;
-    scat:optionalField scat:field-kind ;
+    scat:optionalField scat:field-kind, scat:field-attributed_to ;
     scat:tableHeading "Edges told" ;
     scat:tableColumns ( scat:column-from scat:column-type scat:column-to scat:column-note ) .
+
+scat:Contributor a owl:Class ;
+    rdfs:label "Contributor" ;
+    skos:definition "A person a narrative may be attributed to, with a page of their own: a name or handle as the organiser records it. A contributor page is in the knowledge graph, so a narrative's attributed_to link resolves to it, and outside the four layers: it is no node, takes part in no edge, in no fingerprint and not in the group cap. Whether a vault may have contributor pages is the vault's attribution mode, not the ontology's." ;
+    scat:authored "D-133 (contributors are pages in the knowledge graph where the mode enables attribution), D-134 and D-135; the page's required fields are the organiser's default (WP23): type, status and title, nothing else." ;
+    scat:verification "authored" ;
+    scat:key "contributor" ;
+    scat:pageDescription "A contributor: the name or handle of a person narratives are attributed to, outside the four layers. Only where the vault's attribution mode allows it." ;
+    scat:requiredField scat:field-type, scat:field-status, scat:field-title .
 
 scat:Index a owl:Class ;
     rdfs:label "Index" ;
@@ -267,6 +282,13 @@ scat:field-kind a scat:Field ;
     scat:authored "D-088 and the PM's build-stage defaults: one narrative page, with scenario and architecture as an optional mark." ;
     scat:verification "authored" ;
     scat:key "kind" ; scat:valueSet ( "scenario" "architecture" ) .
+
+scat:field-attributed_to a scat:Field ;
+    rdfs:label "attributed_to" ;
+    skos:definition "On a narrative: the people the narrative is attributed to, as a list of links to contributor pages (the prov:wasAttributedTo sense). The field is a link field and not an edge: it tells no edge, names no node and is no part of the narrative's fingerprint. Whether a narrative must, may or may not have it is the vault's attribution mode, and the rule for each lives in the checks, not here." ;
+    scat:authored "D-133 and D-135: a narrative's attributed_to links resolve to contributor pages in the knowledge graph; the ontology research's prov:wasAttributedTo sense of who a claim comes from, kept apart from the edge types." ;
+    scat:verification "authored" ;
+    scat:key "attributed_to" ; scat:targetType "contributor" .
 
 ##############################################################################
 # Status
@@ -374,8 +396,8 @@ scat:mapsTo a owl:AnnotationProperty ;
     scat:verification "authored" .
 
 scat:targetType a owl:AnnotationProperty ;
-    skos:definition "The page type every target of a link field must have. Its presence makes a field a link field. No field uses it in this version." ;
-    scat:authored "Kept from the earlier vocabulary so the reader changes little." ;
+    skos:definition "The page type (its scat:key) every target of a link field must have. Its presence makes a field a link field. Only attributed_to uses it." ;
+    scat:authored "Kept from the earlier vocabulary; WP23 brings it back for attributed_to." ;
     scat:verification "authored" .
 
 scat:requiredFrom a owl:AnnotationProperty ;

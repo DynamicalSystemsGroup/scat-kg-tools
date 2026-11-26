@@ -71,6 +71,8 @@ fires on a `stub` or `draft` narrative; the `SCAT-DONE-` id is the same conditio
 | Required from `done`, a value set (`timeframe`) | warning | warning | error |
 | Name, frontmatter shape and values, dangling body link, cap | error | error | error |
 | Pairs: table and row problems, mismatches (narratives only) | warning | warning | error |
+| Attribution (the mode decides): `disallowed` and `attributed_to` or a contributor page present; an `attributed_to` entry that is no link to a contributor page | error | error | error |
+| Attribution, `required` mode, no `attributed_to` entry | warning | warning | error |
 | Mention | warning | warning | warning |
 | No edges (SCAT-NOEDGES) | silent | silent | warning |
 | Uncoded (SCAT-UNCODED) | warning | warning | warning |
@@ -142,16 +144,20 @@ because the model it checked is gone (D-088).
 |---|---|---|
 | SCAT-FM-PARSE | kept | |
 | SCAT-FM-REQUIRED | adapted | `status` and `title` only; `indexes` is gone |
-| SCAT-FM-TYPE | adapted | five page types |
+| SCAT-FM-TYPE | adapted | six page types that are Markdown pages (the sixth, `contributor`, WP23) |
 | SCAT-FM-STATUS | kept | |
 | SCAT-FM-TIMEFRAME | adapted | on a narrative |
 | SCAT-FM-KIND | new | `kind` outside its value set |
-| SCAT-FM-SHAPE | adapted | the fields of the new types |
+| SCAT-FM-SHAPE | adapted | the fields of the new types; `attributed_to` is a list of text |
 | SCAT-NAME | adapted | no class page names |
 | SCAT-DONE-FIELD | adapted | `description`; `timeframe` on a narrative |
 | SCAT-DRAFT-FIELD | adapted | |
 | SCAT-LINK-DANGLING-BODY | adapted | every link outside a table end |
 | SCAT-CAP | adapted | counts `group` pages |
+| SCAT-ATTR-DISALLOWED | new | `attributed_to` on a narrative, or a contributor page, when the mode is `disallowed` (WP23-G2) |
+| SCAT-ATTR-LINK | new | an `attributed_to` entry is no link, a dangling link, or a link to a page that is not a contributor page (WP23-G2, G3) |
+| SCAT-DONE-ATTR | new | `attributed_to` names nobody on a `done` narrative, in `required` mode (WP23-G2) |
+| SCAT-DRAFT-ATTR | new | the same at `stub` and `draft`; a warning |
 | SCAT-MODE-CONFIG | new | the `attribution` key of `scat.toml` (WP23-G1) |
 | SCAT-CAP-CONFIG | kept | |
 | SCAT-SUGGEST-CONFIG | new | the `link_suggestions` key of `scat.toml` |
@@ -187,14 +193,18 @@ because the model it checked is gone (D-088).
 |---|---|---|---|---|---|
 | SCAT-FM-PARSE | error | every status | all | file starts with `---` but its frontmatter is not a readable mapping | manual |
 | SCAT-FM-REQUIRED | error | every status | all | `status` or `title` is missing | options |
-| SCAT-FM-TYPE | error | every status | all | `type` is not one of the five page types | options |
+| SCAT-FM-TYPE | error | every status | all | `type` is not one of the six page types that are Markdown pages | options |
 | SCAT-FM-STATUS | error | every status | all | `status` is not `stub`, `draft` or `done` | options |
 | SCAT-FM-TIMEFRAME | error | every status | all | `timeframe` on a narrative is outside its value set | options |
 | SCAT-FM-KIND | error | every status | all | `kind` on a narrative is outside its value set | options |
-| SCAT-FM-SHAPE | error | every status | all | a text field is not a single non-empty string | manual |
+| SCAT-FM-SHAPE | error | every status | all | a text field is not a single non-empty string, or `attributed_to` is not a list of text | manual |
 | SCAT-NAME | error | every status | all | a page's file name is not a legal name, or is not unique | manual |
 | SCAT-DONE-FIELD | error | done | all | a field required from `done` is missing | slot |
 | SCAT-DRAFT-FIELD | warning | draft; stub for `timeframe` | all | a field required from `done` is missing | slot |
+| SCAT-ATTR-DISALLOWED | error | every status | all | `attributed_to` on a narrative, or a contributor page, and the mode is `disallowed` | exact |
+| SCAT-ATTR-LINK | error | every status | all | an `attributed_to` entry is no link, reaches no page, or reaches a page that is not a contributor page; the mode is `required` or `optional` | options |
+| SCAT-DONE-ATTR | error | done | all | `attributed_to` names nobody on a narrative, and the mode is `required` | slot |
+| SCAT-DRAFT-ATTR | warning | stub, draft | all | the same, before `done` | slot |
 | SCAT-LINK-DANGLING-BODY | error | every status | all | a link outside a table end reaches no page | options |
 | SCAT-CAP | error | vault | vault; all when a `group` page is in the set | more `group` pages than the cap | options |
 | SCAT-MODE-CONFIG | error | vault | as SCAT-CAP-CONFIG | `attribution` in `scat.toml` is missing, or not `required`, `optional` or `disallowed` | options |
@@ -229,7 +239,8 @@ manual. The variants, where they differ:
 |---|---|
 | SCAT-FM-REQUIRED | `status`: options; `title`: exact |
 | SCAT-FM-TYPE, SCAT-FM-TIMEFRAME | with a near match: exact; without: options |
-| SCAT-FM-SHAPE | one-item list, boolean, number: exact; otherwise manual |
+| SCAT-FM-SHAPE | one-item list, boolean, number: exact; otherwise manual; `attributed_to` as one line of text: exact, otherwise manual |
+| SCAT-ATTR-LINK | options in every variant (a drop-the-entry option is always exact; a manual option says how to link a contributor page) |
 | SCAT-DONE-FIELD, SCAT-DRAFT-FIELD | `description`: slot; `timeframe`: slot (a choice among exact values) |
 | SCAT-NAME | exact; a hand choice (no title to derive from): manual |
 | SCAT-LINK-DANGLING-BODY | options in every variant |
@@ -277,12 +288,12 @@ error [SCAT-FM-REQUIRED] <file> field `title`: missing
 
 ### SCAT-FM-TYPE
 - **Severity:** error. **Fires:** every status. **Runs at:** all; reads only its page.
-- **Trigger:** `type` is present and is a string that is not one of `group`, `concern`, `affordance`, `technology`, `narrative` (the ontology's page types that are Markdown pages: `index` is a type of the ontology, but an index is a generated Base and not a Markdown page, so `type: index` in a Markdown file is a wrong type); or `type` is present but empty. A value that is not a string is SCAT-FM-SHAPE's.
+- **Trigger:** `type` is present and is a string that is not one of `group`, `concern`, `affordance`, `technology`, `narrative`, `contributor` (the ontology's page types that are Markdown pages: `index` is a type of the ontology, but an index is a generated Base and not a Markdown page, so `type: index` in a Markdown file is a wrong type); or `type` is present but empty. A value that is not a string is SCAT-FM-SHAPE's.
 - **Message:**
 ```
 error [SCAT-FM-TYPE] <file> field `type`: `<value>` is not a page type
-  Fix: change it to `type: <near match>`            (when a near match among the five types exists)
-  Fix, choose the one that describes this page: `type: <key>` ...    (otherwise, one numbered line per type with its `scat:pageDescription`, in alphabetical order)
+  Fix: change it to `type: <near match>`            (when a near match among the six types exists)
+  Fix, choose the one that describes this page: `type: <key>` ...    (otherwise, one numbered line per type with its `scat:pageDescription`, in alphabetical order; `contributor` is offered only where the mode is `required` or `optional`)
 ```
 For an empty `type`, `the value is empty, which is not a page type` replaces `` `<value>` is not a page type`` and the list is given. For `index`, the list is given and a note says an index is generated by `scat index`.
 - **Fix kind:** options (exact when the near match exists). Edits: one `set-field{type, <key>}` per option.
@@ -328,7 +339,7 @@ error [SCAT-FM-KIND] <file> field `kind`: `<value>` is not a kind
 
 ### SCAT-FM-SHAPE
 - **Severity:** error. **Fires:** every status. **Runs at:** all; reads only its page.
-- **Trigger:** `type`, `status`, `title` or `description` (on any page), or `timeframe` or `kind` (on a narrative only), is present and not empty, and is not a single string (a list, a mapping, a number, or a boolean such as an unquoted `yes` or `true`). An unquoted `null` or `~` is missing, by the Empty rule.
+- **Trigger:** `type`, `status`, `title` or `description` (on any page), or `timeframe` or `kind` (on a narrative only), is present and not empty, and is not a single string (a list, a mapping, a number, or a boolean such as an unquoted `yes` or `true`). An unquoted `null` or `~` is missing, by the Empty rule. The link field `attributed_to` (a narrative only; not judged in `disallowed` mode, where SCAT-ATTR-DISALLOWED stands, nor when no mode is known) is present and not empty and is not a list of text: one line of text, a mapping, a number, or a list with an item that is not text (an unquoted `[[ada-quill]]` is a list inside a list). The message then reads `expected a list of links (text), found <one line of text | a list | a mapping | a number | a boolean>`; the fix for one line of text is exact (`attributed_to: ["<text>"]`), otherwise manual.
 - **Message:**
 ```
 error [SCAT-FM-SHAPE] <file> field `<field>`: expected one line of text, found <a list | a mapping | a number | a boolean>
@@ -380,9 +391,82 @@ warning [SCAT-DRAFT-FIELD] <file> field `timeframe`: missing (required once the 
 - **Fix kind:** slot. Edits as SCAT-DONE-FIELD, without the command.
 - **Seed:** the seeds of SCAT-DONE-FIELD at `draft`: warnings only, the exit status of the check unchanged by them. `timeframe` empty at `stub` (a freshly stubbed narrative gives exactly this one message).
 
+### The mode rule
+
+One rule differs by attribution mode, and none other does. Its wording is exact and is the same, byte for byte, in
+`docs/norms.md` and `contracts/assistant.md` (the checks hold it as `scat_kg.checks.attribution.MODE_RULE`; a test
+compares the two):
+
+> In required mode a narrative SHALL name its contributors; in disallowed mode it SHALL NOT; in optional mode it MAY. To name a contributor is to link a contributor page in the narrative's `attributed_to` field.
+
+The mode is the vault's metaparameter (`scat.toml`, page contracts 10): it decides what is conformant, so a vault whose
+mode changes is checked whole against the new mode, with no migration. The four rules below are the whole of it. The
+modes are disjoint: a rule of one mode says nothing at another (a `disallowed` vault is never told to name anyone; a
+`required` or `optional` vault is never told to remove a contributor), and a vault with no usable mode gets
+SCAT-MODE-CONFIG only. Where the mode allows them, a contributor page and an `attributed_to` entry are never a
+node, an edge, a link of the narrative or a member of the layered graph (page contracts 4 and 8): they do not change
+whether a narrative is coded, its fingerprint, the group cap or any view.
+
+| Mode | A narrative's `attributed_to` | A contributor page |
+|---|---|---|
+| `required` | SHALL name a contributor: a warning before `done`, an error at `done` (SCAT-DRAFT-ATTR, SCAT-DONE-ATTR); every entry a link to a contributor page (SCAT-ATTR-LINK) | allowed |
+| `optional` | MAY; every entry a link to a contributor page (SCAT-ATTR-LINK) | allowed |
+| `disallowed` | SHALL NOT: an error at every status (SCAT-ATTR-DISALLOWED) | SHALL NOT exist: an error at every status (SCAT-ATTR-DISALLOWED) |
+
+### SCAT-ATTR-DISALLOWED
+- **Severity:** error. **Fires:** every status. **Runs at:** all; reads its page and the mode in `scat.toml`.
+- **Trigger:** the vault's attribution mode is `disallowed` and (a) a narrative has the key `attributed_to`, whatever it holds (a list, an empty list, empty text, null: any presence of the key), or (b) a page has `type: contributor`. The one finding stands for the field or the page: SCAT-FM-SHAPE and SCAT-ATTR-LINK say nothing about a field in `disallowed` mode. A vault with no usable mode gets SCAT-MODE-CONFIG only. A contributor page is judged here whatever its status. The rule changes with the mode and nothing else: switching a vault to `disallowed` flags every narrative that still has the key and every contributor page.
+- **Message:**
+```
+error [SCAT-ATTR-DISALLOWED] <file> field `attributed_to`: present, and the vault's attribution mode is `disallowed`
+  Fix: delete the field `attributed_to` (all its lines): this vault's attribution mode is `disallowed`; the coder who wants contributors named changes `attribution` in scat.toml for the whole vault
+error [SCAT-ATTR-DISALLOWED] <file> field `type`: `contributor` is a contributor page, and the vault's attribution mode is `disallowed`
+  Fix: delete the file <file>: this vault's attribution mode is `disallowed`, so it holds no contributor page; the coder who wants contributor pages changes `attribution` in scat.toml for the whole vault
+```
+- **Fix kind:** exact. Edits: `delete-field{attributed_to}`; `delete-file{<file>}`. Changing the mode is the coder's call and is named, not offered as an edit.
+- **Seed:** a narrative with a list of links, with `attributed_to: []`, and with the key empty, at `stub`, `draft` and `done` (one message each); a contributor page at each status; the same pages in `optional` and `required` mode give none from this rule.
+
+### SCAT-ATTR-LINK
+- **Severity:** error. **Fires:** every status. **Runs at:** all; reads its page, the vault's pages and the mode.
+- **Trigger:** the mode is `required` or `optional`, and an entry of a narrative's `attributed_to` (a list of text; blank entries are not entries) does not name a contributor page. An entry names one when it is a link written as text, `"[[ada-quill]]"` (alias, heading and block reference stripped as in page contracts 3), whose target is the name of exactly one page, and that page has `type: contributor`. Three variants share the id, one message for each entry: (a) the entry is not a link (`"Ada Quill"`), or is a link that is not a page link; (b) the link reaches no page, as SCAT-LINK-DANGLING-BODY's variants (no such file; a file with no `type`; a name that is not legal); (c) the link reaches a page that is not a contributor page (a node, a narrative). A link to a page whose `type` is missing or invalid is not judged (that page has its own SCAT-FM-TYPE error), and a name that more than one page carries is SCAT-NAME's. The entries are read as text: they are in no `links` of the page, no backlink and no fingerprint (page contracts 3). A narrative that names nobody is SCAT-*-ATTR's. In `disallowed` mode SCAT-ATTR-DISALLOWED stands instead.
+- **Message:**
+```
+error [SCAT-ATTR-LINK] <file> field `attributed_to`: <`<entry>` is not a link to a contributor page | `[[<target>]]` does not reach a page (<reason, as SCAT-LINK-DANGLING-BODY>) | `[[<target>]]` reaches a page that is not a contributor (it is <a|an> <type> page)>
+  Fix, choose one:
+    1. <add the line | replace the line `attributed_to: <current>` with> `attributed_to: ["<the list with this entry replaced by [[<near match>]]>"]` (the contributor page `<near match>`)        (only if a near match exists among the contributor pages)
+    2. link the entry to a contributor page: write `[[<name>]]` of an existing page of type `contributor`, or make one (`type: contributor`, `status: stub`, `title`) and link it
+    3. <replace the line ...> with `attributed_to: [<the other entries>]` (drop this entry)
+```
+- **Fix kind:** options. Edits: `set-field{attributed_to, [<entries>]}` for options 1 and 3; option 2 is manual (the stub operation makes no contributor page here). The near match is of the entry's text (for a link, its target) among the names of the contributor pages.
+- **Seed:** `attributed_to: ["Ada Quill"]` (a), `["[[ghost]]"]` (b), `["[[staff]]"]` (c, a group), each in `optional` and in `required` mode at each status (one message each); a near match (`["[[ada-quil]]"]` with a page `ada-quill`); `["[[ada-quill]]"]` with that contributor page gives none; the same pages in `disallowed` mode give SCAT-ATTR-DISALLOWED only.
+
+### SCAT-DONE-ATTR
+- **Severity:** error. **Fires:** status `done`. **Needs status.** **Runs at:** all; reads its page and the mode.
+- **Trigger:** the mode is `required` and a narrative names nobody: `attributed_to` absent, null, empty text, an empty list, or a list of blank items. A value of another shape is SCAT-FM-SHAPE's; an entry that is no good link is SCAT-ATTR-LINK's (an entry present counts as naming, so the one fault is reported once). In `optional` mode nothing is required.
+- **Message:**
+```
+error [SCAT-DONE-ATTR] <file> field `attributed_to`: missing on a page with status: done (the vault's attribution mode is `required`)
+  Fix, choose one:
+    1. <add the line | replace the line `attributed_to: <current>` with> `attributed_to: ["[[<a contributor page you link>]]"]` (author)
+    2. run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`) if the page is not finished
+```
+- **Fix kind:** slot. The contributor is the coder's: the tools never seed it. Edits: `set-field{attributed_to, ["[[<a contributor page you link>]]"], author_slot}`; `command{set-status <page-name> draft}`.
+- **Seed:** `required` mode, a `done` narrative with the key absent, empty, `[]` and `[""]`; the same at `done` in `optional` and `disallowed` modes gives none from this rule; one entry present gives none.
+
+### SCAT-DRAFT-ATTR
+- **Severity:** warning. **Fires:** status `stub` and `draft`. **Needs status.** **Runs at:** all; reads its page and the mode.
+- **Trigger:** as SCAT-DONE-ATTR, at those statuses.
+- **Message:** the same problem and one option, no `set-status` option, because nothing is blocked:
+```
+warning [SCAT-DRAFT-ATTR] <file> field `attributed_to`: missing (required once the page is done: the vault's attribution mode is `required`)
+  Fix: <add the line | replace the line `attributed_to: <current>` with> `attributed_to: ["[[<a contributor page you link>]]"]` (author) before you set status: done
+```
+- **Fix kind:** slot. Edits as SCAT-DONE-ATTR, without the command.
+- **Seed:** the seeds of SCAT-DONE-ATTR at `stub` and `draft`: warnings only, the exit status of the check unchanged by them.
+
 ### SCAT-LINK-DANGLING-BODY
 - **Severity:** error. **Fires:** every status. **Runs at:** all; reads the vault (names, near match, the cap).
-- **Trigger:** a link in a page after the frontmatter whose target is not the name of any page, and that is not a row end: a link in the `from` or `to` cell of a row of a narrative's first table, when the table is well-formed (those are SCAT-*-END-NOPAGE, graded by status, or for a row that is not well-formed, graded by nothing: section 1). A link in a row's `note` cell is a link like any other and is covered here. Targets that are not page links (page contracts 3) are never dangling. Frontmatter links are never read. Three variants share the id: (a) a legal name and no such file; (b) a legal name for which a Markdown file exists that has no `type`, so it is not a page; (c) a name that is not legal, including one that differs from an existing name only by case.
+- **Trigger:** a link in a page after the frontmatter whose target is not the name of any page, and that is not a row end: a link in the `from` or `to` cell of a row of a narrative's first table, when the table is well-formed (those are SCAT-*-END-NOPAGE, graded by status, or for a row that is not well-formed, graded by nothing: section 1). A link in a row's `note` cell is a link like any other and is covered here. Targets that are not page links (page contracts 3) are never dangling. Frontmatter links are never read, except the entries of `attributed_to`, which SCAT-ATTR-LINK grades. Three variants share the id: (a) a legal name and no such file; (b) a legal name for which a Markdown file exists that has no `type`, so it is not a page; (c) a name that is not legal, including one that differs from an existing name only by case.
 - **Message:**
 ```
 error [SCAT-LINK-DANGLING-BODY] <file>:<line> link [[<target>]]: does not reach a page (<no page is named <target> | <other-file> exists but has no `type`, so it is not a page | <target> is not a legal page name: <reason>>)
@@ -391,7 +475,7 @@ error [SCAT-LINK-DANGLING-BODY] <file>:<line> link [[<target>]]: does not reach 
     2. run `scat stub <target> --type <key>` (REPL: `scat_kg.stub("<target>", type="<key>")`) to create a <key> page      (one numbered option per inferred type)
     n. on line <line> replace `[[<target>]]` with `<target>` to keep the words and drop the link
 ```
-**Inferred types.** A body link does not say what its page is, and the stub operation creates one only for a given type, so the options are alternatives and not a guess: (a) if some row end in the vault names the same target, the layer type that row fixes (all of them, if several, sorted by type key); (b) otherwise the five types `group`, `concern`, `affordance`, `technology`, `narrative`, each a separate numbered exact command. The cap rule: any option that would create a `group` page is withheld when the vault is at its cap, and the message says "the vault is at its cap of <cap> groups, so a new group page would break SCAT-CAP; choose an existing group".
+**Inferred types.** A body link does not say what its page is, and the stub operation creates one only for a given type, so the options are alternatives and not a guess: (a) if some row end in the vault names the same target, the layer type that row fixes (all of them, if several, sorted by type key); (b) otherwise the five types `group`, `concern`, `affordance`, `technology`, `narrative` (the types the stub operation makes: never `contributor`), each a separate numbered exact command. The cap rule: any option that would create a `group` page is withheld when the vault is at its cap, and the message says "the vault is at its cap of <cap> groups, so a new group page would break SCAT-CAP; choose an existing group".
 **Variant (b)** (a typeless file of that name): option 2 is replaced by "add these lines to the frontmatter of <other-file>: `type: <key>`, `status: stub`, `title: "<Title>"`", because the stub operation refuses an existing file; only the keys it lacks are listed, a key present but empty is replaced; a file with no frontmatter gets the three lines in a block between two `---` lines at the very top. For an illegal target the file is not what the link meant: variant (c) applies and the message adds "<other-file> exists but is not a page".
 **Variant (c)** (not a legal name): no stub of `<target>` is offered, because the stub operation refuses an illegal name. Names are compared without regard to case. The replacement names are collected in this order and deduplicated: the near match among all pages; the derived name of the target when it is not empty. A name that is an existing page is a plain replacement; a name that no `.md` file has is "replace `[[<target>]]` with `[[<d>]]`, then run `scat stub <d> --type <key>`" (one option per inferred type); a typeless file of that name gets the variant (b) lines; a name that is a page of another type gets no option here, because replacing would link the wrong page. A derived name that is empty says "choose a legal name by hand".
 - **Fix kind:** options. Edits: `replace-text{line, column, find "[[<target>]]", replace}`; `command{stub ...}` after the edit in a replace-then-stub option (`sequence` true); `set-field` lines for variant (b).
@@ -614,10 +698,10 @@ Variant (b) replaces option 2 by the lines that make the typeless file a page of
 - **Seed:** `| [[ghost]] | holds | [[c]] | |` (options 1 only if a near match, 2, delete); a near match (`[[borrower]]` for `borrowers`); `[[Safety briefing]]` (variant c); a link to a typeless file (variant b); a group stub at the cap (no group option).
 
 #### SCAT-*-END-NOTNODE
-- **Reads:** its page, the vault and the target's page. **Trigger:** a row end is one link whose target is a page that is not a valid node: a page of type `narrative`, or a page whose `type` is missing from the five or invalid (that page has its own SCAT-FM-TYPE error as well; this is the mismatch, at the row). A node page of the wrong layer is SCAT-*-TABLE-LAYERS.
+- **Reads:** its page, the vault and the target's page. **Trigger:** a row end is one link whose target is a page that is not a valid node: a page of type `narrative` or `contributor`, or a page whose `type` is missing from the six or invalid (that page has its own SCAT-FM-TYPE error as well; this is the mismatch, at the row). A node page of the wrong layer is SCAT-*-TABLE-LAYERS.
 - **Message:**
 ```
-<severity> [SCAT-*-END-NOTNODE] <file>:<line>:<column> row <n> cell `<from|to>`: [[<target>]] is <a narrative page | a page with the invalid type `<value>` | a page with an empty `type`>, not a node; a row joins two nodes
+<severity> [SCAT-*-END-NOTNODE] <file>:<line>:<column> row <n> cell `<from|to>`: [[<target>]] is <a narrative page | a contributor page | a page with the invalid type `<value>` | a page with an empty `type`>, not a node; a row joins two nodes
   Fix, choose one:
     1. replace `[[<target>]]` with `[[<candidate>]]`        (one option per candidate for the end's layer; withheld when the layer is unknown)
     2. replace `[[<target>]]` with `[[<node you choose>]]` (author)        (when there is no candidate)
@@ -681,6 +765,8 @@ in the wrong layers), carried as operation refusals with no rule id; they list n
 | R-1 the table of edges (page contracts 4) | SCAT-*-TABLE-HEADER, -ROW, -TYPE, -LAYERS, -DUPLICATE, -SECOND |
 | R-1 the group cap | SCAT-CAP, SCAT-CAP-CONFIG |
 | WP23-G1 the attribution mode is declared, and known | SCAT-MODE-CONFIG |
+| WP23-G2 the mode sets the rules: required SHALL name, disallowed SHALL NOT, optional MAY (the mode rule, section 3) | SCAT-DRAFT-ATTR, SCAT-DONE-ATTR, SCAT-ATTR-DISALLOWED |
+| WP23-G3 contributor pages: `attributed_to` entries resolve to contributor pages; a dangling or wrong-type entry is an error; no contributor page where the mode is `disallowed` | SCAT-ATTR-LINK, SCAT-ATTR-DISALLOWED |
 | R-3 unfinished is never an error | SCAT-DRAFT-FIELD, and every SCAT-DRAFT- pair id, as warnings; nothing else fires for `done` fields at `stub` or `draft` |
 | R-3 full contract at `done`; the `done` check | SCAT-DONE-FIELD, every SCAT-DONE- pair id, SCAT-DONE-REFUSED |
 | R-4 checks never write | none: no rule writes (section 1, Scopes); the operations are `stub`, `set-status`, `record-edge`, `remove-edge` and `index` |
@@ -730,6 +816,10 @@ required narrative.title -> SCAT-FM-REQUIRED
 required narrative.description -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD
 required narrative.timeframe -> SCAT-DONE-FIELD, SCAT-DRAFT-FIELD, SCAT-FM-TIMEFRAME
 optional narrative.kind -> SCAT-FM-KIND
+optional narrative.attributed_to -> SCAT-FM-SHAPE, SCAT-ATTR-DISALLOWED, SCAT-ATTR-LINK, SCAT-DRAFT-ATTR, SCAT-DONE-ATTR
+required contributor.type -> SCAT-FM-TYPE, SCAT-LINK-DANGLING-BODY, SCAT-ATTR-DISALLOWED
+required contributor.status -> SCAT-FM-REQUIRED, SCAT-FM-STATUS
+required contributor.title -> SCAT-FM-REQUIRED
 table-heading narrative.Edges-told -> SCAT-*-TABLE-HEADER, SCAT-*-TABLE-SECOND
 table-column narrative.type -> SCAT-*-TABLE-TYPE, SCAT-*-TABLE-LAYERS, SCAT-*-TABLE-DUPLICATE
 table-column narrative.from -> SCAT-*-END-NOLINK, SCAT-*-END-NOPAGE, SCAT-*-END-NOTNODE, SCAT-*-TABLE-LAYERS, SCAT-*-TABLE-DUPLICATE
@@ -800,7 +890,7 @@ and there are no raw and coded pairs, relation pages or class pages.
 |---|---|---|
 | New edit action `delete-line` | closed list gains a value: bumps | A table row is a whole line; `replace-text` cannot remove one without leaving an empty line, which ends the table. Row insertion needs no action: `replace-text` with a line break in `replace` (and, for a new table, an anchor on the last line of the file) covers it, and no catalogue fix inserts a row |
 | `counts` of a status result no longer has `none` | field removed: bumps | It counted pages of version 1 that carried no status (class pages). Every type has a status now (an index page is generated, not authored: `index` has no fields), so the count is always 0 |
-| `StatusRow.type` takes the five types `group`, `concern`, `affordance`, `technology`, `narrative` (version 1: the twelve) | meaning of values changes: bumps | The ontology's types changed |
+| `StatusRow.type` takes the six types `group`, `concern`, `affordance`, `technology`, `narrative`, `contributor` (version 1: the twelve) | meaning of values changes: bumps | The ontology's types changed |
 | Edge types: slugs `holds`, `addressed-by`, `provided-by` in `edge.type` | new closed list | The CLI and API spelling of the three edge types (`scat:slug`) |
 | `record-edge` and `remove-edge` results: `edge`, `rows_added`, `rows_removed` | added | The new operations of M5; they replace `stub-pair`, which is gone |
 | `Refusal.rule` and `Refusal.problems` | added | The refusal to set `done` lists what blocks it, with fixes |

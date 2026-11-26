@@ -152,7 +152,7 @@ def test__errors_block_and_warnings_do_not(make_vault):
 
 def test__every_rule_has_one_severity_and_none_is_deferred():
     stated = catalogue_severities()
-    assert len(stated) == 36
+    assert len(stated) == 40
     assert SEVERITY == stated
     assert DEFERRED == {}
     assert PAGE_RULES and VAULT_RULES

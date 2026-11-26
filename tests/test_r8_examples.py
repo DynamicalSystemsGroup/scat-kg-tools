@@ -53,5 +53,6 @@ def test__r8__every_example_page_is_read_and_every_page_type_has_one():
     v = read_vault(EXAMPLES)
     assert sorted(p.path for p in v.pages) == PAGES
     assert {p.type for p in v.pages} == set(TBOX.page_types) - {
-        "index"
-    }  # an index is a Base, no page
+        "index",
+        "contributor",
+    }  # an index is a Base, no page; the example vault is `disallowed`: no contributor page

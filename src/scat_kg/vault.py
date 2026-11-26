@@ -32,6 +32,10 @@ DEFAULT_TEMPLATES_FOLDER = "templates"
 ATTRIBUTION_KEY = "attribution"
 MODES = ("required", "optional", "disallowed")
 
+# The link field that names a narrative's contributors, and the page type it links (the TBox's).
+ATTRIBUTED_KEY = "attributed_to"
+CONTRIBUTOR = TBOX.page_types["narrative"].field(ATTRIBUTED_KEY).target_type
+
 
 @dataclass(frozen=True)
 class Link:
@@ -247,6 +251,31 @@ def fenced_lines(lines: list[str]) -> list[bool]:
         else:
             out.append(False)
     return out
+
+
+_ENTRY_LINK = re.compile(r"^!?\[\[(.*)\]\]$", re.DOTALL)
+
+
+def entry_target(entry: str) -> str | None:
+    """The page name a link-field entry (`"[[ada-quill]]"`) reaches, or None when it is not a link to a page.
+
+    A link field is the one place a link outside the body is read (section 3); it is read as text, never as a link
+    of the page: it is in no `links`, no backlink and no fingerprint.
+    """
+    m = _ENTRY_LINK.match(entry.strip())
+    if m is None or "[[" in m.group(1) or "]]" in m.group(1):
+        return None
+    return link_target(m.group(1))
+
+
+def link_entries(page: "Page", key: str) -> list[str] | None:
+    """A link field's entries as written, blank ones dropped; None when it is not a list of text."""
+    v = page.fields.get(key)
+    if v is None or (isinstance(v, str) and not v.strip()) or v == []:
+        return []
+    if isinstance(v, list) and all(isinstance(n, str) for n in v):
+        return [n for n in v if n.strip()]
+    return None
 
 
 def _body_links(body: str, first_line: int) -> tuple[Link, ...]:

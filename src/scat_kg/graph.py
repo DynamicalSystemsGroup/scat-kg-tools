@@ -28,12 +28,16 @@ from scat_kg.tbox import TBOX
 from scat_kg.vault import (
     _BODY_LINK,
     _CODE_SPAN,
+    ATTRIBUTED_KEY,
+    CONTRIBUTOR,
     Link,
     Page,
     Vault,
     _lines,
     _split,
+    entry_target,
     fenced_lines,
+    link_entries,
     link_target,
     read_vault,
 )
@@ -402,10 +406,23 @@ class Narrative:
         str, ...
     ]  # fingerprint: the names of the nodes it links, in layer order then by name
     edges: tuple[EdgeKey, ...]  # fingerprint: the edges its rows tell, in graph order
+    attributed_to: tuple[
+        str, ...
+    ] = ()  # the contributor pages its `attributed_to` links, as written (WP23-G3)
 
     @property
     def rows(self) -> tuple[Row, ...]:
         return self.table.rows if self.table else ()
+
+
+@dataclass(frozen=True)
+class Contributor:
+    """A contributor page: in the knowledge graph, outside the four layers (no node, edge, fingerprint or cap)."""
+
+    name: str
+    status: str | None
+    title: str | None
+    path: str
 
 
 @dataclass(frozen=True)
@@ -469,6 +486,9 @@ class Graph:
     skipped: tuple[Skipped, ...] = ()  # rows that tell no edge, by narrative path, then row
     unreadable: tuple[Unreadable, ...] = ()  # pages left out for frontmatter that cannot be read
     excluded: tuple[Excluded, ...] = ()  # uncoded narratives, left out, by path
+    contributors: tuple[
+        Contributor, ...
+    ] = ()  # contributor pages, by name; only where the mode allows them
 
     @property
     def ok(self) -> bool:
@@ -562,6 +582,28 @@ def load(root: str | Path) -> Graph:
     for ns in nodes.values():
         ns.sort(key=lambda n: (n.name, n.path))
 
+    # contributor pages: in the knowledge graph only where the mode enables attribution, and never a node
+    attributing = vault.config.attribution in ("required", "optional")
+    contributors = tuple(
+        sorted(
+            (
+                Contributor(p.name, _text_field(p, "status"), _text_field(p, "title"), p.path)
+                for p in vault.pages
+                if attributing and p.type == CONTRIBUTOR and p.frontmatter_error is None
+            ),
+            key=lambda c: (c.name, c.path),
+        )
+    )
+    contributor_names = {c.name for c in contributors}
+
+    def attributed(p: Page) -> tuple[str, ...]:
+        """The contributor pages a narrative's `attributed_to` links that resolve: no link of the page, no node."""
+        if not attributing:
+            return ()
+        names = (entry_target(e) for e in link_entries(p, ATTRIBUTED_KEY) or ())
+        found = (n for n in names if n in contributor_names and len(vault.by_name[n]) == 1)
+        return tuple(dict.fromkeys(found))
+
     def node_of(name: str | None) -> Node | None:
         """The node a name reaches: one page of that name, and it is a node page."""
         found = vault.by_name.get(name or "", ())
@@ -632,6 +674,7 @@ def load(root: str | Path) -> Graph:
                 links=p.links,
                 nodes=tuple(n.name for n in fingerprint),
                 edges=edge_keys,
+                attributed_to=attributed(p),
             )
         )
         # rule 4: both ends of a pair linked, no row for it (a row of the pair, either way round, is a row)
@@ -673,6 +716,7 @@ def load(root: str | Path) -> Graph:
         vault=vault,
         skipped=tuple(skipped),
         excluded=tuple(excluded),
+        contributors=contributors,
         unreadable=tuple(
             Unreadable(p.path, p.frontmatter_error.reason)
             for p in vault.pages

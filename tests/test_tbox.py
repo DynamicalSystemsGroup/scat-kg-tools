@@ -15,7 +15,7 @@ TTL = REPO / "ontology" / "scat.ttl"
 
 def test_page_type_slugs():
     assert set(TBOX.page_types) == {
-        "group", "concern", "affordance", "technology", "narrative", "index",
+        "group", "concern", "affordance", "technology", "narrative", "contributor", "index",
     }  # fmt: skip
 
 
@@ -34,7 +34,16 @@ def test_required_and_optional_fields():
     assert [f.key for f in narrative.required] == [
         "description", "status", "timeframe", "title", "type",
     ]  # fmt: skip
-    assert [f.key for f in narrative.optional] == ["kind"]
+    assert [f.key for f in narrative.optional] == ["attributed_to", "kind"]
+    link = narrative.field("attributed_to")
+    assert (link.required_from, link.value_set, link.target_type) == ("done", None, "contributor")
+    assert all(
+        f.target_type is None for t in TBOX.page_types.values() for f in t.fields if f is not link
+    )
+    contributor = TBOX.page_types["contributor"]  # outside the four layers: no node, no edge type
+    assert [f.key for f in contributor.required] == ["status", "title", "type"]
+    assert contributor.optional == () and contributor.table is None
+    assert "contributor" not in TBOX.layers
     assert narrative.field("kind").value_set == ("scenario", "architecture")
     assert narrative.field("timeframe").value_set == ("past", "future", "mixed")
 

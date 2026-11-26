@@ -3,7 +3,7 @@
 import datetime
 import posixpath
 
-from scat_kg.checks import fixes
+from scat_kg.checks import attribution, fixes
 from scat_kg.checks.ctx import PAGE_TYPES, Ctx, page_rule
 from scat_kg.checks.linkedit import literal
 from scat_kg.checks.text import (
@@ -81,6 +81,12 @@ def fm_required(ctx: Ctx, page: Page):
     return out
 
 
+def offered_types(ctx: Ctx) -> tuple[str, ...]:
+    """The page types a fix may offer for a bad `type`: the contributor only where the mode allows it."""
+    allowed = ctx.vault.config.attribution in ("required", "optional")
+    return tuple(k for k in PAGE_TYPES if allowed or k != attribution.CONTRIBUTOR)
+
+
 @page_rule
 def fm_type(ctx: Ctx, page: Page):
     v = page.type
@@ -104,7 +110,7 @@ def fm_type(ctx: Ctx, page: Page):
                     f"`type: {k}` ({TBOX.page_types[k].description})",
                     fixes.set_field(page.path, "type", k),
                 )
-                for k in sorted(PAGE_TYPES)
+                for k in sorted(offered_types(ctx))
             ],
             "Fix, choose the one that describes this page:",
             notes,
@@ -270,6 +276,44 @@ def fm_shape(ctx: Ctx, page: Page):
                 fix,
                 pos=ctx.pos(page, key),
                 on=key,
+            )
+        )
+    return out
+
+
+@page_rule
+def fm_list_shape(ctx: Ctx, page: Page):
+    """SCAT-FM-SHAPE for the link field (`attributed_to`): a list of text, or nothing. In `disallowed` mode the
+    field has its one finding (SCAT-ATTR-DISALLOWED), so its shape is not judged."""
+    if not ctx.is_narrative(page) or ctx.vault.config.attribution in (None, "disallowed"):
+        return []
+    out = []
+    for f in TBOX.page_types[page.type_key].fields:
+        v = page.fields.get(f.key)
+        if f.target_type is None or is_missing(v) or attribution.entries(page) is not None:
+            continue
+        if isinstance(v, str):
+            fix = fixes.single(
+                fixes.option(
+                    "exact",
+                    f"replace the field with the line `{f.key}: [{quote(v)}]`",
+                    fixes.set_field(page.path, f.key, [v]),
+                )
+            )
+        else:
+            fix = fixes.single(
+                FixOption("manual", "replace the field with a list of links you write")
+            )
+        what = _kind(v) if not isinstance(v, str) else "one line of text"
+        out.append(
+            ctx.problem(
+                "SCAT-FM-SHAPE",
+                page.path,
+                f"field `{f.key}`",
+                f"expected a list of links (text), found {what}",
+                fix,
+                pos=ctx.pos(page, f.key),
+                on=f.key,
             )
         )
     return out
