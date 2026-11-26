@@ -2566,3 +2566,23 @@ version); `scat status` lists contributor pages on their own row, apart from the
 mode even an empty `attributed_to` key is an error (no bleed, D-133). U3c's three review defects are fixed as the
 reviewer says (the exact quoting fix; mode keywords only in the mode rule itself, per D-139; the byte-match claim made
 true in U4).
+
+## D-141 | 2026-11-26 | WP22 accepted; the chat-path guide's session flow corrected
+
+WP22 landed (`dev` 3b0b416; CI, Image and Pages green): SCAT Chat as a menu-bar item with a status dot, Copy address
+and Copy key, the vault confirmed at each start and changeable without a terminal, a first-start note, the walkthrough
+fixes L2 to L5, L8, L10, and the prompt-residue fix on the leave-no-trace page. Every unit had a fresh review; two late
+commits (99e15cf, 42d5a1d) were checked by the PM without a fresh review, and the ACE's own read of the guide found
+the defect below. `check_metrics.py --accept WP22` passes. The ACE accepts WP22.
+
+The ACE then corrected `docs/chat-path.md`: it said the server's address changes each session and told every coder to
+delete the server entry and rebuild the saved agent's tool. Both live runs kept one address, the 26 November run showed
+the agent keeps its tool when the entry's key is edited, and the chief engineer said full removal is an option, not
+a routine. The guide now says: keep the entry and paste the new key each session; Clean up is nothing by default;
+Leave no trace is for a strict policy. Two docs tests that pinned the old wording follow.
+
+Left for the chief engineer's sitting (the PM's list): the dot's colours, the menu and the alerts; the Stop alert in
+front; reopening after an unconfirmed Stop; the Gatekeeper prompt and copying the app to Applications; keychain
+prompts; real Colima and Tailscale; the chat's form labels. Left for WP26's sweep: the cold readers' unexplained
+jargon, step 28's two actions, "Colima left running" beside "nothing left running", and list numbering restarting per
+section.
