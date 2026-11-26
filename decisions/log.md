@@ -2630,3 +2630,12 @@ this decision, no catalogue rule; the split plan, the UA-A bar for cold users, a
 change consultant's re-sweep. Homonym proposals wait on a short spike on the test vault and the ACE's decision after
 it. Impact map and refreshed file map on `wp24/impact` (5337652), merged. Revert point `divergence/D-145`. The ACE
 approves WP24.
+
+## D-146 | 2026-11-26 | Test and work status belongs in the plans, not the docs
+
+The chief engineer, quoted as typed and recorded by the ACE, with a screenshot of the chat-path page's warning box
+"What has and has not been tried" (the launcher run against Colima with a stand-in for Tailscale; Docker Desktop
+untested; "your first run is the real test"; the folders the launcher searches): "stuff like this belongs in our work
+and testing plans not in the documentation". Outcome: WP26's sweep (G1) also moves test and work status out of every
+user page into the test plans and the reviewer's guide; a page keeps only what a coder needs to act. Writers in WP24 and
+WP25 are briefed now.
