@@ -30,6 +30,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP20 | The candidate and user acceptance (D-097) | manual path passed UA-A round 2 (D-101); all units done except WP20-UC1 (chat-path UA-A, queued, waits on the chief engineer's sitting) | `WP20.md` |
 | WP21 | Rules and norms, the chat path's life cycle, the published image (D-114) | all units done and merged on `dev`; ready for ACE acceptance after the template pin | `WP21.md` |
 | WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | U1, U2 done; U3 (launcher) and U5 (guides) in flight after D-130; U4 tests, U6 cold read queued | `WP22.md` |
+| WP23 | Three disjoint attribution modes, and the edge's formal name (D-129) | approved; units planned; integration branch `pm-wp23` | `WP23.md` |
 
 ## Units
 
@@ -306,6 +307,19 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP22-U5 | technical writer (guides, acceptance kit lines), sonnet | 5 |  | `wp22/u5` | in flight |  |  |  |
 | WP22-U5r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP22-U5 |  |  |
 | WP22-U6 | simulated user, cold read of the two guides, haiku | 2 |  | `-` | queued | WP22-U5 |  |  |
+| WP23-U1 | ontology designer (rename scat:ProvidedBy, glossary entries), sonnet | 2 |  | `wp23/u1` | queued |  |  |  |
+| WP23-U1r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP23-U1 |  |  |
+| WP23-U2 | Python developer (attribution mode in scat.toml, fixtures, machine interface), sonnet | 5 |  | `wp23/u2` | queued | WP23-U1 (shares ontology/scat.ttl) |  |  |
+| WP23-U2r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP23-U2 |  |  |
+| WP23-U3 | Python developer (attributed_to field, per-mode rules, no-bleed tests), sonnet | 5 |  | `wp23/u3` | queued | WP23-U2 |  |  |
+| WP23-U3r | reviewer (fresh), sonnet | 2 |  | `-` | queued | WP23-U3 |  |  |
+| WP23-U4 | Python developer (MCP mode on every result, assistant.md, skill), sonnet | 3 |  | `wp23/u4` | queued | WP23-U3 and WP22-U2 on dev |  |  |
+| WP23-U4r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP23-U4 |  |  |
+| WP23-U5 | technical writer (planning, consent, coding, norms, index, facilitate pages, reference), sonnet | 5 |  | `wp23/u5` | queued | WP23-U3 |  |  |
+| WP23-U5r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP23-U5 |  |  |
+| WP23-U6 | simulated user, cold read of planning and consent, haiku | 2 |  | `-` | queued | WP23-U5 |  |  |
+| WP23-U7 | Python developer (template, range vault, pins), sonnet | 3 |  | `wp23/u7` | queued | WP23-U2 to U5 on the integration branch |  |  |
+| WP23-U7r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP23-U7 |  |  |
 
 ## Iterations and velocity
 
