@@ -151,7 +151,8 @@ it needs](../docs/chat-path.md#what-the-chat-path-is-and-what-it-needs), [Instal
 3. Install once, in the page's order: SCAT Chat.app (Get SCAT Chat.app), a container runtime (Colima, a few commands in a terminal), the public-link service and its command line (Tailscale), its two one-time settings, the
    first open of the app.
 4. Start a session, as [Start a session](../docs/chat-path.md#start-a-session) says: open SCAT Chat; read the
-   first-start note about the menu bar; answer the vault question (choose the folder that holds `scat.toml`; if it is in
+   first-start note about the menu bar and click **OK**; at this first start, choose your vault in the folder picker (the
+   folder that holds `scat.toml`; later starts ask `Serve <vault>?` instead); if it is in
    Documents, Desktop, Downloads or iCloud the launcher offers a copy: record what you chose); wait for the first fetch
    or build, until the dot is green.
 5. Connect the chat, as [Connect the chat](../docs/chat-path.md#connect-the-chat) says: click **Copy address** in SCAT Chat's
@@ -170,7 +171,7 @@ it needs](../docs/chat-path.md#what-the-chat-path-is-and-what-it-needs), [Instal
 **Record.** Every step the page could not vouch for (it says so), each launcher message you saw and whether the page's
 table covered it, and the exact words of any failure. Anything you guessed.
 
-**Resume.** Open SCAT Chat, wait for the green dot, choose Copy address and Copy key in its menu and paste them into a new
+**Resume.** Open SCAT Chat, answer `Serve <vault>?`, wait for the green dot, choose Copy address and Copy key in its menu and paste them into a new
 server entry in the chat, click Connect, add that entry to the saved agent's tools again, and ask for the check again. The one-time installs are not redone.
 
 ## J6 Plan
@@ -282,11 +283,11 @@ release, licence and rights answers.
 - The whole-vault check is clean and the vault is navigable in Obsidian.
 - The release and its tag are on GitHub, in a repository that is still private, and you can name the tag, the commit it
   pins and the recipient.
-- SCAT Chat's message says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was
+- SCAT Chat's alert says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was
   deleted, and your clipboard holds no key."
 
 **Record.** The tag, the commit and the recipient; how you pushed; any wording of GitHub that differed from the page;
-the Stop message, in full, if it was not the one above.
+the Stop alert, in full, if it was not the one above.
 
 **Resume.** Check the repository's Releases on github.com. If the tag exists, you are done. If not, start a session and
 redo step 4. If Stop did not confirm, do what the page says in "Stop".
