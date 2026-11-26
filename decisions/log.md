@@ -2370,3 +2370,23 @@ set-up) is in v0.1 or after, the chief engineer chose "In v0.1". The ACE found t
 the ontology. The data records groups; an event's participation terms are its own policy, which the docs name without
 choosing one."; (2) the TBox's formal identifier for the affordance-to-technology edge is `scat:Attributes`, the
 source of the diagram's stale label, so freeing "attributed to" means renaming that identifier.
+
+## D-127 | 2026-11-26 | Three disjoint attribution modes; scat:Attributes renamed
+
+The two points raised by D-126, asked as two questions. The chief engineer's answers, quoted as typed and recorded by
+the ACE:
+
+> On the mission's non-goal: "change it to assert that we can have an non-attribution mode and an attribution mode and
+> they are disjoint. cannot let them bleed together in use. system needs to know which mode its. Attribution Req,
+> Attribution optional, Attribution disallowed. Chatham house is attribution disallowed. the disallowed mode is what i
+> plan to use in my pilot but i want the other 2 modes in the software."
+
+> On the TBox name `scat:Attributes`: "Rename it".
+
+Outcomes:
+- **Mission edited on `dev`** (on his instruction): the non-goal "Attributing statements to individuals in the
+  ontology" is replaced by a non-goal against mixing modes, stating the three disjoint attribution modes (required,
+  optional, disallowed; Chatham House is disallowed), set by the organiser at set-up and known to the tools; edges and
+  nodes always record groups. The pilot uses the disallowed mode.
+- **`scat:Attributes` is renamed** (to a name for "is provided by"), freeing "attribution" for C13.
+The ACE scopes both in one package, WP23.

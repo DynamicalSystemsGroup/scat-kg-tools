@@ -335,8 +335,11 @@ matters without claiming to be exhaustive. No particular project's choices appea
 - Letting a project's own repository extend the ontology, and evolving the ontology after v0.1.
 - Checking that pages named in a page's text are linked, beyond a basic warning.
 - The verification, validation and human-signature assurance framework of the INCOSE paper.
-- Attributing statements to individuals in the ontology. The data records groups; an event's participation terms are
-  its own policy, which the docs name without choosing one. How field notes are taken is the facilitator's call.
+- Mixing attribution modes in one vault. A vault runs in exactly one **attribution mode**, set by the organiser at
+  set-up and known to the tools: **attribution required** (every narrative names its contributors), **attribution
+  optional**, or **attribution disallowed** (no narrative names a contributor; the Chatham House rule is this mode).
+  The modes are disjoint: the tools refuse attribution in a disallowed vault and do not let modes bleed together in
+  use. Edges and nodes always record groups, never individuals. How field notes are taken is the facilitator's call.
 - Recording the narrator's normative posture (good, bad or mixed) in the ontology. It stays in the story's text;
   problematization is for a richer ontology such as `ant-rdf`, applied afterwards.
 - Adjudicating between stories or architectures. Neither the tools nor the guides judge which architecture is correct
