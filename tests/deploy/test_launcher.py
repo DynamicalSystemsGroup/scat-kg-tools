@@ -8,6 +8,7 @@ import pytest
 from conftest import REPO, STATUS_NO_HTTPS, STATUS_STOPPED
 
 STOP = {"SCAT_CHAT_A_STOP": "stop"}
+AGAIN = "choose Stop in the SCAT Chat menu, then open SCAT Chat again"  # D-130 follow-up: the menu, not the app icon
 
 
 def test_start_order_flags_and_stop_button(rig):
@@ -77,18 +78,25 @@ def all_files_text(folder):
 
 
 def test_key_is_in_no_argument_of_any_program_and_in_no_file_of_the_state_folder(rig):
-    # dialog mode, so the osascript stand-in sees what the real dialog would be given; the coder copies the key, then stops
-    (rig.stub / "osa-answers").write_text("Copy key\nStop\n")
-    r = rig.run("start", SCAT_CHAT_UI="dialog")
-    assert r.returncode == 0, r.stdout
+    # dialog mode, so the osascript stand-in sees what the real dialogs would be given; the coder copies the key
+    # through the Copy key verb, then stops (D-130: the app calls verbs; start waits to be stopped)
+    proc = rig.start_bg()
     (key,) = rig.keys_seen()
+    assert rig.run("copy-address").returncode == 0
+    assert (
+        rig.run("copy-key").returncode == 0 and rig.clip() == key
+    )  # last, so Stop has a key to clear
+    ps = subprocess.run(["ps", "-axww", "-o", "args="], check=False, capture_output=True, text=True)
+    assert key not in ps.stdout, "the key is in a running process's arguments"
+    assert key.encode() not in all_files_text(rig.state)  # while the session runs
+    assert rig.stop_bg(proc).returncode == 0
     calls = rig.calls_list()
     for program in ["docker", "osascript", "security", "tailscale", "colima", "curl"]:
         assert any(c.startswith(program) for c in calls), program
     assert not [c for c in calls if key in c], "the key is on a command line"
     assert rig.clip() == ""  # Copy key put it there on stdin; Stop cleared it
     assert key.encode() not in all_files_text(rig.state)
-    assert key not in r.stdout
+    assert key not in proc.out.read_text()
 
 
 def test_copy_key_puts_the_key_on_the_clipboard_only_when_the_coder_asks(rig):
@@ -104,16 +112,26 @@ def test_copy_key_puts_the_key_on_the_clipboard_only_when_the_coder_asks(rig):
     rig.run("stop")
 
 
-def test_the_dialog_copy_key_button_copies_and_asks_again_until_stop(rig):
-    (rig.stub / "osa-answers").write_text("Copy key\nCopy key\nStop\n")
-    r = rig.run("start", SCAT_CHAT_UI="dialog")
-    assert r.returncode == 0, r.stdout
-    assert len([c for c in rig.calls_list() if 'buttons {"Copy key", "Stop"}' in c]) == 3
-    assert not rig.item()
+def test_dialog_mode_start_waits_to_be_stopped_and_copy_key_is_the_verb(rig):
+    proc = rig.start_bg()
+    key = rig.key()
+    assert proc.poll() is None  # running: it waits for the Stop verb, it does not end by itself
+    assert rig.clip() == ""  # started: the key is not copied until asked
+    r = rig.run("copy-key", SCAT_CHAT_UI="dialog")
+    assert r.returncode == 0 and rig.clip() == key
+    r = rig.run("copy-key", SCAT_CHAT_UI="dialog")  # asking again is fine
+    assert r.returncode == 0 and rig.clip() == key
+    assert proc.poll() is None
+    notes = [
+        c for c in rig.calls_list() if c.startswith("osascript") and "display notification" in c
+    ]
+    assert len([c for c in notes if "The key is on your clipboard." in c]) == 2
+    assert not [c for c in rig.calls_list() if key in c]
+    r = rig.stop_bg(proc)
+    assert r.returncode == 0 and "Stopped." in r.stdout, r.stdout
+    assert proc.poll() is not None  # the Stop verb ended it
+    assert not rig.item() and rig.clip() == ""
     rig.nothing_left()
-    # the dialog without a Copy key answer leaves the clipboard empty
-    r = rig.run("start", SCAT_CHAT_UI="dialog")
-    assert rig.clip() == ""
 
 
 def test_stop_deletes_the_key_clears_the_clipboard_and_is_idempotent(rig):
@@ -213,10 +231,13 @@ def test_first_run_asks_for_the_vault_and_remembers_it(rig):
     r = rig.run("start", SCAT_CHAT_VAULT=None, SCAT_CHAT_A_VAULT=str(rig.vault), **STOP)
     assert r.returncode == 0, r.stdout
     assert (rig.state / "vault").read_text().strip() == str(rig.vault.resolve())
-    # second run: no answer given, none needed
-    r = rig.run("start", SCAT_CHAT_VAULT=None, **STOP)
+    # second run: the remembered vault is offered, and the coder says "Use it" (D-130: every start asks)
+    r = rig.run("start", SCAT_CHAT_VAULT=None, SCAT_CHAT_A_USE="Use it", **STOP)
     assert r.returncode == 0, r.stdout
-    rig.run("change-vault")
+    assert f"Serve {rig.vault.resolve()}?" in r.stdout
+    # change-vault forgets it and goes to the chooser; no answer: nothing starts
+    r = rig.run("change-vault", SCAT_CHAT_VAULT=None)
+    assert r.returncode == 1 and "No vault was chosen" in r.stdout
     assert not (rig.state / "vault").exists()
     r = rig.run("start", SCAT_CHAT_VAULT=None)  # asks again; no answer: nothing starts
     assert r.returncode == 1 and "No vault was chosen" in r.stdout
@@ -267,7 +288,7 @@ def test_no_published_image_builds_the_source_locally(rig):
 def test_missing_docker(rig):
     r = rig.run("start", SCAT_CHAT_DOCKER=str(rig.bin / "nope"))
     assert r.returncode == 1
-    assert "needs a container runtime" in r.stdout and "click SCAT Chat again" in r.stdout
+    assert "needs a container runtime" in r.stdout and AGAIN in r.stdout
     assert not rig.called("tailscale")
 
 
@@ -322,7 +343,7 @@ def test_stop_that_cannot_confirm_says_what_to_click(rig):
     rig.run("start")
     r = rig.run("stop", SCAT_CHAT_TAILSCALE=str(rig.bin / "nope"))
     assert "could not confirm" in r.stdout
-    assert "click SCAT Chat again, then Stop, or restart your Mac" in r.stdout
+    assert "choose Stop in the SCAT Chat menu to try again, or restart your Mac" in r.stdout
 
 
 def test_missing_tailscale(rig):
@@ -381,11 +402,7 @@ def test_teardown_when_server_never_answers(rig):
 
 def test_failed_build_says_what_to_click(rig):
     r = rig.run("start", STUB_FAIL_BUILD="1")
-    assert (
-        r.returncode == 1
-        and "Building the server failed" in r.stdout
-        and "click SCAT Chat again" in r.stdout
-    )
+    assert r.returncode == 1 and "Building the server failed" in r.stdout and AGAIN in r.stdout
     assert not rig.called("docker run")
 
 
