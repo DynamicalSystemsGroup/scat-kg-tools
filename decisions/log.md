@@ -2552,3 +2552,17 @@ how the chief engineer explained something to the agents rather than what a read
 assistant's rules, quoted instruction phrasing, "as decided", meta-commentary about options and recommendations), and
 (2) rounds of AI user tests on both paths for clarity, concision and the docs matching the code, to the UA-A pass bar,
 fixing between rounds. Planned as WP26.
+
+## D-140 | 2026-11-26 | WP23: a guard refusal held for the chief engineer; three detail calls
+
+WP23's PM reported that the auto-mode guard refused one compound command by its U1b worker ("Destructive or Unwanted
+Actions", part unnamed): reword the glossary's attribution row and commit, merge `wp23/u3c` into `wp23/u1b`, then delete
+a temporary `PENDING_TBOX_NAMES` test hack and run the tests. The PM did not retry or work around it, and asked whether
+to retry as separate steps or have the ACE do it. Retrying in pieces, or the ACE doing it, would route around the guard,
+so the ACE does neither and puts it to the chief engineer. Everything else in WP23 continues.
+
+Detail calls (ACE): the TBox's `owl:versionInfo` stays 0.3.0 (unreleased; both of WP23's ontology changes ship in one
+version); `scat status` lists contributor pages on their own row, apart from the four layers' node pages; in disallowed
+mode even an empty `attributed_to` key is an error (no bleed, D-133). U3c's three review defects are fixed as the
+reviewer says (the exact quoting fix; mode keywords only in the mode rule itself, per D-139; the byte-match claim made
+true in U4).
