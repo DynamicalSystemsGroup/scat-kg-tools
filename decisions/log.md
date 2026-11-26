@@ -2639,3 +2639,19 @@ untested; "your first run is the real test"; the folders the launcher searches):
 and testing plans not in the documentation". Outcome: WP26's sweep (G1) also moves test and work status out of every
 user page into the test plans and the reviewer's guide; a page keeps only what a coder needs to act. Writers in WP24 and
 WP25 are briefed now.
+
+## D-147 | 2026-11-26 | WP24-U5 decided: possible duplicates by structure; homonyms as pages to re-read
+
+The spike (`research/node-pages/spike-b/`) on the three-mode test vault: a structural rule (adjacent-node Jaccard >= 0.5
+with at least two adjacent nodes each, or description cosine >= 0.5, or a twin row in one narrative with narrative
+Jaccard >= 0.5) finds the seeded synonym and duplicate-row cases and never the decoy (9 of 311 pairs on the test vault,
+6 of 113 on the range vault); no structural method separates a two-sense page from a hub. The ACE decides:
+- **The review view proposes possible duplicates** by that rule, each with the adjacent nodes the pair shares and hubs
+  marked, never from names; link text is shown beside a proposal, never used to make one. The thresholds are defaults in
+  the code; that they rest on one seeded positive each is recorded in the reviewer's guide, not the docs (D-146).
+- **Homonyms:** the view lists pages to re-read (four or more narratives whose accounts tell different other ends, the
+  0.3 rule), worded as a prompt to read, never as a claim that a page holds two nodes.
+- Details: the machine-interface page's word cap 646 -> 726 is confirmed (D-131 precedent); the node-page norm gains one
+  line per type (G2 "by type"); `tests/scripts/test_check_metrics.py`'s fixed clock is fixed; `evidence`'s `line` stays a
+  file line, as in every check message; A17's place between A8 and A9 stands (ids stable); the stale schema sample in
+  `contracts/rule-catalogue.md` is updated. U7 is unblocked.
