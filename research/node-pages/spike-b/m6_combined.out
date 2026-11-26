@@ -1,0 +1,21 @@
+== seeded: 9 possible duplicates proposed of 311 same-type pairs
+a | b | type | narr-J | adj-J | desc-cos | twin rows | reason | seed
+  members-not-replying | unanswered-direct-messages | concern | 0.50 | 1.00 | 0.25 | 4 | 2 of 2 adjacent nodes shared; a narrative tells the same row for both (4x) | synonym
+  digest-email | weekly-digest | affordance | 0.67 | 0.33 | 0.62 | 1 | descriptions share 0.62 of their words; a narrative tells the same row for both (1x) | duplicate-row
+  protocol-design-integrity | requisite-variety | concern | 1.00 | 0.50 | 0.00 | 1 | a narrative tells the same row for both (1x) | 
+  it-that-just-works | self-provided-platforms | concern | 1.00 | 0.33 | 0.00 | 1 | a narrative tells the same row for both (1x) | 
+  attention-limit-on-participation | legitimate-consent-at-forum-scale | concern | 0.60 | 0.67 | 0.00 | 6 | 2 of 3 adjacent nodes shared; a narrative tells the same row for both (6x) | 
+  how-members-figure-in-koi | what-integration-does-to-the-protocol | concern | 0.00 | 1.00 | 0.23 | 0 | 2 of 2 adjacent nodes shared | 
+  obsidian | telescope | technology | 0.30 | 0.25 | 0.67 | 2 | descriptions share 0.67 of their words | 
+  renewal-cost-visibility | vendor-lock-in | concern | 0.50 | 0.25 | 0.00 | 1 | a narrative tells the same row for both (1x) | 
+  requisite-variety | vendor-lock-in | concern | 0.00 | 0.67 | 0.00 | 0 | 2 of 3 adjacent nodes shared | 
+  seeds proposed: ['duplicate-row', 'synonym']; decoy proposed: False
+== range: 6 possible duplicates proposed of 113 same-type pairs
+a | b | type | narr-J | adj-J | desc-cos | twin rows | reason | seed
+  obsidian | telescope | technology | 0.50 | 0.50 | 0.67 | 1 | descriptions share 0.67 of their words; a narrative tells the same row for both (1x) | 
+  attention-limit-on-participation | legitimate-consent-at-forum-scale | concern | 1.00 | 0.67 | 0.00 | 2 | 2 of 3 adjacent nodes shared; a narrative tells the same row for both (2x) | 
+  protocol-design-integrity | requisite-variety | concern | 1.00 | 0.50 | 0.00 | 1 | a narrative tells the same row for both (1x) | 
+  it-that-just-works | self-provided-platforms | concern | 1.00 | 0.33 | 0.00 | 1 | a narrative tells the same row for both (1x) | 
+  how-members-figure-in-koi | what-integration-does-to-the-protocol | concern | 0.00 | 1.00 | 0.23 | 0 | 2 of 2 adjacent nodes shared | 
+  requisite-variety | vendor-lock-in | concern | 0.00 | 1.00 | 0.00 | 0 | 2 of 2 adjacent nodes shared | 
+  seeds proposed: []; decoy proposed: False
