@@ -10,7 +10,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **element**: a node or edge.
 - **layer**: all nodes of one type: `group`, `concern`, `affordance`, `technology`, in that order.
 - **layered graph**: nodes and edges, in four layers.
-- **knowledge graph**: the nodes, edges and narratives built from a vault.
+- **knowledge graph**: the nodes, edges and narratives built from a vault, and its contributor pages; those are not in the layered graph.
 - **narrative**: one account of the field notes, on one `narrative` page, marked `past`, `future` or `mixed`. Each edge it tells is a row of its `Edges told` table.
 - **coded, uncoded**: said of a narrative. Coded: it links at least one node page. Uncoded: it links none. `done` means adequately coded, as the coder judges; a `done` narrative can be iterated or moved back to `draft`.
 - **excluded**: said of an uncoded narrative: left out of the knowledge graph and every view, and reported.
@@ -41,6 +41,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **cap**: the most groups a vault may hold, set in `scat.toml` (key `stakeholder_group_cap`).
 - **attribution mode**: required, optional or disallowed (Chatham House rule); set in `scat.toml`.
 - **attribution**: the people a narrative is attributed to, where the mode allows; never a node or a link.
+- **contributor page**: a page of type `contributor`, outside the four layers, naming a person a narrative is attributed to, where the mode allows; the narrative's `attributed_to` field links to it. "Contributor" alone still means a participant.
 - **index page**: the page generated for a type (`index`), listing its entries; an Obsidian Base, 1.9 or later.
 - **status**: how far an entry has got: `stub` (a name), `draft` (content, incomplete) or `done` (complete, conformant, signed off by the coder).
 - **mismatch**: a link and an edge that disagree about the same relationship, reported with a fix.
