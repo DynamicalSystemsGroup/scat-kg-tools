@@ -233,13 +233,17 @@ to try again (see "Stop").
    clipboard."
 5. **In the chat:** in **MCP Settings**, next to the server "SCAT", click **Edit**.
 6. **In the chat:** paste the new key into the API key field.
-7. **In the chat:** save the entry.
-8. **In the chat:** click **Connect** on the entry, and check that it shows connected.
-9. **In the chat:** open the saved agent in the Agent Builder.
-10. **In the chat:** remove the agent's tool that no longer works.
-11. **In the chat:** add the server entry "SCAT" again as the agent's tool.
-12. **In the chat:** save the agent.
-13. **In any app:** copy a word from anywhere, so your clipboard no longer holds the key.
+7. **In the menu bar:** open SCAT Chat's menu and click **Copy address**. A notification says "The address is on your
+   clipboard."
+8. **In the chat:** if the address on your clipboard differs from the entry's address field, paste it there. If it is
+   the same, leave the field as it is.
+9. **In the chat:** save the entry.
+10. **In the chat:** click **Connect** on the entry, and check that it shows connected.
+11. **In the chat:** open the saved agent in the Agent Builder.
+12. **In the chat:** remove the agent's tool that no longer works.
+13. **In the chat:** add the server entry "SCAT" again as the agent's tool.
+14. **In the chat:** save the agent.
+15. **In any app:** copy a word from anywhere, so your clipboard no longer holds the key or the address.
 
 The saved agent's tool is tied to the entry it was added from (see "Set up the skill and the saved agent"). Add it
 again even though you only edited the entry.
