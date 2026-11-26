@@ -1356,8 +1356,8 @@ The examples below are for a vault whose mode is `optional`, with two contributo
 
 === "CLI"
 
-    ```bash
-    uv run scat attribution
+    ```text
+    $ uv run scat attribution
     ```
 
     ```text
