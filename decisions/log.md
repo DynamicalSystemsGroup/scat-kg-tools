@@ -2448,3 +2448,36 @@ and the assistant should help fill in node pages as a synthesis across narrative
 synonyms and homonyms without naive term matching. Research only, on `spike/node-pages`; the readout reaches `dev` on
 its own. It touches none of WP22's or WP23's files. Its recommendation goes to the chief engineer with a v0.1-or-later
 question.
+
+## D-133 | 2026-11-26 | Deontics before release; attribution modes are a repository metaparameter, with contributor pages
+
+Asked (C11) for the timing of the deontic pass and whether to accept the ACE's proposed table (MAY for A1 to A4 and
+A6; SHOULD for A5 and the skill's step, kind and description habits; SHALL NOT for A7 to A12; SHALL for A13 to A15 and
+the edge grammar). The chief engineer chose "Before release" and answered the table in his own words, quoted as typed
+and recorded by the ACE:
+
+> "i am a little worried about bleed between modes. i think we need to make sure the rules that differ by mode are
+> actually extremely clear. i think the only instance of this is that for attribution required we SHALL name
+> contributors, for attribution disallowed we SHALL not name contributors, and for attribution optional we MAY name
+> contributors. keep in mind this also must match the ontology enforcement and obsidian vault checking mechanisms. if
+> attribution is enabled we need a page for each of the contributors, and we need them to be in the knowledge graph so
+> the attributed to predicate resolves.
+>
+> we should treat these 3 modes as changing the rules (its a repo metaparameter) which then determines what is or is
+> not conformant, in addition changing the normative guidance to the AI assistant."
+
+Outcomes:
+- **C11 is in v0.1.** The deontic pass is folded into WP23's assistant unit, since both change `contracts/assistant.md`
+  and the skill.
+- **The mode-dependent rule, stated once and exactly:** in **required** mode a narrative SHALL name its contributors;
+  in **disallowed** mode it SHALL NOT; in **optional** mode it MAY. The same rule is enforced by the ontology's checks
+  and the vault check, and stated to the assistant.
+- **The mode is a repository metaparameter:** it changes what is conformant (the rules), and the assistant's norms.
+- **Contributors are pages in the knowledge graph** when attribution is enabled (required or optional): each
+  contributor has a page, and a narrative's `attributed_to` links to those pages, so the predicate resolves. This
+  reverses D-128's default that an attribution is "not a node, not a link". In disallowed mode no contributor page may
+  exist.
+- **The mission's sentence "Edges and nodes always record groups, never individuals"** (written by the ACE in D-127)
+  no longer holds as written; the ACE narrows it to the four layers and puts the edit to the chief engineer.
+- The remaining rows of the proposed table were not objected to; the ACE confirms them in one follow-up.
+- WP23 is paused after its U1 (rename, glossary) and U2 (the mode key) and is re-scoped.
