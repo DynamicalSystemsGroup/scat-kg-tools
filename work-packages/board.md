@@ -336,8 +336,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP24-U3r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T16:48:44-05:00 | PASS; hand-counted two shares |
 | WP24-U4 | Python developer and technical writer (draft prompt, skill, rules G7, drift), sonnet | 3 | 4 | `wp24/u4` | done |  | 2026-11-26T16:48:44-05:00 | rules, skill, two prompts, two tests; one fix round (test did not exercise set_status) |
 | WP24-U4r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T16:48:44-05:00 | FAIL once on a test-strength defect, mutation-tested the guards |
-| WP24-U5 | research engineer (homonym and synonym spike on the U1 vault), sonnet | 2 |  | `wp24/u5` | queued | U1, U4; then the ACE's logged decision |  |  |
-| WP24-U5r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U5 done |  |  |
+| WP24-U5 | research engineer (homonym and synonym spike on the U1 vault), sonnet | 2 | 2 | `wp24/u5` | done |  | 2026-11-26T16:51:47-05:00 | spike on the G6 vault; one fix round on how far the readout's claims reach |
+| WP24-U5r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T16:51:47-05:00 | PASS; re-ran all scripts and hand-checked the seeds; five claim fixes |
 | WP24-U6 | Python developer (merge: plan, apply, split plan, MCP plan only), sonnet | 5 |  | `wp24/u6` | queued | U4 |  |  |
 | WP24-U6r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U6 done |  |  |
 | WP24-U7 | Python developer (review view), sonnet | 3 |  | `wp24/u7` | queued | U5 and the ACE's logged decision; U6 (shared files) |  |  |
