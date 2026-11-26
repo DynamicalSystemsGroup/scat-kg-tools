@@ -14,6 +14,7 @@
     scat_kg.remove_edge("a", "b")       # or remove_edge("a", "b", ["narrative-name"])
     scat_kg.load()                      # the knowledge graph, derived from the pages
     scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
+    scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
     scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
 
 Each call takes `root=` (the vault folder; default: the current directory) and returns an object whose
@@ -41,7 +42,7 @@ from scat_kg.ops import (
 from scat_kg.ops import read_status as _read_status
 from scat_kg.ops.common import find_page, open_vault
 from scat_kg.ops.result import Result, refused, reports_mode
-from scat_kg.views import Refused, View, edge_table, fingerprint, layered, trace
+from scat_kg.views import Refused, View, attribution, edge_table, fingerprint, layered, trace
 
 # At the REPL the result prints as its message (R-8), not as a dataclass dump.
 for _cls in (Result, StatusReport, EdgeResult, Refused):
@@ -136,6 +137,7 @@ __all__ = [
     "Result",
     "StatusReport",
     "View",
+    "attribution",
     "check",
     "edge_table",
     "export_edges",

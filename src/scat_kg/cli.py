@@ -79,7 +79,8 @@ def _parser() -> argparse.ArgumentParser:
     )
     p = command(
         "stub",
-        "Create a stub page: a node (group, concern, affordance or technology) or a narrative.",
+        "Create a stub page: a node (group, concern, affordance or technology), a narrative, or, where the "
+        "vault's attribution mode is required or optional, a contributor page.",
         '`scat_kg.stub("<page-name>", type="<type>")`',
     )
     p.add_argument("name", metavar="NAME", help="the new page's name: a-z, 0-9 and hyphens")
@@ -182,6 +183,13 @@ def _parser() -> argparse.ArgumentParser:
         metavar="DIRECTION",
         help="up, down or both (default: both)",
     )
+    command(
+        "attribution",
+        "Show the narratives by contributor: each contributor page with the narratives that name it, and "
+        "the narratives that name none. Refuses where the vault's attribution mode is disallowed. "
+        f"{scope}.",
+        "`scat_kg.attribution()`",
+    )
     p = command(
         "export-edges",
         "Write each edge table to DIR as `<type>.csv` and `<type>.md`. Overwrites a file only when its "
@@ -262,6 +270,8 @@ def run(args: argparse.Namespace):
             return scat_kg.layered(args.narrative, root=root)
         case "trace":
             return scat_kg.trace(args.node, args.direction, root=root)
+        case "attribution":
+            return scat_kg.attribution(root=root)
         case "export-edges":
             return scat_kg.export_edges(args.out, root=root)
         case "draw":

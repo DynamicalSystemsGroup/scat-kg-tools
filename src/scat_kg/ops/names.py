@@ -12,8 +12,10 @@ RESERVED = frozenset(
 MAX_NAME = 64
 _SLUG = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 
-# Page types a stub operation may create for a given name: the node types and the narrative (from the TBox).
-STUBBABLE = (*TBOX.layers, TBOX.table_type.slug)
+# Page types a stub operation may create for a given name: the node types, the narrative and the contributor page
+# (from the TBox; a contributor page only where the vault's attribution mode enables attribution).
+CONTRIBUTOR = "contributor"
+STUBBABLE = (*TBOX.layers, TBOX.table_type.slug, CONTRIBUTOR)
 
 
 def name_problem(name: str) -> str | None:

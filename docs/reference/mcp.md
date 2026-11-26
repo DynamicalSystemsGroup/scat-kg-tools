@@ -24,14 +24,14 @@ address and refuses to start on any other.
 
 ## Tools
 
-Thirteen tools. Each returns the operation's own document.
+Fourteen tools. Each returns the operation's own document.
 
 | Tool | What it does |
 |---|---|
 | `check` | Check the vault, one page, or a page and every page one link away. Writes nothing. |
 | `status` | Show each page's status and the counts. Writes nothing. |
 | `set_status` | Set a page to `stub` or `draft`. |
-| `stub` | Create a stub page of a type, never a narrative's text. |
+| `stub` | Create a stub page of a type, never a narrative's text. A contributor page only where the vault's attribution mode is `required` or `optional`. |
 | `stub_links` | Create the node pages that links name and the vault lacks. |
 | `record_edge` | Record an edge by adding its row to each narrative that tells it. |
 | `remove_edge` | Remove an edge by deleting its rows from the narratives that tell it. |
@@ -40,6 +40,7 @@ Thirteen tools. Each returns the operation's own document.
 | `edge_table` | View: every edge of one type, with the narratives that tell it. |
 | `layered` | View: the layered view of some narratives, or all. |
 | `trace` | View: follow edges up, down or both from a node. |
+| `attribution` | View: the narratives by contributor, and the narratives that name none. Refused where the attribution mode is `disallowed`. |
 | `export_edges` | Write the three edge tables as CSV and Markdown into `views/`. |
 
 ## Prompts and the rules

@@ -18,6 +18,7 @@ TOOLS = {
     "edge_table",
     "layered",
     "trace",
+    "attribution",
     "export_edges",
 }
 
@@ -111,6 +112,12 @@ SEQUENCE = [
         {"name": "Bad Name", "type": "concern"},
         lambda r: scat_kg.stub("Bad Name", "concern", root=r),
     ),
+    (
+        "stub",
+        {"name": "ada-quill", "type": "contributor"},
+        lambda r: scat_kg.stub("ada-quill", "contributor", root=r),
+    ),
+    ("attribution", {}, lambda r: scat_kg.attribution(root=r)),
     ("stub_links", {}, lambda r: scat_kg.stub_links(root=r)),
     (
         "stub_links",
@@ -249,6 +256,8 @@ def test_a_read_only_call_leaves_the_tree_as_it_was(tmp_path):
             ("edge_table", {"type": "holds"}),
             ("layered", {}),
             ("trace", {"node": "borrowers"}),
+            ("attribution", {}),
+            ("stub", {"name": "ada-quill", "type": "contributor"}),
             ("check", {"page": "nope"}),
             ("stub", {"name": "Bad Name", "type": "concern"}),
             ("export_edges", {"folder": "../outside"}),

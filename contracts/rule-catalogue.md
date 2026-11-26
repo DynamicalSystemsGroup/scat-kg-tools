@@ -240,7 +240,7 @@ manual. The variants, where they differ:
 | SCAT-FM-REQUIRED | `status`: options; `title`: exact |
 | SCAT-FM-TYPE, SCAT-FM-TIMEFRAME | with a near match: exact; without: options |
 | SCAT-FM-SHAPE | one-item list, boolean, number: exact; otherwise manual; `attributed_to` as one line of text: exact, otherwise manual |
-| SCAT-ATTR-LINK | options in every variant (a drop-the-entry option is always exact; a manual option says how to link a contributor page) |
+| SCAT-ATTR-LINK | options in every variant (a drop-the-entry option is always exact; where the link reaches no page and the name is legal, an exact `scat stub <name> --type contributor` option; otherwise a manual option says how to link a contributor page) |
 | SCAT-DONE-FIELD, SCAT-DRAFT-FIELD | `description`: slot; `timeframe`: slot (a choice among exact values) |
 | SCAT-NAME | exact; a hand choice (no title to derive from): manual |
 | SCAT-LINK-DANGLING-BODY | options in every variant |
@@ -433,10 +433,11 @@ error [SCAT-ATTR-DISALLOWED] <file> field `type`: `contributor` is a contributor
 error [SCAT-ATTR-LINK] <file> field `attributed_to`: <`<entry>` is not a link to a contributor page | `[[<target>]]` does not reach a page (<reason, as SCAT-LINK-DANGLING-BODY>) | `[[<target>]]` reaches a page that is not a contributor (it is <a|an> <type> page)>
   Fix, choose one:
     1. <add the line | replace the line `attributed_to: <current>` with> `attributed_to: ["<the list with this entry replaced by [[<near match>]]>"]` (the contributor page `<near match>`)        (only if a near match exists among the contributor pages)
-    2. link the entry to a contributor page: write `[[<name>]]` of an existing page of type `contributor`, or make one (`type: contributor`, `status: stub`, `title`) and link it
+    2. <run `scat stub <target> --type contributor` (REPL: `scat_kg.stub("<target>", type="contributor")`) to create the contributor page the entry links        (only variant (b), a legal name and no such file)
+       | link the entry to a contributor page: write `[[<name>]]` of an existing page of type `contributor`, or make one (`type: contributor`, `status: stub`, `title`) and link it        (the other variants)>
     3. <replace the line ...> with `attributed_to: [<the other entries>]` (drop this entry)
 ```
-- **Fix kind:** options. Edits: `set-field{attributed_to, [<entries>]}` for options 1 and 3; option 2 is manual (the stub operation makes no contributor page here). The near match is of the entry's text (for a link, its target) among the names of the contributor pages.
+- **Fix kind:** options. Edits: `set-field{attributed_to, [<entries>]}` for options 1 and 3; option 2 is an exact command (the stub operation makes a contributor page, in `required` and `optional` mode) for a link whose name is legal and has no file, else manual. The near match is of the entry's text (for a link, its target) among the names of the contributor pages.
 - **Seed:** `attributed_to: ["Ada Quill"]` (a), `["[[ghost]]"]` (b), `["[[staff]]"]` (c, a group), each in `optional` and in `required` mode at each status (one message each); a near match (`["[[ada-quil]]"]` with a page `ada-quill`); `["[[ada-quill]]"]` with that contributor page gives none; the same pages in `disallowed` mode give SCAT-ATTR-DISALLOWED only.
 
 ### SCAT-DONE-ATTR

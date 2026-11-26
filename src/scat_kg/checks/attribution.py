@@ -163,13 +163,17 @@ def attr_link(ctx: Ctx, page: Page):
                     tail=f" (the contributor page `{near}`)",
                 )
             )
-        opts.append(
-            fixes.option(
-                "manual",
-                f"link the entry to a contributor page: write `[[<name>]]` of an existing page of type `{CONTRIBUTOR}`, "
-                f"or make one (`type: {CONTRIBUTOR}`, `status: stub`, `title`) and link it",
+        gone = classify(ctx, target) if target is not None else None
+        if gone is not None and gone.kind == "a":
+            # a legal name and no such file: the stub makes the page, and the link then resolves
+            opts.append(
+                fixes.run_option(
+                    fixes.stub(target, CONTRIBUTOR),
+                    suffix=" to create the contributor page the entry links",
+                )
             )
-        )
+        else:
+            opts.append(_manual())
         rest = [e for e in found if e is not entry]
         opts.append(
             fixes.put_field(ctx, page, KEY, rest, _list_line(rest), tail=" (drop this entry)")
@@ -187,6 +191,14 @@ def attr_link(ctx: Ctx, page: Page):
             )
         )
     return out
+
+
+def _manual():
+    return fixes.option(
+        "manual",
+        f"link the entry to a contributor page: write `[[<name>]]` of an existing page of type `{CONTRIBUTOR}`, "
+        f"or make one (`type: {CONTRIBUTOR}`, `status: stub`, `title`) and link it",
+    )
 
 
 def _a(kind: str) -> str:

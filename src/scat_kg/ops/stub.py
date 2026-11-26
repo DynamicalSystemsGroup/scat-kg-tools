@@ -13,6 +13,7 @@ from scat_kg.graph import read_table
 from scat_kg.ops.common import find_page, open_vault, taken_names
 from scat_kg.ops.files import create_files
 from scat_kg.ops.names import (
+    CONTRIBUTOR,
     STUBBABLE,
     derive_name,
     name_problem,
@@ -115,6 +116,27 @@ def write_new(op: str, vault: Vault, pages: list[tuple[str, str]], notes=()) -> 
     return Result(op, created=tuple(rel for rel, _ in pages), notes=tuple(notes))
 
 
+def mode_refusal(vault: Vault, type: str) -> Result | None:
+    """The refusal of a contributor page where the vault's mode does not enable attribution (else None)."""
+    if type != CONTRIBUTOR or vault.config.attribution in ("required", "optional"):
+        return None
+    if vault.config.attribution == "disallowed":
+        return refused(
+            "stub",
+            f"type `{type}`",
+            "this vault's attribution mode is `disallowed`, so it holds no contributor page (SCAT-ATTR-DISALLOWED)",
+            "the coder who wants contributor pages changes `attribution` in scat.toml for the whole vault; "
+            "the tool does not change it",
+        )
+    return refused(
+        "stub",
+        f"type `{type}`",
+        "the vault declares no usable attribution mode, so it is not known whether it may hold a contributor page",
+        'write `attribution = "required"`, `"optional"` or `"disallowed"` in scat.toml '
+        "(`scat check` says which problem it has), then run this again",
+    )
+
+
 def _wrong_type(type: str) -> Result | None:
     """The refusal for a `type` that is not one a stub may have, with the command that does what was meant."""
     if type in STUBBABLE:
@@ -145,7 +167,7 @@ def _wrong_type(type: str) -> Result | None:
 
 @reports_mode
 def stub(name: str, type: str | None = None, *, root: str | Path = ".") -> Result:
-    """Create one stub page of the given type (a node type, or `narrative`)."""
+    """Create one stub page of the given type (a node type, `narrative`, or `contributor` where the mode allows it)."""
     op = "stub"
     vault, bad = open_vault(op, root)
     if bad:
@@ -157,7 +179,7 @@ def stub(name: str, type: str | None = None, *, root: str | Path = ".") -> Resul
             "a stub needs its type: a link says a page is wanted, not what it is",
             f"give the type, one of: {', '.join(STUBBABLE)}",
         )
-    if wrong := _wrong_type(type):
+    if wrong := _wrong_type(type) or mode_refusal(vault, type):
         return wrong
     same = vault.by_name.get(name, ())
     if len(same) == 1 and same[0].type == type:

@@ -436,8 +436,8 @@ def test_schema_does_not_enumerate_rule_ids():
     assert "enum" not in SCHEMA["$defs"]["OperationName"]
 
 
-def test_contract_page_is_at_most_600_words():
-    assert len(PAGE.split()) <= 600
+def test_contract_page_is_at_most_650_words():
+    assert len(PAGE.split()) <= 650
 
 
 def def_properties(*names: str) -> set[str]:

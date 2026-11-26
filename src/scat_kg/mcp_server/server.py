@@ -76,7 +76,8 @@ def build(vault: str | Path, **settings) -> FastMCP:
 
     @mcp.tool(
         description=_OWN
-        + "Create a stub page of `type` (group, concern, affordance, technology or narrative) named `name` "
+        + "Create a stub page of `type` (group, concern, affordance, technology, narrative, or contributor "
+        "where the vault's attribution mode is required or optional) named `name` "
         "(a-z, 0-9 and hyphens). Writes a stub only, never a narrative's text (A8). Returns the operation "
         "document."
     )
@@ -152,6 +153,15 @@ def build(vault: str | Path, **settings) -> FastMCP:
     )
     def trace(node: str, direction: str = "both") -> dict[str, Any]:
         return _doc(scat_kg.trace(node, direction, root=root))
+
+    @mcp.tool(
+        description=_OWN
+        + "View: the narratives by contributor, each contributor page with the narratives that name it, and "
+        "the narratives that name none. Refused where the vault's attribution mode is disallowed. Writes "
+        "nothing. Returns the view document."
+    )
+    def attribution() -> dict[str, Any]:
+        return _doc(scat_kg.attribution(root=root))
 
     @mcp.tool(
         description=_OWN

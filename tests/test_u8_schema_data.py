@@ -63,7 +63,7 @@ def test_field_tables_equal_the_tbox_field_for_field():
 
 
 def test_the_tools_hold_no_copy_of_their_own():
-    assert names.STUBBABLE == (*TBOX.layers, "narrative")
+    assert names.STUBBABLE == (*TBOX.layers, "narrative", "contributor")
     assert not hasattr(graph, "EDGE_TYPES") and not hasattr(graph, "COLUMNS")
     assert {n for n in names.RESERVED} == {"con", "prn", "aux", "nul"} | {
         f"{p}{i}" for p in ("com", "lpt") for i in range(10)
