@@ -29,7 +29,9 @@ def _narrative(title, rows, timeframe="past", body=""):
 def generate(root):
     """500 pages: 20 groups, 149 concerns, 100 affordances, 60 technologies and 171 narratives, each with a table of
     edges. Concern c000 is a hub, linked from many narratives. Then `index` writes the Base files."""
-    (root / "scat.toml").write_text("stakeholder_group_cap = 25\n", encoding="utf-8")
+    (root / "scat.toml").write_text(
+        "attribution = 'disallowed'\nstakeholder_group_cap = 25\n", encoding="utf-8"
+    )
     g = [f"group-{i:03d}" for i in range(20)]
     c = [f"concern-{i:03d}" for i in range(149)]
     a = [f"affordance-{i:03d}" for i in range(100)]

@@ -50,7 +50,7 @@ def test__every_catalogue_rule_was_validated(request, capsys):
     if reason:
         pytest.skip(reason + "; run `pytest tests` to cover every rule")
     rows = catalogue_rows()
-    assert len(rows) == 35
+    assert len(rows) == 36
     with capsys.disabled():
         print(
             f"\nharness: {len(h.rules_validated & set(rows))} of {len(rows)} rule ids validated; "
@@ -63,7 +63,7 @@ def test__every_catalogue_rule_was_validated(request, capsys):
     # WP11-R2 closing guards: every rule's problems went through h.check_closing, and the deviation table is
     # exactly the observed (rule, kind) pairs that differ from the catalogue.
     kinds = h.catalogue_kinds()
-    assert len(kinds) == 35
+    assert len(kinds) == 36
     assert sorted(set(rows) - h.rules_guarded) == []
     observed = {pair for pair in h.pairs_seen if kinds[pair[0]] != pair[1]}
     assert sorted(observed - set(h.DEVIATIONS)) == []

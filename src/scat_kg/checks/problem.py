@@ -30,6 +30,7 @@ SEVERITY = {
     "SCAT-DRAFT-FIELD": "warning",
     "SCAT-LINK-DANGLING-BODY": "error",
     "SCAT-CAP": "error",
+    "SCAT-MODE-CONFIG": "error",
     "SCAT-CAP-CONFIG": "error",
     "SCAT-SUGGEST-CONFIG": "error",
     "SCAT-MENTION": "warning",

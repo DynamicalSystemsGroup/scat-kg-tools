@@ -8,7 +8,7 @@ from pathlib import Path
 
 from scat_kg.ops.common import open_vault
 from scat_kg.ops.files import create_files
-from scat_kg.ops.result import Refusal, Result
+from scat_kg.ops.result import Refusal, Result, reports_mode
 from scat_kg.tbox import TBOX
 
 TYPES = (*TBOX.layers, TBOX.table_type.slug)
@@ -48,6 +48,7 @@ def base_text(type_: str, templates_folder: str) -> str:
     return "\n".join(lines) + "\n"
 
 
+@reports_mode
 def index(*, root: str | Path = ".") -> Result:
     """Write `index/<type>.base` for each type that has none."""
     op = "index"

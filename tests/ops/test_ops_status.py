@@ -17,7 +17,7 @@ def lines_changed(old: bytes, new: bytes) -> list[str]:
 def vault(make_vault):
     return make_vault(
         {
-            "scat.toml": "stakeholder_group_cap = 3\n",
+            "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n",
             "concern/a.md": fm("concern", "A", "stub", "", "Pulls against [[b]]; see [[c]]\n"),
             "concern/b.md": fm("concern", "B", "done"),
             "concern/c.md": fm("concern", "C", "draft"),

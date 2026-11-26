@@ -51,7 +51,13 @@ def problem(rule, severity, fix_, **more):
 
 
 def doc(kind, operation, ok, **more):
-    return {"schema_version": 2, "kind": kind, "operation": operation, "ok": ok} | more
+    return {
+        "schema_version": 2,
+        "kind": kind,
+        "operation": operation,
+        "ok": ok,
+        "mode": "disallowed",
+    } | more
 
 
 SET_DRAFT = cmd(["set-status", "a", "draft"], 'scat_kg.set_status("a", "draft")')
@@ -322,6 +328,9 @@ MALFORMED = {
     "string schema_version": mutated(CLEAN, lambda d: d.update(schema_version="2")),
     "wrong kind": mutated(CLEAN, lambda d: d.update(kind="report")),
     "missing ok": mutated(CLEAN, lambda d: d.pop("ok")),
+    "missing mode": mutated(CLEAN, lambda d: d.pop("mode")),
+    "unknown mode": mutated(CLEAN, lambda d: d.update(mode="public")),
+    "numeric mode": mutated(CLEAN, lambda d: d.update(mode=1)),
     "unknown severity": mutated(CHECK, lambda d: d["problems"][0].update(severity="fatal")),
     "bad fix kind": mutated(CHECK, lambda d: d["problems"][0]["fix"].update(kind="auto")),
     "bad option kind": mutated(
@@ -369,6 +378,11 @@ MALFORMED = {
     ),
     "refusal without fix": mutated(REFUSED_STUB, lambda d: d["refused"][0].pop("fix")),
 }
+
+
+@pytest.mark.parametrize("mode", ["required", "optional", "disallowed", None])
+def test_the_mode_is_one_of_the_three_or_null(mode):
+    assert valid(mutated(CLEAN, lambda d: d.update(mode=mode)))
 
 
 @pytest.mark.parametrize("name", MALFORMED)

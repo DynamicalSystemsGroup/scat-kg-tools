@@ -25,7 +25,7 @@ from typing import Any
 from scat_kg.checks import Problem, check_vault
 from scat_kg.contract import SCHEMA_VERSION
 from scat_kg.graph import Edge, Graph, Node, load
-from scat_kg.ops.result import Refusal, Result
+from scat_kg.ops.result import Refusal, Result, reports_mode
 from scat_kg.tbox import TBOX
 
 DIRECTIONS = ("up", "down", "both")
@@ -61,6 +61,7 @@ class View:
 
     operation: str  # "fingerprint", "edges", "layered" or "trace"
     data: dict = field(default_factory=dict)
+    mode: str | None = None  # the vault's attribution mode
 
     @property
     def ok(self) -> bool:
@@ -72,6 +73,7 @@ class View:
             "kind": "view",
             "operation": self.operation,
             "ok": True,
+            "mode": self.mode,
             **self.data,
         }
 
@@ -224,6 +226,7 @@ def _text(op: str, value: object, what: str) -> Refused | None:
     return _refuse(op, repr(value), f"{what} must be a string", f"pass {what} as a string")
 
 
+@reports_mode
 def fingerprint(
     narrative: str | None = None, *, candidates: bool = False, root: str | Path = "."
 ) -> View | Result:
@@ -274,6 +277,7 @@ def fingerprint(
     )
 
 
+@reports_mode
 def edge_table(type: str, *, root: str | Path = ".") -> View | Result:
     """Every edge of one type (`holds`, `addressed-by`, `provided-by`), in graph order."""
     op = "edges"
@@ -305,6 +309,7 @@ def edge_table(type: str, *, root: str | Path = ".") -> View | Result:
     )
 
 
+@reports_mode
 def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> View | Result:
     """The union of the fingerprints of the named narratives (none: every narrative), as four layers."""
     op = "layered"
@@ -344,6 +349,7 @@ def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> V
     )
 
 
+@reports_mode
 def trace(node: str, direction: str = "both", *, root: str | Path = ".") -> View | Result:
     """Follow edges from a node up (toward groups), down (toward technologies) or both; the node itself is left out."""
     op = "trace"

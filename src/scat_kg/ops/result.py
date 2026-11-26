@@ -4,11 +4,14 @@ The API returns it and the CLI prints `str(result)`, so both paths show the same
 Paths are vault-relative with `/` separators, as the catalogue's `<file>`.
 """
 
-from dataclasses import dataclass
+import functools
+from dataclasses import dataclass, is_dataclass, replace
+from pathlib import Path
 from typing import Any
 
 from scat_kg.contract import SCHEMA_VERSION
 from scat_kg.fix import Command, Fix, FixOption
+from scat_kg.vault import read_mode
 
 # The operation's internal name, when it differs from the command name the CLI and the contract use.
 _COMMAND_NAME = {"read-status": "status"}
@@ -55,6 +58,9 @@ class Result:
         None  # a page whose own check ran as part of this operation (set-status done)
     )
     problems: tuple[Any, ...] = ()  # that check's problems, in the catalogue's order
+    mode: str | None = (
+        None  # the vault's attribution mode; None when it declares none or none was read
+    )
 
     @property
     def ok(self) -> bool:
@@ -66,6 +72,7 @@ class Result:
             "kind": "operation",
             "operation": _COMMAND_NAME.get(self.operation, self.operation),
             "ok": self.ok,
+            "mode": self.mode,
             "created": list(self.created),
             "changed": list(self.changed),
             "unchanged": list(self.unchanged),
@@ -97,6 +104,27 @@ class Result:
 
     def __str__(self) -> str:
         return "\n".join(self.lines())
+
+
+def stamp(result: Any, root: str | Path) -> Any:
+    """The result with the vault's attribution mode set: every document reports it (contract section 10)."""
+    if not hasattr(result, "mode"):
+        return result
+    mode = read_mode(root)
+    if is_dataclass(result):
+        return replace(result, mode=mode)
+    result.mode = mode
+    return result
+
+
+def reports_mode(fn):
+    """Decorate an entry point that takes `root=`: the result it returns carries the vault's attribution mode."""
+
+    @functools.wraps(fn)
+    def inner(*args, **kwargs):
+        return stamp(fn(*args, **kwargs), kwargs.get("root", "."))
+
+    return inner
 
 
 def refused(operation: str, subject: str, why: str, fix: str) -> Result:

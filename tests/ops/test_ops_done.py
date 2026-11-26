@@ -75,7 +75,7 @@ def test_a_node_page_with_no_description_is_refused(make_vault, snap):
 def test_a_narrative_with_only_warnings_at_done_is_set(make_vault):
     root = make_vault(
         {
-            "scat.toml": "stakeholder_group_cap = 3\nlink_suggestions = true\n",
+            "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\nlink_suggestions = true\n",
             "concern/quick.md": fm("concern", "Quick checkout", "done", DESC),
             "narrative/n.md": fm("narrative", "N", "draft", NARR_OK, "A quick checkout here.\n"),
         }
@@ -107,7 +107,7 @@ def test_stub_and_draft_are_never_refused(make_vault, status):
 def test_vault_wide_errors_are_not_listed_and_do_not_block(make_vault):
     root = make_vault(
         {
-            "scat.toml": "stakeholder_group_cap = 1\n",
+            "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 1\n",
             "group/a.md": fm("group", "A", "draft", DESC),
             "group/b.md": fm("group", "B", "draft", DESC),
         }

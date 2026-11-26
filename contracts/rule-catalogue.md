@@ -34,7 +34,7 @@ leaves nothing); its *free derived name* is what step 4 gives. A derived name is
 **Scopes.** A check runs at *page*, *one link away* or *vault* scope (G4): the page; the page and every page it links
 or that links it; every page. A rule reports on one file, and a check of that file runs every rule that reports on it,
 reading other pages when the rule needs them. The one exception is SCAT-CAP, which reports on `scat.toml` though it is anchored on a page check (it runs when a `group` page is in the set). The same page gives the same messages at every scope. Rules that are not
-about one page (SCAT-CAP, SCAT-CAP-CONFIG, SCAT-SUGGEST-CONFIG) run at vault scope, and at the other two when a `group` page is in the
+about one page (SCAT-CAP, SCAT-MODE-CONFIG, SCAT-CAP-CONFIG, SCAT-SUGGEST-CONFIG) run at vault scope, and at the other two when a `group` page is in the
 checked set. For a narrative, the nodes at its row ends are one link away, so a check one link away reads them and
 reports on each page it reaches by that page's own rules. Checks never write (R-4). Each rule below says which pages it
 reads besides its own.
@@ -152,6 +152,7 @@ because the model it checked is gone (D-088).
 | SCAT-DRAFT-FIELD | adapted | |
 | SCAT-LINK-DANGLING-BODY | adapted | every link outside a table end |
 | SCAT-CAP | adapted | counts `group` pages |
+| SCAT-MODE-CONFIG | new | the `attribution` key of `scat.toml` (WP23-G1) |
 | SCAT-CAP-CONFIG | kept | |
 | SCAT-SUGGEST-CONFIG | new | the `link_suggestions` key of `scat.toml` |
 | SCAT-MENTION | adapted | on every page, narratives included; off unless `link_suggestions = true` in `scat.toml` (WP21-G9) |
@@ -196,6 +197,7 @@ because the model it checked is gone (D-088).
 | SCAT-DRAFT-FIELD | warning | draft; stub for `timeframe` | all | a field required from `done` is missing | slot |
 | SCAT-LINK-DANGLING-BODY | error | every status | all | a link outside a table end reaches no page | options |
 | SCAT-CAP | error | vault | vault; all when a `group` page is in the set | more `group` pages than the cap | options |
+| SCAT-MODE-CONFIG | error | vault | as SCAT-CAP-CONFIG | `attribution` in `scat.toml` is missing, or not `required`, `optional` or `disallowed` | options |
 | SCAT-CAP-CONFIG | error | vault | vault; all when a `group` page is in the set | `scat.toml` or its cap missing, malformed or not a whole number of at least 1 | slot |
 | SCAT-SUGGEST-CONFIG | error | vault | as SCAT-CAP-CONFIG | `link_suggestions` in `scat.toml` is not `true` or `false` | options |
 | SCAT-MENTION | warning | every status | all (only when `link_suggestions = true`) | body names an existing node page in plain text | exact |
@@ -234,7 +236,7 @@ manual. The variants, where they differ:
 | SCAT-*-TABLE-HEADER | name wrong or separator missing: exact; the four names in another order: advisory |
 | SCAT-*-TABLE-ROW | (a), (b), (c): exact; (d), (e): options |
 | SCAT-*-TABLE-TYPE, -LAYERS, -NOLINK, -NOPAGE, -NOTNODE, -SECOND | options in every variant |
-| SCAT-CAP | options; SCAT-CAP-CONFIG: slot; SCAT-SUGGEST-CONFIG: options (two exact edits) |
+| SCAT-CAP | options; SCAT-CAP-CONFIG: slot; SCAT-MODE-CONFIG: options (three exact edits); SCAT-SUGGEST-CONFIG: options (two exact edits) |
 
 SCAT-FM-STATUS is options in every variant: which status is true is a claim about the page, so even a near match is the
 author's to confirm; the near matches of SCAT-FM-TYPE and SCAT-FM-TIMEFRAME are exact, as a spelling mends a spelling.
@@ -407,6 +409,20 @@ error [SCAT-CAP] scat.toml field `stakeholder_group_cap`: the vault holds <n> gr
 ```
 - **Fix kind:** options. Clustering comes first because the facilitation strategy clusters standpoints before it raises a cap. Option 1 is advisory (which groups merge is the facilitator's judgement); option 2 is exact: `set-field{file scat.toml, field stakeholder_group_cap, value <n>}`.
 - **Seed:** cap 3 and 4 groups (one message, naming all four); 3 groups (none); the fourth group as a stub still triggers.
+
+### SCAT-MODE-CONFIG
+- **Severity:** error. **Fires:** vault level. **Runs at:** as SCAT-CAP-CONFIG.
+- **Trigger:** `scat.toml` is valid TOML and has no top-level `attribution`, or its value is not one of the strings `required`, `optional`, `disallowed` (a string such as `"public"`, a number and a boolean all trigger it). A missing or invalid file is SCAT-CAP-CONFIG's, not this rule's. There is no default mode.
+- **Message:**
+```
+error [SCAT-MODE-CONFIG] scat.toml field `attribution`: <the key is missing | the value `<value>` is not one of `required`, `optional`, `disallowed`>
+  Fix, choose one: ...
+    1. <add the line | replace the line `attribution = <value>` with> `attribution = "required"` (a `done` narrative must name who it is attributed to) in scat.toml
+    2. or with `attribution = "optional"` (a narrative may name who it is attributed to)
+    3. or with `attribution = "disallowed"` (no narrative names who it is attributed to)
+```
+- **Fix kind:** options, three exact edits: `set-field{file scat.toml, field attribution, value "required" | "optional" | "disallowed"}`. Which mode a vault takes is the coder's and the participants' agreement, so no option leads.
+- **Seed:** the key removed; `attribution = "public"`; `attribution = 3`; `attribution = true`.
 
 ### SCAT-CAP-CONFIG
 - **Severity:** error. **Fires:** vault level. **Runs at:** as SCAT-CAP.
@@ -646,7 +662,7 @@ refused [SCAT-DONE-REFUSED] <file>: <n> error(s) would stand at status done; sta
     2. leave the page at `draft`: run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`)
 ```
 - **Fix kind:** options: option 1 advisory (the fixes that matter are each listed problem's own), option 2 exact (`command{set-status <page-name> draft}`, with its REPL twin). Data: a `Refusal` with `subject` the file, `why`, `rule` `SCAT-DONE-REFUSED`, `problems` the list, and `fix` of those two options.
-- **Vault-wide errors are not listed:** an error of SCAT-CAP or SCAT-CAP-CONFIG, though it runs at page scope when the page is a `group`, does not depend on this page's status and is not in the refusal's `problems`; a `group` page with no other error is set to `done` in a vault over its cap, and `scat check` reports the cap.
+- **Vault-wide errors are not listed:** an error of SCAT-CAP, SCAT-CAP-CONFIG or SCAT-MODE-CONFIG, though it runs at page scope when the page is a `group`, does not depend on this page's status and is not in the refusal's `problems`; a `group` page with no other error is set to `done` in a vault over its cap, and `scat check` reports the cap.
 - **Seed:** a narrative at `draft` with a row end that is not a link and no `description` (set `done`: refused, listing SCAT-DONE-FIELD and SCAT-DONE-END-NOLINK, and the file unchanged); the same narrative with both fixed (set: done); a node page with no `description` (refused); a narrative with only warnings at `done` (a SCAT-MENTION, set); a page with an invalid `status` (refused, the status error listed).
 
 `record-edge` and `remove-edge` have their own refusals (a narrative they would change is `done`; an unknown type; ends
@@ -664,6 +680,7 @@ in the wrong layers), carried as operation refusals with no rule id; they list n
 | R-1 links to pages that do not exist | SCAT-LINK-DANGLING-BODY; at a table end SCAT-DRAFT-END-NOPAGE, SCAT-DONE-END-NOPAGE |
 | R-1 the table of edges (page contracts 4) | SCAT-*-TABLE-HEADER, -ROW, -TYPE, -LAYERS, -DUPLICATE, -SECOND |
 | R-1 the group cap | SCAT-CAP, SCAT-CAP-CONFIG |
+| WP23-G1 the attribution mode is declared, and known | SCAT-MODE-CONFIG |
 | R-3 unfinished is never an error | SCAT-DRAFT-FIELD, and every SCAT-DRAFT- pair id, as warnings; nothing else fires for `done` fields at `stub` or `draft` |
 | R-3 full contract at `done`; the `done` check | SCAT-DONE-FIELD, every SCAT-DONE- pair id, SCAT-DONE-REFUSED |
 | R-4 checks never write | none: no rule writes (section 1, Scopes); the operations are `stub`, `set-status`, `record-edge`, `remove-edge` and `index` |

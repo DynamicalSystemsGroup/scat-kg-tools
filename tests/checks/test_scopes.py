@@ -131,7 +131,7 @@ def test__scopes__the_same_page_gives_the_same_messages_at_every_scope(make_vaul
 
 
 def test__scopes__vault_rules_run_at_page_scope_only_for_a_group_page(make_vault):
-    v = vault(make_vault, {"scat.toml": "stakeholder_group_cap = 1\n"})
+    v = vault(make_vault, {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 1\n"})
     assert rules_of(check_page(v, STAFF)) == ["SCAT-CAP"]
     assert rules_of(check_page(v, "concern/safe-handling.md")) == []
     assert rules_of(check_neighborhood(v, DESK)) == [
@@ -152,7 +152,7 @@ def test__errors_block_and_warnings_do_not(make_vault):
 
 def test__every_rule_has_one_severity_and_none_is_deferred():
     stated = catalogue_severities()
-    assert len(stated) == 35
+    assert len(stated) == 36
     assert SEVERITY == stated
     assert DEFERRED == {}
     assert PAGE_RULES and VAULT_RULES

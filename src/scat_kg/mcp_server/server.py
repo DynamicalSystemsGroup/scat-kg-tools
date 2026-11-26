@@ -11,21 +11,21 @@ from mcp.server.fastmcp import FastMCP
 
 import scat_kg
 from scat_kg.mcp_server import prompts
-from scat_kg.ops.result import refused
+from scat_kg.ops.result import refused, stamp
 
 CITE = prompts.CITE
 VIEWS_FOLDER = "views"
 _OWN = f"The tool owns conformance, the coder owns interpretation, the assistant holds no authority ({CITE}). "
 
 
-def _doc(result) -> dict[str, Any]:
-    return result.to_dict()
-
-
 def build(vault: str | Path, **settings) -> FastMCP:
     """The server for the vault folder `vault`, read afresh on each call. `settings` go to FastMCP (host, port)."""
     root = Path(vault)
     mcp = FastMCP("scat-kg", **settings)
+
+    def _doc(result) -> dict[str, Any]:
+        """The document of a result, with the vault's attribution mode (every result reports it)."""
+        return stamp(result, root).to_dict()
 
     @mcp.tool(
         description=_OWN

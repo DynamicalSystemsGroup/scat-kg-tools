@@ -49,6 +49,7 @@ def check_doc(p):
         "kind": "check",
         "operation": "check",
         "ok": p.severity != "error",
+        "mode": "disallowed",
         "problems": [p.to_dict()],
     }
     assert VALIDATOR.is_valid(d), [e.message for e in VALIDATOR.iter_errors(d)]

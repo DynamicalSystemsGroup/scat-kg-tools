@@ -14,7 +14,7 @@ from scat_kg.contract import SCHEMA_VERSION
 from scat_kg.fix import FixOption
 from scat_kg.ops.common import find_page, open_vault
 from scat_kg.ops.files import NotUtf8, join_lines, line_ending, read_lines, replace_file
-from scat_kg.ops.result import Refusal, Result, refused
+from scat_kg.ops.result import Refusal, Result, refused, reports_mode
 from scat_kg.tbox import TBOX
 from scat_kg.vault import Page, Vault, read_vault
 
@@ -65,6 +65,7 @@ class StatusReport(Result):
             "kind": "status",
             "operation": "status",
             "ok": True,
+            "mode": self.mode,
             "scope": self.scope,
             "rows": [r.to_dict() for r in self.rows],
             "counts": self.counts,
@@ -100,6 +101,7 @@ def _neighborhood(vault: Vault, page: Page) -> list[Page]:
     return [page] + [by_path[p] for p in sorted(paths) if p in by_path]
 
 
+@reports_mode
 def read_status(
     scope: str = "vault", ref: str | None = None, *, root: str | Path = "."
 ) -> StatusReport | Result:
@@ -159,6 +161,7 @@ def _with_check(result: Result, status: str, root: Path, path: str) -> Result:
     return replace(result, checked=path, problems=check_page(vault, page).problems)
 
 
+@reports_mode
 def set_status(name: str, status: str, *, root: str | Path = ".") -> Result:
     op = "set-status"
     if status not in TBOX.statuses:

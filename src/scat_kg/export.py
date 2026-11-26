@@ -15,7 +15,7 @@ from pathlib import Path
 
 from scat_kg.ops.common import open_vault
 from scat_kg.ops.files import replace_file
-from scat_kg.ops.result import Refusal, Result
+from scat_kg.ops.result import Refusal, Result, reports_mode
 from scat_kg.tbox import TBOX
 from scat_kg.views import View, edge_table
 
@@ -62,6 +62,7 @@ def _shown(out: Path, name: str, vault_root: Path) -> str:
         return (out / name).as_posix()
 
 
+@reports_mode
 def export_edges(out: str | Path, *, root: str | Path = ".") -> Result:
     """Write each edge type's table to `<out>/<slug>.csv` and `<out>/<slug>.md`."""
     vault, bad = open_vault(OPERATION, root)

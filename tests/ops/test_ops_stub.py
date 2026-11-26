@@ -5,7 +5,7 @@ from scat_kg.ops import stub, stub_links
 from scat_kg.ops.names import derive_name, name_problem, stem_of
 from scat_kg.vault import read_vault
 
-CAP3 = {"scat.toml": "stakeholder_group_cap = 3\n"}
+CAP3 = {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n"}
 
 
 def group(name, title):
@@ -258,7 +258,7 @@ def test_stub_links_target_named_as_two_types_is_refused_alone(make_vault):
 def test_stub_links_over_the_cap_creates_nothing_from_the_call(make_vault, snap):
     root = make_vault(
         {
-            "scat.toml": "stakeholder_group_cap = 2\n",
+            "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 2\n",
             **group("g1", "G1"),
             "narrative/s.md": narrative("S", ["| [[g2]] | holds | [[c]] | |", "| [[g3]] | holds | [[c]] | |"]),
         }

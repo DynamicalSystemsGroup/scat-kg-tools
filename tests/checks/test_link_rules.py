@@ -569,7 +569,7 @@ def test__scat_cap_config__invalid_toml(make_vault):
 def test__scat_cap_config__key_missing(make_vault):
     seeded(
         make_vault,
-        {"scat.toml": "other = 1\n"},
+        {"scat.toml": "attribution = 'disallowed'\nother = 1\n"},
         msg(CONFIG_HEAD.format(what="the key is missing"), config_fix("add the line")),
     )
 
@@ -578,7 +578,7 @@ def test__scat_cap_config__key_missing(make_vault):
 def test__scat_cap_config__bad_value_is_replaced(make_vault, written):
     seeded(
         make_vault,
-        {"scat.toml": f"stakeholder_group_cap = {written}\n"},
+        {"scat.toml": f"attribution = 'disallowed'\nstakeholder_group_cap = {written}\n"},
         msg(
             CONFIG_HEAD.format(what=f"the value `{written}` is not a TOML integer of 1 or more"),
             config_fix(f"replace the line `stakeholder_group_cap = {written}` with"),
@@ -598,7 +598,7 @@ def test__scat_cap_config__no_groups_drops_the_at_least_clause(make_vault):
     del files
     r = report_of(
         make_vault,
-        {"scat.toml": "stakeholder_group_cap = 0\n"},
+        {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 0\n"},
         remove=[p for p in base_files() if p.startswith("group/")]
         + [DESK, "narrative/kiosk-pitch.md"],
     )
@@ -635,12 +635,15 @@ SUGGEST = "link_suggestions = true\n"
 
 def test__scat_mention__is_off_by_default_and_reported_with_the_switch_on(make_vault):
     files = {DESK: narrative(account=ACCOUNT + "\nThe volunteers gave a Briefing first.\n")}
-    default = {"scat.toml": "stakeholder_group_cap = 3\n", **files}
+    default = {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n", **files}
     assert "SCAT-MENTION" not in rules_of(report_of(make_vault, default))
     for off in ("link_suggestions = false\n", ""):
-        text = {"scat.toml": "stakeholder_group_cap = 3\n" + off, **files}
+        text = {
+            "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n" + off,
+            **files,
+        }
         assert "SCAT-MENTION" not in rules_of(report_of(make_vault, text))
-    on = {"scat.toml": "stakeholder_group_cap = 3\n" + SUGGEST, **files}
+    on = {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n" + SUGGEST, **files}
     assert rules_of(report_of(make_vault, on)) == ["SCAT-MENTION"]
 
 
@@ -651,7 +654,9 @@ SUGGEST_HEAD = "error [SCAT-SUGGEST-CONFIG] scat.toml field `link_suggestions`: 
 def test__scat_suggest_config__a_value_that_is_not_a_boolean_is_refused(make_vault, written):
     seeded(
         make_vault,
-        {"scat.toml": f"stakeholder_group_cap = 3\nlink_suggestions = {written}\n"},
+        {
+            "scat.toml": f"attribution = 'disallowed'\nstakeholder_group_cap = 3\nlink_suggestions = {written}\n"
+        },
         msg(
             SUGGEST_HEAD.format(
                 what=f"the value `{written}` is not a TOML boolean, `true` or `false`"
@@ -667,12 +672,15 @@ def test__scat_suggest_config__a_value_that_is_not_a_boolean_is_refused(make_vau
 
 def test__scat_suggest_config__a_boolean_or_no_key_is_not_a_problem(make_vault):
     for text in ("link_suggestions = true\n", "link_suggestions = false\n", ""):
-        r = report_of(make_vault, {"scat.toml": f"stakeholder_group_cap = 3\n{text}"})
+        r = report_of(
+            make_vault,
+            {"scat.toml": f"attribution = 'disallowed'\nstakeholder_group_cap = 3\n{text}"},
+        )
         assert "SCAT-SUGGEST-CONFIG" not in rules_of(r)
 
 
 def test__scat_uncoded__stays_reported_by_default_with_link_suggestions_off(make_vault):
     page = narrative(rows=(), account="A Briefing was given. Nothing here links a page.")
-    default = {"scat.toml": "stakeholder_group_cap = 3\n", DESK: page}
+    default = {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n", DESK: page}
     assert "SCAT-UNCODED" in rules_of(report_of(make_vault, default))
     assert "SCAT-MENTION" not in rules_of(report_of(make_vault, default))

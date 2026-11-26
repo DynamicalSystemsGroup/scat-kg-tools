@@ -45,4 +45,4 @@ def narrative(
     return fm("narrative", title, status, extra, "The account.\n" + table)
 
 
-CAP3 = {"scat.toml": "stakeholder_group_cap = 3\n"}
+CAP3 = {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n"}

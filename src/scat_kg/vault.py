@@ -28,6 +28,10 @@ _KEY_LINE = re.compile(r"""^(?:"([^"]*)"|'([^']*)'|([^\s#:'"-][^:]*?))\s*:(?:\s|
 # The Obsidian page-template folder, skipped whole (D-034); `.obsidian/` is a dot-folder, skipped too.
 DEFAULT_TEMPLATES_FOLDER = "templates"
 
+# The attribution modes (section 10): a vault declares one in `scat.toml`, key `attribution`.
+ATTRIBUTION_KEY = "attribution"
+MODES = ("required", "optional", "disallowed")
+
 
 @dataclass(frozen=True)
 class Link:
@@ -82,7 +86,8 @@ class Page:
 
 @dataclass(frozen=True)
 class VaultConfig:
-    """`scat.toml` (section 10). `problem` is None when the cap is a usable value."""
+    """`scat.toml` (section 10). `problem` is None when the cap is a usable value; the attribution mode
+    has its own fields."""
 
     problem: str | None  # "missing", "invalid-toml", "key-missing" or "bad-value"
     detail: str | None  # the parser's reason (invalid-toml); the value as TOML shows it (bad-value)
@@ -90,6 +95,11 @@ class VaultConfig:
     templates_folder: str = DEFAULT_TEMPLATES_FOLDER  # vault-relative folder the reader skips
     link_suggestions: bool = False  # true turns SCAT-MENTION on
     link_suggestions_bad: str | None = None  # the value as TOML shows it when it is not a boolean
+    attribution: str | None = None  # the attribution mode (one of MODES) when declared and known
+    attribution_problem: str | None = (
+        None  # "key-missing" or "bad-value"; None when usable, or no file
+    )
+    attribution_detail: str | None = None  # the value as TOML shows it (bad-value)
 
 
 @dataclass(frozen=True)
@@ -303,12 +313,26 @@ def _read_config(root: Path) -> VaultConfig:
     folder = folder.strip("/ ")
     suggest = data.get("link_suggestions", False)
     extra = (suggest, None) if isinstance(suggest, bool) else (False, repr(suggest))
+    if ATTRIBUTION_KEY not in data:
+        extra += (None, "key-missing", None)
+    elif isinstance(data[ATTRIBUTION_KEY], str) and data[ATTRIBUTION_KEY] in MODES:
+        extra += (data[ATTRIBUTION_KEY], None, None)
+    else:
+        extra += (None, "bad-value", repr(data[ATTRIBUTION_KEY]))
     if "stakeholder_group_cap" not in data:
         return VaultConfig("key-missing", None, None, folder, *extra)
     value = data["stakeholder_group_cap"]
     if isinstance(value, int) and not isinstance(value, bool) and value >= 1:
         return VaultConfig(None, None, value, folder, *extra)
     return VaultConfig("bad-value", repr(value), None, folder, *extra)
+
+
+def read_mode(root: str | Path) -> str | None:
+    """The vault's attribution mode, or None when it is not declared (or is unknown). Reads only `scat.toml`."""
+    try:
+        return _read_config(Path(root)).attribution
+    except OSError:
+        return None
 
 
 def read_vault(root: str | Path) -> Vault:

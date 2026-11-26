@@ -56,7 +56,7 @@ def render(rows, style):
 
 def build(tmp_path, rows, style, status):
     v = Vault(tmp_path / f"v-{style}-{status}")
-    v.write("scat.toml", "stakeholder_group_cap = 3\n")
+    v.write("scat.toml", "attribution = 'disallowed'\nstakeholder_group_cap = 3\n")
     from indep_kit import NODES, page_text
 
     for type_, items in NODES.items():

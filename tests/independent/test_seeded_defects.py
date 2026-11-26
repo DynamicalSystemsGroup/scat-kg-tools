@@ -800,7 +800,7 @@ def _(v, st):
 
 @seed("DANGLING-group-at-cap", ("draft",), allow=("SCAT-DRAFT-END-NOPAGE",))
 def _(v, st):
-    v.write("scat.toml", "stakeholder_group_cap = 2\n")
+    v.write("scat.toml", "attribution = 'disallowed'\nstakeholder_group_cap = 2\n")
     v.write(
         "narrative/other-day.md",
         '---\ntype: narrative\nstatus: draft\ntitle: "Other day"\ndescription: "d"\ntimeframe: past\n---\n\n## Edges told\n\n'
@@ -995,14 +995,14 @@ def _(v, st):
 
 @seed("CAP-CONFIG-key-missing", ("draft",))
 def _(v, st):
-    return _cfg(v, "other = 1\n", "the key is missing")
+    return _cfg(v, "attribution = 'disallowed'\nother = 1\n", "the key is missing")
 
 
 @seed("CAP-CONFIG-string", ("draft",))
 def _(v, st):
     return _cfg(
         v,
-        'stakeholder_group_cap = "three"\n',
+        'attribution = "disallowed"\nstakeholder_group_cap = "three"\n',
         re.compile(r"^the value `.*three.*` is not a TOML integer of 1 or more$"),
         ("replace the line `stakeholder_group_cap = ",) + SLOT_FIX,
     )
@@ -1011,27 +1011,72 @@ def _(v, st):
 @seed("CAP-CONFIG-zero", ("draft",))
 def _(v, st):
     return _cfg(
-        v, "stakeholder_group_cap = 0\n", "the value `0` is not a TOML integer of 1 or more"
+        v,
+        "attribution = 'disallowed'\nstakeholder_group_cap = 0\n",
+        "the value `0` is not a TOML integer of 1 or more",
     )
 
 
 @seed("CAP-CONFIG-float", ("draft",))
 def _(v, st):
     return _cfg(
-        v, "stakeholder_group_cap = 2.5\n", "the value `2.5` is not a TOML integer of 1 or more"
+        v,
+        "attribution = 'disallowed'\nstakeholder_group_cap = 2.5\n",
+        "the value `2.5` is not a TOML integer of 1 or more",
     )
 
 
 @seed("CAP-CONFIG-float-whole", ("draft",))
 def _(v, st):
     return _cfg(
-        v, "stakeholder_group_cap = 3.0\n", "the value `3.0` is not a TOML integer of 1 or more"
+        v,
+        "attribution = 'disallowed'\nstakeholder_group_cap = 3.0\n",
+        "the value `3.0` is not a TOML integer of 1 or more",
+    )
+
+
+MODE_FIX = (
+    '`attribution = "required"`',
+    '`attribution = "optional"`',
+    '`attribution = "disallowed"`',
+)
+
+
+def _mode(v, text, what, fixhas=MODE_FIX):
+    v.write("scat.toml", text)
+    return [Exp("SCAT-MODE-CONFIG", E_, "scat.toml", "field `attribution`", what, fix_has=fixhas)]
+
+
+@seed("MODE-CONFIG-key-missing", ("draft",))
+def _(v, st):
+    return _mode(v, "stakeholder_group_cap = 3\n", "the key is missing")
+
+
+@seed("MODE-CONFIG-unknown", ("draft",))
+def _(v, st):
+    return _mode(
+        v,
+        'attribution = "public"\nstakeholder_group_cap = 3\n',
+        'the value `"public"` is not one of `required`, `optional`, `disallowed`',
+        ("replace the line `attribution = ",) + MODE_FIX,
+    )
+
+
+@seed("MODE-CONFIG-number", ("draft",))
+def _(v, st):
+    return _mode(
+        v,
+        "attribution = 3\nstakeholder_group_cap = 3\n",
+        "the value `3` is not one of `required`, `optional`, `disallowed`",
     )
 
 
 @seed("SUGGEST-CONFIG-string", ("draft",))
 def _(v, st):
-    v.write("scat.toml", 'stakeholder_group_cap = 3\nlink_suggestions = "yes"\n')
+    v.write(
+        "scat.toml",
+        'attribution = "disallowed"\nstakeholder_group_cap = 3\nlink_suggestions = "yes"\n',
+    )
     what = 'the value `"yes"` is not a TOML boolean, `true` or `false`'
     return [
         Exp(
@@ -1925,7 +1970,7 @@ def _(v, st):
 
 @seed("END-NOPAGE-group-at-cap", ("draft",))
 def _(v, st):
-    v.write("scat.toml", "stakeholder_group_cap = 2\n")
+    v.write("scat.toml", "attribution = 'disallowed'\nstakeholder_group_cap = 2\n")
     _row(v, "| [[ghost]] | holds | [[quick-checkout]] | |")
     return [
         _end(
