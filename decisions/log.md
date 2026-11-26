@@ -2481,3 +2481,12 @@ Outcomes:
   no longer holds as written; the ACE narrows it to the four layers and puts the edit to the chief engineer.
 - The remaining rows of the proposed table were not objected to; the ACE confirms them in one follow-up.
 - WP23 is paused after its U1 (rename, glossary) and U2 (the mode key) and is re-scoped.
+
+## D-134 | 2026-11-26 | The deontic table stands; the mission's attribution line rewritten
+
+Two follow-ups to D-133, each answered "Yes": the other rows of the ACE's deontic table stand (MAY for A1 to A4 and A6;
+SHOULD for A5 and the skill's step, kind and description habits; SHALL NOT for A7 to A12; SHALL for A13 to A15 and the
+edge grammar), with the mode rule of D-133; and `MISSION.md` (Non-goals, attribution modes) now reads: "The four layers
+(groups, concerns, affordances, technologies) record groups, never individuals. Where the mode enables attribution,
+each contributor has a page outside the four layers, and a narrative's attributed-to links resolve to those pages."
+The ACE made that edit on `dev`.
