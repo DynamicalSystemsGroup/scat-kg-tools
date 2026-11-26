@@ -5,7 +5,6 @@ description: Rules and habits for the assistant that helps a coder code narrativ
 
 # SCAT coding: the assistant's skill
 
-<!-- rules: verbatim from contracts/assistant.md (tests/skills/test_scat_coding_skill.py compares) -->
 Three actors work on a vault. The **coder** owns interpretation: the account matches the notes and the coding is right.
 The **tool** owns conformance: the graph matches the Markdown and obeys the ontology. The **assistant** helps and holds
 no authority. Without it nothing is lost but speed. The MCP prompts, the IDE setup skill and the docs cite this file.
@@ -42,7 +41,6 @@ no authority. Without it nothing is lost but speed. The MCP prompts, the IDE set
 The tool cannot tell who is calling. On the chat path the MCP server never crosses `done` (A7, A8). On the IDE path A7
 to A12 hold by this file and by git review of what the assistant changed. Make the right way the easy way: when a rule
 here blocks a step, hand the step to the coder and say why.
-<!-- end rules -->
 
 ## Edges told
 
