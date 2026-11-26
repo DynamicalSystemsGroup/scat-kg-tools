@@ -49,7 +49,10 @@ were closed unmerged (log D-074): the mission has since changed, and the next ca
 11. **WP25 Docs: coding approaches and facilitating (D-137).** C14 and C15: the coding approaches drill-down with a
     screenshot walkthrough each; facilitating with narratives first; planning by event kind and field-note taking.
     After WP23 and WP24.
-12. **WP20 Candidate and user acceptance.** The whole journey, J1 to J10, on both paths: UA-A rounds to the pass bar,
+12. **WP26 Prompt-residue sweep and user-test loops (D-139).** Clean wording that echoes prompts; AI user-test
+    rounds on both paths for clarity, concision and docs-code alignment, fixed between rounds. Before the chief
+    engineer's walkthrough.
+13. **WP20 Candidate and user acceptance.** The whole journey, J1 to J10, on both paths: UA-A rounds to the pass bar,
    the walkthrough scripts, the reviewer's guide, the candidate stage and new release PRs.
 
 The order of WP17 and WP18 may change with the architecture document. Open play-test findings (F-1, F-3, F-5, F-7)

@@ -2530,3 +2530,25 @@ The fresh WP23 PM's re-check of the revised scope found six fixes; applied:
 - `attributed_to` is a list of links to contributor pages; `contracts/architecture.md` and `contracts/examples/scat.toml`
   join the blast radius; C14 and C15 (WP25) and C12 (WP24) are named and sequenced after WP23; C11 is marked taken.
 - The impact map is re-issued for the revised design before U3 starts (the PM has the change consultant do it).
+
+## D-139 | 2026-11-26 | User-test loops after WP25, and a sweep for prompt residue, before the chief engineer's walkthrough
+
+The chief engineer, quoted as typed and recorded by the ACE:
+
+> "i want you to do a round of user testing loops after 3 before my walk through. my gut is there will be some clarity,
+> conciseness and alignment fixes between the code and the documentation that should come before my hands on keyboard
+> test.
+>
+> for one thing the documentation has some places where its clearly left over from LLM prompts. for example the "a MAY"
+> in this screenshot is residue from how i explained it to you. it doesn't really belong on the page. this a common
+> defect in LLM generated content: literal or verbatim translations of prompts. we'll need to search for and clean that
+> up."
+
+(The screenshot: the leave-no-trace page's warning box titled "This is one policy option, a MAY".)
+
+Outcomes: after WP25 (the third item before his sitting), and before his walkthrough, the ACE runs (1) a prompt-residue
+sweep of every user-facing page (docs, template README and pages, launcher messages, skill text): wording that echoes
+how the chief engineer explained something to the agents rather than what a reader needs (deontic keywords outside the
+assistant's rules, quoted instruction phrasing, "as decided", meta-commentary about options and recommendations), and
+(2) rounds of AI user tests on both paths for clarity, concision and the docs matching the code, to the UA-A pass bar,
+fixing between rounds. Planned as WP26.
