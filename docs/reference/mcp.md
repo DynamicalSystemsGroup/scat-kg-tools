@@ -44,6 +44,7 @@ Eighteen tools. Each returns the operation's own document.
 | `trace` | View: follow edges up, down or both from a node. |
 | `evidence` | View: one node page's narratives with the paragraph around each link, its edges with the narratives that tell them, and its adjacent nodes. Reads no `attributed_to` and lists no contributor page. |
 | `copy_share` | View: for each node page (or the one `node` named), the share of its text that repeats a narrative word for word, and the narratives it comes from, the most repeated first. Reads no `attributed_to` and lists no contributor page. |
+| `review` | View: pairs of node pages of one type that may be one node (overlaps, twin rows, shared adjacent nodes with hubs marked, link texts), and pages whose accounts tell them to different other ends, with the narratives grouped. A prompt to read, not a finding. Reads no `attributed_to` and lists no contributor page. |
 | `attribution` | View: the narratives by contributor, and the narratives that name none. Refused where the attribution mode is `disallowed`. |
 | `export_edges` | Write the three edge tables as CSV and Markdown into `views/`. |
 

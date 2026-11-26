@@ -22,6 +22,7 @@ TOOLS = {
     "trace",
     "evidence",
     "copy_share",
+    "review",
     "attribution",
     "export_edges",
 }
@@ -115,6 +116,7 @@ SEQUENCE = [
     ("split_plan", {"a": "funders"}, lambda r: scat_kg.split_plan("funders", root=r)),
     ("copy_share", {}, lambda r: scat_kg.copy_share(root=r)),
     ("copy_share", {"node": "borrowers"}, lambda r: scat_kg.copy_share("borrowers", root=r)),
+    ("review", {}, lambda r: scat_kg.review(root=r)),
     (
         "stub",
         {"name": "new-concern", "type": "concern"},

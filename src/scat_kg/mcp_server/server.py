@@ -213,6 +213,16 @@ def build(vault: str | Path, **settings) -> FastMCP:
 
     @mcp.tool(
         description=_OWN
+        + "View: where to look next. Pairs of node pages of one type that may be one node, each with the "
+        "overlaps, twin rows, shared adjacent nodes (hubs marked) and the link texts coders used; and pages "
+        "whose accounts tell them to different other ends, with the narratives grouped. A prompt to read, "
+        "not a finding. Writes nothing. Returns the view document."
+    )
+    def review() -> dict[str, Any]:
+        return _doc(scat_kg.review(root=root))
+
+    @mcp.tool(
+        description=_OWN
         + "View: the narratives by contributor, each contributor page with the narratives that name it, and "
         "the narratives that name none. Refused where the vault's attribution mode is disallowed. Writes "
         "nothing. Returns the view document."

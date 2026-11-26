@@ -14,7 +14,7 @@ changes from version 1.
 - **Python.** A result's `to_dict()` returns the CLI's data.
 - **Paths** are vault-relative (`/`, no leading `/`, no `..`), except in `export-edges` and `draw` results: outside the vault, as given. `line` and `column` count from 1, or are null.
 
-`kind` is `check`, `status`, `operation` or `view` (`fingerprint`, `edges`, `layered`, `trace`, `evidence`, `copy-share`, `attribution`). A refusal, even by `check` or `status`, gives kind `operation` with `ok` false.
+`kind` is `check`, `status`, `operation` or `view` (`fingerprint`, `edges`, `layered`, `trace`, `evidence`, `copy-share`, `review`, `attribution`). A refusal, even by `check` or `status`, gives kind `operation` with `ok` false.
 
 ## Fields you may rely on
 
@@ -42,15 +42,17 @@ Nothing else is promised.
 
 | Object | Fields |
 |---|---|
-| view | `narratives` (`candidates` on request), `edge_type`, `from_layer`, `to_layer`, `rows`, `nodes`, `edges`, `node`, `direction`, `up`, `down`, `node_type`, `node_status`, `adjacent`, `pages`, `contributors`, `unattributed`, `excluded` |
+| view | `narratives` (`candidates` on request), `edge_type`, `from_layer`, `to_layer`, `rows`, `nodes`, `edges`, `node`, `direction`, `up`, `down`, `node_type`, `node_status`, `adjacent`, `pages`, `proposals`, `reread`, `contributors`, `unattributed`, `excluded` |
 | node | `name`, `type`, `status` |
 | view edge | the edge fields and `status` |
 | view narrative (`evidence`) | `name`, `status`, `kind`, `timeframe`, `tells_edge`, `paragraphs` (`line`, `paragraph`, `sentences`: `text`, `start`, `end`, offsets in `paragraph`) |
 | view edge (`evidence`) | the view edge fields and `tellings` (`narrative`, `note`) |
 | view page (`copy-share`) | `name`, `type`, `status`, `words`, `share` (0 to 1, null under five words), `narratives` (most runs first) |
+| view proposal (`review`) | `type`, `pages` (node fields, `link_texts`), `narrative_jaccard`, `adjacent_jaccard`, `description_cosine`, `twin_rows`, `shared_adjacent` (node fields, `hub`), `reason` |
+| view re-read (`review`) | node fields, `narratives`, `common_end_share`, `groups`, `reason` |
 | view contributor (`attribution`) | `name`, `title`, `status`, `narratives` (the names of the narratives that name it) |
 
-**Version 2 to 3.** The `view` operations gain `evidence` and `copy-share`, new values in a closed list.
+**Version 2 to 3.** New `view` operations: `evidence`, `copy-share`, `review`.
 
 `attribution` is a view of the knowledge graph, not the layered graph. Where the mode is `disallowed` it is a refusal, not an empty list.
 
