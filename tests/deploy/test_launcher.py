@@ -8,6 +8,7 @@ import pytest
 from conftest import REPO, STATUS_NO_HTTPS, STATUS_STOPPED
 
 STOP = {"SCAT_CHAT_A_STOP": "stop"}
+AGAIN = "choose Stop in the SCAT Chat menu, then open SCAT Chat again"  # D-130 follow-up: the menu, not the app icon
 
 
 def test_start_order_flags_and_stop_button(rig):
@@ -287,7 +288,7 @@ def test_no_published_image_builds_the_source_locally(rig):
 def test_missing_docker(rig):
     r = rig.run("start", SCAT_CHAT_DOCKER=str(rig.bin / "nope"))
     assert r.returncode == 1
-    assert "needs a container runtime" in r.stdout and "click SCAT Chat again" in r.stdout
+    assert "needs a container runtime" in r.stdout and AGAIN in r.stdout
     assert not rig.called("tailscale")
 
 
@@ -342,7 +343,7 @@ def test_stop_that_cannot_confirm_says_what_to_click(rig):
     rig.run("start")
     r = rig.run("stop", SCAT_CHAT_TAILSCALE=str(rig.bin / "nope"))
     assert "could not confirm" in r.stdout
-    assert "click SCAT Chat again, then Stop, or restart your Mac" in r.stdout
+    assert "choose Stop in the SCAT Chat menu to try again, or restart your Mac" in r.stdout
 
 
 def test_missing_tailscale(rig):
@@ -401,11 +402,7 @@ def test_teardown_when_server_never_answers(rig):
 
 def test_failed_build_says_what_to_click(rig):
     r = rig.run("start", STUB_FAIL_BUILD="1")
-    assert (
-        r.returncode == 1
-        and "Building the server failed" in r.stdout
-        and "click SCAT Chat again" in r.stdout
-    )
+    assert r.returncode == 1 and "Building the server failed" in r.stdout and AGAIN in r.stdout
     assert not rig.called("docker run")
 
 

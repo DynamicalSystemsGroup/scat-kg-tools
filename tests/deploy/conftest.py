@@ -45,8 +45,8 @@ case "$1 $2" in
 "status --json") cat "$S/ts-status.json" ;;
 "funnel --bg") [ -n "${STUB_FUNNEL_BLOCKED:-}" ] || touch "$S/funnel-on" ;;
 "funnel status") if [ -f "$S/funnel-on" ]; then echo "https://fake-mac.tail1234.ts.net (Funnel on):"; echo "|-- / proxy http://127.0.0.1:8765"; else echo "No serve config"; fi ;;
-"funnel --https=443") rm -f "$S/funnel-on" ;;
-"funnel reset") rm -f "$S/funnel-on" ;;
+"funnel --https=443") [ -n "${STUB_FUNNEL_STUCK:-}" ] || rm -f "$S/funnel-on" ;;
+"funnel reset") [ -n "${STUB_FUNNEL_STUCK:-}" ] || rm -f "$S/funnel-on" ;;
 esac
 """,
     "openssl": r"""#!/bin/sh
@@ -94,8 +94,15 @@ else
     run "$@"
 fi
 """,
-    # the dialogs and notifications of dialog mode: recorded, never answered (no answer is "closed")
-    "osascript": '#!/bin/sh\necho "osascript $*" >> "$CALLS"\n',
+    # the dialogs and notifications of dialog mode: recorded; answered only when a test says so (no answer is
+    # "closed"): STUB_OSA_USE answers the "Serve <vault>?" question, STUB_OSA_FOLDER the folder chooser
+    "osascript": r"""#!/bin/sh
+echo "osascript $*" >> "$CALLS"
+case "$*" in
+*"choose folder"*) [ -z "${STUB_OSA_FOLDER:-}" ] || printf '%s\n' "$STUB_OSA_FOLDER" ;;
+*"buttons {item 3"*"Serve /"*) [ -z "${STUB_OSA_USE:-}" ] || printf '%s\n' "$STUB_OSA_USE" ;;
+esac
+""",
     # curl is the real one (it talks to the fake server); the stand-in only records its arguments
     "curl": '#!/bin/sh\necho "curl $*" >> "$CALLS"\nexec /usr/bin/curl "$@"\n',
     "pbcopy": '#!/bin/sh\ncat > "$STUB_STATE/clip"\n',
@@ -218,9 +225,14 @@ class Rig:
             timeout=60,
         )
 
-    def start_bg(self, **env):
+    def start_bg(self, remembered=True, **env):
         """`start` in dialog mode (the app's mode), which waits to be stopped: returns the process once the
-        state file says running. Its output goes to a file, so no stray child can hold a pipe open."""
+        state file says running. Its output goes to a file, so no stray child can hold a pipe open.
+        Dialog mode ignores SCAT_CHAT_VAULT (WP22-G5), so the rig's vault is remembered in the state folder and the
+        osascript stand-in answers "Use it", unless the test passes remembered=False or its own answers."""
+        if remembered:
+            (self.state / "vault").write_text(f"{self.vault.resolve()}\n")
+            env.setdefault("STUB_OSA_USE", "Use it")
         out = self.tmp / f"bg{len(self.procs)}.out"
         proc = subprocess.Popen(
             ["/bin/sh", str(SCRIPT), "start"],

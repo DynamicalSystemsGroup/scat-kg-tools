@@ -56,16 +56,26 @@ def test_every_verb_the_applet_calls_is_one_the_launcher_accepts():
 def test_no_applet_line_passes_a_value_to_the_launcher():
     # after the verb only redirections and a trailing & may follow; never a variable or `quoted form of`
     verb_only = re.compile(
-        r'^do shell script launcher & " [a-z][a-z-]*( > /dev/null( 2>&1)?)?( &)?"$'
+        r'^(set msg to )?do shell script launcher & " [a-z][a-z-]*( > /dev/null( 2>&1)?| 2>&1)?( &)?"$'
     )
     for ln in applet_launcher_lines():
         assert verb_only.match(ln), ln
-    code = [ln.strip() for ln in APPLET.splitlines() if not ln.strip().startswith("--")]
+    code = [
+        re.sub(r"\s--\s.*$", "", ln.strip())  # a trailing comment is not code
+        for ln in APPLET.splitlines()
+        if not ln.strip().startswith("--")
+    ]
     for ln in [
         ln for ln in code if re.search(r"\blauncher\b", ln)
     ]:  # any other use is the path's own setting
         assert ln.startswith(
-            ("property launcher", "set launcher", "if launcher is", "do shell script launcher")
+            (
+                "property launcher",
+                "set launcher",
+                "if launcher is",
+                "do shell script launcher",
+                "set msg to do shell script launcher",
+            )
         ), ln
 
 
