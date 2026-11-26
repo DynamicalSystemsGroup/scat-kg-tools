@@ -14,6 +14,7 @@
     scat_kg.remove_edge("a", "b")       # or remove_edge("a", "b", ["narrative-name"])
     scat_kg.load()                      # the knowledge graph, derived from the pages
     scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
+    scat_kg.evidence("node")            # one node: its narratives, paragraphs, edges and adjacent nodes
     scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
     scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
 
@@ -26,6 +27,7 @@ from pathlib import Path
 
 from scat_kg.checks import Report, check_neighborhood, check_page, check_vault
 from scat_kg.contract import SCHEMA_VERSION
+from scat_kg.evidence import evidence
 from scat_kg.export import export_edges
 from scat_kg.graph import Graph
 from scat_kg.graph import load as _load
@@ -140,6 +142,7 @@ __all__ = [
     "attribution",
     "check",
     "edge_table",
+    "evidence",
     "export_edges",
     "fingerprint",
     "index",

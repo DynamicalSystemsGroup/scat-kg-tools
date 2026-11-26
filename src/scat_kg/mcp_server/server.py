@@ -156,6 +156,16 @@ def build(vault: str | Path, **settings) -> FastMCP:
 
     @mcp.tool(
         description=_OWN
+        + "View: everything the vault says of one `node` (a group, concern, affordance or technology page): "
+        "the narratives that link it with the paragraph around each link and the linking sentence marked, "
+        "its edges with the narratives that tell them and each row's note, and its adjacent nodes by "
+        "layer. Writes nothing. Returns the view document."
+    )
+    def evidence(node: str) -> dict[str, Any]:
+        return _doc(scat_kg.evidence(node, root=root))
+
+    @mcp.tool(
+        description=_OWN
         + "View: the narratives by contributor, each contributor page with the narratives that name it, and "
         "the narratives that name none. Refused where the vault's attribution mode is disallowed. Writes "
         "nothing. Returns the view document."

@@ -62,6 +62,11 @@ positional arguments:
     trace         Follow edges from a node: up toward the groups, down toward
                   the technologies, or both. The node itself is left out.
                   Writes nothing.
+    evidence      Show everything the vault says of one node page: the
+                  narratives that link it, each with the paragraph around
+                  every link and the linking sentence between >> and <<; its
+                  edges with the narratives that tell them; and its adjacent
+                  nodes by layer. Writes nothing.
     attribution   Show the narratives by contributor: each contributor page
                   with the narratives that name it, and the narratives that
                   name none. Refuses where the vault's attribution mode is
@@ -79,7 +84,7 @@ options:
 Run `scat <command> --help` for a command.
 ```
 
-`scat` has fifteen commands. Each prints a message and exits with a code:
+`scat` has sixteen commands. Each prints a message and exits with a code:
 
 | Exit code | Meaning |
 |---|---|
@@ -114,6 +119,7 @@ Every command takes `--root ROOT`, the vault folder (default: the current folder
         scat_kg.remove_edge("a", "b")       # or remove_edge("a", "b", ["narrative-name"])
     scat_kg.load()                      # the knowledge graph, derived from the pages
     scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
+    scat_kg.evidence("node")            # one node: its narratives, paragraphs, edges and adjacent nodes
     scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
     scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
 
@@ -186,7 +192,7 @@ $ uv run scat check --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "check",
   "operation": "check",
   "ok": true,
@@ -203,7 +209,7 @@ $ uv run scat check --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "check",
   "operation": "check",
   "ok": false,
@@ -338,7 +344,7 @@ $ uv run scat status anonymity --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "status",
   "operation": "status",
   "ok": true,
@@ -418,7 +424,7 @@ $ uv run scat set-status attribution draft --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "set-status",
   "ok": true,
@@ -443,7 +449,7 @@ $ uv run scat set-status attribution finished --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "set-status",
   "ok": false,
@@ -527,7 +533,7 @@ $ uv run scat index --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "index",
   "ok": true,
@@ -605,7 +611,7 @@ $ uv run scat stub study-circle-two --type concern --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "stub",
   "ok": true,
@@ -671,7 +677,7 @@ $ uv run scat stub-links --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "stub-links",
   "ok": true,
@@ -747,7 +753,7 @@ $ uv run scat record-edge addressed-by study-circle reading-shelf --told-by desk
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "record-edge",
   "ok": true,
@@ -843,7 +849,7 @@ $ uv run scat remove-edge study-circle reading-shelf --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "remove-edge",
   "ok": true,
@@ -949,7 +955,7 @@ $ uv run scat fingerprint groups-under-a-cap-pitch --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "view",
   "operation": "fingerprint",
   "ok": true,
@@ -1061,7 +1067,7 @@ $ uv run scat edges holds --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "view",
   "operation": "edges",
   "ok": true,
@@ -1162,7 +1168,7 @@ $ uv run scat layered --narrative groups-under-a-cap-pitch --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "view",
   "operation": "layered",
   "ok": true,
@@ -1283,7 +1289,7 @@ $ uv run scat trace anonymity --direction up --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "view",
   "operation": "trace",
   "ok": true,
@@ -1312,6 +1318,225 @@ $ uv run scat trace anonymity --direction up --json
   "excluded": []
 }
 ```
+
+## scat evidence
+
+```text
+usage: scat evidence [-h] [--root ROOT] [--json] NODE
+
+Show everything the vault says of one node page: the narratives that link it, each with the paragraph around every link and the linking sentence between >> and <<; its edges with the narratives that tell them; and its adjacent nodes by layer. Writes nothing.
+
+positional arguments:
+  NODE         the name of a group, concern, affordance or technology
+
+options:
+  -h, --help   show this help message and exit
+  --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
+
+REPL: `scat_kg.evidence("<node>")`
+```
+
+Shows, for one node page, what the vault says of it, so that you can write the page from the narratives and not from one of them. It prints the vault's attribution mode first, then:
+
+- **narratives**: every narrative that links the node, with its status, kind and timeframe. For each link in the account, the whole paragraph around it (the lines between blank lines, as written), with the sentence that holds the link between `>>` and `<<`. The sentence that matters may be the next one: the paragraph is there to show it. Several links in one paragraph make one entry. A narrative that links the node and tells no edge for it says so. A link inside the `Edges told` table is not a paragraph: it shows through the edges.
+- **edges**: the node's edges, each with the narratives that tell it and each row's note.
+- **adjacent nodes**: the nodes one edge away, by layer.
+
+A sentence ends at a `.`, `!` or `?` followed by a space, so an abbreviation such as `e.g.` ends one early; the paragraph is always whole. A narrative that links no node page is excluded and listed at the end, as in the other views. The command reads no `attributed_to` field and lists no contributor page. It writes nothing.
+
+Exit codes: 0, or 1 for a refusal (a name that is not a node page, such as a narrative or a contributor page, a name that two pages carry, a page it draws that has an error).
+
+=== "Python"
+
+    ```python
+    scat_kg.evidence("anonymity")
+    ```
+
+    ```text
+    attribution mode: disallowed
+    evidence anonymity (concern, draft): 2 narratives, 2 edges
+      narratives (the sentence with the link is between >> and <<)
+        groups-under-a-cap-pitch [done, architecture, future]
+          line 12
+            - [[groups-clustered-under-a-cap|The vault holds groups]], and [[cap-setting|an instance setting]] caps their number.
+            - The cap is set for each vault, in the vault's own configuration. The example vault sets it to 3.
+            - A group is named by its role. No group stands for one identifiable person.
+            - >>Reason given in the record: the people in the data are groups under the Chatham House rule, so [[anonymity|no individual is identifiable]].<<
+        notes-at-a-chatham-house-session [done, scenario, mixed]
+          line 12
+            - [[workshop-participants|Workshop participants]] tell stories in conversations. The work is sized for manual note-taking in Obsidian.
+            - [[facilitator-analysts|Facilitators]] take the field notes. >>The setting is Chatham House rule: the people in the data are groups, so [[anonymity|no individual is identifiable]].<<
+            - The vault holds groups, and [[groups-clustered-under-a-cap|an instance setting caps their number]].
+            - This vault runs in the disallowed attribution mode: the notes name groups, never individuals, and no note links to a person. A project that needs names chooses another mode when it sets up.
+            - >>[[attribution|Attribution]] and [[anonymity]] conflict as concerns, and the vault records that as a remark on one of them.<<
+      edges
+        holds: facilitator-analysts -> anonymity [done; told by notes-at-a-chatham-house-session]
+            notes-at-a-chatham-house-session: They take the field notes under the Chatham House rule, so no individual is identifiable (D-010).
+        addressed-by: anonymity -> groups-clustered-under-a-cap [done; told by groups-under-a-cap-pitch, notes-at-a-chatham-house-session]
+            groups-under-a-cap-pitch: Participants appear only as groups, so no group stands for one identifiable person.
+            notes-at-a-chatham-house-session: The mission says the people in the data are groups under the Chatham House rule, so no individual is identifiable.
+      adjacent nodes
+        group
+          facilitator-analysts [done]
+        affordance
+          groups-clustered-under-a-cap [done]
+    excluded (no node page linked; link one node page to include it)
+        desk-notes-one (narrative/desk-notes-one.md)
+        desk-notes-two (narrative/desk-notes-two.md)
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat evidence anonymity
+    ```
+
+    The same text.
+
+A name that is not a node page is refused, and nothing is written:
+
+```text
+$ uv run scat evidence nobody
+refused nobody: no node has this name
+  Fix: give the name of a page (the file name without `.md`) that is a group, concern, affordance or technology
+```
+
+With `--json`:
+
+```text
+$ uv run scat evidence anonymity --json
+```
+
+```json
+{
+  "schema_version": 3,
+  "kind": "view",
+  "operation": "evidence",
+  "ok": true,
+  "mode": "disallowed",
+  "node": "anonymity",
+  "node_type": "concern",
+  "node_status": "draft",
+  "narratives": [
+    {
+      "name": "groups-under-a-cap-pitch",
+      "status": "done",
+      "kind": "architecture",
+      "timeframe": "future",
+      "tells_edge": true,
+      "paragraphs": [
+        {
+          "line": 12,
+          "paragraph": "- [[groups-clustered-under-a-cap|The vault holds groups]], and [[cap-setting|an instance setting]] caps their number.\n- The cap is set for each vault, in the vault's own configuration. The example vault sets it to 3.\n- A group is named by its role. No group stands for one identifiable person.\n- Reason given in the record: the people in the data are groups under the Chatham House rule, so [[anonymity|no individual is identifiable]].",
+          "sentences": [
+            {
+              "text": "Reason given in the record: the people in the data are groups under the Chatham House rule, so [[anonymity|no individual is identifiable]].",
+              "start": 296,
+              "end": 435
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "notes-at-a-chatham-house-session",
+      "status": "done",
+      "kind": "scenario",
+      "timeframe": "mixed",
+      "tells_edge": true,
+      "paragraphs": [
+        {
+          "line": 12,
+          "paragraph": "- [[workshop-participants|Workshop participants]] tell stories in conversations. The work is sized for manual note-taking in Obsidian.\n- [[facilitator-analysts|Facilitators]] take the field notes. The setting is Chatham House rule: the people in the data are groups, so [[anonymity|no individual is identifiable]].\n- The vault holds groups, and [[groups-clustered-under-a-cap|an instance setting caps their number]].\n- This vault runs in the disallowed attribution mode: the notes name groups, never individuals, and no note links to a person. A project that needs names chooses another mode when it sets up.\n- [[attribution|Attribution]] and [[anonymity]] conflict as concerns, and the vault records that as a remark on one of them.",
+          "sentences": [
+            {
+              "text": "The setting is Chatham House rule: the people in the data are groups, so [[anonymity|no individual is identifiable]].",
+              "start": 197,
+              "end": 314
+            },
+            {
+              "text": "[[attribution|Attribution]] and [[anonymity]] conflict as concerns, and the vault records that as a remark on one of them.",
+              "start": 611,
+              "end": 733
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "type": "holds",
+      "from": "facilitator-analysts",
+      "to": "anonymity",
+      "narratives": [
+        "notes-at-a-chatham-house-session"
+      ],
+      "status": "done",
+      "tellings": [
+        {
+          "narrative": "notes-at-a-chatham-house-session",
+          "note": "They take the field notes under the Chatham House rule, so no individual is identifiable (D-010)."
+        }
+      ]
+    },
+    {
+      "type": "addressed-by",
+      "from": "anonymity",
+      "to": "groups-clustered-under-a-cap",
+      "narratives": [
+        "groups-under-a-cap-pitch",
+        "notes-at-a-chatham-house-session"
+      ],
+      "status": "done",
+      "tellings": [
+        {
+          "narrative": "groups-under-a-cap-pitch",
+          "note": "Participants appear only as groups, so no group stands for one identifiable person."
+        },
+        {
+          "narrative": "notes-at-a-chatham-house-session",
+          "note": "The mission says the people in the data are groups under the Chatham House rule, so no individual is identifiable."
+        }
+      ]
+    }
+  ],
+  "adjacent": {
+    "group": [
+      {
+        "name": "facilitator-analysts",
+        "type": "group",
+        "status": "done"
+      }
+    ],
+    "concern": [],
+    "affordance": [
+      {
+        "name": "groups-clustered-under-a-cap",
+        "type": "affordance",
+        "status": "done"
+      }
+    ],
+    "technology": []
+  },
+  "excluded": [
+    {
+      "name": "desk-notes-one",
+      "file": "narrative/desk-notes-one.md",
+      "fix": "link one node page in the narrative (a row end or its account), then run this again"
+    },
+    {
+      "name": "desk-notes-two",
+      "file": "narrative/desk-notes-two.md",
+      "fix": "link one node page in the narrative (a row end or its account), then run this again"
+    }
+  ]
+}
+```
+
+In the document, `paragraphs[].line` is the file line of the paragraph's first line, and each sentence has `start` and `end`, 0-based character offsets in `paragraph` (`end` not included), so that `paragraph[start:end]` is the sentence.
 
 ## scat attribution
 
@@ -1387,7 +1612,7 @@ $ uv run scat attribution --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "view",
   "operation": "attribution",
   "ok": true,
@@ -1479,7 +1704,7 @@ $ uv run scat export-edges --out edge-tables --json
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kind": "operation",
   "operation": "export-edges",
   "ok": true,

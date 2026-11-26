@@ -41,7 +41,7 @@ def lines(*xs):
 def doc(view, operation):
     d = view.to_dict()
     assert view.ok is True
-    assert d["schema_version"] == 2
+    assert d["schema_version"] == 3
     assert d["kind"] == "view"
     assert d["operation"] == operation
     assert d["ok"] is True

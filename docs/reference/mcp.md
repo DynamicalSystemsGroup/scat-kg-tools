@@ -24,7 +24,7 @@ address and refuses to start on any other.
 
 ## Tools
 
-Fourteen tools. Each returns the operation's own document.
+Fifteen tools. Each returns the operation's own document.
 
 | Tool | What it does |
 |---|---|
@@ -40,6 +40,7 @@ Fourteen tools. Each returns the operation's own document.
 | `edge_table` | View: every edge of one type, with the narratives that tell it. |
 | `layered` | View: the layered view of some narratives, or all. |
 | `trace` | View: follow edges up, down or both from a node. |
+| `evidence` | View: one node page's narratives with the paragraph around each link, its edges with the narratives that tell them, and its adjacent nodes. Reads no `attributed_to` and lists no contributor page. |
 | `attribution` | View: the narratives by contributor, and the narratives that name none. Refused where the attribution mode is `disallowed`. |
 | `export_edges` | Write the three edge tables as CSV and Markdown into `views/`. |
 

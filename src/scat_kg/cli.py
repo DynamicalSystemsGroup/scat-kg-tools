@@ -183,6 +183,16 @@ def _parser() -> argparse.ArgumentParser:
         metavar="DIRECTION",
         help="up, down or both (default: both)",
     )
+    p = command(
+        "evidence",
+        "Show everything the vault says of one node page: the narratives that link it, each with the "
+        "paragraph around every link and the linking sentence between >> and <<; its edges with the "
+        f"narratives that tell them; and its adjacent nodes by layer. {scope}.",
+        '`scat_kg.evidence("<node>")`',
+    )
+    p.add_argument(
+        "node", metavar="NODE", help="the name of a group, concern, affordance or technology"
+    )
     command(
         "attribution",
         "Show the narratives by contributor: each contributor page with the narratives that name it, and "
@@ -270,6 +280,8 @@ def run(args: argparse.Namespace):
             return scat_kg.layered(args.narrative, root=root)
         case "trace":
             return scat_kg.trace(args.node, args.direction, root=root)
+        case "evidence":
+            return scat_kg.evidence(args.node, root=root)
         case "attribution":
             return scat_kg.attribution(root=root)
         case "export-edges":

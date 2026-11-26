@@ -40,7 +40,7 @@ def problems_of(make_vault, files, remove, rule):
 
 def check_doc(p):
     d = {
-        "schema_version": 2,
+        "schema_version": 3,
         "kind": "check",
         "operation": "check",
         "ok": p.severity != "error",

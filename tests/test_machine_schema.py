@@ -52,7 +52,7 @@ def problem(rule, severity, fix_, **more):
 
 def doc(kind, operation, ok, **more):
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "kind": kind,
         "operation": operation,
         "ok": ok,
@@ -325,7 +325,7 @@ def mutated(base, fn):
 MALFORMED = {
     "missing schema_version": mutated(CLEAN, lambda d: d.pop("schema_version")),
     "wrong schema_version": mutated(CLEAN, lambda d: d.update(schema_version=1)),
-    "string schema_version": mutated(CLEAN, lambda d: d.update(schema_version="2")),
+    "string schema_version": mutated(CLEAN, lambda d: d.update(schema_version="3")),
     "wrong kind": mutated(CLEAN, lambda d: d.update(kind="report")),
     "missing ok": mutated(CLEAN, lambda d: d.pop("ok")),
     "missing mode": mutated(CLEAN, lambda d: d.pop("mode")),
@@ -436,8 +436,8 @@ def test_schema_does_not_enumerate_rule_ids():
     assert "enum" not in SCHEMA["$defs"]["OperationName"]
 
 
-def test_contract_page_is_at_most_646_words():
-    assert len(PAGE.split()) <= 646
+def test_contract_page_is_at_most_701_words():
+    assert len(PAGE.split()) <= 701
 
 
 def def_properties(*names: str) -> set[str]:

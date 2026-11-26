@@ -191,7 +191,7 @@ def test_an_edge_never_waits_on_an_excluded_narrative(make):
 @pytest.mark.parametrize("which", range(4))
 def test_the_view_documents_with_an_excluded_record_validate(make, which):
     doc = every_view(make(ghost()))[which].to_dict()
-    assert doc["excluded"] and doc["schema_version"] == 2
+    assert doc["excluded"] and doc["schema_version"] == 3
     assert list(VALIDATOR.iter_errors(doc)) == []
 
 
@@ -213,7 +213,7 @@ def test_a_view_document_without_the_field_still_validates_and_the_version_is_un
     doc = scat_kg.fingerprint(root=make()).to_dict()
     del doc["excluded"]
     assert VALIDATOR.is_valid(doc)  # adding a field keeps the version (R-16)
-    assert doc["schema_version"] == 2
+    assert doc["schema_version"] == 3
 
 
 def test_json_on_the_command_line_carries_the_excluded_record(make, capsys):
