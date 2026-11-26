@@ -278,3 +278,31 @@ def test_a16_a17_the_prompts_say_it():
         assert "sets `done`" in flat or "sets `done`, in Obsidian" in flat
         assert not re.search(r"\b(SHALL NOT|SHALL|SHOULD|MAY)\b", p)
     assert not re.search(r"\b(SHALL NOT|SHALL|SHOULD|MAY)\b", prompts.RULES)
+
+
+def test_r6_the_merge_plan_is_shown_and_applying_is_refused(tmp_path):
+    """WP24-R6: through MCP a merge is a plan; applying one is refused, as `done` is, and nothing is written."""
+    vault = copy_vault(tmp_path / "v")
+    with serve(vault) as url:
+        files = snapshot(vault)
+        plan = call(url, "merge", {"a": "funders", "b": "borrowers"})  # plan is the default
+        assert plan["ok"] is True and plan["plan"] is True and plan["operation"] == "merge"
+        assert plan["removed"] == ["group/funders.md"] and plan["done_narratives"]
+        assert snapshot(vault) == files
+        for args in (
+            {"a": "funders", "b": "borrowers", "plan": False},
+            {"a": "funders", "b": "borrowers", "plan": 0},
+        ):
+            doc = call(url, "merge", args)
+            assert doc["ok"] is False and doc["refused"]
+            assert "coder" in doc["refused"][0]["why"]
+            assert "scat merge funders borrowers" in str(doc["refused"][0]["fix"])
+            assert snapshot(vault) == files
+        # a refused plan, and a string guard
+        assert call(url, "merge", {"a": "funders", "b": "safety-briefing"})["ok"] is False
+        assert call(url, "merge", {"a": "funders", "b": "funders"})["ok"] is False
+        assert snapshot(vault) == files
+        split = call(url, "split_plan", {"a": "funders"})
+        assert split["ok"] is True and split["node"] == "funders" and split["pages"]
+        assert call(url, "split_plan", {"a": "nobody"})["ok"] is False
+        assert snapshot(vault) == files

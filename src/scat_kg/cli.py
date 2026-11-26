@@ -132,6 +132,28 @@ def _parser() -> argparse.ArgumentParser:
         metavar="NARRATIVE",
         help="remove the rows of this narrative only; repeat it for each narrative",
     )
+    p = command(
+        "merge",
+        "Fold node page A into node page B, two pages of one type: every link to A in the narratives and node "
+        "pages becomes a link to B, A's body is added to B under a heading that names A, A's description is "
+        "dropped, and A's page is removed. A is folded into B, never the other way round. Refuses, and writes "
+        "nothing, for a pair of different types, a page that is not a node page, a contributor page that links A, "
+        "or a merge that would give a narrative two rows for one edge. With --plan it writes nothing and shows "
+        "what the merge would do.",
+        '`scat_kg.merge("<a>", "<b>")`, `scat_kg.merge("<a>", "<b>", plan=True)`',
+    )
+    p.add_argument("a", metavar="A", help="the node page that is folded in, and removed")
+    p.add_argument("b", metavar="B", help="the node page that stays")
+    p.add_argument(
+        "--plan", action="store_true", help="show what the merge would do and write nothing"
+    )
+    p = command(
+        "split-plan",
+        "Show what you must re-link to split node page A in two: each narrative that links A, with every link and "
+        "every Edges told row that names A. You assign each narrative to A or to a new page. Writes nothing.",
+        '`scat_kg.split_plan("<a>")`',
+    )
+    p.add_argument("a", metavar="A", help="the node page to split")
     scope = "Writes nothing"
     p = command(
         "fingerprint",
@@ -284,6 +306,10 @@ def run(args: argparse.Namespace):
             )
         case "remove-edge":
             return scat_kg.remove_edge(args.from_node, args.to_node, args.told_by, root=root)
+        case "merge":
+            return scat_kg.merge(args.a, args.b, plan=args.plan, root=root)
+        case "split-plan":
+            return scat_kg.split_plan(args.a, root=root)
         case "stub-links":
             return scat_kg.stub_links(args.page, root=root)
         case "fingerprint":

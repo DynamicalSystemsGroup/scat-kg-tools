@@ -50,6 +50,20 @@ positional arguments:
     remove-edge   Remove an edge: delete its rows, from the narratives named
                   by --told-by or, without it, from every narrative that tells
                   it. Leaves the links. Refuses a narrative that is done.
+    merge         Fold node page A into node page B, two pages of one type:
+                  every link to A in the narratives and node pages becomes a
+                  link to B, A's body is added to B under a heading that names
+                  A, A's description is dropped, and A's page is removed. A is
+                  folded into B, never the other way round. Refuses, and
+                  writes nothing, for a pair of different types, a page that
+                  is not a node page, a contributor page that links A, or a
+                  merge that would give a narrative two rows for one edge.
+                  With --plan it writes nothing and shows what the merge would
+                  do.
+    split-plan    Show what you must re-link to split node page A in two: each
+                  narrative that links A, with every link and every Edges told
+                  row that names A. You assign each narrative to A or to a new
+                  page. Writes nothing.
     fingerprint   Show a narrative's fingerprint: its nodes by layer and the
                   edges its rows tell; with --candidates, also the links that
                   have no row. NARRATIVE is a name; without it, every
@@ -121,13 +135,14 @@ Every command takes `--root ROOT`, the vault folder (default: the current folder
         scat_kg.stub("x", type="concern")
         scat_kg.stub_links()                # or stub_links("x")
         scat_kg.record_edge("holds", "a", "b", ["narrative-name"], note="")
+        scat_kg.merge("a", "b", plan=True)  # fold node page a into b (plan=False applies it); split_plan("a")
         scat_kg.remove_edge("a", "b")       # or remove_edge("a", "b", ["narrative-name"])
-    scat_kg.load()                      # the knowledge graph, derived from the pages
-    scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
-    scat_kg.evidence("node")            # one node: its narratives, paragraphs, edges and adjacent nodes
-    scat_kg.copy_share()                # how much of each node page repeats a narrative, word for word
-    scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
-    scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
+        scat_kg.load()                      # the knowledge graph, derived from the pages
+        scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
+        scat_kg.evidence("node")            # one node: its narratives, paragraphs, edges and adjacent nodes
+        scat_kg.copy_share()                # how much of each node page repeats a narrative, word for word
+        scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
+        scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
 
     Each call takes `root=` (the vault folder; default: the current directory) and returns an object whose
     `str()` is the message the `scat` command prints, and which prints as that message. `.ok` is False when
@@ -887,6 +902,173 @@ $ uv run scat remove-edge study-circle reading-shelf --json
   ]
 }
 ```
+
+## scat merge
+
+```text
+usage: scat merge [-h] [--root ROOT] [--json] [--plan] A B
+
+Fold node page A into node page B, two pages of one type: every link to A in the narratives and node pages becomes a link to B, A's body is added to B under a heading that names A, A's description is dropped, and A's page is removed. A is folded into B, never the other way round. Refuses, and writes nothing, for a pair of different types, a page that is not a node page, a contributor page that links A, or a merge that would give a narrative two rows for one edge. With --plan it writes nothing and shows what the merge would do.
+
+positional arguments:
+  A            the node page that is folded in, and removed
+  B            the node page that stays
+
+options:
+  -h, --help   show this help message and exit
+  --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
+  --plan       show what the merge would do and write nothing
+
+REPL: `scat_kg.merge("<a>", "<b>")`, `scat_kg.merge("<a>", "<b>", plan=True)`
+```
+
+Folds node page A into node page B, two pages of one type, when you have found that they name one node. A is folded into B: B stays and A goes.
+
+- Every link to A in the narratives and node pages becomes a link to B, in the body only. A bare link in prose keeps what you read: `[[A]]` becomes `[[B|A]]`. A link that is a whole `from` or `to` cell of an `Edges told` row stays bare, `[[B]]`. An alias, a heading, a block reference and an embed keep their form. A link in a fenced block or a code span is not a link and is left as it is. A page's frontmatter is never changed.
+- A's body is added to the end of B under the heading `## From A`, and nothing is added when A has no body. A's description is dropped: B keeps its own, and its status and other fields do not change.
+- A's page is removed, and an index page that is missing is written.
+- A narrative that is `done` stays `done`. The result lists each one whose text changed, so that you can read it again.
+
+The merge is tried out before anything is written. The whole result is built in a temporary copy of the vault, which must pass the check with no new error, hold no link to A, and give the same graph as before with A renamed B: the same edges, the narratives that tell each, and each narrative's fingerprint. If any of that fails, nothing is written. With `--plan` the command does all of that and then stops: it prints what the merge would do and writes nothing.
+
+It refuses, and writes nothing, for a name that is no page, one page named twice, a pair of different types, a page that is not a node page (a narrative or a contributor page), a contributor page whose body links A (it is listed: a merge never writes a contributor page), a page it reads or writes that has an error in the check, and a narrative that would end with two rows for one edge (both rows are listed: delete one, putting its note in the other, and run the command again). The assistant over MCP can show the plan but cannot apply a merge.
+
+Exit codes: 0, or 1 for a refusal.
+
+=== "Python"
+
+    ```python
+    scat_kg.merge("project-leads", "workshop-participants", plan=True)
+    ```
+
+    ```text
+    merge plan: `project-leads` is folded into `workshop-participants`; nothing is written
+      3 links to `project-leads` would be rewritten
+    would change narrative/false-start-and-clean-restart.md (2 links)
+    would change narrative/two-branches-and-tags-pitch.md (1 link)
+    would remove group/project-leads.md
+    would change 2 `done` narratives (they stay `done`): false-start-and-clean-restart, two-branches-and-tags-pitch
+    note: `project-leads` has no body, so nothing is appended to `workshop-participants`
+    note: the description of `project-leads` is dropped; `workshop-participants` keeps its own, and its status (`done`) and other fields are unchanged
+    note: a `done` narrative whose text changes stays `done`: read it again before you rely on it
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat merge --plan project-leads workshop-participants
+    ```
+
+    The same text.
+
+A pair of different types is refused, and nothing is written:
+
+```text
+$ uv run scat merge --plan project-leads gated-approval
+refused project-leads and gated-approval: `project-leads` is a group and `gated-approval` is an affordance: a merge needs two pages of one type
+  Fix: name two node pages of one type (group, concern, affordance, technology): `scat merge A B` folds A into B
+```
+
+With `--json`:
+
+```text
+$ uv run scat merge --plan project-leads workshop-participants --json
+```
+
+```json
+{
+  "schema_version": 3,
+  "kind": "operation",
+  "operation": "merge",
+  "ok": true,
+  "mode": "disallowed",
+  "created": [],
+  "changed": [
+    "narrative/false-start-and-clean-restart.md",
+    "narrative/two-branches-and-tags-pitch.md"
+  ],
+  "unchanged": [],
+  "refused": [],
+  "notes": [
+    "`project-leads` has no body, so nothing is appended to `workshop-participants`",
+    "the description of `project-leads` is dropped; `workshop-participants` keeps its own, and its status (`done`) and other fields are unchanged",
+    "a `done` narrative whose text changes stays `done`: read it again before you rely on it"
+  ],
+  "plan": true,
+  "removed": [
+    "group/project-leads.md"
+  ],
+  "done_narratives": [
+    "false-start-and-clean-restart",
+    "two-branches-and-tags-pitch"
+  ],
+  "links_rewritten": [
+    {
+      "file": "narrative/false-start-and-clean-restart.md",
+      "links": 2
+    },
+    {
+      "file": "narrative/two-branches-and-tags-pitch.md",
+      "links": 1
+    }
+  ]
+}
+```
+
+In the document, `plan` is true when nothing was written (`changed` and `removed` are then what a merge would do), `removed` names the page folded in, `done_narratives` the `done` narratives whose text changes, and `links_rewritten` the number of links in each file.
+
+## scat split-plan
+
+```text
+usage: scat split-plan [-h] [--root ROOT] [--json] A
+
+Show what you must re-link to split node page A in two: each narrative that links A, with every link and every Edges told row that names A. You assign each narrative to A or to a new page. Writes nothing.
+
+positional arguments:
+  A            the node page to split
+
+options:
+  -h, --help   show this help message and exit
+  --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
+
+REPL: `scat_kg.split_plan("<a>")`
+```
+
+Shows what you must re-link to split node page A in two, when you have found that it holds two nodes. It splits nothing and writes nothing. For each narrative (or node page) that links A it gives every link, by line and column, and every `Edges told` row that names A, as written. You assign each narrative to A or to a new page (made with `scat stub`), then edit each link and row by hand. A narrative that is `done` is yours to reopen first. For a group the plan notes the cap on groups in `scat.toml` and whether a new group page would go over it; it does not refuse for that. A contributor page is never listed.
+
+It refuses a name that is no page, a page that is not a node page, and a page it reads that has an error in the check.
+
+Exit codes: 0, or 1 for a refusal.
+
+=== "Python"
+
+    ```python
+    scat_kg.split_plan("project-leads")
+    ```
+
+    ```text
+    split plan for `project-leads` (group): 2 pages, 3 links, 1 row to re-link; nothing is written
+      narrative/false-start-and-clean-restart.md (narrative, done): links at line 13, 28
+        row 1, line 28: | [[project-leads]] | holds | [[intent-without-drift]] | The log gives these as the concerns of the false-start story, which it places with project leads (D-020). |
+      narrative/two-branches-and-tags-pitch.md (narrative, done): links at line 13
+    note: you assign each narrative to `project-leads` or to a new page: make the new page with `scat stub <name> --type group`, then edit each link and row by hand
+    note: narratives that are `done` are yours to reopen before you edit them: false-start-and-clean-restart, two-branches-and-tags-pitch
+    note: the vault allows 3 groups and has 3; a new group page makes 4; raise `stakeholder_group_cap` in `scat.toml` first
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat split-plan project-leads
+    ```
+
+    The same text.
+
+With `--json` the document adds `node`, `node_type` and `pages`. Each page has `file`, `name`, `type`, `status`, `links` (`line`, `column`) and `rows` (`row`, `line`, `text`).
 
 ## scat fingerprint
 

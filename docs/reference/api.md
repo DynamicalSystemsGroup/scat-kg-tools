@@ -25,6 +25,8 @@
 | [`scat_kg.stub`](#scat_kgstub) | [`scat stub`](cli.md#scat-stub) | Create one stub page. |
 | [`scat_kg.record_edge`](#scat_kgrecord_edge) | [`scat record-edge`](cli.md#scat-record-edge) | Record an edge: add its row to the narratives that tell it. |
 | [`scat_kg.remove_edge`](#scat_kgremove_edge) | [`scat remove-edge`](cli.md#scat-remove-edge) | Remove an edge: delete its rows. |
+| [`scat_kg.merge`](#scat_kgmerge) | [`scat merge`](cli.md#scat-merge) | Fold node page A into node page B of the same type; `plan=True` shows it and writes nothing. |
+| [`scat_kg.split_plan`](#scat_kgsplit_plan) | [`scat split-plan`](cli.md#scat-split-plan) | Show what must be re-linked to split a node page. Writes nothing. |
 | [`scat_kg.stub_links`](#scat_kgstub_links) | [`scat stub-links`](cli.md#scat-stub-links) | Create the node pages that the ends of rows link and the vault lacks. |
 | [`scat_kg.set_status`](#scat_kgset_status) | [`scat set-status`](cli.md#scat-set-status) | Set a page's status. |
 | [`scat_kg.load`](#scat_kgload) | none | Read the vault into its knowledge graph. Writes nothing. |
@@ -600,6 +602,99 @@ As data:
   ]
 }
 ```
+
+## scat_kg.merge
+
+```text
+merge(a, b, *, plan=False, root=".")
+```
+
+Folds node page `a` into node page `b`, two pages of one type: every link to `a` in the narratives and node pages becomes a link to `b`, `a`'s body is added to `b` under `## From a`, `a`'s description is dropped (`b` keeps its own, with its status and other fields), and `a`'s page is removed. `a` is folded into `b`, never the other way round. CLI twin: [`scat merge`](cli.md#scat-merge).
+
+| Parameter | Meaning |
+|---|---|
+| `a` | The name of the node page that is folded in, and removed. |
+| `b` | The name of the node page that stays. |
+| `plan` | `True` shows what the merge would do and writes nothing. The default applies it. |
+| `root` | The vault folder. |
+
+The whole result is built in a temporary copy of the vault first, and written only when the copy passes the check with no new error, holds no link to `a`, and gives the graph the vault had, with `a` renamed `b`. A narrative that is `done` stays `done`; `done_narratives` lists each one whose text changed. It refuses, and writes nothing, for a pair of different types, a page that is not a node page, a contributor page whose body links `a` (a merge never writes a contributor page), an error in a page it reads, and a narrative that would end with two rows for one edge (both rows are listed). The [CLI reference](cli.md#scat-merge) says how each kind of link is rewritten.
+
+=== "Python"
+
+    ```python
+    scat_kg.merge("project-leads", "workshop-participants", plan=True)
+    ```
+
+    ```text
+    merge plan: `project-leads` is folded into `workshop-participants`; nothing is written
+      3 links to `project-leads` would be rewritten
+    would change narrative/false-start-and-clean-restart.md (2 links)
+    would change narrative/two-branches-and-tags-pitch.md (1 link)
+    would remove group/project-leads.md
+    would change 2 `done` narratives (they stay `done`): false-start-and-clean-restart, two-branches-and-tags-pitch
+    note: `project-leads` has no body, so nothing is appended to `workshop-participants`
+    note: the description of `project-leads` is dropped; `workshop-participants` keeps its own, and its status (`done`) and other fields are unchanged
+    note: a `done` narrative whose text changes stays `done`: read it again before you rely on it
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat merge --plan project-leads workshop-participants
+    ```
+
+    The same text.
+
+`result.to_dict()` is the document the command prints with `--json`; its `plan`, `removed`, `done_narratives` and `links_rewritten` fields are in the [CLI reference](cli.md#scat-merge). A refusal prints what to do next, and nothing is written:
+
+```python
+scat_kg.merge("project-leads", "gated-approval", plan=True)
+```
+
+```text
+refused project-leads and gated-approval: `project-leads` is a group and `gated-approval` is an affordance: a merge needs two pages of one type
+  Fix: name two node pages of one type (group, concern, affordance, technology): `scat merge A B` folds A into B
+```
+
+## scat_kg.split_plan
+
+```text
+split_plan(a, *, root=".")
+```
+
+Shows what must be re-linked to split node page `a` in two. It writes nothing. For each narrative (or node page) that links `a` it lists every link and every `Edges told` row that names `a`; you assign each narrative to `a` or to a new page and edit by hand. A contributor page is never listed. CLI twin: [`scat split-plan`](cli.md#scat-split-plan).
+
+| Parameter | Meaning |
+|---|---|
+| `a` | The name of the node page to split. |
+| `root` | The vault folder. |
+
+The returned plan has `node`, `node_type` and `pages` (each with `file`, `name`, `type`, `status`, `links` and `rows`). It refuses a name that is no page, a page that is not a node page, and an error in a page it reads.
+
+=== "Python"
+
+    ```python
+    scat_kg.split_plan("project-leads")
+    ```
+
+    ```text
+    split plan for `project-leads` (group): 2 pages, 3 links, 1 row to re-link; nothing is written
+      narrative/false-start-and-clean-restart.md (narrative, done): links at line 13, 28
+        row 1, line 28: | [[project-leads]] | holds | [[intent-without-drift]] | The log gives these as the concerns of the false-start story, which it places with project leads (D-020). |
+      narrative/two-branches-and-tags-pitch.md (narrative, done): links at line 13
+    note: you assign each narrative to `project-leads` or to a new page: make the new page with `scat stub <name> --type group`, then edit each link and row by hand
+    note: narratives that are `done` are yours to reopen before you edit them: false-start-and-clean-restart, two-branches-and-tags-pitch
+    note: the vault allows 3 groups and has 3; a new group page makes 4; raise `stakeholder_group_cap` in `scat.toml` first
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat split-plan project-leads
+    ```
+
+    The same text.
 
 ## scat_kg.stub_links
 
@@ -1271,7 +1366,7 @@ In Jupyter, a drawing shows itself. `.save` makes the folder if needed, rewrites
 
 ## Results
 
-Each call returns one of three kinds of result. All print as their message.
+Each call returns one of these kinds of result. All print as their message.
 
 | Kind | Returned by | Holds |
 |---|---|---|
@@ -1279,6 +1374,7 @@ Each call returns one of three kinds of result. All print as their message.
 | `StatusReport` | `status`, when it ran | `scope` (`"page"`, `"neighborhood"` or `"vault"`), `rows` (each with `path`, `name`, `type`, `status`), `counts` (pages per status; `other` is a missing or invalid status), `ok`. |
 | `Result` | `stub`, `stub_links`, `set_status`, `index`, and any refusal | `created`, `changed`, `unchanged`, `notes` (tuples of text), `refused` (each with `subject`, `why`, `fix`), `ok`. |
 | `EdgeResult` | `record_edge`, `remove_edge` | everything a `Result` holds, and `edge`, `rows_added`, `rows_removed`. |
+| `MergeResult`, `SplitPlan` | `merge`, `split_plan`, when they ran | everything a `Result` holds, and `plan`, `removed`, `done_narratives`, `links_rewritten` (merge); `node`, `node_type`, `pages` (split plan). |
 
 The views return a `View` (see [Views](#views)) and the drawings a `Drawing` (see [Drawings](#drawings)).
 

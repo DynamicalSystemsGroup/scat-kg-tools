@@ -13,6 +13,8 @@ TOOLS = {
     "stub_links",
     "record_edge",
     "remove_edge",
+    "merge",
+    "split_plan",
     "index",
     "fingerprint",
     "edge_table",
@@ -105,6 +107,12 @@ SEQUENCE = [
         {"node": "funders-meeting"},
         lambda r: scat_kg.evidence("funders-meeting", root=r),
     ),
+    (
+        "merge",
+        {"a": "funders", "b": "borrowers"},
+        lambda r: scat_kg.merge("funders", "borrowers", plan=True, root=r),
+    ),
+    ("split_plan", {"a": "funders"}, lambda r: scat_kg.split_plan("funders", root=r)),
     ("copy_share", {}, lambda r: scat_kg.copy_share(root=r)),
     ("copy_share", {"node": "borrowers"}, lambda r: scat_kg.copy_share("borrowers", root=r)),
     (

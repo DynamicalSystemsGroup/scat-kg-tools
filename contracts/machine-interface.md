@@ -29,6 +29,7 @@ Nothing else is promised.
 | status row | `path`, `name`, `type`, `status` |
 | operation | `created`, `changed`, `unchanged` (already right, nothing written), `refused`, `notes` (sentences for a person), `problems` |
 | record-edge, remove-edge result | an operation, and when `ok`: `edge`, `rows_added`, `rows_removed` |
+| merge, split-plan result | an operation, and when `ok`: `plan`, `removed`, `done_narratives`, `links_rewritten` (merge); `node`, `node_type`, `pages` (split-plan) |
 | edge | `type` (`holds`, `addressed-by` or `provided-by`), `from`, `to`, `narratives` |
 | row | `narrative`, `file`, `line`, `note` |
 | refusal | `subject`, `why`, `fix`, `rule`, `problems` |

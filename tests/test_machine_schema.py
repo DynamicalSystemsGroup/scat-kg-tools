@@ -436,8 +436,8 @@ def test_schema_does_not_enumerate_rule_ids():
     assert "enum" not in SCHEMA["$defs"]["OperationName"]
 
 
-def test_contract_page_is_at_most_726_words():
-    assert len(PAGE.split()) <= 726
+def test_contract_page_is_at_most_746_words():
+    assert len(PAGE.split()) <= 746
 
 
 def def_properties(*names: str) -> set[str]:
@@ -457,6 +457,7 @@ OBJECTS = {
     "status row": ["StatusRow"],
     "operation": ["OperationResult"],
     "record-edge, remove-edge result": ["OperationResult"],
+    "merge, split-plan result": ["OperationResult"],
     "edge": ["EdgeRef"],
     "row": ["RowRef"],
     "refusal": ["Refusal"],
@@ -502,7 +503,12 @@ def test_promised_fields_the_schema_requires_are_all_promised():
     """The required properties of each object are a subset of what the page promises for it."""
     table = promised()
     for obj, names in OBJECTS.items():
-        if obj in ("every document", "edit", "record-edge, remove-edge result"):
+        if obj in (
+            "every document",
+            "edit",
+            "record-edge, remove-edge result",
+            "merge, split-plan result",
+        ):
             continue  # the last: an operation plus fields; its required ones are the operation row's
         required = set()
         for name in names:

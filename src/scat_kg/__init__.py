@@ -11,6 +11,7 @@
     scat_kg.stub("x", type="concern")
     scat_kg.stub_links()                # or stub_links("x")
     scat_kg.record_edge("holds", "a", "b", ["narrative-name"], note="")
+    scat_kg.merge("a", "b", plan=True)  # fold node page a into b (plan=False applies it); split_plan("a")
     scat_kg.remove_edge("a", "b")       # or remove_edge("a", "b", ["narrative-name"])
     scat_kg.load()                      # the knowledge graph, derived from the pages
     scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
@@ -37,9 +38,11 @@ from scat_kg.ops import (
     EdgeResult,
     StatusReport,
     index,
+    merge,
     record_edge,
     remove_edge,
     set_status,
+    split_plan,
     stub,
     stub_links,
 )
@@ -151,9 +154,11 @@ __all__ = [
     "index",
     "layered",
     "load",
+    "merge",
     "record_edge",
     "remove_edge",
     "set_status",
+    "split_plan",
     "status",
     "stub",
     "stub_links",
