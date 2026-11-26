@@ -2335,3 +2335,12 @@ WP18-R4, the live run, ran on 25 November (`acceptance/chat-path/live-run-wp18-r
 in a process's arguments, and is deleted at Stop. R2's "key rotated" now reads "key deleted" (D-115; one key per
 session). R1, R3, R5 hold on `dev` 834490f with CI green; `check_metrics.py --accept WP18` passes. The ACE accepts WP18.
 The chat-path user tests (WP20-UC1) remain for the chief engineer's sitting.
+
+## D-123 | 2026-11-26 | Node-page help (C12): a spike first
+
+During the leave-no-trace sitting the chief engineer asked whether tools, prompts and workflows exist to help fill in
+node pages as a synthesis across narratives (C12, quoted in `work-packages/candidates.md`). The ACE answered: not yet
+(the server stubs pages and records edges; `trace` follows edges; no skill, prompt or view helps write a node page, and
+renaming or merging node pages is an accepted gap, W11, D-100). Asked where the work goes, he chose "A spike first": a
+short research spike on synthesis across narratives and on synonym and homonym handling, then a decision. The spike
+(RS4) is scoped by the ACE; C10 and C11's timing is asked separately.
