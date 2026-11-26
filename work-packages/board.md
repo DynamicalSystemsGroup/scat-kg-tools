@@ -29,7 +29,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP19 | The range vault (D-094) | all units done and reviewed on `pm-wp18`; `check_metrics.py --accept WP19` passes; ready for ACE acceptance | `WP19.md` |
 | WP20 | The candidate and user acceptance (D-097) | manual path passed UA-A round 2 (D-101); all units done except WP20-UC1 (chat-path UA-A, queued, waits on the chief engineer's sitting) | `WP20.md` |
 | WP21 | Rules and norms, the chat path's life cycle, the published image (D-114) | all units done and merged on `dev`; ready for ACE acceptance after the template pin | `WP21.md` |
-| WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | U1 spike and U2 skill markers done and merged; U3 waits on the ACE's logged decision on the mechanism | `WP22.md` |
+| WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | U1, U2 done; U3 (launcher) and U5 (guides) in flight after D-130; U4 tests, U6 cold read queued | `WP22.md` |
 
 ## Units
 
@@ -299,11 +299,11 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP22-U1r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T11:30:00-05:00 | two fresh review rounds, re-ran the applet, plutil, codesign |
 | WP22-U2 | Python developer (skill markers, drift test), haiku | 1 | 1 | `wp22/u2` | done |  | 2026-11-26T11:30:00-05:00 | PASS first time; markers replaced by title and first G4 heading anchors; merged 7e5472b |
 | WP22-U2r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T11:30:00-05:00 | fresh reviewer PASS first time; 5 mutations caught |
-| WP22-U3 | macOS and shell developer (applet, launcher, build), sonnet | 8 |  | `wp22/u3` | queued | the ACE's logged decision on the mechanism (spike note ready) |  |  |
+| WP22-U3 | macOS and shell developer (applet, launcher, build), sonnet | 8 |  | `wp22/u3` | in flight |  |  |  |
 | WP22-U3r | reviewer (fresh), runs the built app, sonnet | 2 |  | `-` | queued | WP22-U3 |  |  |
 | WP22-U4 | test engineer (tests/deploy), sonnet | 3 |  | `wp22/u4` | queued | WP22-U3 |  |  |
 | WP22-U4r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP22-U4 |  |  |
-| WP22-U5 | technical writer (guides, acceptance kit lines), sonnet | 5 |  | `wp22/u5` | queued | WP22-U3 (final labels) |  |  |
+| WP22-U5 | technical writer (guides, acceptance kit lines), sonnet | 5 |  | `wp22/u5` | in flight |  |  |  |
 | WP22-U5r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP22-U5 |  |  |
 | WP22-U6 | simulated user, cold read of the two guides, haiku | 2 |  | `-` | queued | WP22-U5 |  |  |
 
