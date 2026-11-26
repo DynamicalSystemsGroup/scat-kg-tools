@@ -1,0 +1,31 @@
+== seeded description: 271 same-type pairs with text on both; top 6
+  0.67 obsidian ~ telescope  narr-J=0.30
+  0.62 digest-email ~ weekly-digest duplicate-row narr-J=0.67
+  0.27 digest-email ~ direct-message-reminder  narr-J=0.00
+  0.25 members-not-replying ~ unanswered-direct-messages synonym narr-J=0.50
+  0.23 how-members-figure-in-koi ~ what-integration-does-to-the-protocol  narr-J=0.00
+  0.22 interpretive-work-needs-time ~ members-not-replying  narr-J=0.00
+  cos>=0.5: proposed=2 seeds=['duplicate-row']
+  cos>=0.7: proposed=0 seeds=[]
+  cos>=0.9: proposed=0 seeds=[]
+== seeded body: 1 same-type pairs with text on both; top 6
+  0.15 members-lose-the-thread ~ members-not-replying  narr-J=0.00
+  cos>=0.5: proposed=0 seeds=[]
+  cos>=0.7: proposed=0 seeds=[]
+  cos>=0.9: proposed=0 seeds=[]
+  any-type top descriptions: [(0.82, 'resource-identifier', 'resources-referable-across-subnets', 'affordance', 'concern'), (0.67, 'obsidian', 'telescope', 'technology', 'technology'), (0.62, 'digest-email', 'weekly-digest', 'affordance', 'affordance')]
+== range description: 113 same-type pairs with text on both; top 6
+  0.67 obsidian ~ telescope  narr-J=0.50
+  0.23 how-members-figure-in-koi ~ what-integration-does-to-the-protocol  narr-J=0.00
+  0.16 shared-data-set-integrity ~ vendor-lock-in  narr-J=0.00
+  0.15 ethnographers ~ technical-team  narr-J=0.29
+  0.14 self-provided-platforms ~ vendor-lock-in  narr-J=1.00
+  0.11 resources-referable-across-subnets ~ right-to-be-forgotten  narr-J=0.00
+  cos>=0.5: proposed=1 seeds=[]
+  cos>=0.7: proposed=0 seeds=[]
+  cos>=0.9: proposed=0 seeds=[]
+== range body: 0 same-type pairs with text on both; top 6
+  cos>=0.5: proposed=0 seeds=[]
+  cos>=0.7: proposed=0 seeds=[]
+  cos>=0.9: proposed=0 seeds=[]
+  any-type top descriptions: [(0.82, 'resource-identifier', 'resources-referable-across-subnets', 'affordance', 'concern'), (0.67, 'obsidian', 'telescope', 'technology', 'technology'), (0.37, 'durable-shared-records', 'obsidian', 'affordance', 'technology')]

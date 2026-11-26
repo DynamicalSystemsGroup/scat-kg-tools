@@ -1,0 +1,15 @@
+== seeded: 16 nodes told in >=3 narratives; lowest first (share of pairs with a common end / mean Jaccard)
+  1. technical-team narratives=5 share=0.00 meanJ=0.00
+  2. obsidian narratives=4 share=0.17 meanJ=0.17
+  3. ethnographers narratives=12 share=0.24 meanJ=0.13
+  4. community-members narratives=6 share=0.27 meanJ=0.12  <- seeded homonym
+  5. forum-bot narratives=6 share=0.47 meanJ=0.47
+  6. members-lose-the-thread narratives=4 share=0.50 meanJ=0.18
+  7. telescope narratives=9 share=0.56 meanJ=0.44
+  8. closing-the-loop narratives=6 share=0.93 meanJ=0.67
+  rank of community-members [4]
+== range: 3 nodes told in >=3 narratives; lowest first (share of pairs with a common end / mean Jaccard)
+  1. ethnographers narratives=4 share=0.00 meanJ=0.00
+  2. technical-team narratives=4 share=0.00 meanJ=0.00
+  3. community-members narratives=3 share=0.33 meanJ=0.17  <- seeded homonym
+  rank of community-members [3]

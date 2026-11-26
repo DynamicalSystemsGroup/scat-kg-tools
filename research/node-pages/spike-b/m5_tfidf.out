@@ -1,0 +1,50 @@
+== seeded: 311 same-type pairs; top 8 (cos, narr-J, adj-J)
+  1.00 ask-metagov ~ koi-pond-chatbot narr-J=1.00 adj-J=0.00 
+  0.84 digest-email ~ weekly-digest narr-J=0.67 adj-J=0.33 duplicate-row
+  0.69 members-not-replying ~ unanswered-direct-messages narr-J=0.50 adj-J=1.00 synonym
+  0.61 forget-signal ~ resource-identifier narr-J=0.33 adj-J=0.00 
+  0.47 obsidian ~ telescope narr-J=0.30 adj-J=0.25 
+  0.41 renewal-cost-visibility ~ vendor-lock-in narr-J=0.50 adj-J=0.25 
+  0.41 attention-limit-on-participation ~ legitimate-consent-at-forum-scale narr-J=0.60 adj-J=0.67 
+  0.36 ethics-committees ~ ethnographers narr-J=0.07 adj-J=0.10 
+  cos>=0.3: proposed=10 seeds=['duplicate-row', 'synonym']
+  cos>=0.4: proposed=7 seeds=['duplicate-row', 'synonym']
+  cos>=0.5: proposed=4 seeds=['duplicate-row', 'synonym']
+  seed synonym: cos=0.69 rank 3/311
+  seed duplicate-row: cos=0.84 rank 2/311
+  seed decoy: cos=0.00 rank 296/311
+-- seeded without shared paragraphs; top 6
+  0.21 protocol-design-integrity ~ what-integration-does-to-the-protocol narr-J=0.00 
+  0.14 closing-the-loop ~ interpretive-work-needs-time narr-J=0.00 
+  0.13 community-members ~ ethnographers narr-J=0.17 
+  0.13 participatory-consent-feature ~ retention-review-calendar narr-J=0.20 
+  0.12 durable-shared-records ~ retention-review-calendar narr-J=0.00 
+  0.12 obsidian ~ telescope narr-J=0.30 
+  cos>=0.2: proposed=1 seeds=[]
+  cos>=0.3: proposed=0 seeds=[]
+  cos>=0.4: proposed=0 seeds=[]
+  seed synonym: cos=0.11 rank 7/311
+  seed duplicate-row: cos=0.00 rank 272/311
+  seed decoy: cos=0.00 rank 295/311
+== range: 113 same-type pairs; top 8 (cos, narr-J, adj-J)
+  1.00 ask-metagov ~ koi-pond-chatbot narr-J=1.00 adj-J=0.00 
+  1.00 attention-limit-on-participation ~ legitimate-consent-at-forum-scale narr-J=1.00 adj-J=0.67 
+  0.58 forget-signal ~ resource-identifier narr-J=0.33 adj-J=0.00 
+  0.51 obsidian ~ telescope narr-J=0.50 adj-J=0.50 
+  0.44 ethics-committees ~ ethnographers narr-J=0.20 adj-J=0.20 
+  0.36 community-members ~ technical-team narr-J=0.50 adj-J=0.00 
+  0.33 ethnographers ~ technical-team narr-J=0.29 adj-J=0.25 
+  0.27 community-members ~ ethnographers narr-J=0.43 adj-J=0.00 
+  cos>=0.3: proposed=7 seeds=[]
+  cos>=0.4: proposed=5 seeds=[]
+  cos>=0.5: proposed=4 seeds=[]
+-- range without shared paragraphs; top 6
+  0.18 protocol-design-integrity ~ what-integration-does-to-the-protocol narr-J=0.00 
+  0.13 community-members ~ ethnographers narr-J=0.43 
+  0.13 ethnographers ~ technical-team narr-J=0.29 
+  0.12 community-members ~ technical-team narr-J=0.50 
+  0.09 protocol-design-integrity ~ vendor-lock-in narr-J=0.00 
+  0.07 resources-referable-across-subnets ~ shared-data-set-integrity narr-J=0.00 
+  cos>=0.2: proposed=0 seeds=[]
+  cos>=0.3: proposed=0 seeds=[]
+  cos>=0.4: proposed=0 seeds=[]

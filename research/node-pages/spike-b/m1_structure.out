@@ -1,0 +1,79 @@
+== seeded: 311 same-type pairs, 44 nodes
+pair | narr-J | edge-J | adj-J | mean | seed
+  members-not-replying ~ unanswered-direct-messages | 0.50 | 1.00 | 1.00 | 0.83 | synonym
+  how-members-figure-in-koi ~ what-integration-does-to-the-protocol | 0.00 | 1.00 | 1.00 | 0.67 | 
+  protocol-design-integrity ~ requisite-variety | 1.00 | 0.50 | 0.50 | 0.67 | 
+  attention-limit-on-participation ~ legitimate-consent-at-forum-scale | 0.60 | 0.67 | 0.67 | 0.64 | 
+  it-that-just-works ~ self-provided-platforms | 1.00 | 0.33 | 0.33 | 0.56 | 
+  requisite-variety ~ vendor-lock-in | 0.00 | 0.67 | 0.67 | 0.44 | 
+  digest-email ~ weekly-digest | 0.67 | 0.33 | 0.33 | 0.44 | duplicate-row
+  right-to-be-forgotten ~ shared-data-set-integrity | 0.25 | 0.50 | 0.50 | 0.42 | 
+threshold sweep (proposed pairs: total / seeded found / decoy proposed)
+  adj-J>=t t=0.3: proposed=47 seeds=['duplicate-row', 'synonym']
+  adj-J>=t t=0.5: proposed=12 seeds=['synonym']
+  adj-J>=t t=0.7: proposed=2 seeds=['synonym']
+  adj-J>=t t=1.0: proposed=2 seeds=['synonym']
+  edge-J>=t t=0.3: proposed=47 seeds=['duplicate-row', 'synonym']
+  edge-J>=t t=0.5: proposed=12 seeds=['synonym']
+  edge-J>=t t=0.7: proposed=2 seeds=['synonym']
+  edge-J>=t t=1.0: proposed=2 seeds=['synonym']
+  narr-J>=t t=0.3: proposed=17 seeds=['duplicate-row', 'synonym']
+  narr-J>=t t=0.5: proposed=10 seeds=['duplicate-row', 'synonym']
+  narr-J>=t t=0.7: proposed=3 seeds=[]
+  narr-J>=t t=1.0: proposed=3 seeds=[]
+  mean>=t t=0.3: proposed=20 seeds=['duplicate-row', 'synonym']
+  mean>=t t=0.5: proposed=5 seeds=['synonym']
+  mean>=t t=0.7: proposed=1 seeds=['synonym']
+  mean>=t t=1.0: proposed=0 seeds=[]
+  adj-J>=t and narr-J>=0.3 t=0.3: proposed=5 seeds=['duplicate-row', 'synonym']
+  adj-J>=t and narr-J>=0.3 t=0.5: proposed=3 seeds=['synonym']
+  adj-J>=t and narr-J>=0.3 t=0.7: proposed=1 seeds=['synonym']
+  adj-J>=t and narr-J>=0.3 t=1.0: proposed=1 seeds=['synonym']
+  adj-J>=t and each has >=2 adjacent t=0.3: proposed=37 seeds=['duplicate-row', 'synonym']
+  adj-J>=t and each has >=2 adjacent t=0.5: proposed=4 seeds=['synonym']
+  adj-J>=t and each has >=2 adjacent t=0.7: proposed=2 seeds=['synonym']
+  adj-J>=t and each has >=2 adjacent t=1.0: proposed=2 seeds=['synonym']
+proposed at adj-J>=0.5 and each has >=2 adjacent nodes:
+  how-members-figure-in-koi ~ what-integration-does-to-the-protocol (concern) adj-J=1.00 narr-J=0.00 edge-J=1.00 adjacent=['ethnographers', 'technical-team'] 
+  members-not-replying ~ unanswered-direct-messages (concern) adj-J=1.00 narr-J=0.50 edge-J=1.00 adjacent=['direct-message-reminder', 'ethnographers'] synonym
+  attention-limit-on-participation ~ legitimate-consent-at-forum-scale (concern) adj-J=0.67 narr-J=0.60 edge-J=0.67 adjacent=['ethnographers', 'participatory-consent-feature'] 
+  requisite-variety ~ vendor-lock-in (concern) adj-J=0.67 narr-J=0.00 edge-J=0.67 adjacent=['koi-doctrine', 'technical-team'] 
+== range: 113 same-type pairs, 27 nodes
+pair | narr-J | edge-J | adj-J | mean | seed
+  attention-limit-on-participation ~ legitimate-consent-at-forum-scale | 1.00 | 0.67 | 0.67 | 0.78 | 
+  how-members-figure-in-koi ~ what-integration-does-to-the-protocol | 0.00 | 1.00 | 1.00 | 0.67 | 
+  protocol-design-integrity ~ requisite-variety | 1.00 | 0.50 | 0.50 | 0.67 | 
+  requisite-variety ~ vendor-lock-in | 0.00 | 1.00 | 1.00 | 0.67 | 
+  it-that-just-works ~ self-provided-platforms | 1.00 | 0.33 | 0.33 | 0.56 | 
+  obsidian ~ telescope | 0.50 | 0.50 | 0.50 | 0.50 | 
+  right-to-be-forgotten ~ shared-data-set-integrity | 0.33 | 0.50 | 0.50 | 0.44 | 
+  how-members-figure-in-koi ~ protocol-design-integrity | 0.00 | 0.50 | 0.50 | 0.33 | 
+threshold sweep (proposed pairs: total / seeded found / decoy proposed)
+  adj-J>=t t=0.3: proposed=23 seeds=[]
+  adj-J>=t t=0.5: proposed=11 seeds=[]
+  adj-J>=t t=0.7: proposed=2 seeds=[]
+  adj-J>=t t=1.0: proposed=2 seeds=[]
+  edge-J>=t t=0.3: proposed=23 seeds=[]
+  edge-J>=t t=0.5: proposed=11 seeds=[]
+  edge-J>=t t=0.7: proposed=2 seeds=[]
+  edge-J>=t t=1.0: proposed=2 seeds=[]
+  narr-J>=t t=0.3: proposed=16 seeds=[]
+  narr-J>=t t=0.5: proposed=8 seeds=[]
+  narr-J>=t t=0.7: proposed=6 seeds=[]
+  narr-J>=t t=1.0: proposed=6 seeds=[]
+  mean>=t t=0.3: proposed=15 seeds=[]
+  mean>=t t=0.5: proposed=6 seeds=[]
+  mean>=t t=0.7: proposed=1 seeds=[]
+  mean>=t t=1.0: proposed=0 seeds=[]
+  adj-J>=t and narr-J>=0.3 t=0.3: proposed=5 seeds=[]
+  adj-J>=t and narr-J>=0.3 t=0.5: proposed=4 seeds=[]
+  adj-J>=t and narr-J>=0.3 t=0.7: proposed=0 seeds=[]
+  adj-J>=t and narr-J>=0.3 t=1.0: proposed=0 seeds=[]
+  adj-J>=t and each has >=2 adjacent t=0.3: proposed=15 seeds=[]
+  adj-J>=t and each has >=2 adjacent t=0.5: proposed=3 seeds=[]
+  adj-J>=t and each has >=2 adjacent t=0.7: proposed=2 seeds=[]
+  adj-J>=t and each has >=2 adjacent t=1.0: proposed=2 seeds=[]
+proposed at adj-J>=0.5 and each has >=2 adjacent nodes:
+  how-members-figure-in-koi ~ what-integration-does-to-the-protocol (concern) adj-J=1.00 narr-J=0.00 edge-J=1.00 adjacent=['ethnographers', 'technical-team'] 
+  requisite-variety ~ vendor-lock-in (concern) adj-J=1.00 narr-J=0.00 edge-J=1.00 adjacent=['koi-doctrine', 'technical-team'] 
+  attention-limit-on-participation ~ legitimate-consent-at-forum-scale (concern) adj-J=0.67 narr-J=1.00 edge-J=0.67 adjacent=['ethnographers', 'participatory-consent-feature'] 

@@ -1,0 +1,41 @@
+== seeded: nodes with link texts 44; texts used for >1 node:
+  nodes whose link texts differ by >=3 distinct strings:
+    members-lose-the-thread: 4 distinct {'members lost the thread': 1, 'members losing the thread': 1, 'members lose the thread': 1, 'members who lose the thread': 1}
+    shared-data-set-integrity: 3 distinct {'integrity': 1, 'integrity and completeness': 2, 'shared data set': 1}
+    ethics-committees: 2 distinct {'committee': 1, 'ethics committee': 1}
+    legitimate-consent-at-forum-scale: 2 distinct {'consent': 4, 'consent at forum scale': 1}
+    participatory-consent-feature: 2 distinct {'participatory consent feature': 4, 'consent feature': 1}
+  same-type pairs by link-text word overlap (top 5):
+    0.50 digest-email ~ weekly-digest duplicate-row
+    0.46 members-lose-the-thread ~ members-not-replying 
+    0.43 protocol-design-integrity ~ shared-data-set-integrity 
+    0.41 koi-doctrine ~ koi-pond-chatbot 
+    0.41 how-members-figure-in-koi ~ members-not-replying 
+  link texts for the seeded homonym, by narrative:
+    ethnographic-loop: ['community']
+    forget-incident: ['community members']
+    forum-moderators-and-digests: ['community members']
+    member-organisations-and-the-renewal: ['community members']
+    members-and-the-data-set: ['community members']
+    members-as-the-site-sees-them: ['community members']
+    parts-and-deployment: ['community members']
+    self-infrastructuring: ['community members']
+== range: nodes with link texts 27; texts used for >1 node:
+  nodes whose link texts differ by >=3 distinct strings:
+    community-members: 2 distinct {'community members': 4, 'community': 1}
+    forget-signal: 2 distinct {'forget signal': 2, 'forget': 1}
+    shared-data-set-integrity: 2 distinct {'integrity': 1, 'integrity and completeness': 2}
+    ethnographers: 2 distinct {'ethnographers': 4, 'ethnography working group': 1}
+    right-to-be-forgotten: 1 distinct {'right to be forgotten': 1}
+  same-type pairs by link-text word overlap (top 5):
+    0.48 protocol-design-integrity ~ shared-data-set-integrity 
+    0.41 koi-doctrine ~ koi-pond-chatbot 
+    0.41 protocol-design-integrity ~ what-integration-does-to-the-protocol 
+    0.00 vendor-lock-in ~ what-integration-does-to-the-protocol 
+    0.00 shared-data-set-integrity ~ what-integration-does-to-the-protocol 
+  link texts for the seeded homonym, by narrative:
+    ethnographic-loop: ['community']
+    forget-incident: ['community members']
+    members-and-the-data-set: ['community members']
+    parts-and-deployment: ['community members']
+    self-infrastructuring: ['community members']
