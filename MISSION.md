@@ -224,7 +224,9 @@ matters without claiming to be exhaustive. No particular project's choices appea
   - read status at the same three scopes, and set a page's status;
   - regenerate the index pages;
   - create entailed missing pages as stubs;
-  - record an edge, and remove one, so neither the coder nor the assistant hand-writes its structure (R-11).
+  - record an edge, and remove one, so neither the coder nor the assistant hand-writes its structure (R-11);
+  - merge two node pages of the same type into one, with a plan shown first; narratives already done stay done
+    and are listed.
 
   The one-page and one-link-away checks act as a fast linter during working sessions.
 - **G5. Two repositories.** `scat-kg-tools` is a slim, separately maintained package with the ontology, the tools and the

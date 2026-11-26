@@ -2610,3 +2610,23 @@ kept for WP26: `schema_version` stays 2 with the new `attribution` operation (al
 wording, a grey spot); the terms cap is now 910 and the machine-schema doc's word cap 646; `impact/file-map.md` is stale
 since WP17 and is refreshed with WP24's map. The superseded `wp23/u3` branch and worktree are removed (never merged).
 The ACE accepts WP23.
+
+## D-144 | 2026-11-26 | Merge in the mission's G4
+
+WP24's scope check found that `MISSION.md` G4 lists the tool's operations and has no merge, which D-136 put in v0.1.
+Asked to add "merge two node pages of the same type into one, with a plan shown first; narratives already done stay
+done and are listed", the chief engineer chose "Yes, add it". The ACE made the edit on `dev`.
+
+## D-145 | 2026-11-26 | WP24 approved
+
+WP24 (`work-packages/WP24.md`: node-page help and merge) takes C12 (D-136). The PM's scope check found twelve fixes,
+all applied: status and a definition of good; contributor pages untouched by evidence, the review view and merge (merge
+refuses them, and any contributor page linking `a`); the mode on every new result and tests in the three modes; merge's
+behaviour stated (a's body appended under a heading, a's description dropped, b's status kept, duplicate rows refuse
+with nothing written, index pages regenerated); MCP shows the plan and refuses apply; the assistant's rules for node
+pages in `assistant.md`, the skill and the server's rules text alike; words (possible duplicates, adjacent nodes, node
+not concept); G4 in the mission (D-144) and R-19 manual first; `schema_version` 3; the norms page's seventh section by
+this decision, no catalogue rule; the split plan, the UA-A bar for cold users, a keyword grep for D-139 and the
+change consultant's re-sweep. Homonym proposals wait on a short spike on the test vault and the ACE's decision after
+it. Impact map and refreshed file map on `wp24/impact` (5337652), merged. Revert point `divergence/D-145`. The ACE
+approves WP24.
