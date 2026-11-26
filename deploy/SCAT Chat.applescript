@@ -3,7 +3,8 @@
 -- The dot is grey (starting, stopped), green (running) or red (a problem). The menu shows what the launcher wrote
 -- to its state file (`ui` in the launcher's state folder: state, vault, address, then a problem line) and runs the
 -- launcher with verbs only. No value is ever an argument, and the session key is never read or shown here:
--- `copy-key` is the one path to the clipboard. Quitting (the menu's Stop included) runs the launcher's stop.
+-- `copy-key` is the one path to the clipboard. Stop runs the launcher's stop and shows its sentence in one alert, then quits; if the stop is not confirmed it stays,
+-- red, so Stop can be tried again. Any other quit runs the launcher's stop silently, once.
 -- Test settings (unset in a double-clicked app): SCAT_CHAT_LAUNCHER (a stand-in launcher), SCAT_CHAT_HOME (the
 -- state folder, as for the launcher) and SCAT_CHAT_APPLET_LOG (a file that receives the menu's lines).
 use AppleScript version "2.4"
@@ -27,6 +28,7 @@ property stopItem : missing value
 property ticks : 0
 property alerted : false
 property lastDump : ""
+property stopDone : false -- the Stop item already ran the launcher's stop: quitting must not run it again
 
 on logline(t)
 	if logPath is "" then return
@@ -158,7 +160,26 @@ on changeVault_(sender)
 end changeVault_
 
 on stopIt_(sender)
-	quit
+	-- Stop runs the launcher's stop and shows its sentence in one alert. Confirmed (exit 0): quit. Not confirmed
+	-- (the launcher exits non-zero and has written the problem state): show it as the problem and stay, so Stop can
+	-- be chosen again. `do shell script` blocks the run loop meanwhile; `alerted` keeps the idle timer from alerting too.
+	set alerted to true
+	try
+		set msg to do shell script launcher & " stop 2>&1"
+		set stopDone to true
+		my logline("stop: " & msg)
+		try
+			activate
+			display alert "SCAT Chat stopped" message msg
+		end try
+		quit
+	on error msg
+		my logline("stop failed: " & msg)
+		try
+			activate
+			display alert "SCAT Chat has a problem" message msg as critical
+		end try
+	end try
 end stopIt_
 
 on idle
@@ -188,8 +209,12 @@ on idle
 end idle
 
 on quit
-	try
-		do shell script launcher & " stop > /dev/null 2>&1"
-	end try
+	-- other routes (Cmd-Q, the system, a quit mid-start) stop silently, once
+	if not stopDone then
+		set stopDone to true
+		try
+			do shell script launcher & " stop > /dev/null 2>&1"
+		end try
+	end if
 	continue quit
 end quit
