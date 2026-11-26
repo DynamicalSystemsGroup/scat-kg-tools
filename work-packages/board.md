@@ -327,6 +327,25 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP23-U6 | simulated user, cold read of planning and consent, haiku, haiku | 2 | 1 | `-` | done |  | 2026-11-26T14:30:00-05:00 | one Haiku reader understood the three modes; the unclear items it raised were not about the modes and are old |
 | WP23-U7 | Python developer and release engineer (template, range vault, pins), sonnet | 3 | 5 | `wp23/u7` | done |  | 2026-11-26T14:30:00-05:00 | a docs sample had to be retagged: the template is disallowed and the attribution command refuses by design |
 | WP23-U7r | reviewer (fresh), sonnet, sonnet | 1 | 2 | `-` | done |  | 2026-11-26T14:30:00-05:00 | PASS first time; rebuilt the pin chain locally |
+| WP24-U1 | test-vault builder (G6 vault, one copy per attribution mode), sonnet | 2 |  | `wp24/u1` | queued |  |  |  |
+| WP24-U1r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U1 done |  |  |
+| WP24-U2 | Python developer (evidence view: Python, CLI, MCP, schema v3, reference), sonnet | 3 |  | `wp24/u2` | queued |  |  |  |
+| WP24-U2r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U2 done |  |  |
+| WP24-U3 | technical writer and developer (node-page norm, contract, copy-share view), sonnet | 3 |  | `wp24/u3` | queued | U2 |  |  |
+| WP24-U3r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U3 done |  |  |
+| WP24-U4 | Python developer and technical writer (draft prompt, skill, rules G7, drift), sonnet | 3 |  | `wp24/u4` | queued | U2, U3 |  |  |
+| WP24-U4r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U4 done |  |  |
+| WP24-U5 | research engineer (homonym and synonym spike on the U1 vault), sonnet | 2 |  | `wp24/u5` | queued | U1, U4; then the ACE's logged decision |  |  |
+| WP24-U5r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U5 done |  |  |
+| WP24-U6 | Python developer (merge: plan, apply, split plan, MCP plan only), sonnet | 5 |  | `wp24/u6` | queued | U4 |  |  |
+| WP24-U6r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U6 done |  |  |
+| WP24-U7 | Python developer (review view), sonnet | 3 |  | `wp24/u7` | queued | U5 and the ACE's logged decision; U6 (shared files) |  |  |
+| WP24-U7r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U7 done |  |  |
+| WP24-U8 | technical writer (merge and review rules, docs, reviewers guide), sonnet | 2 |  | `wp24/u8` | queued | U6, U7 |  |  |
+| WP24-U8r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U8 done |  |  |
+| WP24-U9 | simulated users (3 Haiku, 1 Sonnet control; G6), haiku | 2 |  | `wp24/u9` | queued | U4, U1 |  |  |
+| WP24-U9r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U9 done |  |  |
+| WP24-U10 | change consultant (S1 re-sweep, counts and greps), haiku | 1 |  | `wp24/u10` | queued | U8, U9 |  |  |
 
 ## Iterations and velocity
 
