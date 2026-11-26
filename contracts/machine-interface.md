@@ -14,7 +14,7 @@ changes from version 1.
 - **Python.** A result's `to_dict()` returns the CLI's data.
 - **Paths** are vault-relative (`/`, no leading `/`, no `..`), except in `export-edges` and `draw` results: outside the vault, as given. `line` and `column` count from 1, or are null.
 
-`kind` is `check`, `status`, `operation` or `view` (`fingerprint`, `edges`, `layered`, `trace`). A refusal, even by `check` or `status`, gives kind `operation` with `ok` false.
+`kind` is `check`, `status`, `operation` or `view` (`fingerprint`, `edges`, `layered`, `trace`, `attribution`). A refusal, even by `check` or `status`, gives kind `operation` with `ok` false.
 
 ## Fields you may rely on
 
@@ -41,9 +41,12 @@ Nothing else is promised.
 
 | Object | Fields |
 |---|---|
-| view | `narratives` (`candidates` on request), `edge_type`, `from_layer`, `to_layer`, `rows`, `nodes`, `edges`, `node`, `direction`, `up`, `down`, `excluded` |
+| view | `narratives` (`candidates` on request), `edge_type`, `from_layer`, `to_layer`, `rows`, `nodes`, `edges`, `node`, `direction`, `up`, `down`, `contributors`, `unattributed`, `excluded` |
 | node | `name`, `type`, `status` |
 | view edge | the edge fields and `status` |
+| view contributor (`attribution`) | `name`, `title`, `status`, `narratives` (the names of the narratives that name it) |
+
+`attribution` is a view of the knowledge graph, not the layered graph. Where the mode is `disallowed` it is a refusal, not an empty list.
 
 ## Fixes
 

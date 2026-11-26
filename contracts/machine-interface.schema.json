@@ -16,7 +16,7 @@
       "enum": ["required", "optional", "disallowed", null]
     },
     "OperationName": {
-      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge, fingerprint, edges, layered, trace, export-edges). New commands may appear, so the names are not enumerated.",
+      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge, fingerprint, edges, layered, trace, attribution, export-edges). New commands may appear, so the names are not enumerated.",
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]*$"
     },
@@ -89,7 +89,7 @@
       "properties": {
         "path": { "$ref": "#/$defs/VaultPath" },
         "name": { "type": "string", "description": "The file name without .md." },
-        "type": { "type": ["string", "null"], "description": "The type key as written; null when there is none that is a string." },
+        "type": { "type": ["string", "null"], "description": "The type key as written (group, concern, affordance, technology, narrative or contributor); null when there is none that is a string." },
         "status": { "type": ["string", "null"], "description": "The status as written; null when missing or not a string." }
       }
     },
@@ -184,14 +184,14 @@
       }
     },
     "ViewResult": {
-      "description": "What fingerprint, edges, layered and trace return when they ran: the data of one view, deterministic (layer order, then name; edges in graph order; narratives in path order). A view that cannot run (unknown name, an error in a page it draws, no vault) is an OperationResult with ok false and its problems. fingerprint: narratives. edges: edge_type, from_layer, to_layer, rows. layered: narratives (names), nodes (by layer), edges. trace: node, direction, up and down (nodes in layer order then name; empty for a direction not asked), edges (those walked); the node itself is in neither list.",
+      "description": "What fingerprint, edges, layered, trace and attribution return when they ran: the data of one view, deterministic (layer order, then name; edges in graph order; narratives in path order). A view that cannot run (unknown name, an error in a page it draws, no vault) is an OperationResult with ok false and its problems. fingerprint: narratives. edges: edge_type, from_layer, to_layer, rows. layered: narratives (names), nodes (by layer), edges. trace: node, direction, up and down (nodes in layer order then name; empty for a direction not asked), edges (those walked); the node itself is in neither list. attribution: contributors (each contributor page with the narratives that name it), unattributed (the narratives that name none), excluded. It is a view of the knowledge graph, not of the layered graph: a contributor page is in no other view. Where the vault's mode is disallowed, or declares none, it is an OperationResult with ok false, not an empty list.",
       "type": "object",
       "required": ["schema_version", "kind", "operation", "ok", "mode"],
       "properties": {
         "schema_version": { "$ref": "#/$defs/SchemaVersion" },
         "mode": { "$ref": "#/$defs/Mode" },
         "kind": { "const": "view" },
-        "operation": { "enum": ["fingerprint", "edges", "layered", "trace"] },
+        "operation": { "enum": ["fingerprint", "edges", "layered", "trace", "attribution"] },
         "ok": { "const": true },
         "narratives": { "type": "array", "description": "fingerprint: the fingerprints (ViewNarrative), one per narrative asked, or every narrative in path order. layered: the names of the narratives drawn." },
         "edge_type": { "$ref": "#/$defs/EdgeType" },
@@ -214,7 +214,9 @@
         "node": { "type": "string", "minLength": 1 },
         "direction": { "enum": ["up", "down", "both"] },
         "up": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" }, "description": "trace: nodes toward the groups." },
-        "down": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" }, "description": "trace: nodes toward the technologies." }
+        "down": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" }, "description": "trace: nodes toward the technologies." },
+        "contributors": { "type": "array", "items": { "$ref": "#/$defs/ViewContributor" }, "description": "attribution: every contributor page, by name, with the narratives that name it." },
+        "unattributed": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "attribution: the names of the coded narratives that name no contributor, in path order." }
       },
       "allOf": [
         {
@@ -232,8 +234,23 @@
         {
           "if": { "properties": { "operation": { "const": "trace" } }, "required": ["operation"] },
           "then": { "required": ["node", "direction", "up", "down", "edges"] }
+        },
+        {
+          "if": { "properties": { "operation": { "const": "attribution" } }, "required": ["operation"] },
+          "then": { "required": ["contributors", "unattributed", "excluded"] }
         }
       ]
+    },
+    "ViewContributor": {
+      "description": "One contributor page and the narratives whose attributed_to links it. Not a node: it has no edge and is in no layered view.",
+      "type": "object",
+      "required": ["name", "title", "status", "narratives"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "description": "The page name of the contributor page." },
+        "title": { "type": ["string", "null"] },
+        "status": { "type": ["string", "null"] },
+        "narratives": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "The names of the narratives that name this contributor, in path order; empty when none does." }
+      }
     },
     "ViewExcluded": {
       "description": "A narrative left out of the knowledge graph and every view because it is uncoded: it links no node page.",

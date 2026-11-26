@@ -39,7 +39,8 @@ positional arguments:
     index         Write the index page `index/<type>.base` of each type that
                   has none. Never rewrites one.
     stub          Create a stub page: a node (group, concern, affordance or
-                  technology) or a narrative.
+                  technology), a narrative, or, where the vault's attribution
+                  mode is required or optional, a contributor page.
     stub-links    Create the node pages that the ends of rows link and the
                   vault lacks. PAGE limits it to one page.
     record-edge   Record an edge: add its row to each narrative named by
@@ -61,6 +62,10 @@ positional arguments:
     trace         Follow edges from a node: up toward the groups, down toward
                   the technologies, or both. The node itself is left out.
                   Writes nothing.
+    attribution   Show the narratives by contributor: each contributor page
+                  with the narratives that name it, and the narratives that
+                  name none. Refuses where the vault's attribution mode is
+                  disallowed. Writes nothing.
     export-edges  Write each edge table to DIR as `<type>.csv` and
                   `<type>.md`. Overwrites a file only when its content
                   differs; makes DIR if it is not there. Refuses where `scat
@@ -74,7 +79,7 @@ options:
 Run `scat <command> --help` for a command.
 ```
 
-`scat` has fourteen commands. Each prints a message and exits with a code:
+`scat` has fifteen commands. Each prints a message and exits with a code:
 
 | Exit code | Meaning |
 |---|---|
@@ -109,6 +114,7 @@ Every command takes `--root ROOT`, the vault folder (default: the current folder
         scat_kg.remove_edge("a", "b")       # or remove_edge("a", "b", ["narrative-name"])
     scat_kg.load()                      # the knowledge graph, derived from the pages
     scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
+    scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
     scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
 
     Each call takes `root=` (the vault folder; default: the current directory) and returns an object whose
@@ -184,6 +190,7 @@ $ uv run scat check --json
   "kind": "check",
   "operation": "check",
   "ok": true,
+  "mode": "disallowed",
   "problems": []
 }
 ```
@@ -200,6 +207,7 @@ $ uv run scat check --json
   "kind": "check",
   "operation": "check",
   "ok": false,
+  "mode": "disallowed",
   "problems": [
     {
       "rule": "SCAT-DONE-END-NOPAGE",
@@ -334,6 +342,7 @@ $ uv run scat status anonymity --json
   "kind": "status",
   "operation": "status",
   "ok": true,
+  "mode": "disallowed",
   "scope": "page",
   "rows": [
     {
@@ -413,6 +422,7 @@ $ uv run scat set-status attribution draft --json
   "kind": "operation",
   "operation": "set-status",
   "ok": true,
+  "mode": "disallowed",
   "created": [],
   "changed": [],
   "unchanged": [
@@ -437,6 +447,7 @@ $ uv run scat set-status attribution finished --json
   "kind": "operation",
   "operation": "set-status",
   "ok": false,
+  "mode": "disallowed",
   "created": [],
   "changed": [],
   "unchanged": [],
@@ -520,6 +531,7 @@ $ uv run scat index --json
   "kind": "operation",
   "operation": "index",
   "ok": true,
+  "mode": "disallowed",
   "created": [],
   "changed": [],
   "unchanged": [
@@ -539,7 +551,7 @@ $ uv run scat index --json
 ```text
 usage: scat stub [-h] [--root ROOT] [--json] --type TYPE NAME
 
-Create a stub page: a node (group, concern, affordance or technology) or a narrative.
+Create a stub page: a node (group, concern, affordance or technology), a narrative, or, where the vault's attribution mode is required or optional, a contributor page.
 
 positional arguments:
   NAME         the new page's name: a-z, 0-9 and hyphens
@@ -550,14 +562,14 @@ options:
   --json       print the result as one JSON document (machine-interface
                contract), nothing else
   --type TYPE  the page's type, one of: group, concern, affordance,
-               technology, narrative
+               technology, narrative, contributor
 
 REPL: `scat_kg.stub("<page-name>", type="<type>")`
 ```
 
-Creates one page with `status: stub`. The `--type` option is required. A node (`group`, `concern`, `affordance`, `technology`) or a `narrative`; a narrative stub also carries an empty `timeframe:` line for you to fill.
+Creates one page with `status: stub`. The `--type` option is required. A node (`group`, `concern`, `affordance`, `technology`), a `narrative`, or a `contributor` page. A narrative stub also carries an empty `timeframe:` line for you to fill. A contributor page is made only where the vault's attribution mode (in `scat.toml`) is `required` or `optional`; in `disallowed` mode the command refuses and says that the vault holds no contributor page.
 
-Exit codes: 0 when the page was created, 1 for a refusal (not a legal name, a file already has the name, not a stubbable type, or the group cap). A missing `--type` is a command line that cannot be read: exit code 2.
+Exit codes: 0 when the page was created, 1 for a refusal (not a legal name, a file already has the name, not a stubbable type, the group cap, or a contributor page where the attribution mode is `disallowed`). A missing `--type` is a command line that cannot be read: exit code 2.
 
 The CLI example uses different names from the Python one, so both can run in one vault.
 
@@ -597,6 +609,7 @@ $ uv run scat stub study-circle-two --type concern --json
   "kind": "operation",
   "operation": "stub",
   "ok": true,
+  "mode": "disallowed",
   "created": [
     "concern/study-circle-two.md"
   ],
@@ -662,6 +675,7 @@ $ uv run scat stub-links --json
   "kind": "operation",
   "operation": "stub-links",
   "ok": true,
+  "mode": "disallowed",
   "created": [],
   "changed": [],
   "unchanged": [],
@@ -737,6 +751,7 @@ $ uv run scat record-edge addressed-by study-circle reading-shelf --told-by desk
   "kind": "operation",
   "operation": "record-edge",
   "ok": true,
+  "mode": "disallowed",
   "created": [
     "affordance/reading-shelf.md"
   ],
@@ -832,6 +847,7 @@ $ uv run scat remove-edge study-circle reading-shelf --json
   "kind": "operation",
   "operation": "remove-edge",
   "ok": true,
+  "mode": "disallowed",
   "created": [],
   "changed": [
     "narrative/desk-notes-two.md"
@@ -937,6 +953,7 @@ $ uv run scat fingerprint groups-under-a-cap-pitch --json
   "kind": "view",
   "operation": "fingerprint",
   "ok": true,
+  "mode": "disallowed",
   "narratives": [
     {
       "name": "groups-under-a-cap-pitch",
@@ -1048,6 +1065,7 @@ $ uv run scat edges holds --json
   "kind": "view",
   "operation": "edges",
   "ok": true,
+  "mode": "disallowed",
   "edge_type": "holds",
   "from_layer": "group",
   "to_layer": "concern",
@@ -1148,6 +1166,7 @@ $ uv run scat layered --narrative groups-under-a-cap-pitch --json
   "kind": "view",
   "operation": "layered",
   "ok": true,
+  "mode": "disallowed",
   "narratives": [
     "groups-under-a-cap-pitch"
   ],
@@ -1268,6 +1287,7 @@ $ uv run scat trace anonymity --direction up --json
   "kind": "view",
   "operation": "trace",
   "ok": true,
+  "mode": "disallowed",
   "node": "anonymity",
   "direction": "up",
   "up": [
@@ -1288,6 +1308,111 @@ $ uv run scat trace anonymity --direction up --json
       ],
       "status": "done"
     }
+  ],
+  "excluded": []
+}
+```
+
+## scat attribution
+
+```text
+usage: scat attribution [-h] [--root ROOT] [--json]
+
+Show the narratives by contributor: each contributor page with the narratives that name it, and the narratives that name none. Refuses where the vault's attribution mode is disallowed. Writes nothing.
+
+options:
+  -h, --help   show this help message and exit
+  --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
+
+REPL: `scat_kg.attribution()`
+```
+
+Lists each contributor page with the narratives whose `attributed_to` field names it, and then the narratives that name nobody. It is a view of the knowledge graph, not of the layered graph: a contributor page has no edge and appears in no other view. It writes nothing.
+
+Where the vault's attribution mode is `disallowed`, no narrative names anyone and no contributor page may exist, so the command refuses and says so; it does not print an empty list. It refuses too when `scat.toml` declares no usable mode, and, like the other views, when a page it draws has an error.
+
+Exit codes: 0, or 1 for a refusal.
+
+The examples below are for a vault whose mode is `optional`, with two contributor pages.
+
+=== "Python"
+
+    ```python
+    scat_kg.attribution()
+    ```
+
+    ```text
+    attribution: narratives by contributor
+      ada-quill [done]
+        funders-meeting
+        saturday-at-the-lending-desk
+      bo-marsh [stub]
+        saturday-at-the-lending-desk
+      narratives that name no contributor
+        self-service-kiosk-pitch
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat attribution
+    ```
+
+    ```text
+    attribution: narratives by contributor
+      ada-quill [done]
+        funders-meeting
+        saturday-at-the-lending-desk
+      bo-marsh [stub]
+        saturday-at-the-lending-desk
+      narratives that name no contributor
+        self-service-kiosk-pitch
+    ```
+
+In a vault whose mode is `disallowed`:
+
+```text
+$ uv run scat attribution
+refused scat.toml field `attribution`: this vault's attribution mode is `disallowed`, so it allows no attribution: no narrative names a contributor and there is no contributor page to list
+  Fix: the coder who wants contributors named changes `attribution` in scat.toml for the whole vault
+```
+
+With `--json`:
+
+```text
+$ uv run scat attribution --json
+```
+
+```json
+{
+  "schema_version": 2,
+  "kind": "view",
+  "operation": "attribution",
+  "ok": true,
+  "mode": "optional",
+  "contributors": [
+    {
+      "name": "ada-quill",
+      "title": "Ada Quill",
+      "status": "done",
+      "narratives": [
+        "funders-meeting",
+        "saturday-at-the-lending-desk"
+      ]
+    },
+    {
+      "name": "bo-marsh",
+      "title": "Bo Marsh",
+      "status": "stub",
+      "narratives": [
+        "saturday-at-the-lending-desk"
+      ]
+    }
+  ],
+  "unattributed": [
+    "self-service-kiosk-pitch"
   ],
   "excluded": []
 }
@@ -1358,6 +1483,7 @@ $ uv run scat export-edges --out edge-tables --json
   "kind": "operation",
   "operation": "export-edges",
   "ok": true,
+  "mode": "disallowed",
   "created": [],
   "changed": [],
   "unchanged": [

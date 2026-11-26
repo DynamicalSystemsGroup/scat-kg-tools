@@ -14,11 +14,18 @@ def help_of(command, capsys):
 
 def test_stub_help_lists_every_type_key(capsys):
     out = help_of("stub", capsys)
-    keys = [s for s, t in TBOX.page_types.items() if t.carries_status and s != "contributor"]
-    assert len(keys) == 5  # the stub operation makes no contributor page
+    keys = [s for s, t in TBOX.page_types.items() if t.carries_status]
+    assert len(keys) == 6  # the five page types and the contributor page
     for k in keys:
         assert k in out
-    assert "one of: " + ", ".join((*TBOX.layers, "narrative")) in out
+    assert "one of: " + ", ".join((*TBOX.layers, "narrative", "contributor")) in out
+    assert "where the vault's attribution mode is required or optional" in out
+
+
+def test_attribution_help_names_the_view_and_its_twin(capsys):
+    out = help_of("attribution", capsys)
+    assert "contributor" in out and "disallowed" in out and "--root" in out and "--json" in out
+    assert "REPL: `scat_kg.attribution()`" in out
 
 
 def test_record_edge_help_lists_the_edge_types(capsys):

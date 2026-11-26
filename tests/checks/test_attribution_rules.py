@@ -266,12 +266,35 @@ def test__scat_attr_link__a_link_that_reaches_no_page_is_an_error(make_vault, mo
         msg(
             link_head(status, "`[[ghost]]` does not reach a page (no page is named ghost)"),
             *choose(
-                "link the entry to a contributor page: write `[[<name>]]` of an existing page of type "
-                "`contributor`, or make one (`type: contributor`, `status: stub`, `title`) and link it",
+                'run `scat stub ghost --type contributor` (REPL: `scat_kg.stub("ghost", type="contributor")`) '
+                "to create the contributor page the entry links",
                 'replace the line `attributed_to: ["[[ghost]]"]` with `attributed_to: []` (drop this entry)',
             ),
         ),
     )
+
+
+def test__scat_attr_link__a_missing_page_gets_the_stub_command_as_an_exact_fix(make_vault):
+    report = report_of(make_vault, desk("optional", "done", 'attributed_to: ["[[ghost]]"]'))
+    (p,) = report.problems
+    stub_it, drop = p.fix_data.options
+    assert stub_it.kind == "exact" and stub_it.edits == ()
+    assert stub_it.command.argv == ("stub", "ghost", "--type", "contributor")
+    assert stub_it.command.repl == 'scat_kg.stub("ghost", type="contributor")'
+    assert drop.kind == "exact"
+
+
+def test__scat_attr_link__running_the_stub_fix_makes_the_link_resolve(make_vault):
+    root = make_vault(desk("optional", "done", 'attributed_to: ["[[ghost]]"]'))
+    assert scat_kg.stub("ghost", "contributor", root=root).ok
+    assert "SCAT-ATTR-LINK" not in [p.rule for p in scat_kg.check(root=root).problems]
+
+
+@pytest.mark.parametrize("entry", ['"Ada Quill"', '"[[safe-handling]]"'])
+def test__scat_attr_link__text_and_wrong_type_keep_the_manual_hint(make_vault, entry):
+    report = report_of(make_vault, desk("optional", "done", f"attributed_to: [{entry}]"))
+    (p,) = report.problems
+    assert [o.kind for o in p.fix_data.options][-2:] == ["manual", "exact"]
 
 
 def test__scat_attr_link__a_dangling_link_with_a_near_match_offers_it(make_vault):

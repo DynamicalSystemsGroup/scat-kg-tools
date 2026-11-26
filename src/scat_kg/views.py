@@ -5,6 +5,7 @@
     scat_kg.edge_table("holds")          # every edge of one type
     scat_kg.layered(["dry-july"])        # the union of fingerprints, as four layers; none: the whole vault
     scat_kg.trace("farmers", "down")     # what a node reaches, up, down or both
+    scat_kg.attribution()                # narratives by contributor, where the vault's mode allows attribution
 
 A view is data first: `to_dict()` is the document (`kind` `view`), `str(view)` is a short text, one line per node
 or edge. The knowledge graph is derived on every call (`load`) and nothing is written. A view refuses, as a
@@ -14,6 +15,10 @@ missing vault folder, on any error in the pages it draws, and on a row of a narr
 not refuse. An uncoded narrative (it links no node page) is excluded: left out of every view and listed under
 `excluded`, with how to include it, by each view that draws every narrative; naming one is refused. Relationship annotations
 appear in no view. Names are plain text, never `[[links]]`.
+
+The attribution view is a view of the knowledge graph, not of the layered graph: it lists the contributor pages and the
+narratives that name them, and it refuses (a plain message, not an empty list) where the vault's mode allows no
+attribution. Contributor pages are in no other view.
 
 Order is deterministic: layer order, then name; edges in graph order; narratives in path order.
 """
@@ -59,7 +64,7 @@ def _refuse(
 class View:
     """What a view returns: the document's content, and the text the CLI prints."""
 
-    operation: str  # "fingerprint", "edges", "layered" or "trace"
+    operation: str  # "fingerprint", "edges", "layered", "trace" or "attribution"
     data: dict = field(default_factory=dict)
     mode: str | None = None  # the vault's attribution mode
 
@@ -398,6 +403,61 @@ def trace(node: str, direction: str = "both", *, root: str | Path = ".") -> View
     )
 
 
+def _no_attribution(op: str, g: Graph) -> Refused | None:
+    """Refuse where the vault's mode does not enable attribution: a plain message, never an empty list."""
+    mode = g.vault.config.attribution
+    if mode in ("required", "optional"):
+        return None
+    if mode == "disallowed":
+        return _refuse(
+            op,
+            "scat.toml field `attribution`",
+            "this vault's attribution mode is `disallowed`, so it allows no attribution: "
+            "no narrative names a contributor and there is no contributor page to list",
+            "the coder who wants contributors named changes `attribution` in scat.toml for the whole vault",
+        )
+    return _refuse(
+        op,
+        "scat.toml field `attribution`",
+        "the vault declares no usable attribution mode, so it is not known whether it allows attribution",
+        'write `attribution = "required"`, `"optional"` or `"disallowed"` in scat.toml '
+        "(`scat check` says which problem it has)",
+    )
+
+
+@reports_mode
+def attribution(*, root: str | Path = ".") -> View | Result:
+    """The narratives by contributor: each contributor page with the narratives that name it, and the
+    narratives that name none. A view of the knowledge graph: contributor pages are in no layered view."""
+    op = "attribution"
+    g, bad = _open(op, root)
+    if bad:
+        return bad
+    if bad := _no_attribution(op, g):
+        return bad
+    names = [n.name for n in g.narratives]
+    bad = _check(op, g, names, g.contributors, []) or _unreadable(op, g)
+    if bad:
+        return bad
+    named = {n.name for n in g.narratives if n.attributed_to}
+    return View(
+        op,
+        {
+            "contributors": [
+                {
+                    "name": c.name,
+                    "title": c.title,
+                    "status": c.status,
+                    "narratives": [n.name for n in g.narratives if c.name in n.attributed_to],
+                }
+                for c in g.contributors
+            ],
+            "unattributed": [n for n in names if n not in named],
+            "excluded": _excluded(g),
+        },
+    )
+
+
 # ---------------------------------------------------------------------------------------------------------
 # Text: one line per node or edge, grouped by layer
 # ---------------------------------------------------------------------------------------------------------
@@ -467,9 +527,20 @@ def _text_trace(d: dict) -> list[str]:
     return out + _excluded_lines(d)
 
 
+def _text_attribution(d: dict) -> list[str]:
+    out = ["attribution: narratives by contributor"]
+    for c in d["contributors"]:
+        out.append(f"  {c['name']} [{c['status']}]")
+        out += [f"    {n}" for n in c["narratives"]] or ["    no narrative names this contributor"]
+    out.append("  narratives that name no contributor")
+    out += [f"    {n}" for n in d["unattributed"]] or ["    none"]
+    return out + _excluded_lines(d)
+
+
 _TEXT = {
     "fingerprint": _text_fingerprint,
     "edges": _text_edges,
     "layered": _text_layered,
     "trace": _text_trace,
+    "attribution": _text_attribution,
 }
