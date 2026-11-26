@@ -40,7 +40,9 @@ were closed unmerged (log D-074): the mission has since changed, and the next ca
    through the shared generator; the chat-path guide and the IDE note with its setup skill.
 7. **WP19 Range vault** (R-20). The public KOI case in `mzargham/ant-rdf`, rebuilt as a SCAT model with groups, not
    named people; the lab and range runs.
-8. **WP20 Candidate and user acceptance.** The whole journey, J1 to J10, on both paths: UA-A rounds to the pass bar,
+8. **WP22 SCAT Chat as a small clear local app (D-124).** The launcher packaged and transparent; the walkthrough fixes
+   from the leave-no-trace run. Before WP20's chat-path UA-A.
+9. **WP20 Candidate and user acceptance.** The whole journey, J1 to J10, on both paths: UA-A rounds to the pass bar,
    the walkthrough scripts, the reviewer's guide, the candidate stage and new release PRs.
 
 The order of WP17 and WP18 may change with the architecture document. Open play-test findings (F-1, F-3, F-5, F-7)
