@@ -2351,3 +2351,13 @@ After the leave-no-trace run (`acceptance/chat-path/leave-no-trace-run.md`), ask
 with the silent reuse of a remembered vault, L1) come before or after the release PRs. The chief engineer chose "Yes,
 before release". The ACE scopes WP22: SCAT Chat as a small, clear local Mac app that runs the MCP server, with the
 walkthrough fixes the run found (L2 to L5, L8, L10).
+
+## D-125 | 2026-11-26 | WP22 approved
+
+WP22 (`work-packages/WP22.md`: SCAT Chat as a small clear local app that runs the MCP server, and the walkthrough fixes
+L2 to L5, L8, L10) takes C10 (D-124). The PM's scope check found nine fixes, all applied: Applications is written only
+in the chief engineer's sitting, tests and builds use a temporary folder (ORG, Limits); the blast radius names every
+file; the skill's comment lines are the drift test's markers and change with it; each visual requirement has a
+reviewer's dry run; candidates and glossary words set right; the spike's logged decision gates the launcher unit.
+Impact map `work-packages/impact/WP22.md` (change consultant's work, via the PM). Revert point `divergence/D-125`.
+The ACE approves WP22.
