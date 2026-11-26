@@ -21,8 +21,6 @@ WORD_CAP = 900  # raised by D-131, raised by D-138
 
 # Backticked names that are not in the TBox but are real: the vault's configuration file and its key.
 CONFIG_NAMES = {"scat.toml", "stakeholder_group_cap"}
-# Names D-138 adds to the glossary before the TBox has them (WP23); drop once the TBox holds them.
-PENDING_TBOX_NAMES = {"contributor", "attributed_to"}
 # Words the glossary retired or never had for a sense it defines (D-081, D-088).
 RETIRED = [
     r"\braw (page|record|scenario|architecture)",
@@ -75,7 +73,7 @@ def tbox_names() -> dict[str, set[str]]:
         "value": values,
         "edge type": {s for e in TBOX.edge_types.values() for s in e.spellings},
         "table name": {TBOX.table.heading, *TBOX.table.names},
-        "configuration name": CONFIG_NAMES | PENDING_TBOX_NAMES,
+        "configuration name": CONFIG_NAMES,
     }
 
 
