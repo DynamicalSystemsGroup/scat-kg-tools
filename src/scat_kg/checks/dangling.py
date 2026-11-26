@@ -9,7 +9,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 
 from scat_kg.checks import fixes
-from scat_kg.checks.ctx import NODE_TYPES, PAGE_TYPES, Ctx, page_rule
+from scat_kg.checks.ctx import NARRATIVE, NODE_TYPES, Ctx, page_rule
 from scat_kg.checks.linkedit import literal
 from scat_kg.checks.text import (
     article,
@@ -113,11 +113,11 @@ def derive(ctx: Ctx, target: str) -> str | None:
 
 def inferred_types(ctx: Ctx, name: str) -> tuple[list[str], bool]:
     """The types a body link to `name` may be stubbed as (catalogue, "Inferred types"), and whether they
-    are inferred from the row ends that name it (else the five page types)."""
+    are inferred from the row ends that name it (else the five the stub operation makes)."""
     found = ctx.row_layers.get(name)
     if found:
         return sorted(found), True
-    return list(PAGE_TYPES), False
+    return [*NODE_TYPES, NARRATIVE], False  # the types `scat stub` makes: never a contributor page
 
 
 def creations(ctx: Ctx, name: str, types: list[str]) -> tuple[list[FixOption], list[str]]:

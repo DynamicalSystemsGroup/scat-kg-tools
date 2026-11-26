@@ -3,7 +3,7 @@
 import datetime
 import posixpath
 
-from scat_kg.checks import fixes
+from scat_kg.checks import attribution, fixes
 from scat_kg.checks.ctx import PAGE_TYPES, Ctx, page_rule
 from scat_kg.checks.linkedit import literal
 from scat_kg.checks.text import (
@@ -81,6 +81,12 @@ def fm_required(ctx: Ctx, page: Page):
     return out
 
 
+def offered_types(ctx: Ctx) -> tuple[str, ...]:
+    """The page types a fix may offer for a bad `type`: the contributor only where the mode allows it."""
+    allowed = ctx.vault.config.attribution in ("required", "optional")
+    return tuple(k for k in PAGE_TYPES if allowed or k != attribution.CONTRIBUTOR)
+
+
 @page_rule
 def fm_type(ctx: Ctx, page: Page):
     v = page.type
@@ -104,7 +110,7 @@ def fm_type(ctx: Ctx, page: Page):
                     f"`type: {k}` ({TBOX.page_types[k].description})",
                     fixes.set_field(page.path, "type", k),
                 )
-                for k in sorted(PAGE_TYPES)
+                for k in sorted(offered_types(ctx))
             ],
             "Fix, choose the one that describes this page:",
             notes,
@@ -270,6 +276,61 @@ def fm_shape(ctx: Ctx, page: Page):
                 fix,
                 pos=ctx.pos(page, key),
                 on=key,
+            )
+        )
+    return out
+
+
+@page_rule
+def fm_list_shape(ctx: Ctx, page: Page):
+    """SCAT-FM-SHAPE for the link field (`attributed_to`): a list of text, or nothing. In `disallowed` mode the
+    field has its one finding (SCAT-ATTR-DISALLOWED), so its shape is not judged."""
+    if not ctx.is_narrative(page) or ctx.vault.config.attribution in (None, "disallowed"):
+        return []
+    out = []
+    for f in TBOX.page_types[page.type_key].fields:
+        v = page.fields.get(f.key)
+        if f.target_type is None or is_missing(v) or attribution.entries(page) is not None:
+            continue
+        if isinstance(v, str):
+            fix = fixes.single(
+                fixes.option(
+                    "exact",
+                    f"replace the field with the line `{f.key}: [{quote(v)}]`",
+                    fixes.set_field(page.path, f.key, [v]),
+                )
+            )
+        elif isinstance(v, list) and all(
+            isinstance(i, str) or (isinstance(i, list) and len(i) == 1 and isinstance(i[0], str))
+            for i in v
+        ):  # unquoted `[[ada-quill]]` is YAML for a list inside a list: the same names, each quoted
+            fixed = [i if isinstance(i, str) else f"[[{i[0]}]]" for i in v]
+            line = f"{f.key}: [{', '.join(quote(i) for i in fixed)}]"
+            fix = fixes.single(
+                fixes.option(
+                    "exact",
+                    f"replace the field with the line `{line}` (a link in a list is written in quotes)",
+                    fixes.set_field(page.path, f.key, fixed),
+                )
+            )
+        else:
+            fix = fixes.single(
+                FixOption(
+                    "manual", "replace the field with a list of links you write, each in quotes"
+                )
+            )
+        what = _kind(v) if not isinstance(v, str) else "one line of text"
+        if isinstance(v, list) and any(isinstance(i, list) for i in v):
+            what = 'a list inside a list: a link must be written in quotes, `"[[name]]"`'
+        out.append(
+            ctx.problem(
+                "SCAT-FM-SHAPE",
+                page.path,
+                f"field `{f.key}`",
+                f"expected a list of links (text), found {what}",
+                fix,
+                pos=ctx.pos(page, f.key),
+                on=f.key,
             )
         )
     return out

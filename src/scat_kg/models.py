@@ -4,7 +4,7 @@ No field list is written here: a model's fields are the TBox's fields for that p
 and optional alike. Each model checks the *shape* of what is written and nothing else:
 every field is optional (whether a field is required depends on the page's status, which is a rule's
 business, not the model's), a field with a value set (`status`, `timeframe`, `kind`) takes only its
-values, any other field is text, and `type` takes only the page type's slug. Keys the TBox does not list
+values, a link field (`attributed_to`) a list of text, any other field is text, and `type` takes only the page type's slug. Keys the TBox does not list
 for the type are ignored, as the contract says.
 """
 
@@ -18,6 +18,8 @@ from scat_kg.tbox import TBOX, Field, PageType, TBox
 def _annotation(field: Field):
     if field.value_set is not None:
         return Literal[field.value_set]
+    if field.target_type is not None:
+        return list[str]  # a link field: a list of text, each a wikilink as written
     return str
 
 

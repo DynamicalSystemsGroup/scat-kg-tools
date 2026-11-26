@@ -132,8 +132,8 @@ def _notnode(ctx: Ctx, page: Page, rule: str, end: End, target: Page):
     cell = end.cell
     lit = literal_in(cell)
     kind = target.type_key
-    if kind == TBOX.table_type.slug:
-        why = "a narrative page"
+    if kind is not None:
+        why = f"a {kind} page"
     elif is_missing(target.type):
         why = "a page with an empty `type`"
     else:

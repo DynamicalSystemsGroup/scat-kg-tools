@@ -64,7 +64,7 @@ def rdf_list(g, head):
 
 def test__r7__page_type_slugs_and_descriptions_equal_the_ttl(g):
     types = ttl_types(g)
-    assert set(TBOX.page_types) == set(types) and len(types) == 6
+    assert set(TBOX.page_types) == set(types) and len(types) == 7
     for slug, node in types.items():
         t = TBOX.page_types[slug]
         assert t.slug == slug
@@ -86,9 +86,13 @@ def test__r7__the_fields_of_each_page_type_equal_the_ttl(g, prop, attr):
             assert f.definition == str(one(g, fnode, "skos:definition")), (slug, f.key)
 
 
-def test__r7__no_page_type_lists_a_discouraged_or_link_field(g):
+def test__r7__no_page_type_lists_a_discouraged_field_and_one_link_field_is_attributed_to(g):
     assert not q(g, "SELECT ?c WHERE { ?c scat:discouragedField ?f }")
-    assert not q(g, "SELECT ?f WHERE { ?f scat:targetType ?t }")
+    rows = q(g, "SELECT ?k ?t WHERE { ?f scat:key ?k ; scat:targetType ?t }")
+    assert [(str(r.k), str(r.t)) for r in rows] == [("attributed_to", "contributor")]
+    (field,) = (f for t in TBOX.page_types.values() for f in t.fields if f.target_type)
+    assert (field.key, field.target_type) == ("attributed_to", "contributor")
+    assert field.target_type in TBOX.page_types
 
 
 def test__r7__each_field_carries_its_required_from_and_value_set(g):
@@ -102,7 +106,7 @@ def test__r7__each_field_carries_its_required_from_and_value_set(g):
                 assert f.required_from == want_from, (slug, key)
                 assert (f.value_set is not None) == (one(g, fnode, "scat:valueSet") is not None)
                 seen += 1
-    assert seen == 4 * 4 + 5 + 1
+    assert seen == 4 * 4 + 5 + 1 + 1 + 3  # nodes, narrative, kind, attributed_to, contributor
 
 
 def test__r7__status_values_in_lifecycle_order_equal_the_ttl(g):
