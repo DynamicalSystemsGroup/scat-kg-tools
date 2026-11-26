@@ -2410,3 +2410,24 @@ only in the check's page record where allowed; R4 restated (no MCP tool writes f
 live in the checks; D-128 logs the new field and the version bump; the pin order keeps `dev` green. No spike: the mode
 is a config key like `link_suggestions`. Impact map `work-packages/impact/WP23.md`. Revert point `divergence/D-129`.
 The ACE approves WP23.
+
+## D-130 | 2026-11-26 | WP22-U1 decided: SCAT Chat as a menu-bar item
+
+The spike (`research/chat-path/launcher-ui.md`) recommends AppleScriptObjC inside the existing applet, as a menu-bar item:
+a coloured-dot status item with a menu (State, Vault and Address lines; Copy address, Copy key, Change vault, Stop),
+the launcher writing a three-line state file (never the key) that the applet polls, and the applet calling the
+launcher with verbs only. The ACE decides:
+- **Menu-bar item only**, no window; this meets WP22-G2 ("out of the way") without minimising, and WP22-R2 is met by the
+  menu bar alone. The window fallback is not built.
+- **One first-start note** says that SCAT Chat now lives in the menu bar and where to find its dot (a menu-bar-only app
+  is otherwise hard to find), shown once per Mac.
+- **Change vault** means stop, then start on the chosen vault (a new session key; the guide says to update the chat's
+  server entry).
+- **The build** may set `LSUIElement` in the app's `Info.plist` and re-sign it ad hoc; both stay in `build-app.sh`.
+- **A problem** shows as a red dot, a "Problem:" line in the menu with the launcher's own words, and one alert when it
+  first occurs.
+- **The vault at each start:** "Serve <vault>?" with "Use it" and "Choose another", as recommended.
+- **No mission edit:** `MISSION.md` Platforms already reads "its macOS tools (among them `security`, ...) sit behind
+  its own functions"; the new tools (`plutil`, `codesign`, AppleScriptObjC) are recorded in `deploy/README.md`.
+- The dot's look, a real click and "no flicker" are confirmed in the chief engineer's sitting.
+U3 is unblocked.
