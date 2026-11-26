@@ -40,7 +40,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **link**: an Obsidian `[[…]]` reference. Never an edge by itself.
 - **cap**: the most groups a vault may hold, set in `scat.toml` (key `stakeholder_group_cap`).
 - **attribution mode**: required, optional or disallowed (Chatham House rule); set in `scat.toml`.
-- **attribution**: the people a narrative is attributed to, where the mode allows; never a node or a link.
+- **attribution**: the people a narrative is attributed to, where the mode allows, held as its `attributed_to` links to contributor pages; never a node or edge of the four layers.
 - **contributor page**: a page of type `contributor`, outside the four layers, naming a person a narrative is attributed to, where the mode allows; the narrative's `attributed_to` field links to it. "Contributor" alone still means a participant.
 - **index page**: the page generated for a type (`index`), listing its entries; an Obsidian Base, 1.9 or later.
 - **status**: how far an entry has got: `stub` (a name), `draft` (content, incomplete) or `done` (complete, conformant, signed off by the coder).
