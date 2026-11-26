@@ -309,8 +309,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP22-U6 | simulated user, cold read of the two guides, haiku | 2 |  | `-` | queued | WP22-U5 |  |  |
 | WP23-U1 | ontology designer (rename scat:ProvidedBy, glossary entries), sonnet | 2 | 3 | `wp23/u1` | done |  | 2026-11-26T11:54:33-05:00 | 2 push-backs (a cap weakening, then two clauses cut); D-131 raised the cap; fresh re-review PASS |
 | WP23-U1r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T11:54:33-05:00 | 3 review rounds incl. re-review at a7c1ed6; PASS |
-| WP23-U2 | Python developer (attribution mode in scat.toml, fixtures, machine interface), sonnet | 5 |  | `wp23/u2` | in flight |  |  |  |
-| WP23-U2r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP23-U2 |  |  |
+| WP23-U2 | Python developer (attribution mode in scat.toml, fixtures, machine interface), sonnet | 5 |  | `wp23/u2` | in review |  |  |  |
+| WP23-U2r | reviewer (fresh), sonnet | 1 |  | `-` | in flight |  |  |  |
 | WP23-U3 | Python developer (attributed_to field, per-mode rules, no-bleed tests), sonnet | 5 |  | `wp23/u3` | queued | WP23-U2 |  |  |
 | WP23-U3r | reviewer (fresh), sonnet | 2 |  | `-` | queued | WP23-U3 |  |  |
 | WP23-U4 | Python developer (MCP mode on every result, assistant.md, skill), sonnet | 3 |  | `wp23/u4` | queued | WP23-U3 and WP22-U2 on dev |  |  |
