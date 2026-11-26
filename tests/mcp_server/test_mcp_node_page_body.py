@@ -36,6 +36,9 @@ CALLS: list[tuple[str, dict]] = [
     ),
     ("remove_edge", {**EXISTING, "told_by": [NARRATIVE]}),
     ("remove_edge", {"from_node": "ethnographers", "to_node": "fresh-concern"}),
+    ("merge", {"a": "forum-bot", "b": "scheduler", "plan": True}),  # a plan: nothing is written
+    ("merge", {"a": "forum-bot", "b": "scheduler", "plan": False}),  # applying is refused
+    ("split_plan", {"a": "ethnographers"}),
     ("index", {}),
     ("fingerprint", {"narrative": NARRATIVE, "candidates": True}),
     ("edge_table", {"type": "holds"}),

@@ -116,6 +116,44 @@ def build(vault: str | Path, **settings) -> FastMCP:
 
     @mcp.tool(
         description=_OWN
+        + "Show the plan of folding node page `a` into node page `b` (two pages of one type): the files that "
+        "would change, the links that would be rewritten, the `done` narratives whose text would change, "
+        "or why it is refused. Writes nothing. Applying a merge is refused here (`plan` false): the coder "
+        "runs `scat merge a b`. Returns the operation document."
+    )
+    def merge(a: str, b: str, plan: bool = True) -> dict[str, Any]:
+        if not isinstance(a, str) or not isinstance(b, str):
+            return _doc(
+                refused(
+                    "merge", repr((a, b)), "a page is named by a string", "pass the two page names"
+                )
+            )
+        if plan is not True:
+            return _doc(
+                refused(
+                    "merge",
+                    f"{a} and {b}",
+                    "this server never applies a merge: that is the coder's act",
+                    f"the coder looks at the plan, then runs `scat merge {a} {b}` (see {CITE})",
+                )
+            )
+        return _doc(scat_kg.merge(a, b, plan=True, root=root))
+
+    @mcp.tool(
+        description=_OWN
+        + "Show what must be re-linked to split node page `a`: the narratives that link it, with every link "
+        "and every Edges told row that names it. The coder assigns each narrative. Writes nothing. Returns "
+        "the operation document."
+    )
+    def split_plan(a: str) -> dict[str, Any]:
+        if not isinstance(a, str):
+            return _doc(
+                refused("split-plan", repr(a), "a page is named by a string", "pass the page name")
+            )
+        return _doc(scat_kg.split_plan(a, root=root))
+
+    @mcp.tool(
+        description=_OWN
         + "Write the index page of each type that has none. Never rewrites one. Returns the operation document."
     )
     def index() -> dict[str, Any]:

@@ -16,7 +16,7 @@
       "enum": ["required", "optional", "disallowed", null]
     },
     "OperationName": {
-      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge, fingerprint, edges, layered, trace, evidence, copy-share, attribution, export-edges). New commands may appear, so the names are not enumerated.",
+      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge, merge, split-plan, fingerprint, edges, layered, trace, evidence, copy-share, attribution, export-edges). New commands may appear, so the names are not enumerated.",
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]*$"
     },
@@ -112,7 +112,14 @@
         "problems": { "type": "array", "items": { "$ref": "#/$defs/Problem" }, "description": "Optional. The problems the write leaves, on the pages it touched and the pages one link away, in the catalogue's sort order." },
         "edge": { "$ref": "#/$defs/EdgeRef" },
         "rows_added": { "type": "array", "items": { "$ref": "#/$defs/RowRef" }, "description": "The rows the call wrote. Both rows_added and rows_removed are empty when the call found nothing to do: ok is then true and the narratives are in unchanged." },
-        "rows_removed": { "type": "array", "items": { "$ref": "#/$defs/RowRef" }, "description": "The rows the call deleted." }
+        "rows_removed": { "type": "array", "items": { "$ref": "#/$defs/RowRef" }, "description": "The rows the call deleted." },
+        "plan": { "type": "boolean", "description": "merge: true when the call only showed what a merge would do and wrote nothing. changed, created and removed then list what a real merge would write." },
+        "removed": { "$ref": "#/$defs/PathList", "description": "merge: the pages the merge removed (or would remove): the one folded in." },
+        "done_narratives": { "$ref": "#/$defs/StringList", "description": "merge: the names of the narratives that are done and whose text changes. They stay done." },
+        "links_rewritten": { "type": "array", "items": { "$ref": "#/$defs/LinkCount" }, "description": "merge: for each file that holds a link to the page folded in, how many links were (or would be) rewritten, in path order. A link in a contributor page is never rewritten: the merge refuses instead." },
+        "node": { "type": "string", "minLength": 1, "description": "split-plan: the page name of the node page to split." },
+        "node_type": { "type": "string", "description": "split-plan: the layer of that node page." },
+        "pages": { "type": "array", "items": { "$ref": "#/$defs/SplitPage" }, "description": "split-plan: every page that links the node page, in path order, with its links and the Edges told rows that name it. A contributor page is never listed." }
       },
       "allOf": [
         {
@@ -127,6 +134,16 @@
             "required": ["operation", "ok"]
           },
           "then": { "required": ["edge", "rows_added", "rows_removed"] }
+        },
+        {
+          "description": "merge, when it ran or was planned, says which, what it removes, which done narratives change and how many links it rewrites. A refusal wrote nothing and these fields may be absent.",
+          "if": { "properties": { "operation": { "const": "merge" }, "ok": { "const": true } }, "required": ["operation", "ok"] },
+          "then": { "required": ["plan", "removed", "done_narratives", "links_rewritten"] }
+        },
+        {
+          "description": "split-plan, when it ran, names the node page and every page to re-link. It writes nothing.",
+          "if": { "properties": { "operation": { "const": "split-plan" }, "ok": { "const": true } }, "required": ["operation", "ok"] },
+          "then": { "required": ["node", "node_type", "pages"] }
         },
         {
           "if": { "properties": { "ok": { "const": true } }, "required": ["ok"] },
@@ -380,6 +397,25 @@
         "from": { "type": "string", "minLength": 1, "description": "The page name of the node at the first end." },
         "to": { "type": "string", "minLength": 1, "description": "The page name of the node at the second end." },
         "narratives": { "$ref": "#/$defs/StringList", "description": "The page names of every narrative that has a row for this edge once the operation is done, in byte order. Empty after a remove-edge that took the last row: the edge is gone from the graph." }
+      }
+    },
+    "LinkCount": {
+      "description": "A file and the number of links in it that a merge rewrites.",
+      "type": "object",
+      "required": ["file", "links"],
+      "properties": { "file": { "$ref": "#/$defs/VaultPath" }, "links": { "type": "integer", "minimum": 1 } }
+    },
+    "SplitPage": {
+      "description": "A page that links the node page a split plan is for: where each link is, and the Edges told rows that name the node page.",
+      "type": "object",
+      "required": ["file", "name", "type", "links", "rows"],
+      "properties": {
+        "file": { "$ref": "#/$defs/VaultPath" },
+        "name": { "type": "string", "minLength": 1 },
+        "type": { "type": "string" },
+        "status": { "type": ["string", "null"] },
+        "links": { "type": "array", "items": { "type": "object", "required": ["line", "column"], "properties": { "line": { "type": "integer", "minimum": 1 }, "column": { "type": "integer", "minimum": 1 } } } },
+        "rows": { "type": "array", "items": { "type": "object", "required": ["row", "line", "text"], "properties": { "row": { "type": "integer", "minimum": 1 }, "line": { "type": "integer", "minimum": 1 }, "text": { "type": "string" } } }, "description": "The rows as written, the first row being row 1." }
       }
     },
     "RowRef": {

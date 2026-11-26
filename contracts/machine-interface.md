@@ -53,6 +53,10 @@ Nothing else is promised.
 
 `attribution` is a view of the knowledge graph, not the layered graph. Where the mode is `disallowed` it is a refusal, not an empty list.
 
+## Merge and split-plan
+
+Operations. When `ok`, `merge` adds `plan` (true: nothing written), `removed`, `done_narratives` and `links_rewritten` (`file`, `links`); `split-plan` adds `node`, `node_type` and `pages` (`file`, `name`, `type`, `status`, `links`, `rows`).
+
 ## Fixes
 
 A fix's `kind` is the catalogue rule's kind (exact, options, slot, advisory, manual); each option has its own kind

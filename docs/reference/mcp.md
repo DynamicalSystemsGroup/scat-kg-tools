@@ -24,7 +24,7 @@ address and refuses to start on any other.
 
 ## Tools
 
-Sixteen tools. Each returns the operation's own document.
+Eighteen tools. Each returns the operation's own document.
 
 | Tool | What it does |
 |---|---|
@@ -35,6 +35,8 @@ Sixteen tools. Each returns the operation's own document.
 | `stub_links` | Create the node pages that links name and the vault lacks. |
 | `record_edge` | Record an edge by adding its row to each narrative that tells it. |
 | `remove_edge` | Remove an edge by deleting its rows from the narratives that tell it. |
+| `merge` | Show the plan of folding node page `a` into node page `b`, two pages of one type: the files that would change, the links that would be rewritten, the `done` narratives whose text would change, or why it is refused. Writes nothing. Applying a merge (`plan` false) is refused, and the refusal names the coder's command, `scat merge a b`. |
+| `split_plan` | Show what must be re-linked to split node page `a`: the narratives that link it, with every link and every `Edges told` row that names it. Lists no contributor page. Writes nothing. |
 | `index` | Write the index page of each type that has none. |
 | `fingerprint` | View: a narrative's fingerprint, or every narrative's. |
 | `edge_table` | View: every edge of one type, with the narratives that tell it. |
