@@ -104,6 +104,7 @@ The chief engineer's words, 26 November (quoted as typed; recorded by the ACE):
 | ID | Candidate | What it touches | Source |
 |---|---|---|---|
 | C14 | **Coding approaches, as a drill-down with a walkthrough each.** The sidebar's top level is "coding approaches", with: coding by hand (no AI); coding with an AI IDE (example: Codex); coding with an AI chatbot (example: Claude); coding with a local LLM (example: Ollama running in Docker; or a better local model); and leave no trace (example: inference.coop). Different providers for the IDE, chat and leave-no-trace flows, so no tool is favoured. Each walkthrough has screenshots and makes set-up as easy as possible: fewer steps where possible, but no step removed if that would confuse; automation may remove steps, never points where a person must choose. | `mkdocs.yml` navigation, `docs/coding.md`, `docs/chat-path.md`, `docs/ide.md`, `docs/leave-no-trace.md`, new pages (local LLM, chatbot), screenshots under `docs/assets/`, the launcher or set-up scripts where automation helps | The chief engineer's words below |
+| C15 | **Facilitating and planning, rethought together.** The Facilitating section opens with **Narratives**, then Scenarios and Architectures (introduced as heuristics for organising and interpreting narratives), and may give what is versus what could be its own content; mode-aware content on attributing participants; all of it aimed at capturing field notes. Coupled with revisiting the planning content: high-level guidance on organising the event to set the stage for facilitation and field-note collection, by event kind (a one-off online discussion, a recurring discussion, an in-person meetup, a multi-day workshop), including who takes field notes and, with several note takers, how notes are collected and compiled as input to the coding workflow. Kept light, not bloated. | `mkdocs.yml` navigation, `docs/facilitate-*.md`, a new narratives page, `docs/planning.md`, `docs/data-and-consent.md`, WP23's attribution modes | The chief engineer's words below |
 
 > C14: "the sidebar with the "coding" in chat should be a drill down. the top level is coding approaches and it should
 > have several options: coding by hand (which is the no ai option), coding with an AI IDE (like codex or claude code or
@@ -119,3 +120,15 @@ The chief engineer's words, 26 November (quoted as typed; recorded by the ACE):
 > "walk throughs need screen shots and we should make sure the materials we provide are aimed at making the set up as
 > easy as possible. fewer steps where we can but not eliminating steps if it will result in confusion. automation can
 > help remove steps but should not remove points where humans need to make choices"
+
+> C15: "this should also have a narratives section. that should come first. then scenarios and architectures.
+> scenarios and architectures are introduced to provide heuristics for organizing and interpreting narratives.
+> similarly our distinction between observations about what is versus what could be may merit their own content. (all
+> under the facilitating heading). there probably needs to be mode aware content on attribution of participants. all
+> this content is specifically there to help capture field notes. and i think the design of this documentation should
+> be coupled with revisiting the planning content which involves setting setting up for the facilitated events. will be
+> very different if you are hosting a one off online discussion, a reocurring discussion, an in person meetup or a
+> multiday workshop. i don't want this too get too bloated so the idea is that we should provide high level guidance
+> for how to organize the event to set the stage for facilitation and field note collection, including identifying who
+> is going to be responisble for taking field notes. and when there are multiple field note takers how are they to be
+> collected and compiled to serve as an input to our coding workflow"
