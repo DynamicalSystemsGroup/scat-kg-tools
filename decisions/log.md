@@ -2390,3 +2390,23 @@ Outcomes:
   nodes always record groups. The pilot uses the disallowed mode.
 - **`scat:Attributes` is renamed** (to a name for "is provided by"), freeing "attribution" for C13.
 The ACE scopes both in one package, WP23.
+
+## D-128 | 2026-11-26 | The ontology gains an optional narrative field, `attributed_to`
+
+An ontology change, logged on its own (ORG: staged change). For WP23 (C13, D-127) the TBox gains one optional field on
+a narrative, `attributed_to`: the people the narrative is attributed to, where the vault's attribution mode allows;
+not a node, not a link, not an edge type (the ontology research's `prov:wasAttributedTo` sense of "who a claim comes
+from", kept apart from holding). It is optional in the TBox; the per-mode rules (required, optional, disallowed) live
+in the checks. "Contributor" is not used for it, because the mission and glossary already call the participants
+contributors; the glossary term is **attribution**. With the rename of `scat:Attributes` to `scat:ProvidedBy` (D-127),
+`owl:versionInfo` moves to 0.3.0.
+
+## D-129 | 2026-11-26 | WP23 approved
+
+WP23 (`work-packages/WP23.md`: three disjoint attribution modes; `scat:Attributes` renamed) takes C13. The PM's scope
+check found eight fixes, all applied: the machine interface is not a view and carries the mode, and an attribution
+only in the check's page record where allowed; R4 restated (no MCP tool writes fields); R5's exact grep; the field is
+`attributed_to` and the glossary term "attribution", to avoid "contributor"; "field", not "property"; the mode rules
+live in the checks; D-128 logs the new field and the version bump; the pin order keeps `dev` green. No spike: the mode
+is a config key like `link_suggestions`. Impact map `work-packages/impact/WP23.md`. Revert point `divergence/D-129`.
+The ACE approves WP23.

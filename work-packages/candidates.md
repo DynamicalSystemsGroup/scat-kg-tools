@@ -91,7 +91,7 @@ The chief engineer's words, 26 November (quoted as typed; recorded by the ACE):
 
 | ID | Candidate | What it touches | Source |
 |---|---|---|---|
-| C13 | **Attributing narratives to contributors, as an organiser's choice at set-up.** Some groups prefer attribution to privacy. Attribution is off in Chatham House mode; the organiser chooses it when setting up and setting expectations. "Attributed to" is the natural word for it (the diagram's stale "attributed to" for affordance to technology is fixed: "provided by"). | The ontology (an attribution property, distinct from holding; `prov:wasAttributedTo` was weighed in the ontology research), page contracts, `scat.toml` (a mode), the planning guide and consent page, views | The chief engineer's words below |
+| C13 | **(Taken by WP23, D-129.)** **Attributing narratives to contributors, as an organiser's choice at set-up.** Some groups prefer attribution to privacy. Attribution is off in Chatham House mode; the organiser chooses it when setting up and setting expectations. "Attributed to" is the natural word for it (the diagram's stale "attributed to" for affordance to technology is fixed: "provided by"). | The ontology (an attribution property, distinct from holding; `prov:wasAttributedTo` was weighed in the ontology research), page contracts, `scat.toml` (a mode), the planning guide and consent page, views | The chief engineer's words below |
 
 > C13: "this is a bit of an awkward catch but hopefully not a huge disruption. i think people would be more likely to
 > say "affordances are provided by technologies" than "attributed to" that also releases the "attributed to" concept
