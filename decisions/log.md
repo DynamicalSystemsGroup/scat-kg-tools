@@ -2344,3 +2344,10 @@ node pages as a synthesis across narratives (C12, quoted in `work-packages/candi
 renaming or merging node pages is an accepted gap, W11, D-100). Asked where the work goes, he chose "A spike first": a
 short research spike on synthesis across narratives and on synonym and homonym handling, then a decision. The spike
 (RS4) is scoped by the ACE; C10 and C11's timing is asked separately.
+
+## D-124 | 2026-11-26 | The launcher (C10) is fixed before the release
+
+After the leave-no-trace run (`acceptance/chat-path/leave-no-trace-run.md`), asked whether the launcher fixes (C10,
+with the silent reuse of a remembered vault, L1) come before or after the release PRs. The chief engineer chose "Yes,
+before release". The ACE scopes WP22: SCAT Chat as a small, clear local Mac app that runs the MCP server, with the
+walkthrough fixes the run found (L2 to L5, L8, L10).
