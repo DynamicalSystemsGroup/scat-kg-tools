@@ -2440,3 +2440,11 @@ unlogged raise and a cut of unrelated entries, and brought it to the ACE after t
 `WORD_CAP` in `tests/docs/test_terms.py` from 820 to 850 (that one line), so the entries carry real definitions:
 "attribution mode: required, optional or disallowed (Chatham House rule); set in `scat.toml`." and "attribution: the
 people a narrative is attributed to, where the mode allows; never a node or a link."; the edge line keeps "typed".
+
+## D-132 | 2026-11-26 | RS4 (node-page synthesis spike) approved
+
+Following D-123 ("a spike first"), the ACE scopes and approves RS4 (`work-packages/RS4-node-pages.md`): how the tools
+and the assistant should help fill in node pages as a synthesis across narratives, and how to surface and act on
+synonyms and homonyms without naive term matching. Research only, on `spike/node-pages`; the readout reaches `dev` on
+its own. It touches none of WP22's or WP23's files. Its recommendation goes to the chief engineer with a v0.1-or-later
+question.
