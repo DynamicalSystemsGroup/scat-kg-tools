@@ -2515,3 +2515,18 @@ The ACE suggested one docs package for C14 (coding approaches as a drill-down, a
 different provider per flow) and C15 (facilitating with narratives first; planning by event kind; field-note takers
 and compiling their notes), after WP23 and WP24. The chief engineer: "after WP23 and WP24 is fine". The ACE scopes it
 as WP25, before the release PRs.
+
+## D-138 | 2026-11-26 | WP23 re-check: mission line 172, the knowledge graph's sense, the attribution view
+
+The fresh WP23 PM's re-check of the revised scope found six fixes; applied:
+- **`MISSION.md` line 172**, which said "The people in the data are stakeholder groups, never individuals", contradicted
+  contributor pages. Asked to replace it with "The people in the four layers are stakeholder groups, never individuals.
+  Where the vault's attribution mode enables it, contributor pages name the people a narrative is attributed to,
+  outside the four layers.", the chief engineer answered "Yes, use that". The ACE made the edit on `dev`.
+- **Glossary call:** the **knowledge graph**'s sense widens to hold contributor pages, which are not in the **layered
+  graph**; "contributor" in its existing sense (a participant) lives in `MISSION.md` and the organiser's example, and
+  **contributor page** is added; the terms page's word cap rises again to fit it (as in D-131).
+- **The attribution view** is `scat attribution` (CLI, Python, MCP tool), in the reference pages.
+- `attributed_to` is a list of links to contributor pages; `contracts/architecture.md` and `contracts/examples/scat.toml`
+  join the blast radius; C14 and C15 (WP25) and C12 (WP24) are named and sequenced after WP23; C11 is marked taken.
+- The impact map is re-issued for the revised design before U3 starts (the PM has the change consultant do it).

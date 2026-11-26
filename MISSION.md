@@ -169,7 +169,8 @@ each has its own user experience:
   for (i) and (ii). It is the one non-critical role of the three: the coder owns interpretation even where the
   assistant helps, and the tool owns conformance even where the assistant helps. Without it, nothing is lost but speed.
 
-**The people in the data** are stakeholder **groups**, never individuals. Each vault sets a cap on how many
+**The people in the four layers** are stakeholder **groups**, never individuals. Where the vault's attribution mode
+enables it, contributor pages name the people a narrative is attributed to, outside the four layers. Each vault sets a cap on how many
 stakeholder groups it holds, and participants are clustered into groups that fit under it. What participants are told
 about how their contributions are used is the event's own agreed policy, decided by the organisers up front and the
 same for everyone: for example, the Chatham House rule or personal attribution.
