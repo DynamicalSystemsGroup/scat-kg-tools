@@ -266,6 +266,10 @@ wait_dead() { # pid
     ! kill -0 "$1" 2>/dev/null
 }
 
+live_launcher() { # pid: true only for a live launcher (a reused pid of some other program does not count)
+    [ -n "$1" ] && kill -0 "$1" 2>/dev/null && ps -p "$1" -o command= 2>/dev/null | grep -q 'scat-chat'
+}
+
 # Everything the session started, off; each step verified. Sets RESULT to one plain sentence.
 teardown() {
     bad=""
@@ -566,7 +570,7 @@ cmd_start() {
     mkdir -p "$STATE" && chmod 700 "$STATE" || exit 1
     if [ -f "$STATE/session" ]; then
         old=$(cat "$STATE/session")
-        if [ "$UI" = dialog ] && ! kill -0 "$old" 2>/dev/null; then
+        if [ "$UI" = dialog ] && ! live_launcher "$old"; then
             teardown # a crashed earlier session: clean up, then go on
         else
             VAULT=$(cat "$STATE/vault" 2>/dev/null) # the app may have just deleted ui: show the live session again
@@ -615,7 +619,7 @@ do_stop() { # the teardown with the session's own process stopped first; returns
     HOME_REAL=$(cd "$HOME" && pwd -P)
     if [ -f "$STATE/session" ]; then
         sp=$(cat "$STATE/session")
-        if [ -n "$sp" ] && [ "$sp" != "$$" ] && kill -0 "$sp" 2>/dev/null && ps -p "$sp" -o command= 2>/dev/null | grep -q 'scat-chat'; then
+        if [ "$sp" != "$$" ] && live_launcher "$sp"; then
             kill "$sp" 2>/dev/null
             wait_dead "$sp"
         fi
@@ -623,9 +627,14 @@ do_stop() { # the teardown with the session's own process stopped first; returns
     teardown
     VAULT=""
     URL=""
-    ui_state stopped
     printf '%s\n' "$RESULT"
-    case "$RESULT" in "Stopped, but"*) return 1 ;; esac
+    case "$RESULT" in
+    "Stopped, but"*) # not confirmed: a red dot and one alert, and the app stays so that Stop can try again
+        ui_state problem "$RESULT"
+        return 1
+        ;;
+    esac
+    ui_state stopped
     return 0
 }
 
@@ -642,7 +651,7 @@ cmd_status() {
         cm=""
     fi
     sp=$(cat "$STATE/session" 2>/dev/null)
-    if [ "$UI" = dialog ] && [ -n "$sp" ] && ! kill -0 "$sp" 2>/dev/null; then
+    if [ "$UI" = dialog ] && [ -n "$sp" ] && ! live_launcher "$sp"; then
         sp="" # the launcher was killed: a dead session is not "starting"; the app then quits, and its stop cleans up
         [ -n "$cm" ] || { printf 'SCAT Chat is not running.\n'; exit 1; }
     fi
