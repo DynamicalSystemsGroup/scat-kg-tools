@@ -1,4 +1,4 @@
-"""WP23-U1: the affordance-to-technology edge type is scat:ProvidedBy (it was scat:Attributes); TBox 0.3.0."""
+"""WP23-U1: the affordance-to-technology edge type is scat:ProvidedBy; TBox 0.3.0."""
 
 from pathlib import Path
 

@@ -12,7 +12,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **layered graph**: nodes and edges, in four layers.
 - **knowledge graph**: the nodes, edges and narratives built from a vault.
 - **narrative**: one account of the field notes, on one `narrative` page, marked `past`, `future` or `mixed`. Each edge it tells is a row of its `Edges told` table.
-- **coded, uncoded**: said of a narrative. Coded: it links at least one node page. Uncoded: it links none. `done` means adequately coded, as the coder judges; a `done` narrative can be iterated or moved back to `draft`.
+- **coded, uncoded**: said of a narrative. Coded: it links at least one node page. Uncoded: it links none. `done` means adequately coded, as the coder judges.
 - **excluded**: said of an uncoded narrative: left out of the knowledge graph and every view, and reported.
 - **scenario**: a narrative (`kind` `scenario`) about people doing things over time; it tells groups, concerns and affordances.
 - **architecture**: a narrative (`kind` `architecture`) about parts put together into tools; it tells concerns, affordances and technologies.
@@ -58,7 +58,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **the coding loop**: interpreting, authoring, coding, reviewing, until the coder sets it to `done`.
 - **analysing**: generating views from the knowledge graph's structure.
 - **a finished model**: conformant, navigable, with views, and the coder's statement that it represents the notes.
-- **rule, norm**: a rule is what conformance requires and the tool enforces. A norm is guidance to coders and assistants, not enforced; the assistant's rules are norms the server enforces only where it refuses an act.
+- **rule, norm**: a rule is what conformance requires and the tool enforces. A norm is guidance to coders and assistants, not enforced.
 - **skill**: a package of instructions an assistant loads, in the chat or the IDE.
 - **saved agent**: the chat's saved assistant setup, from which a new chat starts.
 - **session key**: the key the coder pastes into the chat for one session; deleted at Stop.
