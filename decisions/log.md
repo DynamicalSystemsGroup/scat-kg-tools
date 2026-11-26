@@ -2593,3 +2593,20 @@ Asked whether WP23's worker may retry the guard-refused compound command (D-140)
 chose "Yes, as separate steps". The worker runs, one command each: reword the glossary and terms attribution rows and
 commit; merge `wp23/u3c` into `wp23/u1b`; remove the temporary `PENDING_TBOX_NAMES` hack; run the tests. If the guard
 refuses any single step, it stops and reports again.
+
+## D-143 | 2026-11-26 | WP23 accepted
+
+WP23 landed: tools `dev` ad8f961 (CI, Image, Pages green), template `dev` 0a765a8 pinning tools fd0a39e (CI green),
+`TEMPLATE_COMMIT` on 0a765a8, docs tests 80 passed against it. Built: the attribution mode as a repository
+metaparameter (`scat.toml`, SCAT-MODE-CONFIG, the mode on every machine document and MCP result); contributor pages
+outside the four layers with `attributed_to` links that resolve; the mode rule stated identically in the catalogue,
+`docs/norms.md` and `contracts/assistant.md`; `scat attribution` (CLI, Python, MCP); the deontic pass (D-134);
+`scat:Attributes` renamed `scat:ProvidedBy`, version 0.3.0; glossary terms; docs; the template declaring `disallowed`;
+the range vault. Every unit had a fresh review; a Haiku cold read ran. `check_metrics.py --accept WP23` passes
+(iteration 40: 45 est, 56 realized). The guard refusal of D-140 was resolved by D-142 with no further refusal.
+
+The ACE checked the PM's claim that `docs/leave-no-trace.md` still carries "a MAY": it does not (fixed in WP22). Notes
+kept for WP26: `schema_version` stays 2 with the new `attribution` operation (allowed by the contract's closed-list
+wording, a grey spot); the terms cap is now 910 and the machine-schema doc's word cap 646; `impact/file-map.md` is stale
+since WP17 and is refreshed with WP24's map. The superseded `wp23/u3` branch and worktree are removed (never merged).
+The ACE accepts WP23.
