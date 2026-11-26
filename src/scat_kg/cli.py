@@ -230,6 +230,14 @@ def _parser() -> argparse.ArgumentParser:
         help="the name of a group, concern, affordance or technology; without it, every node page",
     )
     command(
+        "review",
+        "Show where to look next: pairs of node pages of one type that may be one node (with the shared "
+        "adjacent nodes, hubs marked, and the link texts coders used), and pages whose accounts tell them "
+        "to different other ends, with the narratives grouped. A prompt to read, not a finding. "
+        f"{scope}.",
+        "`scat_kg.review()`",
+    )
+    command(
         "attribution",
         "Show the narratives by contributor: each contributor page with the narratives that name it, and "
         "the narratives that name none. Refuses where the vault's attribution mode is disallowed. "
@@ -324,6 +332,8 @@ def run(args: argparse.Namespace):
             return scat_kg.evidence(args.node, root=root)
         case "copy-share":
             return scat_kg.copy_share(args.node, root=root)
+        case "review":
+            return scat_kg.review(root=root)
         case "attribution":
             return scat_kg.attribution(root=root)
         case "export-edges":

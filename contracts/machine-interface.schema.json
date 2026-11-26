@@ -16,7 +16,7 @@
       "enum": ["required", "optional", "disallowed", null]
     },
     "OperationName": {
-      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge, merge, split-plan, fingerprint, edges, layered, trace, evidence, copy-share, attribution, export-edges). New commands may appear, so the names are not enumerated.",
+      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge, merge, split-plan, fingerprint, edges, layered, trace, evidence, copy-share, review, attribution, export-edges). New commands may appear, so the names are not enumerated.",
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]*$"
     },
@@ -201,14 +201,14 @@
       }
     },
     "ViewResult": {
-      "description": "What fingerprint, edges, layered, trace, evidence, copy-share and attribution return when they ran: the data of one view, deterministic (layer order, then name; edges in graph order; narratives in path order). A view that cannot run (unknown name, an error in a page it draws, no vault) is an OperationResult with ok false and its problems. fingerprint: narratives. edges: edge_type, from_layer, to_layer, rows. layered: narratives (names), nodes (by layer), edges. trace: node, direction, up and down (nodes in layer order then name; empty for a direction not asked), edges (those walked); the node itself is in neither list. evidence: node, node_type, node_status, narratives (EvidenceNarrative: every narrative that links the node, with the paragraphs around its links), edges (those of the node, each with its tellings), adjacent (the nodes one edge away, by layer), excluded; it reads no contributor page and no attributed_to. copy-share: pages (CopyShareEntry: each node page, or the one named, with the share of its five-word runs found word for word in a narrative; highest share first), excluded; it reads no contributor page and no attributed_to. attribution: contributors (each contributor page with the narratives that name it), unattributed (the narratives that name none), excluded. It is a view of the knowledge graph, not of the layered graph: a contributor page is in no other view. Where the vault's mode is disallowed, or declares none, it is an OperationResult with ok false, not an empty list.",
+      "description": "What fingerprint, edges, layered, trace, evidence, copy-share, review and attribution return when they ran: the data of one view, deterministic (layer order, then name; edges in graph order; narratives in path order). A view that cannot run (unknown name, an error in a page it draws, no vault) is an OperationResult with ok false and its problems. fingerprint: narratives. edges: edge_type, from_layer, to_layer, rows. layered: narratives (names), nodes (by layer), edges. trace: node, direction, up and down (nodes in layer order then name; empty for a direction not asked), edges (those walked); the node itself is in neither list. evidence: node, node_type, node_status, narratives (EvidenceNarrative: every narrative that links the node, with the paragraphs around its links), edges (those of the node, each with its tellings), adjacent (the nodes one edge away, by layer), excluded; it reads no contributor page and no attributed_to. copy-share: pages (CopyShareEntry: each node page, or the one named, with the share of its five-word runs found word for word in a narrative; highest share first), excluded; it reads no contributor page and no attributed_to. review: proposals (ReviewProposal: pairs of node pages of one type that may be one node), reread (ReviewReread: pages whose accounts tell them to different other ends), excluded; a place to look, never a finding; it reads no contributor page and no attributed_to. attribution: contributors (each contributor page with the narratives that name it), unattributed (the narratives that name none), excluded. It is a view of the knowledge graph, not of the layered graph: a contributor page is in no other view. Where the vault's mode is disallowed, or declares none, it is an OperationResult with ok false, not an empty list.",
       "type": "object",
       "required": ["schema_version", "kind", "operation", "ok", "mode"],
       "properties": {
         "schema_version": { "$ref": "#/$defs/SchemaVersion" },
         "mode": { "$ref": "#/$defs/Mode" },
         "kind": { "const": "view" },
-        "operation": { "enum": ["fingerprint", "edges", "layered", "trace", "evidence", "copy-share", "attribution"] },
+        "operation": { "enum": ["fingerprint", "edges", "layered", "trace", "evidence", "copy-share", "review", "attribution"] },
         "ok": { "const": true },
         "narratives": { "type": "array", "description": "fingerprint: the fingerprints (ViewNarrative), one per narrative asked, or every narrative in path order. layered: the names of the narratives drawn." },
         "edge_type": { "$ref": "#/$defs/EdgeType" },
@@ -230,6 +230,8 @@
         "excluded": { "type": "array", "items": { "$ref": "#/$defs/ViewExcluded" }, "description": "The uncoded narratives (they link no node page), which every view leaves out: all of them for a view that draws every narrative, none for a view of named narratives (which refuses an excluded name). Present on fingerprint, edges, layered and trace; absent from a document written before it was added." },
         "node": { "type": "string", "minLength": 1 },
         "pages": { "type": "array", "items": { "$ref": "#/$defs/CopyShareEntry" }, "description": "copy-share: one entry for each node page." },
+        "proposals": { "type": "array", "items": { "$ref": "#/$defs/ReviewProposal" }, "description": "review: pairs that may be one node, the largest overlap first." },
+        "reread": { "type": "array", "items": { "$ref": "#/$defs/ReviewReread" }, "description": "review: pages to re-read, the fewest shared other ends first." },
         "node_type": { "enum": ["group", "concern", "affordance", "technology"], "description": "evidence: the layer of the node." },
         "node_status": { "type": ["string", "null"], "description": "evidence: the node page's status, as written." },
         "adjacent": {
@@ -281,6 +283,10 @@
           "then": { "required": ["pages", "excluded"] }
         },
         {
+          "if": { "properties": { "operation": { "const": "review" } }, "required": ["operation"] },
+          "then": { "required": ["proposals", "reread", "excluded"] }
+        },
+        {
           "if": { "properties": { "operation": { "const": "attribution" } }, "required": ["operation"] },
           "then": { "required": ["contributors", "unattributed", "excluded"] }
         }
@@ -297,6 +303,72 @@
         "words": { "type": "integer", "minimum": 0 },
         "share": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
         "narratives": { "$ref": "#/$defs/StringList" }
+      }
+    },
+    "ReviewProposal": {
+      "description": "Two node pages of one type that may be one node (review): both pages with the link texts coders wrote for each, the narrative, adjacent-node and description overlaps (0 to 1), the twin rows (a narrative tells the same edge type to the same other end for both pages; lines gives the row of each page), the adjacent nodes both pages share with the hubs marked, and a one-line reason. Link text is shown, never scored; names are never compared.",
+      "type": "object",
+      "required": ["type", "pages", "narrative_jaccard", "adjacent_jaccard", "description_cosine", "twin_rows", "shared_adjacent", "reason"],
+      "properties": {
+        "type": { "enum": ["group", "concern", "affordance", "technology"] },
+        "pages": {
+          "type": "array", "minItems": 2, "maxItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["name", "type", "status", "link_texts"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "type": { "enum": ["group", "concern", "affordance", "technology"] },
+              "status": { "type": ["string", "null"] },
+              "link_texts": { "$ref": "#/$defs/StringList" }
+            }
+          }
+        },
+        "narrative_jaccard": { "type": "number", "minimum": 0, "maximum": 1 },
+        "adjacent_jaccard": { "type": "number", "minimum": 0, "maximum": 1 },
+        "description_cosine": { "type": "number", "minimum": 0, "maximum": 1 },
+        "twin_rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["narrative", "file", "edge_type", "other_end", "lines"],
+            "properties": {
+              "narrative": { "type": "string", "minLength": 1 },
+              "file": { "type": "string", "minLength": 1 },
+              "edge_type": { "$ref": "#/$defs/EdgeType" },
+              "other_end": { "type": "string", "minLength": 1 },
+              "lines": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "integer", "minimum": 1 } }
+            }
+          }
+        },
+        "shared_adjacent": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "type", "status", "hub"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "type": { "enum": ["group", "concern", "affordance", "technology"] },
+              "status": { "type": ["string", "null"] },
+              "hub": { "type": "boolean" }
+            }
+          }
+        },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "ReviewReread": {
+      "description": "A node page to re-read (review): told by 4 or more narratives, at most 0.3 of whose pairs tell it to a common other end. groups: the narratives, joined when they tell the page to a common other end, directly or through others; largest group first.",
+      "type": "object",
+      "required": ["name", "type", "status", "narratives", "common_end_share", "groups", "reason"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["group", "concern", "affordance", "technology"] },
+        "status": { "type": ["string", "null"] },
+        "narratives": { "type": "integer", "minimum": 4 },
+        "common_end_share": { "type": "number", "minimum": 0, "maximum": 1 },
+        "groups": { "type": "array", "items": { "$ref": "#/$defs/StringList" } },
+        "reason": { "type": "string", "minLength": 1 }
       }
     },
     "EvidenceNarrative": {

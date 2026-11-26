@@ -86,6 +86,12 @@ positional arguments:
                   they come from; the most repeated pages first. A high share
                   is a prompt to look (`scat evidence`), not a fault. NODE is
                   a name; without it, every node page. Writes nothing.
+    review        Show where to look next: pairs of node pages of one type
+                  that may be one node (with the shared adjacent nodes, hubs
+                  marked, and the link texts coders used), and pages whose
+                  accounts tell them to different other ends, with the
+                  narratives grouped. A prompt to read, not a finding. Writes
+                  nothing.
     attribution   Show the narratives by contributor: each contributor page
                   with the narratives that name it, and the narratives that
                   name none. Refuses where the vault's attribution mode is
@@ -141,6 +147,7 @@ Every command takes `--root ROOT`, the vault folder (default: the current folder
         scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
         scat_kg.evidence("node")            # one node: its narratives, paragraphs, edges and adjacent nodes
         scat_kg.copy_share()                # how much of each node page repeats a narrative, word for word
+        scat_kg.review()                    # pages that may be one node, and pages to re-read
         scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
         scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
 
@@ -1838,6 +1845,143 @@ $ uv run scat copy-share gated-approval --json
       "fix": "link one node page in the narrative (a row end or its account), then run this again"
     }
   ]
+}
+```
+
+## scat review
+
+```text
+usage: scat review [-h] [--root ROOT] [--json]
+
+Show where to look next: pairs of node pages of one type that may be one node (with the shared adjacent nodes, hubs marked, and the link texts coders used), and pages whose accounts tell them to different other ends, with the narratives grouped. A prompt to read, not a finding. Writes nothing.
+
+options:
+  -h, --help   show this help message and exit
+  --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
+
+REPL: `scat_kg.review()`
+```
+
+Shows where to look next, in two lists. It prints the vault's attribution mode first.
+
+**Pairs that may be one node.** Two node pages of one type are listed when any of these holds:
+
+- they have two or more adjacent nodes each (the nodes one edge away), and at least half of all their adjacent nodes are shared;
+- their descriptions share at least half of their words (a word of three letters or more, without common words such as "the" or "and", counted with its repeats);
+- one narrative tells the same edge type to the same other end for both pages (a twin row), and at least half of the narratives that link either page link both.
+
+Each pair shows the three overlaps (`narratives`, `adjacent nodes`, `descriptions`, each from 0 to 1), each twin row with its file and the line of the row for each page, the adjacent nodes the two pages share, and the link texts coders gave each page (`[[node|text]]` in a narrative). A shared adjacent node is marked `(hub)` when it is adjacent to at least four node pages and to more than a tenth of all node pages: sharing a hub says little, so look at the shared nodes that are not marked. Link texts are shown beside the pair and take no part in choosing it, and names are never compared: a pair is listed for what the vault says around its pages, not for how its names are spelled.
+
+**Pages to re-read.** A page whose edges are told by four or more narratives, where at most three tenths of the pairs of those narratives tell the page to a common other end. The narratives are shown in groups: two are in one group when they tell the page to a common other end, directly or through others. These accounts tell the page to different other ends; read them together.
+
+Both lists are prompts to read, not findings: you decide whether two pages are one node, and whether a page needs a closer reading, and `scat evidence <node>` shows what the narratives say. A narrative that links no node page is excluded, and listed at the end, as in the other views. The command reads no `attributed_to` field and lists no contributor page. It writes nothing.
+
+Exit codes: 0, or 1 for a refusal (a page it draws that has an error, a row that tells no edge, a missing vault folder).
+
+=== "Python"
+
+    ```python
+    scat_kg.review()
+    ```
+
+    ```text
+    attribution mode: disallowed
+    review: 1 page pair that may be one node
+        gated-approval ~ revert-with-history-kept (affordance; done, done): may be one node: a narrative tells the same row for both (2x)
+            narratives 1.00, adjacent nodes 0.33, descriptions 0.00
+            twin row: false-start-and-clean-restart (narrative/false-start-and-clean-restart.md lines 29 and 30) tells addressed-by with intent-without-drift
+            twin row: two-branches-and-tags-pitch (narrative/two-branches-and-tags-pitch.md lines 26 and 27) tells addressed-by with intent-without-drift
+            shared adjacent nodes: intent-without-drift
+            link texts for gated-approval: "Approval is a merge into main", "a gated mission"
+            link texts for revert-with-history-kept: "dev is reverted to the approved state. History is kept", "reverting without losing history"
+    pages to re-read: 0
+        none
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat review
+    ```
+
+    The same text.
+
+With `--json`:
+
+```text
+$ uv run scat review --json
+```
+
+```json
+{
+  "schema_version": 3,
+  "kind": "view",
+  "operation": "review",
+  "ok": true,
+  "mode": "disallowed",
+  "proposals": [
+    {
+      "type": "affordance",
+      "pages": [
+        {
+          "name": "gated-approval",
+          "type": "affordance",
+          "status": "done",
+          "link_texts": [
+            "Approval is a merge into main",
+            "a gated mission"
+          ]
+        },
+        {
+          "name": "revert-with-history-kept",
+          "type": "affordance",
+          "status": "done",
+          "link_texts": [
+            "dev is reverted to the approved state. History is kept",
+            "reverting without losing history"
+          ]
+        }
+      ],
+      "narrative_jaccard": 1.0,
+      "adjacent_jaccard": 0.333,
+      "description_cosine": 0.0,
+      "twin_rows": [
+        {
+          "narrative": "false-start-and-clean-restart",
+          "file": "narrative/false-start-and-clean-restart.md",
+          "edge_type": "addressed-by",
+          "other_end": "intent-without-drift",
+          "lines": [
+            29,
+            30
+          ]
+        },
+        {
+          "narrative": "two-branches-and-tags-pitch",
+          "file": "narrative/two-branches-and-tags-pitch.md",
+          "edge_type": "addressed-by",
+          "other_end": "intent-without-drift",
+          "lines": [
+            26,
+            27
+          ]
+        }
+      ],
+      "shared_adjacent": [
+        {
+          "name": "intent-without-drift",
+          "type": "concern",
+          "status": "done",
+          "hub": false
+        }
+      ],
+      "reason": "may be one node: a narrative tells the same row for both (2x)"
+    }
+  ],
+  "reread": [],
+  "excluded": []
 }
 ```
 

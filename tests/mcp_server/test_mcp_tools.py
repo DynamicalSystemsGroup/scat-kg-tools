@@ -1,5 +1,8 @@
 """WP18-R1: every MCP tool returns the same data as the tool's own call, over a real HTTP server with a key."""
 
+import re
+from pathlib import Path
+
 import pytest
 from mcputil import call, changed, copy_vault, serve, snapshot, with_session
 
@@ -22,6 +25,7 @@ TOOLS = {
     "trace",
     "evidence",
     "copy_share",
+    "review",
     "attribution",
     "export_edges",
 }
@@ -46,6 +50,46 @@ def test_the_tools_listed(url):
         return {t.name for t in (await s.list_tools()).tools}
 
     assert with_session(url, names) == TOOLS
+
+
+def test_the_reference_page_states_the_number_of_tools(url):
+    words = [
+        "zero",
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten",
+        "eleven",
+        "twelve",
+        "thirteen",
+        "fourteen",
+        "fifteen",
+    ]
+    words += [
+        "sixteen",
+        "seventeen",
+        "eighteen",
+        "nineteen",
+        "twenty",
+        "twenty-one",
+        "twenty-two",
+        "twenty-three",
+        "twenty-four",
+    ]
+    page = (Path(__file__).parents[2] / "docs" / "reference" / "mcp.md").read_text("utf-8")
+    said = re.search(r"^(\w[\w-]*) tools\.", page, re.MULTILINE)
+    assert said and said.group(1).lower() in words
+
+    async def count(s):
+        return len((await s.list_tools()).tools)
+
+    assert words.index(said.group(1).lower()) == with_session(url, count)
 
 
 def test_every_tool_description_says_who_owns_what(url):
@@ -115,6 +159,7 @@ SEQUENCE = [
     ("split_plan", {"a": "funders"}, lambda r: scat_kg.split_plan("funders", root=r)),
     ("copy_share", {}, lambda r: scat_kg.copy_share(root=r)),
     ("copy_share", {"node": "borrowers"}, lambda r: scat_kg.copy_share("borrowers", root=r)),
+    ("review", {}, lambda r: scat_kg.review(root=r)),
     (
         "stub",
         {"name": "new-concern", "type": "concern"},

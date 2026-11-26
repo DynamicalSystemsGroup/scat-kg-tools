@@ -17,6 +17,7 @@
     scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
     scat_kg.evidence("node")            # one node: its narratives, paragraphs, edges and adjacent nodes
     scat_kg.copy_share()                # how much of each node page repeats a narrative, word for word
+    scat_kg.review()                    # pages that may be one node, and pages to re-read
     scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
     scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
 
@@ -49,6 +50,7 @@ from scat_kg.ops import (
 from scat_kg.ops import read_status as _read_status
 from scat_kg.ops.common import find_page, open_vault
 from scat_kg.ops.result import Result, refused, reports_mode
+from scat_kg.review import review
 from scat_kg.views import Refused, View, attribution, edge_table, fingerprint, layered, trace
 
 # At the REPL the result prints as its message (R-8), not as a dataclass dump.
@@ -157,6 +159,7 @@ __all__ = [
     "merge",
     "record_edge",
     "remove_edge",
+    "review",
     "set_status",
     "split_plan",
     "status",

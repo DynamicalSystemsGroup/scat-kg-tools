@@ -46,6 +46,7 @@ CALLS: list[tuple[str, dict]] = [
     ("trace", {"node": "ethnographers"}),
     ("evidence", {"node": "ethnographers"}),
     ("copy_share", {}),
+    ("review", {}),
     ("attribution", {}),
     ("export_edges", {}),
 ]
