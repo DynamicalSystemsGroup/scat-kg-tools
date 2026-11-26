@@ -58,7 +58,9 @@ def test__scat_uncoded__fires_only_on_a_narrative(make_vault):
 
 def test__scat_uncoded__does_not_refuse_set_status_done(make_vault):
     page = narrative(status="draft", account=NO_LINK, section="")
-    root = make_vault({"scat.toml": "stakeholder_group_cap = 3\n", DESK: page})
+    root = make_vault(
+        {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n", DESK: page}
+    )
     result = scat_kg.set_status("desk-day", "done", root=root)
     assert result.ok, str(result)
 

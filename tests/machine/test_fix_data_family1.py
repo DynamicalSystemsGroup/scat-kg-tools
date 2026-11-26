@@ -107,14 +107,33 @@ CASES = [
         (),
     ),
     ("cap", "SCAT-CAP", GROUPS, ()),
+    ("mode-config-missing", "SCAT-MODE-CONFIG", {"scat.toml": "stakeholder_group_cap = 3\n"}, ()),
+    (
+        "mode-config-unknown",
+        "SCAT-MODE-CONFIG",
+        {"scat.toml": 'attribution = "public"\nstakeholder_group_cap = 3\n'},
+        (),
+    ),
     ("cap-config-missing", "SCAT-CAP-CONFIG", {}, ("scat.toml",)),
     ("cap-config-toml", "SCAT-CAP-CONFIG", {"scat.toml": "stakeholder_group_cap = \n"}, ()),
-    ("cap-config-key", "SCAT-CAP-CONFIG", {"scat.toml": "other = 1\n"}, ()),
-    ("cap-config-bad", "SCAT-CAP-CONFIG", {"scat.toml": "stakeholder_group_cap = 0\n"}, ()),
+    (
+        "cap-config-key",
+        "SCAT-CAP-CONFIG",
+        {"scat.toml": "attribution = 'disallowed'\nother = 1\n"},
+        (),
+    ),
+    (
+        "cap-config-bad",
+        "SCAT-CAP-CONFIG",
+        {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 0\n"},
+        (),
+    ),
     (
         "suggest-config",
         "SCAT-SUGGEST-CONFIG",
-        {"scat.toml": "link_suggestions = 1\nstakeholder_group_cap = 3\n"},
+        {
+            "scat.toml": "attribution = 'disallowed'\nlink_suggestions = 1\nstakeholder_group_cap = 3\n"
+        },
         (),
     ),
     ("mention", "SCAT-MENTION", {C: H.doc("concern", "S", body="\nNeeds a briefing.\n")}, ()),

@@ -22,7 +22,7 @@ from pathlib import Path
 
 from scat_kg import views
 from scat_kg.ops.files import replace_file
-from scat_kg.ops.result import Refusal, Result
+from scat_kg.ops.result import Refusal, Result, stamp
 from scat_kg.tbox import TBOX
 
 OPERATION = "draw"
@@ -223,7 +223,9 @@ class Drawing:
 
     def save(self, path: str | Path) -> Result:
         """Write the image to `path` (`.png` or `.svg`); a file with the same content is left alone."""
-        path = Path(path)
+        return stamp(self._write(Path(path)), self.root)
+
+    def _write(self, path: Path) -> Result:
         if path.suffix.lower() not in SUFFIXES:
             return _no_write(
                 path,

@@ -84,7 +84,7 @@ def test__a_page_with_a_missing_status_is_judged_as_done_and_the_status_error_is
 
 def test__the_vault_wide_errors_are_not_listed_and_the_vault_check_reports_the_cap(make_vault):
     files = {
-        "scat.toml": "stakeholder_group_cap = 1\n",
+        "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 1\n",
         "group/staff.md": doc("group", "Staff", status="draft"),
     }
     v, report = at_done(make_vault, files, "group/staff.md")

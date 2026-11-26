@@ -53,7 +53,7 @@ def base_files() -> dict[str, str]:
     `idle` is a technology no narrative links; `water` carries a relationship annotation to `cost`.
     """
     return {
-        "scat.toml": "stakeholder_group_cap = 3\n",
+        "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n",
         "group/farmers.md": page("group", "Farmers", "draft"),
         "group/towns.md": page("group", "Towns", "stub"),
         "concern/water.md": page("concern", "Water", "draft", body="Pulls against [[cost]].\n"),

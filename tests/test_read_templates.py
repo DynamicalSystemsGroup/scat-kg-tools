@@ -13,7 +13,7 @@ def cap_problem(root):
 def test_templates_folder_is_not_read(make_vault):
     root = make_vault(
         {
-            "scat.toml": "stakeholder_group_cap = 3\n",
+            "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n",
             "templates/concern.md": TEMPLATE,
             "templates/deep/more.md": TEMPLATE,
             "templates/note.md": "no frontmatter\n",
@@ -30,7 +30,7 @@ def test_templates_folder_is_not_read(make_vault):
 def test_custom_templates_folder(make_vault):
     root = make_vault(
         {
-            "scat.toml": 'stakeholder_group_cap = 3\ntemplates_folder = "skel"\n',
+            "scat.toml": 'attribution = "disallowed"\nstakeholder_group_cap = 3\ntemplates_folder = "skel"\n',
             "skel/concern.md": TEMPLATE,
             "templates/concern.md": REAL,
         }
@@ -43,7 +43,7 @@ def test_custom_templates_folder(make_vault):
 def test_bad_value_falls_back_to_default(make_vault, bad):
     root = make_vault(
         {
-            "scat.toml": f"stakeholder_group_cap = 3\ntemplates_folder = {bad}\n",
+            "scat.toml": f"attribution = 'disallowed'\nstakeholder_group_cap = 3\ntemplates_folder = {bad}\n",
             "templates/concern.md": TEMPLATE,
             "concern/real.md": REAL,
         }
@@ -54,12 +54,20 @@ def test_bad_value_falls_back_to_default(make_vault, bad):
 
 
 def test_extra_key_does_not_trigger_cap_config(make_vault):
-    root = make_vault({"scat.toml": 'stakeholder_group_cap = 3\ntemplates_folder = "skel"\n'})
+    root = make_vault(
+        {
+            "scat.toml": 'attribution = "disallowed"\nstakeholder_group_cap = 3\ntemplates_folder = "skel"\n'
+        }
+    )
     v = read_vault(root)
     assert v.config.problem is None and v.config.cap == 3
     assert cap_problem(root) is None
 
 
 def test_bad_cap_still_reported_with_templates_key(make_vault):
-    root = make_vault({"scat.toml": 'stakeholder_group_cap = "x"\ntemplates_folder = "skel"\n'})
+    root = make_vault(
+        {
+            "scat.toml": 'attribution = "disallowed"\nstakeholder_group_cap = "x"\ntemplates_folder = "skel"\n'
+        }
+    )
     assert cap_problem(root) == "bad-value"

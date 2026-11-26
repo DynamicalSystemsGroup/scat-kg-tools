@@ -451,13 +451,23 @@ and "Groups", `affordance` and "Affordances", `technology` and "Technologies". T
 after `note.description`: `note.kind` and `note.timeframe`. The second filter names the vault's
 `templates_folder` (10), here the default `templates`.
 
-## 10. Vault configuration: the group cap
+## 10. Vault configuration: the attribution mode and the group cap
 
-The cap is not in the TBox. It is set per vault in a file named **`scat.toml` at the vault root**, in TOML:
+Neither is in the TBox. Both are set per vault in a file named **`scat.toml` at the vault root**, in TOML:
 
 ```
+attribution = "disallowed"
 stakeholder_group_cap = 3
 ```
+
+- `attribution` is the vault's **attribution mode**: a TOML string, one of `required`, `optional` or `disallowed`
+  (GLOSSARY: attribution mode). It says whether a narrative may name the people it is attributed to; the per-mode
+  rules for the narrative's field are the catalogue's. There is no default: a vault with no `attribution` key, or
+  a value that is not one of the three, is a configuration problem for the catalogue to report
+  (SCAT-MODE-CONFIG), with a fix that names the three choices. The tools read the mode before any other key, and
+  report it: `check` prints it, and every document of the machine interface carries it as `mode` (a string; null
+  when the vault declares none, or an unknown one). A vault that changes its mode is checked as a whole against the
+  new one.
 
 - The value is a TOML integer of 1 or more (a float such as `3.0` is a configuration problem). The tools read this key
   and ignore any other key in the file, except `link_suggestions` (below) and `templates_folder`: the vault-relative folder of the Obsidian page
@@ -468,7 +478,7 @@ stakeholder_group_cap = 3
   problem for the catalogue to report (SCAT-SUGGEST-CONFIG).
 - The count is the number of pages with `type: group`, at every status, stubs included.
 - The cap is checked over the whole vault. A vault above the cap is not conformant.
-- The key is at the top level of the file. There is no default: if the file is missing or not valid TOML, or the key
+- The keys are at the top level of the file. The cap has no default: if the file is missing or not valid TOML, or the key
   is missing, not at the top level, or not such a number, that is itself a configuration problem for the catalogue to
   report.
 
@@ -496,5 +506,5 @@ the form of the Base files, the cap file, what a link entails, how an edge's sta
 - A link that reaches no page (3, 6); at a row's end it is a mismatch, graded by status.
 - The mismatches and other problems of 4, and a narrative that is `done` while one is left; setting `done` is judged as the page would stand
   at `done`.
-- A missing or invalid `scat.toml` (10); a group stub that would exceed the cap (6, 10), for which the stub option is
+- A missing or invalid `scat.toml`, a missing or unknown attribution mode (10); a group stub that would exceed the cap (6, 10), for which the stub option is
   withdrawn.

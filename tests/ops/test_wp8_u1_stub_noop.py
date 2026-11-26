@@ -6,7 +6,7 @@ from scat_kg import cli
 from scat_kg.ops import stub
 
 GOOD = {
-    "scat.toml": "stakeholder_group_cap = 3\n",
+    "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n",
     "concern/a.md": fm("concern", "A", "draft", 'description: "Fine."\n'),
 }
 

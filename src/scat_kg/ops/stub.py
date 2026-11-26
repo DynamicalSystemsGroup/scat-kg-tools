@@ -19,7 +19,7 @@ from scat_kg.ops.names import (
     quote,
     title_from_name,
 )
-from scat_kg.ops.result import Refusal, Result, refusal, refused, run_option
+from scat_kg.ops.result import Refusal, Result, refusal, refused, reports_mode, run_option
 from scat_kg.tbox import TBOX
 from scat_kg.vault import Page, Vault
 
@@ -143,6 +143,7 @@ def _wrong_type(type: str) -> Result | None:
     )
 
 
+@reports_mode
 def stub(name: str, type: str | None = None, *, root: str | Path = ".") -> Result:
     """Create one stub page of the given type (a node type, or `narrative`)."""
     op = "stub"
@@ -219,6 +220,7 @@ def _wants(vault: Vault, pages: tuple[Page, ...]):
     return wants, list(dict.fromkeys(notes))
 
 
+@reports_mode
 def stub_links(page: str | None = None, *, root: str | Path = ".") -> Result:
     """Create the node pages that the ends of rows link and the vault lacks, from one page or the whole vault.
 

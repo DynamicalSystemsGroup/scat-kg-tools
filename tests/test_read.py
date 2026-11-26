@@ -257,7 +257,7 @@ def test_reading_leaves_the_tree_unchanged(make_vault):
         "other/crlf.md": page("concern").replace("\n", "\r\n").encode(),
         ".obsidian/x.md": page("concern"),
         "README.md": "hi\n",
-        "scat.toml": "stakeholder_group_cap = 2\n",
+        "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 2\n",
     })  # fmt: skip
     for tree in (root, EXAMPLES):
         before = snapshot(tree)

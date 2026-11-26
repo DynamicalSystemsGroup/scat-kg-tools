@@ -18,11 +18,11 @@ changes from version 1.
 
 ## Fields you may rely on
 
-Nothing outside it is promised.
+Nothing else is promised.
 
 | Object | Fields |
 |---|---|
-| every document | `schema_version`, `kind`, `operation`, `ok` |
+| every document | `schema_version`, `kind`, `operation`, `ok`, `mode` |
 | check | `problems` |
 | problem | `rule`, `severity` (`error` or `warning`), `file`, `line`, `column`, `field`, `where`, `what`, `repeat`, `fix`, `text` (the message as `scat check` prints it) |
 | status | `scope` (`page`; `neighborhood`, a page and its linked pages; `vault`), `rows`, `counts`, `notes` |

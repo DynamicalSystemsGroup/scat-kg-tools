@@ -11,6 +11,10 @@
   ],
   "$defs": {
     "SchemaVersion": { "const": 2 },
+    "Mode": {
+      "description": "The vault's attribution mode, read from scat.toml (page contracts, section 10): required, optional or disallowed. Null when the vault declares none or an unknown one (SCAT-MODE-CONFIG says so), and when there is no vault to read.",
+      "enum": ["required", "optional", "disallowed", null]
+    },
     "OperationName": {
       "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge, fingerprint, edges, layered, trace, export-edges). New commands may appear, so the names are not enumerated.",
       "type": "string",
@@ -37,9 +41,10 @@
     "CheckResult": {
       "description": "What check returns when it ran. A check that could not run (not a vault, page not found, ...) is an OperationResult with ok false.",
       "type": "object",
-      "required": ["schema_version", "kind", "operation", "ok", "problems"],
+      "required": ["schema_version", "kind", "operation", "ok", "mode", "problems"],
       "properties": {
         "schema_version": { "$ref": "#/$defs/SchemaVersion" },
+        "mode": { "$ref": "#/$defs/Mode" },
         "kind": { "const": "check" },
         "operation": { "const": "check" },
         "ok": { "type": "boolean", "description": "False when any problem has severity error; warnings alone keep it true. The exit code encodes the same boolean." },
@@ -60,9 +65,10 @@
     "StatusResult": {
       "description": "What status returns when it ran. A status that could not run is an OperationResult with ok false.",
       "type": "object",
-      "required": ["schema_version", "kind", "operation", "ok", "scope", "rows", "counts", "notes"],
+      "required": ["schema_version", "kind", "operation", "ok", "mode", "scope", "rows", "counts", "notes"],
       "properties": {
         "schema_version": { "$ref": "#/$defs/SchemaVersion" },
+        "mode": { "$ref": "#/$defs/Mode" },
         "kind": { "const": "status" },
         "operation": { "const": "status" },
         "ok": { "const": true },
@@ -91,9 +97,10 @@
     "OperationResult": {
       "description": "What every other command returns, and what check and status return when they refuse. ok is true exactly when refused is empty. created holds pages the call wrote new (for record-edge and remove-edge, the stub of a missing end node or narrative); changed, pages it altered (for those two, the narratives it wrote a row into); notes, sentences for a person. Links are never added or removed by record-edge or remove-edge.",
       "type": "object",
-      "required": ["schema_version", "kind", "operation", "ok", "created", "changed", "unchanged", "refused", "notes"],
+      "required": ["schema_version", "kind", "operation", "ok", "mode", "created", "changed", "unchanged", "refused", "notes"],
       "properties": {
         "schema_version": { "$ref": "#/$defs/SchemaVersion" },
+        "mode": { "$ref": "#/$defs/Mode" },
         "kind": { "const": "operation" },
         "operation": { "$ref": "#/$defs/OperationName" },
         "ok": { "type": "boolean" },
@@ -179,9 +186,10 @@
     "ViewResult": {
       "description": "What fingerprint, edges, layered and trace return when they ran: the data of one view, deterministic (layer order, then name; edges in graph order; narratives in path order). A view that cannot run (unknown name, an error in a page it draws, no vault) is an OperationResult with ok false and its problems. fingerprint: narratives. edges: edge_type, from_layer, to_layer, rows. layered: narratives (names), nodes (by layer), edges. trace: node, direction, up and down (nodes in layer order then name; empty for a direction not asked), edges (those walked); the node itself is in neither list.",
       "type": "object",
-      "required": ["schema_version", "kind", "operation", "ok"],
+      "required": ["schema_version", "kind", "operation", "ok", "mode"],
       "properties": {
         "schema_version": { "$ref": "#/$defs/SchemaVersion" },
+        "mode": { "$ref": "#/$defs/Mode" },
         "kind": { "const": "view" },
         "operation": { "enum": ["fingerprint", "edges", "layered", "trace"] },
         "ok": { "const": true },

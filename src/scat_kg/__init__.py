@@ -40,7 +40,7 @@ from scat_kg.ops import (
 )
 from scat_kg.ops import read_status as _read_status
 from scat_kg.ops.common import find_page, open_vault
-from scat_kg.ops.result import Result, refused
+from scat_kg.ops.result import Result, refused, reports_mode
 from scat_kg.views import Refused, View, edge_table, fingerprint, layered, trace
 
 # At the REPL the result prints as its message (R-8), not as a dataclass dump.
@@ -56,8 +56,9 @@ def load(root: str | Path = ".") -> Graph:
 class CheckResult:
     """What `check` returns: the report of problems, in the catalogue's order, and the text the CLI prints."""
 
-    def __init__(self, report: Report):
+    def __init__(self, report: Report, mode: str | None = None):
         self.report = report
+        self.mode = mode  # the vault's attribution mode: set by `check`, from scat.toml
 
     @property
     def problems(self):
@@ -81,19 +82,22 @@ class CheckResult:
             "kind": "check",
             "operation": "check",
             "ok": self.ok,
+            "mode": self.mode,
             "problems": [p.to_dict() for p in self.problems],
         }
 
     def __str__(self) -> str:
         e, w = len(self.errors), len(self.warnings)
+        head = f"attribution mode: {self.mode or 'not declared'}"
         if not self.problems:
-            return "no problems"
+            return f"{head}\nno problems"
         total = f"{e} error{'' if e == 1 else 's'}, {w} warning{'' if w == 1 else 's'}"
-        return f"{self.report.render()}\n{total}"
+        return f"{head}\n{self.report.render()}\n{total}"
 
     __repr__ = __str__
 
 
+@reports_mode
 def check(
     page: str | None = None, *, neighborhood: bool = False, root: str | Path = "."
 ) -> CheckResult | Result:

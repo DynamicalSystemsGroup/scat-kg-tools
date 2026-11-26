@@ -1,10 +1,12 @@
-"""The rules about the vault as a whole: SCAT-CAP, SCAT-CAP-CONFIG, SCAT-SUGGEST-CONFIG (contract section 10)."""
+"""The rules about the vault as a whole: SCAT-MODE-CONFIG, SCAT-CAP, SCAT-CAP-CONFIG, SCAT-SUGGEST-CONFIG
+(contract section 10)."""
 
 import re
 
 from scat_kg.checks import fixes
 from scat_kg.checks.ctx import Ctx, vault_rule
 from scat_kg.fix import FixOption
+from scat_kg.vault import ATTRIBUTION_KEY, MODES
 
 FILE = "scat.toml"
 KEY = "stakeholder_group_cap"
@@ -17,6 +19,44 @@ def _written(ctx: Ctx, key: str = KEY) -> str:
     text = (ctx.vault.root / FILE).read_bytes().decode("utf-8", errors="replace")
     m = re.search(rf"^\s*{key}\s*=\s*(.*?)\s*(?:#.*)?$", text, re.MULTILINE)
     return m.group(1) if m else (ctx.vault.config.detail or "")
+
+
+MODE_CHOICES = {
+    "required": "a `done` narrative must name who it is attributed to",
+    "optional": "a narrative may name who it is attributed to",
+    "disallowed": "no narrative names who it is attributed to",
+}
+
+
+@vault_rule
+def mode_config(ctx: Ctx):
+    """The attribution mode is declared and known; read before the rest of the config (contract section 10)."""
+    cfg = ctx.vault.config
+    if cfg.attribution_problem is None:
+        return []
+    if cfg.attribution_problem == "key-missing":
+        what, verb = "the key is missing", "add the line"
+    else:
+        written = _written(ctx, ATTRIBUTION_KEY)
+        what = f"the value `{written}` is not one of `required`, `optional`, `disallowed`"
+        verb = f"replace the line `{ATTRIBUTION_KEY} = {written}` with"
+    options = []
+    for i, mode in enumerate(MODES):
+        lead = f"{verb} " if i == 0 else "or with "
+        options.append(
+            fixes.option(
+                "exact",
+                f'{lead}`{ATTRIBUTION_KEY} = "{mode}"` ({MODE_CHOICES[mode]})'
+                + (" in scat.toml" if i == 0 else ""),
+                fixes.set_field(FILE, ATTRIBUTION_KEY, mode),
+            )
+        )
+    where = f"field `{ATTRIBUTION_KEY}`"
+    return [
+        ctx.problem(
+            "SCAT-MODE-CONFIG", FILE, where, what, fixes.alternatives(options), on=ATTRIBUTION_KEY
+        )
+    ]
 
 
 @vault_rule

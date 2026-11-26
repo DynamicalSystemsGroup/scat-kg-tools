@@ -21,6 +21,7 @@ from scat_kg.ops.result import (
     Result,
     RowRef,
     refusal,
+    reports_mode,
     run_option,
 )
 from scat_kg.ops.stub import cap_refusal, name_refusal, stub_text
@@ -179,6 +180,7 @@ def _layer_refusal(
     )
 
 
+@reports_mode
 def record_edge(
     type: str,
     from_: str,
@@ -311,6 +313,7 @@ def record_edge(
     )
 
 
+@reports_mode
 def remove_edge(
     from_: str,
     to: str,

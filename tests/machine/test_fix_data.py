@@ -123,6 +123,7 @@ def test_typed_fix_validates_and_renders():
         "kind": "check",
         "operation": "check",
         "ok": False,
+        "mode": "disallowed",
         "problems": [
             {
                 "rule": "SCAT-FM-STATUS",

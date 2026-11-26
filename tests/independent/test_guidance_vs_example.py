@@ -125,7 +125,7 @@ def test_the_contracts_example_table_is_conformant_under_the_contracts_own_rules
     ]
     assert tables, "page contracts section 4 no longer shows an example table"
     v = Vault(tmp_path / "v")
-    v.write("scat.toml", "stakeholder_group_cap = 3\n")
+    v.write("scat.toml", "attribution = 'disallowed'\nstakeholder_group_cap = 3\n")
     v.write(
         "narrative/example.md",
         '---\ntype: narrative\nstatus: draft\ntitle: "Example"\ndescription: "d"\ntimeframe: past\n---\n\n'
@@ -143,7 +143,7 @@ def test_the_contracts_example_stub_is_what_stub_links_writes(tmp_path):
     text = CONTRACTS.read_text()
     assert "[[safety-briefing]] | is provided by | [[booking-app]]" in text
     v = Vault(tmp_path / "v")
-    v.write("scat.toml", "stakeholder_group_cap = 3\n")
+    v.write("scat.toml", "attribution = 'disallowed'\nstakeholder_group_cap = 3\n")
     v.write(
         "narrative/example.md",
         '---\ntype: narrative\nstatus: draft\ntitle: "Example"\ndescription: "d"\ntimeframe: past\n---\n\n'
@@ -182,7 +182,7 @@ def test_the_contracts_example_pages_are_conformant_at_their_stated_status(tmp_p
     examples = _page_examples()
     assert len(examples) >= 4, "page contracts 8 no longer shows the node-page examples"
     v = Vault(tmp_path / "v")
-    v.write("scat.toml", "stakeholder_group_cap = 3\n")
+    v.write("scat.toml", "attribution = 'disallowed'\nstakeholder_group_cap = 3\n")
     for i, (type_, block) in enumerate(examples):
         v.write(f"{type_}/example-{type_}-{i}.md", block.split("\n\nFree text")[0].rstrip() + "\n")
     problems = v.check()

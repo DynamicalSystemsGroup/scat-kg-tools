@@ -299,7 +299,7 @@ def results():
 @pytest.mark.parametrize("path", ["breadth", "depth"])
 def test_no_mismatch_is_ever_unseen(tmp_path, path, results):
     v = Vault(tmp_path / "v")
-    v.write("scat.toml", "stakeholder_group_cap = 3\n")
+    v.write("scat.toml", "attribution = 'disallowed'\nstakeholder_group_cap = 3\n")
     steps = breadth_steps() if path == "breadth" else depth_steps()
     seen_kinds = set()
     failures = []

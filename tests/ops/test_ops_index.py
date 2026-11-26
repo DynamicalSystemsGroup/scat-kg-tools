@@ -41,7 +41,11 @@ def test_base_text_is_lf_with_one_final_newline_and_the_columns_of_the_contract(
 
 
 def test_the_filter_follows_the_templates_folder_of_scat_toml(make_vault):
-    root = make_vault({"scat.toml": 'stakeholder_group_cap = 3\ntemplates_folder = "skel"\n'})
+    root = make_vault(
+        {
+            "scat.toml": 'attribution = "disallowed"\nstakeholder_group_cap = 3\ntemplates_folder = "skel"\n'
+        }
+    )
     index(root=root)
     assert '!file.inFolder("skel")' in (root / "index/group.base").read_text(encoding="utf-8")
 
