@@ -48,14 +48,18 @@ class StatusReport(Result):
 
     @property
     def counts(self) -> dict[str, int]:
-        """Pages per status; `other` is a missing or invalid status."""
+        """Pages per status; `other` is a missing or invalid status; `contributors` (only when there are some) counts
+        contributor pages, which are not in the status counts."""
         counts = {s: 0 for s in TBOX.statuses} | {"other": 0}
         for r in self.rows:
+            if r.type == "contributor":
+                continue  # a contributor page is counted on its own, below, not among the pages of the layers
             if isinstance(r.status, str) and r.status in TBOX.statuses:
                 counts[r.status] += 1
             else:
                 counts["other"] += 1
-        return counts
+        people = sum(r.type == "contributor" for r in self.rows)
+        return counts | {"contributors": people} if people else counts
 
     def to_dict(self) -> dict:
         if self.refused:

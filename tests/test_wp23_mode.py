@@ -45,7 +45,14 @@ def test_the_example_vault_declares_disallowed():
 def test_each_valid_mode_is_accepted_and_reported_by_check(tmp_path, mode):
     root = vault_with(tmp_path, declared(mode))
     result = scat_kg.check(root=root)
-    assert result.ok and "SCAT-MODE-CONFIG" not in [p.rule for p in result.problems]
+    rules = {p.rule for p in result.problems}
+    assert "SCAT-MODE-CONFIG" not in rules
+    if (
+        mode == "required"
+    ):  # the example narratives name nobody: the mode's own rule (WP23-G2), not a config fault
+        assert {r for r in rules if "ATTR" in r} == {"SCAT-DONE-ATTR", "SCAT-DRAFT-ATTR"}
+    else:
+        assert result.ok
     assert result.mode == result.to_dict()["mode"] == mode
     assert str(result).splitlines()[0] == f"attribution mode: {mode}"
 

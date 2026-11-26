@@ -10,7 +10,7 @@ SCRIPT = Path(script.__file__)
 
 
 def test__r1__every_catalogue_rule_has_a_seeded_test_by_the_script():
-    assert len(script.catalogue_ids()) == 36
+    assert len(script.catalogue_ids()) == 40
     assert script.rules_without_tests() == []
 
 

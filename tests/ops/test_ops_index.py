@@ -12,7 +12,10 @@ BASES = [f"index/{t}.base" for t in TYPES]
 
 def test_one_base_per_type_in_the_ontologys_order():
     assert TYPES == ("group", "concern", "affordance", "technology", "narrative")
-    assert set(TYPES) == set(TBOX.page_types) - {"index"}
+    assert set(TYPES) == set(TBOX.page_types) - {
+        "index",
+        "contributor",
+    }  # a contributor page has no Base
 
 
 def test_index_creates_every_base_in_a_vault_with_none(make_vault, snap, diff):

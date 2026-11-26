@@ -21,6 +21,9 @@ class Field:
     definition: str
     required_from: str  # status from which the field is required when listed as required
     value_set: tuple[str, ...] | None  # allowed values, in order (status, timeframe, kind)
+    target_type: str | None = (
+        None  # a link field (attributed_to): the page type its links must reach
+    )
 
 
 @dataclass(frozen=True)
@@ -137,6 +140,7 @@ def _field(g: Graph, node) -> Field:
         definition=_text(g, node, SKOS.definition),
         required_from="done" if required_from is None else _text(g, required_from, SKOS.notation),
         value_set=values,
+        target_type=_text(g, node, SCAT.targetType),
     )
 
 

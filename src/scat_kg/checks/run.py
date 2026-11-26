@@ -7,6 +7,7 @@ vault scope, and at the other two when a `group` page is in the set. `check_page
 """
 
 from scat_kg.checks import (  # noqa: F401  (register the rules)
+    attribution,
     completeness,
     dangling,
     ends,

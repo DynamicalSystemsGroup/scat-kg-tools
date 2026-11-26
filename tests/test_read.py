@@ -35,8 +35,9 @@ def test_example_vault_pages_and_types():
         "group": 3, "concern": 3, "affordance": 2, "technology": 2, "narrative": 3,
     }  # fmt: skip
     assert set(Counter(p.type for p in v.pages)) == set(TBOX.page_types) - {
-        "index"
-    }  # an index is no page
+        "index",
+        "contributor",
+    }  # an index is no page; the example vault is `disallowed`, which holds no contributor page
     assert v.non_pages == ("README.md",)  # the `index/*.base` files are not read at all
     assert all(p.frontmatter_error is None and p.model_error is None for p in v.pages)
     assert all(p.model is not None for p in v.pages)

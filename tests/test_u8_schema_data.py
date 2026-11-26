@@ -47,7 +47,7 @@ def field_tables():
     body = section("## 8. Types: fields", "## 9. Index pages")
     out = {}
     for slug, text in re.findall(r"### `([a-z]+)`\n(.*?)(?=\n### |\Z)", body, re.DOTALL):
-        rows = re.findall(r"^\| `([a-z]+)` \| .* \| (stub|done|optional) \|$", text, re.MULTILINE)
+        rows = re.findall(r"^\| `([a-z_]+)` \| .* \| (stub|done|optional) \|$", text, re.MULTILINE)
         out[slug] = dict(rows)
     return out
 

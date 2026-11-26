@@ -12,7 +12,9 @@ The shape of the model, in one paragraph. The four node types are pages: `group`
 refers to beyond the text, and a table under the heading `Edges told` with one row for each edge the account tells.
 An edge is no page and no field: it is a row. The tool builds the knowledge graph from the pages on every call; it
 holds one edge per (type, from, to) and names every narrative with a row for it. An index is a generated Obsidian
-Base file, not a page.
+Base file, not a page. Where the vault's attribution mode allows it (10), a fifth kind of page, the `contributor`,
+names a person a narrative is attributed to: it is in the knowledge graph, so a narrative's `attributed_to` links
+resolve to it, and it is outside the four layers, never a node, an edge, a fingerprint or part of the cap.
 
 ## 1. Pages
 
@@ -22,7 +24,8 @@ page-template folder (10) is not read, nor is `.obsidian/`. An index (9) is a `.
 is one of the TBox's types.
 
 **Layout.** The tools put each page they create in the folder named for its type, at the vault root: `group/`,
-`concern/`, `affordance/`, `technology/` and `narrative/`; the generated index files go in `index/`. A page by hand may
+`concern/`, `affordance/`, `technology/` and `narrative/` (a contributor page, where the mode allows it, goes in
+`contributor/`); the generated index files go in `index/`. A page by hand may
 go in any folder: the folder is never checked, and the `type` key alone says what the page is.
 
 **Shape of a file.**
@@ -47,7 +50,8 @@ Free text in Markdown. Nothing in it is required.
   specially (a bare colon or `#` in an unquoted value breaks the YAML). Unquoted plain text is accepted. Inside
   quotes, `"` is written `\"` and `\` is written `\\`. `type`, `status`, `kind` and `timeframe` are written bare.
 - Keys that the TBox does not list for the type are ignored, whatever they hold (you may add your own note
-  keys). No type has a link field: a link in the frontmatter is never read (3).
+  keys). One field is a link field, a narrative's `attributed_to` (8); a link in any other frontmatter field is
+  never read (3).
 
 **Status.** Every page has `status`: `stub`, `draft` or `done`, in that order.
 - `stub`: the page exists because something links to it, or has just been started. Only `type`, `status` and `title`
@@ -65,6 +69,7 @@ Free text in Markdown. Nothing in it is required.
 |---|---|---|---|
 | `group`, `concern`, `affordance`, `technology` | `type`, `status`, `title` | the same | and `description` |
 | `narrative` | `type`, `status`, `title` | the same | and `description`, `timeframe`; every row of its table conformant (4) |
+| `contributor` | `type`, `status`, `title` | the same | the same: nothing else is required |
 | `index` | not a page: no fields | | |
 
 `kind` is optional on a narrative at every status. A narrative's table is optional at every status: a narrative with
@@ -118,7 +123,10 @@ briefing]]`), is a bad link: the fix is to write the exact slug name. The stub o
 
 **A link is `[[page-name]]`**, optionally `[[page-name|text to show]]` or `[[page-name#Heading]]`; the tools strip
 `|...`, `#...` and `^...` (a block reference) and read the page name, which must exist. In the frontmatter, links are
-never read: no field is a link field, and a link there is ignored. In the body, which is what is meant by a link
+never read, with one exception: the entries of a narrative's `attributed_to` (8), a list of text each written as a
+link, `"[[ada-quill]]"` (quoted, as YAML needs). They are read as text and are no link of the page: in no backlink,
+no fingerprint and no edge, and a link to a contributor page anywhere in the body is a link like any other, to a page
+that is not a node, so it never codes a narrative. A link in any other frontmatter field is ignored. In the body, which is what is meant by a link
 below, what is and is not a link:
 - Text inside matched code spans and fenced code blocks is never a link. An indented code block is not code here, and
   an unmatched backtick starts nothing.
@@ -169,7 +177,8 @@ its table, or a link in its account or its list); it is *uncoded* when it links 
 leave it out, and `scat check` (SCAT-UNCODED) and each view that draws every narrative report it by name, with how to
 include it: link one node page. It is included as soon as it is coded. A link in the account to a node page is the
 place for a node the narrative names with no edge (a lone node): it codes the narrative and the node is in its
-fingerprint. A row can tell an edge only through links to node pages, so an uncoded narrative tells no edge and no edge
+fingerprint. A link to a contributor page is not a node link: a narrative that links only contributor pages, in its
+body or in `attributed_to`, is still uncoded. A row can tell an edge only through links to node pages, so an uncoded narrative tells no edge and no edge
 waits on one.
 
 **Reading the table.** The rules, all of which a person can follow by hand:
@@ -267,7 +276,8 @@ already reaches a page of another type: that is a problem of the table (4) and t
 **Any other link entails a page, but not its type.** The account does not say what the page is, and guessing would put
 words in the coder's mouth. So the stub operation creates a page for such a link only when it is given the type slug
 explicitly, and then it creates it exactly as above. The slugs it accepts are the four node types (`group`, `concern`,
-`affordance`, `technology`) and `narrative`; it refuses any other slug. It also refuses a name that is illegal (2) or
+`affordance`, `technology`) and `narrative`; it refuses any other slug (a contributor page is made by hand, or by the
+later operation the attribution mode gates). It also refuses a name that is illegal (2) or
 already taken (any existing `.md` file name counts), when the name is given directly and not derived: it creates
 nothing and says why. With no type, it creates nothing and reports the link. The usual way to give such a link a type
 is to add the row that tells the edge, which entails the stub with that type and makes the link resolve. A stub of a
@@ -390,6 +400,18 @@ One account on one page: the account, an optional list of links, and the table o
 | `description` | short text | done |
 | `timeframe` | `past`, `future` or `mixed` | done |
 | `kind` | `scenario` or `architecture` | optional |
+| `attributed_to` | a list of links to contributor pages, each written `"[[name]]"` | optional |
+
+`attributed_to` names the people the narrative is attributed to (GLOSSARY: attribution): each entry is a link to a
+contributor page, for example `attributed_to: ["[[ada-quill]]", "[[bo-marsh]]"]`. It is a link field and not an
+edge: it tells no edge, names no node, and is no part of the narrative's fingerprint, and a link in it never codes
+the narrative (4). The TBox says only that it is optional and that its links reach pages of type `contributor`; the
+attribution mode decides the rest, in one rule (the mode rule, the catalogue's section 3): in `required` mode a
+narrative names a contributor (a warning before `done`, an error at `done`, SCAT-DRAFT-ATTR, SCAT-DONE-ATTR); in
+`disallowed` mode the field is an error at every status (SCAT-ATTR-DISALLOWED); in `optional` mode it is free. In
+the two modes that allow it, an entry that is not a link, that reaches no page or that reaches a page that is not a
+contributor page is an error (SCAT-ATTR-LINK). A value that is not a list of text is SCAT-FM-SHAPE's. Only a
+narrative has the field; on another page it is an unlisted key, which the tools ignore.
 
 The page's heading of the table is `Edges told`; its columns are `from`, `type`, `to`, `note`.
 
@@ -411,6 +433,31 @@ The queue was out of the door by ten. A [[borrowers|borrower]] wanted [[quick-ch
 |---|---|---|---|
 | [[borrowers]] | holds | [[quick-checkout]] | Said twice in the first hour. |
 ```
+
+### `contributor`
+
+One page per person narratives are attributed to, outside the four layers: the name or handle as the organiser
+records it, as the `title`. Present only where the vault's attribution mode is `required` or `optional`; in a
+`disallowed` vault a contributor page is an error at every status (SCAT-ATTR-DISALLOWED). It takes no part in any
+edge, the group cap, a fingerprint or a layered view: the layered graph holds the four layers only, and a
+contributor page is in the knowledge graph as a page a narrative's `attributed_to` link resolves to. Nothing about
+a person beyond the name is a field here, and the tools keep no contact details or consent record.
+
+| Key | Value | Required from |
+|---|---|---|
+| `type` | `contributor` | stub |
+| `status` | `stub`, `draft` or `done` | stub |
+| `title` | text | stub |
+
+```
+---
+type: contributor
+status: done
+title: "Ada Quill"
+---
+```
+
+A narrative names her with `attributed_to: ["[[ada-quill]]"]`.
 
 ### `index`
 
@@ -467,7 +514,9 @@ stakeholder_group_cap = 3
   (SCAT-MODE-CONFIG), with a fix that names the three choices. The tools read the mode before any other key, and
   report it: `check` prints it, and every document of the machine interface carries it as `mode` (a string; null
   when the vault declares none, or an unknown one). A vault that changes its mode is checked as a whole against the
-  new one.
+  new one: no narrative or page keeps what the old mode allowed, so a switch to `disallowed` flags every narrative
+  that still has `attributed_to` and every contributor page. The rule that differs by mode is one sentence, in the
+  catalogue (the mode rule); nothing else differs.
 
 - The value is a TOML integer of 1 or more (a float such as `3.0` is a configuration problem). The tools read this key
   and ignore any other key in the file, except `link_suggestions` (below) and `templates_folder`: the vault-relative folder of the Obsidian page
@@ -486,8 +535,9 @@ stakeholder_group_cap = 3
 
 Every key in the field tables is a `scat:key` of a field of that type in the TBox, and every field the TBox lists
 for a type is in its table, with the TBox's level (`requiredField` with its `requiredFrom`, `optionalField`).
-The types are the TBox's six `scat:key` values: `group`, `concern`, `affordance`, `technology`, `narrative` and
-`index`. The statuses are the TBox's `StatusValues`: `stub`, `draft`, `done`. `timeframe` takes `past`, `future`,
+The types are the TBox's seven `scat:key` values: `group`, `concern`, `affordance`, `technology`, `narrative`,
+`contributor` and `index`. A field with `scat:targetType` is a link field (`attributed_to`, whose links reach
+`contributor` pages); no other field is. The statuses are the TBox's `StatusValues`: `stub`, `draft`, `done`. `timeframe` takes `past`, `future`,
 `mixed` and `kind` takes `scenario`, `architecture`, as the TBox's value sets. The edge types, with their slugs, verbs
 and the node types of their two ends, are the table in 4, and the TBox's three `scat:EdgeType` properties
 (`scat:Heldby`, `scat:Addresses`, `scat:ProvidedBy`). The heading `Edges told` and the columns `from`, `type`, `to`,
@@ -506,5 +556,7 @@ the form of the Base files, the cap file, what a link entails, how an edge's sta
 - A link that reaches no page (3, 6); at a row's end it is a mismatch, graded by status.
 - The mismatches and other problems of 4, and a narrative that is `done` while one is left; setting `done` is judged as the page would stand
   at `done`.
+- The attribution mode rule (8, `contributor`, 10): `attributed_to` and contributor pages per mode, and an entry that
+  is no link to a contributor page.
 - A missing or invalid `scat.toml`, a missing or unknown attribution mode (10); a group stub that would exceed the cap (6, 10), for which the stub option is
   withdrawn.

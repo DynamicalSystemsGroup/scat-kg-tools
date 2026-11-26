@@ -119,7 +119,7 @@ class Ctx:
 
     @staticmethod
     def type_key(page: Page) -> str | None:
-        """The page's `type` when it is one of the five page types of a Markdown page."""
+        """The page's `type` when it is one of the six page types of a Markdown page."""
         return page.type_key if page.type_key in PAGE_TYPES else None
 
     @classmethod
