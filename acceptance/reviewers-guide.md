@@ -65,8 +65,8 @@ this guide's sitting 1.
   did them, log D-040 and D-044): create a real private repository from the template, run uv's installer, push, and
   open Obsidian.
 - **Chat path (J1 to J10, G14).** You run it as you would use it: the field notes uploaded to the chat as a
-  collection, the coding loop in the chat and in Obsidian, views through the MCP server, ending with the launcher
-  torn down and the key deleted. This needs your sign-ins and a key you paste; it is also WP18-R4 (the live run),
+  collection, the coding loop in the chat and in Obsidian, views through the MCP server, ending with Stop
+  confirmed and the key deleted. This needs your sign-ins and a key you paste; it is also WP18-R4 (the live run),
   which has not been done (see 4c, item 2). Its UA-A is three testers, two on Haiku and one on Sonnet, run by the ACE
   in these sittings.
 - **Hand-over (J10).** Each path ends with you deciding the model is finished and locking a version with a tag.
@@ -86,7 +86,7 @@ the affected stage.
   and my repository is still private.
 - [ ] Manual path: I navigated the graph and the index pages in Obsidian without help (R-21).
 - [ ] Manual path: I locked a version with a tag and named what it pins and who receives it.
-- [ ] Chat path: the coding loop ran in the chat, a clean check followed, the launcher ended torn down, and the key
+- [ ] Chat path: the coding loop ran in the chat, a clean check followed, Stop was confirmed, and the key
   was deleted.
 - [ ] Anything I flagged is written down with its stage.
 

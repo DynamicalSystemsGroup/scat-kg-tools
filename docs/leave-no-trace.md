@@ -1,9 +1,8 @@
 # Leave no trace
 
-!!! warning "This is one policy option, a MAY"
-    This page shows **one option** for a strict data policy. It is not a recommendation and it is not a default.
-    Projects that prefer lower friction need not follow it, and should not jump through these extra steps. Read it
-    only when your project's data policy asks for it.
+!!! note "For a strict data policy"
+    This page is for projects whose data policy asks that nothing stays on the chat platform. If yours does not, you
+    do not need it: the chat path's own "Clean up" is enough.
 
 Some projects work under a strict data policy: an AI platform **non-retention** policy (nothing you put into the
 platform stays there), or an **approved chatbot only** policy. "Leave no trace" is the life cycle of a chat-path
@@ -21,9 +20,9 @@ This page only adds what a strict policy needs.
     No one has yet run this walkthrough end to end. Its pieces were seen separately in the lab run of 25 November
     (the server entry, the skill and the saved agent, an uploaded file, the removal of the server entry). Two things
     were not tried: the chat's Temporary Chat setting in a session, and the chat's collections. Where a step names a
-    control that was not seen, it says what to look for, and the chief engineer's sitting is where it is confirmed.
+    control that was not seen, it says what to look for, and your first run is where it is confirmed.
 
-## What this option does
+## What this page does
 
 1. A **temporary chat**: the coding session runs in the chat's Temporary Chat setting, whose own text says the chat
    will not appear in your history and is deleted automatically.
@@ -56,13 +55,13 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 5. **In the menu bar:** wait until SCAT Chat's dot is green.
 6. **In the chat:** in the bar of icons on the left, click **MCP Settings**.
 7. **In the chat:** choose to add an MCP server, and type `SCAT` as its name.
-8. **In the menu bar:** open SCAT Chat's menu and click **Copy address**.
+8. **In the menu bar:** open SCAT Chat's menu and click **Copy address**. A notification says "The address is on your clipboard."
 9. **In the chat:** paste the address (it ends in `/mcp`) into the address field.
 10. **In the chat:** choose the Streamable HTTPS transport (the way the chat talks to a server over a secure web
    address).
 11. **In the chat:** choose API key as the authentication.
 12. **In the chat:** choose the header format the form offers for the key (`X-API-Key` or `Authorization: Bearer`; the server accepts either).
-13. **In the menu bar:** open SCAT Chat's menu and click **Copy key**.
+13. **In the menu bar:** open SCAT Chat's menu and click **Copy key**. A notification says "The key is on your clipboard."
 14. **In the chat:** paste the key into the API key field.
 15. **In the chat:** tick the consent **I trust this application**. The form requires it.
 16. **In the chat:** save.
@@ -105,9 +104,11 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 
 ### Tear everything down
 
-43. **In the menu bar:** open SCAT Chat's menu and click **Stop**. SCAT Chat quits, so its dot leaves the menu bar.
-44. **In SCAT Chat:** read the alert that reports the result. It says the public link is off, the server is removed, the key was
-    deleted and your clipboard holds no key.
+43. **In the menu bar:** open SCAT Chat's menu and click **Stop**. Stop shows the result in one alert.
+44. **In SCAT Chat:** read the alert titled "SCAT Chat stopped". It says the public link is off, the server is removed,
+    the key was deleted and your clipboard holds no key. Click **OK**: SCAT Chat quits and its dot leaves the menu bar.
+    If the alert is titled "SCAT Chat has a problem" instead, the stop was not confirmed: see "Stop" on the chat path,
+    and do not go on until it is.
 45. **In a web browser:** open the address that ended in `/mcp`. It should not load.
 46. **In the chat:** end the temporary chat (close it or leave it). It is deleted automatically.
 47. **In the chat:** open your history list and check the temporary chat is not there. If it is, delete it from its

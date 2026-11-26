@@ -277,20 +277,20 @@ release, licence and rights answers.
 5. Hand it over to the recipient the case names.
 6. Choose **Stop** in SCAT Chat's menu, then clean up the chat platform as [Clean up](../docs/chat-path.md#clean-up)
    says (delete the server entry; the rest is optional). Under a strict data policy, run [Leave
-   no trace](../docs/leave-no-trace.md) instead; it is an option, not part of this pass.
+   no trace](../docs/leave-no-trace.md) instead; it is not part of this pass.
 
 **Done.**
 - The whole-vault check is clean and the vault is navigable in Obsidian.
 - The release and its tag are on GitHub, in a repository that is still private, and you can name the tag, the commit it
   pins and the recipient.
-- SCAT Chat's alert says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was
+- SCAT Chat's alert, titled "SCAT Chat stopped", says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was
   deleted, and your clipboard holds no key."
 
 **Record.** The tag, the commit and the recipient; how you pushed; any wording of GitHub that differed from the page;
 the Stop alert, in full, if it was not the one above.
 
 **Resume.** Check the repository's Releases on github.com. If the tag exists, you are done. If not, start a session and
-redo step 4. If Stop did not confirm, do what the page says in "Stop".
+redo step 4. If Stop did not confirm (the alert "SCAT Chat has a problem" and a red dot), do what the page says in "Stop".
 
 ---
 

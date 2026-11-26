@@ -21,7 +21,7 @@ that runs the server), **In the menu bar** (SCAT Chat's coloured dot and its men
     installed although it is, that is the likely cause; tell the person who set this up.
 
 If your project's data policy is strict (an AI platform that must keep nothing, or "approved chatbot only"), see
-[Leave no trace](leave-no-trace.md). It is one option for such a policy, not something you need for a session.
+[Leave no trace](leave-no-trace.md). You do not need it for an ordinary session.
 
 ## What the chat path is, and what it needs
 
@@ -206,7 +206,8 @@ ones; the steps say which.
    for its version ("Fetching the server, once."), and when none is published yet, as with a candidate before its
    release, it builds the server on your Mac ("Building the server, once. The first time takes a few minutes."). Later
    sessions reuse it. The server runs as your own Mac user, set each time it starts, so it can read and write your vault.
-6. **In the menu bar:** check that the dot is green. A problem shows as a red dot, a **Problem:** line in the menu and
+6. **In the menu bar:** check that the dot is green. A notification then says "SCAT Chat is running. Click its dot in
+   the menu bar: Copy address, then Copy key, and paste each into the chat." A problem shows as a red dot, a **Problem:** line in the menu and
    one alert, "SCAT Chat has a problem", that repeats the line (see "When something goes wrong").
 7. **In the menu bar:** click the dot to open its menu. It shows State, Vault and Address lines, and **Copy address**,
    **Copy key**, **Change vault** and **Stop**. It never shows the key. Your Mac stays awake while SCAT Chat runs.
@@ -224,7 +225,8 @@ agent's tool must be added again. Do these steps after the dot is green again.
 1. **In the menu bar:** click the dot, then click **Change vault**.
 2. **In SCAT Chat:** choose the folder that holds `scat.toml` in the folder picker.
 3. **In the menu bar:** check that the dot is green.
-4. **In the menu bar:** open SCAT Chat's menu and click **Copy key**.
+4. **In the menu bar:** open SCAT Chat's menu and click **Copy key**. A notification says "The key is on your
+   clipboard."
 5. **In the chat:** in **MCP Settings**, next to the server "SCAT", click **Edit**.
 6. **In the chat:** paste the new key into the API key field.
 7. **In the chat:** save the entry.
@@ -248,15 +250,16 @@ As an example, in inference.coop's chat (lab run, 24 and 25 November, with lab m
 1. **In the chat:** in the bar of icons on the left, click **MCP Settings**.
 2. **In the chat:** choose to add an MCP server.
 3. **In the chat:** where the form asks for a name, type `SCAT`.
-4. **In the menu bar:** open SCAT Chat's menu and click **Copy address**. The address, which ends in `/mcp`, is now on
-   your clipboard.
+4. **In the menu bar:** open SCAT Chat's menu and click **Copy address**. A notification says "The address is on your
+   clipboard." The address, which ends in `/mcp`, is now on your clipboard.
 5. **In the chat:** paste the address into the server's address field.
 6. **In the chat:** choose the Streamable HTTPS transport (the way the chat talks to a server over a secure web
    address).
 7. **In the chat:** choose API key as the authentication.
 8. **In the chat:** choose the header format the form offers for the key. The server accepts the key as an `X-API-Key`
    header or as an `Authorization: Bearer` header; choose either.
-9. **In the menu bar:** open SCAT Chat's menu and click **Copy key**. The key is now on your clipboard.
+9. **In the menu bar:** open SCAT Chat's menu and click **Copy key**. A notification says "The key is on your
+   clipboard." The key is now on your clipboard.
 10. **In the chat:** paste the key into the API key field.
 11. **In the chat:** tick the consent **I trust this application**. The form requires it: without it the entry cannot
     be saved.
@@ -410,19 +413,26 @@ What each Stop removes, and what stays:
 Stopping has two parts here: stop the session on your Mac, and check that it stopped. Then clean up the chat
 platform (next section).
 
-1. **In the menu bar:** open SCAT Chat's menu and click **Stop**. SCAT Chat quits, so its dot leaves the menu bar. The
-   public link goes off, the server is removed, your Mac may sleep again, the key is deleted from your keychain, and your
-   clipboard is cleared of the key.
-2. **In SCAT Chat:** read the alert that reports the result. It is an alert, not a line in the menu. It says "Stopped.
-   The public link is off, the server is removed, your Mac may sleep again, the key was deleted, and your clipboard holds
-   no key."
-3. **In a web browser:** open the address that ended in `/mcp`. It should not load. If it does, open SCAT Chat again and
-   choose **Stop** again.
+1. **In the menu bar:** open SCAT Chat's menu and click **Stop**. Stop switches off the public link, removes the server,
+   lets your Mac sleep again, deletes the key from your keychain and clears your clipboard of the key. It shows the
+   result in one alert.
+2. **In SCAT Chat:** read the alert titled "SCAT Chat stopped". It says "Stopped. The public link is off, the server is
+   removed, your Mac may sleep again, the key was deleted, and your clipboard holds no key." It is an alert, not a line
+   in the menu.
+3. **In SCAT Chat:** click **OK** on the alert. SCAT Chat quits, and its dot leaves the menu bar.
+4. **In a web browser:** open the address that ended in `/mcp`. It should not load.
 
-If the alert says "Stopped, but I could not confirm:" followed by what it could not confirm, then "choose Stop in the
-SCAT Chat menu to try again, or restart your Mac, to be sure.", do that: open SCAT Chat again, choose **Stop** in its
-menu, or restart your Mac. If it says the public link may still be on, open Tailscale and switch Funnel off. If it says
-the key could not be deleted, open Keychain Access and delete the item it names.
+**When Stop could not confirm.** The alert is then titled "SCAT Chat has a problem" and says "Stopped, but I could not
+confirm:" followed by what it could not confirm, then "choose Stop in the SCAT Chat menu to try again, or restart your
+Mac, to be sure." SCAT Chat stays open, with a red dot. Do not open SCAT Chat again: that would start a new session.
+Choose **Stop** in its menu again, or restart your Mac. If the alert says the public link may still be on, open
+Tailscale and switch Funnel off. If it says the key could not be deleted, open Keychain Access and delete the item it
+names.
+
+**Two cases, two answers.** A problem while SCAT Chat is starting (a red dot and the alert "SCAT Chat has a problem",
+with a message that ends "choose Stop in the SCAT Chat menu, then open SCAT Chat again") leaves SCAT Chat open: choose
+**Stop**, fix the cause, then open SCAT Chat again. A Stop that could not confirm leaves it open too, but there you
+choose **Stop** again and do not open SCAT Chat.
 
 Colima keeps running after Stop; it is not in your way. Closing Docker Desktop, if you use it, is up to you.
 
@@ -430,7 +440,7 @@ Colima keeps running after Stop; it is not in your way. Closing Docker Desktop, 
 
 Clean up the chat platform each time, even in a relaxed project: the server entry holds a key that no longer works,
 so delete it rather than leave it. This section is the default flow: delete the server entry, and the rest is your
-choice. If your data policy needs everything removed from the platform, follow the strict option, [Leave no
+choice. If your data policy needs everything removed from the platform, follow [Leave no
 trace](leave-no-trace.md), instead.
 
 1. **In the chat:** in the bar of icons on the left, click **MCP Settings** (the last icon above your initials).
@@ -463,8 +473,9 @@ service and to the model provider behind it. Settle what is allowed before you b
 ## When something goes wrong
 
 SCAT Chat's messages, and what to do. A problem shows as a red dot, a **Problem:** line in the menu and one alert,
-"SCAT Chat has a problem". The alert repeats the line. Messages that begin "choose Stop in the SCAT Chat menu" mean the
-start was stopped: do that, fix the cause, then open SCAT Chat again. Quotes below are the words SCAT Chat uses; long
+"SCAT Chat has a problem". The alert repeats the line. A message that ends "choose Stop in the SCAT Chat menu, then
+open SCAT Chat again" is a problem at start: SCAT Chat is still open with a red dot. Choose **Stop**, fix the cause, then
+open SCAT Chat again. The one exception is a Stop that could not confirm (last rows). Quotes below are the words SCAT Chat uses; long
 ones are cut with "...".
 
 | SCAT Chat says | Do this |
@@ -495,7 +506,9 @@ ones are cut with "...".
 | "The server did not answer within ... seconds." or "The server answers but does not accept its own key." | Choose **Stop** in the SCAT Chat menu, then open SCAT Chat again. If it repeats, tell the person who set this up. |
 | "SCAT Chat stopped unexpectedly." | Choose **Stop** in the SCAT Chat menu, then open SCAT Chat again. If it repeats, tell the person who set this up. |
 | "SCAT Chat is already running. Click Stop in its menu (or quit the app) before starting it again." | Open its menu in the menu bar and choose **Stop**, then open SCAT Chat again. |
-| "Stopped, but I could not confirm:" followed by what it could not confirm, then "choose Stop in the SCAT Chat menu to try again, or restart your Mac, to be sure." | See "Stop": do that. If it names the public link, open Tailscale and switch Funnel off. |
+| "Stopped, but I could not confirm:" followed by what it could not confirm, then "choose Stop in the SCAT Chat menu to try again, or restart your Mac, to be sure." (the alert "SCAT Chat has a problem", after you chose Stop) | SCAT Chat stays open with a red dot. Choose **Stop** again, or restart your Mac. Do not open SCAT Chat again. If it names the public link, open Tailscale and switch Funnel off. |
+| "SCAT Chat is running. Click its dot in the menu bar: Copy address, then Copy key, and paste each into the chat." or "The address is on your clipboard." or "The key is on your clipboard." (a notification) | Not an error. See "Connect the chat". |
+| "SCAT Chat stopped" (an alert) | Not an error: Stop worked. See "Stop". |
 
 If you use Docker Desktop and the first run fails in a way that table does not cover, that is the untested part:
 send the person who set this up the exact words SCAT Chat showed.

@@ -1,5 +1,5 @@
 """WP21-R7: the chat-path life-cycle guide and the leave-no-trace walkthrough exist, have their headings, name
-a place in every numbered step, say the walkthrough is an option, and are linked and in the nav."""
+a place in every numbered step, say who the walkthrough is for, and are linked and in the nav."""
 
 import re
 from pathlib import Path
@@ -99,11 +99,26 @@ def test_leave_no_trace_steps_name_a_place():
     assert not _one_action(steps)
 
 
-def test_leave_no_trace_says_it_is_an_option_not_a_recommendation():
+def test_leave_no_trace_says_who_it_is_for():
     text = LNT.read_text(encoding="utf-8")
-    assert "This is one policy option, a MAY" in text
-    assert "not a recommendation" in text
-    assert "not a default" in text
+    assert "For a strict data policy" in text
+    assert "do not need it" in text
+
+
+def test_no_prompt_residue_in_the_guides():
+    """D-139: no deontic keywords and no meta-talk about options or recommendations in the coder's pages."""
+    deontic = re.compile(r"\b(MAY|SHALL|SHOULD|MUST)\b")
+    meta = re.compile(r"(?i)policy option|not a recommendation|not a default|a MAY")
+    for path in (CHAT, LNT, ROOT / "acceptance" / "walkthrough-chat.md"):
+        text = path.read_text(encoding="utf-8")
+        assert not deontic.search(text), (path.name, deontic.search(text).group(0))
+        assert not meta.search(text), (path.name, meta.search(text).group(0))
+
+
+def test_stop_is_an_alert_with_its_titles():
+    chat = CHAT.read_text(encoding="utf-8")
+    for title in ("SCAT Chat stopped", "SCAT Chat has a problem"):
+        assert f'"{title}"' in chat
 
 
 def test_leave_no_trace_covers_setup_and_removal():
