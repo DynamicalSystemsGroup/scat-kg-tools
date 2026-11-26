@@ -40,9 +40,11 @@ Two kinds of session feed it, and they look at the same graph from opposite side
   address concerns. People are set aside, so a design does not presume who will use it. An architecture tells
   concerns, affordances and technologies.
 
-The people in your data appear as **groups**, never as individuals. What the participation terms agreed for the event
-allow is for you to settle before the first session: see [Data, rights and consent](data-and-consent.md). Each vault
-sets a cap on how many groups it holds, and participants are clustered into groups that fit under it.
+The people in the four layers appear as **groups**, never as individuals. Each vault sets a cap on how many groups it
+holds, and participants are clustered into groups that fit under it. Each vault also has one **attribution mode**,
+`required`, `optional` or `disallowed`, which says whether a narrative names the people it is attributed to; in the first
+two, those people have contributor pages outside the four layers. You choose the mode, and settle what the participation
+terms agreed for the event allow, before the first session: see [Data, rights and consent](data-and-consent.md).
 
 ## Why it is called SCAT
 

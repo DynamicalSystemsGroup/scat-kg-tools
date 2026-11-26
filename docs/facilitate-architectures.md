@@ -45,6 +45,8 @@ Anyone with a design to pitch is a technologist for this session. That is a role
 Do: say aloud the participation terms agreed for the event. The script below uses the Chatham House rule, the worked example's choice: whatever is said here can be used, and nobody is named. Say that today is for designs and the concerns they answer, and that several
 designs may answer one concern.
 
+The worked example's attribution mode is `disallowed`. To choose another, and for what to say in it, see [Planning](planning.md#choose-the-attribution-mode).
+
 Say the lines under "Say" in the order given. Use your own words if you like, but say "Yes, and" exactly as written, and where a line names a group, use the name of your own group.
 
 ```text

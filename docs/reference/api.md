@@ -32,6 +32,7 @@
 | [`scat_kg.edge_table`](#scat_kgedge_table) | [`scat edges`](cli.md#scat-edges) | View: every edge of one type. |
 | [`scat_kg.layered`](#scat_kglayered) | [`scat layered`](cli.md#scat-layered) | View: the union of fingerprints, in four layers. |
 | [`scat_kg.trace`](#scat_kgtrace) | [`scat trace`](cli.md#scat-trace) | View: what a node reaches, up or down the layers. |
+| [`scat_kg.attribution`](#scat_kgattribution) | [`scat attribution`](cli.md#scat-attribution) | View: the narratives by contributor (where the vault's attribution mode allows it). |
 | [`scat_kg.export_edges`](#scat_kgexport_edges) | [`scat export-edges`](cli.md#scat-export-edges) | Write the edge tables as CSV and Markdown. |
 | [`scat_kg.draw.fingerprint`](#scat_kgdrawfingerprint), [`scat_kg.draw.layered`](#scat_kgdrawlayered) | [`scat draw`](cli.md#scat-draw) | Draw a view as an image (needs the extra `draw`). |
 
@@ -55,7 +56,7 @@ Checks the vault against the rules and returns a `CheckResult` (see [Results](#r
 | `neighborhood` | `True` checks `page` and every page one link away, in either direction. It needs `page`. |
 | `root` | The vault folder. |
 
-It prints one block per problem, then a count line: `<n> errors, <n> warnings`. With no problems it prints `no problems`. Errors block, warnings do not. A rule id such as `SCAT-DONE-END-NOPAGE` names the rule; the `Fix:` line says what to do. Asking for `neighborhood=True` without a page, or for a page that is not there, returns a refusal.
+It prints one block per problem, then a count line: `<n> errors, <n> warnings`. It starts with the vault's attribution mode (`attribution mode: disallowed`). With no problems it then prints `no problems`. Errors block, warnings do not. A rule id such as `SCAT-DONE-END-NOPAGE` names the rule; the `Fix:` line says what to do. Asking for `neighborhood=True` without a page, or for a page that is not there, returns a refusal.
 
 The whole vault, and a page and every page one link away:
 
@@ -69,7 +70,9 @@ The whole vault, and a page and every page one link away:
     ```
 
     ```text
+    attribution mode: disallowed
     no problems
+    attribution mode: disallowed
     no problems
     ```
 
@@ -81,7 +84,9 @@ The whole vault, and a page and every page one link away:
     ```
 
     ```text
+    attribution mode: disallowed
     no problems
+    attribution mode: disallowed
     no problems
     ```
 
@@ -97,7 +102,9 @@ One page, by name or by path:
     ```
 
     ```text
+    attribution mode: disallowed
     no problems
+    attribution mode: disallowed
     no problems
     ```
 
@@ -109,7 +116,9 @@ One page, by name or by path:
     ```
 
     ```text
+    attribution mode: disallowed
     no problems
+    attribution mode: disallowed
     no problems
     ```
 
@@ -125,6 +134,7 @@ As data, on the unchanged template (`import json` first):
   "kind": "check",
   "operation": "check",
   "ok": true,
+  "mode": "disallowed",
   "problems": []
 }
 ```
@@ -141,6 +151,7 @@ To see a problem with a fix a program can apply, change `[[cap-setting]]` to `[[
   "kind": "check",
   "operation": "check",
   "ok": false,
+  "mode": "disallowed",
   "problems": [
     {
       "rule": "SCAT-DONE-END-NOPAGE",
@@ -790,13 +801,13 @@ scat_kg.load().summary()
 
 ## Views
 
-A view is a purposeful picture or table made from a conformant vault, and the four calls below make the four views. Each returns a `View`, or a refusal. Each takes `root=`, writes nothing, and gives the same output for the same vault.
+A view is a purposeful picture or table made from a conformant vault, and the calls below make the views. Each returns a `View`, or a refusal. Each takes `root=`, writes nothing, and gives the same output for the same vault.
 
 - `str(view)` is a short text, one line per node or edge. At the REPL the view prints as that text.
 - `view.ok` is `True`. `view.to_dict()` is the document.
 - A view refuses, with the problems and their fixes, on a name that is not there or is ambiguous, an edge type or direction that does not exist, a vault folder that is missing, any error in the pages it draws, and a row of a narrative it draws that tells no edge (the file and the row are named; the edge table and the trace draw every narrative). Warnings do not refuse. A narrative that links no node page is excluded: left out of every view, listed under `excluded` (name, file and how to include it) by each view that draws every narrative, and refused when you name it. Relationship annotations appear in no view.
 
-The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `layered` or `trace`. This is an excerpt of `scat_kg.edge_table("holds").to_dict()`; the full documents are in the [CLI reference](cli.md#scat-fingerprint) and the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md):
+The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `layered`, `trace` or `attribution`. This is an excerpt of `scat_kg.edge_table("holds").to_dict()`; the full documents are in the [CLI reference](cli.md#scat-fingerprint) and the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md):
 
 ```text
 {
@@ -804,6 +815,7 @@ The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `la
   "kind": "view",
   "operation": "edges",
   "ok": true,
+  "mode": "disallowed",
   "edge_type": "holds",
   "from_layer": "group",
   "to_layer": "concern",
@@ -988,6 +1000,54 @@ scat_kg.trace("anonymity", "sideways")
 ```text
 refused sideways: this is not a direction
   Fix: use one of: up, down, both
+```
+
+## scat_kg.attribution
+
+```text
+attribution(*, root=".")
+```
+
+Shows each contributor page with the narratives whose `attributed_to` field names it, then the narratives that name none. A contributor page is in the knowledge graph but in no layered view, so no other view shows one. CLI twin: [`scat attribution`](cli.md#scat-attribution).
+
+| Parameter | Meaning |
+|---|---|
+| `root` | The vault folder. |
+
+It refuses in a vault whose attribution mode is `disallowed`, where no narrative names a contributor and there is no contributor page to list. It refuses too on an error in a page it draws. The template's mode is `disallowed`, so on a fresh copy it refuses:
+
+=== "Python"
+
+    ```python
+    scat_kg.attribution()
+    ```
+
+    ```text
+    refused scat.toml field `attribution`: this vault's attribution mode is `disallowed`, so it allows no attribution: no narrative names a contributor and there is no contributor page to list
+      Fix: the coder who wants contributors named changes `attribution` in scat.toml for the whole vault
+    ```
+
+=== "CLI"
+
+    ```text
+    $ uv run scat attribution
+    refused scat.toml field `attribution`: this vault's attribution mode is `disallowed`, so it allows no attribution: no narrative names a contributor and there is no contributor page to list
+      Fix: the coder who wants contributors named changes `attribution` in scat.toml for the whole vault
+    ```
+
+    The command exits with 1, as every refusal does.
+
+Where the mode is `optional`, with one contributor page, `ada-quill`, named by one narrative, the view prints:
+
+```text
+attribution: narratives by contributor
+  ada-quill [stub]
+    saturday-at-the-tool-library
+  narratives that name no contributor
+    false-start-and-clean-restart
+    groups-under-a-cap-pitch
+    notes-at-a-chatham-house-session
+    two-branches-and-tags-pitch
 ```
 
 ## scat_kg.export_edges

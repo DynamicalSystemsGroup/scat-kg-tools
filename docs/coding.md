@@ -24,6 +24,7 @@ A **narrative** is one account drawn from your field notes, kept on one page. Co
 | `affordance` | `affordance/` | what a tool or arrangement lets someone do | you, or `scat stub` |
 | `technology` | `technology/` | the thing that provides an affordance | you, or `scat stub` |
 | `narrative` | `narrative/` | one account, with the table of edges it tells | you, or `scat stub --type narrative NAME` |
+| `contributor` | `contributor/` | a person a narrative is attributed to; only where the vault's attribution mode is `required` or `optional` | you, or `scat stub --type contributor NAME` |
 | index pages | `index/` | a list of the pages of one type | `scat index`, once |
 
 An **edge** is no page. It is one row of a narrative's `Edges told` table, and there are three types, fixed by the layers they join:
@@ -34,7 +35,7 @@ An **edge** is no page. It is one row of a narrative's `Edges told` table, and t
 | `is addressed by` | `addressed-by` | `concern` | `affordance` |
 | `is provided by` | `provided-by` | `affordance` | `technology` |
 
-The tool builds the knowledge graph from the pages on every call and never holds it. It has one edge for each (type, from, to), and the edge names every narrative that has a row for it. An edge is `done` when every narrative that tells it is `done`, so you sign off edges by signing off narratives. A **link** is only "this page refers to that one". A link never makes an edge; only a row does.
+The tool builds the knowledge graph from the pages on every call and never holds it. It has one edge for each (type, from, to), and the edge names every narrative that has a row for it. An edge is `done` when every narrative that tells it is `done`, so you sign off edges by signing off narratives. A **link** is only "this page refers to that one". A link never makes an edge; only a row does. A contributor page is no node either: it sits outside the four layers, and a narrative's link to one says who the account is attributed to, not what it tells.
 
 ## The coding loop
 
@@ -67,7 +68,7 @@ Two narratives can tell the same edge. Each has its own row and its own note, an
 
 ## A narrative, start to finish
 
-This is one narrative coded the way most people begin, writing first and recording edges as they come. Each `$` line is a command you type, without the `$`; the lines under it are exactly what the tool prints. Page content is what you type in Obsidian.
+This is one narrative coded the way most people begin, writing first and recording edges as they come. The vault is a copy of the template, whose attribution mode is `disallowed`, so every check prints that mode first. Each `$` line is a command you type, without the `$`; the lines under it are exactly what the tool prints. Page content is what you type in Obsidian.
 
 ### 1. Make the page
 
@@ -91,6 +92,7 @@ The check does not fault an unfinished page. It notes, as a warning, what `done`
 
 ```text
 $ uv run scat check saturday-at-the-tool-library
+attribution mode: disallowed
 warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `timeframe`: missing (required once the page is done)
   Fix, choose one before you set status: done:
     1. replace the line `timeframe: # past | future | mixed` with `timeframe: past` (author)
@@ -127,6 +129,7 @@ The check shows the to-do for the `description`, and says the page is still excl
 
 ```text
 $ uv run scat check saturday-at-the-tool-library
+attribution mode: disallowed
 warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
 warning [SCAT-UNCODED] narrative/saturday-at-the-tool-library.md body: the narrative links no node page, so it is excluded from the knowledge graph and every view
@@ -222,6 +225,7 @@ From the point of view of [[workshop-participants|Workshop participants]] (about
 
 ```text
 $ uv run scat check saturday-at-the-tool-library --neighborhood
+attribution mode: disallowed
 warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
 0 errors, 1 warning
@@ -241,6 +245,7 @@ The check says:
 
 ```text
 $ uv run scat check saturday-at-the-tool-library --neighborhood
+attribution mode: disallowed
 warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
 0 errors, 1 warning
@@ -289,6 +294,7 @@ Fix what it lists (here, add the line `description: "Loans go unrecorded when th
 $ uv run scat set-status saturday-at-the-tool-library done
 changed narrative/saturday-at-the-tool-library.md
 note: `status` set to done (was draft)
+check of narrative/saturday-at-the-tool-library.md: no problems
 $ uv run scat status saturday-at-the-tool-library --neighborhood
 done         narrative/saturday-at-the-tool-library.md
 stub         affordance/sign-out-sheet.md
@@ -349,6 +355,7 @@ From the point of view of [[workshop-participants|Workshop participants]] (about
 
 ```text
 $ uv run scat check saturday-at-the-tool-library
+attribution mode: disallowed
 no problems
 ```
 
@@ -382,6 +389,7 @@ From the point of view of [[workshop-participants|Workshop participants]]: [[lat
 
 ```text
 $ uv run scat check sunday-at-the-desk --neighborhood
+attribution mode: disallowed
 no problems
 ```
 
@@ -418,6 +426,7 @@ From the point of view of [[workshop-participants|Workshop participants]]: [[lat
 
 ```text
 $ uv run scat check sunday-at-the-desk --neighborhood
+attribution mode: disallowed
 no problems
 ```
 
@@ -452,6 +461,7 @@ From the point of view of [[workshop-participants|Workshop participants]]: [[lat
 
 ```text
 $ uv run scat check monday-at-the-desk
+attribution mode: disallowed
 warning [SCAT-DRAFT-END-NOLINK] narrative/monday-at-the-desk.md:16:39 row 1 cell `to`: `late-returns` is not a link; each end of a row is one link, `[[page-name]]`
   Fix, choose one:
     1. replace `late-returns` with `[[late-returns]]`
@@ -495,6 +505,7 @@ Apply the first fix to each: link the name, swap the two ends, and link the exis
 
 ```text
 $ uv run scat check monday-at-the-desk
+attribution mode: disallowed
 warning [SCAT-DRAFT-TABLE-DUPLICATE] narrative/monday-at-the-desk.md:17:1 row 2: tells the same edge as row 1 (`holds`, [[workshop-participants]], [[late-returns]]); a narrative tells an edge once
   Fix: delete the row `| [[workshop-participants]] | holds | [[late-returns]] | |`
 warning [SCAT-DRAFT-TABLE-DUPLICATE] narrative/monday-at-the-desk.md:18:1 row 3: tells the same edge as row 1 (`holds`, [[workshop-participants]], [[late-returns]]); a narrative tells an edge once
@@ -506,10 +517,12 @@ Delete rows 2 and 3, which leaves row 1 as the one row. The narrative passes and
 
 ```text
 $ uv run scat check monday-at-the-desk
+attribution mode: disallowed
 no problems
 $ uv run scat set-status monday-at-the-desk done
 changed narrative/monday-at-the-desk.md
 note: `status` set to done (was draft)
+check of narrative/monday-at-the-desk.md: no problems
 ```
 
 ### The table in Obsidian
@@ -524,6 +537,7 @@ Obsidian's table editor re-pads the columns when you click into a table. That is
 
 ```text
 $ uv run scat check monday-at-the-desk
+attribution mode: disallowed
 no problems
 ```
 
@@ -543,8 +557,83 @@ Pulls against [[anonymity]]: chasing a borrower for a late tool means knowing wh
 
 ```text
 $ uv run scat check late-returns --neighborhood
+attribution mode: disallowed
 no problems
 ```
+
+## Contributor pages and `attributed_to`
+
+Where the vault's attribution mode is `required` or `optional`, a narrative can name the people it is attributed to. Each person has a **contributor page** in `contributor/`, outside the four layers, and the narrative names them in its `attributed_to` field: a list of quoted links to those pages.
+
+```text
+attributed_to: ["[[ada-quill]]"]
+```
+
+A contributor page is no node and a link to one is no edge. The page holds a name or a handle, as the organiser records it, in its `title`. What each mode asks of a narrative:
+
+| Mode | What the check says |
+|---|---|
+| `required` | A narrative names its contributors. Without `attributed_to`, a draft gets a warning (`SCAT-DRAFT-ATTR`) and `done` is an error (`SCAT-DONE-ATTR`). |
+| `optional` | A narrative names its contributors or names none. The check asks for nothing. |
+| `disallowed` | No narrative names a contributor and the vault holds no contributor page. Either is an error at every status (`SCAT-ATTR-DISALLOWED`), and `scat stub --type contributor` refuses. |
+
+The [norms](norms.md#writing-together) state the same three cases. Every check prints the mode first, so you see which applies.
+
+The examples start from a copy of the template with `attribution = "required"` in `scat.toml`, and a draft narrative `saturday-at-the-tool-library` that is coded and has its `description` and `timeframe`, as in step 6 above, but names nobody. The check warns, and setting `done` is refused:
+
+```text
+$ uv run scat check saturday-at-the-tool-library
+attribution mode: required
+warning [SCAT-DRAFT-ATTR] narrative/saturday-at-the-tool-library.md field `attributed_to`: missing (required once the page is done: the vault's attribution mode is `required`)
+  Fix: add the line `attributed_to: ["[[<a contributor page you link>]]"]` (author) before you set status: done
+0 errors, 1 warning
+$ uv run scat set-status saturday-at-the-tool-library done
+refused [SCAT-DONE-REFUSED] narrative/saturday-at-the-tool-library.md: 1 error(s) would stand at status done; status unchanged
+  error [SCAT-DONE-ATTR] narrative/saturday-at-the-tool-library.md field `attributed_to`: missing on a page with status: done (the vault's attribution mode is `required`)
+    Fix, choose one:
+      1. add the line `attributed_to: ["[[<a contributor page you link>]]"]` (author)
+      2. run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library", "draft")`) if the page is not finished
+  Fix, choose one:
+    1. fix the problems above, then run `scat set-status saturday-at-the-tool-library done` again
+    2. leave the page at `draft`: run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library", "draft")`)
+```
+
+Make the contributor page with `scat stub`, then link it in the narrative's front matter:
+
+```text
+$ uv run scat stub ada-quill --type contributor
+created contributor/ada-quill.md
+```
+
+```text
+---
+type: contributor
+status: stub
+title: "Ada quill"
+---
+```
+
+Write the name as the organiser records it in the `title` (here, "Ada Quill"), and add `attributed_to: ["[[ada-quill]]"]` to the narrative. The link must reach a contributor page, as any link must reach a page:
+
+```text
+$ uv run scat check saturday-at-the-tool-library
+attribution mode: required
+no problems
+```
+
+In a `disallowed` vault the same field is refused. Here `scat.toml` says `attribution = "disallowed"`, and the narrative carries the field above:
+
+```text
+$ uv run scat check saturday-at-the-tool-library
+attribution mode: disallowed
+error [SCAT-ATTR-DISALLOWED] narrative/saturday-at-the-tool-library.md field `attributed_to`: present, and the vault's attribution mode is `disallowed`
+  Fix: delete the field `attributed_to` (all its lines): this vault's attribution mode is `disallowed`; the coder who wants contributors named changes `attribution` in scat.toml for the whole vault
+1 error, 0 warnings
+```
+
+The mode belongs to the whole vault and the organiser sets it before the first session. The tool never changes it. If you change it, the next whole-vault check reads every page against the new mode.
+
+`scat attribution` lists each contributor page with the narratives that name it, and the narratives that name none. It refuses in a `disallowed` vault. Its reference is in the [CLI reference](reference/cli.md), and its Python form is in the [Python API reference](reference/api.md#scat_kgattribution).
 
 ## The operations
 
@@ -564,10 +653,13 @@ Every operation has two spellings that give the same messages: the Python REPL (
     ```
 
     ```text
+    attribution mode: disallowed
     no problems
 
+    attribution mode: disallowed
     no problems
 
+    attribution mode: disallowed
     no problems
     ```
 
@@ -580,18 +672,21 @@ Every operation has two spellings that give the same messages: the Python REPL (
     ```
 
     ```text
+    attribution mode: disallowed
     no problems
 
+    attribution mode: disallowed
     no problems
 
+    attribution mode: disallowed
     no problems
     ```
 
-The template's own example is clean. Warnings do not block: a command exits with 0 unless there is an error.
+Every check prints the vault's attribution mode first. The template's own example is clean, and its mode is `disallowed`. Warnings do not block: a command exits with 0 unless there is an error.
 
 ### Stub: make a page
 
-`stub` makes one page of the type you name (`group`, `concern`, `affordance`, `technology` or `narrative`) with `status: stub`. It refuses a name that is taken, a name that is not legal (lower-case letters, digits and single hyphens), and a new group that would go over the cap.
+`stub` makes one page of the type you name (`group`, `concern`, `affordance`, `technology` or `narrative`, and `contributor` where the vault's attribution mode is `required` or `optional`) with `status: stub`. It refuses a name that is taken, a name that is not legal (lower-case letters, digits and single hyphens), a new group that would go over the cap, and a contributor page in a `disallowed` vault.
 
 === "Python (REPL)"
 

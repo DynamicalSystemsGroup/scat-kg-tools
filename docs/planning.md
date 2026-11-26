@@ -8,7 +8,7 @@ Planning settles who takes part, and in what order, before the sessions start, s
 You are planning a facilitation event. Write your event plan: who takes part, in which session, in what order. Save it as a plain text file named `plan.txt` in your vault folder, outside the page folders. It is not a SCAT page, and the check does not read it. By the end you will have a short plan: which sessions hear stories, which hear
 architectures, which groups are in the room, and how the notes will be kept.
 
-Settle the participation terms first: what the notes may be used for, and who may touch them. [Data, rights and consent](data-and-consent.md) lists the questions. Two words come up below. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. The [home page](index.md) defines these and the other two kinds of thing, groups and technologies.
+Settle the participation terms first: what the notes may be used for, and who may touch them, and the vault's attribution mode. [Data, rights and consent](data-and-consent.md) lists the questions. Two words come up below. A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. The [home page](index.md) defines these and the other two kinds of thing, groups and technologies.
 
 Nothing here is ranked, voted on or adjudicated. Your plan adds topics and voices; it never trades one off against
 another.
@@ -94,6 +94,24 @@ refused scat.toml field `stakeholder_group_cap`: the vault is at its cap of 3 gr
 
 The example vault ships with three example groups, which fill a cap of 3. Keep the example while you plan, as a model. When the plan is done, clear the example pages: that is step 5 of Getting started, [Start your own content](getting-started.md#5-start-your-own-content). Do it before you add any page of your own, and before you code your own notes.
 
+## Choose the attribution mode
+
+The vault has one **attribution mode**: whether a narrative names the people it is attributed to. You choose it at set-up, before the first session, with one line in `scat.toml`, beside the cap. The template's line is the worked example's mode:
+
+```text
+attribution = "disallowed"
+```
+
+The choices:
+
+| Mode | A narrative | The vault holds |
+|---|---|---|
+| `required` | names its contributors before it is `done` | a contributor page for each person named |
+| `optional` | names its contributors, or none | a contributor page for each person who chose to be named |
+| `disallowed` | names no contributor; the Chatham House rule is this mode | no contributor page |
+
+The mode is the same for every session and every participant. The check refuses a vault with no mode, and the tools enforce the mode you choose: [Norms](norms.md#writing-together) and [Coding](coding.md#contributor-pages-and-attributed_to) say how. To change it later, change the line; the next check reads every narrative against the new mode, so a switch after the sessions can flag pages written under the old one. Choose it before you tell participants anything, because what you tell them follows from it.
+
 ## Give every group room in every session
 
 Invite every group, and give each one room to speak in every session.
@@ -109,13 +127,32 @@ as you plan add ("who else sees it this way?"); they do not test ("is that reall
 ## State the participation terms, aloud and on the page
 
 Frame every session under the participation terms agreed for the event, and do it twice: say them at the start, and write them on the page the
-notes go on. The worked example's terms are the Chatham House rule, so its script reads like this; yours says what you agreed:
+notes go on. What you say follows from the vault's attribution mode. The worked example's mode is `disallowed`, the Chatham House rule, so its script reads like this; yours says what you agreed:
 
 ```text
 Whatever is said here can be used. Nobody is named, and
 nobody is quoted by name. The notes say which group an
 account comes from, never who gave it. A group is never
 a stand-in for one person.
+```
+
+In `required` mode, tell participants that each account is written down with the name of the person who gave it:
+
+```text
+Whatever is said here can be used. Each account is written
+down with the name of the person who gave it, and the notes
+also say which group it comes from. A group is never a
+stand-in for one person.
+```
+
+In `optional` mode, tell them that a name goes with an account only if its giver wants it:
+
+```text
+Whatever is said here can be used. If you want your name
+with what you say, tell the note-taker, and it is written
+with the account. If you say nothing, the account has no
+name, only the group it comes from. A group is never a
+stand-in for one person.
 ```
 
 Tell participants three more things:
@@ -151,11 +188,11 @@ Field notes are kept apart from any later coding of them. Capture comes first, a
   Both end with `no problems`.
 
 - **A note-taker for each session.** Someone other than the facilitator, so the facilitator can listen. They write
-  what was offered, in the speaker's words, headed by the group, with a rough time. Never a name. Both facilitation
+  what was offered, in the speaker's words, headed by the group, with a rough time. In `disallowed` mode, never a name. In `required` mode, also the name or handle of the person speaking, so the coder can make their contributor page; in `optional` mode, a name only for a speaker who asked for one. Both facilitation
   guides show what the notes look like.
 - **One narrative page for each story told or design pitched.** You make it with one command, after the session, from the
   notes. The guides show how: [scenarios](facilitate-scenarios.md), [architectures](facilitate-architectures.md).
-- **A line on the notes page** naming the participation terms, for example "Chatham House: groups, not individuals."
+- **A line on the notes page** naming the attribution mode and the participation terms, for example "Attribution disallowed (Chatham House): groups, not individuals."
 
 ## Where next
 
