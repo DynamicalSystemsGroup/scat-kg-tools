@@ -1,5 +1,5 @@
-"""WP21-R3: docs/norms.md has its six sections, is linked from the coding and chat-path guides and the nav, and
-names only rule ids that the rule catalogue holds."""
+"""WP21-R3: docs/norms.md has its sections, is linked from the coding and chat-path guides and the nav, and names
+only rule ids that the rule catalogue holds. WP24-R2 changed it from six sections to seven: "What a node page holds"."""
 
 import re
 from pathlib import Path
@@ -12,13 +12,14 @@ HEADINGS = [
     "A coded narrative",
     "Links in the account",
     "Descriptions",
+    "What a node page holds",
     "Writing together",
     "Status when you leave a page",
     "What `done` needs",
 ]
 
 
-def test_page_has_exactly_the_six_headings_in_order():
+def test_page_has_exactly_the_seven_headings_in_order():
     assert PAGE.is_file()
     text = PAGE.read_text(encoding="utf-8")
     assert re.findall(r"(?m)^## (.+?)\s*$", text) == HEADINGS

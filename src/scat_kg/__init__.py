@@ -15,6 +15,7 @@
     scat_kg.load()                      # the knowledge graph, derived from the pages
     scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
     scat_kg.evidence("node")            # one node: its narratives, paragraphs, edges and adjacent nodes
+    scat_kg.copy_share()                # how much of each node page repeats a narrative, word for word
     scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
     scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
 
@@ -27,6 +28,7 @@ from pathlib import Path
 
 from scat_kg.checks import Report, check_neighborhood, check_page, check_vault
 from scat_kg.contract import SCHEMA_VERSION
+from scat_kg.copyshare import copy_share
 from scat_kg.evidence import evidence
 from scat_kg.export import export_edges
 from scat_kg.graph import Graph
@@ -141,6 +143,7 @@ __all__ = [
     "View",
     "attribution",
     "check",
+    "copy_share",
     "edge_table",
     "evidence",
     "export_edges",

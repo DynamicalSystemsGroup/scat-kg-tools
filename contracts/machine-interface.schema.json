@@ -16,7 +16,7 @@
       "enum": ["required", "optional", "disallowed", null]
     },
     "OperationName": {
-      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge, fingerprint, edges, layered, trace, evidence, attribution, export-edges). New commands may appear, so the names are not enumerated.",
+      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge, fingerprint, edges, layered, trace, evidence, copy-share, attribution, export-edges). New commands may appear, so the names are not enumerated.",
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]*$"
     },
@@ -184,14 +184,14 @@
       }
     },
     "ViewResult": {
-      "description": "What fingerprint, edges, layered, trace, evidence and attribution return when they ran: the data of one view, deterministic (layer order, then name; edges in graph order; narratives in path order). A view that cannot run (unknown name, an error in a page it draws, no vault) is an OperationResult with ok false and its problems. fingerprint: narratives. edges: edge_type, from_layer, to_layer, rows. layered: narratives (names), nodes (by layer), edges. trace: node, direction, up and down (nodes in layer order then name; empty for a direction not asked), edges (those walked); the node itself is in neither list. evidence: node, node_type, node_status, narratives (EvidenceNarrative: every narrative that links the node, with the paragraphs around its links), edges (those of the node, each with its tellings), adjacent (the nodes one edge away, by layer), excluded; it reads no contributor page and no attributed_to. attribution: contributors (each contributor page with the narratives that name it), unattributed (the narratives that name none), excluded. It is a view of the knowledge graph, not of the layered graph: a contributor page is in no other view. Where the vault's mode is disallowed, or declares none, it is an OperationResult with ok false, not an empty list.",
+      "description": "What fingerprint, edges, layered, trace, evidence, copy-share and attribution return when they ran: the data of one view, deterministic (layer order, then name; edges in graph order; narratives in path order). A view that cannot run (unknown name, an error in a page it draws, no vault) is an OperationResult with ok false and its problems. fingerprint: narratives. edges: edge_type, from_layer, to_layer, rows. layered: narratives (names), nodes (by layer), edges. trace: node, direction, up and down (nodes in layer order then name; empty for a direction not asked), edges (those walked); the node itself is in neither list. evidence: node, node_type, node_status, narratives (EvidenceNarrative: every narrative that links the node, with the paragraphs around its links), edges (those of the node, each with its tellings), adjacent (the nodes one edge away, by layer), excluded; it reads no contributor page and no attributed_to. copy-share: pages (CopyShareEntry: each node page, or the one named, with the share of its five-word runs found word for word in a narrative; highest share first), excluded; it reads no contributor page and no attributed_to. attribution: contributors (each contributor page with the narratives that name it), unattributed (the narratives that name none), excluded. It is a view of the knowledge graph, not of the layered graph: a contributor page is in no other view. Where the vault's mode is disallowed, or declares none, it is an OperationResult with ok false, not an empty list.",
       "type": "object",
       "required": ["schema_version", "kind", "operation", "ok", "mode"],
       "properties": {
         "schema_version": { "$ref": "#/$defs/SchemaVersion" },
         "mode": { "$ref": "#/$defs/Mode" },
         "kind": { "const": "view" },
-        "operation": { "enum": ["fingerprint", "edges", "layered", "trace", "evidence", "attribution"] },
+        "operation": { "enum": ["fingerprint", "edges", "layered", "trace", "evidence", "copy-share", "attribution"] },
         "ok": { "const": true },
         "narratives": { "type": "array", "description": "fingerprint: the fingerprints (ViewNarrative), one per narrative asked, or every narrative in path order. layered: the names of the narratives drawn." },
         "edge_type": { "$ref": "#/$defs/EdgeType" },
@@ -212,6 +212,7 @@
         "edges": { "type": "array", "items": { "$ref": "#/$defs/ViewEdge" } },
         "excluded": { "type": "array", "items": { "$ref": "#/$defs/ViewExcluded" }, "description": "The uncoded narratives (they link no node page), which every view leaves out: all of them for a view that draws every narrative, none for a view of named narratives (which refuses an excluded name). Present on fingerprint, edges, layered and trace; absent from a document written before it was added." },
         "node": { "type": "string", "minLength": 1 },
+        "pages": { "type": "array", "items": { "$ref": "#/$defs/CopyShareEntry" }, "description": "copy-share: one entry for each node page." },
         "node_type": { "enum": ["group", "concern", "affordance", "technology"], "description": "evidence: the layer of the node." },
         "node_status": { "type": ["string", "null"], "description": "evidence: the node page's status, as written." },
         "adjacent": {
@@ -259,10 +260,27 @@
           }
         },
         {
+          "if": { "properties": { "operation": { "const": "copy-share" } }, "required": ["operation"] },
+          "then": { "required": ["pages", "excluded"] }
+        },
+        {
           "if": { "properties": { "operation": { "const": "attribution" } }, "required": ["operation"] },
           "then": { "required": ["contributors", "unattributed", "excluded"] }
         }
       ]
+    },
+    "CopyShareEntry": {
+      "description": "One node page (copy-share): its words (description and body, without an Edges told section), the share of its five-word runs found word for word in a narrative (null when it has fewer than five words), and the narratives those runs come from, the one with most runs first.",
+      "type": "object",
+      "required": ["name", "type", "status", "words", "share", "narratives"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["group", "concern", "affordance", "technology"] },
+        "status": { "type": ["string", "null"] },
+        "words": { "type": "integer", "minimum": 0 },
+        "share": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "narratives": { "$ref": "#/$defs/StringList" }
+      }
     },
     "EvidenceNarrative": {
       "description": "A narrative that links the node (evidence): its name, status, kind and timeframe as written; whether it tells an edge for the node (false: it links the node and tells no edge for it); and the paragraphs around the node's links in its account, in file order. A link inside the Edges told table is in no paragraph (the table's rows show through the node's edges), so a narrative that links the node only there has none.",

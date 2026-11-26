@@ -48,6 +48,8 @@ You work each narrative round the same four steps, as often as it takes:
 
 The [norms](norms.md) say what the tool requires and what is only guidance, and what `done` needs.
 
+A node page is written across the narratives that link it, not from one of them. The norms section [What a node page holds](norms.md#what-a-node-page-holds) says what it holds, and `scat evidence <node>` shows every narrative that links the node, with the paragraph around each link.
+
 When the check passes and you confirm both, set the narrative to `done`. Done is not frozen: to change a `done` narrative you set it back to `draft`, edit, then set `done` again, and the tool checks it again then.
 
 ### The three actors

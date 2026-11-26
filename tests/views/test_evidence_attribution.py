@@ -22,7 +22,9 @@ from scat_kg.graph import load
 ROOT = Path(__file__).resolve().parents[2]
 EXAMPLES = ROOT / "contracts" / "examples"
 RANGE = ROOT / "research" / "range" / "koi" / "vault"
+NODE_PAGES = ROOT / "research" / "node-pages" / "vault"
 PEOPLE = ("ada-quill", "bo-marsh", "cy-reed")
+G6_PEOPLE = ("lab-member-a", "lab-member-b", "lab-member-c")  # the contributors of the G6 vault
 ATTRIBUTED = re.compile(r"^attributed_to:.*\n", re.MULTILINE)
 
 
@@ -49,13 +51,27 @@ def the_range_vault(tmp: Path) -> Path:
     return root
 
 
-# (id, builder, mode). Extend with the G6 vault's three copies, one per mode.
+def node_pages_vault(mode: str):
+    """The G6 vault's copy in `mode`."""
+
+    def build(tmp: Path) -> Path:
+        root = tmp / f"node-pages-{mode}"
+        shutil.copytree(NODE_PAGES / mode, root)
+        return root
+
+    return build
+
+
+# (id, builder, mode): the example vault, the range vault and the G6 vault's three copies, one per mode.
 VAULTS = [
     ("examples-disallowed", examples("disallowed", False), "disallowed"),
     ("examples-optional-unnamed", examples("optional", False), "optional"),
     ("examples-optional", examples("optional", True), "optional"),
     ("examples-required", examples("required", True), "required"),
     ("range-disallowed", the_range_vault, "disallowed"),
+    ("node-pages-disallowed", node_pages_vault("disallowed"), "disallowed"),
+    ("node-pages-optional", node_pages_vault("optional"), "optional"),
+    ("node-pages-required", node_pages_vault("required"), "required"),
 ]
 
 
@@ -135,7 +151,7 @@ def test_no_contributor_is_in_any_document(made, tmp_path):
     # the contributor names are in no field of any document; a paragraph is the body text as written, which no
     # narrative of these vaults uses to name one
     strings = names_in(list(documents(other).values()))
-    for who in (*PEOPLE, "di-fox", "ed-wren"):
+    for who in (*PEOPLE, *G6_PEOPLE, "di-fox", "ed-wren"):
         assert not any(who in s for s in strings), who
 
 

@@ -22,6 +22,8 @@ A **view** is a purposeful picture or table made from a conformant vault. The to
 
 **Trace.** What does this node reach? Following edges up goes toward groups, down toward technologies. It does not say how strongly a node depends on what it reaches.
 
+Two more views serve the node pages. **Evidence** (`scat evidence <node>`) shows every narrative that links one node, with the paragraph around each link, its edges and its adjacent nodes: read it before you write the page. **Copy-share** (`scat copy-share`) shows, for each node page, how much of its text repeats a narrative word for word, and which narratives. A high share is a prompt to look at the page, not a fault.
+
 ## The notebook
 
 The vault template holds `analysis.ipynb` at its root. It shows each view with a short paragraph and exports the three edge tables. Its tools are already installed: the one setup command, `uv sync`, installs JupyterLab and what the notebook needs, so there is nothing more to install. Run it from your vault folder, in Terminal:

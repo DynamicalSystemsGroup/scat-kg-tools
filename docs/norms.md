@@ -35,6 +35,24 @@ page is in a sentence before you sign it off.
 The norm: keep the description brief, and do not repeat the account. It says what the page is for, not what happened
 in it. An assistant may offer one, as text for you to read. You decide what stays.
 
+## What a node page holds
+
+*A norm.* A node page (a group, concern, affordance or technology) holds four parts, written across the narratives
+that link it. Never paste one account into it.
+
+- **What it is**, in the node's own terms: what the group, concern, affordance or technology is, as the people in the
+  narratives mean it.
+- **How the narratives tell it.** Cite each claim by a link to the narrative that makes it, and say when several
+  narratives agree. A node that appears in one narrative only says so.
+- **Where accounts differ.** Keep the differences and do not merge them. A group page that spans several senses (a cap
+  forces broad groups) says so and names the senses.
+- **What is thin**: what no narrative says.
+
+To look, run `scat evidence <node>`: it shows every narrative that links the node, with the paragraph around each
+link. `scat copy-share` shows how much of each page repeats a narrative word for word. A high share is a prompt to
+look at the page, not a fault. The assistant may draft a page as text; you write it into the vault and decide what
+stays.
+
 ## Writing together
 
 *A norm.* Writing the account and the description is a mixed loop. You may go first, or the assistant may, and you
