@@ -6,8 +6,8 @@
 
 The chat path lets you code a narrative by talking to an assistant in a chat window in your browser, with no
 terminal in the coding itself. Obsidian stays where you read and decide. This page walks one session from start to
-clean-up. Each numbered step names one outcome and says where you do it: **In the chat**, **In SCAT Chat** (the launcher
-app), **In Finder**, **In GitHub Desktop**, **In Obsidian**, **In Tailscale** or **In a terminal**.
+clean-up. Each numbered step names one outcome and says where you do it: **In the chat**, **In SCAT Chat** (the small Mac app
+that runs the server), **In the menu bar** (SCAT Chat's coloured dot and its menu), **In Finder**, **In GitHub Desktop**, **In Obsidian**, **In Tailscale** or **In a terminal**.
 
 !!! warning "What has and has not been tried"
     The launcher was run against Colima with a stand-in for Tailscale. A first connection to a chat worked in a
@@ -15,7 +15,7 @@ app), **In Finder**, **In GitHub Desktop**, **In Obsidian**, **In Tailscale** or
     Colima** and has not been run end to end with this launcher. Nobody has yet run the whole path as a coder
     following this page, so your first run is the real test. Where this page cannot vouch for a step, it says so. If
     a step fails and its message does not help, tell the person who set this up for you which step and what the
-    window said.
+    message said.
     One more thing not checked: the launcher looks for the `docker` command in `/usr/local/bin`, `/opt/homebrew/bin`
     and Docker Desktop's own folder (`/Applications/Docker.app/Contents/Resources/bin`). If it says Docker is not
     installed although it is, that is the likely cause; tell the person who set this up.
@@ -32,7 +32,7 @@ message, and nothing else.
 
 You need:
 
-- A Mac that stays awake and online while you work (the launcher keeps it awake while its window is open).
+- A Mac that stays awake and online while you work (SCAT Chat keeps it awake while a session runs).
 - A vault, as in [Getting started](getting-started.md) or, with no terminal, [GitHub Desktop](#your-vault-with-no-terminal-github-desktop), kept in a folder outside Documents, Desktop, Downloads and
   iCloud (macOS hides those from the server's container; the launcher offers a copy if yours is there).
 - A container runtime: Colima (the one this page uses). Docker Desktop is the untested alternative.
@@ -103,11 +103,18 @@ You do these steps one time per Mac. Each ends with what you should see.
 
 ### 0. Get SCAT Chat.app
 
+**What SCAT Chat is.** SCAT Chat is a small Mac app that runs the SCAT MCP server, the tool's front end for the chat.
+It has no window of its own: while a session runs it is a coloured dot in the Mac's menu bar (the strip at the top of
+the screen), with a menu under it. It starts the server, makes the public address and the session key, and stops them
+again. **Where it is:** in your Applications folder, once you do the step below. That step puts a copy of the app
+there. Nothing is installed system-wide: the copy is the whole app, and deleting it removes it.
+
 Today the app is not a download. The person who set this up builds it from the `scat-kg-tools` repository with
 `deploy/build-app.sh` and hands it to you. The built app is not kept in the repository. If no one has built it for you, ask the person who set up your tools;
 this guide cannot build it for you.
 
-1. **In Finder:** drag `SCAT Chat.app` into your Applications folder. You should see an app called SCAT Chat there.
+1. **In Finder:** drag `SCAT Chat.app` into your Applications folder. You should see an app called SCAT Chat there,
+   a copy of the one you were given.
 
 ### 1. A container runtime: Colima
 
@@ -150,7 +157,7 @@ This page could not confirm the exact name of that menu item, so follow what you
 
 ### 3. The one-time settings in your Tailscale account
 
-The launcher never changes these itself. You will meet each of these when you first click SCAT Chat: if
+The launcher never changes these itself. You will meet each of these when you first start SCAT Chat: if
 one is missing, the launcher stops, says which, and offers to open the page. You may also do them now. Do not
 change anything it does not name.
 
@@ -164,7 +171,7 @@ only then switch HTTPS on. On the page the launcher opens, choose Enable HTTPS. 
 **Funnel.** What it does: lets the internet reach the one address the launcher publishes. Why it is needed: the
 chat's service has to reach your server. On the page the launcher opens, approve Funnel (one click). If it is
 missing, the launcher says "The public link did not start." and that Funnel is probably not allowed yet. Click
-**Open the page**, approve it, then click SCAT Chat again.
+**Open the page**, approve it, then start SCAT Chat again.
 
 ### 4. Open the app the first time
 
@@ -184,14 +191,23 @@ Colima needs no start by hand: SCAT Chat starts it. (With Docker Desktop, open i
 first; the launcher does not start it.)
 
 1. **In Finder:** open SCAT Chat from Applications.
-2. **In SCAT Chat:** the first time, a window asks you to choose your vault: choose the folder that holds `scat.toml`.
-   The launcher remembers it. (`change-vault` forgets it.)
-3. **In SCAT Chat:** wait. The first time it needs the internet to get the server. It fetches the published image
+2. **In SCAT Chat:** the first time only, a note says that SCAT Chat lives in the menu bar and where its dot is. Read
+   it. The dot is grey while SCAT Chat starts or is stopped, green while it runs, and red when there is a problem.
+3. **In SCAT Chat:** the first time, it asks you to choose your vault: choose the folder that holds `scat.toml`. On
+   later starts it asks `Serve <vault>?`, naming the vault it remembers: choose **Use it**, or **Choose another** to
+   pick a different folder that holds `scat.toml`. It never serves a vault you have not just confirmed.
+4. **In SCAT Chat:** wait. The first time it needs the internet to get the server. It fetches the published image
    for its version ("Fetching the server, once."), and when none is published yet, as with a candidate before its
    release, it builds the server on your Mac ("Building the server, once.", a few minutes). Later sessions reuse
    it. The server runs as your own Mac user, set each time it starts, so it can read and write your vault.
-4. **In SCAT Chat:** read the window that says "SCAT Chat is running." It shows an address, your vault, and two
-   buttons, **Copy key** and **Stop**. It never shows the key. Leave the window open: your Mac stays awake while it is.
+5. **In the menu bar:** check that the dot is green. If it is red, open the menu: its **Problem:** line says what is
+   wrong (see "When something goes wrong").
+6. **In the menu bar:** click the dot to open its menu. It shows State, Vault and Address lines, and **Copy address**,
+   **Copy key**, **Change vault** and **Stop**. It never shows the key. Your Mac stays awake while SCAT Chat runs.
+
+To serve a different vault later, choose **Change vault** in the menu. That stops the server and starts it again on
+the vault you choose, so it has a new session key: update the chat's server entry with the new key (see "Connect the
+chat").
 
 If your vault is in Documents, Desktop, Downloads or iCloud, the launcher offers to copy it to `~/SCAT/vault`.
 Your original stays where it is. Work in the copy and bring edits back through git (commit and push from the copy,
@@ -207,18 +223,26 @@ As an example, in inference.coop's chat (lab run, 24 and 25 November, with lab m
 1. **In the chat:** in the bar of icons on the left, click **MCP Settings**.
 2. **In the chat:** choose to add an MCP server.
 3. **In the chat:** where the form asks for a name, type `SCAT`.
-4. **In SCAT Chat:** read the address in the window. It ends in `/mcp`.
-5. **In the chat:** type the address into the server's address field.
+4. **In the menu bar:** open SCAT Chat's menu and click **Copy address**. The address, which ends in `/mcp`, is now on
+   your clipboard.
+5. **In the chat:** paste the address into the server's address field.
 6. **In the chat:** choose the Streamable HTTPS transport (the way the chat talks to a server over a secure web
    address).
 7. **In the chat:** choose API key as the authentication.
-8. **In SCAT Chat:** click **Copy key**. The key is now on your clipboard.
-9. **In the chat:** paste the key into the API key field.
-10. **In the chat:** save.
-11. **In any app:** copy a word from anywhere, so your clipboard no longer holds the key.
+8. **In the chat:** choose the header format the form offers for the key. The server accepts the key as an `X-API-Key`
+   header or as an `Authorization: Bearer` header; choose either.
+9. **In the menu bar:** open SCAT Chat's menu and click **Copy key**. The key is now on your clipboard.
+10. **In the chat:** paste the key into the API key field.
+11. **In the chat:** tick the consent **I trust this application**. The form requires it: without it the entry cannot
+    be saved.
+12. **In the chat:** save.
+13. **In the chat:** click **Connect** on the new entry. A new entry stays unconnected until you do.
+14. **In the chat:** check that the entry "SCAT" shows connected. If it does not, check that the dot is green, then
+    delete the entry and add it again with a fresh **Copy key**.
+15. **In any app:** copy a word from anywhere, so your clipboard no longer holds the key.
 
-Your chat's form may be worded differently. The fields are the same: address, transport, key. Where the chat asks
-for a name for the server, use one you will recognise, for example "SCAT".
+Your chat's form may be worded differently. The fields are the same: address, transport, key, header format and the
+consent. Where the chat asks for a name for the server, use one you will recognise, for example "SCAT".
 
 Do not paste the key anywhere else: see "The session key".
 
@@ -240,23 +264,26 @@ button's name, it says what to look for.
 4. **In the chat:** look for **Skills** (in the chat's menus or settings; this page has not recorded where).
 5. **In the chat:** choose to create a new skill.
 6. **In the chat:** name it `scat-coding`.
-7. **In the chat:** paste the text you copied. (If the form offers an upload instead, upload the file; whether the
-   chat takes the file as it stands or asks for a different form was not recorded.)
-8. **In the chat:** save the skill.
-9. **In the chat:** open the **Agent Builder**.
-10. **In the chat:** name the agent something you will recognise, for example "SCAT coder".
-11. **In the chat:** choose a model in the agent's settings.
-12. **In the chat:** add, as a tool, the server you added under "Connect the chat".
-13. **In the chat:** add the chat's Ask User tool, if it offers one.
-14. **In the chat:** choose the `scat-coding` skill as the agent's only skill.
-15. **In the chat:** save the agent.
-16. **In the chat:** open the Agent Builder and find its **Select** control. On inference.coop's instance, agents
+7. **In the chat:** fill in the **Description**, which the form requires. Copy the text after `description:` in the
+   file's first lines (it begins "Rules and habits for the assistant"), from the tab you kept open.
+8. **In the chat:** paste the text you copied into the skill's text field. (If the form offers an upload instead, upload
+   the file; whether the chat takes the file as it stands or asks for a different form was not recorded.)
+9. **In the chat:** save the skill.
+10. **In the chat:** open the **Agent Builder**.
+11. **In the chat:** name the agent something you will recognise, for example "SCAT coder".
+12. **In the chat:** choose a model in the agent's settings.
+13. **In the chat:** add, as a tool, the server you added under "Connect the chat".
+14. **In the chat:** add the chat's Ask User tool, if it offers one.
+15. **In the chat:** choose the `scat-coding` skill as the agent's only skill.
+16. **In the chat:** save the agent.
+17. **In the chat:** open the Agent Builder and find its **Select** control. On inference.coop's instance, agents
     start from that Select, not from the model menu or from typing `@`.
-17. **In the chat:** use **Select** to pick the agent. A new chat starts with it.
+18. **In the chat:** use **Select** to pick the agent. A new chat starts with it.
 
-An agent keeps the server entry you chose when you saved it. The server's address and key change each session, so
-each session you add a new entry (as in "Connect the chat") and, if the saved agent no longer lists a working server,
-choose the new entry in the agent's tools again. This was not yet tried.
+An agent's tool is tied to the server entry you chose when you saved it, and that tie does not survive deleting the
+entry. The server's address and key change each session, and each session you add a new entry (as in "Connect the
+chat"), so each session the saved agent's tool must be added again: open the agent in the Agent Builder, remove the
+tool that no longer works, add the new entry, and save. This was seen on the lab run's old agent.
 
 ## Use
 
@@ -327,8 +354,8 @@ exists for one session. Here is where it lives and what to do with it.
 - **Where it lives.** SCAT Chat makes a new key at each start and keeps it in your Mac's login keychain. It is never
   written to a file in your vault or in the repository, and it is never put where another program on your Mac can
   read it from the process list.
-- **Where it is shown.** The launcher window shows the address and a **Copy key** button, never the key. The key
-  reaches your clipboard only when you click **Copy key**.
+- **Where it is shown.** SCAT Chat's menu shows the address and has **Copy address** and **Copy key** items, never the
+  key. The key reaches your clipboard only when you choose **Copy key**.
 - **At Stop.** Stop deletes the key from the keychain and clears your clipboard if it still holds the key. The message
   says "the key was deleted".
 
@@ -336,10 +363,10 @@ Good practice, for the key:
 
 - Paste it only into the chat's server entry (the API key field in the chat's MCP settings). Do not paste it into a
   message to the assistant, an email, a document or a note, and do not save it anywhere.
-- Click **Copy key** only when you are about to paste. After pasting, copy something else (a word from anywhere), so
+- Choose **Copy key** only when you are about to paste. After pasting, copy something else (a word from anywhere), so
   the clipboard no longer holds it.
 - Do not screenshot or share your screen while you paste it.
-- If you think the key has been seen by someone, click **Stop** at once, then start again. A new session has a new
+- If you think the key has been seen by someone, choose **Stop** at once, then start again. A new session has a new
   key; the old one no longer works.
 - You never need to look at, write down or reuse a key. The next session has its own.
 
@@ -358,13 +385,13 @@ What each Stop removes, and what stays:
 Stopping has two parts here: stop the session on your Mac, and check that it stopped. Then clean up the chat
 platform (next section).
 
-1. **In SCAT Chat:** click **Stop**. (Quitting SCAT Chat does the same thing.) The public link goes off, the server is
-   removed, your Mac may sleep again, the key was deleted, and your clipboard is cleared of the key. A message then
-   says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was deleted, and
+1. **In the menu bar:** open SCAT Chat's menu and click **Stop**. The dot turns grey. The public link goes off, the
+   server is removed, your Mac may sleep again, the key was deleted, and your clipboard is cleared of the key. SCAT Chat's
+   message then says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was deleted, and
    your clipboard holds no key."
 2. **In a web browser:** open the address that ended in `/mcp`. It should not load. If it does, do step 1 again.
 
-If the message says "Stopped, but I could not confirm:" followed by something, click SCAT Chat again, then Stop, or
+If the message says "Stopped, but I could not confirm:" followed by something, start SCAT Chat again, then stop it, or
 restart your Mac. If it says the public link may still be on, open Tailscale and switch Funnel off. If it says the key
 could not be deleted, open Keychain Access and delete the item it names.
 
@@ -392,8 +419,9 @@ That is the clean-up the lab run did on 25 November. Delete only the server entr
   recorded for this page; look for a file library and the conversation's menu in the chat.
 - **Your vault** is on your Mac and is not touched.
 
-Next session, add the new server entry (see "Connect the chat"); if the saved agent no longer lists a working server,
-choose the new entry in its tools again (not yet tried).
+Next session, add the new server entry (see "Connect the chat"). A saved agent's tool does not survive deleting the
+server entry it was tied to, so open the saved agent in the Agent Builder, remove the tool that no longer works, add
+the new entry, and save (seen on the lab run's old agent).
 
 ## What leaves your machine
 
@@ -407,25 +435,25 @@ service and to the model provider behind it. Settle what is allowed before you b
 
 The launcher's messages, and what to do.
 
-| The window says | Do this |
+| SCAT Chat says | Do this |
 |---|---|
-| "SCAT Chat needs a container runtime: Colima (recommended) or Docker Desktop. Neither is installed." | Install Colima as shown under "Install once" (or Docker Desktop, untested), then click SCAT Chat. |
-| "Docker Desktop is not running." | You use Docker Desktop. Open it from your Applications folder, wait until it says it is running, then click SCAT Chat. |
-| "Colima would not start." | Restart your Mac, then click SCAT Chat again. If it repeats, tell the person who set this up. |
-| "Docker does not answer." | Restart your Mac, then click SCAT Chat again. |
-| "SCAT Chat needs Tailscale ... not installed." | Install Tailscale and its command line as under "Install once", sign in, click SCAT Chat. |
-| "Tailscale is not running or you are not signed in." | Open Tailscale from the menu bar, sign in, click SCAT Chat. |
+| "SCAT Chat needs a container runtime: Colima (recommended) or Docker Desktop. Neither is installed." | Install Colima as shown under "Install once" (or Docker Desktop, untested), then start SCAT Chat. |
+| "Docker Desktop is not running." | You use Docker Desktop. Open it from your Applications folder, wait until it says it is running, then start SCAT Chat. |
+| "Colima would not start." | Restart your Mac, then start SCAT Chat again. If it repeats, tell the person who set this up. |
+| "Docker does not answer." | Restart your Mac, then start SCAT Chat again. |
+| "SCAT Chat needs Tailscale ... not installed." | Install Tailscale and its command line as under "Install once", sign in, start SCAT Chat. |
+| "Tailscale is not running or you are not signed in." | Open Tailscale from the menu bar, sign in, start SCAT Chat. |
 | "Tailscale needs HTTPS switched on" | The HTTPS setting above; click Open the page. |
 | "The public link did not start" | The Funnel setting above; click Open the page. |
 | "Choose your vault" | Choose the folder that holds `scat.toml`. |
 | "Your vault is in a folder that macOS protects" | Say Copy, or move the vault outside Documents, Desktop, Downloads and iCloud. |
-| "I could not keep a new key in your keychain." | If macOS asked for permission, click Allow, then click SCAT Chat again. |
+| "I could not keep a new key in your keychain." | If macOS asked for permission, click Allow, then start SCAT Chat again. |
 | "Fetching the server, once." or "Building the server, once." | Wait. Not an error. |
-| "Building the server failed" | Check you are online, then click SCAT Chat again. |
+| "Building the server failed" | Check you are online, then start SCAT Chat again. |
 | "The server would not start" | Close any other SCAT Chat, then click again. |
 | "The server did not answer" or "stopped right after starting" | Click again; if it repeats, tell the person who set this up. |
-| "Stopped, but I could not confirm:" followed by what it could not confirm, then "click SCAT Chat again, then Stop, or restart your Mac, to be sure." | Do that: click SCAT Chat again, then Stop, or restart your Mac. If it names the public link, open Tailscale and switch Funnel off. |
-| "SCAT Chat is already running." | Click Stop in its window, or quit the app, then start again. |
+| "Stopped, but I could not confirm:" followed by what it could not confirm, then "start SCAT Chat again, then stop it, or restart your Mac, to be sure." | Do that: start SCAT Chat again, then stop it, or restart your Mac. If it names the public link, open Tailscale and switch Funnel off. |
+| "SCAT Chat is already running." | Open its menu in the menu bar and choose Stop, then start again. |
 
 If you use Docker Desktop and the first run fails in a way that table does not cover, that is the untested part:
-send the person who set this up the exact words in the window.
+send the person who set this up the exact words SCAT Chat showed.

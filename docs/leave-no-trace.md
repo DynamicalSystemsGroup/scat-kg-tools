@@ -41,79 +41,88 @@ This page only adds what a strict policy needs.
 
 ## The walkthrough
 
-Each numbered step names where it is done and one outcome. It begins with where you do it: **In SCAT Chat** (the launcher app), **In the
+Each numbered step names where it is done and one outcome. It begins with where you do it: **In SCAT Chat** (the small Mac app that runs the server), **In the menu bar** (its dot and menu), **In the
 chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web browser**.
 
 ### Set up for the session
 
 1. **In Finder:** check that your field notes are in a folder on your Mac. This is your local copy.
-2. **In SCAT Chat:** open the app and wait for the window that says "SCAT Chat is running." (Start a session, on the
-   chat path.)
-3. **In the chat:** in the bar of icons on the left, click **MCP Settings**.
-4. **In the chat:** choose to add an MCP server, and type `SCAT` as its name.
-5. **In the chat:** type the address from the SCAT Chat window (it ends in `/mcp`) into the address field.
-6. **In the chat:** choose the Streamable HTTPS transport (the way the chat talks to a server over a secure web
+2. **In Finder:** open SCAT Chat from Applications. (Start a session, on the chat path.)
+3. **In SCAT Chat:** answer the question `Serve <vault>?` with **Use it**, or with **Choose another** and the folder that
+   holds `scat.toml`.
+4. **In the menu bar:** wait until SCAT Chat's dot is green.
+5. **In the chat:** in the bar of icons on the left, click **MCP Settings**.
+6. **In the chat:** choose to add an MCP server, and type `SCAT` as its name.
+7. **In the menu bar:** open SCAT Chat's menu and click **Copy address**.
+8. **In the chat:** paste the address (it ends in `/mcp`) into the address field.
+9. **In the chat:** choose the Streamable HTTPS transport (the way the chat talks to a server over a secure web
    address).
-7. **In the chat:** choose API key as the authentication.
-8. **In SCAT Chat:** click **Copy key**.
-9. **In the chat:** paste the key into the API key field.
-10. **In the chat:** save.
-11. **In any app:** copy a word from anywhere, so your clipboard no longer holds the key.
-12. **In a web browser:** open the skill file, <https://raw.githubusercontent.com/DynamicalSystemsGroup/scat-kg-tools/dev/skills/scat-coding/SKILL.md>.
-13. **In a web browser:** select all (Cmd-A) and copy (Cmd-C) its text. Keep the tab open.
-14. **In the chat:** look for **Skills** (in the chat's menus or settings; this page has not recorded where) and choose to create a new skill.
-15. **In the chat:** name the skill `scat-coding` and paste the text you copied. (If the form offers an upload instead, upload the file; whether the chat takes the file as it stands was not recorded.)
-16. **In the chat:** save the skill.
-17. **In the chat:** open the **Agent Builder** and name the agent something you will recognise, for example "SCAT coder".
-18. **In the chat:** in the agent's settings choose a model, and add as tools the server "SCAT" and the chat's Ask User tool, if it offers one.
-19. **In the chat:** choose the `scat-coding` skill as the agent's only skill, and save the agent.
-20. **In the chat:** upload your field notes as one collection, if the chat offers collections. If it does not, skip
+10. **In the chat:** choose API key as the authentication.
+11. **In the chat:** choose the header format the form offers for the key (`X-API-Key` or `Authorization: Bearer`; the server accepts either).
+12. **In the menu bar:** open SCAT Chat's menu and click **Copy key**.
+13. **In the chat:** paste the key into the API key field.
+14. **In the chat:** tick the consent **I trust this application**. The form requires it.
+15. **In the chat:** save.
+16. **In the chat:** click **Connect** on the new entry. A new entry stays unconnected until you do.
+17. **In the chat:** check that the entry "SCAT" shows connected.
+18. **In any app:** copy a word from anywhere, so your clipboard no longer holds the key.
+19. **In a web browser:** open the skill file, <https://raw.githubusercontent.com/DynamicalSystemsGroup/scat-kg-tools/dev/skills/scat-coding/SKILL.md>.
+20. **In a web browser:** select all (Cmd-A) and copy (Cmd-C) its text. Keep the tab open.
+21. **In the chat:** look for **Skills** (in the chat's menus or settings; this page has not recorded where) and choose to create a new skill.
+22. **In the chat:** name the skill `scat-coding`.
+23. **In the chat:** fill in the **Description**, which the form requires, with the text after `description:` in the skill file's first lines (it begins "Rules and habits for the assistant").
+24. **In the chat:** paste the text you copied into the skill's text field. (If the form offers an upload instead, upload the file; whether the chat takes the file as it stands was not recorded.)
+25. **In the chat:** save the skill.
+26. **In the chat:** open the **Agent Builder** and name the agent something you will recognise, for example "SCAT coder".
+27. **In the chat:** in the agent's settings choose a model, and add as tools the server "SCAT" and the chat's Ask User tool, if it offers one. (If you delete the server entry and add it again, the agent's tool does not survive: add the tool again.)
+28. **In the chat:** choose the `scat-coding` skill as the agent's only skill, and save the agent.
+29. **In the chat:** upload your field notes as one collection, if the chat offers collections. If it does not, skip
     this step and attach the notes to the temporary chat when you start coding instead. (Collections were not tried; look for a
     file or knowledge area where you can group files under one name.)
-21. **In the chat:** turn on the Temporary Chat setting (the chat shows the control; the shortcut seen was Cmd-Shift-Y).
-22. **In the chat:** check that its note says the chat will not appear in your history and will be deleted
+30. **In the chat:** turn on the Temporary Chat setting (the chat shows the control; the shortcut seen was Cmd-Shift-Y).
+31. **In the chat:** check that its note says the chat will not appear in your history and will be deleted
     automatically.
-23. **In the chat:** open the Agent Builder and use its **Select** control to pick the agent; a new chat starts with it.
+32. **In the chat:** open the Agent Builder and use its **Select** control to pick the agent; a new chat starts with it.
     (On inference.coop's instance agents start from that Select, not from the model menu or from typing `@`. Whether
     the saved agent can be chosen inside a temporary chat was not tried.)
 
 ### Do the coding
 
-24. **In the chat:** name the narrative and ask the assistant to help you code it, with your collection (or, if you
+33. **In the chat:** name the narrative and ask the assistant to help you code it, with your collection (or, if you
     skipped the collection, the notes attached to this chat).
-25. **In the chat:** answer the assistant's questions, one step per reply, as in [the coding
+34. **In the chat:** answer the assistant's questions, one step per reply, as in [the coding
     loop](chat-path.md#the-coding-loop-in-the-chat-and-in-obsidian).
-26. **In the chat:** confirm or change the nodes and links the assistant proposes.
-27. **In Obsidian:** paste the account the assistant drafted into the narrative's page.
-28. **In Obsidian:** read the page against your notes.
-29. **In Obsidian:** set `status` yourself (`done` or `draft`).
-30. **In the chat:** ask the assistant to check the whole vault.
-31. **In the chat:** ask the assistant to name the pages you worked on with their status.
-32. **In GitHub Desktop:** commit your work. This is your local copy of the result; it stays.
+35. **In the chat:** confirm or change the nodes and links the assistant proposes.
+36. **In Obsidian:** paste the account the assistant drafted into the narrative's page.
+37. **In Obsidian:** read the page against your notes.
+38. **In Obsidian:** set `status` yourself (`done` or `draft`).
+39. **In the chat:** ask the assistant to check the whole vault.
+40. **In the chat:** ask the assistant to name the pages you worked on with their status.
+41. **In GitHub Desktop:** commit your work. This is your local copy of the result; it stays.
 
 ### Tear everything down
 
-33. **In SCAT Chat:** click **Stop**. The window says the public link is off, the server is removed, the key was
+42. **In the menu bar:** open SCAT Chat's menu and click **Stop**. The dot turns grey, and SCAT Chat's message says the public link is off, the server is removed, the key was
     deleted and your clipboard holds no key.
-34. **In a web browser:** open the address that ended in `/mcp`. It should not load.
-35. **In the chat:** end the temporary chat (close it or leave it). It is deleted automatically.
-36. **In the chat:** open your history list and check the temporary chat is not there. If it is, delete it from its
+43. **In a web browser:** open the address that ended in `/mcp`. It should not load.
+44. **In the chat:** end the temporary chat (close it or leave it). It is deleted automatically.
+45. **In the chat:** open your history list and check the temporary chat is not there. If it is, delete it from its
     menu.
-37. **In the chat:** in **MCP Settings**, next to the server "SCAT", click **Edit**.
-38. **In the chat:** click the red **delete** button.
-39. **In the chat:** confirm.
-40. **In the chat:** delete the saved agent. (The chat's Agent Builder holds it; where its delete control is was not
+46. **In the chat:** in **MCP Settings**, next to the server "SCAT", click **Edit**.
+47. **In the chat:** click the red **delete** button.
+48. **In the chat:** confirm.
+49. **In the chat:** delete the saved agent. (The chat's Agent Builder holds it; where its delete control is was not
     recorded, so look there.)
-41. **In the chat:** delete the skill `scat-coding`. (Look where you created it.)
-42. **In the chat:** delete the collection you uploaded. (Where it is was not recorded; look for a file library.)
-43. **In the chat:** delete any file left in the chat's file library from this session.
-44. **In the chat:** delete any prompt you saved for this session. If you saved none, there is nothing to do.
-45. **In the chat:** look once more at each place you set something up (MCP Settings, the Agent Builder, the skills,
+50. **In the chat:** delete the skill `scat-coding`. (Look where you created it.)
+51. **In the chat:** delete the collection you uploaded. (Where it is was not recorded; look for a file library.)
+52. **In the chat:** delete any file left in the chat's file library from this session. This step is needed because field notes you attached to a temporary chat stay in the file library after the chat is deleted (seen in the lab run).
+53. **In the chat:** delete any prompt you saved for this session. If you saved none, there is nothing to do.
+54. **In the chat:** look once more at each place you set something up (MCP Settings, the Agent Builder, the skills,
     the files, the history) and check that nothing from this session remains.
 
 ### Check what stays on your Mac
 
-46. **In Finder:** check that your field notes folder and your vault are still there, with your work in them.
+55. **In Finder:** check that your field notes folder and your vault are still there, with your work in them.
 
 ## What is removed and what stays
 

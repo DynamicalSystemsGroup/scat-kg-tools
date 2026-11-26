@@ -12,6 +12,7 @@ LNT = DOCS / "leave-no-trace.md"
 PLACES = (
     "In the chat",
     "In SCAT Chat",
+    "In the menu bar",
     "In Finder",
     "In GitHub Desktop",
     "In Obsidian",
@@ -151,3 +152,76 @@ def test_no_step_refers_to_a_step_of_another_page():
     assert not [s for s in steps if ref.search(s) or "same section" in s]
     assert not ref.search(LNT.read_text(encoding="utf-8"))
     assert not re.search(r"(?i)steps? \d+ (and|to) \d+ of", CHAT.read_text(encoding="utf-8"))
+
+
+def _all_steps(path):
+    return [
+        m.group(1) for ln in path.read_text(encoding="utf-8").splitlines() if (m := STEP.match(ln))
+    ]
+
+
+def test_no_guide_calls_scat_chat_a_window():
+    """WP22 (D-130): SCAT Chat is a menu-bar app with no window; no stale launcher-window wording."""
+    stale = re.compile(
+        r"(?i)copy key and stop|leave the window|the window that says|the window says|launcher window"
+        r"|scat chat window|in its window|in the window"
+    )
+    for path in (CHAT, LNT, ROOT / "acceptance" / "walkthrough-chat.md"):
+        text = path.read_text(encoding="utf-8")
+        assert not stale.search(text), (path.name, stale.search(text).group(0))
+    for path in (CHAT, LNT):
+        bad = [
+            s
+            for s in _all_steps(path)
+            if re.match(r"\*\*In (SCAT Chat|the menu bar):\*\*", s) and "window" in s
+        ]
+        assert not bad, bad
+
+
+def test_menu_bar_steps_use_the_decided_labels():
+    for path in (CHAT, LNT):
+        text = path.read_text(encoding="utf-8")
+        for label in (
+            "Copy address",
+            "Copy key",
+            "Stop",
+            "Use it",
+            "Choose another",
+            "Serve <vault>?",
+        ):
+            assert label in text, (path.name, label)
+    assert "Change vault" in CHAT.read_text(encoding="utf-8")
+    assert "Problem:" in CHAT.read_text(encoding="utf-8")
+
+
+def _has_step(path, *words):
+    return any(all(w in s for w in words) for s in _all_steps(path))
+
+
+def test_the_chats_required_forms_are_in_numbered_steps():
+    """L4, L5: the consent, the header format, Connect and the connected check, and the skill's Description."""
+    for path in (CHAT, LNT):
+        assert _has_step(path, "I trust this application"), path.name
+        assert _has_step(path, "header format"), path.name
+        assert _has_step(path, "**Connect**"), path.name
+        assert _has_step(path, "shows connected"), path.name
+        assert _has_step(path, "**Description**", "description:"), path.name
+
+
+def test_step_for_the_file_library_says_why():
+    """L8: field notes attached to a temporary chat stay in the file library after the chat is deleted."""
+    steps = [
+        s
+        for s in _all_steps(LNT)
+        if "file library" in s and s.startswith("**In the chat:** delete any file")
+    ]
+    assert len(steps) == 1
+    assert "stay in the file library after the chat is deleted" in steps[0]
+
+
+def test_the_saved_agents_tool_is_added_again():
+    """L10: the tool does not survive deleting the server entry."""
+    chat = CHAT.read_text(encoding="utf-8")
+    assert chat.count("does not survive") >= 2
+    assert "must be added again" in chat
+    assert "add the tool again" in LNT.read_text(encoding="utf-8")

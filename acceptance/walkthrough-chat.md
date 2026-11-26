@@ -150,25 +150,28 @@ it needs](../docs/chat-path.md#what-the-chat-path-is-and-what-it-needs), [Instal
    Then open the folder in Obsidian as a vault (**Open folder as vault**, version 1.9 or later).
 3. Install once, in the page's order: SCAT Chat.app (Get SCAT Chat.app), a container runtime (Colima, a few commands in a terminal), the public-link service and its command line (Tailscale), its two one-time settings, the
    first open of the app.
-4. Start a session, as [Start a session](../docs/chat-path.md#start-a-session) says: open SCAT Chat; choose the folder
-   that holds `scat.toml` (if it is in Documents, Desktop, Downloads or iCloud the launcher offers a copy: record what
-   you chose); wait for the first fetch or build.
-5. Connect the chat, as [Connect the chat](../docs/chat-path.md#connect-the-chat) says: add the address from the window
-   (it ends in `/mcp`), the Streamable HTTPS transport, API key authentication, and the key (click **Copy key** in the
-   window; the window never shows it). Then set up the skill and the saved agent ([Set up the skill and the saved
+4. Start a session, as [Start a session](../docs/chat-path.md#start-a-session) says: open SCAT Chat; read the
+   first-start note about the menu bar; answer the vault question (choose the folder that holds `scat.toml`; if it is in
+   Documents, Desktop, Downloads or iCloud the launcher offers a copy: record what you chose); wait for the first fetch
+   or build, until the dot is green.
+5. Connect the chat, as [Connect the chat](../docs/chat-path.md#connect-the-chat) says: click **Copy address** in SCAT Chat's
+   menu and paste it (it ends in `/mcp`), the Streamable HTTPS transport, API key authentication, the header format, the
+   key (click **Copy key** in the menu; the menu never shows it), tick **I trust this application**, save, click
+   **Connect**, and check that the entry shows connected. Then set up the skill and the saved agent ([Set up the skill and the saved
    agent](../docs/chat-path.md#set-up-the-skill-and-the-saved-agent)) and record every control you could not find.
 6. Ask the assistant for a check of the whole vault. The page does not give this sentence; record the words you used.
 
 **Done.**
 - The repository is private on GitHub, the example is removed and pushed, and the folder is open as a vault in Obsidian.
-- A window says "SCAT Chat is running." and shows an address and your vault, with **Copy key** and **Stop** buttons and no key.
+- The dot in the menu bar is green, and its menu shows State, Vault and Address lines, with **Copy address**, **Copy key**,
+  **Change vault** and **Stop**, and no key.
 - The assistant's reply to the check quotes the tool's result, `no problems`, for the vault with the example removed and pushed.
 
 **Record.** Every step the page could not vouch for (it says so), each launcher message you saw and whether the page's
 table covered it, and the exact words of any failure. Anything you guessed.
 
-**Resume.** Open SCAT Chat, wait for "SCAT Chat is running.", click Copy key and paste the new key into a new server
-entry in the chat, and ask for the check again. The one-time installs are not redone.
+**Resume.** Open SCAT Chat, wait for the green dot, choose Copy address and Copy key in its menu and paste them into a new
+server entry in the chat, click Connect, add that entry to the saved agent's tools again, and ask for the check again. The one-time installs are not redone.
 
 ## J6 Plan
 
@@ -271,7 +274,7 @@ release, licence and rights answers.
    Note the commit the release page shows for the tag, if it shows one. With a terminal at hand, the commands in [See
    which commit a tag pins](../docs/coding.md#see-which-commit-a-tag-pins) give it (docs fix 4).
 5. Hand it over to the recipient the case names.
-6. Click **Stop** in the SCAT Chat window, then clean up the chat platform as [Clean up](../docs/chat-path.md#clean-up)
+6. Choose **Stop** in SCAT Chat's menu, then clean up the chat platform as [Clean up](../docs/chat-path.md#clean-up)
    says (delete the server entry; the rest is optional). Under a strict data policy, run [Leave
    no trace](../docs/leave-no-trace.md) instead; it is an option, not part of this pass.
 
@@ -279,7 +282,7 @@ release, licence and rights answers.
 - The whole-vault check is clean and the vault is navigable in Obsidian.
 - The release and its tag are on GitHub, in a repository that is still private, and you can name the tag, the commit it
   pins and the recipient.
-- The window says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was
+- SCAT Chat's message says "Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was
   deleted, and your clipboard holds no key."
 
 **Record.** The tag, the commit and the recipient; how you pushed; any wording of GitHub that differed from the page;

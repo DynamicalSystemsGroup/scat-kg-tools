@@ -481,7 +481,9 @@ live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
     keychain item syncs to iCloud Keychain. (c) Docker Desktop, the untested alternative to Colima. (d) R4: the
     `scat-coding` skill loading in the chat, and the saved agent. (e) R7: the leave-no-trace walkthrough
     (`docs/leave-no-trace.md`), including the chat's Temporary Chat setting and collections, neither tried. (f) R6: the
-    first push of the published image, which also waits on the mission's Release step 3.
+    first push of the published image, which also waits on the mission's Release step 3. (g) WP22: SCAT Chat as a menu-bar app (the dot, its menu, the first-start note, `Serve <vault>?`, Change
+    vault) and the guides' account of the chat's forms (the consent, the header format, Connect, the skill's
+    Description, the saved agent's tool added again), none confirmed on a real Mac and chat.
 
 **The note on the rule audit (D-052, D-053).** The audit covered the v0.1 catalogue as it stood then. The rules in
 force, with their ids and severities, are in `contracts/rule-catalogue.md`; `SCAT-NOEDGES` (G1, added in WP18-U6) and
