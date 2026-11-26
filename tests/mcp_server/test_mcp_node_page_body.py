@@ -20,8 +20,9 @@ CALLS: list[tuple[str, dict]] = [
     ("check", {}),
     ("check", {"page": "ethnographers", "neighborhood": True}),
     ("status", {}),
-    ("set_status", {"page": "attention-limit-on-participation", "status": "draft"}),
-    ("set_status", {"page": "ethnographers", "status": "stub"}),
+    ("set_status", {"page": "scheduler", "status": "draft"}),  # a stub node page: the write runs
+    ("set_status", {"page": "scheduler", "status": "stub"}),
+    ("set_status", {"page": "ethnographers", "status": "draft"}),  # `done`: refused
     ("stub", {"name": "fresh-concern", "type": "concern"}),
     ("stub_links", {}),
     (

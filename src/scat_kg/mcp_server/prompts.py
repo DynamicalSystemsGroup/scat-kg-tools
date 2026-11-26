@@ -66,7 +66,7 @@ The loop, each step handed back to the coder before the next. Node page: {{node}
    as text in your reply, across the narratives and not pasting one account. Cite each claim by a link to the
    narrative. Keep the differences. A node that one narrative tells says so.
 3. Handing over. The coder reads and edits the draft, and writes the page into the vault; you do not write it through
-   the tool. The page stays `draft` until the coder says.
+   the tool. The page keeps its status until the coder changes it.
 4. Done is the coder's. The coder sets `done`, in Obsidian, after reading. You cannot, and must not try. End by naming
    the coder's next act."""
 

@@ -96,8 +96,8 @@ When the coder asks for a node page's text (a group, concern, affordance or tech
    across the narratives; never paste one account.
 3. Cite each claim by a link to the narrative that makes it. Keep disagreement between narratives; do not merge it.
    Say what is thin. A node that one narrative tells says so.
-4. Offer the draft. The coder writes it into the vault and decides what stays. The page stays `draft` until the coder
-   says otherwise; `done` is the coder's.
+4. Offer the draft. The coder writes it into the vault and decides what stays. The page keeps its status until the coder
+   changes it; the coder sets `done`.
 5. End by naming the coder's next act: read, edit, write it in, or set `done`.
 
 ## Sweeping the stub node pages
