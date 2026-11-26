@@ -29,7 +29,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP19 | The range vault (D-094) | all units done and reviewed on `pm-wp18`; `check_metrics.py --accept WP19` passes; ready for ACE acceptance | `WP19.md` |
 | WP20 | The candidate and user acceptance (D-097) | manual path passed UA-A round 2 (D-101); all units done except WP20-UC1 (chat-path UA-A, queued, waits on the chief engineer's sitting) | `WP20.md` |
 | WP21 | Rules and norms, the chat path's life cycle, the published image (D-114) | all units done and merged on `dev`; ready for ACE acceptance after the template pin | `WP21.md` |
-| WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | U1 spike and U2 skill markers in flight; U3 waits on the ACE's logged decision | `WP22.md` |
+| WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | U1 spike and U2 skill markers done and merged; U3 waits on the ACE's logged decision on the mechanism | `WP22.md` |
 
 ## Units
 
@@ -295,11 +295,11 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP21-U9r | reviewer (fresh), sonnet | 2 | 2 | `-` | done |  | 2026-11-25T15:46:40-05:00 | fresh reviewer PASS first time, built the image under Colima |
 | WP21-U10 | technical writer (life-cycle guide, leave-no-trace), sonnet | 5 | 8 | `wp21/u10` | done |  | 2026-11-25T18:17:21-05:00 | 3 push-backs on R7's one-action bar, D-119 reworded it; 2 cold readers; one more tiny fix round; 2401 tests; merged c89411e |
 | WP21-U10r | reviewer and cold reader (fresh), sonnet | 2 | 3 | `-` | done |  | 2026-11-25T18:17:21-05:00 | 4 fresh review rounds and 2 cold readers (hence 3 against 2) |
-| WP22-U1 | research engineer (macOS launcher UI spike), sonnet | 3 |  | `wp22/u1` | in flight |  |  |  |
-| WP22-U1r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP22-U1 |  |  |
-| WP22-U2 | Python developer (skill markers, drift test), haiku | 1 |  | `wp22/u2` | in flight |  |  |  |
-| WP22-U2r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP22-U2 |  |  |
-| WP22-U3 | macOS and shell developer (applet, launcher, build), sonnet | 8 |  | `wp22/u3` | queued | WP22-U1 and the ACE's logged decision on the mechanism |  |  |
+| WP22-U1 | research engineer (macOS launcher UI spike), sonnet | 3 | 5 | `wp22/u1` | done |  | 2026-11-26T11:30:00-05:00 | 1 push-back (non-compiling repro, untraceable Tested rows) and a nit round; spike note 899 words, appendices A to C; merged d3d6a35 |
+| WP22-U1r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T11:30:00-05:00 | two fresh review rounds, re-ran the applet, plutil, codesign |
+| WP22-U2 | Python developer (skill markers, drift test), haiku | 1 | 1 | `wp22/u2` | done |  | 2026-11-26T11:30:00-05:00 | PASS first time; markers replaced by title and first G4 heading anchors; merged 7e5472b |
+| WP22-U2r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T11:30:00-05:00 | fresh reviewer PASS first time; 5 mutations caught |
+| WP22-U3 | macOS and shell developer (applet, launcher, build), sonnet | 8 |  | `wp22/u3` | queued | the ACE's logged decision on the mechanism (spike note ready) |  |  |
 | WP22-U3r | reviewer (fresh), runs the built app, sonnet | 2 |  | `-` | queued | WP22-U3 |  |  |
 | WP22-U4 | test engineer (tests/deploy), sonnet | 3 |  | `wp22/u4` | queued | WP22-U3 |  |  |
 | WP22-U4r | reviewer (fresh), sonnet | 1 |  | `-` | queued | WP22-U4 |  |  |
@@ -346,6 +346,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 34 | WP21-U2, U2r, U3, U3r, U3g, U3gr, U4, U4r, U5, U5r, U8, U8r (U4b, a 1-point pin edit, unplanned: no separate review, the docs tests are its check) | 33 | 33 | 1.00 | 2.2 h | 15.0 |
 | 35 | WP21-U3h, U3hr, U6, U6r, U8f, U8fr (U8f, U8fr added by the PM: red CI) | 12 | 13 | 1.08 | 1.6 h | 8.13 |
 | 36 | WP21-U10, U10r, U10b, U10br (U10b, U10br added by the PM after D-119) | 9 | 13 | 1.44 | 1.7 h | 7.65 |
+| 37 | WP22-U1, U1r, U2, U2r | 6 | 9 | 1.50 | 0.3 h | 30.0 |
 
 ## Velocity and forecast
 
