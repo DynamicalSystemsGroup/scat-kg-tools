@@ -2431,3 +2431,12 @@ launcher with verbs only. The ACE decides:
   its own functions"; the new tools (`plutil`, `codesign`, AppleScriptObjC) are recorded in `deploy/README.md`.
 - The dot's look, a real click and "no flicker" are confirmed in the chief engineer's sitting.
 U3 is unblocked.
+
+## D-131 | 2026-11-26 | The terms page's word cap rises to 850 for the attribution terms
+
+`docs/reference/terms.md` was at 811 of its 820-word cap (WP12; raised before in D-117), so the two new terms
+(**attribution mode**, **attribution**, D-128) fit only as empty pointers. The PM correctly refused a worker's
+unlogged raise and a cut of unrelated entries, and brought it to the ACE after two push-backs. The ACE raises
+`WORD_CAP` in `tests/docs/test_terms.py` from 820 to 850 (that one line), so the entries carry real definitions:
+"attribution mode: required, optional or disallowed (Chatham House rule); set in `scat.toml`." and "attribution: the
+people a narrative is attributed to, where the mode allows; never a node or a link."; the edge line keeps "typed".
