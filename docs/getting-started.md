@@ -99,10 +99,11 @@ uv run scat check
 The template ships with a worked example, so you can see what a vault looks like. A clean result for it is this:
 
 ```text
+attribution mode: disallowed
 no problems
 ```
 
-That is a pass. A **clean** check prints `no problems`. **Errors** block you: a vault with errors is not clean.
+That is a pass. A **clean** check prints the vault's attribution mode, then `no problems`. **Errors** block you: a vault with errors is not clean.
 **Warnings** do not block you. They are to-dos, such as a draft page that still needs a sentence.
 
 The check looks at structure only: that each page has what its type needs, that links point at pages that exist,
@@ -126,6 +127,7 @@ scat_kg.check()
 It prints the same text as `uv run scat check`:
 
 ```text
+attribution mode: disallowed
 no problems
 ```
  Every `scat` command has a twin in the REPL; the
@@ -133,11 +135,14 @@ no problems
 
 ### Two things the tools do that may surprise you
 
-`scat.toml` is required. It sits in the vault folder and holds the cap on groups. If it is missing, the
-check reports an error (`SCAT-CAP-CONFIG`). If you see that error, you are probably in the wrong folder, or the file
+`scat.toml` is required. It sits in the vault folder and holds two keys: `stakeholder_group_cap`, the cap on groups, and
+`attribution`, the vault's attribution mode (`required`, `optional` or `disallowed`). The template sets the cap to 3 and the
+mode to `disallowed`; [Planning](planning.md#choose-the-attribution-mode) says how to choose yours. If either key is missing,
+the check reports an error (`SCAT-CAP-CONFIG` or `SCAT-MODE-CONFIG`). If the whole file is missing, you are probably in the wrong folder, or the file
 was deleted. In a wrong (empty) folder the check ends with `1 error, 0 warnings`:
 
 ```text
+attribution mode: not declared
 error [SCAT-CAP-CONFIG] scat.toml field `stakeholder_group_cap`: the file is missing
   Fix: add the line `stakeholder_group_cap = <number you choose>` (author) in scat.toml; choose a whole number of 1 or more (the vault has 0 group pages now)
 1 error, 0 warnings
@@ -183,6 +188,7 @@ uv run scat check
 `scat check` then prints:
 
 ```text
+attribution mode: disallowed
 no problems
 ```
 

@@ -11,8 +11,10 @@ notes carries that text into the model, and the rules for the model then apply t
 
 ## What the tool does
 
-- Pages name groups, not individuals. The cap on groups, set in `scat.toml`, is enforced: the tool
+- The four layers name groups, never individuals. The cap on groups, set in `scat.toml`, is enforced: the tool
   refuses a group page beyond it.
+- Whether a narrative names the people it is attributed to is the vault's attribution mode, also set in `scat.toml`
+  and enforced. See [Attribution mode](#attribution-mode).
 - The `scat` commands read and write the vault folder and make no network calls. They do not read the field notes.
 - The tool cannot tell whether a person or an assistant wrote a page.
 - Consent has no field in the vault. The consent records are inputs, kept as choice 3 and choice 2 say. Git keeps every committed version of a page.
@@ -30,7 +32,8 @@ Nine, made before the first session. Each is a dependency: a later step is plann
    choose the participation terms up front, every participant works within the same terms, and they are told before
    they take part. For example: a signed form each; a read-aloud statement recorded in the notes; the terms in the
    invitation.
-4. **What contributions will and will not be used for.** Analysis (step 9) depends on it. Attribution is part of it.
+4. **What contributions will and will not be used for.** Analysis (step 9) depends on it. Attribution is part of it:
+   the answer fixes the vault's attribution mode (see [Attribution mode](#attribution-mode)).
    For example: the Chatham House rule; attribution by name with permission; use for the funder's report only.
 5. **Whether AI is used, and which tools may touch which data.** Coding (step 8) depends on it, and the answer is
    matched to what participants were told. On the chat path the field notes go to the chat provider's service. For
@@ -46,6 +49,23 @@ Nine, made before the first session. Each is a dependency: a later step is plann
 9. **How commitments to participants are followed through.** What comes after hand-over depends on it. For example: a
    findings session with contributors; a written summary sent to each; a copy of the released analysis.
 
+## Attribution mode
+
+Choice 4 fixes one setting for the whole vault, the **attribution mode**. You write it in `scat.toml` before the first
+session, and the check refuses a vault that has none. The mode says whether a narrative names the people it is
+attributed to. It is the same for every participant, so say which one it is in the consent you gather.
+
+| Mode | What participants are told | What the vault holds |
+|---|---|---|
+| `required` | Each account is attributed to the person who gave it, by name. | A contributor page for each person named. Every narrative names its contributors before it is `done`. |
+| `optional` | Each account is attributed to its giver only if that person wants it. | A contributor page for each person who chose to be named. A narrative names its contributors or names none. |
+| `disallowed` | No account is attributed to anyone. The Chatham House rule is this mode. | No contributor page, and no narrative names a contributor. The tool refuses both. |
+
+Contributor pages exist only in `required` and `optional` vaults. The four layers hold groups in every mode. A contributor
+page holds a name or handle you record, so in those two modes the vault holds people's names, and the answers to choices 2
+and 6 cover them. [Planning](planning.md#choose-the-attribution-mode) shows what to say aloud for each mode, and
+[Coding](coding.md#contributor-pages-and-attributed_to) shows the pages.
+
 ## Before you start
 
 One question for each choice above, to tick when it is documented.
@@ -53,7 +73,7 @@ One question for each choice above, to tick when it is documented.
 - [ ] What will be collected, and in what form?
 - [ ] Where is each kind of material kept, and who can see it?
 - [ ] How is consent given and documented?
-- [ ] What will contributions be used for, and not used for?
+- [ ] What will contributions be used for, and not used for? Which attribution mode follows from it?
 - [ ] Is AI used, and which tools may touch which data?
 - [ ] Who is each kind of material released to, and in what form?
 - [ ] Under what licence is anything published?
