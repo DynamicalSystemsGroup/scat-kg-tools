@@ -1,0 +1,15 @@
+filters:
+  and:
+    - 'note.type == "affordance"'
+    - '!file.inFolder("templates")'
+views:
+  - type: table
+    name: "Affordances"
+    order:
+      - file.name
+      - note.title
+      - note.status
+      - note.description
+    sort:
+      - property: file.name
+        direction: ASC
