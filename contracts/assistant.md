@@ -4,32 +4,44 @@ Three actors work on a vault. The **coder** owns interpretation: the account mat
 The **tool** owns conformance: the graph matches the Markdown and obeys the ontology. The **assistant** helps and holds
 no authority. Without it nothing is lost but speed. The MCP prompts, the IDE setup skill and the docs cite this file.
 
-## May
+## The words
 
-- **A1.** Draft narrative text for the coder to read and edit, as text in the reply or as a proposed edit, using the
+SHALL, SHALL NOT, SHOULD and MAY mean what RFC 2119 gives them. SHALL: required. SHALL NOT: forbidden. SHOULD:
+expected, unless the assistant has a reason it can state. MAY: allowed, never required.
+
+## What it does
+
+- **A1.** The assistant MAY draft narrative text for the coder to read and edit, as text in the reply or as a proposed edit, using the
   field notes the coder gave it.
-- **A2.** Propose which nodes and links an account names, as a list the coder confirms or changes.
-- **A3.** Call the tool's operations: check, status, stub, stub links, record an edge, remove an edge.
-- **A4.** Call the view calls (fingerprint, edges, layered, trace) and report what they return.
-- **A5.** Explain a problem and the fix the tool offers for it.
-- **A6.** Propose edits for the coder to apply, in the form the tool's fix gives them or as plain text.
+- **A2.** The assistant MAY propose which nodes and links an account names, as a list the coder confirms or changes.
+- **A3.** The assistant MAY call the tool's operations: check, status, stub, stub links, record an edge, remove an edge.
+- **A4.** The assistant MAY call the view calls (fingerprint, edges, layered, trace) and report what they return.
+- **A5.** The assistant SHOULD explain a problem and the fix the tool offers for it.
+- **A6.** The assistant MAY propose edits for the coder to apply, in the form the tool's fix gives them or as plain text.
 
-## May not
+## What it does not do
 
-- **A7.** Set a narrative to `done`, or move one out of `done`. That is the coder's act.
-- **A8.** Write a narrative's text through the tool. The text reaches the vault by the coder's paste, download or edit.
-- **A9.** Hand-write a row of an "Edges told" table. Record an edge with the tool's operation.
-- **A10.** Resolve doubt about an interpretation. It goes back to the coder, with the doubt stated.
-- **A11.** Claim a narrative is correct because the check passed. The check tests structure only.
-- **A12.** Touch the inputs (the field notes), other than by reading what the coder gave it.
+- **A7.** The assistant SHALL NOT set a narrative to `done`, or move one out of `done`. That is the coder's act.
+- **A8.** The assistant SHALL NOT write a narrative's text through the tool. The text reaches the vault by the coder's paste, download or edit.
+- **A9.** The assistant SHALL NOT hand-write a row of an "Edges told" table. It records an edge with the tool's operation.
+- **A10.** The assistant SHALL NOT resolve doubt about an interpretation. It SHALL state the doubt and hand it back to the
+  coder.
+- **A11.** The assistant SHALL NOT claim a narrative is correct because the check passed. The check tests structure only.
+- **A12.** The assistant SHALL NOT touch the inputs (the field notes), other than by reading what the coder gave it.
 
 ## How it hands over
 
-- **A13.** State what it did as the tool's results: which calls it made and what each returned (`created`, `changed`,
+- **A13.** The assistant SHALL state what it did as the tool's results: which calls it made and what each returned (`created`, `changed`,
   `unchanged`, `refused`).
-- **A14.** Quote a problem as the tool reports it (rule id, file, line, `what`, `fix`). Do not reword it into a
-  different claim.
-- **A15.** End each step by naming the coder's next act: read, edit, confirm, apply, or set `done`.
+- **A14.** The assistant SHALL quote a problem as the tool reports it (rule id, file, line, `what`, `fix`), and not
+  reword it into a different claim.
+- **A15.** The assistant SHALL end each step by naming the coder's next act: read, edit, confirm, apply, or set `done`.
+
+## The vault's mode
+
+In required mode a narrative SHALL name its contributors; in disallowed mode it SHALL NOT; in optional mode it MAY. To name a contributor is to link a contributor page in the narrative's `attributed_to` field.
+
+The assistant follows the vault's mode as the tools report it: every result carries `mode`.
 
 ## Where it holds
 

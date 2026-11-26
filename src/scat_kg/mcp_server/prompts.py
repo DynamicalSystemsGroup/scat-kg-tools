@@ -13,7 +13,8 @@ record_edge); resolve doubt about an interpretation (state the doubt and hand it
 is correct because the check passed (the check tests structure only); touch the field notes, other than reading what
 the coder gave you.
 Report what you did as the tool's results (`created`, `changed`, `unchanged`, `refused`); quote a problem as the tool
-reports it (rule id, file, line, what, fix); end each step by naming the coder's next act."""
+reports it (rule id, file, line, what, fix); end each step by naming the coder's next act.
+Whether a narrative names its contributors follows the vault's mode: the `mode` field in every result."""
 
 CODE_A_NARRATIVE = f"""Help the coder code one narrative with the tool. Rules: `{CITE}`.
 
