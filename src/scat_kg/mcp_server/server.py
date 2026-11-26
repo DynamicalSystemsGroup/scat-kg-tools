@@ -166,6 +166,15 @@ def build(vault: str | Path, **settings) -> FastMCP:
 
     @mcp.tool(
         description=_OWN
+        + "View: for each node page (or the one `node` named), the share of its five-word runs that appear "
+        "word for word in a narrative, and the narratives they come from, the most repeated first. A prompt "
+        "to look, not a fault. Writes nothing. Returns the view document."
+    )
+    def copy_share(node: str | None = None) -> dict[str, Any]:
+        return _doc(scat_kg.copy_share(node, root=root))
+
+    @mcp.tool(
+        description=_OWN
         + "View: the narratives by contributor, each contributor page with the narratives that name it, and "
         "the narratives that name none. Refused where the vault's attribution mode is disallowed. Writes "
         "nothing. Returns the view document."

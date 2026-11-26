@@ -33,6 +33,7 @@
 | [`scat_kg.layered`](#scat_kglayered) | [`scat layered`](cli.md#scat-layered) | View: the union of fingerprints, in four layers. |
 | [`scat_kg.trace`](#scat_kgtrace) | [`scat trace`](cli.md#scat-trace) | View: what a node reaches, up or down the layers. |
 | [`scat_kg.evidence`](#scat_kgevidence) | [`scat evidence`](cli.md#scat-evidence) | View: one node's narratives with the paragraph around each link, its edges and its adjacent nodes. |
+| [`scat_kg.copy_share`](#scat_kgcopy_share) | [`scat copy-share`](cli.md#scat-copy-share) | View: for each node page, the share of its text that repeats a narrative word for word. |
 | [`scat_kg.attribution`](#scat_kgattribution) | [`scat attribution`](cli.md#scat-attribution) | View: the narratives by contributor (where the vault's attribution mode allows it). |
 | [`scat_kg.export_edges`](#scat_kgexport_edges) | [`scat export-edges`](cli.md#scat-export-edges) | Write the edge tables as CSV and Markdown. |
 | [`scat_kg.draw.fingerprint`](#scat_kgdrawfingerprint), [`scat_kg.draw.layered`](#scat_kgdrawlayered) | [`scat draw`](cli.md#scat-draw) | Draw a view as an image (needs the extra `draw`). |
@@ -808,7 +809,7 @@ A view is a purposeful picture or table made from a conformant vault, and the ca
 - `view.ok` is `True`. `view.to_dict()` is the document.
 - A view refuses, with the problems and their fixes, on a name that is not there or is ambiguous, an edge type or direction that does not exist, a vault folder that is missing, any error in the pages it draws, and a row of a narrative it draws that tells no edge (the file and the row are named; the edge table and the trace draw every narrative). Warnings do not refuse. A narrative that links no node page is excluded: left out of every view, listed under `excluded` (name, file and how to include it) by each view that draws every narrative, and refused when you name it. Relationship annotations appear in no view.
 
-The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `layered`, `trace`, `evidence` or `attribution`. This is an excerpt of `scat_kg.edge_table("holds").to_dict()`; the full documents are in the [CLI reference](cli.md#scat-fingerprint) and the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md):
+The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `layered`, `trace`, `evidence`, `copy-share` or `attribution`. This is an excerpt of `scat_kg.edge_table("holds").to_dict()`; the full documents are in the [CLI reference](cli.md#scat-fingerprint) and the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md):
 
 ```text
 {
@@ -1069,6 +1070,55 @@ Returns everything the vault says of one node page: the narratives that link it,
 
 ```python
 scat_kg.evidence("nobody")
+```
+
+```text
+refused nobody: no node has this name
+  Fix: give the name of a page (the file name without `.md`) that is a group, concern, affordance or technology
+```
+
+## scat_kg.copy_share
+
+```text
+copy_share(node=None, *, root=".")
+```
+
+Returns, for each node page (or the one named), the share of its five-word runs that appear word for word in a narrative, from 0 to 1, and the narratives those runs come from, the one with most runs first. The pages come most repeated first. A page of fewer than five words, such as a stub, has a share of `None`. A high share is a prompt to look at the page (see [`scat_kg.evidence`](#scat_kgevidence)), not a fault. CLI twin: [`scat copy-share`](cli.md#scat-copy-share).
+
+| Parameter | Meaning |
+|---|---|
+| `node` | The name of a group, concern, affordance or technology; without it, every node page. |
+| `root` | The vault folder. |
+
+The page's text is its `description` and its body, without an `Edges told` section; a narrative's text is its body. Case, punctuation and line breaks count for nothing, and a link counts as the text it shows. A narrative that links no node page is excluded: its text is not compared, and it is listed under `excluded`. `str(view)` begins with the vault's attribution mode. The view reads no `attributed_to` field and lists no contributor page. It refuses when the name is not a node page (a narrative, a contributor page, or no page), when two pages carry the name, and on an error in a page it draws.
+
+=== "Python"
+
+    ```python
+    scat_kg.copy_share("gated-approval")
+    ```
+
+    ```text
+    attribution mode: disallowed
+    copy-share: 1 node page
+        gated-approval (affordance, done): 15 words, share 0.18; from two-branches-and-tags-pitch
+    excluded (no node page linked; link one node page to include it)
+        desk-notes-one (narrative/desk-notes-one.md)
+        desk-notes-two (narrative/desk-notes-two.md)
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat copy-share gated-approval
+    ```
+
+    The same text.
+
+`view.to_dict()` is the document, the one `scat copy-share gated-approval --json` prints; see the [CLI reference](cli.md#scat-copy-share) for all of it. A refusal prints what to do next, and nothing is written:
+
+```python
+scat_kg.copy_share("nobody")
 ```
 
 ```text

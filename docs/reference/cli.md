@@ -67,6 +67,11 @@ positional arguments:
                   every link and the linking sentence between >> and <<; its
                   edges with the narratives that tell them; and its adjacent
                   nodes by layer. Writes nothing.
+    copy-share    Show, for each node page, the share of its five-word runs
+                  that appear word for word in a narrative, and the narratives
+                  they come from; the most repeated pages first. A high share
+                  is a prompt to look (`scat evidence`), not a fault. NODE is
+                  a name; without it, every node page. Writes nothing.
     attribution   Show the narratives by contributor: each contributor page
                   with the narratives that name it, and the narratives that
                   name none. Refuses where the vault's attribution mode is
@@ -120,6 +125,7 @@ Every command takes `--root ROOT`, the vault folder (default: the current folder
     scat_kg.load()                      # the knowledge graph, derived from the pages
     scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
     scat_kg.evidence("node")            # one node: its narratives, paragraphs, edges and adjacent nodes
+    scat_kg.copy_share()                # how much of each node page repeats a narrative, word for word
     scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
     scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
 
@@ -1537,6 +1543,121 @@ $ uv run scat evidence anonymity --json
 ```
 
 In the document, `paragraphs[].line` is the file line of the paragraph's first line, and each sentence has `start` and `end`, 0-based character offsets in `paragraph` (`end` not included), so that `paragraph[start:end]` is the sentence.
+
+## scat copy-share
+
+```text
+usage: scat copy-share [-h] [--root ROOT] [--json] [NODE]
+
+Show, for each node page, the share of its five-word runs that appear word for word in a narrative, and the narratives they come from; the most repeated pages first. A high share is a prompt to look (`scat evidence`), not a fault. NODE is a name; without it, every node page. Writes nothing.
+
+positional arguments:
+  NODE         the name of a group, concern, affordance or technology; without
+               it, every node page
+
+options:
+  -h, --help   show this help message and exit
+  --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
+
+REPL: `scat_kg.copy_share()`, `scat_kg.copy_share("<node>")`
+```
+
+Shows, for each node page, how much of its text repeats a narrative, so that you can see which pages were written from one account. It prints the vault's attribution mode first, then one line for each node page, the most repeated first:
+
+- **share**: the part of the page's five-word runs that appear word for word in a narrative, from 0 to 1. A page of fewer than five words, such as a stub, has no share.
+- **from**: the narratives those runs come from, the one with most runs first.
+
+The page's text is its `description` and its body, without an `Edges told` section. A narrative's text is its body. Case, punctuation, line breaks and table bars count for nothing, a link counts as the text it shows (its name when it shows none), and a run may cross a sentence. A narrative that links no node page is excluded: its text is not compared, and it is listed at the end, as in the other views.
+
+A high share is a prompt to look at the page, with `scat evidence <node>`, not a fault. The command reads no `attributed_to` field and lists no contributor page. It writes nothing.
+
+Exit codes: 0, or 1 for a refusal (a name that is not a node page, such as a narrative or a contributor page, a name that two pages carry, a page it draws that has an error).
+
+=== "Python"
+
+    ```python
+    scat_kg.copy_share()
+    ```
+
+    ```text
+    attribution mode: disallowed
+    copy-share: 14 node pages
+        gated-approval (affordance, done): 15 words, share 0.18; from two-branches-and-tags-pitch
+        main-and-dev-branches (technology, done): 15 words, share 0.18; from two-branches-and-tags-pitch
+        anonymity (concern, draft): 21 words, share 0.00
+        archive-tags (technology, done): 17 words, share 0.00
+        attribution (concern, draft): 11 words, share 0.00
+        cap-setting (technology, done): 16 words, share 0.00
+        facilitator-analysts (group, done): 13 words, share 0.00
+        groups-clustered-under-a-cap (affordance, done): 14 words, share 0.00
+        intent-without-drift (concern, done): 15 words, share 0.00
+        project-leads (group, done): 13 words, share 0.00
+        revert-with-history-kept (affordance, done): 18 words, share 0.00
+        workshop-participants (group, done): 10 words, share 0.00
+        reading-group (concern, stub): 0 words, no share (fewer than 5 words)
+        study-circle (concern, stub): 0 words, no share (fewer than 5 words)
+    excluded (no node page linked; link one node page to include it)
+        desk-notes-one (narrative/desk-notes-one.md)
+        desk-notes-two (narrative/desk-notes-two.md)
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat copy-share
+    ```
+
+    The same text.
+
+A name that is not a node page is refused, and nothing is written:
+
+```text
+$ uv run scat copy-share nobody
+refused nobody: no node has this name
+  Fix: give the name of a page (the file name without `.md`) that is a group, concern, affordance or technology
+```
+
+With `--json`:
+
+```text
+$ uv run scat copy-share gated-approval --json
+```
+
+```json
+{
+  "schema_version": 3,
+  "kind": "view",
+  "operation": "copy-share",
+  "ok": true,
+  "mode": "disallowed",
+  "pages": [
+    {
+      "name": "gated-approval",
+      "type": "affordance",
+      "status": "done",
+      "words": 15,
+      "share": 0.182,
+      "narratives": [
+        "two-branches-and-tags-pitch"
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "name": "desk-notes-one",
+      "file": "narrative/desk-notes-one.md",
+      "fix": "link one node page in the narrative (a row end or its account), then run this again"
+    },
+    {
+      "name": "desk-notes-two",
+      "file": "narrative/desk-notes-two.md",
+      "fix": "link one node page in the narrative (a row end or its account), then run this again"
+    }
+  ]
+}
+```
 
 ## scat attribution
 

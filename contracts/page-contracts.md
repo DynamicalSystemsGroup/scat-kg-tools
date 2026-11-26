@@ -388,6 +388,22 @@ title: "Booking app"
 ---
 ```
 
+### What a node page's body holds
+
+A group, concern, affordance or technology page has a body as well as a description. The tool reads it as text and
+checks nothing in it; its links are links like any other. The norm for it (not a rule, and no rule id): the body holds
+four parts, written across the narratives that link the node and never pasted from one.
+
+1. What the node is, in its own terms.
+2. How the narratives tell it: each claim cited by a link to the narrative, recurrence named, and a node that one
+   narrative alone links says so. A group page that spans several senses (a cap forces broad groups) says so.
+3. Where accounts differ: kept, not merged.
+4. What is thin: what no narrative says.
+
+`scat evidence <node>` shows what the narratives say of the node. `scat copy-share` reports how much of a page repeats a
+narrative word for word: a prompt to look, not a check. The coder writes the page; the assistant may offer a draft as
+text.
+
 ### `narrative`
 
 One account on one page: the account, an optional list of links, and the table of edges it tells (4).

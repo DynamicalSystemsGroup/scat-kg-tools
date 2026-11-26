@@ -19,6 +19,7 @@ TOOLS = {
     "layered",
     "trace",
     "evidence",
+    "copy_share",
     "attribution",
     "export_edges",
 }
@@ -104,6 +105,8 @@ SEQUENCE = [
         {"node": "funders-meeting"},
         lambda r: scat_kg.evidence("funders-meeting", root=r),
     ),
+    ("copy_share", {}, lambda r: scat_kg.copy_share(root=r)),
+    ("copy_share", {"node": "borrowers"}, lambda r: scat_kg.copy_share("borrowers", root=r)),
     (
         "stub",
         {"name": "new-concern", "type": "concern"},

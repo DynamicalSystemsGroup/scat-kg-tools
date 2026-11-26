@@ -193,6 +193,20 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument(
         "node", metavar="NODE", help="the name of a group, concern, affordance or technology"
     )
+    p = command(
+        "copy-share",
+        "Show, for each node page, the share of its five-word runs that appear word for word in a narrative, "
+        "and the narratives they come from; the most repeated pages first. A high share is a prompt to look "
+        "(`scat evidence`), not a fault. NODE is a name; without it, every node page. "
+        f"{scope}.",
+        '`scat_kg.copy_share()`, `scat_kg.copy_share("<node>")`',
+    )
+    p.add_argument(
+        "node",
+        nargs="?",
+        metavar="NODE",
+        help="the name of a group, concern, affordance or technology; without it, every node page",
+    )
     command(
         "attribution",
         "Show the narratives by contributor: each contributor page with the narratives that name it, and "
@@ -282,6 +296,8 @@ def run(args: argparse.Namespace):
             return scat_kg.trace(args.node, args.direction, root=root)
         case "evidence":
             return scat_kg.evidence(args.node, root=root)
+        case "copy-share":
+            return scat_kg.copy_share(args.node, root=root)
         case "attribution":
             return scat_kg.attribution(root=root)
         case "export-edges":
