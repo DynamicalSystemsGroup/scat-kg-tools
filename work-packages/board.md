@@ -31,6 +31,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP21 | Rules and norms, the chat path's life cycle, the published image (D-114) | all units done and merged on `dev`; ready for ACE acceptance after the template pin | `WP21.md` |
 | WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | all units done; merged into `dev`; waiting on the ACE's acceptance and the chief engineer's sitting | `WP22.md` |
 | WP23 | Three disjoint attribution modes, and the edge's formal name (D-129) | all units done on `pm-wp23`; landing on `dev` with the template pin; waiting on the ACE's acceptance | `WP23.md` |
+| WP24 | Node-page help and merge (D-145) | units planned, A (U1 to U4) before B (U5 to U8); U7 waits on the ACE's logged decision after U5 | `WP24.md` |
 
 ## Units
 
