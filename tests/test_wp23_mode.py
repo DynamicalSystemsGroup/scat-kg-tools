@@ -161,6 +161,17 @@ def test_every_mcp_result_carries_the_mode(tmp_path, mode):
         ("index", {}),
         ("stub", {"name": "fresh-idea", "type": "concern"}),
         ("stub_links", {}),
+        (
+            "record_edge",
+            {
+                "type": "holds",
+                "from_node": "borrowers",
+                "to_node": "careful-record-keeping",
+                "told_by": ["funders-meeting"],
+            },
+        ),
+        ("remove_edge", {"from_node": "funders", "to_node": "quick-checkout"}),
+        ("export_edges", {"folder": "views"}),
     ]
     for tool, args in calls:
         doc = call(server, tool, **args)
