@@ -53,3 +53,36 @@ are kept. It also serves an "approved chatbot only" policy.
 | ID | Candidate | What it touches | Source |
 |---|---|---|---|
 | C9 | **A commit is the trigger to read written content into the knowledge graph.** Uncommitted edits are scratch work; committing them via git is the explicit signal that the content should be read and the knowledge graph updated. Not in v0.1 unless the chief engineer says so. | The coding guide and norms, the views (what they read: working tree or committed state), the chat-path life cycle | D-116 |
+
+## From the leave-no-trace sitting, 26 November
+
+| ID | Candidate | What it touches | Source |
+|---|---|---|---|
+| C10 | **SCAT Chat as a small, clear local app that runs the MCP server.** Installed to Applications; a window that can be minimised; Copy key and Copy address buttons; says plainly it is the MCP server, with a status light; shows which vault is mounted and lets the coder change it without a terminal; no flicker when the key is copied. | `deploy/`, `docs/chat-path.md` | The run record, `~/scat-lab/evidence-lnt` (findings at steps 2, 10, and the restart); the chief engineer's words below |
+| C11 | **The assistant's rules in stronger deontic words.** `contracts/assistant.md` (and the skill, which follows it) says "May" and "May not"; a pass decides SHALL, SHALL NOT or SHOULD for each of A1 to A15. | `contracts/assistant.md`, `skills/scat-coding/SKILL.md`, its drift test | The chief engineer, below |
+| C12 | **Help to fill in the node pages, as synthesis across narratives.** Today the tools stub node pages and record edges; nothing helps write a node page's content. The aim is a meaningful synthesis of each group, concern, affordance and technology as it appears across many narratives, not text copied from one. Naive term matching must be avoided: different words can name one concept, and one word can name different concepts. Likely skills or agentic workflows, with views that gather, for one node, what every narrative says of it. | Skills and MCP prompts, views (a per-node evidence view beyond `trace`), norms, the node-page contracts; links to the accepted gap on renaming and merging node pages (W11, D-100) | The chief engineer, below |
+
+The chief engineer's words, 26 November (quoted as typed; recorded by the ACE):
+
+> C10: "SCAT Chat needs to be something i can minimize now that its open its in front of my work and i keep moving it
+> out of the way" / "the Copy key button is good. i also want a button to copy the address to for the mcp server since
+> i also need to paste that." / "it should be clear that this is the MCP server and provide basic status info for the
+> mcp server maybe just a colored light. the server should be a very thin local service, easy to use but also
+> transparent about what it is and what status it is in" / "there is an odd visual effect when the key is copied. the
+> scat chat screen disappears and reappears quickly" / "we can just add the steps to get into applications in the pass
+> with the other fixes to the scat chat. basically its just a small local app that runs an mcp server. let's package
+> it up that way so its clear and easy to use."
+
+> C11: "skimming the skill. i noticed you used MAY and MAY NOT. that's a pretty soft deontic. i think we'll want to
+> make another pass to see if we should be using SHALL or SHOULD for some or all of these."
+
+> C12: "i opened it and marked it done just as a test but then i downgraded it to draft. this file is coded but it
+> references a bunch of stubbed content. i mean technically this page is done but all these other pages are stubbed
+> out. i want to make sure our assistant is able to help us fill in the related pages. the key is that all this
+> content is not unrelated. if this were the human only flow (no assistant) it would actually feel a bit repetitive.
+> that's not necessarily bad because it forces you to think about what you are doing. and its particularly important
+> to revisit the content to make sure the coded S, C, A, T are more than just copied text from the narrative but
+> rather a meaningful synthesis of the named concepts as they appear across many narratives. we need to avoid naive
+> term matching because sometimes different words are used for the same concept and sometimes the same term is used
+> for a different concept. i suspect much of the work to facilitate populating the pages will come from skills or
+> agentic workflows. do we have those extra tools, prompts and workflows available yet to test out?"
