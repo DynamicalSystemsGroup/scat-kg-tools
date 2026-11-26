@@ -6,13 +6,13 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 
 - **SCAT**: the four node types.
 - **node**: a group, concern, affordance or technology of the layered graph. (Obsidian's graph view also calls every page a node.)
-- **edge**: a typed connection between nodes in neighbouring layers, one per pair: `holds` (group to concern), `is addressed by` (concern to affordance), `is provided by` (affordance to technology).
+- **edge**: a connection between nodes in neighbouring layers, one per pair: `holds` (group to concern), `is addressed by` (concern to affordance), `is provided by` (affordance to technology).
 - **element**: a node or edge.
 - **layer**: all nodes of one type: `group`, `concern`, `affordance`, `technology`, in that order.
 - **layered graph**: nodes and edges, in four layers.
 - **knowledge graph**: the nodes, edges and narratives built from a vault.
 - **narrative**: one account of the field notes, on one `narrative` page, marked `past`, `future` or `mixed`. Each edge it tells is a row of its `Edges told` table.
-- **coded, uncoded**: said of a narrative. Coded: it links at least one node page. Uncoded: it links none. `done` means adequately coded, as the coder judges.
+- **coded, uncoded**: said of a narrative. Coded: it links at least one node page. Uncoded: it links none. `done` means adequately coded, as the coder judges; a `done` narrative can be iterated or moved back to `draft`.
 - **excluded**: said of an uncoded narrative: left out of the knowledge graph and every view, and reported.
 - **scenario**: a narrative (`kind` `scenario`) about people doing things over time; it tells groups, concerns and affordances.
 - **architecture**: a narrative (`kind` `architecture`) about parts put together into tools; it tells concerns, affordances and technologies.
@@ -39,8 +39,8 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **Edges told**: the table on a `narrative` page, one row for each edge the account tells; columns `from`, `type`, `to`, `note`. Not an edge table.
 - **link**: an Obsidian `[[…]]` reference. Never an edge by itself.
 - **cap**: the most groups a vault may hold, set in `scat.toml` (key `stakeholder_group_cap`).
-- **attribution mode**: required, optional or disallowed (the Chatham House rule); set in `scat.toml`.
-- **attribution**: the people a narrative is attributed to, where the mode allows. Never a node or a link.
+- **attribution mode**: in `scat.toml`.
+- **attribution**: a narrative's people.
 - **index page**: the page generated for a type (`index`), listing its entries; an Obsidian Base, 1.9 or later.
 - **status**: how far an entry has got: `stub` (a name), `draft` (content, incomplete) or `done` (complete, conformant, signed off by the coder).
 - **mismatch**: a link and an edge that disagree about the same relationship, reported with a fix.
@@ -58,7 +58,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **the coding loop**: interpreting, authoring, coding, reviewing, until the coder sets it to `done`.
 - **analysing**: generating views from the knowledge graph's structure.
 - **a finished model**: conformant, navigable, with views, and the coder's statement that it represents the notes.
-- **rule, norm**: a rule is what conformance requires and the tool enforces. A norm is guidance to coders and assistants, not enforced.
+- **rule, norm**: a rule is what conformance requires and the tool enforces. A norm is guidance to coders and assistants, not enforced; the assistant's rules are norms the server enforces only where it refuses an act.
 - **skill**: a package of instructions an assistant loads, in the chat or the IDE.
 - **saved agent**: the chat's saved assistant setup, from which a new chat starts.
 - **session key**: the key the coder pastes into the chat for one session; deleted at Stop.
