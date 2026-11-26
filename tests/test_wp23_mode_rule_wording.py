@@ -18,7 +18,9 @@ KEYWORDS = r"\b(SHALL NOT|SHALL|SHOULD|MAY)\b"
 
 
 def _item(n: int) -> str:
-    m = re.search(rf"^- \*\*A{n}\.\*\* (.*?)(?=^- \*\*A|\n\n|\Z)", ASSISTANT, re.DOTALL | re.MULTILINE)
+    m = re.search(
+        rf"^- \*\*A{n}\.\*\* (.*?)(?=^- \*\*A|\n\n|\Z)", ASSISTANT, re.DOTALL | re.MULTILINE
+    )
     assert m, n
     return " ".join(m.group(1).split())
 
@@ -26,7 +28,9 @@ def _item(n: int) -> str:
 def test_the_mode_rule_is_the_same_words_in_catalogue_assistant_and_skill():
     assert MODE_RULE in CATALOGUE
     assert MODE_RULE in ASSISTANT
-    assert MODE_RULE in SKILL  # the skill's rules text is the contract's body, held by the drift test
+    assert (
+        MODE_RULE in SKILL
+    )  # the skill's rules text is the contract's body, held by the drift test
     assert "every result carries `mode`" in ASSISTANT
 
 
