@@ -2440,3 +2440,93 @@ unlogged raise and a cut of unrelated entries, and brought it to the ACE after t
 `WORD_CAP` in `tests/docs/test_terms.py` from 820 to 850 (that one line), so the entries carry real definitions:
 "attribution mode: required, optional or disallowed (Chatham House rule); set in `scat.toml`." and "attribution: the
 people a narrative is attributed to, where the mode allows; never a node or a link."; the edge line keeps "typed".
+
+## D-132 | 2026-11-26 | RS4 (node-page synthesis spike) approved
+
+Following D-123 ("a spike first"), the ACE scopes and approves RS4 (`work-packages/RS4-node-pages.md`): how the tools
+and the assistant should help fill in node pages as a synthesis across narratives, and how to surface and act on
+synonyms and homonyms without naive term matching. Research only, on `spike/node-pages`; the readout reaches `dev` on
+its own. It touches none of WP22's or WP23's files. Its recommendation goes to the chief engineer with a v0.1-or-later
+question.
+
+## D-133 | 2026-11-26 | Deontics before release; attribution modes are a repository metaparameter, with contributor pages
+
+Asked (C11) for the timing of the deontic pass and whether to accept the ACE's proposed table (MAY for A1 to A4 and
+A6; SHOULD for A5 and the skill's step, kind and description habits; SHALL NOT for A7 to A12; SHALL for A13 to A15 and
+the edge grammar). The chief engineer chose "Before release" and answered the table in his own words, quoted as typed
+and recorded by the ACE:
+
+> "i am a little worried about bleed between modes. i think we need to make sure the rules that differ by mode are
+> actually extremely clear. i think the only instance of this is that for attribution required we SHALL name
+> contributors, for attribution disallowed we SHALL not name contributors, and for attribution optional we MAY name
+> contributors. keep in mind this also must match the ontology enforcement and obsidian vault checking mechanisms. if
+> attribution is enabled we need a page for each of the contributors, and we need them to be in the knowledge graph so
+> the attributed to predicate resolves.
+>
+> we should treat these 3 modes as changing the rules (its a repo metaparameter) which then determines what is or is
+> not conformant, in addition changing the normative guidance to the AI assistant."
+
+Outcomes:
+- **C11 is in v0.1.** The deontic pass is folded into WP23's assistant unit, since both change `contracts/assistant.md`
+  and the skill.
+- **The mode-dependent rule, stated once and exactly:** in **required** mode a narrative SHALL name its contributors;
+  in **disallowed** mode it SHALL NOT; in **optional** mode it MAY. The same rule is enforced by the ontology's checks
+  and the vault check, and stated to the assistant.
+- **The mode is a repository metaparameter:** it changes what is conformant (the rules), and the assistant's norms.
+- **Contributors are pages in the knowledge graph** when attribution is enabled (required or optional): each
+  contributor has a page, and a narrative's `attributed_to` links to those pages, so the predicate resolves. This
+  reverses D-128's default that an attribution is "not a node, not a link". In disallowed mode no contributor page may
+  exist.
+- **The mission's sentence "Edges and nodes always record groups, never individuals"** (written by the ACE in D-127)
+  no longer holds as written; the ACE narrows it to the four layers and puts the edit to the chief engineer.
+- The remaining rows of the proposed table were not objected to; the ACE confirms them in one follow-up.
+- WP23 is paused after its U1 (rename, glossary) and U2 (the mode key) and is re-scoped.
+
+## D-134 | 2026-11-26 | The deontic table stands; the mission's attribution line rewritten
+
+Two follow-ups to D-133, each answered "Yes": the other rows of the ACE's deontic table stand (MAY for A1 to A4 and A6;
+SHOULD for A5 and the skill's step, kind and description habits; SHALL NOT for A7 to A12; SHALL for A13 to A15 and the
+edge grammar), with the mode rule of D-133; and `MISSION.md` (Non-goals, attribution modes) now reads: "The four layers
+(groups, concerns, affordances, technologies) record groups, never individuals. Where the mode enables attribution,
+each contributor has a page outside the four layers, and a narrative's attributed-to links resolve to those pages."
+The ACE made that edit on `dev`.
+
+## D-135 | 2026-11-26 | WP23 revised for D-133 and D-134
+
+WP23's scope is revised: the mode is a repository metaparameter that sets the rules (G2, with the one mode-dependent
+rule stated identically in the checks, the norms and the assistant's rules); contributor pages, a new type outside the
+four layers, hold the people a narrative is attributed to, and `attributed_to` links resolve to them in the knowledge
+graph, never in the four layers' edges, the cap or the layered views (G3); the deontic pass on `contracts/assistant.md`
+and the skill (C11) joins as G4. D-128's "not a node, not a link" default is replaced. U1 (rename, glossary) and U2 (the
+mode key) keep their work; U3 onward are re-planned. The PM re-checks the revised scope before U3 starts.
+
+## D-136 | 2026-11-26 | Node-page help (RS4's packages A and B) in v0.1; merge leaves done narratives done
+
+RS4's readout (`research/node-pages/readout.md`) recommends two packages: A, a per-node evidence view, a norm for what
+a node page holds, and an MCP prompt and skill that drafts one node page for the coder to accept; B, after A, a review
+view proposing synonym and homonym candidates and a same-type `merge` with a dry-run plan (split as a plan only).
+Asked which goes into v0.1, the chief engineer chose "A and B in v0.1". Asked what merge does with narratives already
+`done`, he chose "Leave them done": the merge is the coder's own act, and it reports which `done` narratives it changed.
+The ACE scopes WP24, A then B, after WP23 (they share the skill, the assistant's rules and the page contracts).
+
+## D-137 | 2026-11-26 | C14 and C15: one docs package after WP23 and WP24, in v0.1
+
+The ACE suggested one docs package for C14 (coding approaches as a drill-down, a screenshot walkthrough each, a
+different provider per flow) and C15 (facilitating with narratives first; planning by event kind; field-note takers
+and compiling their notes), after WP23 and WP24. The chief engineer: "after WP23 and WP24 is fine". The ACE scopes it
+as WP25, before the release PRs.
+
+## D-138 | 2026-11-26 | WP23 re-check: mission line 172, the knowledge graph's sense, the attribution view
+
+The fresh WP23 PM's re-check of the revised scope found six fixes; applied:
+- **`MISSION.md` line 172**, which said "The people in the data are stakeholder groups, never individuals", contradicted
+  contributor pages. Asked to replace it with "The people in the four layers are stakeholder groups, never individuals.
+  Where the vault's attribution mode enables it, contributor pages name the people a narrative is attributed to,
+  outside the four layers.", the chief engineer answered "Yes, use that". The ACE made the edit on `dev`.
+- **Glossary call:** the **knowledge graph**'s sense widens to hold contributor pages, which are not in the **layered
+  graph**; "contributor" in its existing sense (a participant) lives in `MISSION.md` and the organiser's example, and
+  **contributor page** is added; the terms page's word cap rises again to fit it (as in D-131).
+- **The attribution view** is `scat attribution` (CLI, Python, MCP tool), in the reference pages.
+- `attributed_to` is a list of links to contributor pages; `contracts/architecture.md` and `contracts/examples/scat.toml`
+  join the blast radius; C14 and C15 (WP25) and C12 (WP24) are named and sequenced after WP23; C11 is marked taken.
+- The impact map is re-issued for the revised design before U3 starts (the PM has the change consultant do it).

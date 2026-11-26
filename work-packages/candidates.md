@@ -59,8 +59,8 @@ are kept. It also serves an "approved chatbot only" policy.
 | ID | Candidate | What it touches | Source |
 |---|---|---|---|
 | C10 | **(Taken by WP22, D-125.)** **SCAT Chat as a small, clear local app that runs the MCP server.** Installed to Applications; a window that can be minimised; Copy key and Copy address buttons; says plainly it is the MCP server, with a status light; shows which vault is mounted and lets the coder change it without a terminal; no flicker when the key is copied. | `deploy/`, `docs/chat-path.md` | The run record, `~/scat-lab/evidence-lnt` (findings at steps 2, 10, and the restart); the chief engineer's words below |
-| C11 | **The assistant's rules in stronger deontic words.** `contracts/assistant.md` (and the skill, which follows it) says "May" and "May not"; a pass decides SHALL, SHALL NOT or SHOULD for each of A1 to A15. | `contracts/assistant.md`, `skills/scat-coding/SKILL.md`, its drift test | The chief engineer, below |
-| C12 | **Help to fill in the node pages, as synthesis across narratives.** Today the tools stub node pages and record edges; nothing helps write a node page's content. The aim is a meaningful synthesis of each group, concern, affordance and technology as it appears across many narratives, not text copied from one. Naive term matching must be avoided: different words can name one concept, and one word can name different concepts. Likely skills or agentic workflows, with views that gather, for one node, what every narrative says of it. | Skills and MCP prompts, views (a per-node evidence view beyond `trace`), norms, the node-page contracts; links to the accepted gap on renaming and merging node pages (W11, D-100) | The chief engineer, below |
+| C11 | **(Taken by WP23, D-133.)** **The assistant's rules in stronger deontic words.** `contracts/assistant.md` (and the skill, which follows it) says "May" and "May not"; a pass decides SHALL, SHALL NOT or SHOULD for each of A1 to A15. | `contracts/assistant.md`, `skills/scat-coding/SKILL.md`, its drift test | The chief engineer, below |
+| C12 | **(Taken by WP24, D-136.)** **Help to fill in the node pages, as synthesis across narratives.** Today the tools stub node pages and record edges; nothing helps write a node page's content. The aim is a meaningful synthesis of each group, concern, affordance and technology as it appears across many narratives, not text copied from one. Naive term matching must be avoided: different words can name one concept, and one word can name different concepts. Likely skills or agentic workflows, with views that gather, for one node, what every narrative says of it. | Skills and MCP prompts, views (a per-node evidence view beyond `trace`), norms, the node-page contracts; links to the accepted gap on renaming and merging node pages (W11, D-100) | The chief engineer, below |
 
 The chief engineer's words, 26 November (quoted as typed; recorded by the ACE):
 
@@ -98,3 +98,37 @@ The chief engineer's words, 26 November (quoted as typed; recorded by the ACE):
 > for future use to attribute narratives to contributors. the option to attribute narratives to contributors is off
 > when running in chatham house mode but i do think its something the tool should support. some groups will prefer
 > attribution over privacy. this choice is part of the set up and expectation setting stage for the organizer."
+
+## From the chief engineer, 26 November (docs)
+
+| ID | Candidate | What it touches | Source |
+|---|---|---|---|
+| C14 | **Coding approaches, as a drill-down with a walkthrough each.** The sidebar's top level is "coding approaches", with: coding by hand (no AI); coding with an AI IDE (example: Codex); coding with an AI chatbot (example: Claude); coding with a local LLM (example: Ollama running in Docker; or a better local model); and leave no trace (example: inference.coop). Different providers for the IDE, chat and leave-no-trace flows, so no tool is favoured. Each walkthrough has screenshots and makes set-up as easy as possible: fewer steps where possible, but no step removed if that would confuse; automation may remove steps, never points where a person must choose. | `mkdocs.yml` navigation, `docs/coding.md`, `docs/chat-path.md`, `docs/ide.md`, `docs/leave-no-trace.md`, new pages (local LLM, chatbot), screenshots under `docs/assets/`, the launcher or set-up scripts where automation helps | The chief engineer's words below |
+| C15 | **Facilitating and planning, rethought together.** The Facilitating section opens with **Narratives**, then Scenarios and Architectures (introduced as heuristics for organising and interpreting narratives), and may give what is versus what could be its own content; mode-aware content on attributing participants; all of it aimed at capturing field notes. Coupled with revisiting the planning content: high-level guidance on organising the event to set the stage for facilitation and field-note collection, by event kind (a one-off online discussion, a recurring discussion, an in-person meetup, a multi-day workshop), including who takes field notes and, with several note takers, how notes are collected and compiled as input to the coding workflow. Kept light, not bloated. | `mkdocs.yml` navigation, `docs/facilitate-*.md`, a new narratives page, `docs/planning.md`, `docs/data-and-consent.md`, WP23's attribution modes | The chief engineer's words below |
+
+> C14: "the sidebar with the "coding" in chat should be a drill down. the top level is coding approaches and it should
+> have several options: coding by hand (which is the no ai option), coding with an AI IDE (like codex or claude code or
+> cursor), coding with an AI chatbot, coding with a local LLM (eg i have ollama locally), leave no trace. we can talk
+> this out a bit more if you need more guidance but the idea is to give the reader some clarity about options and
+> provide some walk throughs for each. i prefer to provide some screen shots in the walk throughs to make them
+> intuitive. our local LLM example is ollama running in docker, our chat example can be claude, leave no trace examples
+> are inference.coop and our ide example can be codex. we don't really want to bias the tools so having the IDE, the
+> chat and the leave-no-trace flows use different service providers is a good practice. we can also look at whether
+> there is a better local LLM to use. i don't usually use local LLMs on this machine because its old and they are slow
+> but that should not stop us from providing a clear path for others to use local first LLM."
+>
+> "walk throughs need screen shots and we should make sure the materials we provide are aimed at making the set up as
+> easy as possible. fewer steps where we can but not eliminating steps if it will result in confusion. automation can
+> help remove steps but should not remove points where humans need to make choices"
+
+> C15: "this should also have a narratives section. that should come first. then scenarios and architectures.
+> scenarios and architectures are introduced to provide heuristics for organizing and interpreting narratives.
+> similarly our distinction between observations about what is versus what could be may merit their own content. (all
+> under the facilitating heading). there probably needs to be mode aware content on attribution of participants. all
+> this content is specifically there to help capture field notes. and i think the design of this documentation should
+> be coupled with revisiting the planning content which involves setting setting up for the facilitated events. will be
+> very different if you are hosting a one off online discussion, a reocurring discussion, an in person meetup or a
+> multiday workshop. i don't want this too get too bloated so the idea is that we should provide high level guidance
+> for how to organize the event to set the stage for facilitation and field note collection, including identifying who
+> is going to be responisble for taking field notes. and when there are multiple field note takers how are they to be
+> collected and compiled to serve as an input to our coding workflow"
