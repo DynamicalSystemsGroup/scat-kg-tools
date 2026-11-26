@@ -2499,3 +2499,12 @@ four layers, hold the people a narrative is attributed to, and `attributed_to` l
 graph, never in the four layers' edges, the cap or the layered views (G3); the deontic pass on `contracts/assistant.md`
 and the skill (C11) joins as G4. D-128's "not a node, not a link" default is replaced. U1 (rename, glossary) and U2 (the
 mode key) keep their work; U3 onward are re-planned. The PM re-checks the revised scope before U3 starts.
+
+## D-136 | 2026-11-26 | Node-page help (RS4's packages A and B) in v0.1; merge leaves done narratives done
+
+RS4's readout (`research/node-pages/readout.md`) recommends two packages: A, a per-node evidence view, a norm for what
+a node page holds, and an MCP prompt and skill that drafts one node page for the coder to accept; B, after A, a review
+view proposing synonym and homonym candidates and a same-type `merge` with a dry-run plan (split as a plan only).
+Asked which goes into v0.1, the chief engineer chose "A and B in v0.1". Asked what merge does with narratives already
+`done`, he chose "Leave them done": the merge is the coder's own act, and it reports which `done` narratives it changed.
+The ACE scopes WP24, A then B, after WP23 (they share the skill, the assistant's rules and the page contracts).
