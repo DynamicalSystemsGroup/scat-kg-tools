@@ -24,7 +24,7 @@ address and refuses to start on any other.
 
 ## Tools
 
-Eighteen tools. Each returns the operation's own document.
+Nineteen tools. Each returns the operation's own document.
 
 | Tool | What it does |
 |---|---|

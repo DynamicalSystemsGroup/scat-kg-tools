@@ -42,7 +42,7 @@ TYPES = {"g": "group", "c": "concern", "a": "affordance", "t": "technology"}
 EDGE = {("g", "c"): "holds", ("c", "a"): "addressed-by", ("a", "t"): "provided-by"}
 
 
-def build(tmp, narratives, descriptions=None, aliases=None):
+def build(tmp, narratives, descriptions=None, aliases=None, pad=0):
     """A vault from `narratives`: {name: [(a, b), ...]}, each pair a row between nodes named by their first letter
     (g group, c concern, a affordance, t technology). `descriptions` is {node: text}; `aliases` {node: text}, the
     text a narrative gives its link."""
@@ -52,6 +52,8 @@ def build(tmp, narratives, descriptions=None, aliases=None):
     for x in nodes:
         extra = f'description: "{descriptions[x]}"\n' if x in descriptions else ""
         files[f"{TYPES[x[0]]}/{x}.md"] = page(TYPES[x[0]], x, "draft", extra, "")
+    for i in range(pad):  # node pages no narrative links
+        files[f"technology/t-pad{i}.md"] = page("technology", f"t-pad{i}", "draft", "", "")
     for name, rows in narratives.items():
         text = "Account: " + " ".join(
             f"[[{x}|{aliases[x]}]]" if x in aliases else f"[[{x}]]"
@@ -275,6 +277,90 @@ def test_a_page_told_by_three_narratives_is_not_listed(tmp_path):
 def test_a_narrative_that_only_links_the_page_is_not_counted(tmp_path):
     rows = {f"n{i}": [("g1", f"c{i}")] for i in range(1, 4)} | {"n4": [("g2", "c1")]}
     # n4 links c1 and tells no edge of g1; g1 has three telling narratives
+    assert doc(build(tmp_path, rows))["reread"] == []
+
+
+# ---------------------------------------------------------------- just under each threshold, and each count at its edge
+
+
+def words(n, start=0):
+    """n distinct words of three letters, none a common word."""
+    return " ".join(
+        f"q{chr(97 + (i // 26) % 26)}{chr(97 + i % 26)}" for i in range(start, start + n)
+    )
+
+
+def test_adjacent_nodes_just_under_one_half_do_not(tmp_path):
+    # shared 25 of 51 (0.4902): c1 and c2 share g1 to g25, c1 has 13 more, c2 has 13 more
+    rows = {}
+    for i in range(25):
+        rows[f"s1-{i}"], rows[f"s2-{i}"] = [(f"g{i}", "c1")], [(f"g{i}", "c2")]
+    for i in range(13):
+        rows[f"o1-{i}"], rows[f"o2-{i}"] = [(f"gh{i}", "c1")], [(f"gk{i}", "c2")]
+    d = doc(build(tmp_path, rows))
+    assert ("c1", "c2") not in pairs(d)
+
+
+def test_adjacent_nodes_at_one_half_with_two_each_are_proposed(tmp_path):
+    d = doc(
+        build(tmp_path, {"n1": [("g1", "c1"), ("g2", "c1")], "n2": [("g1", "c2"), ("g2", "c2")]})
+    )
+    assert proposal(d, "c1", "c2")["adjacent_jaccard"] == 1.0  # two adjacent nodes each is enough
+
+
+def test_descriptions_just_under_one_half_do_not(tmp_path):
+    # 51 words each, 25 shared: cosine 25/51 = 0.4902
+    a, b = words(51), words(25) + " " + words(26, 100)
+    d = doc(build(tmp_path, {"n1": [("g1", "c1")], "n2": [("g2", "c2")]}, {"c1": a, "c2": b}))
+    assert d["proposals"] == []
+
+
+def test_narratives_just_under_one_half_do_not(tmp_path):
+    # c1 and c2 are linked by 25 narratives in common of 51; one of them tells the twin row
+    rows = {"twin": [("g0", "c1"), ("g0", "c2")]}
+    for i in range(24):
+        rows[f"s{i}"] = [(f"ga{i}", "c1"), (f"gb{i}", "c2")]
+    for i in range(13):
+        rows[f"o1-{i}"], rows[f"o2-{i}"] = [(f"gh{i}", "c1")], [(f"gk{i}", "c2")]
+    d = doc(build(tmp_path, rows))
+    assert ("c1", "c2") not in pairs(d)
+
+
+def hub_flags(tmp_path, adjacent, total):
+    """The hub flag of g1, shared by c1 and c2 and adjacent to `adjacent` concerns, in a vault of `total` node pages."""
+    rows = {f"n{i}": [("g1", f"c{i}")] for i in range(1, adjacent + 1)}
+    rows["n1"], rows["n2"] = [("g1", "c1"), ("g2", "c1")], [("g1", "c2"), ("g2", "c2")]
+    pad = total - (2 + adjacent)  # g1, g2 and the concerns
+    d = doc(build(tmp_path, rows, pad=pad))
+    return {x["name"]: x["hub"] for x in proposal(d, "c1", "c2")["shared_adjacent"]}["g1"]
+
+
+def test_a_node_adjacent_to_three_pages_is_not_a_hub(tmp_path):
+    assert hub_flags(tmp_path, 3, 12) is False
+
+
+def test_a_node_adjacent_to_four_pages_is_a_hub(tmp_path):
+    assert hub_flags(tmp_path, 4, 12) is True
+
+
+def test_four_pages_is_a_hub_over_a_tenth_of_39_pages(tmp_path):
+    assert hub_flags(tmp_path, 4, 39) is True  # 4 is more than 3.9
+
+
+def test_four_pages_is_not_a_hub_at_a_tenth_of_40_pages(tmp_path):
+    assert hub_flags(tmp_path, 4, 40) is False  # 4 is not more than 4.0
+
+
+def test_a_page_told_by_four_narratives_is_listed(tmp_path):
+    d = doc(build(tmp_path, {f"n{i}": [("g1", f"c{i}")] for i in range(1, 5)}))
+    assert [r["name"] for r in d["reread"]] == ["g1"] and d["reread"][0]["narratives"] == 4
+
+
+def test_a_common_end_share_just_over_three_tenths_is_not_listed(tmp_path):
+    # nine narratives: five tell g1 to c1, two to c2, one each to c3 and c4: 11 of 36 pairs, 0.3056
+    rows = {
+        f"n{i}": [("g1", "c1" if i <= 5 else "c2" if i <= 7 else f"c{i}")] for i in range(1, 10)
+    }
     assert doc(build(tmp_path, rows))["reread"] == []
 
 

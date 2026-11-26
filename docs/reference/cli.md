@@ -148,7 +148,7 @@ Every command takes `--root ROOT`, the vault folder (default: the current folder
         scat_kg.evidence("node")            # one node: its narratives, paragraphs, edges and adjacent nodes
         scat_kg.copy_share()                # how much of each node page repeats a narrative, word for word
         scat_kg.review()                    # pages that may be one node, and pages to re-read
-    scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
+        scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
         scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
 
     Each call takes `root=` (the vault folder; default: the current directory) and returns an object whose
