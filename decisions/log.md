@@ -2508,3 +2508,10 @@ view proposing synonym and homonym candidates and a same-type `merge` with a dry
 Asked which goes into v0.1, the chief engineer chose "A and B in v0.1". Asked what merge does with narratives already
 `done`, he chose "Leave them done": the merge is the coder's own act, and it reports which `done` narratives it changed.
 The ACE scopes WP24, A then B, after WP23 (they share the skill, the assistant's rules and the page contracts).
+
+## D-137 | 2026-11-26 | C14 and C15: one docs package after WP23 and WP24, in v0.1
+
+The ACE suggested one docs package for C14 (coding approaches as a drill-down, a screenshot walkthrough each, a
+different provider per flow) and C15 (facilitating with narratives first; planning by event kind; field-note takers
+and compiling their notes), after WP23 and WP24. The chief engineer: "after WP23 and WP24 is fine". The ACE scopes it
+as WP25, before the release PRs.

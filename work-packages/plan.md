@@ -46,7 +46,10 @@ were closed unmerged (log D-074): the mission has since changed, and the next ca
    into the knowledge graph; `scat:Attributes` renamed. Alongside WP22.
 10. **WP24 Node-page help and merge (D-136).** The evidence view, the node-page norm, a drafted page; then review
     candidates and `merge`. After WP23.
-11. **WP20 Candidate and user acceptance.** The whole journey, J1 to J10, on both paths: UA-A rounds to the pass bar,
+11. **WP25 Docs: coding approaches and facilitating (D-137).** C14 and C15: the coding approaches drill-down with a
+    screenshot walkthrough each; facilitating with narratives first; planning by event kind and field-note taking.
+    After WP23 and WP24.
+12. **WP20 Candidate and user acceptance.** The whole journey, J1 to J10, on both paths: UA-A rounds to the pass bar,
    the walkthrough scripts, the reviewer's guide, the candidate stage and new release PRs.
 
 The order of WP17 and WP18 may change with the architecture document. Open play-test findings (F-1, F-3, F-5, F-7)
