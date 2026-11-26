@@ -71,7 +71,7 @@ def test_copies_agree_in_nodes_edges_and_text(graphs):
         for n in base.narratives:
             a = (VAULT / "disallowed" / "narrative" / f"{n.name}.md").read_text()
             b = (VAULT / mode / "narrative" / f"{n.name}.md").read_text()
-            body = lambda t: t.split("\n---\n", 1)[1]  # noqa: E731
+            body = lambda t: t.split("\n---\n", 1)[1]
             assert body(a) == body(b)
 
 
@@ -192,5 +192,5 @@ def test_homonym_group(g):
         g.narrative("members-as-the-site-sees-them"),
         g.narrative("member-organisations-and-the-renewal"),
     )
-    held = lambda nar: {k.to_node for k in nar.edges if k.from_node == "community-members"}  # noqa: E731
+    held = lambda nar: {k.to_node for k in nar.edges if k.from_node == "community-members"}
     assert held(site) and held(orgs) and not held(site) & held(orgs)
