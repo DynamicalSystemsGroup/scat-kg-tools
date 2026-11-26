@@ -15,7 +15,8 @@
 # Other settings: SCAT_CHAT_SEARCH_PATH (folders searched first for the programs; for tests), SCAT_CHAT_HOME (state folder), SCAT_CHAT_CONTEXT (the source to build), SCAT_CHAT_PORT,
 #   SCAT_CHAT_WAIT, SCAT_CHAT_TUNNEL_WAIT, SCAT_CHAT_UI.
 # SCAT_CHAT_VAULT is a TEST OVERRIDE ONLY: it names the vault and skips the "Serve <vault>?" question, so it breaks
-# the rule that every start shows the coder the vault (WP22-G5). The app never sets it.
+# the rule that every start shows the coder the vault (WP22-G5). It is honoured only when SCAT_CHAT_UI=plain,
+# which the app never sets.
 # SCAT_CHAT_UI=plain prints instead of showing dialogs, and takes answers from SCAT_CHAT_A_<KEY> or stdin:
 #   USE (Use it / Choose another: the question about the remembered vault), VAULT (a folder), COPY (copy), OPEN (open),
 #   COPYKEY (copy: the Copy key menu item), STOP (stop). In plain mode start returns once the session is up,
@@ -324,7 +325,7 @@ teardown() {
     if [ -z "$bad" ]; then
         RESULT="Stopped. The public link is off, the server is removed, your Mac may sleep again, the key was deleted, and your clipboard holds no key."
     else
-        RESULT="Stopped, but I could not confirm:$bad click SCAT Chat again, then Stop, or restart your Mac, to be sure."
+        RESULT="Stopped, but I could not confirm:$bad choose Stop in the SCAT Chat menu to try again, or restart your Mac, to be sure."
     fi
 }
 
@@ -367,26 +368,26 @@ $RESULT"
 step_tools() {
     ui_state starting
     if ! have "$DOCKER"; then
-        die "SCAT Chat needs a container runtime: Colima (recommended) or Docker Desktop. Neither is installed. Install one once, as the chat-path guide shows under 'Install once', then click SCAT Chat again."
+        die "SCAT Chat needs a container runtime: Colima (recommended) or Docker Desktop. Neither is installed. Install one once, as the chat-path guide shows under 'Install once', then choose Stop in the SCAT Chat menu, then open SCAT Chat again."
     fi
     if have "$COLIMA"; then
         if ! "$COLIMA" status >/dev/null 2>&1; then
             ui_progress "Starting Colima, the program that runs the server's container. This can take a minute."
             "$COLIMA" start >"$STATE/colima.log" 2>&1 ||
-                die "Colima would not start. Restart your Mac, then click SCAT Chat again. If it still fails, tell the person who set this up that Colima's start failed."
+                die "Colima would not start. Restart your Mac, then choose Stop in the SCAT Chat menu, then open SCAT Chat again. If it still fails, tell the person who set this up that Colima's start failed."
         fi
     elif ! "$DOCKER" info >/dev/null 2>&1; then
-        die "Docker Desktop is not running. Open Docker Desktop from your Applications folder, wait until it says it is running, then click SCAT Chat again."
+        die "Docker Desktop is not running. Open Docker Desktop from your Applications folder, wait until it says it is running, then choose Stop in the SCAT Chat menu, then open SCAT Chat again."
     fi
     "$DOCKER" info >/dev/null 2>&1 ||
-        die "Docker does not answer. Restart your Mac, then click SCAT Chat again."
+        die "Docker does not answer. Restart your Mac, then choose Stop in the SCAT Chat menu, then open SCAT Chat again."
 
     if ! have "$TAILSCALE"; then
-        die "SCAT Chat needs Tailscale, which makes the public link, and it is not installed. Install it once, as the chat-path guide shows under 'Install once', sign in, then click SCAT Chat again."
+        die "SCAT Chat needs Tailscale, which makes the public link, and it is not installed. Install it once, as the chat-path guide shows under 'Install once', sign in, then choose Stop in the SCAT Chat menu, then open SCAT Chat again."
     fi
     TS_JSON=$(tailscale_json)
     if ! printf '%s\n' "$TS_JSON" | grep -q '"BackendState": *"Running"'; then
-        die "Tailscale is not running or you are not signed in. Open Tailscale from the menu bar at the top of your screen, sign in, then click SCAT Chat again."
+        die "Tailscale is not running or you are not signed in. Open Tailscale from the menu bar at the top of your screen, sign in, then choose Stop in the SCAT Chat menu, then open SCAT Chat again."
     fi
     MACHINE=$(printf '%s\n' "$TS_JSON" | json_first HostName)
     NODE_ID=$(printf '%s\n' "$TS_JSON" | json_first ID)
@@ -395,7 +396,7 @@ step_tools() {
 
 First look at the name: Tailscale calls this Mac \"$MACHINE\". Switching HTTPS on puts that name in a public record that can never be erased. If it has your name or anything private in it, rename the Mac first in Tailscale (Machines, then Edit machine name), and only then switch HTTPS on.
 
-SCAT Chat never switches HTTPS on for you. When the name is right, click 'Open the page', switch on Enable HTTPS, then click SCAT Chat again." "Open the page" "Close")
+SCAT Chat never switches HTTPS on for you. When the name is right, click 'Open the page', switch on Enable HTTPS, then choose Stop in the SCAT Chat menu, then open SCAT Chat again." "Open the page" "Close")
         if [ "$ans" = "Open the page" ]; then
             "$OPEN" "$DNS_PAGE" >/dev/null 2>&1
         fi
@@ -405,7 +406,10 @@ SCAT Chat never switches HTTPS on for you. When the name is right, click 'Open t
 
 step_vault() {
     ui_state starting
-    VAULT=${SCAT_CHAT_VAULT:-} # test override only (see the top of this file)
+    VAULT=""
+    if [ "$UI" = plain ]; then
+        VAULT=${SCAT_CHAT_VAULT:-} # test override only: honoured in plain mode, which the app never sets
+    fi
     if [ -z "$VAULT" ] && [ -f "$STATE/vault" ]; then
         VAULT=$(cat "$STATE/vault")
         if [ ! -d "$VAULT" ]; then
@@ -416,30 +420,30 @@ step_vault() {
             case "$ans" in
             "Use it" | use) ;;
             "Choose another" | another) VAULT="" ;;
-            *) die "No vault was confirmed, so nothing was started. Click SCAT Chat again and say whether to use $VAULT." ;;
+            *) die "No vault was confirmed, so nothing was started. Choose Stop in the SCAT Chat menu, then open SCAT Chat again and say whether to use $VAULT." ;;
             esac
         fi
     fi
     if [ -z "$VAULT" ]; then
         VAULT=$(ui_folder VAULT "Choose your vault: the folder that holds your narratives (it has a file called scat.toml).")
-        [ -n "$VAULT" ] || die "No vault was chosen, so nothing was started. Click SCAT Chat again and choose your vault folder."
+        [ -n "$VAULT" ] || die "No vault was chosen, so nothing was started. Choose Stop in the SCAT Chat menu, then open SCAT Chat again and choose your vault folder."
     fi
-    VAULT=$(cd "$VAULT" 2>/dev/null && pwd -P) || die "I cannot open that folder. Click SCAT Chat again and choose your vault folder."
+    VAULT=$(cd "$VAULT" 2>/dev/null && pwd -P) || die "I cannot open that folder. Choose Stop in the SCAT Chat menu, then open SCAT Chat again and choose your vault folder."
 
     if in_private "$VAULT"; then
         COPY_TO=$HOME_REAL/SCAT/vault
         if [ -e "$COPY_TO" ]; then
-            die "Your vault is in a folder that macOS protects, so the server cannot read it, and ~/SCAT/vault already exists, so I will not copy over it. Click SCAT Chat again and choose ~/SCAT/vault, or a folder outside Documents, Desktop, Downloads and iCloud."
+            die "Your vault is in a folder that macOS protects, so the server cannot read it, and ~/SCAT/vault already exists, so I will not copy over it. Choose Stop in the SCAT Chat menu, then open SCAT Chat again and choose ~/SCAT/vault, or a folder outside Documents, Desktop, Downloads and iCloud."
         fi
         ans=$(ui_choice COPY "Your vault is in $VAULT, a folder that macOS keeps private from the server's container, so the server cannot read it there.
 
 I can make a copy in ~/SCAT/vault and use the copy. Your original stays where it is; I never move it. Edits you make in the copy have to be brought back to your original through git: commit and push from the copy, then pull in the original.
 
 Make the copy now?" "Copy" "Cancel")
-        [ "$ans" = "Copy" ] || [ "$ans" = "copy" ] || die "Nothing was copied or started. Move your vault outside Documents, Desktop, Downloads and iCloud, or click SCAT Chat again and say Copy."
+        [ "$ans" = "Copy" ] || [ "$ans" = "copy" ] || die "Nothing was copied or started. Move your vault outside Documents, Desktop, Downloads and iCloud, or choose Stop in the SCAT Chat menu, then open SCAT Chat again and say Copy."
         if ! { mkdir -p "$COPY_TO" && cp -R "$VAULT/." "$COPY_TO/"; }; then
             rm -rf "$COPY_TO"
-            die "The copy failed, so nothing was started. If macOS asked whether SCAT Chat may use your Documents folder, click Allow; then click SCAT Chat again."
+            die "The copy failed, so nothing was started. If macOS asked whether SCAT Chat may use your Documents folder, click Allow; then choose Stop in the SCAT Chat menu, then open SCAT Chat again."
         fi
         VAULT=$COPY_TO
         ui_progress "Copied your vault to ~/SCAT/vault. Remember: edits made there must be pulled back through git."
@@ -486,14 +490,14 @@ step_image() {
     ui_progress "Building the server, once. The first time takes a few minutes."
     if ! "$DOCKER" build -f "$CTX/deploy/Dockerfile" -t "$TAG" "$CTX" >"$STATE/build.log" 2>&1; then
         die "Building the server failed. The last lines say: $(tail -n 5 "$STATE/build.log" | tr '\n' ' ')
-Check that you are online, then click SCAT Chat again."
+Check that you are online, then choose Stop in the SCAT Chat menu, then open SCAT Chat again."
     fi
 }
 
 step_server() {
     ui_state starting
     if ! { key_put "$(new_key)" && key_present; }; then
-        die "I could not keep a new key in your keychain. If macOS asked for permission, click Allow; then click SCAT Chat again."
+        die "I could not keep a new key in your keychain. If macOS asked for permission, click Allow; then choose Stop in the SCAT Chat menu, then open SCAT Chat again."
     fi
     "$DOCKER" rm -f "$CONTAINER" >/dev/null 2>&1
     printf 'SCAT_MCP_KEY=%s\n' "$(key_get)" |
@@ -501,7 +505,7 @@ step_server() {
         --security-opt no-new-privileges --cap-drop ALL \
         -p "127.0.0.1:$PORT:8765" -v "$VAULT:/vault" --env-file /dev/stdin "$TAG" >/dev/null 2>"$STATE/run.log" ||
         die "The server would not start: $(tail -n 3 "$STATE/run.log" | tr '\n' ' ')
-Make sure no other SCAT Chat is open and port $PORT is free, then click SCAT Chat again."
+Make sure no other SCAT Chat is open and port $PORT is free, then choose Stop in the SCAT Chat menu, then open SCAT Chat again."
 
     ui_progress "Waiting for the server to answer."
     i=0
@@ -511,13 +515,13 @@ Make sure no other SCAT Chat is open and port $PORT is free, then click SCAT Cha
         [ "$code" = 401 ] && break
         if ! container_running; then
             die "The server stopped right after starting. Its last words: $("$DOCKER" logs --tail 5 "$CONTAINER" 2>&1 | tr '\n' ' ')
-Click SCAT Chat again; if it repeats, tell the person who set this up."
+Choose Stop in the SCAT Chat menu, then open SCAT Chat again; if it repeats, tell the person who set this up."
         fi
         i=$((i + 1))
         sleep 0.2
     done
-    [ "$code" = 401 ] || die "The server did not answer within $WAIT seconds. Click SCAT Chat again; if it repeats, tell the person who set this up."
-    [ "$(http_code 1)" = 200 ] || die "The server answers but does not accept its own key. Click SCAT Chat again; if it repeats, tell the person who set this up."
+    [ "$code" = 401 ] || die "The server did not answer within $WAIT seconds. Choose Stop in the SCAT Chat menu, then open SCAT Chat again; if it repeats, tell the person who set this up."
+    [ "$(http_code 1)" = 200 ] || die "The server answers but does not accept its own key. Choose Stop in the SCAT Chat menu, then open SCAT Chat again; if it repeats, tell the person who set this up."
 }
 
 step_tunnel() {
@@ -543,7 +547,7 @@ step_tunnel() {
             page=$FUNNEL_POLICY_PAGE
             [ -n "$NODE_ID" ] && page="$page?node=$NODE_ID"
         fi
-        ans=$(ui_choice OPEN "The public link did not start. The usual reason is that Funnel is not allowed on your Tailscale account yet. That takes one click, once: click 'Open the page', approve Funnel there, then click SCAT Chat again." "Open the page" "Close")
+        ans=$(ui_choice OPEN "The public link did not start. The usual reason is that Funnel is not allowed on your Tailscale account yet. That takes one click, once: click 'Open the page', approve Funnel there, then choose Stop in the SCAT Chat menu, then open SCAT Chat again." "Open the page" "Close")
         if [ "$ans" = "Open the page" ]; then
             "$OPEN" "$page" >/dev/null 2>&1
         fi
@@ -565,6 +569,9 @@ cmd_start() {
         if [ "$UI" = dialog ] && ! kill -0 "$old" 2>/dev/null; then
             teardown # a crashed earlier session: clean up, then go on
         else
+            VAULT=$(cat "$STATE/vault" 2>/dev/null) # the app may have just deleted ui: show the live session again
+            URL=$(cat "$STATE/session.txt" 2>/dev/null)
+            if [ -n "$URL" ]; then ui_state running; else ui_state starting; fi
             ui_note "SCAT Chat is already running. Click Stop in its menu (or quit the app) before starting it again."
             exit 0
         fi
@@ -629,7 +636,17 @@ cmd_stop() {
 }
 
 cmd_status() {
-    if [ -f "$STATE/session" ] || [ -f "$STATE/changing" ]; then # changing: Change vault is between two sessions
+    cm=$(cat "$STATE/changing" 2>/dev/null) # Change vault is between two sessions, while its process lives
+    if [ -n "$cm" ] && ! kill -0 "$cm" 2>/dev/null; then
+        rm -f "$STATE/changing"
+        cm=""
+    fi
+    sp=$(cat "$STATE/session" 2>/dev/null)
+    if [ "$UI" = dialog ] && [ -n "$sp" ] && ! kill -0 "$sp" 2>/dev/null; then
+        sp="" # the launcher was killed: a dead session is not "starting"; the app then quits, and its stop cleans up
+        [ -n "$cm" ] || { printf 'SCAT Chat is not running.\n'; exit 1; }
+    fi
+    if [ -n "$sp" ] || [ -n "$cm" ]; then
         if [ -f "$STATE/session" ] && [ -f "$STATE/session.txt" ]; then
             printf 'SCAT Chat is running at %s\n' "$(cat "$STATE/session.txt")"
         else
@@ -661,7 +678,7 @@ cmd_copy_address() {
 
 cmd_change_vault() { # stop, then start again with the vault chooser; the session key is new, so the chat's server entry needs updating
     mkdir -p "$STATE" || exit 1
-    : >"$STATE/changing"
+    printf '%s\n' "$$" >"$STATE/changing" # this process's pid: a marker whose process is gone is stale
     if ! do_stop; then
         rm -f "$STATE/changing"
         exit 1

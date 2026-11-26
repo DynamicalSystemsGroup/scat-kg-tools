@@ -17,7 +17,7 @@ What is here:
   (default `deploy/build`) with the launcher and the server source inside, sets `LSUIElement` (no Dock icon) and signs it ad hoc (no certificate). The built app is not committed.
 
 Test-only settings (a double-clicked app has none of them): `SCAT_CHAT_VAULT` names the vault and skips the "Serve <vault>?" question,
-which breaks the rule that every start shows the coder the vault (the tests use it; the app never sets it); the applet reads `SCAT_CHAT_LAUNCHER` (a stand-in launcher),
+which breaks the rule that every start shows the coder the vault (the tests use it; it is honoured only with `SCAT_CHAT_UI=plain`, which the app never sets, so a dialog-mode start ignores it); the applet reads `SCAT_CHAT_LAUNCHER` (a stand-in launcher),
 `SCAT_CHAT_HOME` (the state folder) and `SCAT_CHAT_APPLET_LOG` (a file that receives its menu lines).
 
 How it is tested: `tests/deploy` runs the script with stand-ins for docker, colima, tailscale, openssl, security, osascript, curl, pbcopy and
