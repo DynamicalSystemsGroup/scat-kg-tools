@@ -50,7 +50,8 @@ def test_a_contributor_page_is_never_listed(tmp_path):
     plan = scat_kg.split_plan("community-members", root=root)
     assert plan.ok
     assert all(not p.file.startswith("contributor/") for p in plan.pages)
-    assert "lab-member-a" not in str(plan) and "lab-member-a" not in str(plan.to_dict())
+    assert "lab-member-a" not in str([p.to_dict() for p in plan.pages])  # never a place to re-link
+    assert any("contributor/lab-member-a.md" in n and "never changed" in n for n in plan.notes)
 
 
 @pytest.mark.parametrize(

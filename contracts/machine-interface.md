@@ -29,6 +29,7 @@ Nothing else is promised.
 | status row | `path`, `name`, `type`, `status` |
 | operation | `created`, `changed`, `unchanged` (already right, nothing written), `refused`, `notes` (sentences for a person), `problems` |
 | record-edge, remove-edge result | an operation, and when `ok`: `edge`, `rows_added`, `rows_removed` |
+| merge, split-plan result | an operation, and when `ok`: `plan`, `removed`, `done_narratives`, `links_rewritten` (merge); `node`, `node_type`, `pages` (split-plan) |
 | edge | `type` (`holds`, `addressed-by` or `provided-by`), `from`, `to`, `narratives` |
 | row | `narrative`, `file`, `line`, `note` |
 | refusal | `subject`, `why`, `fix`, `rule`, `problems` |
@@ -52,10 +53,6 @@ Nothing else is promised.
 **Version 2 to 3.** The `view` operations gain `evidence` and `copy-share`, new values in a closed list.
 
 `attribution` is a view of the knowledge graph, not the layered graph. Where the mode is `disallowed` it is a refusal, not an empty list.
-
-## Merge and split-plan
-
-Operations. When `ok`, `merge` adds `plan` (true: nothing written), `removed`, `done_narratives` and `links_rewritten` (`file`, `links`); `split-plan` adds `node`, `node_type` and `pages` (`file`, `name`, `type`, `status`, `links`, `rows`).
 
 ## Fixes
 

@@ -937,8 +937,6 @@ It refuses, and writes nothing, for a name that is no page, one page named twice
 
 Exit codes: 0, or 1 for a refusal.
 
-The examples run on a copy of the template, as a plan.
-
 === "Python"
 
     ```python

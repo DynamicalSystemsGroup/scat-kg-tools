@@ -170,8 +170,11 @@ def _new_link(inner: str, a: str, b: str, alias: bool, escape: bool) -> str:
     return "[[" + head + rest + "]]"
 
 
-def rewrite_body(body: list[str], a: str, b: str, narrative: bool) -> tuple[list[str], int]:
-    """The body lines with every page link to `a` pointed at `b`, and how many were rewritten.
+def rewrite_body(
+    body: list[str], a: str, b: str, narrative: bool
+) -> tuple[list[str], int, list[tuple[int, str]]]:
+    """The body lines with every page link to `a` pointed at `b`, how many were rewritten, and the
+    (line index, heading) of each rewritten link that names a heading.
 
     A link in code (a fence or a span) is not a link and is left. A bare link in prose becomes `[[b|a]]`; a link
     that is a whole `from` or `to` cell of an `Edges told` row stays bare, `[[b]]`; an embed stays bare too; an
@@ -185,7 +188,7 @@ def rewrite_body(body: list[str], a: str, b: str, narrative: bool) -> tuple[list
             for cell in (row.cell("from"), row.cell("to")):
                 if cell is not None and cell.target == a:
                     ends.add((cell.line, cell.start, cell.end))
-    out, count = [], 0
+    out, count, headings = [], 0, []
     for i, line in enumerate(body):
         hits = [m for m in _BODY_LINK.finditer(blanked[i]) if link_target(m.group(1)) == a]
         for m in reversed(hits):
@@ -194,11 +197,21 @@ def rewrite_body(body: list[str], a: str, b: str, narrative: bool) -> tuple[list
                 continue
             embed = m.start() > 0 and line[m.start() - 1] == "!"
             bare = embed or any(i == n and s <= m.start() and m.end() <= e for n, s, e in ends)
+            if (h := re.match(r"[^|#^]*#([^|^]*)", inner)) and h.group(1).strip():
+                headings.append((i, h.group(1).replace("\\", "").strip()))
             new = _new_link(inner, a, b, alias=not bare, escape=line.lstrip().startswith("|"))
             line = line[: m.start()] + new + line[m.end() :]
             count += 1
         out.append(line)
-    return out, count
+    return out, count, headings
+
+
+_HEADING = re.compile(r"^ {0,3}#{1,6}[ \t]+(.*?)(?:[ \t]+#+)?[ \t]*$")
+
+
+def _headings(lines: list[str]) -> set[str]:
+    """The ATX headings in lines, lower-cased."""
+    return {m.group(1).strip().casefold() for ln in lines if (m := _HEADING.match(ln))}
 
 
 def _split(lines: list[tuple[str, str]]) -> int:
@@ -214,6 +227,7 @@ class _Plan:
     counts: dict[str, int]  # path -> links rewritten
     done: list[str]  # names of `done` narratives whose text changes
     appended: bool  # a's body goes into b
+    notes: list[str]  # links whose heading now reaches b's own section
 
 
 def _build(vault: Vault, a: Page, b: Page) -> _Plan | Refusal:
@@ -222,26 +236,29 @@ def _build(vault: Vault, a: Page, b: Page) -> _Plan | Refusal:
     todo = {p.path: p for p in pages} | {a.path: a, b.path: b}
     old, new, counts, done = {}, {}, {}, []
     a_body: list[str] = []
+    heads: list[tuple[str, int, str]] = []  # (path, file line, heading) of a link to a heading
     for path, page in sorted(todo.items()):
         try:
             lines, bom = read_lines(vault.root / path)
         except NotUtf8 as e:
             return Refusal(path, str(e), "save the file as UTF-8, then run this again")
         first = _split(lines)
-        body, n = rewrite_body(
+        body, n, hs = rewrite_body(
             [t for t, _ in lines[first:]], a.name, b.name, page.type == NARRATIVE
         )
+        if path != a.path:
+            heads += [(path, first + i + 1, h) for i, h in hs]
         lines = lines[:first] + [(t, e) for t, (_, e) in zip(body, lines[first:], strict=True)]
         old[path] = (vault.root / path).read_bytes()
         counts[path] = n
         if path == a.path:
             a_body = body
         elif path == b.path:
-            b_lines, b_bom = lines, bom
+            b_lines, b_bom, b_first = lines, bom, first
         else:
             if n:
                 new[path] = join_lines(lines, bom)
-                if page.status == "done":
+                if page.type == NARRATIVE and page.status == "done":
                     done.append(page.name)
     # b: its own links rewritten, then a's body under a heading that names a
     while a_body and not a_body[0].strip():
@@ -249,6 +266,13 @@ def _build(vault: Vault, a: Page, b: Page) -> _Plan | Refusal:
     while a_body and not a_body[-1].strip():
         a_body.pop()
     appended = bool(a_body)
+    both = _headings(a_body) & _headings([t for t, _ in b_lines[b_first:]])
+    clash = [
+        f"the link `[[{a.name}#{h}]]` at {path} line {n} now reaches the section `{h}` that "
+        f"`{b.name}` already had, not the one added from `{a.name}`"
+        for path, n, h in sorted(heads)
+        if h.casefold() in both
+    ]
     if appended:
         eol = line_ending(b_lines)
         while b_lines and not b_lines[-1][0].strip():
@@ -259,8 +283,6 @@ def _build(vault: Vault, a: Page, b: Page) -> _Plan | Refusal:
         b_lines += [(t, eol) for t in a_body]
     if appended or counts[b.path]:
         new[b.path] = join_lines(b_lines, b_bom)
-        if b.status == "done":
-            done.append(b.name)
     # a's own links to itself count where they land: in b
     counts[b.path] += counts.pop(a.path)
     return _Plan(
@@ -269,6 +291,7 @@ def _build(vault: Vault, a: Page, b: Page) -> _Plan | Refusal:
         {p: n for p, n in counts.items() if n},
         sorted(done),
         appended,
+        clash,
     )
 
 
@@ -383,11 +406,18 @@ def _duplicate_rows(before: Graph, a: str, b: str) -> list[Refusal]:
             same = {(r.edge_type, r.from_target, r.to_target) for r in rows}
             if len(same) > 1:
                 where = " and ".join(f"line {r.line} `{r.text.strip()}`" for r in rows)
+                fix = "delete one of the two rows (put its note in the other first), then run this again"
+                if n.status == "done":
+                    fix = (
+                        f"this narrative is `done`: you move it out of `done` first (`scat set-status "
+                        f"{n.name} draft`), then delete one of the two rows (put its note in the other "
+                        "first), then run this again"
+                    )
                 out.append(
                     Refusal(
                         n.path,
                         f"the merge would make two rows tell one edge: {where}",
-                        "delete one of the two rows (put its note in the other first), then run this again",
+                        fix,
                     )
                 )
     return out
@@ -415,13 +445,18 @@ def merge(a: str, b: str, *, plan: bool = False, root: str | Path = ".") -> Resu
             NAME_FIX,
         )
     pages, contributors = linking_pages(vault, pa.name)
+    at: dict[str, list[int]] = {}
+    for page, line in contributors:
+        at.setdefault(page.path, []).append(line)
     refusals = [
         Refusal(
-            page.path,
-            f"this contributor page links `{pa.name}` at line {line}, and a merge never writes one",
+            path,
+            f"this contributor page links `{pa.name}` at line "
+            + ", ".join(str(n) for n in sorted(set(lines)))
+            + ", and a merge never writes one",
             "take the link out of the contributor page by hand, then run this again",
         )
-        for page, line in contributors
+        for path, lines in sorted(at.items())
     ]
     refusals += error_refusals(vault, {pa.path, pb.path} | {p.path for p in pages})
     before = load(root)
@@ -431,7 +466,19 @@ def merge(a: str, b: str, *, plan: bool = False, root: str | Path = ".") -> Resu
     built = _build(vault, pa, pb)
     if isinstance(built, Refusal):
         return Result(OP, refused=(built,))
-    why, made = _try_out(vault, before, pa, pb, built)
+    try:
+        why, made = _try_out(vault, before, pa, pb, built)
+    except OSError as e:
+        return Result(
+            OP,
+            refused=(
+                Refusal(
+                    "the vault",
+                    f"could not write: {e}",
+                    "check the permissions of the vault's folders, then run this again",
+                ),
+            ),
+        )
     if why:
         return Result(
             OP,
@@ -460,6 +507,18 @@ def merge(a: str, b: str, *, plan: bool = False, root: str | Path = ".") -> Resu
     ]
     if isinstance(pa.fields.get("description"), str) and not pb.fields.get("description"):
         notes.append(f"`{pb.name}` has no description: add one, `{pa.name}`'s is not kept")
+    notes += built.notes
+    frontmatter = [
+        f"{p.path} (field `{k}`)"
+        for p in vault.pages
+        if p.type != CONTRIBUTOR
+        for k in _fm(p, pa.name)
+    ]
+    if frontmatter:
+        notes.append(
+            f"a link to `{pa.name}` in frontmatter is not rewritten (a merge rewrites bodies only): "
+            + ", ".join(frontmatter)
+        )
     if built.done:
         notes.append(
             "a `done` narrative whose text changes stays `done`: read it again before you rely on it"
@@ -478,6 +537,21 @@ def merge(a: str, b: str, *, plan: bool = False, root: str | Path = ".") -> Resu
     )
 
 
+def _fm(page: Page, name: str) -> list[str]:
+    """The frontmatter fields of `page` that hold a link to `name`."""
+
+    def has(v) -> bool:
+        if isinstance(v, str):
+            return any(link_target(m.group(1)) == name for m in _BODY_LINK.finditer(v))
+        if isinstance(v, list | tuple):
+            return any(has(x) for x in v)
+        if isinstance(v, dict):
+            return any(has(x) for x in v.values())
+        return False
+
+    return [k for k, v in page.fields.items() if has(v)]
+
+
 def _write(vault: Vault, a: Page, plan: _Plan) -> Refusal | None:
     """Write the changed files, then remove a's page; on a failure put everything back."""
     root = vault.root
@@ -493,10 +567,24 @@ def _write(vault: Vault, a: Page, plan: _Plan) -> Refusal | None:
             replace_file(root / path, data)
             done.append(path)
         (root / a.path).unlink()
-    except OSError as e:
+    except BaseException as e:
+        lost = []
         for path in done:
-            replace_file(root / path, plan.old[path])
-        if not (root / a.path).exists():
-            (root / a.path).write_bytes(a_was)
-        return Refusal("the vault", f"could not write: {e}", "check the files' permissions")
+            try:
+                replace_file(root / path, plan.old[path])
+            except OSError:
+                lost.append(path)
+        try:
+            if not (root / a.path).exists():
+                (root / a.path).write_bytes(a_was)
+        except OSError:
+            lost.append(a.path)
+        if not isinstance(e, OSError):
+            if lost:
+                e.add_note("could not be restored: " + ", ".join(lost))
+            raise
+        why = f"could not write: {e}"
+        if lost:
+            why += "; these files could not be put back as they were: " + ", ".join(lost)
+        return Refusal("the vault", why, "check the files' permissions")
     return None

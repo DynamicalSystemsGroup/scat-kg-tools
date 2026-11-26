@@ -62,7 +62,7 @@ def test_a_document_that_leaves_out_what_merge_adds_is_rejected(vault):
 
 
 def test_the_page_names_every_field_the_schema_adds():
-    section = PAGE.split("## Merge and split-plan", 1)[1].split("\n## ", 1)[0]
+    row = next(r for r in PAGE.splitlines() if r.startswith("| merge, split-plan result"))
     for key in (
         "plan",
         "removed",
@@ -72,5 +72,5 @@ def test_the_page_names_every_field_the_schema_adds():
         "node_type",
         "pages",
     ):
-        assert f"`{key}`" in section
+        assert f"`{key}`" in row
         assert key in SCHEMA["$defs"]["OperationResult"]["properties"]

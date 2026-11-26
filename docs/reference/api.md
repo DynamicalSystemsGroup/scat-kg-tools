@@ -646,7 +646,7 @@ The whole result is built in a temporary copy of the vault first, and written on
 
     The same text.
 
-The examples run on a fresh copy of the template. `result.to_dict()` is the document the command prints with `--json`; its `plan`, `removed`, `done_narratives` and `links_rewritten` fields are in the [CLI reference](cli.md#scat-merge). A refusal prints what to do next, and nothing is written:
+`result.to_dict()` is the document the command prints with `--json`; its `plan`, `removed`, `done_narratives` and `links_rewritten` fields are in the [CLI reference](cli.md#scat-merge). A refusal prints what to do next, and nothing is written:
 
 ```python
 scat_kg.merge("project-leads", "gated-approval", plan=True)

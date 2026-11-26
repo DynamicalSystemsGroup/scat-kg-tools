@@ -1,5 +1,6 @@
 """WP24-R5: `merge` plans, refuses with nothing written, and otherwise folds one node page into another."""
 
+import importlib
 import json
 
 import pytest
@@ -240,7 +241,7 @@ def test_links_in_prose_keep_what_the_reader_saw():
         "Embedded: ![[a]] and ![[a|200]].",
         "Not this one: [[ab]] or [[a.png]] or [[x/a]].",
     ]
-    out, n = rewrite_body(body, "a", "b", narrative=False)
+    out, n, _ = rewrite_body(body, "a", "b", narrative=False)
     assert n == 7
     assert out[0] == (
         "Plain [[b|a]] and [[b|alias]] and [[b#Heading]] and [[b#^block]] and [[ b |a]] here."
@@ -250,20 +251,20 @@ def test_links_in_prose_keep_what_the_reader_saw():
 
 
 def test_a_row_end_stays_bare_and_a_bar_in_a_cell_is_escaped():
-    out, n = rewrite_body(TABLE, "a", "b", narrative=True)
+    out, n, _ = rewrite_body(TABLE, "a", "b", narrative=True)
     assert n == 3
     assert out[-1] == "| [[g]] | holds | [[b]] | see [[b\\|a]] and [[b|x]] |"
 
 
 def test_a_table_line_outside_the_edges_table_gets_an_escaped_alias():
     body = ["| name | what |", "|---|---|", "| [[a]] | [[a\\|shown]] |"]
-    out, n = rewrite_body(body, "a", "b", narrative=True)
+    out, n, _ = rewrite_body(body, "a", "b", narrative=True)
     assert out[2] == "| [[b\\|a]] | [[b\\|shown]] |" and n == 2
 
 
 def test_code_is_not_rewritten():
     body = ["```", "[[a]]", "```", "A span `[[a]]` and a link [[a]].", "~~~~", "[[a]]", "~~~~"]
-    out, n = rewrite_body(body, "a", "b", narrative=False)
+    out, n, _ = rewrite_body(body, "a", "b", narrative=False)
     assert n == 1
     assert (
         out[1] == "[[a]]" and out[3] == "A span `[[a]]` and a link [[b|a]]." and out[5] == "[[a]]"
@@ -292,3 +293,155 @@ def test_frontmatter_and_code_in_a_real_merge(tmp_path, make_vault):
     n = (root / "narrative/n.md").read_text(encoding="utf-8")
     assert 'description: "[[a]]"' in n and "The account of [[b|a]], then [[b]]." in n
     assert "```\n[[a]]\n```" in n
+
+
+# ---------------------------------------------------------------------------------------------------------
+# Review findings
+# ---------------------------------------------------------------------------------------------------------
+
+
+def test_done_narratives_lists_only_narratives(tmp_path):
+    root = copy_of("disallowed", tmp_path)
+    a, b = CLEAN
+    page_b = root / f"concern/{b}.md"
+    assert "status: done" in page_b.read_text(encoding="utf-8")  # b is done
+    node = root / "affordance" / "forget-signal.md"  # a done node page that links a
+    node.write_text(node.read_text(encoding="utf-8").rstrip("\n") + f"\n\nSee [[{a}]].\n")
+    r = scat_kg.merge(a, b, plan=True, root=root)
+    assert r.ok
+    kinds = {n.name for n in scat_kg.load(root).narratives}
+    assert r.done_narratives and set(r.done_narratives) <= kinds
+    assert b not in r.done_narratives and "forget-signal" not in r.done_narratives
+    assert "forget-signal.md" in " ".join(
+        r.changed
+    )  # the node page is rewritten, not listed as done
+
+
+def test_a_read_only_folder_is_a_refusal_with_nothing_written(tmp_path):
+    import os
+
+    root = copy_of("disallowed", tmp_path)
+    before = tree(root)
+    os.chmod(root / "narrative", 0o555)
+    try:
+        if os.access(root / "narrative", os.W_OK):
+            pytest.skip("permissions are not enforced for this user")
+        for plan in (True, False):
+            r = scat_kg.merge(*CLEAN, plan=plan, root=root)
+            assert not r.ok and "could not write" in str(r)
+    finally:
+        os.chmod(root / "narrative", 0o755)
+    assert tree(root) == before
+
+
+def test_two_links_on_one_line_of_a_contributor_page_are_one_refusal(tmp_path):
+    root = copy_of("required", tmp_path)
+    page = root / "contributor" / "lab-member-a.md"
+    page.write_text(
+        page.read_text(encoding="utf-8").rstrip("\n") + f"\n\n[[{CLEAN[0]}]] and [[{CLEAN[0]}]].\n"
+    )
+    r = scat_kg.merge(*CLEAN, root=root)
+    mine = [x for x in r.refused if x.subject == "contributor/lab-member-a.md"]
+    assert len(mine) == 1 and str(r).count("lab-member-a.md") == 1
+
+
+def test_a_heading_that_b_already_has_is_named(tmp_path, make_vault):
+    front = '---\ntype: concern\nstatus: draft\ntitle: "{}"\ndescription: "d"\n---\n'
+    narr = '---\ntype: narrative\nstatus: draft\ntitle: "N"\nkind: scenario\ntimeframe: past\n---\n'
+    root = make_vault(
+        {
+            "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 4\n",
+            "concern/a.md": front.format("A") + "## Notes\n\nA's notes.\n",
+            "concern/b.md": front.format("B") + "## Notes\n\nB's notes.\n",
+            "narrative/n.md": narr + "See [[a#Notes]] and [[a]].\n",
+            "narrative/m.md": narr + "Only [[a#Other]] and [[b]].\n",
+        }
+    )
+    r = scat_kg.merge("a", "b", root=root)
+    assert r.ok, str(r)
+    said = [n for n in r.notes if "already had" in n]
+    assert len(said) == 1 and "narrative/n.md line 8" in said[0] and "[[a#Notes]]" in said[0]
+    assert "[[b#Notes]]" in (root / "narrative/n.md").read_text()
+
+
+def test_frontmatter_links_are_named_and_left(tmp_path, make_vault):
+    front = '---\ntype: concern\nstatus: draft\ntitle: "{}"\ndescription: "d"\n{}---\n'
+    root = make_vault(
+        {
+            "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 4\n",
+            "concern/a.md": front.format("A", "") + "Body.\n",
+            "concern/b.md": front.format("B", 'related: "[[a]]"\n') + "Body.\n",
+        }
+    )
+    r = scat_kg.merge("a", "b", plan=True, root=root)
+    assert r.ok and any("concern/b.md (field `related`)" in n for n in r.notes)
+
+
+def test_path_and_extension_forms_are_not_links(tmp_path, make_vault):
+    """`[[concern/a]]` and `[[a.md]]` are not page links to the reader of the vault, so a merge leaves them."""
+    front = '---\ntype: concern\nstatus: draft\ntitle: "{}"\ndescription: "d"\n---\n'
+    root = make_vault(
+        {
+            "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 4\n",
+            "concern/a.md": front.format("A") + "Body.\n",
+            "concern/b.md": front.format("B") + "Body.\n",
+            "concern/c.md": front.format("C") + "See [[concern/a]] and [[a.md]] and [[a]].\n",
+        }
+    )
+    assert scat_kg.load(root).vault.inbound("a")[0].source == "concern/c.md"
+    assert len(scat_kg.load(root).vault.inbound("a")) == 1
+    assert scat_kg.merge("a", "b", root=root).ok
+    text = (root / "concern/c.md").read_text()
+    assert "[[concern/a]]" in text and "[[a.md]]" in text and "[[b|a]]" in text
+
+
+def test_an_interrupt_during_the_write_puts_the_files_back(tmp_path, monkeypatch):
+    m = importlib.import_module("scat_kg.ops.merge")
+
+    root = copy_of("disallowed", tmp_path)
+    before = tree(root)
+    real = m.replace_file
+    calls = {"n": 0}
+
+    def flaky(path, data):
+        if not str(path).startswith(str(root)):  # the temporary copy is not the vault
+            return real(path, data)
+        calls["n"] += 1
+        if calls["n"] == 2:
+            raise KeyboardInterrupt
+        return real(path, data)
+
+    monkeypatch.setattr(m, "replace_file", flaky)
+    with pytest.raises(KeyboardInterrupt):
+        scat_kg.merge("forum-bot", "scheduler", root=root)
+    monkeypatch.setattr(m, "replace_file", real)
+    assert calls["n"] >= 2  # the interrupt came in the real write
+    assert tree(root) == before
+
+
+def test_a_failure_while_putting_back_does_not_escape(tmp_path, monkeypatch):
+    m = importlib.import_module("scat_kg.ops.merge")
+
+    root = copy_of("disallowed", tmp_path)
+    real = m.replace_file
+    calls = {"n": 0}
+
+    def broken(path, data):
+        if not str(path).startswith(str(root)):
+            return real(path, data)
+        calls["n"] += 1
+        if calls["n"] >= 2:
+            raise OSError("disk gone")
+        return real(path, data)
+
+    monkeypatch.setattr(m, "replace_file", broken)
+    r = scat_kg.merge("forum-bot", "scheduler", root=root)
+    assert not r.ok and "could not write" in str(r) and "could not be put back" in str(r)
+
+
+def test_a_duplicate_in_a_done_narrative_says_the_coder_reopens_it(tmp_path):
+    root = copy_of("disallowed", tmp_path)
+    r = scat_kg.merge("ethnographers", "ethics-committees", root=root)
+    done = [x for x in r.refused if "consent-and-ethics-gate" in x.subject]
+    assert done and "`done`" in done[0].fix and "set-status" in done[0].fix
+    assert "then delete one of the two rows" in done[0].fix

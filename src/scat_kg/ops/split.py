@@ -81,7 +81,9 @@ def split_plan(a: str, *, root: str | Path = ".") -> Result:
     page, refusal = resolve_node(OP, vault, a)
     if refusal:
         return Result(OP, refused=(refusal,))
-    pages, _ = linking_pages(vault, page.name)  # contributor pages are never listed
+    pages, contributors = linking_pages(
+        vault, page.name
+    )  # contributor pages are never listed as places
     if bad := error_refusals(vault, {page.path} | {p.path for p in pages}):
         return Result(OP, refused=tuple(bad))
     graph = load(root)
@@ -102,6 +104,12 @@ def split_plan(a: str, *, root: str | Path = ".") -> Result:
             f"`scat stub <name> --type {page.type}`, then edit each link and row by hand"
         )
     ]
+    people = sorted({c.path for c, _ in contributors})
+    if people:
+        notes.append(
+            "a contributor page links this page and is never changed by the tool: "
+            + ", ".join(people)
+        )
     done = [p.name for p in out if p.type == NARRATIVE and p.status == "done"]
     if done:
         notes.append(
