@@ -190,6 +190,7 @@ $ uv run scat check --json
   "kind": "check",
   "operation": "check",
   "ok": true,
+  "mode": "disallowed",
   "problems": []
 }
 ```
@@ -206,6 +207,7 @@ $ uv run scat check --json
   "kind": "check",
   "operation": "check",
   "ok": false,
+  "mode": "disallowed",
   "problems": [
     {
       "rule": "SCAT-DONE-END-NOPAGE",
@@ -340,6 +342,7 @@ $ uv run scat status anonymity --json
   "kind": "status",
   "operation": "status",
   "ok": true,
+  "mode": "disallowed",
   "scope": "page",
   "rows": [
     {
@@ -419,6 +422,7 @@ $ uv run scat set-status attribution draft --json
   "kind": "operation",
   "operation": "set-status",
   "ok": true,
+  "mode": "disallowed",
   "created": [],
   "changed": [],
   "unchanged": [
@@ -443,6 +447,7 @@ $ uv run scat set-status attribution finished --json
   "kind": "operation",
   "operation": "set-status",
   "ok": false,
+  "mode": "disallowed",
   "created": [],
   "changed": [],
   "unchanged": [],
@@ -526,6 +531,7 @@ $ uv run scat index --json
   "kind": "operation",
   "operation": "index",
   "ok": true,
+  "mode": "disallowed",
   "created": [],
   "changed": [],
   "unchanged": [
@@ -603,6 +609,7 @@ $ uv run scat stub study-circle-two --type concern --json
   "kind": "operation",
   "operation": "stub",
   "ok": true,
+  "mode": "disallowed",
   "created": [
     "concern/study-circle-two.md"
   ],
@@ -668,6 +675,7 @@ $ uv run scat stub-links --json
   "kind": "operation",
   "operation": "stub-links",
   "ok": true,
+  "mode": "disallowed",
   "created": [],
   "changed": [],
   "unchanged": [],
@@ -743,6 +751,7 @@ $ uv run scat record-edge addressed-by study-circle reading-shelf --told-by desk
   "kind": "operation",
   "operation": "record-edge",
   "ok": true,
+  "mode": "disallowed",
   "created": [
     "affordance/reading-shelf.md"
   ],
@@ -838,6 +847,7 @@ $ uv run scat remove-edge study-circle reading-shelf --json
   "kind": "operation",
   "operation": "remove-edge",
   "ok": true,
+  "mode": "disallowed",
   "created": [],
   "changed": [
     "narrative/desk-notes-two.md"
@@ -943,6 +953,7 @@ $ uv run scat fingerprint groups-under-a-cap-pitch --json
   "kind": "view",
   "operation": "fingerprint",
   "ok": true,
+  "mode": "disallowed",
   "narratives": [
     {
       "name": "groups-under-a-cap-pitch",
@@ -1054,6 +1065,7 @@ $ uv run scat edges holds --json
   "kind": "view",
   "operation": "edges",
   "ok": true,
+  "mode": "disallowed",
   "edge_type": "holds",
   "from_layer": "group",
   "to_layer": "concern",
@@ -1154,6 +1166,7 @@ $ uv run scat layered --narrative groups-under-a-cap-pitch --json
   "kind": "view",
   "operation": "layered",
   "ok": true,
+  "mode": "disallowed",
   "narratives": [
     "groups-under-a-cap-pitch"
   ],
@@ -1274,6 +1287,7 @@ $ uv run scat trace anonymity --direction up --json
   "kind": "view",
   "operation": "trace",
   "ok": true,
+  "mode": "disallowed",
   "node": "anonymity",
   "direction": "up",
   "up": [
@@ -1469,6 +1483,7 @@ $ uv run scat export-edges --out edge-tables --json
   "kind": "operation",
   "operation": "export-edges",
   "ok": true,
+  "mode": "disallowed",
   "created": [],
   "changed": [],
   "unchanged": [

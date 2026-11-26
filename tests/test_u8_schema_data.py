@@ -8,7 +8,7 @@ with `TBOX`, which is read from the ontology: the tools hold no copy of their ow
 import re
 from pathlib import Path
 
-from scat_kg import graph
+from scat_kg import graph, vault
 from scat_kg.ops import names
 from scat_kg.tbox import TBOX
 
@@ -63,7 +63,7 @@ def test_field_tables_equal_the_tbox_field_for_field():
 
 
 def test_the_tools_hold_no_copy_of_their_own():
-    assert names.STUBBABLE == (*TBOX.layers, "narrative", "contributor")
+    assert names.STUBBABLE == (*TBOX.layers, "narrative", vault.CONTRIBUTOR)
     assert not hasattr(graph, "EDGE_TYPES") and not hasattr(graph, "COLUMNS")
     assert {n for n in names.RESERVED} == {"con", "prn", "aux", "nul"} | {
         f"{p}{i}" for p in ("com", "lpt") for i in range(10)

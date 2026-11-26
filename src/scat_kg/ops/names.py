@@ -4,6 +4,7 @@ import re
 import unicodedata
 
 from scat_kg.tbox import TBOX
+from scat_kg.vault import CONTRIBUTOR
 
 RESERVED = frozenset(
     {"con", "prn", "aux", "nul"} | {f"com{i}" for i in range(10)} | {f"lpt{i}" for i in range(10)}
@@ -14,7 +15,6 @@ _SLUG = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 
 # Page types a stub operation may create for a given name: the node types, the narrative and the contributor page
 # (from the TBox; a contributor page only where the vault's attribution mode enables attribution).
-CONTRIBUTOR = "contributor"
 STUBBABLE = (*TBOX.layers, TBOX.table_type.slug, CONTRIBUTOR)
 
 
