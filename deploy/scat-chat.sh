@@ -404,7 +404,7 @@ SCAT Chat never switches HTTPS on for you. When the name is right, click 'Open t
         if [ "$ans" = "Open the page" ]; then
             "$OPEN" "$DNS_PAGE" >/dev/null 2>&1
         fi
-        die "Nothing was started: HTTPS is not switched on in Tailscale yet (the page is $DNS_PAGE)."
+        die "Nothing was started: HTTPS is not switched on in Tailscale yet (the page is $DNS_PAGE). Once that is done, choose Stop in the SCAT Chat menu, then open SCAT Chat again."
     fi
 }
 
@@ -555,7 +555,7 @@ step_tunnel() {
         if [ "$ans" = "Open the page" ]; then
             "$OPEN" "$page" >/dev/null 2>&1
         fi
-        die "The public link did not start (Funnel is probably not allowed yet: $page)."
+        die "The public link did not start (Funnel is probably not allowed yet: $page). Once that is done, choose Stop in the SCAT Chat menu, then open SCAT Chat again."
     fi
     URL=$PUBLIC/mcp
 }
