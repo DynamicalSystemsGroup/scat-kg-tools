@@ -232,6 +232,20 @@ def build(vault: str | Path, **settings) -> FastMCP:
     def review_before_done(narrative: str = "(the coder will name it)") -> str:
         return prompts.REVIEW_BEFORE_DONE.format(narrative=narrative)
 
+    @mcp.prompt(
+        name="draft-a-node-page",
+        description=f"Draft one node page as text for the coder to write in ({CITE}).",
+    )
+    def draft_a_node_page(node: str = "(the coder will name it)") -> str:
+        return prompts.DRAFT_A_NODE_PAGE.format(node=node)
+
+    @mcp.prompt(
+        name="fill-in-node-pages",
+        description=f"Walk the stub node pages, one page per step, each handed back ({CITE}).",
+    )
+    def fill_in_node_pages() -> str:
+        return prompts.FILL_IN_NODE_PAGES
+
     @mcp.resource(
         "scat://assistant-rules",
         name="assistant-rules",

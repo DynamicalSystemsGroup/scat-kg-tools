@@ -20,14 +20,17 @@ expected, unless the assistant has a reason it can state. MAY: allowed, never re
   field notes the coder gave it.
 - **A2.** The assistant MAY propose which nodes and links an account names, as a list the coder confirms or changes.
 - **A3.** The assistant MAY call the tool's operations: check, status, stub, stub links, record an edge, remove an edge.
-- **A4.** The assistant MAY call the view calls (fingerprint, edges, layered, trace) and report what they return.
+- **A4.** The assistant MAY call the view calls (fingerprint, edges, layered, trace, evidence, copy-share) and report what they return.
 - **A5.** The assistant SHOULD explain a problem and the fix the tool offers for it.
 - **A6.** The assistant MAY propose edits for the coder to apply, in the form the tool's fix gives them or as plain text.
+- **A16.** The assistant MAY draft one node page, as text in the reply for the coder to read and edit, from the evidence
+  view, across the narratives that link the node and citing them.
 
 ## What it does not do
 
 - **A7.** The assistant SHALL NOT set a narrative to `done`, or move one out of `done`. That is the coder's act.
 - **A8.** The assistant SHALL NOT write a narrative's text through the tool. The text reaches the vault by the coder's paste, download or edit.
+- **A17.** The assistant SHALL NOT write a node page's body through the tool. The text reaches the vault by the coder's paste or edit.
 - **A9.** The assistant SHALL NOT hand-write a row of an "Edges told" table. It records an edge with the tool's operation.
 - **A10.** The assistant SHALL NOT resolve doubt about an interpretation. It SHALL state the doubt and hand it back to the
   coder.
@@ -51,7 +54,7 @@ The assistant follows the vault's mode as the tools report it: every result carr
 ## Where it holds
 
 The tool cannot tell who is calling. On the chat path the MCP server never crosses `done` (A7, A8). On the IDE path A7
-to A12 hold by this file and by git review of what the assistant changed. Make the right way the easy way: when a rule
+to A12 and A17 hold by this file and by git review of what the assistant changed. Make the right way the easy way: when a rule
 here blocks a step, hand the step to the coder and say why.
 
 ## Edges told
@@ -83,6 +86,25 @@ coder, and not author and code in one reply.
 
 When the check reports a missing `description`, the assistant SHOULD offer one sentence for the coder to accept or change. It is brief and
 does not repeat the account. The coder decides; writing is a loop, coder-first or assistant-first, any number of rounds.
+
+## Drafting a node page
+
+When the coder asks for a node page's text (a group, concern, affordance or technology), the assistant MAY draft it:
+
+1. Call `evidence` for the node, then `copy_share` for the page. Report what each returned.
+2. Draft the four parts the norms page names (`docs/norms.md`, "What a node page holds"), as text in the reply. Write
+   across the narratives; never paste one account.
+3. Cite each claim by a link to the narrative that makes it. Keep disagreement between narratives; do not merge it.
+   Say what is thin. A node that one narrative tells says so.
+4. Offer the draft. The coder writes it into the vault and decides what stays. The page stays `draft` until the coder
+   says otherwise; `done` is the coder's.
+5. End by naming the coder's next act: read, edit, write it in, or set `done`.
+
+## Sweeping the stub node pages
+
+When the coder asks to fill in the node pages, call `status` and list the stub node pages. Take them in turn, one page
+per step, with the steps of "Drafting a node page", and hand each back to the coder before the next. The coder chooses
+the order if they care. Do not draft two pages in one reply.
 
 ## At the end of a session
 
