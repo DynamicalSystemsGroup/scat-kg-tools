@@ -5,7 +5,7 @@
 #     affordance, technology), the narrative, and the index. Only the first five are pages of Markdown with
 #     frontmatter; an index is an Obsidian Base file the tool generates, with no frontmatter and no fields.
 #   * An edge is no page and no field. It is one row of a narrative's table. The three edge types are
-#     the properties scat:Heldby, scat:Addresses and scat:Attributes (formal identifiers; their labels are the plain
+#     the properties scat:Heldby, scat:Addresses and scat:ProvidedBy (formal identifiers; their labels are the plain
 #     words "holds", "is addressed by" and "is provided by"). Each states its slug, its verb and the node types of its
 #     two ends, in order (scat:endpointOrder). A row's type is fixed by the layers of its ends.
 #   * A page type lists its fields with scat:requiredField, scat:optionalField and scat:discouragedField. Each field
@@ -55,7 +55,7 @@
 
 <https://w3id.org/scat> a owl:Ontology ;
     rdfs:label "SCAT ontology" ;
-    owl:versionInfo "0.2.0" ;
+    owl:versionInfo "0.3.0" ;
     rdfs:comment "TBox for scat-kg: four SKOS-based node types, three edge types, and six page types (the four node types, the narrative and the index), with the fields of each and how a narrative's table of edges is read. The IRI base is unregistered until release." .
 
 ##############################################################################
@@ -142,7 +142,7 @@ scat:Addresses a owl:ObjectProperty, scat:EdgeType ;
     scat:verb "is addressed by" ;
     scat:endpointOrder ( scat:Concern scat:Affordance ) .
 
-scat:Attributes a owl:ObjectProperty, scat:EdgeType ;
+scat:ProvidedBy a owl:ObjectProperty, scat:EdgeType ;
     rdfs:label "is provided by" ;
     rdfs:domain scat:Affordance ;
     rdfs:range scat:Technology ;

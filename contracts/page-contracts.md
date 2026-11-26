@@ -480,7 +480,7 @@ The types are the TBox's six `scat:key` values: `group`, `concern`, `affordance`
 `index`. The statuses are the TBox's `StatusValues`: `stub`, `draft`, `done`. `timeframe` takes `past`, `future`,
 `mixed` and `kind` takes `scenario`, `architecture`, as the TBox's value sets. The edge types, with their slugs, verbs
 and the node types of their two ends, are the table in 4, and the TBox's three `scat:EdgeType` properties
-(`scat:Heldby`, `scat:Addresses`, `scat:Attributes`). The heading `Edges told` and the columns `from`, `type`, `to`,
+(`scat:Heldby`, `scat:Addresses`, `scat:ProvidedBy`). The heading `Edges told` and the columns `from`, `type`, `to`,
 `note`, in that order, with the cell each holds, are the TBox's `scat:tableHeading`, `scat:tableColumns` and
 `scat:cellHolds`. Things in this document that the TBox does not state (names, folders, how the table's cells are read,
 the form of the Base files, the cap file, what a link entails, how an edge's status is derived) are the contract's own.
