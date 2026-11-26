@@ -339,7 +339,7 @@ error [SCAT-FM-KIND] <file> field `kind`: `<value>` is not a kind
 
 ### SCAT-FM-SHAPE
 - **Severity:** error. **Fires:** every status. **Runs at:** all; reads only its page.
-- **Trigger:** `type`, `status`, `title` or `description` (on any page), or `timeframe` or `kind` (on a narrative only), is present and not empty, and is not a single string (a list, a mapping, a number, or a boolean such as an unquoted `yes` or `true`). An unquoted `null` or `~` is missing, by the Empty rule. The link field `attributed_to` (a narrative only; not judged in `disallowed` mode, where SCAT-ATTR-DISALLOWED stands, nor when no mode is known) is present and not empty and is not a list of text: one line of text, a mapping, a number, or a list with an item that is not text (an unquoted `[[ada-quill]]` is a list inside a list). The message then reads `expected a list of links (text), found <one line of text | a list | a mapping | a number | a boolean>`; the fix for one line of text is exact (`attributed_to: ["<text>"]`), otherwise manual.
+- **Trigger:** `type`, `status`, `title` or `description` (on any page), or `timeframe` or `kind` (on a narrative only), is present and not empty, and is not a single string (a list, a mapping, a number, or a boolean such as an unquoted `yes` or `true`). An unquoted `null` or `~` is missing, by the Empty rule. The link field `attributed_to` (a narrative only; not judged in `disallowed` mode, where SCAT-ATTR-DISALLOWED stands, nor when no mode is known) is present and not empty and is not a list of text: one line of text, a mapping, a number, or a list with an item that is not text (an unquoted `[[ada-quill]]` is a list inside a list). The message then reads `expected a list of links (text), found <one line of text | a list | a list inside a list: a link must be written in quotes, `"[[name]]"` | a mapping | a number | a boolean>`; the fix for one line of text is exact (`attributed_to: ["<text>"]`), and for an unquoted link, a list inside a list of one name each, exact too (`attributed_to: ["[[ada-quill]]"]`, the names kept, each in quotes); otherwise manual.
 - **Message:**
 ```
 error [SCAT-FM-SHAPE] <file> field `<field>`: expected one line of text, found <a list | a mapping | a number | a boolean>
@@ -394,8 +394,9 @@ warning [SCAT-DRAFT-FIELD] <file> field `timeframe`: missing (required once the 
 ### The mode rule
 
 One rule differs by attribution mode, and none other does. Its wording is exact and is the same, byte for byte, in
-`docs/norms.md` and `contracts/assistant.md` (the checks hold it as `scat_kg.checks.attribution.MODE_RULE`; a test
-compares the two):
+`docs/norms.md` and `contracts/assistant.md` when they quote it (the checks hold it as
+`scat_kg.checks.attribution.MODE_RULE`; a test compares the catalogue's quotation with it, and a later unit adds the
+comparison for those two files):
 
 > In required mode a narrative SHALL name its contributors; in disallowed mode it SHALL NOT; in optional mode it MAY. To name a contributor is to link a contributor page in the narrative's `attributed_to` field.
 
@@ -409,9 +410,9 @@ whether a narrative is coded, its fingerprint, the group cap or any view.
 
 | Mode | A narrative's `attributed_to` | A contributor page |
 |---|---|---|
-| `required` | SHALL name a contributor: a warning before `done`, an error at `done` (SCAT-DRAFT-ATTR, SCAT-DONE-ATTR); every entry a link to a contributor page (SCAT-ATTR-LINK) | allowed |
-| `optional` | MAY; every entry a link to a contributor page (SCAT-ATTR-LINK) | allowed |
-| `disallowed` | SHALL NOT: an error at every status (SCAT-ATTR-DISALLOWED) | SHALL NOT exist: an error at every status (SCAT-ATTR-DISALLOWED) |
+| `required` | must name a contributor: a warning before `done`, an error at `done` (SCAT-DRAFT-ATTR, SCAT-DONE-ATTR); every entry a link to a contributor page (SCAT-ATTR-LINK) | allowed |
+| `optional` | may name contributors; every entry a link to a contributor page (SCAT-ATTR-LINK) | allowed |
+| `disallowed` | no narrative names a contributor: an error at every status, even for an empty key (SCAT-ATTR-DISALLOWED) | no contributor page exists: an error at every status (SCAT-ATTR-DISALLOWED) |
 
 ### SCAT-ATTR-DISALLOWED
 - **Severity:** error. **Fires:** every status. **Runs at:** all; reads its page and the mode in `scat.toml`.
@@ -765,7 +766,7 @@ in the wrong layers), carried as operation refusals with no rule id; they list n
 | R-1 the table of edges (page contracts 4) | SCAT-*-TABLE-HEADER, -ROW, -TYPE, -LAYERS, -DUPLICATE, -SECOND |
 | R-1 the group cap | SCAT-CAP, SCAT-CAP-CONFIG |
 | WP23-G1 the attribution mode is declared, and known | SCAT-MODE-CONFIG |
-| WP23-G2 the mode sets the rules: required SHALL name, disallowed SHALL NOT, optional MAY (the mode rule, section 3) | SCAT-DRAFT-ATTR, SCAT-DONE-ATTR, SCAT-ATTR-DISALLOWED |
+| WP23-G2 the mode sets the rules: required mode names contributors, disallowed mode names none and holds no contributor page, optional mode leaves it free (the mode rule, section 3) | SCAT-DRAFT-ATTR, SCAT-DONE-ATTR, SCAT-ATTR-DISALLOWED |
 | WP23-G3 contributor pages: `attributed_to` entries resolve to contributor pages; a dangling or wrong-type entry is an error; no contributor page where the mode is `disallowed` | SCAT-ATTR-LINK, SCAT-ATTR-DISALLOWED |
 | R-3 unfinished is never an error | SCAT-DRAFT-FIELD, and every SCAT-DRAFT- pair id, as warnings; nothing else fires for `done` fields at `stub` or `draft` |
 | R-3 full contract at `done`; the `done` check | SCAT-DONE-FIELD, every SCAT-DONE- pair id, SCAT-DONE-REFUSED |

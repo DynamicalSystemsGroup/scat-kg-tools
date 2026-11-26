@@ -226,3 +226,15 @@ def test_the_mode_rule_says_what_the_chief_engineer_said():
         "narrative's `attributed_to` field."
     )
     assert MODE_RULE.count("SHALL") == 2 and MODE_RULE.count("MAY") == 1
+
+
+def test_status_lists_a_contributor_page_on_its_own_row_and_count(tmp_path):
+    root = vault(tmp_path, "v", contributors=True, names=True)
+    report = scat_kg.status(root=root)
+    rows = [r for r in report.rows if r.type == "contributor"]
+    assert sorted(r.name for r in rows) == sorted(PEOPLE)
+    plain = scat_kg.status(root=vault(tmp_path, "p")).counts
+    counts = report.counts
+    assert counts.pop("contributors") == 3 and counts == plain  # not folded into the status counts
+    assert "3 contributors" in str(report).splitlines()[-1]
+    assert "contributors" not in plain

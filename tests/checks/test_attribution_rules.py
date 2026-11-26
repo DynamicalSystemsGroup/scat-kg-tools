@@ -1,7 +1,7 @@
 """WP23-G2, G3, R2: the one mode-dependent rule, per mode and status. Test names carry the rule id.
 
-The rule (`scat_kg.checks.attribution.MODE_RULE`): required mode SHALL name contributors, disallowed SHALL NOT,
-optional MAY; to name one is to link a contributor page in `attributed_to`.
+The rule (`scat_kg.checks.attribution.MODE_RULE`): required mode names contributors, disallowed mode none,
+optional mode leaves it free; to name one is to link a contributor page in `attributed_to`.
 """
 
 import itertools
@@ -308,9 +308,16 @@ def test__scat_attr_link__a_link_is_read_as_text_and_is_no_link_of_the_page(make
     ]  # not also SCAT-LINK-DANGLING-BODY
 
 
-def test__scat_attr_link__an_unquoted_link_is_a_wrong_shape_not_a_link(make_vault):
-    got = rules(make_vault, "optional", "done", "attributed_to: [[ada-quill]]")
-    assert got == ["SCAT-FM-SHAPE"]
+def test__scat_fm_shape__an_unquoted_attributed_to_link_gets_an_exact_quoted_fix(make_vault):
+    report = report_of(make_vault, desk("optional", "done", "attributed_to: [[ada-quill]]"))
+    (p,) = report.problems
+    assert p.rule == "SCAT-FM-SHAPE"
+    assert (
+        p.what
+        == 'expected a list of links (text), found a list inside a list: a link must be written in quotes, `"[[name]]"`'
+    )
+    assert p.fix_data.kind == "exact" and p.fix_data.options[0].edits[0].value == ["[[ada-quill]]"]
+    assert 'replace the field with the line `attributed_to: ["[[ada-quill]]"]`' in p.fix
     report = report_of(make_vault, desk("optional", "done", 'attributed_to: "[[ada-quill]]"'))
     (p,) = report.problems
     assert p.rule == "SCAT-FM-SHAPE" and 'attributed_to: ["[[ada-quill]]"]' in p.fix

@@ -300,11 +300,28 @@ def fm_list_shape(ctx: Ctx, page: Page):
                     fixes.set_field(page.path, f.key, [v]),
                 )
             )
+        elif isinstance(v, list) and all(
+            isinstance(i, str) or (isinstance(i, list) and len(i) == 1 and isinstance(i[0], str))
+            for i in v
+        ):  # unquoted `[[ada-quill]]` is YAML for a list inside a list: the same names, each quoted
+            fixed = [i if isinstance(i, str) else f"[[{i[0]}]]" for i in v]
+            line = f"{f.key}: [{', '.join(quote(i) for i in fixed)}]"
+            fix = fixes.single(
+                fixes.option(
+                    "exact",
+                    f"replace the field with the line `{line}` (a link in a list is written in quotes)",
+                    fixes.set_field(page.path, f.key, fixed),
+                )
+            )
         else:
             fix = fixes.single(
-                FixOption("manual", "replace the field with a list of links you write")
+                FixOption(
+                    "manual", "replace the field with a list of links you write, each in quotes"
+                )
             )
         what = _kind(v) if not isinstance(v, str) else "one line of text"
+        if isinstance(v, list) and any(isinstance(i, list) for i in v):
+            what = 'a list inside a list: a link must be written in quotes, `"[[name]]"`'
         out.append(
             ctx.problem(
                 "SCAT-FM-SHAPE",
