@@ -2,6 +2,7 @@
 section and a script for each mode, consent names the three modes, coding shows `attributed_to`."""
 
 import re
+import tomllib
 from pathlib import Path
 
 DOCS = Path(__file__).resolve().parents[2] / "docs"
@@ -71,3 +72,8 @@ def test_getting_started_names_the_mode_key_beside_the_cap():
 def test_python_reference_shows_attribution():
     text = read("reference/api.md")
     assert "## scat_kg.attribution" in text
+
+
+def test_the_template_declares_the_disallowed_mode(template):
+    config = tomllib.loads((template / "scat.toml").read_text(encoding="utf-8"))
+    assert config["attribution"] == "disallowed"
