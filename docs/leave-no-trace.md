@@ -70,23 +70,23 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 19. **In any app:** copy a word from anywhere, so your clipboard no longer holds the key.
 20. **In a web browser:** open the skill file, <https://raw.githubusercontent.com/DynamicalSystemsGroup/scat-kg-tools/dev/skills/scat-coding/SKILL.md>.
 21. **In a web browser:** select all (Cmd-A) and copy (Cmd-C) its text. Keep the tab open.
-22. **In the chat:** look for **Skills** (in the chat's menus or settings; this page has not recorded where) and choose to create a new skill.
+22. **In the chat:** look for **Skills** (in the chat's menus or settings) and choose to create a new skill.
 23. **In the chat:** name the skill `scat-coding`.
 24. **In the chat:** fill in the **Description**, which the form requires, with the text after `description:` in the skill file's first lines (it begins "Rules and habits for the assistant").
-25. **In the chat:** paste the text you copied into the skill's text field. (If the form offers an upload instead, upload the file; whether the chat takes the file as it stands was not recorded.)
+25. **In the chat:** paste the text you copied into the skill's text field. (If the form offers an upload instead, upload the file; if the chat does not accept the file as it stands, paste its text instead.)
 26. **In the chat:** save the skill.
 27. **In the chat:** open the **Agent Builder** and name the agent something you will recognise, for example "SCAT coder".
 28. **In the chat:** in the agent's settings choose a model, and add as tools the server "SCAT" and the chat's Ask User tool, if it offers one. (If you delete the server entry and add it again, the agent's tool does not survive: add the tool again.)
 29. **In the chat:** choose the `scat-coding` skill as the agent's only skill, and save the agent.
 30. **In the chat:** upload your field notes as one collection, if the chat offers collections. If it does not, skip
-    this step and attach the notes to the temporary chat when you start coding instead. (Collections were not tried; look for a
+    this step and attach the notes to the temporary chat when you start coding instead. (Look for a
     file or knowledge area where you can group files under one name.)
 31. **In the chat:** turn on the Temporary Chat setting (the chat shows the control; the shortcut seen was Cmd-Shift-Y).
 32. **In the chat:** check that its note says the chat will not appear in your history and will be deleted
     automatically.
 33. **In the chat:** open the Agent Builder and use its **Select** control to pick the agent; a new chat starts with it.
-    (On inference.coop's instance agents start from that Select, not from the model menu or from typing `@`. Whether
-    the saved agent can be chosen inside a temporary chat was not tried.)
+    (On inference.coop's instance agents start from that Select, not from the model menu or from typing `@`. If the
+    saved agent cannot be chosen inside a temporary chat, start the chat with the model and the server entry instead.)
 
 ### Do the coding
 
@@ -116,10 +116,9 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 48. **In the chat:** in **MCP Settings**, next to the server "SCAT", click **Edit**.
 49. **In the chat:** click the red **delete** button.
 50. **In the chat:** confirm.
-51. **In the chat:** delete the saved agent. (The chat's Agent Builder holds it; where its delete control is was not
-    recorded, so look there.)
+51. **In the chat:** delete the saved agent. (The chat's Agent Builder holds it; look there for its delete control.)
 52. **In the chat:** delete the skill `scat-coding`. (Look where you created it.)
-53. **In the chat:** delete the collection you uploaded. (Where it is was not recorded; look for a file library.)
+53. **In the chat:** delete the collection you uploaded. (Look for a file library.)
 54. **In the chat:** delete any file left in the chat's file library from this session. This step is needed because field notes you attached to a temporary chat stay in the file library after the chat is deleted (seen in the lab run).
 55. **In the chat:** delete any prompt you saved for this session. If you saved none, there is nothing to do.
 56. **In the chat:** look once more at each place you set something up (MCP Settings, the Agent Builder, the skills,

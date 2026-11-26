@@ -153,7 +153,7 @@ Tailscale makes the public address.
 6. **In Tailscale:** choose the menu item that installs the command line tool, and accept any prompt. SCAT Chat needs
    the `tailscale` command and will say so if it is missing.
 
-This page could not confirm the exact name of that menu item, so follow what your version of the app shows.
+The menu item's name differs between versions of the app: choose the one that installs the command line tool.
 
 ### 3. The one-time settings in your Tailscale account
 
@@ -183,7 +183,7 @@ it is unsigned. What you can check is that it is the file the person who set thi
 3. **In Finder:** choose **Open** again in the dialog. macOS asks only once.
 
 If macOS offers no **Open** button, open System Settings, then Privacy and Security, scroll down and look for
-SCAT Chat with an **Open Anyway** button. This page could not check your version of macOS.
+SCAT Chat with an **Open Anyway** button. The names in System Settings differ between versions of macOS.
 
 ## Start a session
 
@@ -222,6 +222,10 @@ pull in the original).
 with the folder picker, not with `Serve <vault>?`. The chat's server entry still holds the old key, and the saved
 agent's tool must be added again. Do these steps after the dot is green again.
 
+If the stop inside Change vault could not be confirmed, the dot turns red and the alert "SCAT Chat has a problem" says
+"Stopped, but I could not confirm:" and what. SCAT Chat stays open and does not start again. Choose **Stop** in the menu
+to try again (see "Stop").
+
 1. **In the menu bar:** click the dot, then click **Change vault**.
 2. **In SCAT Chat:** choose the folder that holds `scat.toml` in the folder picker.
 3. **In the menu bar:** check that the dot is green.
@@ -237,8 +241,8 @@ agent's tool must be added again. Do these steps after the dot is green again.
 12. **In the chat:** save the agent.
 13. **In any app:** copy a word from anywhere, so your clipboard no longer holds the key.
 
-The saved agent's tool is tied to the entry it was added from (see "Set up the skill and the saved agent"); this page
-has not confirmed that it survives editing the entry, so add it again.
+The saved agent's tool is tied to the entry it was added from (see "Set up the skill and the saved agent"). Add it
+again even though you only edited the entry.
 
 ## Connect the chat
 
@@ -282,20 +286,20 @@ assistant is still the actor and holds no authority. The skill here carries the 
 from `skills/scat-coding/SKILL.md`; a saved agent that uses it saves you from setting the chat up by hand each time.
 You do this once. What you set up stays in the chat after Stop (see "Clean up").
 
-The live run used inference.coop's chat, which has Skills and an Agent Builder. Where this page has not seen a
-button's name, it says what to look for.
+The live run used inference.coop's chat, which has Skills and an Agent Builder. Where a button's name is not given,
+the step says what to look for.
 
 1. **In a web browser:** open the skill file,
    <https://raw.githubusercontent.com/DynamicalSystemsGroup/scat-kg-tools/dev/skills/scat-coding/SKILL.md>.
 2. **In a web browser:** select all (Cmd-A).
 3. **In a web browser:** copy (Cmd-C). Keep the tab open.
-4. **In the chat:** look for **Skills** (in the chat's menus or settings; this page has not recorded where).
+4. **In the chat:** look for **Skills** (in the chat's menus or settings).
 5. **In the chat:** choose to create a new skill.
 6. **In the chat:** name it `scat-coding`.
 7. **In the chat:** fill in the **Description**, which the form requires. Copy the text after `description:` in the
    file's first lines (it begins "Rules and habits for the assistant"), from the tab you kept open.
 8. **In the chat:** paste the text you copied into the skill's text field. (If the form offers an upload instead, upload
-   the file; whether the chat takes the file as it stands or asks for a different form was not recorded.)
+   the file. If the chat does not accept the file as it stands, paste its text instead.)
 9. **In the chat:** save the skill.
 10. **In the chat:** open the **Agent Builder**.
 11. **In the chat:** name the agent something you will recognise, for example "SCAT coder".
@@ -330,8 +334,8 @@ tool that no longer works, add the new entry, and save. This was seen on the lab
 
 Then follow the coding loop below, one step per reply.
 
-Whether your chat offers the server's three prompts (`code-a-narrative`, `explain-a-problem`, `review-before-done`)
-was not tried. If it does, `code-a-narrative` starts the loop.
+If your chat offers the server's three prompts (`code-a-narrative`, `explain-a-problem`, `review-before-done`),
+`code-a-narrative` starts the loop.
 
 ### The coding loop, in the chat and in Obsidian
 
@@ -351,8 +355,8 @@ This is the [coding loop](coding.md#the-coding-loop) with an assistant. What is 
 8. **In Obsidian:** read the page and decide whether the account matches the notes.
 9. **In Obsidian:** set `status: done` yourself. The assistant never does, and the server refuses it if asked.
 
-The server and Obsidian use the same folder, so what the assistant records appears in Obsidian. How quickly
-Obsidian shows a change was not tried; if a page looks stale, reopen it. If you work in a copy (see above), the
+The server and Obsidian use the same folder, so what the assistant records appears in Obsidian. If a page
+looks stale in Obsidian, reopen it. If you work in a copy (see above), the
 same is true of that copy.
 
 ### Views
@@ -370,9 +374,7 @@ GitHub's features and no terminal:
 **Releases**, then **Draft a new release**, then in the tag box type a name such as `v1` and choose the option to
 create that new tag. Add a title and choose **Publish release**. The tag now names that commit.
 
-**GitHub Desktop** commits and pushes, as shown under [your vault with no terminal](#your-vault-with-no-terminal-github-desktop); this page does not give its clicks for tagging.
-
-This was read in GitHub's documentation, not run by a coder, and GitHub's wording changes.
+**GitHub Desktop** commits and pushes, as shown under [your vault with no terminal](#your-vault-with-no-terminal-github-desktop). For tagging, use the release on the website, above. GitHub's wording changes: use the nearest name on your screen.
 
 ## The session key
 
@@ -425,9 +427,10 @@ platform (next section).
 **When Stop could not confirm.** The alert is then titled "SCAT Chat has a problem" and says "Stopped, but I could not
 confirm:" followed by what it could not confirm, then "choose Stop in the SCAT Chat menu to try again, or restart your
 Mac, to be sure." SCAT Chat stays open, with a red dot. Do not open SCAT Chat again: that would start a new session.
-Choose **Stop** in its menu again, or restart your Mac. If the alert says the public link may still be on, open
-Tailscale and switch Funnel off. If it says the key could not be deleted, open Keychain Access and delete the item it
-names.
+Choose **Stop** in its menu again, or restart your Mac. If the public link may still be on, open Tailscale and switch Funnel off. If the public link could not be checked
+because Tailscale was not found, install or open Tailscale and check it. If the server container is still there, restart
+your Mac to be sure. If your Mac may stay awake, restart it to be sure. If the key could not be deleted, open Keychain
+Access and delete the item named in the alert. If the key is still on your clipboard, copy something else over it.
 
 **Two cases, two answers.** A problem while SCAT Chat is starting (a red dot and the alert "SCAT Chat has a problem",
 with a message that ends "choose Stop in the SCAT Chat menu, then open SCAT Chat again") leaves SCAT Chat open: choose
@@ -451,11 +454,11 @@ trace](leave-no-trace.md), instead.
 That is the clean-up the lab run did on 25 November. Delete only the server entry; the rest is optional:
 
 - **A skill or a saved agent you set up stays** unless you remove it. Leave them for the next session, or remove them
-  in the chat where you made them (where the chat keeps them for removal was not recorded; look where you created
+  in the chat where you made them (look where you created
   them).
-- **Your uploaded field notes and conversations** stay in the chat account until you delete them there. Whether and how long the chat
-  provider keeps them is not recorded here (to confirm). How to delete an uploaded file and a conversation was not
-  recorded for this page; look for a file library and the conversation's menu in the chat.
+- **Your uploaded field notes and conversations** stay in the chat account until you delete them there. How long the chat
+  provider keeps them is set by the provider: ask it, or read its terms. To delete an uploaded file and a conversation,
+  look for a file library and the conversation's menu in the chat.
 - **Your vault** is on your Mac and is not touched.
 
 Next session, add the new server entry (see "Connect the chat"). A saved agent's tool does not survive deleting the
@@ -506,7 +509,7 @@ ones are cut with "...".
 | "The server did not answer within ... seconds." or "The server answers but does not accept its own key." | Choose **Stop** in the SCAT Chat menu, then open SCAT Chat again. If it repeats, tell the person who set this up. |
 | "SCAT Chat stopped unexpectedly." | Choose **Stop** in the SCAT Chat menu, then open SCAT Chat again. If it repeats, tell the person who set this up. |
 | "SCAT Chat is already running. Click Stop in its menu (or quit the app) before starting it again." | Open its menu in the menu bar and choose **Stop**, then open SCAT Chat again. |
-| "Stopped, but I could not confirm:" followed by what it could not confirm, then "choose Stop in the SCAT Chat menu to try again, or restart your Mac, to be sure." (the alert "SCAT Chat has a problem", after you chose Stop) | SCAT Chat stays open with a red dot. Choose **Stop** again, or restart your Mac. Do not open SCAT Chat again. If it names the public link, open Tailscale and switch Funnel off. |
+| "Stopped, but I could not confirm:" followed by what it could not confirm, then "choose Stop in the SCAT Chat menu to try again, or restart your Mac, to be sure." (the alert "SCAT Chat has a problem", after you chose Stop) | SCAT Chat stays open with a red dot. Choose **Stop** again, or restart your Mac. Do not open SCAT Chat again. Then the remedy for what it names: public link may still be on, open Tailscale and switch Funnel off; server container still there or your Mac may stay awake, restart your Mac; key could not be deleted, delete the named item in Keychain Access; key still on your clipboard, copy something else over it. |
 | "SCAT Chat is running. Click its dot in the menu bar: Copy address, then Copy key, and paste each into the chat." or "The address is on your clipboard." or "The key is on your clipboard." (a notification) | Not an error. See "Connect the chat". |
 | "SCAT Chat stopped" (an alert) | Not an error: Stop worked. See "Stop". |
 

@@ -153,7 +153,7 @@ it needs](../docs/chat-path.md#what-the-chat-path-is-and-what-it-needs), [Instal
 4. Start a session, as [Start a session](../docs/chat-path.md#start-a-session) says: open SCAT Chat; read the
    first-start note about the menu bar and click **OK**; at this first start, choose your vault in the folder picker (the
    folder that holds `scat.toml`; later starts ask `Serve <vault>?` instead); if it is in
-   Documents, Desktop, Downloads or iCloud the launcher offers a copy: record what you chose); wait for the first fetch
+   Documents, Desktop, Downloads or iCloud the launcher offers a copy: record what you chose; wait for the first fetch
    or build, until the dot is green.
 5. Connect the chat, as [Connect the chat](../docs/chat-path.md#connect-the-chat) says: click **Copy address** in SCAT Chat's
    menu and paste it (it ends in `/mcp`), the Streamable HTTPS transport, API key authentication, the header format, the
