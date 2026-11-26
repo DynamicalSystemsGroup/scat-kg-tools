@@ -56,9 +56,9 @@ def test_the_keywords_are_defined_once():
 @pytest.mark.parametrize(
     ("ns", "word"),
     [
-        ([1, 2, 3, 4, 6], "MAY"),
+        ([1, 2, 3, 4, 6, 16], "MAY"),
         ([5], "SHOULD"),
-        ([7, 8, 9, 10, 11, 12], "SHALL NOT"),
+        ([7, 8, 9, 10, 11, 12, 17], "SHALL NOT"),
         ([13, 14, 15], "SHALL"),
     ],
 )

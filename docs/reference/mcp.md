@@ -47,13 +47,15 @@ Sixteen tools. Each returns the operation's own document.
 
 ## Prompts and the rules
 
-Three prompts, each citing `contracts/assistant.md`:
+Five prompts, each citing `contracts/assistant.md`:
 
 | Prompt | What it gives the assistant |
 |---|---|
 | `code-a-narrative` | The coding loop for one narrative, each step handed back to the coder. |
 | `explain-a-problem` | How to explain a problem the tool reported, quoting it as reported. |
 | `review-before-done` | A review of a narrative before the coder sets `done`. |
+| `draft-a-node-page` | A draft of one node page as text in the reply, from the evidence view, across the narratives and citing them. You write it into the vault and set `done`. |
+| `fill-in-node-pages` | The same for each stub node page in turn, one page per step, each handed back to you before the next. |
 
 The server also offers one resource, `scat://assistant-rules`, the assistant's rules as text.
 
@@ -68,6 +70,7 @@ A refusal is a result, not an error, and says what to do instead.
   refused ("no page has this name or path"). `export_edges` writes only inside `views/`, and refuses any other
   folder.
 - **A narrative's text.** No tool writes it; the coder pastes it.
+- **A node page's body.** No tool writes it either; `stub` creates a page with an empty body, and you write the text into the vault.
 
 ## The data is the tool's own
 

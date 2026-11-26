@@ -26,6 +26,8 @@ G4_HEADINGS = {
     "kind": "## Kind",
     "one step per reply": "## One step per reply",
     "offering a description": "## Offering a description",
+    "drafting a node page": "## Drafting a node page",
+    "sweeping the stub node pages": "## Sweeping the stub node pages",
     "pages to tag at the end": "## At the end of a session",
     "norms pointer": "## Norms",
 }

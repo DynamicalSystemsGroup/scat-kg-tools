@@ -338,8 +338,10 @@ in the Agent Builder, remove the tool that no longer works, add the new entry, a
 
 Then follow the coding loop below, one step per reply.
 
-If your chat offers the server's three prompts (`code-a-narrative`, `explain-a-problem`, `review-before-done`),
-`code-a-narrative` starts the loop.
+If your chat offers the server's prompts (`code-a-narrative`, `explain-a-problem`, `review-before-done`,
+`draft-a-node-page`, `fill-in-node-pages`), `code-a-narrative` starts the loop. `draft-a-node-page` drafts one node
+page as text in the reply for you to write into the vault, and `fill-in-node-pages` does that for each stub node page
+in turn.
 
 ### The coding loop, in the chat and in Obsidian
 

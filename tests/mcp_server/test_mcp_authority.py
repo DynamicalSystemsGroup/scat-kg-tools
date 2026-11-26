@@ -145,6 +145,7 @@ def test_the_assistants_file_has_the_may_not_rules_this_server_is_built_to():
         10: "The assistant SHALL NOT resolve doubt about an interpretation.",
         11: "The assistant SHALL NOT claim a narrative is correct because the check passed.",
         12: "The assistant SHALL NOT touch the inputs (the field notes)",
+        17: "The assistant SHALL NOT write a node page's body through the tool.",
     }
     for n, start in key.items():
         assert _rule(n).startswith(start), n
@@ -215,6 +216,8 @@ def test_prompts_and_tools_cite_the_assistants_file_and_say_the_coder_sets_done(
         prompts.CODE_A_NARRATIVE,
         prompts.EXPLAIN_A_PROBLEM,
         prompts.REVIEW_BEFORE_DONE,
+        prompts.DRAFT_A_NODE_PAGE,
+        prompts.FILL_IN_NODE_PAGES,
         prompts.RULES,
     ):
         assert "contracts/assistant.md" in p
@@ -234,7 +237,13 @@ def test_the_prompts_through_the_server(tmp_path):
 
     with serve(copy_vault(tmp_path / "v")) as url:
         got = with_session(url, go)
-    assert {"code-a-narrative", "explain-a-problem", "review-before-done"} <= set(got)
+    assert {
+        "code-a-narrative",
+        "explain-a-problem",
+        "review-before-done",
+        "draft-a-node-page",
+        "fill-in-node-pages",
+    } <= set(got)
     for name, text in got.items():
         assert "contracts/assistant.md" in text, name
         assert "coder" in text and "done" in text, name
@@ -253,3 +262,19 @@ def test_importing_the_core_does_not_import_the_server_or_mcp():
 
 def test_w9_the_review_prompt_asks_the_fingerprint_for_its_candidates():
     assert "Call fingerprint with candidates true" in prompts.REVIEW_BEFORE_DONE
+
+
+def test_a16_a17_the_prompts_say_it():
+    rules = " ".join(prompts.RULES.split())
+    assert "draft one node page as text in your reply, from the evidence view" in rules  # A16
+    assert (
+        "write a node page's body through the tool (the coder pastes or edits it)" in rules
+    )  # A17
+    assert "`evidence` and `copy_share`" in rules
+    for p in (prompts.DRAFT_A_NODE_PAGE, prompts.FILL_IN_NODE_PAGES):
+        flat = " ".join(p.split())
+        assert rules in flat
+        assert "writes the page into the vault" in flat or "write the page into the vault" in flat
+        assert "sets `done`" in flat or "sets `done`, in Obsidian" in flat
+        assert not re.search(r"\b(SHALL NOT|SHALL|SHOULD|MAY)\b", p)
+    assert not re.search(r"\b(SHALL NOT|SHALL|SHOULD|MAY)\b", prompts.RULES)
