@@ -86,3 +86,15 @@ The chief engineer's words, 26 November (quoted as typed; recorded by the ACE):
 > term matching because sometimes different words are used for the same concept and sometimes the same term is used
 > for a different concept. i suspect much of the work to facilitate populating the pages will come from skills or
 > agentic workflows. do we have those extra tools, prompts and workflows available yet to test out?"
+
+## From the chief engineer, 26 November (later)
+
+| ID | Candidate | What it touches | Source |
+|---|---|---|---|
+| C13 | **Attributing narratives to contributors, as an organiser's choice at set-up.** Some groups prefer attribution to privacy. Attribution is off in Chatham House mode; the organiser chooses it when setting up and setting expectations. "Attributed to" is the natural word for it (the diagram's stale "attributed to" for affordance to technology is fixed: "provided by"). | The ontology (an attribution property, distinct from holding; `prov:wasAttributedTo` was weighed in the ontology research), page contracts, `scat.toml` (a mode), the planning guide and consent page, views | The chief engineer's words below |
+
+> C13: "this is a bit of an awkward catch but hopefully not a huge disruption. i think people would be more likely to
+> say "affordances are provided by technologies" than "attributed to" that also releases the "attributed to" concept
+> for future use to attribute narratives to contributors. the option to attribute narratives to contributors is off
+> when running in chatham house mode but i do think its something the tool should support. some groups will prefer
+> attribution over privacy. this choice is part of the set up and expectation setting stage for the organizer."
