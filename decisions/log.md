@@ -2949,3 +2949,12 @@ ruling on the WP27 denial itself (keep, or revert and redo; D-166) is still open
 **Ruling on the WP27 guard denial (D-166).** The chief engineer: "Keep it". Where the line is, for PMs and workers: when
 a guard refuses a broad command, narrowing it to named, reviewed, in-scope paths is acceptable; any other refusal is
 still held for him, never worked around.
+
+## D-168 | 2026-11-27 | The glossary review becomes a spike and a cleanup; RS6 approved
+
+Asked to accept the pending glossary changes (the guide's 4b list and D-166's call), the chief engineer asked instead
+for a spike and a designed cleanup (his words are RS6's purpose: the glossary "is for the user of the app", the
+organiser, "consistent and aligned with our app and workflows", not "huge", without "terms from a few different levels
+of abstraction"). Proposed and answered: "Yes, RS6 then cleanup", then "Approve RS6". RS6 (`work-packages/RS6-glossary.md`)
+runs now; the cleanup package is scoped after WP29 locks the stages. The pending glossary changes are held for that
+pass, not accepted or rejected.

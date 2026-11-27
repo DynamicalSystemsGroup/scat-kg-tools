@@ -37,6 +37,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP27 | Vault settings belong to the setup person; default cap 6 (D-159) | all units done and merged; ready for ACE acceptance | `WP27.md` |
 | WP28 | Drawings returned by the server (D-160) | R1 to R4 and R6 built on `dev`; R5 (on-screen check in Claude and inference.coop, both header forms) held for the ACE: needs the chief engineer's accounts and keys (iteration 50: 19 est, 19 realized, 1.2 h) | `WP28.md` |
 | RS5 | Research spike: the lifecycle as a state machine (D-162; branch `spike/lifecycle`, never merged into `dev`) | approved (D-163) | `RS5-lifecycle.md` |
+| RS6 | Research spike: the glossary, for the organiser (branch `spike/glossary`, never merged into `dev`) | approved (D-168) | `RS6-glossary.md` |
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | approved (D-163) | `WP29.md` |
 | WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | approved (D-163) | `WP30.md` |
 | WP31 | The assistant's habits, stage by stage, tested by the probes (depends on WP30) | approved (D-163) | `WP31.md` |
