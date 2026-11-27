@@ -27,8 +27,9 @@ guide is current to D-156.
    - the by-hand screenshots in Obsidian (or let me take them with full-screen control).
 3. **The chat-path user tests' live stages** (c1 to c3, J5 and J7 to J10), human-paced, as `acceptance/chat-path/plan.md`
    says; you sign in and paste each key, I drive.
-4. **One judgement for you:** the chat path's "Install once" uses Terminal (the pages say a person who sets it up does
-   it); the mission says the organiser must not be required to open a terminal on that path (D-155).
+4. **When you're back from errands:** a short sitting for the account-bound trials held from WP28 (images in Claude
+   and inference.coop; Claude's two header forms) and RS5 (client trials, from its trial plan); then WP29's stage
+   model for your approval.
 
 Then: your walkthrough (UA-M) from `acceptance/reviewers-guide.md`, and I open the release PRs.
 
