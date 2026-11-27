@@ -20,6 +20,7 @@
     scat_kg.review()                    # pages that may be one node, and pages to re-read
     scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
     scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
+    scat_kg.guide("code")               # a lifecycle stage's guide (no stage: the index); no vault needed
 
 Each call takes `root=` (the vault folder; default: the current directory) and returns an object whose
 `str()` is the message the `scat` command prints, and which prints as that message. `.ok` is False when
@@ -35,6 +36,7 @@ from scat_kg.evidence import evidence
 from scat_kg.export import export_edges
 from scat_kg.graph import Graph
 from scat_kg.graph import load as _load
+from scat_kg.guides import guide
 from scat_kg.ops import (
     EdgeResult,
     StatusReport,
@@ -153,6 +155,7 @@ __all__ = [
     "evidence",
     "export_edges",
     "fingerprint",
+    "guide",
     "index",
     "layered",
     "load",

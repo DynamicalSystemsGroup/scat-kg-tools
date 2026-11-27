@@ -2,12 +2,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://scat-kg-tools.invalid/contracts/machine-interface.schema.json",
   "title": "scat machine interface, schema_version 3",
-  "description": "The one JSON document a scat command prints with --json, and the dict a Python result's to_dict() returns. Every object allows extra fields: adding a field does not change schema_version. The set of rule ids is not enumerated here, only its pattern. Version 3 adds the `evidence` view; the layout is that of version 2 (D-088): pages are group, concern, affordance, technology and narrative; an edge is a row of a narrative table, so record-edge and remove-edge results name the edge and the rows they touched. kind is check, status, operation or view. A refusal, even by check or status, gives kind operation with ok false. ok is false on an error or a refusal; warnings keep it true. The exit code is 0 when ok, 1 otherwise, and 2 for a command line that cannot be read. Stdout holds exactly one document; text for humans goes to stderr. Line numbers count the file's lines, front matter included; columns count characters, from 1.",
+  "description": "The one JSON document a scat command prints with --json, and the dict a Python result's to_dict() returns. Every object allows extra fields: adding a field does not change schema_version. The set of rule ids is not enumerated here, only its pattern. Version 3 adds the `evidence` view; the layout is that of version 2 (D-088): pages are group, concern, affordance, technology and narrative; an edge is a row of a narrative table, so record-edge and remove-edge results name the edge and the rows they touched. kind is check, status, operation, view, guide or stage (guide and stage were added without a version bump: they are new kinds, and no existing document changes). A refusal, even by check or status, gives kind operation with ok false. ok is false on an error or a refusal; warnings keep it true. The exit code is 0 when ok, 1 otherwise, and 2 for a command line that cannot be read. Stdout holds exactly one document; text for humans goes to stderr. Line numbers count the file's lines, front matter included; columns count characters, from 1.",
   "oneOf": [
     { "$ref": "#/$defs/CheckResult" },
     { "$ref": "#/$defs/StatusResult" },
     { "$ref": "#/$defs/OperationResult" },
-    { "$ref": "#/$defs/ViewResult" }
+    { "$ref": "#/$defs/ViewResult" },
+    { "$ref": "#/$defs/GuideResult" },
+    { "$ref": "#/$defs/StageResult" }
   ],
   "$defs": {
     "SchemaVersion": { "const": 3 },
@@ -92,6 +94,119 @@
         "type": { "type": ["string", "null"], "description": "The type key as written (group, concern, affordance, technology, narrative or contributor); null when there is none that is a string." },
         "status": { "type": ["string", "null"], "description": "The status as written; null when missing or not a string." }
       }
+    },
+
+    "GuideResult": {
+      "description": "What `scat guide [STAGE]` and scat_kg.guide return for a stage or the index: the text of the guide, the same text everywhere. It needs no vault, so mode is null. An unknown stage is an OperationResult with operation guide and ok false.",
+      "type": "object",
+      "required": ["schema_version", "kind", "operation", "ok", "mode", "stage", "text", "docs", "tools", "exits"],
+      "properties": {
+        "schema_version": { "$ref": "#/$defs/SchemaVersion" },
+        "kind": { "const": "guide" },
+        "operation": { "const": "guide" },
+        "ok": { "const": true },
+        "mode": { "const": null },
+        "stage": { "type": "string", "minLength": 1, "description": "index, or one of the stages of the lifecycle (plan, capture, code, analyse, report)." },
+        "text": { "type": "string", "minLength": 1, "description": "The guide as `scat guide` prints it, without the final newline." },
+        "docs": { "type": ["string", "null"], "description": "The repository-relative docs page of the stage; null for the index." },
+        "tools": { "$ref": "#/$defs/StringList", "description": "The stage's tools; for the index, the stage tools." },
+        "exits": { "$ref": "#/$defs/StringList", "description": "The ids of the transitions out of the stage; for the index, every transition." }
+      }
+    },
+    "StagePredicate": {
+      "description": "A transition's predicate. A person predicate says what the person must say. A detect predicate says what was checked, whether it holds now, and the numbers behind it.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["kind", "says"],
+          "properties": { "kind": { "const": "person" }, "says": { "type": "string" } }
+        },
+        {
+          "type": "object",
+          "required": ["kind", "check", "holds", "detail"],
+          "properties": {
+            "kind": { "const": "detect" },
+            "check": { "type": "string" },
+            "holds": { "type": "boolean" },
+            "detail": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "StageExit": {
+      "description": "A transition out of a stage (or out of unknown).",
+      "type": "object",
+      "required": ["id", "to", "dir", "trigger", "decides", "predicate"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^L[0-9]+$" },
+        "to": { "type": "string", "minLength": 1, "description": "A stage, or any for the move out of unknown." },
+        "dir": { "enum": ["start", "forward", "backward"] },
+        "trigger": { "type": "string" },
+        "decides": { "type": "string", "description": "The role whose say-so makes the move: organiser, coder or setup person." },
+        "predicate": { "$ref": "#/$defs/StagePredicate" }
+      }
+    },
+    "StageResult": {
+      "description": "What the server's which_stage and set_stage return. which-stage: the stage (or unknown), who set it and when, any pending request, the stage's work, required inputs, tools, prompts and exits, plus text and the uri of its guide; when the stage is unknown, stages lists the five with their work. set-stage: moved says whether the stage changed; a request without `by` is recorded as pending and moves nothing; a move gives from, to, transition, decides and any advisory, with the new stage's exits. A refused stage call is an OperationResult with ok false.",
+      "type": "object",
+      "required": ["schema_version", "kind", "operation", "ok", "mode"],
+      "properties": {
+        "schema_version": { "$ref": "#/$defs/SchemaVersion" },
+        "mode": { "$ref": "#/$defs/Mode" },
+        "kind": { "const": "stage" },
+        "operation": { "enum": ["which-stage", "set-stage"] },
+        "ok": { "const": true },
+        "stage": { "type": "string", "minLength": 1, "description": "The project's stage, or unknown. Optional in set-stage, where it is the stage after the call." },
+        "set_by": { "type": ["string", "null"], "description": "Who made the move, as given." },
+        "set_at": { "type": ["string", "null"], "description": "UTC, ISO 8601 to the second, ending in Z." },
+        "pending": {
+          "description": "A recorded request that has not moved the stage, or null.",
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "required": ["to", "requested_at"],
+              "properties": { "to": { "type": "string" }, "requested_at": { "type": "string" } }
+            }
+          ]
+        },
+        "work": { "type": "string", "description": "which-stage: the stage's work in one line." },
+        "required_inputs": { "$ref": "#/$defs/StringList" },
+        "tools": { "$ref": "#/$defs/StringList" },
+        "prompts": { "$ref": "#/$defs/StringList" },
+        "exits": { "type": "array", "items": { "$ref": "#/$defs/StageExit" } },
+        "stages": {
+          "type": "array",
+          "description": "which-stage in unknown: the five stages with their work.",
+          "items": {
+            "type": "object",
+            "required": ["name", "work"],
+            "properties": { "name": { "type": "string" }, "work": { "type": "string" } }
+          }
+        },
+        "text": { "type": "string", "description": "A short rendering for a person." },
+        "guide": { "type": "string", "description": "which-stage: the resource uri of the stage's guide." },
+        "moved": { "type": "boolean", "description": "set-stage: true when the stage changed." },
+        "from": { "type": "string", "description": "set-stage, when moved: the stage before." },
+        "to": { "type": "string", "description": "set-stage: the stage asked for." },
+        "transition": { "type": "string", "pattern": "^L[0-9]+$", "description": "set-stage, when moved or requested: the transition's id." },
+        "decides": { "type": "string", "description": "set-stage: the role who decides the move, as a reminder." },
+        "advisory": { "$ref": "#/$defs/StringList", "description": "set-stage, when moved: a line for a detect predicate that does not hold now; it never blocks." }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "operation": { "const": "which-stage" } }, "required": ["operation"] },
+          "then": { "required": ["stage", "set_by", "set_at", "pending", "work", "exits", "text", "guide"] }
+        },
+        {
+          "if": { "properties": { "operation": { "const": "set-stage" } }, "required": ["operation"] },
+          "then": { "required": ["moved", "to", "text"] }
+        },
+        {
+          "if": { "properties": { "moved": { "const": true } }, "required": ["moved"] },
+          "then": { "required": ["from", "transition", "decides", "advisory", "exits"] }
+        }
+      ]
     },
 
     "OperationResult": {

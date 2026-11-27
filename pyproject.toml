@@ -35,6 +35,7 @@ packages = ["src/scat_kg"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "ontology/scat.ttl" = "scat_kg/scat.ttl"
+"contracts/lifecycle.md" = "scat_kg/guides/lifecycle.md"
 
 [tool.ruff]
 line-length = 100

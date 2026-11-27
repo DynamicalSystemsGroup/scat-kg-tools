@@ -260,6 +260,13 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--out", required=True, metavar="DIR", help="the folder the tables go in (no default)"
     )
+    p = command(
+        "guide",
+        "Show the guide of a lifecycle stage (plan, capture, code, analyse or report), or, without STAGE, "
+        "the index of the stages and their moves. Needs no vault. Writes nothing.",
+        '`scat_kg.guide()`, `scat_kg.guide("<stage>")`',
+    )
+    p.add_argument("stage", nargs="?", metavar="STAGE", help="the stage; without it, the index")
     drawing = sub.add_parser(
         "draw",
         help="Draw a view as an image (needs the extra `draw`): `.png` or `.svg`.",
@@ -367,6 +374,8 @@ def run(args: argparse.Namespace):
             return scat_kg.attribution(root=root)
         case "export-edges":
             return scat_kg.export_edges(args.out, root=root)
+        case "guide":
+            return scat_kg.guide(args.stage)
         case "draw":
             match args.drawing:
                 case "fingerprint":
