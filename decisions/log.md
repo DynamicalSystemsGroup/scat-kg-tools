@@ -2945,3 +2945,7 @@ narrow commit tools for the app, checked against the rules the session's stage r
 and page statuses (his words are in `work-packages/WP28-WP31-inputs.md`). Asked where it goes, his answer: "Into WP29's
 design". WP29 takes it as a stage tool to design; WP30's scope gets an amendment for it when the design lands. His
 ruling on the WP27 denial itself (keep, or revert and redo; D-166) is still open.
+
+**Ruling on the WP27 guard denial (D-166).** The chief engineer: "Keep it". Where the line is, for PMs and workers: when
+a guard refuses a broad command, narrowing it to named, reviewed, in-scope paths is acceptable; any other refusal is
+still held for him, never worked around.

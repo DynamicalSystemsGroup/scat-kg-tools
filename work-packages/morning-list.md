@@ -27,9 +27,8 @@ guide is current to D-156.
    - the by-hand screenshots in Obsidian (or let me take them with full-screen control).
 3. **The chat-path user tests' live stages** (c1 to c3, J5 and J7 to J10), human-paced, as `acceptance/chat-path/plan.md`
    says; you sign in and paste each key, I drive.
-4. **One ruling (D-166):** in WP27 the auto-mode classifier denied a worker's broad `git add -A && git commit`; the PM
-   then committed the same in-scope diff with named paths. Keep, or revert and redo? Also for your review: the glossary
-   call on **cap** and **attribution mode** (organiser chooses, setup person writes).
+4. **For your review:** the glossary call on **cap** and **attribution mode** (organiser chooses, setup person writes;
+   D-166).
 5. **When you're back from errands:** a short sitting for the account-bound trials held from WP28 (images in Claude
    and inference.coop; Claude's two header forms) and RS5 (client trials, from its trial plan); then WP29's stage
    model for your approval.
