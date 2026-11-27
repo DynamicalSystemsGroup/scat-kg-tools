@@ -423,7 +423,7 @@ def test_script_syntax():
 
 def test_dockerfile_contract():
     d = (REPO / "deploy" / "Dockerfile").read_text()
-    assert "UID" not in d and "useradd" not in d and "USER 65534:65534" in d and "[mcp]" in d
+    assert "UID" not in d and "useradd" not in d and "USER 65534:65534" in d and "[mcp,draw]" in d
     assert '"scat-mcp", "--vault", "/vault", "--host", "0.0.0.0", "--port", "8765"' in d
     ig = (REPO / "deploy" / "Dockerfile.dockerignore").read_text().splitlines()
     assert ig[1] == "*" or "*" in ig  # allow-list: only what the Dockerfile copies

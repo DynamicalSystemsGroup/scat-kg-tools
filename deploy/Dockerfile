@@ -7,7 +7,7 @@ FROM python:3.12-slim
 COPY pyproject.toml /src/pyproject.toml
 COPY src /src/src
 COPY ontology/scat.ttl /src/ontology/scat.ttl
-RUN pip install --no-cache-dir "/src[mcp]" && rm -rf /src /root/.cache
+RUN pip install --no-cache-dir "/src[mcp,draw]" && rm -rf /src /root/.cache
 
 # Nothing writes outside /tmp (a tmpfs at run time) and /vault.
 ENV HOME=/tmp \
