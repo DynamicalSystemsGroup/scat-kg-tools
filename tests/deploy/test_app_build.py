@@ -82,7 +82,10 @@ def test_no_applet_line_passes_a_value_to_the_launcher():
 def test_the_build_never_targets_applications():
     build = (DEPLOY / "build-app.sh").read_text()
     assert "/Applications" not in build
-    assert "/Applications" not in APPLET
+    # The applet names Applications only in the move it offers a person (D-156), never under tests.
+    offer = APPLET.split("on offerMove()", 1)[1].split("end offerMove", 1)[0]
+    assert "/Applications" not in APPLET.replace(offer, "")
+    assert 'if launcher is "" and my offerMove() then' in APPLET
     assert "out=${1:-$here/build}" in build  # the default is inside the checkout (deploy/build)
 
 

@@ -171,15 +171,16 @@ You do these steps one time per Mac. Each ends with what you should see.
 **What SCAT Chat is.** SCAT Chat is a small Mac app that runs the SCAT MCP server, the tool's front end for the chat.
 It has no window of its own: while a session runs it is a coloured dot in the Mac's menu bar (the strip at the top of
 the screen), with a menu under it. It starts the server, makes the public address and the session key, and stops them
-again. **Where it is:** in your Applications folder, once you do the step below. That step puts a copy of the app
-there. Nothing is installed system-wide: the copy is the whole app, and deleting it removes it.
+again. **Where it is:** in your Applications folder, once you do the step below. That step moves the app there. Nothing is installed system-wide: the copy is the whole app, and deleting it removes it.
 
 Today the app is not a download. The person who set this up builds it from the `scat-kg-tools` repository with
 `deploy/build-app.sh` and hands it to you. The built app is not kept in the repository. If no one has built it for you, ask the person who set up your tools;
 this guide cannot build it for you.
 
-25. **In Finder:** drag `SCAT Chat.app` into your Applications folder. You should see an app called SCAT Chat there,
-    a copy of the one you were given.
+25. **In Finder:** open `SCAT Chat.app` where you were given it. It asks whether to move itself to your Applications
+    folder: choose **Move to Applications**. It moves itself, says so, and closes; it starts no session yet. If it says
+    it can't move itself, drag `SCAT Chat.app` into your Applications folder in Finder. You should see an app called
+    SCAT Chat in your Applications folder.
 
 ### A container runtime: Colima
 

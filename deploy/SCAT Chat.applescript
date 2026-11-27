@@ -57,9 +57,39 @@ on addAction(t, sel)
 	return mi
 end addAction
 
+-- Outside the Applications folder, offer to move the app there, as many Mac apps do. Returns true when the person chose
+-- to move it (moved, or told how), so this copy quits without starting a session. Skipped under tests
+-- (SCAT_CHAT_LAUNCHER set).
+on offerMove()
+	set here to POSIX path of (path to me)
+	if here ends with "/" then set here to text 1 thru -2 of here
+	if here starts with "/Applications/" then return false
+	set target to "/Applications/SCAT Chat.app"
+	activate -- a menu-bar app's dialog would otherwise open behind other windows
+	set answer to button returned of (display dialog "SCAT Chat is not in your Applications folder. Move it there? It then opens from Applications, like your other apps." buttons {"Not now", "Move to Applications"} default button "Move to Applications" with title "SCAT Chat" with icon note)
+	if answer is not "Move to Applications" then return false
+	if here contains "/AppTranslocation/" then
+		display alert "SCAT Chat can't move itself from here." message "macOS is running it from a temporary place. Quit it, then drag SCAT Chat.app into your Applications folder in Finder and open it from there."
+		return true
+	end if
+	try
+		do shell script "rm -rf " & quoted form of target & " && mv " & quoted form of here & " " & quoted form of target
+	on error
+		display alert "SCAT Chat couldn't move itself." message "Drag SCAT Chat.app into your Applications folder in Finder, then open it from there."
+		return true
+	end try
+	display dialog "SCAT Chat is now in your Applications folder. Open it from there when you start a session." buttons {"OK"} default button "OK" with title "SCAT Chat" with icon note
+	return true
+end offerMove
+
 on run
 	set logPath to my envOf("SCAT_CHAT_APPLET_LOG")
 	set launcher to my envOf("SCAT_CHAT_LAUNCHER")
+	if launcher is "" and my offerMove() then
+		set stopDone to true -- this copy started nothing, so its quit has nothing to stop
+		quit
+		return
+	end if
 	if launcher is "" then set launcher to POSIX path of (path to resource "scat-chat.sh")
 	set launcher to quoted form of launcher
 	set stateDir to my envOf("SCAT_CHAT_HOME")
