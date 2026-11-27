@@ -1,7 +1,7 @@
-# WP27 inputs (gathered before its scope)
+# WP28 to WP30 inputs (gathered before their scopes)
 
-Evidence and prior work for WP27, the lifecycle manual built into the tools (D-157) with the analysis stage's drawings
-(D-160). Written 27 November in the chief engineer's sitting. The scope cites this file.
+Evidence and prior work for WP28 (drawings, D-160), WP29 (the lifecycle manual, D-157) and WP30 (the assistant's habits).
+Written 27 November in the chief engineer's sitting; the three scopes cite it. (First filed as WP27-inputs.md, before the work was split into four packages.)
 
 ## The drawing gap: prior work exists, the hand-off was dropped
 

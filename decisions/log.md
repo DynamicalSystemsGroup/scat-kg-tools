@@ -2855,3 +2855,14 @@ teardown he set the aim (typed by the agent): "we need the analysis stage of the
 call python tools that produce visualizations and providing help interpreting those visuals and where necessary
 revisiting the coded data". The ACE folds it into WP27 (D-157), as the analysis stage: the MCP server's drawing tools
 return the `draw` module's images, and the guide has the assistant interpret them and hand revisits back to the coder.
+
+## D-161 | 2026-11-27 | Two sitting changes made on his word: the move prompt and the pros-and-cons page
+
+- SCAT Chat offers to move itself to Applications at its first start (tools 71c8417), on the chief engineer's (typed by
+  the agent): "i did not drag it to applications but i think it would be much easier if we set up the prompt to do that
+  like with many mac apps". After the move it says where it went and quits, starting no session, because Install once
+  comes before Colima is set up. Builds and tests still never write to Applications (D-125); only a person's click
+  does. He tried it: "i clicked move, then ok. it worked."
+- A docs page, Pros and cons of each path (tools eeb1a99), on his: "the main con of the IDE approach is that we cannot
+  truly prevent the LLM assistent from handwriting files which are supposed to be written with the tools we provided. i
+  want us to add to our documentation a simple page reviewing pros and cons of each documented approach."
