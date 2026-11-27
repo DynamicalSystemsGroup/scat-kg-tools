@@ -1,4 +1,4 @@
-"""Drawings (M6): a view drawn as four columns, one per layer, in layer order. Needs the extra `draw` (matplotlib).
+"""Drawings (M6): a view drawn as columns, one per layer, in layer order (four; a fingerprint drops one for its kind). Needs the extra `draw` (matplotlib).
 
     from scat_kg import draw
     d = draw.fingerprint("dry-july")      # a narrative's nodes and edges
@@ -7,6 +7,10 @@
     d = draw.trace("water")               # what a node reaches: up, down or `direction="both"` (the default)
     d.png(); d.svg()                      # the image, as bytes and as text; Jupyter shows `d` itself
     d.save("dry-july.png")                # the explicit write: `.png` or `.svg`
+
+A fingerprint of an architecture has no stakeholder column and one of a scenario has no technology column; the footer
+says how many nodes of the dropped layer the narrative links and why they are not drawn. The first column is labelled
+"stakeholder" (the layer `group`).
 
 A drawing is the view's data first (`view.to_dict()`, never the graph again) and then marks. A trace draws the
 nodes it reaches and the node it starts from, whose type and status come from `evidence`, another view. Each node is a box in
@@ -39,10 +43,24 @@ COLOURS = {
     "affordance": "#009E73",
     "technology": "#CC79A7",
 }
+SHOWN = {
+    "group": "stakeholder"
+}  # the word at the top of a column, where it is not the layer's name
+PLURAL = {
+    "group": "stakeholders",
+    "concern": "concerns",
+    "affordance": "affordances",
+    "technology": "technologies",
+}
+DROPPED = {
+    "architecture": "group",
+    "scenario": "technology",
+}  # the layer a kind's fingerprint leaves out
 DPI = 100
 ROW = 0.3  # inches between two nodes of a column
 HEAD = 1.1  # inches above the nodes: title and layer labels
-FOOT = 0.6  # inches below the nodes: the legend line
+FOOT = 0.6  # inches below the nodes: one line of legend
+FOOT_LINE = 0.17  # inches for each further line of legend
 MIN_BODY = 1.2
 DASH = (0, (4, 3))
 
@@ -62,10 +80,11 @@ def _label(node: dict) -> str:
     return node["name"] if not status or status == "done" else f"{node['name']} ({status})"
 
 
-def _columns(nodes_by_layer: dict[str, list[dict]]) -> tuple:
+def _columns(nodes_by_layer: dict[str, list[dict]], drop: str | None = None) -> tuple:
     return tuple(
         (layer, tuple((n["name"], _label(n)) for n in nodes_by_layer.get(layer, ())))
         for layer in TBOX.layers
+        if layer != drop
     )
 
 
@@ -74,13 +93,21 @@ def _fingerprint_mark(data: dict) -> _Mark:
     by_layer = {layer: [x for x in n["nodes"] if x["type"] == layer] for layer in TBOX.layers}
     lines = [(e["from"], e["to"], False) for e in n["edges"]]
     lines += [(c["from"], c["to"], True) for c in n.get("candidates", ())]
-    return _Mark(
-        f"{n['name']} ({n['status']})",
-        _columns(by_layer),
-        tuple(lines),
-        "solid line: an edge a row of this narrative tells."
-        + (" dashed line: a link with no row (a candidate)." if "candidates" in n else ""),
+    legend = "solid line: an edge a row of this narrative tells." + (
+        " dashed line: a link with no row (a candidate)." if "candidates" in n else ""
     )
+    drop = DROPPED.get(n["kind"])
+    if drop:
+        shown, left = SHOWN.get(drop, drop), len(by_layer[drop])
+        legend += (
+            f"\nno {shown} column: {'an' if n['kind'] == 'architecture' else 'a'} {n['kind']}."
+        )
+        if left:
+            noun = shown if left == 1 else PLURAL[drop]
+            legend += (
+                f" {left} {noun} the narrative links {'is' if left == 1 else 'are'} not drawn."
+            )
+    return _Mark(f"{n['name']} ({n['status']})", _columns(by_layer, drop), tuple(lines), legend)
 
 
 def _layered_mark(data: dict) -> _Mark:
@@ -141,10 +168,17 @@ def _render(mark: _Mark, fmt: str) -> bytes:
     longest = max((len(lab) for _, col in mark.columns for _, lab in col), default=10)
     tallest = max((len(col) for _, col in mark.columns), default=0)
     spacing = max(3.0, 0.075 * longest + 1.0)  # inches between two column centres
-    width = 4 * spacing
+    cols = len(mark.columns)
+    width = cols * spacing
     body = max(MIN_BODY, ROW * tallest)
-    height = HEAD + body + FOOT
-    mid = FOOT + body / 2
+    legend = "\n".join(  # a paragraph of the legend (a line of `\n`) wraps by itself
+        w
+        for para in mark.legend.split("\n")
+        for w in textwrap.wrap(para, int(width * 12), break_on_hyphens=False)
+    )
+    foot = FOOT + FOOT_LINE * (legend.count("\n"))
+    height = HEAD + body + foot
+    mid = foot + body / 2
 
     rc = {
         "font.family": "DejaVu Sans",
@@ -155,7 +189,7 @@ def _render(mark: _Mark, fmt: str) -> bytes:
         fig = Figure(figsize=(width, height), dpi=DPI, facecolor="white")
         FigureCanvasAgg(fig)
         ax = fig.add_axes((0, 0, 1, 1))
-        ax.set_xlim(-0.5, 3.5)  # x: the column number; y: inches from the bottom
+        ax.set_xlim(-0.5, cols - 0.5)  # x: the column number; y: inches from the bottom
         ax.set_ylim(0, height)
         ax.axis("off")
 
@@ -174,10 +208,12 @@ def _render(mark: _Mark, fmt: str) -> bytes:
                     zorder=1,
                 )
         title = "\n".join(textwrap.wrap(mark.title, int(width * 8), break_on_hyphens=False))
-        ax.text(1.5, height - 0.3, title, ha="center", va="center", fontsize=12, zorder=3)
+        ax.text(
+            (cols - 1) / 2, height - 0.3, title, ha="center", va="center", fontsize=12, zorder=3
+        )
         for x, (layer, col) in enumerate(mark.columns):
             ax.text(
-                x, height - HEAD + 0.25, layer, ha="center", va="center", fontsize=10,
+                x, height - HEAD + 0.25, SHOWN.get(layer, layer), ha="center", va="center", fontsize=10,
                 fontweight="bold", color="#222222", zorder=3,
             )  # fmt: skip
             for name, label in col:
@@ -194,11 +230,29 @@ def _render(mark: _Mark, fmt: str) -> bytes:
         if tallest == 0:
             ax.add_patch(
                 Rectangle(
-                    (-0.45, FOOT), 3.9, body, fill=False, ec="#888888", lw=1, ls=DASH, zorder=1
+                    (-0.45, foot),
+                    cols - 0.1,
+                    body,
+                    fill=False,
+                    ec="#888888",
+                    lw=1,
+                    ls=DASH,
+                    zorder=1,
                 )
             )
-            ax.text(1.5, mid, "no nodes", ha="center", va="center", fontsize=11, color="#444444")
-        ax.text(1.5, FOOT / 2, mark.legend, ha="center", va="center", fontsize=8, color="#333333")
+            ax.text(
+                (cols - 1) / 2,
+                mid,
+                "no nodes",
+                ha="center",
+                va="center",
+                fontsize=11,
+                color="#444444",
+            )
+        ax.text(
+            (cols - 1) / 2, foot / 2, legend, ha="center", va="center", fontsize=8, color="#333333",
+            linespacing=1.2,
+        )  # fmt: skip
 
         buf = io.BytesIO()
         meta = {"Software": None} if fmt == "png" else {"Date": None, "Creator": "scat-kg"}

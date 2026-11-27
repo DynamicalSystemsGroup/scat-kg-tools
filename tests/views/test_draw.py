@@ -16,8 +16,20 @@ PNG = b"\x89PNG\r\n\x1a\n"
 
 
 def texts(svg: str) -> list[tuple[float, float, str]]:
-    root = ET.fromstring(svg)
-    return [(float(t.get("x")), float(t.get("y")), t.text or "") for t in root.iter(NS + "text")]
+    """Each text as (x, y, text); a footer wrapped onto several lines is one text a line, placed by `translate`."""
+    out = []
+    for t in ET.fromstring(svg).iter(NS + "text"):
+        if t.get("x") is None:
+            x, y = re.search(r"translate\(([-\d.]+) ([-\d.]+)\)", t.get("transform")).groups()
+        else:
+            x, y = t.get("x"), t.get("y")
+        out.append((float(x), float(y), t.text or ""))
+    return out
+
+
+def said(svg: str) -> str:
+    """Everything the image says, joined (a wrapped footer line joins to the next with a space)."""
+    return " ".join(t for _, _, t in texts(svg))
 
 
 def lines(svg: str) -> list[tuple[float, float, bool]]:
@@ -32,22 +44,28 @@ def lines(svg: str) -> list[tuple[float, float, bool]]:
     return out
 
 
+SHOWN = {
+    "group": "stakeholder"
+}  # the word a column carries at the top; every other layer is its own name
+HEADS = {SHOWN.get(layer, layer): layer for layer in TBOX.layers}
+
+
 def columns(svg: str) -> dict[str, list[tuple[float, str]]]:
-    """{layer: [(y, label) top to bottom]}, read by the x of each layer's label at the top."""
+    """{layer: [(y, label) top to bottom]} for the columns present, read by the x of each column's head."""
     ts = texts(svg)
-    heads = {t: x for x, _, t in ts if t in TBOX.layers}
-    assert list(heads) == list(TBOX.layers)
+    heads = {HEADS[t]: x for x, _, t in ts if t in HEADS}
+    assert list(heads) == [layer for layer in TBOX.layers if layer in heads]  # layer order
     assert list(heads.values()) == sorted(heads.values())  # columns in layer order, left to right
-    out = {layer: [] for layer in TBOX.layers}
+    out = {layer: [] for layer in heads}
     for x, y, t in ts:
         for layer, hx in heads.items():
-            if x == hx and t != layer:
+            if x == hx and t != SHOWN.get(layer, layer):
                 out[layer].append((y, t))
     return {k: sorted(v) for k, v in out.items()}
 
 
 def xs(svg: str) -> list[float]:
-    return sorted({x for x, _, t in texts(svg) if t in TBOX.layers})
+    return sorted({x for x, _, t in texts(svg) if t in HEADS})
 
 
 def label(node: dict) -> str:
@@ -82,10 +100,11 @@ def test_fingerprint_draws_no_candidates_and_no_legend_for_them_unless_asked(vau
     svg = draw.fingerprint("dry", root=vault).svg()
     drawn = lines(svg)
     assert drawn and not any(dashed for *_, dashed in drawn)
-    assert len(drawn) == 3
-    said = " ".join(t for _, _, t in texts(svg))
-    assert "dashed" not in said and "candidate" not in said
-    assert "solid line" in said
+    assert (
+        len(drawn) == 2
+    )  # `dry` tells 3 edges; the one to a technology is not drawn: a scenario has no such column
+    assert "dashed" not in said(svg) and "candidate" not in said(svg)
+    assert "solid line" in said(svg)
 
 
 def test_fingerprint_shows_name_status_and_candidates_dashed(vault):
@@ -93,11 +112,12 @@ def test_fingerprint_shows_name_status_and_candidates_dashed(vault):
     svg = d.svg()
     view = scat_kg.fingerprint("dry", candidates=True, root=vault).to_dict()["narratives"][0]
     assert "dry (draft)" in [t for _, _, t in texts(svg)]
-    assert "dashed line" in " ".join(t for _, _, t in texts(svg))
+    assert "dashed line" in said(svg)
     drawn = lines(svg)
     assert len(view["candidates"]) == 1 and len(view["edges"]) == 3
     assert sum(1 for *_, dashed in drawn if dashed) == len(view["candidates"])
-    assert sum(1 for *_, dashed in drawn if not dashed) == len(view["edges"])
+    # the edge to a technology is not drawn: a scenario has no such column
+    assert sum(1 for *_, dashed in drawn if not dashed) == len(view["edges"]) - 1
     col_x = xs(svg)
     assert all(abs(col_x.index(a) - col_x.index(b)) == 1 for a, b, _ in drawn)
     cols = columns(svg)
@@ -114,7 +134,7 @@ def test_an_empty_drawing_is_a_labelled_frame_saying_no_nodes(vault):
     for d in (draw.layered([], root=vault), draw.fingerprint("empty", root=vault)):
         svg = d.svg()
         t = [x for _, _, x in texts(svg)]
-        assert all(layer in t for layer in TBOX.layers)
+        assert all(SHOWN.get(layer, layer) in t for layer in TBOX.layers)
     assert "no nodes" in [x for _, _, x in texts(draw.layered([], root=vault).svg())]
 
 
@@ -154,7 +174,9 @@ def test_png_has_the_expected_size(vault):
 
 def test_the_figure_grows_with_the_largest_column(make):
     rows = [row("provided-by", "sensor", f"tech-{i:02d}") for i in range(12)]
-    v = make({"narrative/many.md": narrative("Many", "Many.", rows, "draft", "scenario")})
+    v = make(
+        {"narrative/many.md": narrative("Many", "Many.", rows, "draft")}
+    )  # no kind: all four columns
     for i in range(12):
         scat_kg.stub(f"tech-{i:02d}", "technology", root=v)
     d = draw.fingerprint("many", root=v)
