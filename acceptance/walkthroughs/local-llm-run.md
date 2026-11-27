@@ -27,7 +27,7 @@ Page: `docs/local-llm.md`. Unit WP25-U4. Run on 26 to 27 Nov 2026.
 01-open-webui-home (step 4), 02-tool-server (step 5), 03-tool-on (step 7), 04-chat-controls (step 8), 05-tool-result and 06-answer (step 9). The lab key is hidden by the form; the key was a throwaway.
 
 ## Deviations
-- 01 shows llama3.2:3b in the model picker (taken before the 7B was pulled); the page's alt text says so.
+- 01 was taken before the 7B was pulled and showed llama3.2:3b in the model picker; after review the model name was painted out of the picture (stack already removed, not re-run), and the alt text and step 4 say 'your model's name'.
 - The Docker host here is Colima, not Docker.app.
 - Reached Settings by address, not by the avatar menu.
 

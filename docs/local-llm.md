@@ -118,10 +118,10 @@ hides those from a container).
     You should see `success` at the end.
 
 4. **In a web browser:** open <http://localhost:3000>. Open WebUI downloads a small helper model on its first start, so
-   the page can take a minute or two to answer. You should see Open WebUI's start page, with no sign-in, and the
+   the page can take a minute or two to answer. You should see Open WebUI's start page, with no sign-in, and your
    model's name at the right of the message box.
 
-    ![Open WebUI's start page: a message box with a plus button on the left and the model name llama3.2:3b on the right, above a list of suggestions.](assets/walkthroughs/local-llm/01-open-webui-home.png)
+    ![Open WebUI's start page: a message box with a plus button on the left and, on the right, the place where the model's name shows, above a list of suggestions.](assets/walkthroughs/local-llm/01-open-webui-home.png)
 
 5. **In Open WebUI:** register the SCAT server. Open the address
    <http://localhost:3000/admin/settings/integrations>, and next to **External Tool Servers** choose **+**. Click the
@@ -180,9 +180,9 @@ hides those from a container).
     uv run scat check
     ```
 
-    You should see the same two warnings and the last line `0 errors, 2 warnings`. The model named the two warnings
-    correctly. Its words "not fully conformant" are the model's reading: the tool's line says no errors, and the two
-    warnings are fields to fill in before the narrative is done. The tool's output settles it.
+    You should see the same two warnings and the last line `0 errors, 2 warnings`. Compare: do the warnings the model listed
+    match the tool's two, and do its words ("not fully conformant" in the example) match the tool's line? The tool's line
+    says no errors; the two warnings are fields to fill in before the narrative is done. The tool's output settles it.
 
 11. **In a terminal:** stop the session. Go back to the folder that holds `compose.yaml`.
 
