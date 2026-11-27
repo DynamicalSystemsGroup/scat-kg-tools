@@ -408,7 +408,7 @@ class Narrative:
     edges: tuple[EdgeKey, ...]  # fingerprint: the edges its rows tell, in graph order
     attributed_to: tuple[
         str, ...
-    ] = ()  # the contributor pages its `attributed_to` links, as written (WP23-G3)
+    ] = ()  # the contributor pages its `attributed_to` links, as written
 
     @property
     def rows(self) -> tuple[Row, ...]:

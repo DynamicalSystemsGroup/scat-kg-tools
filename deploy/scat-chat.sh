@@ -8,15 +8,14 @@
 # after start end in the same teardown (tunnel off, container removed, Mac allowed to sleep, key deleted,
 # clipboard cleared), which is safe to run twice and when nothing is running.
 #
-# Every outside program is found through an environment override so tests can use stand-ins:
+# Every outside program is found through an environment override, so a test can replace it:
 #   SCAT_CHAT_DOCKER, SCAT_CHAT_COLIMA, SCAT_CHAT_TAILSCALE, SCAT_CHAT_OPENSSL, SCAT_CHAT_CURL,
 #   SCAT_CHAT_PBCOPY, SCAT_CHAT_PBPASTE, SCAT_CHAT_CAFFEINATE, SCAT_CHAT_OSASCRIPT, SCAT_CHAT_OPEN,
 #   SCAT_CHAT_SECURITY (the macOS keychain tool; only the key_* functions call it)
 # Other settings: SCAT_CHAT_SEARCH_PATH (folders searched first for the programs; for tests), SCAT_CHAT_HOME (state folder), SCAT_CHAT_CONTEXT (the source to build), SCAT_CHAT_PORT,
 #   SCAT_CHAT_WAIT, SCAT_CHAT_TUNNEL_WAIT, SCAT_CHAT_UI.
-# SCAT_CHAT_VAULT is a TEST OVERRIDE ONLY: it names the vault and skips the "Serve <vault>?" question, so it breaks
-# the rule that every start shows the coder the vault (WP22-G5). It is honoured only when SCAT_CHAT_UI=plain,
-# which the app never sets.
+# SCAT_CHAT_VAULT is for tests only: it names the vault and skips the "Serve <vault>?" question, which every start
+# otherwise asks. It works only when SCAT_CHAT_UI=plain, which the app never sets.
 # SCAT_CHAT_UI=plain prints instead of showing dialogs, and takes answers from SCAT_CHAT_A_<KEY> or stdin:
 #   USE (Use it / Choose another: the question about the remembered vault), VAULT (a folder), COPY (copy), OPEN (open),
 #   COPYKEY (copy: the Copy key menu item), STOP (stop). In plain mode start returns once the session is up,
@@ -53,7 +52,7 @@ OPEN=${SCAT_CHAT_OPEN:-open}
 SECURITY=${SCAT_CHAT_SECURITY:-/usr/bin/security}
 
 IMAGE=scat-chat-mcp
-# The published image (WP21-G6): one per package version, read from the pyproject.toml that travels with the launcher.
+# The published image: one per package version, read from the pyproject.toml that travels with the launcher.
 REGISTRY_IMAGE=ghcr.io/dynamicalsystemsgroup/scat-kg-tools
 CONTAINER=scat-chat
 KEY_SERVICE=scat-chat # the keychain item: service and account
@@ -372,7 +371,7 @@ $RESULT"
 step_tools() {
     ui_state starting
     if ! have "$DOCKER"; then
-        die "SCAT Chat needs a container runtime: Colima (recommended) or Docker Desktop. Neither is installed. Install one once, as the chat-path guide shows under 'Install once', then choose Stop in the SCAT Chat menu, then open SCAT Chat again."
+        die "SCAT Chat needs a container runtime: Colima or Docker Desktop. Neither is installed. Install one once, as the chat-path guide shows under 'Install once', then choose Stop in the SCAT Chat menu, then open SCAT Chat again."
     fi
     if have "$COLIMA"; then
         if ! "$COLIMA" status >/dev/null 2>&1; then
@@ -419,7 +418,7 @@ step_vault() {
         if [ ! -d "$VAULT" ]; then
             ui_note "The vault folder I remembered is gone ($VAULT). Choose it again on the next screen."
             VAULT=""
-        else # a remembered vault is offered, never used silently (WP22-G5)
+        else # a remembered vault is offered, never used silently
             ans=$(ui_choice USE "Serve $VAULT?" "Use it" "Choose another")
             case "$ans" in
             "Use it" | use) ;;

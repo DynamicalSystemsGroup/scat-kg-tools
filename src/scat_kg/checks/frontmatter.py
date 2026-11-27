@@ -90,9 +90,7 @@ def offered_types(ctx: Ctx) -> tuple[str, ...]:
 @page_rule
 def fm_type(ctx: Ctx, page: Page):
     v = page.type
-    empty = "type" in page.fields and is_missing(
-        v
-    )  # present but null or blank (log D-035 ruling 3)
+    empty = "type" in page.fields and is_missing(v)  # present but null or blank
     if page.frontmatter_error or not (empty or isinstance(v, str)) or v in PAGE_TYPES:
         return []
     near = None if empty else near_match(v, PAGE_TYPES)

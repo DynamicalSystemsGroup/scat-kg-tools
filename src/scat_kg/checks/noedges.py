@@ -1,5 +1,5 @@
-"""SCAT-UNCODED: a narrative that links no node page, so it is excluded (WP21-G2); SCAT-NOEDGES: a `done` coded
-narrative whose fingerprint has no edges (MISSION G1). Catalogue, "SCAT-UNCODED" and "SCAT-NOEDGES"."""
+"""SCAT-UNCODED: a narrative that links no node page, so it is excluded; SCAT-NOEDGES: a `done` coded
+narrative whose fingerprint has no edges. Catalogue, "SCAT-UNCODED" and "SCAT-NOEDGES"."""
 
 from scat_kg.checks import fixes
 from scat_kg.checks.ctx import NODE_TYPES, Ctx, page_rule
