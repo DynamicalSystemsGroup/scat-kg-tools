@@ -1,6 +1,6 @@
-# WP28 to WP30 inputs (gathered before their scopes)
+# WP28 to WP31 inputs (gathered before their scopes)
 
-Evidence and prior work for WP28 (drawings, D-160), WP29 (the lifecycle manual, D-157) and WP30 (the assistant's habits).
+Evidence and prior work for WP28 (drawings, D-160), RS5, WP29 and WP30 (the lifecycle as a state machine and the manual, D-157, D-162) and WP31 (the assistant's habits).
 Written 27 November in the chief engineer's sitting; the three scopes cite it. (First filed as WP27-inputs.md, before the work was split into four packages.)
 
 ## The drawing gap: prior work exists, the hand-off was dropped
