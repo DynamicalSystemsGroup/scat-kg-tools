@@ -91,7 +91,7 @@ def test_the_reference_page_states_the_number_of_tools(url):
     async def count(s):
         return len((await s.list_tools()).tools)
 
-    assert words.index(said.group(1).lower()) == with_session(url, count) - len(STAGE_TOOLS)
+    assert words.index(said.group(1).lower()) == with_session(url, count)
 
 
 def test_every_tool_description_says_who_owns_what(url):
