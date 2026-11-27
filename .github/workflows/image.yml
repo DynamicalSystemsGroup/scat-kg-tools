@@ -7,6 +7,7 @@ on:
     paths:
       - "deploy/**"
       - "src/scat_kg/mcp_server/**"
+      - "tests/deploy/test_image.py"
       - ".github/workflows/image.yml"
 
 permissions:
@@ -18,3 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: docker build -f deploy/Dockerfile -t scat-kg-tools:ci .
+      # Run the image as the launcher does and draw through it (WP28-R4); stdlib only, so no uv or project install.
+      - run: pip install pytest
+      - run: SCAT_IMAGE_TEST=1 SCAT_IMAGE=scat-kg-tools:ci python -m pytest tests/deploy/test_image.py -q -p no:cacheprovider --rootdir . -c /dev/null
