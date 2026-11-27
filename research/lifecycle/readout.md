@@ -171,7 +171,9 @@ Findings for WP29 beyond the grid:
 - **The refusal and the clarification text are relayed in full by both,** and both left the stage to the coder.
 - **The model's account of its own tools is unreliable** (inference.coop): after a stage move it recited stale tool
   lists, then disowned a real call; the client's tool set was right. WP31's habits, not the server, must handle this.
-- **Elicitation cannot be relied on:** it hangs in Claude and is absent in inference.coop.
+- **Elicitation, as tried, did not work:** with one server implementation (the SDK's `elicit_form`, one form, sent
+  mid-call) it hung in Claude and was absent in inference.coop. Whether that is the clients or the server, and what the
+  established ways are for a tool to ask the person, is open (RS7, proposed).
 
 ## Questions WP29 must decide (RS5-R4)
 
