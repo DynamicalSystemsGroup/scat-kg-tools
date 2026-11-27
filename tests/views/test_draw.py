@@ -163,13 +163,18 @@ def test_no_date_in_either_image(vault):
     assert b"tIME" not in png and b"Software" not in png and b"Creation Time" not in png
 
 
-def test_png_has_the_expected_size(vault):
-    png = draw.layered(root=vault).png()
+def test_png_has_the_expected_size(make):
+    png = draw.layered(root=make({"technology/idle.md": None})).png()  # a vault with no orphan page
     w, h = struct.unpack(">II", png[16:24])
     assert (w, h) == (
         1200,
         290,
     )  # four columns of 3 inches; 1.7 inches of margins and a 1.2 inch body
+
+
+def test_an_orphan_footer_line_adds_one_line_of_height(vault):
+    png = draw.layered(root=vault).png()  # `idle` is an orphan: a second footer line (WP34)
+    assert struct.unpack(">II", png[16:24]) == (1200, 307)
 
 
 def test_the_figure_grows_with_the_largest_column(make):

@@ -64,6 +64,7 @@ FOOT = 0.6  # inches below the nodes: one line of legend
 FOOT_LINE = 0.17  # inches for each further line of legend
 MIN_BODY = 1.2
 DASH = (0, (4, 3))
+ORPHANS_SHOWN = 10  # orphan names in the footer; the rest are "and N more"
 
 
 @dataclass(frozen=True)
@@ -89,6 +90,9 @@ def _columns(nodes_by_layer: dict[str, list[dict]], drop: str | None = None) -> 
     )
 
 
+NO_ACCOUNT = "every candidate for it is just an adjacent pair, not evidence."
+
+
 def _fingerprint_mark(data: dict) -> _Mark:
     n = data["narratives"][0]
     by_layer = {layer: [x for x in n["nodes"] if x["type"] == layer] for layer in TBOX.layers}
@@ -108,6 +112,8 @@ def _fingerprint_mark(data: dict) -> _Mark:
             legend += (
                 f" {left} {noun} the narrative links {'is' if left == 1 else 'are'} not drawn."
             )
+    if n.get("no_account"):
+        legend += "\nno account text: " + NO_ACCOUNT
     return _Mark(f"{n['name']} ({n['status']})", _columns(by_layer, drop), tuple(lines), legend)
 
 
@@ -119,19 +125,34 @@ def _layered_mark(data: dict) -> _Mark:
         title = "layered view of " + ", ".join(names)
     else:
         title = f"layered view of {len(names)} narratives"
-    return _Mark(
-        title,
-        _columns(data["nodes"]),
-        tuple((e["from"], e["to"], False) for e in data["edges"]),
-        "line: an edge a row of a drawn narrative tells."
-        + (
+    lines = [(e["from"], e["to"], False) for e in data["edges"]]
+    lines += [(c["from"], c["to"], True) for c in data.get("candidates", ())]
+    legend = "line: an edge a row of a drawn narrative tells." + (
+        " dashed line: a link with no row (a candidate)." if "candidates" in data else ""
+    )
+    if data.get("excluded"):
+        legend += (
             " excluded (no node page linked): "
             + ", ".join(x["name"] for x in data["excluded"])
             + "."
-            if data.get("excluded")
-            else ""
-        ),
-    )
+        )
+    if data.get("no_account"):
+        legend += (
+            "\nno account text: "
+            + ", ".join(data["no_account"])
+            + "; every candidate for them is just an adjacent pair, not evidence."
+        )
+    if data.get("orphans"):
+        names = [x["name"] for x in data["orphans"]]
+        shown = ", ".join(names[:ORPHANS_SHOWN])
+        more = len(names) - ORPHANS_SHOWN
+        legend += (
+            "\nno row tells these node pages: "
+            + shown
+            + (f" and {more} more" if more > 0 else "")
+            + "."
+        )
+    return _Mark(title, _columns(data["nodes"]), tuple(lines), legend)
 
 
 def _trace_mark(data: dict, me: dict) -> _Mark:
@@ -415,11 +436,14 @@ def fingerprint(
     return _drawn_with(view, root) if isinstance(view, views.View) else view
 
 
-def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> Drawing | Result:
-    """Draw the layered view of the named narratives (none: every narrative)."""
+def layered(
+    narratives: list[str] | None = None, *, candidates: bool = False, root: str | Path = "."
+) -> Drawing | Result:
+    """Draw the layered view of the named narratives (none: every narrative); `candidates=True` adds their rule-4
+    candidates dashed. Node pages no row tells are named in the footer."""
     if bad := _need_matplotlib():
         return bad
-    view = views.layered(narratives, root=root)
+    view = views.layered(narratives, candidates=candidates, root=root)
     return _drawn_with(view, root) if isinstance(view, views.View) else view
 
 

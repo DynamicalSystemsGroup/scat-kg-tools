@@ -29,9 +29,10 @@ from typing import Any
 
 from scat_kg.checks import Problem, check_vault
 from scat_kg.contract import SCHEMA_VERSION
-from scat_kg.graph import Edge, Graph, Node, load
+from scat_kg.graph import Candidate, Edge, Graph, Narrative, Node, _headings, load
 from scat_kg.ops.result import Refusal, Result, reports_mode
 from scat_kg.tbox import TBOX
+from scat_kg.vault import fenced_lines
 
 DIRECTIONS = ("up", "down", "both")
 
@@ -107,6 +108,30 @@ def _edge(e: Edge) -> dict:
         "narratives": list(e.narratives),
         "status": e.status,
     }
+
+
+def _candidate(c: Candidate) -> dict:
+    return {"type": c.type, "from": c.from_node, "to": c.to_node}
+
+
+def _no_account(g: Graph, nar: Narrative) -> bool:
+    """Whether a narrative has no account text: its body outside its `Edges told` section, ignoring whitespace
+    and Markdown headings, is empty. (The section is the first `Edges told` heading to the next heading of the same
+    or a higher level, as the table is read; a narrative with no account has only its rows as links, so every
+    adjacent pair of its nodes is a candidate and the candidates say nothing about any text.)"""
+    page = next((p for p in g.vault.pages if p.path == nar.path), None)
+    if page is None:
+        return False
+    lines = page.body.split("\n")
+    fenced = fenced_lines(lines)
+    heads = _headings(lines, fenced)
+    drop = {i for i, _, _ in heads}
+    named = [h for h in heads if h[2].casefold() == TBOX.table.heading.casefold()]
+    if named:
+        start, level, _ = named[0]
+        end = next((i for i, lv, _ in heads if i > start and lv <= level), len(lines))
+        drop |= set(range(start, end))
+    return not any(ln.strip() for i, ln in enumerate(lines) if i not in drop)
 
 
 INCLUDE = "link one node page in the narrative (a row end or its account), then run this again"
@@ -269,11 +294,9 @@ def fingerprint(
             "edges": [_edge(e) for e in es],
         }
         if candidates:
-            item["candidates"] = [
-                {"type": c.type, "from": c.from_node, "to": c.to_node}
-                for c in g.candidates
-                if c.narrative == nar.name
-            ]
+            item["candidates"] = [_candidate(c) for c in g.candidates if c.narrative == nar.name]
+            if _no_account(g, nar):
+                item["no_account"] = True
         items.append(item)
         nodes |= set(nar.nodes)
         edges += es
@@ -317,9 +340,21 @@ def edge_table(type: str, *, root: str | Path = ".") -> View | Result:
 
 
 @reports_mode
-def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> View | Result:
-    """The union of the fingerprints of the named narratives (none: every narrative), as four layers."""
+def layered(
+    narratives: list[str] | None = None, *, candidates: bool = False, root: str | Path = "."
+) -> View | Result:
+    """The union of the fingerprints of the named narratives (none: every narrative), as four layers.
+
+    `orphans` (only when there are some) lists the node pages that are an end of no edge anywhere in the vault,
+    whichever narratives are chosen. With `candidates=True` it adds `candidates`, the rule-4 candidates of the
+    chosen narratives (each with its `narrative`), and `no_account`, the names of the chosen narratives that have
+    no account text (see `_no_account`), whose candidates are only adjacent pairs.
+    """
     op = "layered"
+    if not isinstance(candidates, bool):
+        return _refuse(
+            op, repr(candidates), "candidates must be True or False", "pass True or False"
+        )
     if narratives is not None and not (
         isinstance(narratives, list | tuple) and all(isinstance(n, str) for n in narratives)
     ):
@@ -345,15 +380,28 @@ def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> V
     nodes = _nodes(g, {x for n in chosen for x in n.nodes})
     names = [n.name for n in chosen]
     bad = _drawn(op, g, names, nodes, edges, names, narratives is None)
-    return bad or View(
-        op,
-        {
-            "narratives": names,
-            "nodes": {layer: [_node(n) for n in nodes if n.type == layer] for layer in TBOX.layers},
-            "edges": [_edge(e) for e in edges],
-            "excluded": _excluded(g) if narratives is None else [],
-        },
-    )
+    if bad:
+        return bad
+    data = {
+        "narratives": names,
+        "nodes": {layer: [_node(n) for n in nodes if n.type == layer] for layer in TBOX.layers},
+        "edges": [_edge(e) for e in edges],
+        "excluded": _excluded(g) if narratives is None else [],
+    }
+    told = {x for e in g.edges for x in (e.from_node, e.to_node)}
+    orphans = [_node(n) for ns in g.nodes.values() for n in ns if n.name not in told]
+    if orphans:
+        data["orphans"] = orphans
+    if candidates:
+        data["candidates"] = [
+            {**_candidate(c), "narrative": c.narrative}
+            for c in g.candidates
+            if c.narrative in names
+        ]
+        bare = [n.name for n in chosen if _no_account(g, n)]
+        if bare:
+            data["no_account"] = bare
+    return View(op, data)
 
 
 @reports_mode
@@ -491,6 +539,11 @@ def _excluded_lines(d: dict) -> list[str]:
     return out + [f"    {x['name']} ({x['file']})" for x in d["excluded"]]
 
 
+NO_ACCOUNT_NOTE = (
+    "  no account text: every candidate for this narrative is just an adjacent pair, not evidence"
+)
+
+
 def _text_fingerprint(d: dict) -> list[str]:
     out = []
     for n in d["narratives"]:
@@ -499,6 +552,8 @@ def _text_fingerprint(d: dict) -> list[str]:
         out += _layer_lines(n["nodes"])
         if n["edges"]:
             out += ["  edges", *map(_edge_line, n["edges"])]
+        if n.get("no_account"):
+            out.append(NO_ACCOUNT_NOTE)
         if n.get("candidates"):
             out.append("  candidates (linked, no row)")
             out += [f"    {c['type']}: {c['from']} -> {c['to']}" for c in n["candidates"]]
@@ -517,6 +572,21 @@ def _text_layered(d: dict) -> list[str]:
             out += [f"  {layer}", *map(_node_line, d["nodes"][layer])]
     if d["edges"]:
         out += ["  edges", *map(_edge_line, d["edges"])]
+    if d.get("candidates"):
+        out.append("  candidates (linked, no row)")
+        out += [
+            f"    {c['type']}: {c['from']} -> {c['to']} [told by {c['narrative']}]"
+            for c in d["candidates"]
+        ]
+    if d.get("no_account"):
+        out.append(
+            "  no account text: "
+            + ", ".join(d["no_account"])
+            + "; every candidate for them is just an adjacent pair, not evidence"
+        )
+    if d.get("orphans"):
+        out.append("  orphans (node pages no row tells)")
+        out += [f"    {n['name']} ({n['type']}) [{n['status']}]" for n in d["orphans"]]
     return out + _excluded_lines(d)
 
 
