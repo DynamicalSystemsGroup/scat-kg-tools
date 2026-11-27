@@ -46,6 +46,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | approved (D-163) | `WP30.md` |
 | WP31 | The assistant's habits, stage by stage, tested by the probes (depends on WP30) | approved (D-163) | `WP31.md` |
 | WP32 | Fingerprints follow the narrative's kind; columns read stakeholder, concern, affordance, technology (D-172, D-175) | all units done and merged on `dev`; ready for ACE acceptance | `WP32.md` |
+| WP33 | One query, rendered as a plot, a table or both; one tool per view (D-174, D-175) | all units done and merged on `dev`; ready for ACE acceptance | `WP33.md` |
 
 ## Units
 
@@ -411,6 +412,10 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP32-U1 | Python developer and test engineer (kind-aware fingerprint drawing, tests), sonnet | 3 | 3 | `wp32/u1` | done |  | 2026-11-27 | one worker; footer wording reworked once; six existing test edits listed; PASS first review |
 | WP32-U2 | technical writer (drawing columns in docs), sonnet | 2 | 3 | `wp32/u2` | done |  | 2026-11-27 | review found the image alt text said stakeholders over an image saying group; one follow-up commit restored it |
 | WP32-U1r | reviewer (fresh, WP32), sonnet | 2 | 2 | `-` | done |  | 2026-11-27 | mutation-tested each requirement in a scratch copy, looked at the PNGs, found the alt-text mismatch |
+| WP33-U1 | Python developer and test engineer (query layer, draw.render), sonnet | 5 | 5 | `wp33/u1` | done |  | 2026-11-27 | draw.render, View.traced, byte-identical drawings, consistency and twin tests; no existing test edited |
+| WP33-U2 | Python developer and test engineer (MCP view tools, mcp.md), sonnet | 5 | 8 | `wp33/u2` | done |  | 2026-11-27 | two stopping points ruled by the PM (outputSchema dropped; one consequential helper edit in test_wp23_mode); suite fix and mutation check as follow-up |
+| WP33-U3 | technical writer (api.md, analysis.md), sonnet | 2 | 3 | `wp33/u3` | done |  | 2026-11-27 | review found a stale tool count in local-llm.md and two wording nits; one follow-up commit |
+| WP33-U1r | reviewer (fresh, WP33), sonnet | 3 | 3 | `-` | done |  | 2026-11-27 | 13 mutations in a scratch copy, live server on old and new trees, default calls and CLI byte-identical, found the stale count |
 
 ## Iterations and velocity
 
@@ -461,6 +466,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 50 | WP28-U1 to WP28-U3r | 19 | 19 | 1.00 | 1.2 h | 15.8 |
 | 51 | RS6-U1 to U5 | 22 | 25 | 1.14 | 0.8 h | 31.3 |
 | 52 | WP32-U1 to WP32-U1r | 7 | 8 | 1.14 | 0.65 h | 12.3 |
+| 53 | WP33-U1 to WP33-U1r | 15 | 19 | 1.27 | 1.4 h | 13.6 |
 
 ## Velocity and forecast
 
