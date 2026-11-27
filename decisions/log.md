@@ -2665,3 +2665,15 @@ the chatbot path (example inference.coop); different providers per walkthrough; 
 with its example provider, the chief engineer chose "Yes, amend it". The ACE made the edits on `dev`. They remove G14's
 sentence "Testing with Claude would be cheating, since Claude is the development team", which the chief engineer's
 choice of Claude as the chatbot example supersedes. The docs say "path", not "approach".
+
+## D-149 | 2026-11-26 | WP25 approved
+
+WP25 (`work-packages/WP25.md`: coding paths, facilitating and planning) takes C14 and C15 (D-137) under the amended
+G14 (D-148). The PM's scope check found thirteen fixes, all applied: "path", not "approach", with leave no trace an
+option of the chatbot path; "attribution" in its glossary sense; "timeframe" for what was and what could be, with its
+own page; the mission amended (D-148); the template's `AGENTS.md` for Codex in the blast radius; `src/` and `deploy/`
+untouched; exact page paths, keeping existing names; the missing pages in the blast radius; the Docker Desktop box left
+to WP26; run records and place labels named; a `provider` field for the provider test; a 1,500-word planning budget and
+D-146's patterns in the grep; alt text and choice-point screenshots checked; the spike's readout path and a logged
+decision after it; a cold reader without accounts. It branches from `dev` after WP24 lands. Impact map
+`work-packages/impact/WP25.md` (merged). Revert point `divergence/D-149`. The ACE approves WP25.
