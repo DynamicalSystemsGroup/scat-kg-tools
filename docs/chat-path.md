@@ -118,7 +118,7 @@ No terminal is needed for the coding. The one-time install under [Install once](
 
 ## Worked example: Claude
 
-Claude in the browser (claude.ai). Free accounts can add one custom connector. On a Team or Enterprise plan, an
+Claude in the browser (claude.ai). Free accounts can add one custom connector, and skills are listed for Free through Enterprise. On a Team or Enterprise plan, an
 owner adds the connector in the organization's settings, then you connect it under **Customize** > **Connectors**.
 
 Do [Install once](#install-once) and [Start a session](#start-a-session) first. Come back when the dot is green.
@@ -130,8 +130,8 @@ new key.
    clipboard.
 2. **In Claude:** click **Customize**, then **Connectors**, then **+ Add**, then **Add custom connector**. A form
    asks for a name and a URL.
-3. **In Claude:** type `SCAT` as the name, paste the address as the URL, and click **Continue**. The form shows
-   the authentication settings.
+3. **In Claude:** in the form, type `SCAT` as the **Name** and paste the address as the **URL**. The first two
+   fields are filled.
 4. **In Claude:** under **Authentication**, choose **No sign in**. The key goes in a header, not a sign-in.
 5. **In the menu bar:** click the dot, then **Copy key**. The key is on your clipboard.
 6. **In Claude:** under **Request headers**, add a header named `Authorization` whose value is `Bearer `, a space,
@@ -145,8 +145,11 @@ new key.
    and save it as `SKILL.md` into a new folder named `scat-coding`. The folder holds the file.
 9. **In Finder:** right-click the `scat-coding` folder and choose **Compress**. A file `scat-coding.zip` appears.
 10. **In Claude:** click **Customize**, then **Skills**, then **+**, then **Create skill**, then **Upload a skill**,
-    and choose `scat-coding.zip`. The skill is listed with its switch on. (Skills need code execution: under
-    **Settings** > **Capabilities** if the option is missing.)
+    and choose `scat-coding.zip`. The skill is listed with its switch on.
+
+Skills need code execution. On Free, Pro and Max, switch on **Code execution and file creation** under **Settings**
+> **Capabilities**. On Team and Enterprise, an owner switches it on under **Organization settings** > **Plugins &
+skills** > **Policy**; on Enterprise the owner also switches on **Skills** there.
 
 **Start a chat and check.**
 
