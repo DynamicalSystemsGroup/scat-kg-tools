@@ -197,7 +197,8 @@
         "status": { "type": ["string", "null"] },
         "nodes": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" } },
         "edges": { "type": "array", "items": { "$ref": "#/$defs/ViewEdge" } },
-        "candidates": { "type": "array", "items": { "$ref": "#/$defs/ViewCandidate" } }
+        "candidates": { "type": "array", "items": { "$ref": "#/$defs/ViewCandidate" } },
+        "no_account": { "const": true, "description": "Present only when candidates were asked for and the narrative has no account text: its only links are its rows, so every adjacent pair is a candidate and the candidates say nothing about the text." }
       }
     },
     "ViewResult": {
@@ -227,6 +228,9 @@
           }
         },
         "edges": { "type": "array", "items": { "$ref": "#/$defs/ViewEdge" } },
+        "orphans": { "type": "array", "items": { "$ref": "#/$defs/ViewNode" }, "description": "layered: the node pages that are an end of no edge anywhere in the vault, whichever narratives are drawn, in layer order then name; present only when there are some." },
+        "candidates": { "type": "array", "items": { "allOf": [{ "$ref": "#/$defs/ViewCandidate" }, { "type": "object", "required": ["narrative"], "properties": { "narrative": { "type": "string", "minLength": 1 } } }] }, "description": "layered: the rule-4 candidates of the narratives drawn, each with its narrative; present only when candidates were asked for." },
+        "no_account": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "layered: the names of the narratives drawn that have no account text, whose candidates are only adjacent pairs; present only when candidates were asked for and there are some." },
         "excluded": { "type": "array", "items": { "$ref": "#/$defs/ViewExcluded" }, "description": "The uncoded narratives (they link no node page), which every view leaves out: all of them for a view that draws every narrative, none for a view of named narratives (which refuses an excluded name). Present on fingerprint, edges, layered and trace; absent from a document written before it was added." },
         "node": { "type": "string", "minLength": 1 },
         "pages": { "type": "array", "items": { "$ref": "#/$defs/CopyShareEntry" }, "description": "copy-share: one entry for each node page." },

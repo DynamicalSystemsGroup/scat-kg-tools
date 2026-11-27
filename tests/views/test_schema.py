@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 from jsonschema import Draft202012Validator
-from viewutil import page
+from viewutil import narrative, page, row
 
 import scat_kg
 
@@ -27,6 +27,8 @@ VIEWS = {
     "edges-provided-by": lambda r: scat_kg.edge_table("provided-by", root=r),
     "layered-all": lambda r: scat_kg.layered(root=r),
     "layered-some": lambda r: scat_kg.layered(["dry", "split"], root=r),
+    "layered-candidates": lambda r: scat_kg.layered(candidates=True, root=r),
+    "layered-some-candidates": lambda r: scat_kg.layered(["dry", "split"], candidates=True, root=r),
     "layered-none-named": lambda r: scat_kg.layered([], root=r),
     "trace-both": lambda r: scat_kg.trace("farmers", root=r),
     "trace-up": lambda r: scat_kg.trace("probe", "up", root=r),
@@ -114,3 +116,24 @@ def test_a_view_is_not_an_operation_document_and_unknown_fields_are_allowed(vaul
     d["extra"] = 1
     d["narratives"][0]["extra"] = 1
     assert errors(d) == []
+
+
+BARE = narrative(
+    "Bare", "", [row("holds", "farmers", "water"), row("addressed-by", "water", "alert")]
+)
+
+
+def test_the_new_keys_validate_and_are_checked(make):
+    root = make({"narrative/bare.md": BARE})
+    lay = scat_kg.layered(candidates=True, root=root).to_dict()
+    assert {"orphans", "candidates", "no_account"} <= set(lay) and lay["no_account"] == ["bare"]
+    assert errors(lay) == []
+    fp = scat_kg.fingerprint("bare", candidates=True, root=root).to_dict()
+    assert fp["narratives"][0]["no_account"] is True and errors(fp) == []
+    # wrong shapes are rejected
+    assert errors({**lay, "orphans": [{"name": "x"}]}) != []
+    assert errors({**lay, "candidates": [{**lay["candidates"][0], "narrative": ""}]}) != []
+    assert errors({**lay, "candidates": [{"type": "holds", "from": "a", "to": "b"}]}) != []
+    assert errors({**lay, "no_account": "bare"}) != []
+    bad = {**fp, "narratives": [{**fp["narratives"][0], "no_account": False}]}
+    assert errors(bad) != []

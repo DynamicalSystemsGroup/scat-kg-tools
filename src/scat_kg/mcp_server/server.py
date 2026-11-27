@@ -245,13 +245,21 @@ def build(vault: str | Path, **settings) -> FastMCP:
 
     @mcp.tool(
         description=_OWN
-        + "View: the layered view, the union of the fingerprints of `narratives`, or of every narrative. "
-        "Writes nothing. " + same
+        + "View: the layered view, the union of the fingerprints of `narratives`, or of every narrative; with "
+        "`candidates` true, also the candidates (links with no row), each marked with its narrative. It lists "
+        "the orphans (node pages no row tells) and, for a narrative with no account text, flags it in "
+        "`no_account`, since its candidates then say nothing about the text. Writes nothing. "
+        + same
     )
     def layered(
-        narratives: list[str] | None = None, output: str = "table", format: str = "png"
+        narratives: list[str] | None = None,
+        candidates: bool = False,
+        output: str = "table",
+        format: str = "png",
     ) -> CallToolResult:
-        return _view(lambda: scat_kg.layered(narratives, root=root), output, format)
+        return _view(
+            lambda: scat_kg.layered(narratives, candidates=candidates, root=root), output, format
+        )
 
     @mcp.tool(
         description=_OWN

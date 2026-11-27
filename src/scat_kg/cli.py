@@ -181,14 +181,20 @@ def _parser() -> argparse.ArgumentParser:
     p = command(
         "layered",
         "Show the layered view: the union of the fingerprints of the narratives named by --narrative, "
-        f"or, without it, of every narrative. {scope}.",
-        '`scat_kg.layered()`, `scat_kg.layered(["<narrative>"])`',
+        "or, without it, of every narrative; with --candidates, also the links that have no row. "
+        f"{scope}.",
+        '`scat_kg.layered()`, `scat_kg.layered(["<narrative>"], candidates=True)`',
     )
     p.add_argument(
         "--narrative",
         action="append",
         metavar="NARRATIVE",
         help="include this narrative; repeat it for each narrative",
+    )
+    p.add_argument(
+        "--candidates",
+        action="store_true",
+        help="also show the candidates: links between two nodes that have no row",
     )
     p = command(
         "trace",
@@ -257,7 +263,7 @@ def _parser() -> argparse.ArgumentParser:
     drawing = sub.add_parser(
         "draw",
         help="Draw a view as an image (needs the extra `draw`): `.png` or `.svg`.",
-        description="Draw a view as an image, four columns in layer order. Needs the extra `draw`: "
+        description="Draw a view as an image in columns by layer. Needs the extra `draw`: "
         '`pip install "scat-kg[draw]"`. The only write is the image file you name with --out.',
         epilog="REPL: `from scat_kg import draw`, then `draw.fingerprint(...)`, `draw.layered(...)` or `draw.trace(...)`",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -266,7 +272,7 @@ def _parser() -> argparse.ArgumentParser:
     out_help = "the image file to write, ending in `.png` or `.svg` (no default)"
     p = command(
         "fingerprint",
-        "Draw a narrative's fingerprint: its nodes and edges in four columns; with --candidates, the "
+        "Draw a narrative's fingerprint: its nodes and edges in columns that follow the narrative's kind; with --candidates, the "
         "links that have no row dashed. Refuses where `scat fingerprint` would, and then writes nothing.",
         '`draw.fingerprint("<narrative>", candidates=True).save("<file>")`',
         which,
@@ -281,8 +287,9 @@ def _parser() -> argparse.ArgumentParser:
     p = command(
         "layered",
         "Draw the layered view of the narratives named by --narrative or, without it, of every "
-        "narrative. Refuses where `scat layered` would, and then writes nothing.",
-        '`draw.layered().save("<file>")`, `draw.layered(["<narrative>"]).save("<file>")`',
+        "narrative; with --candidates, the links that have no row dashed. Refuses where `scat layered` "
+        "would, and then writes nothing.",
+        '`draw.layered().save("<file>")`, `draw.layered(["<narrative>"], candidates=True).save("<file>")`',
         which,
     )
     p.add_argument(
@@ -290,6 +297,11 @@ def _parser() -> argparse.ArgumentParser:
         action="append",
         metavar="NARRATIVE",
         help="include this narrative; repeat it for each narrative",
+    )
+    p.add_argument(
+        "--candidates",
+        action="store_true",
+        help="also draw the candidates: links with no row, dashed",
     )
     p.add_argument("--out", required=True, metavar="FILE", help=out_help)
     p = command(
@@ -342,7 +354,7 @@ def run(args: argparse.Namespace):
         case "edges":
             return scat_kg.edge_table(args.type, root=root)
         case "layered":
-            return scat_kg.layered(args.narrative, root=root)
+            return scat_kg.layered(args.narrative, candidates=args.candidates, root=root)
         case "trace":
             return scat_kg.trace(args.node, args.direction, root=root)
         case "evidence":
@@ -360,7 +372,7 @@ def run(args: argparse.Namespace):
                 case "fingerprint":
                     made = draw.fingerprint(args.narrative, candidates=args.candidates, root=root)
                 case "layered":
-                    made = draw.layered(args.narrative, root=root)
+                    made = draw.layered(args.narrative, candidates=args.candidates, root=root)
                 case "trace":
                     made = draw.trace(args.node, args.direction, root=root)
             return made.save(args.out) if isinstance(made, draw.Drawing) else made
