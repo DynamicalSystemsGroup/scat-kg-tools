@@ -84,3 +84,11 @@ See `acceptance/walkthroughs/analysis-in-practice.md`: what each figure answers,
 figures hide (orphans, candidates, near-duplicates), the moves out of Analyse (to Code, Capture or Plan, Hand over),
 and the chief engineer's ask that every image have a data dump of its nodes and edges viewable as a table (each view
 already is one; the pairing in one result is missing). For WP29's transitions and WP30's analysis guide and tools.
+
+## For WP29: the MVC loop (27 November)
+
+The chief engineer, in the inference.coop session: "this is precisely why we expect a feedback loop between analysis
+and coding. this is in essence an MVC loop where the views inform exercise of the available controls". Analyse is the
+views (everything that writes nothing), Code the controls; moving a `done` narrative to `draft` is the coder's
+transition that reopens them; `review`'s merge candidates and `check`'s missing fields are analysis outputs that send
+the coder back to Code.
