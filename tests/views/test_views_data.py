@@ -3,6 +3,7 @@
 import json
 
 import pytest
+from viewutil import base_files
 
 import scat_kg
 
@@ -240,6 +241,17 @@ def test_layered_view_of_an_empty_vault(make):
     d = doc(scat_kg.layered(root=root), "layered")
     assert d["narratives"] == []
     assert d["edges"] == []
+    # no narrative tells an edge, so every node page is an orphan (WP34): the text form lists them after the header
+    assert str(scat_kg.layered(root=root)).split("\n")[:2] == [
+        "layered view of no narratives",
+        "  orphans (node pages no row tells)",
+    ]
+    assert len(d["orphans"]) == 9
+
+
+def test_layered_view_of_a_vault_with_no_pages_has_no_orphans(make):
+    root = make({k: None for k in [*base_narratives(), *base_files()] if k.endswith(".md")})
+    assert "orphans" not in doc(scat_kg.layered(root=root), "layered")
     assert str(scat_kg.layered(root=root)) == "layered view of no narratives"
 
 
@@ -415,7 +427,7 @@ def test_two_calls_give_the_same_bytes(vault, call):
 
 def test_the_order_does_not_depend_on_how_the_vault_was_written(tmp_path, vault):
     # the same pages written in the reverse order give the same document
-    from viewutil import base_files, write
+    from viewutil import write
 
     files = base_files()
     other = write(tmp_path / "rev", dict(reversed(list(files.items()))))

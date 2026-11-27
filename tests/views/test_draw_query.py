@@ -1,9 +1,12 @@
 """The query is its own layer (WP33): a drawing is made from a query result, never by a second query, and what it
 draws is what the same result's table (`to_dict()`) says."""
 
+import re
 import sys
 
 import pytest
+from test_draw import said
+from viewutil import page
 
 import scat_kg
 from scat_kg import draw, views
@@ -30,16 +33,37 @@ def table_of(view: views.View) -> tuple[set, set]:
         return nodes, {e for e in edges if not ({e[0], e[1]} & gone)}
     if view.operation == "layered":
         nodes = {(x["name"], layer) for layer, xs in d["nodes"].items() for x in xs}
+        edges = {(e["from"], e["to"], False) for e in d["edges"]}
+        return nodes, edges | {(c["from"], c["to"], True) for c in d.get("candidates", ())}
     else:
         nodes = {(x["name"], x["type"]) for x in [*d["up"], *d["down"], view.traced]}
     return nodes, {(e["from"], e["to"], False) for e in d["edges"]}
+
+
+def orphan_disagreements(view: views.View, drawing: draw.Drawing) -> list[str]:
+    """Orphans are drawn as no node: the plot names them in its footer, at most draw.ORPHANS_SHOWN, then "and N more".
+    The rule: the names the footer gives are the table's first names, and the "N more" is the rest."""
+    named = [o["name"] for o in view.data.get("orphans", ())] if view.operation == "layered" else []
+    footer = re.search(r"no row tells these node pages: (.*?)\.(?: |$)", said(drawing.svg()))
+    if not named:
+        return [] if footer is None else ["drawn, not in the table: orphans"]
+    if footer is None:
+        return ["in the table, not drawn: orphans"]
+    shown, _, more = footer.group(1).partition(" and ")
+    got = shown.split(", ")
+    want = named[: draw.ORPHANS_SHOWN]
+    out = [] if got == want else [f"orphans drawn {got}, table says {want}"]
+    left = len(named) - len(want)
+    return out + (
+        [] if (more == f"{left} more" if left else not more) else ["orphans: N more differs"]
+    )
 
 
 def disagreements(view: views.View, drawing: draw.Drawing) -> list[str]:
     """Where the drawing and the table of the same result differ (empty: they agree)."""
     nodes, edges = table_of(view)
     got_n, got_e = set(drawing.nodes()), set(drawing.edges())
-    return (
+    return orphan_disagreements(view, drawing) + (
         [f"drawn, not in the table: node {n}" for n in sorted(got_n - nodes)]
         + [f"in the table, not drawn: node {n}" for n in sorted(nodes - got_n)]
         + [f"drawn, not in the table: edge {e}" for e in sorted(got_e - edges)]
@@ -54,6 +78,9 @@ def queries(vault) -> list[views.View]:
         for c in (False, True)
     ]
     out += [scat_kg.layered(root=vault), scat_kg.layered(["dry", "wet"], root=vault)]
+    out += [
+        scat_kg.layered(c, candidates=True, root=vault) for c in (None, ["dry"], ["wet", "split"])
+    ]
     out += [
         scat_kg.trace(n, d, root=vault)
         for n in ("water", "farmers", "probe", "idle")
@@ -185,3 +212,17 @@ def test_the_twin_rule_every_drawing_has_a_view():
     assert {"fingerprint", "layered", "trace"} <= set(drawings)
     for name in drawings:
         assert callable(getattr(views, name, None)), f"draw.{name} has no views.{name}"
+
+
+def test_the_plot_names_the_tables_orphans_and_a_difference_fails(vault, make):
+    view = scat_kg.layered(root=vault)
+    drawing = draw.render(view)
+    assert view.data["orphans"] and orphan_disagreements(view, drawing) == []
+    bare = views.View("layered", {k: v for k, v in view.data.items() if k != "orphans"})
+    assert orphan_disagreements(bare, drawing) == ["drawn, not in the table: orphans"]
+    other = {**view.data, "orphans": [{"name": "elsewhere", "type": "technology", "status": "x"}]}
+    assert orphan_disagreements(views.View("layered", other), drawing)
+    many = scat_kg.layered(
+        root=make({f"technology/o{i:02d}.md": page("technology", "O") for i in range(12)})
+    )
+    assert orphan_disagreements(many, draw.render(many)) == []
