@@ -35,6 +35,8 @@ the narrative. See [Coding](coding.md#the-three-actors).
 
 ## Worked example: Codex
 
+Codex is the example here; another IDE agent that reads project instructions works the same way, from step 2.
+
 Codex is OpenAI's coding agent. It runs as an extension in VS Code, Cursor and Windsurf, or as a command in a
 terminal. Use either one; the steps below say which.
 
@@ -63,8 +65,7 @@ Codex also reads an `AGENTS.md` in any folder between the vault's root and the f
 its own instructions. It stops reading once the instructions pass 32 KiB in all.
 
 Codex can also connect to a server through MCP, in its settings. The IDE path does not need it: the assistant runs
-the `scat` commands in the vault itself. Cursor, VS Code with another agent, and any command-line agent that reads
-`AGENTS.md` follow the same steps from step 2.
+the `scat` commands in the vault itself.
 
 If your data policy is strict, settle first what can go to the assistant's provider: see
 [Data, rights and consent](data-and-consent.md).
