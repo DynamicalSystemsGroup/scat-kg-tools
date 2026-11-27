@@ -67,6 +67,8 @@ class View:
     operation: str  # "fingerprint", "edges", "layered", "trace", "evidence" or "attribution"
     data: dict = field(default_factory=dict)
     mode: str | None = None  # the vault's attribution mode
+    # A trace's starting node (name, type, status), which the document leaves out; a drawing needs it. Not in `to_dict()`.
+    traced: dict | None = field(default=None, compare=False)
 
     @property
     def ok(self) -> bool:
@@ -400,6 +402,7 @@ def trace(node: str, direction: str = "both", *, root: str | Path = ".") -> View
             "edges": [_edge(e) for e in edges],
             "excluded": _excluded(g),
         },
+        traced=next(_node(n) for n in shown if n.name == node),
     )
 
 
