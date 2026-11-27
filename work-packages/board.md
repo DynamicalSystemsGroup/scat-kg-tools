@@ -43,7 +43,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP34 | What the figures hide, shown (orphans, candidates, the no-account flag) | approved (D-175); after WP33 | `WP34.md` |
 | WP35 | Legible layouts | approved (D-175); after WP34 | `WP35.md` |
 | RS7 | Research spike: how a tool asks the person (standards, practice, why the elicitation trial hung; D-182) | desk and local parts done and reviewed; readout `research/asking/readout.md` on `dev`; variants and notes on `spike/asking`; client trials and acceptance held for the ACE (iteration 54: 19 est, 28 realized, 1.1 h) | `RS7-asking-the-person.md` |
-| WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | approved (D-163); unblocked by RS5 (D-181); inputs D-177 to D-179 | `WP29.md` |
+| WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | accepted (D-186, D-187); model locked; `contracts/lifecycle.md` | `WP29.md` |
 | WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | approved (D-163) | `WP30.md` |
 | WP31 | The assistant's habits, stage by stage, tested by the probes (depends on WP30) | approved (D-163) | `WP31.md` |
 | WP32 | Fingerprints follow the narrative's kind; columns read stakeholder, concern, affordance, technology (D-172, D-175) | all units done and merged on `dev`; ready for ACE acceptance | `WP32.md` |
@@ -417,6 +417,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP33-U2 | Python developer and test engineer (MCP view tools, mcp.md), sonnet | 5 | 8 | `wp33/u2` | done |  | 2026-11-27 | two stopping points ruled by the PM (outputSchema dropped; one consequential helper edit in test_wp23_mode); suite fix and mutation check as follow-up |
 | WP33-U3 | technical writer (api.md, analysis.md), sonnet | 2 | 3 | `wp33/u3` | done |  | 2026-11-27 | review found a stale tool count in local-llm.md and two wording nits; one follow-up commit |
 | WP33-U1r | reviewer (fresh, WP33), sonnet | 3 | 3 | `-` | done |  | 2026-11-27 | 13 mutations in a scratch copy, live server on old and new trees, default calls and CLI byte-identical, found the stale count |
+| WP29-U1 | architect (model, instance, test, glossary), opus (the ACE) | 5 | 8 | `wp29/design` | done |  | 2026-11-27 | WP33 landed mid-draft; terms cap raised to 960 (D-186) |
+| WP29-U1r | reviewer (fresh, WP29), sonnet | 2 | 2 | `-` | done |  | 2026-11-27 | 3 must-fix, 8 smaller |
+| WP29-U2 | architect (fixes after review), opus (the ACE) | 2 | 3 | `wp29/design` | done |  | 2026-11-27 | all applied; suite and CI green |
 | RS7-U1 | protocol research engineer (G1 standards), sonnet | 3 | 5 | `spike/asking` | done |  | 2026-11-27 | 62 fetches over three spec versions; 2026 spec found published; some pages only partly read |
 | RS7-U2 | LLM-tooling practice researcher (G2 patterns, clients), sonnet | 3 | 5 | `spike/asking` | done |  | 2026-11-27 | four patterns plus five more, each with a named product and URL |
 | RS7-U3 | research engineer (G3 local reproduction, variants), sonnet | 5 | 8 | `spike/asking` | done |  | 2026-11-27 | 55 variant rows with wire logs; PM reran B1, B2 and 13 tests |

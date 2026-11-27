@@ -1,7 +1,7 @@
 # The lifecycle: stages of a SCAT project
 
-**Status.** DRAFT for the chief engineer's review (WP29). The model is locked only by his approval, recorded in
-`decisions/log.md`. WP30 builds it into the server; WP31 writes the assistant's habits to it.
+**Status.** Approved by the chief engineer (log D-186); the model is locked, and changes to it are amendments with
+his approval. WP30 builds it into the server; WP31 writes the assistant's habits to it.
 
 A SCAT project moves through **stages**: where the project is in its lifecycle. A stage names the work a person is
 doing, so the server can offer the tools that work needs, refuse the rest, and say how to move on. A record's

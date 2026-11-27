@@ -3136,3 +3136,20 @@ approved". RS7 has no open items; it awaits approval of the scope.
 The chief engineer (typed by the agent): "Approve RS7". RS7 (`work-packages/RS7-asking-the-person.md`) is approved.
 Execution: a PM runs the desk and local-server parts (G1, G2, G3 locally); the client trials run with the chief
 engineer at a sitting he chooses, the ACE as coder.
+
+## D-186 | 2026-11-27 | The lifecycle model approved (WP29-R5)
+
+The ACE drafted `contracts/lifecycle.md` (five stages: plan, capture, code, analyse, report; 13 transitions; stage stored
+in the vault; a stable tool list enforced by refusal), had it read by a fresh reviewer, fixed every finding, and brought
+it with a note that the terms page's word cap had to rise from 910 to 960 in `tests/docs/test_terms.py`, outside the
+scope's file list. The chief engineer said (typed by the agent): "i approve your lifecycle model. including raising the
+terms page word cap". The model is locked; changes to it are amendments with his approval.
+
+## D-187 | 2026-11-27 | WP29 accepted by the ACE
+
+WP29-R1 to R4 are met (the document; the consistency test, 12 checks, mutation-checked; RS5 cited for each choice in
+section 3). R5: D-186. R6: CI green on `wp29/design` (run 46069968582), full suite 3,433 passed locally, and
+`check_metrics.py --accept WP29` passes (iteration 55). One file outside the blast radius changed
+(`tests/docs/test_terms.py`, the word cap), approved in D-186. `wp29/design` is merged into `dev`. RS7's readout (how a
+tool asks the person) found the RS5 elicitation hang most likely came from the spike's own call; the model's section 3
+leaves how the server asks open to RS7, so nothing in it changes. Accepted by the ACE.
