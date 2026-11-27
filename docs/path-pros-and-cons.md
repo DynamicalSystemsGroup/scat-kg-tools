@@ -39,7 +39,7 @@ write others: a narrative's text, a node page's body, and `status: done`. An ass
 ## An AI chatbot, leave no trace
 
 - **Pros:** everything the chatbot path gives, and nothing stays on the platform afterwards: a temporary chat, the
-  field notes as one collection, and the server entry, agent and skill removed at the end.
+  field notes attached to it and then deleted, and the server entry, agent and skill removed at the end.
 - **Cons:** the content still passes through the platform during the session; the clean-up is yours, every session,
   so there are more steps.
 

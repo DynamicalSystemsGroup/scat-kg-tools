@@ -145,7 +145,7 @@ def test_leave_no_trace_covers_setup_and_removal():
     text = LNT.read_text(encoding="utf-8").lower()
     for word in (
         "temporary chat",
-        "collection",
+        "attach your field notes",
         "saved agent",
         "skill",
         "server entry",
@@ -248,10 +248,10 @@ def test_step_for_the_file_library_says_why():
     steps = [
         s
         for s in _all_steps(LNT)
-        if "file library" in s and s.startswith("**In the chat:** delete any file")
+        if "file library" in s and s.startswith("**In the chat:** in the file library, delete")
     ]
     assert len(steps) == 1
-    assert "stay in the file library after the chat is deleted" in steps[0]
+    assert "stay after the temporary chat is deleted" in steps[0]
 
 
 def test_the_saved_agents_tool_is_added_again():

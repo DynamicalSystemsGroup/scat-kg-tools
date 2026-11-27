@@ -24,8 +24,8 @@ key. The chat path's [Install once](chat-path.md#install-once) is done once per 
 things:
 
 - A **temporary chat** to code in, so the session does not stay in your history.
-- Your **field notes uploaded as a collection** (a named group of files in the chat's file library), so they can be removed as one thing. Where the chat has no
-  collections, the notes are attached to the temporary chat instead.
+- Your **field notes attached to the temporary chat**, not kept in a collection, and deleted from the chat's file
+  library at the end.
 - **Nothing left on the platform at the end**: the server entry, the saved agent, the skill and any prompts you saved
   are removed.
 - **Local copies kept**: your field notes folder and your vault stay on your Mac.
@@ -81,20 +81,19 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 31. **In the chat:** add the chat's Ask User tool (it lets the assistant ask you a question), if the chat offers one.
 32. **In the chat:** choose the `scat-coding` skill as the agent's only skill.
 33. **In the chat:** save the agent.
-34. **In the chat:** upload your field notes as one collection, if the chat offers collections. If it does not, skip
-    this step and attach the notes to the temporary chat when you start coding instead. (Look for a
-    file or knowledge area where you can group files under one name.)
-35. **In the chat:** turn on the Temporary Chat setting (look for the control).
-36. **In the chat:** check that its note says the chat will not appear in your history and will be deleted
+34. **In the chat:** turn on the Temporary Chat setting (look for the control).
+35. **In the chat:** check that its note says the chat will not appear in your history and will be deleted
     automatically.
-37. **In the chat:** open the Agent Builder and use its **Select** control to pick the agent; a new chat starts with it.
+36. **In the chat:** open the Agent Builder and use its **Select** control to pick the agent; a new chat starts with it.
     (On inference.coop's instance agents start from that Select, not from the model menu or from typing `@`. If the
     saved agent cannot be chosen inside a temporary chat, start the chat with the model and the server entry instead.)
+37. **In the chat:** attach your field notes to this chat: the paperclip in the message box, then the file from your
+    field notes folder. The chat shows the file attached.
 
 #### Do the coding
 
-38. **In the chat:** name the narrative and ask the assistant to help you code it, with your collection (or, if you
-    skipped the collection, the notes attached to this chat).
+38. **In the chat:** name the narrative and ask the assistant to help you code it from the notes attached to this
+    chat.
 39. **In the chat:** answer the assistant's questions, one step per reply, as in [the coding
     loop](chat-path.md#the-coding-loop-in-the-chat-and-in-obsidian).
 40. **In the chat:** confirm or change the nodes and links the assistant proposes.
@@ -121,8 +120,8 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 54. **In the chat:** confirm.
 55. **In the chat:** delete the saved agent. (The chat's Agent Builder holds it; look there for its delete control.)
 56. **In the chat:** delete the skill `scat-coding`. (Look where you created it.)
-57. **In the chat:** delete the collection you uploaded. (Look for a file library.)
-58. **In the chat:** delete any file left in the chat's file library from this session. Field notes you attached to a temporary chat stay in the file library after the chat is deleted.
+57. **In the chat:** in the file library, delete the notes you attached: they stay after the temporary chat is deleted.
+58. **In the chat:** check that the file library holds no other file from this session, and delete any that is there.
 59. **In the chat:** delete any prompt you saved for this session. If you saved none, there is nothing to do.
 60. **In the chat:** look once more at each place you set something up (MCP Settings, the Agent Builder, the skills,
     the files, the history) and check that nothing from this session remains.
@@ -135,7 +134,7 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 
 | Removed from the chat platform | Stays on your Mac |
 |---|---|
-| The temporary chat, the server entry, the saved agent, the skill, the collection and its files, any prompts you saved | Your field notes folder |
+| The temporary chat, the server entry, the saved agent, the skill, the attached field notes, any prompts you saved | Your field notes folder |
 | | Your vault, with every page and commit |
 | The key (deleted from your keychain by Stop) | Colima, which keeps running, and the server's image |
 
