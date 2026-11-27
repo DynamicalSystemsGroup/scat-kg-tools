@@ -2790,3 +2790,12 @@ whether node pages must be written before their narratives are done).
 One more fix under D-156 (V6): signed out, GitHub's template page shows no **Use this template**; `getting-started`'s
 website path now says to sign in first. The website path itself (creating the private repository) has never been run
 on screen and needs the chief engineer's account: it joins his sitting.
+
+**The chief engineer on the visual pass's items (27 November), typed by the agent:**
+
+- On the GitHub website path: "i just checked in the browser and you can. i am not sure why you could not test this."
+  The ACE had tried it in Claude in Chrome, which is signed out, and not in the built-in browser, where he is signed in.
+  The ACE then ran it there (V7): the private repository `scat-visual-test` was made from the template in his account,
+  cloned, and checked clean. One fix: the chat path's steps now name **Commit to dev** (tools `dev`).
+- V4: "all individual pages get independent status. we use neighborhood level checks which can programatically ask
+  whether all nodes in a narrative are also done." Decided: statuses stay independent; no change.

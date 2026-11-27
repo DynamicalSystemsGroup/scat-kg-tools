@@ -13,8 +13,8 @@ outputs are kept outside the repository, in the lab evidence folder; this report
   with Obsidian's list continuation; links typed over the words (Obsidian closes `]]` by itself). Each saved page was
   compared with the tester's requested text: all six matched exactly.
 - **Terminal:** every command the tester asked for, with its full output.
-- **Not covered:** creating the private repository on GitHub (the test lead made clones with the remote removed, as in
-  earlier rounds), so both pushes failed with "No configured push destination". Clipboard paste was not used (no
+- **Covered afterwards:** creating the private repository on GitHub's website (V7). In the run itself the test lead
+  made clones with the remote removed, as in earlier rounds, so both pushes failed with "No configured push destination". Clipboard paste was not used (no
   grant), so text was typed.
 
 ## Result
@@ -34,7 +34,8 @@ blocking finding.
 | V3 | `scat stub` writes `timeframe: # past \| future \| mixed`; Obsidian shows the property as empty, so the hint is invisible there. | Obsidian, Properties panel | **For the chief engineer:** accept (the Coding page shows the hint) or change the stub. |
 | V4 | Node pages made by `record-edge` stay stubs when their narratives are set done; no page says whether a node page must be written first, and the views show every node as `[stub]` without saying that is expected. | Terminal (views) | **For the chief engineer:** a page sentence, or accept. |
 | V5 | The persona's terms did not settle the attribution question, so the mode was a guess at planning. | Text | Accept: the page asks the question; the persona's terms did not answer it. |
-| V6 | Signed out, GitHub's template page shows no **Use this template** button; `getting-started`'s website path listed a GitHub account but did not say to sign in first. Checked on the live repository page by the ACE after the run (the tester's clones skipped this step). | Chrome, the template's page signed out | **Fixed:** the step now says to sign in first (tools `dev`). Creating the repository itself is left for the chief engineer's sitting: it needs his account. |
+| V6 | Signed out, GitHub's template page shows no **Use this template** button; `getting-started`'s website path listed a GitHub account but did not say to sign in first. Checked on the live repository page by the ACE after the run (the tester's clones skipped this step). | Chrome, the template's page signed out | **Fixed:** the step now says to sign in first (tools `dev`). |
+| V7 | The website path, run afterwards in the built-in browser, where the chief engineer is signed in: Use this template, Create a new repository, a name, visibility set to Private (the form showed Public until it was changed), Create. The repository came out private with one branch, `dev`; cloned, `scat check` reported no problems. The chat path's GitHub Desktop steps named the button **Commit to main**, which such a repository never shows. | Browser and Terminal | **Fixed:** the steps name **Commit to dev** (tools `dev`). |
 
 The tester's other items (gaps in its own terms and plan, a transcription detail, the git identity in a clone with no
 setup) are not page or tool faults.
