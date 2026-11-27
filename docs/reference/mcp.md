@@ -57,6 +57,9 @@ Nineteen tools. Each returns the operation's own document. The three view tools 
 
 One call runs the view's query once and gives what `output` asks of that one result. `table` is the view's document, exactly what the tool returns without `output`. `plot` is only the picture `scat draw` and the notebook make for the same vault and arguments, byte for byte: a `png` is MCP image content, so a client shows or passes on the picture as it does any image, and an `svg` is the drawing's text. `both` is two items: the plot first, then the table as text, the JSON of the same document `table` returns. The plot and the table of one call tell the same nodes and edges, since both come from the one result.
 
+These three tools declare no output schema, since a plot is not JSON: their table comes as text content, the JSON of
+the view's document.
+
 A drawing is never written to the vault. To keep a picture as a file, the coder runs `scat draw ... --out`, or saves it from the notebook.
 
 A refusal is returned as the refusal document, as for every other tool, and no image, for every `output`: a name that is not a page, a narrative given to `trace`, a narrative that is excluded, a `direction`, `output` or `format` that is not offered, a plot of no narrative (or of every narrative) from `fingerprint`, which draws one narrative, a vault whose pages the view refuses (the document lists the problems), and a server without the `draw` extra (the document says how to install it). `fingerprint` as a `table` with no `narrative` still returns every narrative's view.

@@ -3160,3 +3160,21 @@ Asked whether WP30 (the server built to the locked lifecycle model, D-186) shoul
 both touch the server's `layered` tool, the chief engineer said (typed by the agent): "Start WP30 now". A PM runs
 WP30 except R6's on-screen check, which is held for a sitting with the chief engineer. The WP34 and WP35 PM keeps the
 view tools; WP30's PM rebases on `dev` often and keeps stage handling in its own layer.
+
+## D-189 | 2026-11-27 | WP32 and WP33 accepted by the ACE
+
+WP32 (fingerprints follow the narrative's kind; columns read stakeholder, concern, affordance, technology). The ACE
+drew the three contract-example narratives itself: the scenario has no technology column and says so, the architecture
+has no stakeholder column and says so, the unkinded narrative has all four, and the layered and trace drawings head
+their first column "stakeholder" (R1, R3). The examples name no node in a dropped column, so R2's count is shown by the
+package's fixture test (it passes). `test_draw_kinds.py` passes (10); CI green; `check_metrics.py --accept WP32` passes
+(R4).
+
+WP33 (one query; plot, table or both; one tool per view). The ACE called the server's `fingerprint`, `layered` and
+`trace` with `output` table, plot and both and `format` svg: each returns only what was asked, svg as text, both as two
+items; no `draw_*` tool is listed and `docs/reference/mcp.md` says so (R2 to R4). R1 rests on the package's
+query-count test, which the ACE read (it counts the view functions where both the server and the renderer call them);
+R5 on the reviewer's 13 mutations. The view and server tests pass (663); CI green; `check_metrics.py --accept WP33`
+passes (R6). The PM ruled two stopping points itself (U2): the three view tools declare no output schema, since a plot
+is not JSON, and one helper edit in `test_wp23_mode`. The ACE accepts both and added one line to `docs/reference/mcp.md`
+saying the three tools declare no output schema. Accepted by the ACE.
