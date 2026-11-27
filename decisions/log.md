@@ -2831,3 +2831,5 @@ and a dependence on Copilot reading `AGENTS.md`). His answer: "Copilot in VS Cod
 vault's `AGENTS.md` and skill, then the rules named), recorded in `acceptance/walkthroughs/ide-run.md`; the page now
 uses Copilot (tools ae29efa), naming Codex as another agent. Separately, and not as project work, the ACE fixed Codex's
 install on this Mac (npm's global folder was not on the PATH; `codex` linked into `/usr/local/bin`).
+
+Mission lines 160, 315 and R-20 now name Copilot in VS Code; the chief engineer: "Yes, change them".
