@@ -64,10 +64,26 @@ def test_chat_path_has_the_life_cycle_headings_in_order():
     assert found == CHAT_HEADINGS
 
 
-def test_chat_path_leads_with_colima_and_says_docker_desktop_is_untested():
+def test_chat_path_uses_colima_and_names_docker_desktop_in_one_plain_line():
+    """The launcher uses Colima when it is installed and Docker Desktop otherwise (deploy/scat-chat.sh)."""
     text = CHAT.read_text(encoding="utf-8")
     assert text.index("Colima") < text.index("Docker Desktop")
-    assert "Docker Desktop is the untested alternative" in text
+    flat = " ".join(text.split())
+    assert (
+        "If Docker Desktop is already installed and Colima is not, SCAT Chat uses Docker Desktop instead"
+        in flat
+    )
+    assert "untested" not in text
+
+
+def test_numbered_steps_run_continuously_through_each_guide():
+    for path in (CHAT, LNT):
+        numbers = [
+            int(m.group(1))
+            for ln in path.read_text(encoding="utf-8").splitlines()
+            if (m := re.match(r"^(\d+)\. ", ln))
+        ]
+        assert numbers == list(range(1, len(numbers) + 1)), path.name
 
 
 def test_chat_path_session_key_wording():
