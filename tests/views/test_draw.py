@@ -72,14 +72,13 @@ def label(node: dict) -> str:
     return node["name"] if node["status"] == "done" else f"{node['name']} ({node['status']})"
 
 
-def test_layered_draws_each_node_in_its_layer_column_by_name(vault):
+def test_layered_draws_each_node_in_its_layer_column(vault):
     d = draw.layered(root=vault)
     view = scat_kg.layered(root=vault).to_dict()
     cols = columns(d.svg())
     for layer in TBOX.layers:
-        assert [t for _, t in cols[layer]] == [label(n) for n in view["nodes"][layer]]
-        names = [n["name"] for n in view["nodes"][layer]]
-        assert names == sorted(names)
+        # the order within a column is chosen to reduce crossings (WP35, D-175), no longer by name
+        assert sorted(t for _, t in cols[layer]) == sorted(label(n) for n in view["nodes"][layer])
     assert sum(map(len, cols.values())) == 8  # `idle` has no narrative: not drawn
     assert not any("idle" in t for _, t in [c for col in cols.values() for c in col])
 
