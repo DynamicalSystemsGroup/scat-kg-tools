@@ -147,6 +147,7 @@ def call(server, tool, **args):
     async def go():
         out = await server.call_tool(tool, args)
         blocks = out[0] if isinstance(out, tuple) else out
+        blocks = getattr(blocks, "content", blocks)  # a view tool returns a CallToolResult
         return json.loads(blocks[0].text)
 
     return asyncio.run(go())
