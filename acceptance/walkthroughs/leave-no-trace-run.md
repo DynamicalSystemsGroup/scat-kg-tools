@@ -1,8 +1,26 @@
 # Run record: leave no trace (example: inference.coop)
 
-Status: waiting for the chief engineer's sitting. Not run: inference.coop was off limits for the writing unit
-(WP25-U7). The page `docs/leave-no-trace.md` was written from the existing page, the chat path's life cycle and the
-lab run of 25 November; it carries no screenshot references yet.
+Status: **run 27 Nov 2026 in the chief engineer's sitting**, end to end, set-up to teardown (chat.inference.coop in
+the built-in browser, his account; SCAT Chat serving the test vault `my-vault`; the synthetic note
+`lab-note-community-fridge.md` as field notes). Screenshots and the probe log are in the sitting's evidence folder,
+outside the repository. Earlier status, kept: the page was first written from the existing page, the chat path's life
+cycle and the lab run of 25 November.
+
+## The run, 27 November
+
+| Steps | What happened | Finding and disposition |
+|---|---|---|
+| 6 to 18 | MCP Settings, +, name, address, Streamable HTTPS, API Key with the **Bearer** header format; he pasted the key and ticked I trust; Create; **Connect**: "MCP server 'scat' initialized successfully", entry "SCAT - Connected" | Passed as written |
+| 20 to 26 | Skills, +, **Write skill instructions**: name, description, the skill file's text; "Skill created", **Available to agent** on | Passed |
+| 27 to 33 | Agent Builder: name SCAT coder, model as given, Tool Library: **scat** (19 tools) and **Ask User**; skills **Selected**, `scat-coding` only; Create: "Successfully created SCAT coder" | Passed |
+| 34 (old) | The page made a collection the main route for the notes; My Files has no collections, and the chief engineer: collections are for the regular pass, the temporary chat for leave no trace | Page fixed (tools f237b15): notes attached to the temporary chat, deleted from the file library at the end |
+| 34 to 36 | Temporary Chat on; its note: "This chat won't appear in your history and will be deleted automatically"; Agent Builder **Select** started the chat with the agent | Passed |
+| 37 to 38 | Notes attached by paperclip. First try: choosing a model in **Select a model** replaced the agent, so a plain model answered with no tools, no skill and no sight of the file | Page fixed (tools f25a8f3): leave the model menu alone once the agent is picked |
+| 38 to 40 | With the agent: it read the note and asked through **Ask User**; the group cap (3, already full) refused a new group; it could not edit `scat.toml` and handed that back | Cap and settings: D-159. The coding behaviour, probed (P1 to P8, V1 to V3): `work-packages/WP27-inputs.md` |
+| analysis | Asked for pictures, it called the views and wrote Mermaid itself; the server has no drawing tool | D-160: the tools draw (into WP27) |
+| 47 to 49 | Stop: "SCAT Chat stopped"; the address no longer connects; the container is gone; the app quit | Passed |
+| 50 to 60 | Neither temporary chat in history; server entry deleted; agent deleted; skill deleted ("Skill deleted"); two copies of the note were in My Files (one per try) and were deleted; no prompts | Passed. The two copies confirm step 57: attachments outlive the temporary chat |
+| 61 | Field notes folder and vault still on the Mac; no SCAT Chat key in the keychain; Colima still running | Passed. Step 46's commit was not made (a lab vault) |
 
 To fill at the sitting: date, environment (Mac, macOS, Colima version, Tailscale, SCAT Chat build), material used
 (lab only: `contracts/examples` or the template case study; a throwaway key), every step as run with its outcome,
