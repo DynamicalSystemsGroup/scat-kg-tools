@@ -7,7 +7,7 @@ provider: Ollama
 !!! tip "Your next step"
     Read "What this path needs", then follow the worked example to see one complete setup.
 
-Code with a language model that runs on your own computer, which you supply, so nothing leaves it. You code as on
+Code with a language model that runs on your own computer, which you supply, so your notes and your chat go to a model on your own computer. You code as on
 the [chat path](chat-path.md): the assistant drafts and proposes, you decide, and the tool checks. This page says what
 the SCAT side needs from any local setup, then shows one setup, Ollama and Open WebUI in Docker, from start to stop.
 Another model runner or another chat client that meets the same needs works the same way.
@@ -27,7 +27,7 @@ Another model runner or another chat client that meets the same needs works the 
 - **The assistant's rules.** `contracts/assistant.md` in the repository is the assistant's file. Give it to the model
   as its system prompt. The server also offers the same text as the resource `scat://assistant-rules` and as prompts.
 
-Whatever the setup, the tool decides whether the vault conforms, and the model does not. Run `uv run scat check` in
+Whatever the setup, the tool decides whether the vault conforms, and the model does not. Run `scat check` in
 your vault yourself and read its last line. You own the interpretation; the model only helps. The server cannot set a
 narrative to `done`, so the model cannot either: you do that in Obsidian.
 
@@ -35,7 +35,7 @@ narrative to `done`, so the model cannot either: you do that in Obsidian.
 
 - **Memory.** A model stays in memory while you use it: about 5 GB for a 3B model and about 6.5 GB for a 7B model.
   Open WebUI and the server add about 1 GB. Give Docker enough memory for all of it: at least 8 GB for a 7B model
-  (Docker's resource settings, or `colima start --memory 12`).
+  (Docker Desktop: Settings > Resources; Colima: `colima start --memory 12`).
 - **Context.** The rules and the tool list together run to several thousand tokens. Ollama's default context window
   cuts them off, and the model then does not see the tool. The example sets 8192.
 - **Time.** A turn can take minutes on an older Mac. The first turn also loads the model; later turns come faster.
@@ -45,16 +45,20 @@ narrative to `done`, so the model cannot either: you do that in Obsidian.
 
 Ollama runs the model, Open WebUI is the chat window, and the SCAT server serves your vault. All three run in Docker,
 on one Docker network, started by one file and a few terminal commands. The model is `qwen2.5:7b`; any model that can
-call tools takes its place. You need Docker running (Docker Desktop or Colima), a clone of `scat-kg-tools` (the server
-is built from it), and a vault in a folder in your home folder outside Documents, Desktop, Downloads and iCloud (macOS
-hides those from a container).
+call tools takes its place. You need Docker running (Docker Desktop or Colima), a clone of `scat-kg-tools` in your home
+folder (the server is built from it: `git clone https://github.com/DynamicalSystemsGroup/scat-kg-tools ~/scat-kg-tools`),
+and a vault in a folder in your home folder outside Documents, Desktop, Downloads and iCloud (macOS hides those from a
+container). The steps call the vault folder `~/my-vault` and keep the setup in `~/local-llm`. Use one terminal window
+for the steps that start with `export`: the variables and the key live only in it. Downloads at the first start: the
+images (several GB; Open WebUI's is the largest), the model from Ollama's library, and a small helper model that Open
+WebUI fetches for itself from huggingface.co. Your chat text goes only to the model in your Ollama container.
 
-1. **In a terminal:** make an empty folder for this setup, go into it, and write the setup file. The file starts three
+1. **In a terminal:** make the folder `~/local-llm`, go into it, and write the setup file. The file starts three
    containers: Ollama (with the context window set), the SCAT server (read-only, running as you, with your vault
    mounted) and Open WebUI.
 
     ```text
-    mkdir local-llm && cd local-llm
+    mkdir -p ~/local-llm && cd ~/local-llm
     cat > compose.yaml <<'EOF'
     services:
       ollama:
@@ -96,7 +100,7 @@ hides those from a container).
     password is created. The SCAT server is not published at all; only Open WebUI reaches it, over the Docker network.
 
 2. **In a terminal:** name your clone, your vault and a new key, then start everything. The first start downloads
-   several GB and builds the server, so it takes a while; later starts take seconds.
+   the images and builds the server: it took about 40 minutes on a slow connection, and later starts take seconds.
 
     ```text
     export SCAT_SRC=~/scat-kg-tools
@@ -106,10 +110,10 @@ hides those from a container).
     docker compose up -d --build
     ```
 
-    You should see three containers started. `docker compose ps` lists them as running. Keep this terminal open: the
-    key lives only in it.
+    You should see three containers started. `docker compose ps` lists them as running. Keep this terminal open
+    for the rest of the session.
 
-3. **In a terminal:** pull the model into Ollama's volume (about 4.7 GB).
+3. **In a terminal:** pull the model into Ollama's volume (4.7 GB; a few minutes on a fast connection).
 
     ```text
     docker compose exec ollama ollama pull qwen2.5:7b
@@ -136,7 +140,9 @@ hides those from a container).
 
     Choose **Save**. You should see "Connections saved successfully" and a row **SCAT** under External Tool Servers.
     The URL uses the server's name on the Docker network, because inside Open WebUI's container `localhost` is Open
-    WebUI itself. The filter list offers the model two tools instead of all nineteen, which keeps each request short.
+    WebUI itself. The filter list offers the model two tools instead of all nineteen, which keeps each request short. It uses the
+    server's tool names, `check` and `status`; Open WebUI shows a tool as the connection's ID plus its name, so `check`
+    appears as `scat_check`.
 
     ![The connection form for the SCAT server: type MCP Streamable HTTP, name SCAT, URL http://scat-mcp:8765/mcp, bearer auth with the key hidden, and the function name filter list check, status.](assets/walkthroughs/local-llm/02-tool-server.png)
 
@@ -177,19 +183,22 @@ hides those from a container).
 
     ```text
     cd ~/my-vault
-    uv run scat check
+    uv run --project ~/scat-kg-tools scat check
     ```
 
     You should see the same two warnings and the last line `0 errors, 2 warnings`. Compare: do the warnings the model listed
     match the tool's two, and do its words ("not fully conformant" in the example) match the tool's line? The tool's line
     says no errors; the two warnings are fields to fill in before the narrative is done. The tool's output settles it.
 
-11. **In a terminal:** stop the session. Go back to the folder that holds `compose.yaml`.
+11. **In a terminal:** stop the session. 
 
     ```text
+    cd ~/local-llm
     docker compose down
     ```
 
     You should see the three containers removed. The downloaded model and Open WebUI's data stay in their volumes for
-    the next session; start again with step 2, which makes a new key. To remove them too, run
+    the next session. Each session has a new key: start again with step 2, then in Open WebUI open Settings >
+    Integrations, choose the gear on the **SCAT** row, paste the new key (`echo $SCAT_MCP_KEY`) and choose **Save**.
+    Open WebUI keeps the old key until you do, and the server answers it with 401. To remove the volumes too, run
     `docker compose down --volumes`.
