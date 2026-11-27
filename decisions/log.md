@@ -3000,3 +3000,14 @@ get technologies. the default interpretation is the generic narrative that gets 
 plotting methods should have the word group swapped for stakeholder so the for columns match S, C, A, T". Earlier, on
 the figures: "it's also worth ensuring every image we can generate has an associated data dump method that returns its
 nodes and edges which could be viewed as a table". Where these are built is asked next.
+
+## D-173 | 2026-11-27 | The MVC loop runs in Claude; the app's name will be scatlab
+
+The chief engineer asked for the loop to be tested in Claude before shutting down; it ran end to end, view to control to
+view, with Claude reading the tool's images (`acceptance/walkthroughs/mvc-loop-claude.md`). Findings go to WP31, WP34
+and the proposed WP36. The WP32 to WP35 approval is still to come.
+
+The chief engineer, during the run (typed by the agent): "by the way, i have decided that i want my app to be named
+scatlab (its meant to make someone think of matlab. its for scat coding (instead of math coding) and even if we leave it
+implicit people will appreciate the easter egg". What the rename covers (the SCAT Chat app, the tool, the repositories,
+the docs site) is to be settled with him and scoped as its own package.
