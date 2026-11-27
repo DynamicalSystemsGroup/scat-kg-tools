@@ -5,7 +5,7 @@
 
 The MCP server offers the tool's operations to a chat or an agent. It is a front end to the tool, not part of it:
 every tool below calls one operation of the Python package and returns that call's own data, unchanged. It holds no
-authority, so it never sets a narrative to `done`.
+authority, so it never sets a narrative to `done`. The two stage tools are the exception: they belong to the server.
 
 ## Starting it
 
@@ -24,7 +24,7 @@ address and refuses to start on any other.
 
 ## Tools
 
-Nineteen tools. Each returns the operation's own document. The three view tools `fingerprint`, `layered` and `trace` can return a picture, or both, instead (see [Drawings](#drawings)).
+Twenty-one tools. Nineteen are the operations; `which_stage` and `set_stage` are the stage tools (see [Stages](#stages)). Each returns the operation's own document. The three view tools `fingerprint`, `layered` and `trace` can return a picture, or both, instead (see [Drawings](#drawings)).
 
 | Tool | What it does |
 |---|---|
@@ -47,6 +47,10 @@ Nineteen tools. Each returns the operation's own document. The three view tools 
 | `review` | View: pairs of node pages of one type that may be one node (overlaps, twin rows, shared adjacent nodes with hubs marked, link texts), and pages whose accounts tell them to different other ends, with the narratives grouped. A prompt to read, not a finding. Reads no `attributed_to` and lists no contributor page. |
 | `attribution` | View: the narratives by contributor, and the narratives that name none. Refused where the attribution mode is `disallowed`. |
 | `export_edges` | Write the three edge tables as CSV and Markdown into `views/`. |
+| `which_stage` | Show the project's stage, who set it and when, the stage's work, tools and prompts, and each move out of it with whether its predicate holds now. Works in every stage. Writes nothing. |
+| `set_stage` | Move the project to a stage, only when a person has said so. Takes `to` and `by`. Writes `lifecycle.toml` and nothing else. |
+
+Every tool's description ends with the stages that offer it, for example `Stages: code, analyse.`, or `Stages: all.` The list of tools is the same in every stage and does not change between calls; a call the stage does not offer is refused (see [Stages](#stages)).
 
 ## Drawings
 
@@ -79,11 +83,35 @@ Six prompts, each citing `contracts/assistant.md`:
 | `fill-in-node-pages` | The same for each stub node page in turn, one page per step, each handed back to you before the next. |
 | `look-for-duplicates` | The possible duplicates and pages to re-read from `review`, one proposal per step, with the merge plan shown. You run the merge yourself, and each step is handed back to you. |
 
-The server also offers one resource, `scat://assistant-rules`, the assistant's rules as text.
+Each prompt's description also ends with the stages it belongs to. The prompt list is stable too, and a prompt is never refused.
+
+The server offers these resources, all as text:
+
+| Resource | What it gives |
+|---|---|
+| `scat://assistant-rules` | The assistant's rules. |
+| `scat://guide/index` | The five stages, one line each, and every move between them. |
+| `scat://guide/<stage>` | One stage's guide, for `plan`, `capture`, `code`, `analyse` or `report`. |
+
+The guide resources carry the same text as `scat guide` and `scat_kg.guide()`. The server also sends the index as its instructions when a client connects.
+
+## Stages
+
+A project is in one stage at a time: `plan`, `capture`, `code`, `analyse` or `report`. A stage is where the project is in its lifecycle; it is not a page's status, and neither sets the other. The stage is kept for the whole vault, so it is the same in every chat and after a restart.
+
+- **`lifecycle.toml`**, at the vault's root, holds `stage`, `set_by` and `set_at` (UTC), and a `[pending]` table when a move is requested without a name. The server reads it afresh on every call. `set_stage` is the only writer. `scat check` and `scat status` ignore the file.
+- **No stage recorded.** The file is missing, has no `stage`, names something that is not one of the five stages, or cannot be read. Every tool except the two stage tools is refused, and the refusal names the five stages and says the person decides which one.
+- **A call the stage does not offer.** The tool is refused, nothing runs and nothing is written. The refusal says the tool is not offered in this stage, names the stages that offer it, and says a move is the person's say-so. Some stages also limit how a tool may be used (in `plan`, `stub` makes group pages only); a call that breaks a limit is refused the same way.
+- **`which_stage`** works in every stage. For each move out of the stage it gives the trigger, who decides, and whether the move's predicate holds now. A predicate the server can read from the vault (every narrative is `done` and the check has no errors; the number of groups has reached the cap) only advises. A predicate that only a person can say is shown as words.
+- **`set_stage(to, by)`** records a move after the person has said so. `by` is the name the person gave; it is a signature, not proof of consent. Without `by`, the move is recorded as a pending request and nothing moves. A stage that is not one of the five, the stage the project is already in, or a move the model does not list is refused, and the refusal names the stage's exits. A move whose predicate is read from the vault and does not hold is made and carries an advisory line; it is not blocked. From no stage, any stage may be named.
+
+The assistant never moves the stage itself. See [The chat path](../chat-path.md#stages) for how a coder uses this.
 
 ## What it refuses
 
 A refusal is a result, not an error, and says what to do instead.
+
+- **A call the stage does not offer**, or any call while no stage is recorded (see [Stages](#stages)).
 
 - **A request without the key** gets HTTP status 401 with a short "unauthorised" message and nothing else, when a key is set.
 - **`done`.** `set_status` refuses to set a page to `done` and refuses to move a page out of `done`. No other tool
@@ -97,5 +125,5 @@ A refusal is a result, not an error, and says what to do instead.
 ## The data is the tool's own
 
 A result is the document the same call returns from the command line with `--json` or from Python. The server adds
-nothing to it and takes nothing away. The fields are in the
+nothing to it and takes nothing away. The two stage tools return their own documents, of kind `stage`. The fields are in the
 [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md).

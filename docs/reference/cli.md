@@ -101,6 +101,9 @@ positional arguments:
                   `<type>.md`. Overwrites a file only when its content
                   differs; makes DIR if it is not there. Refuses where `scat
                   edges` would, and then writes nothing.
+    guide         Show the guide of a lifecycle stage (plan, capture, code,
+                  analyse or report), or, without STAGE, the index of the
+                  stages and their moves. Needs no vault. Writes nothing.
     draw          Draw a view as an image (needs the extra `draw`): `.png` or
                   `.svg`.
 
@@ -110,7 +113,7 @@ options:
 Run `scat <command> --help` for a command.
 ```
 
-`scat` has sixteen commands. Each prints a message and exits with a code:
+`scat` has twenty-one commands. Each prints a message and exits with a code:
 
 | Exit code | Meaning |
 |---|---|
@@ -151,6 +154,7 @@ Every command takes `--root ROOT`, the vault folder (default: the current folder
         scat_kg.review()                    # pages that may be one node, and pages to re-read
         scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
         scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
+        scat_kg.guide("code")               # a lifecycle stage's guide (no stage: the index); no vault needed
 
     Each call takes `root=` (the vault folder; default: the current directory) and returns an object whose
     `str()` is the message the `scat` command prints, and which prints as that message. `.ok` is False when
@@ -2174,6 +2178,45 @@ $ uv run scat export-edges --out edge-tables --json
   "notes": []
 }
 ```
+
+## scat guide
+
+```text
+usage: scat guide [-h] [--root ROOT] [--json] [STAGE]
+
+Show the guide of a lifecycle stage (plan, capture, code, analyse or report), or, without STAGE, the index of the stages and their moves. Needs no vault. Writes nothing.
+
+positional arguments:
+  STAGE        the stage; without it, the index
+
+options:
+  -h, --help   show this help message and exit
+  --root ROOT  the vault folder, the one with scat.toml (default: here)
+  --json       print the result as one JSON document (machine-interface
+               contract), nothing else
+
+REPL: `scat_kg.guide()`, `scat_kg.guide("<stage>")`
+```
+
+Shows the guide of one stage of the project's lifecycle, or, with no `STAGE`, the index: the five stages, one line each, and the moves between them. A stage is where the project is (plan, capture, code, analyse or report); it is not a page's status. The guide says what the stage is for, how to recognise it, what it needs and makes, which tools and prompts it offers, what the coder does, and where it can go next. It needs no vault, so it works in any folder. An unknown stage is a refusal that names the five.
+
+The MCP server sends the same text as its resources `scat://guide/index` and `scat://guide/<stage>` (see the [MCP server reference](mcp.md#stages)), and the assistant on the IDE path reads it with this command.
+
+Exit codes: 0, or 1 for a refusal.
+
+=== "Python"
+
+    ```python
+    scat_kg.guide("analyse")
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat guide analyse
+    ```
+
+Both print the guide as text: a heading with the stage's name, then what it is for, how to recognise it, what it needs and makes, its tools and prompts, the coder's acts, its exits, and what `mode` means. With no `STAGE` they print the index of the five stages and their moves.
 
 ## scat draw
 

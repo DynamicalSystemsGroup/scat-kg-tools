@@ -39,6 +39,7 @@
 | [`scat_kg.review`](#scat_kgreview) | [`scat review`](cli.md#scat-review) | View: pairs of node pages that may be one node, and pages whose accounts tell them to different other ends. |
 | [`scat_kg.attribution`](#scat_kgattribution) | [`scat attribution`](cli.md#scat-attribution) | View: the narratives by contributor (where the vault's attribution mode allows it). |
 | [`scat_kg.export_edges`](#scat_kgexport_edges) | [`scat export-edges`](cli.md#scat-export-edges) | Write the edge tables as CSV and Markdown. |
+| [`scat_kg.guide`](#scat_kgguide) | [`scat guide`](cli.md#scat-guide) | Show the guide of a lifecycle stage, or the index of the stages. Needs no vault. |
 | [`scat_kg.draw.render`](#scat_kgdrawrender), [`scat_kg.draw.fingerprint`](#scat_kgdrawfingerprint), [`scat_kg.draw.layered`](#scat_kgdrawlayered), [`scat_kg.draw.trace`](#scat_kgdrawtrace) | [`scat draw`](cli.md#scat-draw) | Draw a view, or a view's result, as an image (needs the extra `draw`). |
 
 ## Machine-readable output
@@ -1355,6 +1356,36 @@ The CSV has the columns `from`, `to`, `narratives` (joined by `;`) and `status`.
 
     The same lines, with `edge-tables/` in place of `tables/`.
 
+## scat_kg.guide
+
+```text
+guide(stage=None)
+```
+
+Returns the guide of one stage of the project's lifecycle (`"plan"`, `"capture"`, `"code"`, `"analyse"` or `"report"`). With no `stage`, or `"index"`, it returns the index: the five stages and the moves between them. It needs no vault and has no `root`. A stage is where the project is; it is not a page's status. CLI twin: [`scat guide`](cli.md#scat-guide).
+
+| Parameter | Meaning |
+|---|---|
+| `stage` | The stage's name, or `"index"`. Without it, the index. |
+
+`str(result)` is the text `scat guide` prints, and the result prints as that text. Besides `ok` (always `True` for a stage or the index), it holds `stage`, `text`, `docs` (the stage's docs page, or `None` for the index), `tools` (the stage's tools) and `exits` (the ids of its moves). A name that is not a stage returns a `Result` that is a refusal naming the five stages, with `ok` set to `False`.
+
+=== "Python"
+
+    ```python
+    scat_kg.guide("analyse")
+    scat_kg.guide("analyse").tools
+    scat_kg.guide("ideation").ok
+    ```
+
+=== "CLI"
+
+    ```bash
+    uv run scat guide analyse
+    ```
+
+    The first line prints the guide. The other two lines give the stage's tools, and `False`.
+
 ## Drawings
 
 A drawing shows a view as columns, one for each layer, in layer order, with the edges as lines between them. The columns are labelled stakeholder, concern, affordance and technology; the first holds the nodes of the `group` layer. SVG and PNG are the same drawing in two formats. It needs the extra `draw`: `pip install "scat-kg[draw]"`. Without it, the call returns a refusal that says so. In the vault template it is already installed. Import the module with `from scat_kg import draw`. Where a view refuses, the drawing refuses with the same refusal.
@@ -1442,6 +1473,7 @@ Each call returns one of these kinds of result. All print as their message.
 | `StatusReport` | `status`, when it ran | `scope` (`"page"`, `"neighborhood"` or `"vault"`), `rows` (each with `path`, `name`, `type`, `status`), `counts` (pages per status; `other` is a missing or invalid status), `ok`. |
 | `Result` | `stub`, `stub_links`, `set_status`, `index`, and any refusal | `created`, `changed`, `unchanged`, `notes` (tuples of text), `refused` (each with `subject`, `why`, `fix`), `ok`. |
 | `EdgeResult` | `record_edge`, `remove_edge` | everything a `Result` holds, and `edge`, `rows_added`, `rows_removed`. |
+| `Guide` | `guide` | `stage`, `text`, `docs`, `tools`, `exits`, `ok` (always `True`). |
 | `MergeResult`, `SplitPlan` | `merge`, `split_plan`, when they ran | everything a `Result` holds, and `plan`, `removed`, `done_narratives`, `links_rewritten` (merge); `node`, `node_type`, `pages` (split plan). |
 
 The views return a `View` (see [Views](#views)) and the drawings a `Drawing` (see [Drawings](#drawings)).
