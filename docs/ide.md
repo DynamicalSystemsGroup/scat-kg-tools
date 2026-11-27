@@ -33,6 +33,22 @@ what the assistant changed. Run `git diff` before every commit and read it. The 
 `uv run scat set-status`, because the command cannot tell who types it, so you set `done` yourself, after reading
 the narrative. See [Coding](coding.md#the-three-actors).
 
+## The stage on this path
+
+A project is in one stage at a time: plan, capture, code, analyse or report. The stage is not a
+page's status. On this path the stage is advisory, because no server refuses a call outside it. The assistant reads
+the guides with the tool's own command, and you say which stage the project is in:
+
+```bash
+uv run scat guide
+uv run scat guide code
+```
+
+The first prints the five stages and the moves between them. The second prints one stage's guide: what the work is,
+what it needs and makes, which tools it offers, and where it can go next. The assistant offers only the work and the
+tools of the stage you name, and a move to another stage is yours to say. If your vault has a `lifecycle.toml` at its
+root, the assistant reads the stage from it.
+
 ## Worked example: Copilot in VS Code
 
 GitHub Copilot in VS Code is the example here; another IDE agent that reads project instructions, such as Codex or

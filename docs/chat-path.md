@@ -403,6 +403,9 @@ in the Agent Builder, remove the tool that no longer works, add the new entry, a
 
 98. **In the chat:** send it.
 
+On inference.coop, field notes may go in a collection instead of an attachment: we use collections on the regular
+inference.coop pass. Ask the person who set this up for you how your collection is used.
+
 Then follow the coding loop below, one step per reply.
 
 If your chat offers the server's prompts (`code-a-narrative`, `explain-a-problem`, `review-before-done`,
@@ -431,6 +434,28 @@ This is the [coding loop](coding.md#the-coding-loop) with an assistant. What is 
 The server and Obsidian use the same folder, so what the assistant records appears in Obsidian. If a page
 looks stale in Obsidian, reopen it. If you work in a copy (see above), the
 same is true of that copy.
+
+### Stages
+
+A project is in one **stage** at a time: plan, capture, code, analyse or report. A stage is where the project is in its
+lifecycle. It is not a page's status (`stub`, `draft`, `done`), which changes many times inside one stage. Each stage
+offers the tools its work needs, and the server's guide for the stage says what to do in it.
+
+- **Ask which stage it is.** Say "what stage are we in?" The assistant calls `which_stage`, which gives the stage, who
+  set it and when, the stage's work, its tools, and where it can go next.
+- **Name a stage.** Say it plainly, for example "we are coding". The assistant calls `set_stage` with your name as `by`
+  and says what it did. It never moves the stage on its own: you decide, and your name is only a signature.
+- **It is kept in the vault.** The stage is in the file `lifecycle.toml` at the vault's root. It is the same in every
+  chat on this vault and it survives a restart of the server. A new chat does not have to be told.
+- **A refusal.** A call the stage does not offer is refused, and nothing is changed. The refusal says the tool is not
+  offered in this stage, which stages offer it, and that a move is yours to say. If no stage is recorded yet, every
+  call is refused until you name one, and the refusal names the five stages. The assistant relays the refusal in full
+  and does not work around it. To go on, tell it which stage to move to.
+
+The server sends a short guide for each stage, and the assistant reads the one for the stage you are in. You can read
+the same text yourself with `uv run scat guide` and `uv run scat guide <stage>` (see the
+[CLI reference](reference/cli.md#scat-guide)). How the server keeps and enforces the stage is in the
+[MCP server reference](reference/mcp.md#stages).
 
 ### Views
 
