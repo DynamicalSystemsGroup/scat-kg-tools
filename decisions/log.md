@@ -2979,3 +2979,24 @@ SCAT Chat and showed the `draw_layered` PNG the server returned (`acceptance/wal
 `authorization: Bearer <key>` failed to connect again, with the same key and setup as `x-api-key`, which connected; the
 chat path keeps `x-api-key`. Two findings go to WP30 and WP31 (PNG to show, SVG to save; never re-embed a tool's image).
 WP28-R1 to R6 are met; the ACE accepts WP28.
+
+## D-171 | 2026-11-27 | RS6 delivered and accepted
+
+RS6's readout is on `dev` (`research/glossary/readout.md`, tools 995d2c2, the only file changed); the inventory data
+(59 glossary words classified, 85 app terms the glossary lacks, 41 inconsistencies) is on `spike/glossary`. R1 to R4
+met; the readout's main text is 2,356 words against the default of about 2,000, with appendices so it stands alone
+(accepted). Two cells in the spike's `inconsistencies.csv` keep a mislabelled page count: a permission classifier
+refused the writer's edit, the PM did not work around it, and the readout records the correction (accepted as is; the
+data stays on the spike branch). Notes for the cleanup package: two high inconsistencies ("contributor"; where the
+narratives sit among inputs, model and analysis); `MISSION.md` commits the glossary to its formal-concept column, so
+dropping that column needs his mission amendment; `tests/docs/test_terms.py` pins `terms.md` to the glossary and to
+910 words. `check_metrics.py` passes (iteration 51). The ACE accepts RS6.
+
+## D-172 | 2026-11-27 | Fingerprints follow the narrative's kind; columns read stakeholder, concern, affordance, technology
+
+The chief engineer (typed by the agent), after the analysis notes: "a fingerprint thats keyword flagged as an
+architecture doesn't get a stakeholders (group) column and a fingerprint that is keyword flagged as a scenario doesn't
+get technologies. the default interpretation is the generic narrative that gets all 4 columns. i also think the
+plotting methods should have the word group swapped for stakeholder so the for columns match S, C, A, T". Earlier, on
+the figures: "it's also worth ensuring every image we can generate has an associated data dump method that returns its
+nodes and edges which could be viewed as a table". Where these are built is asked next.
