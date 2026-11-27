@@ -36,8 +36,9 @@ git ls-remote https://github.com/DynamicalSystemsGroup/scat-kg-template refs/hea
 
 The first prints the tools candidate, the second prints nothing, the third shows the template's `dev` commit. To see
 that the template's pin has the same `src/` and `docs/`, run `git diff bc66409 71a0faf -- src docs`; it prints nothing. The
-results quoted in this guide were taken on `dev` at `66d8dc3`, before the candidate existed (the last commit that
-changed `src/` or `docs/` was `84fd58b`); the PM refreshes them at staging.
+figures quoted in sittings 2 and 3 were taken earlier, on `dev` at `66d8dc3` (before WP21 to WP26); sitting 3's
+command block reruns every one on the candidate, so read its output rather than the quoted numbers. The packages'
+own acceptance entries (D-121 to D-155) give their test counts on their own heads.
 
 | Sitting | Entry point | The decision you make |
 |---|---|---|
