@@ -63,3 +63,10 @@ structure-aware commit as a stage tool (staging only the vault's template paths,
 running the checks the stage requires and refusing if they fail; still the coder's act, which the assistant may propose
 but not run). Evidence: V1 (a first `git add .` swept Obsidian's files in). Implementing it needs an amendment to WP30's
 scope once the design lands.
+
+## From WP28-R5's on-screen run (27 November)
+
+Both Claude and inference.coop show a PNG the server returns. In inference.coop the model also re-embedded the picture
+as its own markdown image (a broken placeholder), and on a second request it chose SVG, which a chat shows as text, not
+a picture. For WP30's analysis guide and WP31's habits: ask for PNG to show, SVG only to save; never re-embed a tool's
+image. Claude: `authorization: Bearer <key>` fails to connect twice; `x-api-key` works.

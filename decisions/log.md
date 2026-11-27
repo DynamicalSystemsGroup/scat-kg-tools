@@ -2971,3 +2971,11 @@ with `acceptance/walkthroughs/drawings-run.md` written then. Accepted as is: fil
 (`.github/workflows/image.yml` for R4's CI step; `docs/local-llm.md`'s tool count), and the reviewers' nits. The image
 grew from 177 MB to 343 MB (matplotlib). The ACE re-pinned the template to tools c7ebf69 (template `dev` f04fcc3) and
 `TEMPLATE_COMMIT` to it (tools dc9c0a1; docs tests 310 passed). WP28 is accepted when R5 is recorded.
+
+## D-170 | 2026-11-27 | WP28-R5 run; WP28 accepted
+
+In the chief engineer's sitting (the ACE as coder, his keys): Claude and inference.coop each connected to the rebuilt
+SCAT Chat and showed the `draw_layered` PNG the server returned (`acceptance/walkthroughs/drawings-run.md`). Claude's
+`authorization: Bearer <key>` failed to connect again, with the same key and setup as `x-api-key`, which connected; the
+chat path keeps `x-api-key`. Two findings go to WP30 and WP31 (PNG to show, SVG to save; never re-embed a tool's image).
+WP28-R1 to R6 are met; the ACE accepts WP28.
