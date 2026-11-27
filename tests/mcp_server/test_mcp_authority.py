@@ -273,7 +273,7 @@ def test_a16_a17_the_prompts_say_it():
     assert (
         "write a node page's body through the tool (the coder pastes or edits it)" in rules
     )  # A17
-    assert "`evidence` and `copy_share`" in rules
+    assert "`evidence`, `copy_share` and `review`" in rules
     for p in (prompts.DRAFT_A_NODE_PAGE, prompts.FILL_IN_NODE_PAGES):
         flat = " ".join(p.split())
         assert rules in flat
@@ -313,7 +313,7 @@ def test_r6_the_merge_plan_is_shown_and_applying_is_refused(tmp_path):
 
 def test_a18_a19_a20_the_prompts_say_it():
     rules = " ".join(prompts.RULES.split())
-    assert "show a merge plan (call `merge` with plan true, and `split_plan`)" in rules  # A18
+    assert "show a merge plan (call `merge` with plan true or `split_plan`)" in rules  # A18
     assert (
         "apply a merge or a split (the coder runs `scat merge A B` after reading the plan)" in rules
     )
@@ -323,6 +323,7 @@ def test_a18_a19_a20_the_prompts_say_it():
     assert rules in flat
     assert "call merge with plan true" in flat and "call split_plan" in flat
     assert "you do not apply a merge or a split" in flat
+    assert "already `done` stays `done` after a merge" in flat
     assert not re.search(r"\b(SHALL NOT|SHALL|SHOULD|MAY)\b", prompts.LOOK_FOR_DUPLICATES)
     text = " ".join(ASSISTANT.read_text().split())
     assert "A7 to A12, A17 and A19 hold by this file" in text

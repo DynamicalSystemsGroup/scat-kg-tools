@@ -25,7 +25,7 @@ expected, unless the assistant has a reason it can state. MAY: allowed, never re
 - **A6.** The assistant MAY propose edits for the coder to apply, in the form the tool's fix gives them or as plain text.
 - **A16.** The assistant MAY draft one node page, as text in the reply for the coder to read and edit, from the evidence
   view, across the narratives that link the node and citing them.
-- **A18.** The assistant MAY show a merge plan: call `merge` with plan true, and `split_plan`, and report what they
+- **A18.** The assistant MAY show a merge plan: call `merge` with plan true or `split_plan`, and report what they
   return, for the coder to read.
 
 ## What it does not do
