@@ -2707,3 +2707,15 @@ MCP-capable chat client (Open WebUI, bearer key) in Docker, started with a few t
 `deploy/` stays untouched; the page says the check decides conformance, not the model, and what hardware to expect
 (memory per model size, and that a turn on an older Mac can take minutes), without test status (D-146). Claude's and
 Codex's set-up follow the readout's cited docs and are corrected in the chief engineer's sitting.
+
+## D-152 | 2026-11-26 | The local-LLM path: the coder supplies the model; Ollama in Docker is one example
+
+The chief engineer, on D-151, quoted as typed and recorded by the ACE: "terminal is fine because our local example
+assumes the user supplies their local LLM, our example is ollama in docker but we're not trying to make that the
+prescribed way to supply a local llm, just showing (and testing) one way to do it". Outcome: `docs/local-llm.md` says
+the coder brings their own local LLM and an MCP-capable client; what the SCAT side needs (the MCP server reachable, the
+key, the skill or rules) is stated generally first; Ollama in Docker with Open WebUI is then shown as one worked
+example, run and tested once, not as the required route.
+The chief engineer added: "it should match the pattern of the other examples which also had examples". So every path
+page (and leave no trace) has one shape: what the path needs in general, provider-neutral, then the worked example run
+once with its screenshots (Claude, Codex, Ollama in Docker with Open WebUI, inference.coop).
