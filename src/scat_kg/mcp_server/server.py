@@ -294,6 +294,13 @@ def build(vault: str | Path, **settings) -> FastMCP:
     def fill_in_node_pages() -> str:
         return prompts.FILL_IN_NODE_PAGES
 
+    @mcp.prompt(
+        name="look-for-duplicates",
+        description=f"Walk the possible duplicates and the pages to re-read, one proposal per step, each handed back ({CITE}).",
+    )
+    def look_for_duplicates() -> str:
+        return prompts.LOOK_FOR_DUPLICATES
+
     @mcp.resource(
         "scat://assistant-rules",
         name="assistant-rules",

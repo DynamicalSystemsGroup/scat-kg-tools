@@ -400,6 +400,13 @@ four parts, written across the narratives that link the node and never pasted fr
 3. Where accounts differ: kept, not merged.
 4. What is thin: what no narrative says.
 
+What "what the node is" holds depends on the type (a norm the tool does not check):
+
+- **A group:** who they are as the narratives tell them, and what they hold.
+- **A concern:** what is at stake and who holds it, and what addresses it.
+- **An affordance:** what it offers, and which technologies provide it.
+- **A technology:** what it is as the narratives tell it, and which affordances rest on it.
+
 `scat evidence <node>` shows what the narratives say of the node. `scat copy-share` reports how much of a page repeats a
 narrative word for word: a prompt to look, not a check. The coder writes the page; the assistant may offer a draft as
 text.

@@ -308,6 +308,7 @@ def test_the_prompts_and_the_resource_are_listed(url):
         "review-before-done",
         "draft-a-node-page",
         "fill-in-node-pages",
+        "look-for-duplicates",
     } <= prompts
     assert "funders-meeting" in text
     assert "scat://assistant-rules" in res

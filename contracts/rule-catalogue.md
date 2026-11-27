@@ -862,7 +862,7 @@ operation document. An edge is no page: it is the rows of narratives, so the res
 Example, `scat record-edge holds borrowers quick-checkout --told-by saturday-at-the-desk --json` (abridged):
 
 ```json
-{"schema_version": 2, "kind": "operation", "operation": "record-edge", "ok": true,
+{"schema_version": 3, "kind": "operation", "operation": "record-edge", "ok": true,
  "created": [], "changed": ["narrative/saturday-at-the-desk.md"], "unchanged": [], "refused": [], "notes": [],
  "edge": {"type": "holds", "from": "borrowers", "to": "quick-checkout", "narratives": ["saturday-at-the-desk"]},
  "rows_added": [{"narrative": "saturday-at-the-desk", "file": "narrative/saturday-at-the-desk.md", "line": 14, "note": ""}],
