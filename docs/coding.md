@@ -136,7 +136,7 @@ When the check passes and you confirm both, set the narrative to `done`. Done is
 - **The tool** owns conformance. It checks that the knowledge graph matches the pages and that it obeys the ontology. No part of the tool can tell who is calling it.
 - **An assistant,** where your participation terms allow one, helps and holds no authority. It may draft and may run the commands. Which data an assistant may touch is settled before the first session: see [Data, rights and consent](data-and-consent.md).
 
-On the chat path, the server never moves a page into or out of `done`, so the assistant cannot, by construction. On the IDE path an assistant can run `scat set-status`, because the command cannot tell who types it. That is a residual risk, accepted: there, authority holds by the rules written for the assistant and by your review of what it changed in git (`git diff` before every commit), not by the tool.
+On the chat path, the server never moves a page into or out of `done`, so the assistant cannot, by construction. On the IDE path an assistant can run `scat set-status`, because the command cannot tell who types it. There, authority rests on the rules written for the assistant and on your review of what it changed in git (`git diff` before every commit), not on the tool.
 
 ## Where narratives and their edges come from
 
@@ -995,7 +995,7 @@ git tag v1
 git push origin v1
 ```
 
-The tag name is yours to choose: `v1` is only an example, and any name that is not already a tag will do. The tag names that commit for good; later commits do not move it. Locking is your statement that the model is finished, and `git tag` does not run the tool. Stub pages do not stop you: the architecture allows them, and the tool never faults a page for being unfinished. Run the whole-vault check first, so the version you lock is clean.
+The tag name is yours to choose: `v1` is only an example, and any name that is not already a tag will do. The tag names that commit for good; later commits do not move it. Locking is your statement that the model is finished, and `git tag` does not run the tool. Stub pages do not stop you: the tool never faults a page for being unfinished. Run the whole-vault check first, so the version you lock is clean.
 
 ### See which commit a tag pins
 

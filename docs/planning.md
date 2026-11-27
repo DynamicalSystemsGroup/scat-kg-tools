@@ -69,8 +69,8 @@ Frame every session under the participation terms agreed for the event: say them
 ```text
 Whatever is said here can be used. Nobody is named, and
 nobody is quoted by name. The notes say which group an
-account comes from, never who gave it. A group is never
-a stand-in for one person.
+account comes from, never who gave it. A group never
+stands for one person.
 ```
 
 In `required` mode, tell participants that each account is written down with the name of the person who gave it:
@@ -78,8 +78,8 @@ In `required` mode, tell participants that each account is written down with the
 ```text
 Whatever is said here can be used. Each account is written
 down with the name of the person who gave it, and the notes
-also say which group it comes from. A group is never a
-stand-in for one person.
+also say which group it comes from. A group never
+stands for one person.
 ```
 
 In `optional` mode, tell them that a name goes with an account only if its giver wants it:
@@ -88,8 +88,8 @@ In `optional` mode, tell them that a name goes with an account only if its giver
 Whatever is said here can be used. If you want your name
 with what you say, tell the note-taker, and it is written
 with the account. If you say nothing, the account has no
-name, only the group it comes from. A group is never a
-stand-in for one person.
+name, only the group it comes from. A group never
+stands for one person.
 ```
 
 Also tell participants: the notes become pages in a private vault, and each group gets its page to add to or change; anything can stay in the room, and the notes leave it out; accounts can differ, and the differences are written down, not settled.

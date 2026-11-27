@@ -1,10 +1,9 @@
 # Norms for coding a narrative
 
 A **rule** is what the tool checks. A breach is reported by `scat check` with a rule id (`SCAT-...`) and either blocks
-(an error) or does not (a warning); the rule catalogue (`contracts/rule-catalogue.md`) holds every rule, and a "must"
-on this page always names one. A **norm** is guidance for coding well. It is the same for a person as for an LLM
-assistant, and the tool does not enforce it, so this page says "should" and "may" for norms. Each section below opens
-by saying which it is.
+(an error) or does not (a warning). The rule catalogue (`contracts/rule-catalogue.md`) holds every rule. A **norm** is
+guidance for coding well, the same for a person as for an assistant; the tool does not enforce it. Each section below
+opens by saying which it is.
 
 ## A coded narrative
 
