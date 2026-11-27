@@ -47,8 +47,10 @@ nav:
   - Getting started: getting-started.md
   - Planning: planning.md
   - Facilitating:
+      - Narratives: narratives.md
       - Scenarios: facilitate-scenarios.md
       - Architectures: facilitate-architectures.md
+      - Timeframe: facilitate-timeframe.md
   - Coding paths:
       - Overview: coding-paths.md
       - By hand: coding.md
