@@ -2737,3 +2737,13 @@ timeframe pages and the coding-paths page with its four walkthroughs; the non-go
 provider other than inference.coop in v0.1" now reads as testing beyond the R-20 runs and one run of each walkthrough.
 Left for WP26: "timeframe" has no glossary entry; the 13 status lines; the local server image is built from a clone
 until the release publishes it.
+
+## D-154 | 2026-11-26 | WP26 approved
+
+WP26 (`work-packages/WP26.md`: the residue and status sweep, the user-test loops) after the PM's scope check (nine
+fixes, applied): a definition of good and a blast radius; the carried items (G4) traced to deliverables and to R5; the
+impact map as a deliverable and the **timeframe** glossary entry as a logged ACE call for the chief engineer's review;
+message wording may change but not operations, fields or schema versions, and word caps only by a logged call; the chat
+testers run Sitting A (J1 to J4) and J6 only; R6 re-runs the sweep's patterns; "by-hand path" with UA-A's "manual path"
+as its label; candidates: none taken, and C7 marked done by WP21-U8 (an ACE bookkeeping slip). Revert point
+`divergence/D-154`. The ACE approves WP26.
