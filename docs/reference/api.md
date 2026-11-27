@@ -1364,10 +1364,10 @@ A view's query returns a result: its document is the table of nodes and edges. A
 ### scat_kg.draw.render
 
 ```text
-draw.render(result)
+draw.render(result, *, mark_narratives=False)
 ```
 
-Draws a query result you already hold, without running any query: a fingerprint of one narrative, a layered view or a trace, as returned by [`scat_kg.fingerprint`](#scat_kgfingerprint), [`scat_kg.layered`](#scat_kglayered) or [`scat_kg.trace`](#scat_kgtrace). Returns a `Drawing`. A refusal passed in comes back unchanged. Any other result (an edge table, for example), or a fingerprint of more than one narrative, is refused with what to pass instead.
+Draws a query result you already hold, without running any query: a fingerprint of one narrative, a layered view or a trace, as returned by [`scat_kg.fingerprint`](#scat_kgfingerprint), [`scat_kg.layered`](#scat_kglayered) or [`scat_kg.trace`](#scat_kgtrace). With `mark_narratives=True` each edge of a layered view is marked by the narrative that tells it, as in [`draw.layered`](#scat_kgdrawlayered); it has no effect on a fingerprint or a trace. Returns a `Drawing`. A refusal passed in comes back unchanged. Any other result (an edge table, for example), or a fingerprint of more than one narrative, is refused with what to pass instead.
 
 ### scat_kg.draw.fingerprint
 
@@ -1380,10 +1380,10 @@ Draws a narrative's fingerprint. The drawing follows the narrative's kind: an ar
 ### scat_kg.draw.layered
 
 ```text
-draw.layered(narratives=None, *, candidates=False, root=".")
+draw.layered(narratives=None, *, candidates=False, mark_narratives=False, root=".")
 ```
 
-Draws the layered view of the named narratives, or of every narrative. It keeps all four columns, because it mixes narratives. With `candidates=True` the candidates are added as dashed lines, and the footer names the narratives that have no account text. The footer also names the node pages no row tells, at most ten, then "and N more". Returns a `Drawing`. `candidates` is `False` unless you pass `True` (CLI: `--candidates`). CLI twin: [`scat draw layered`](cli.md#scat-draw-layered).
+Draws the layered view of the named narratives, or of every narrative. It keeps all four columns, because it mixes narratives. With `candidates=True` the candidates are added as dashed lines, and the footer names the narratives that have no account text. The footer also names the node pages no row tells, at most ten, then "and N more". Parts of the graph that share no node are drawn as separate bands, and nodes are ordered within each column to cut crossing lines. With `mark_narratives=True` each solid edge is drawn in the mark (colour and line style) of the narrative that tells it, black and thicker where more than one tells it, with a key under the figure; candidates stay grey and dashed. `mark_narratives` is `False` unless you pass `True`; the CLI and the server do not offer it. Returns a `Drawing`. `candidates` is `False` unless you pass `True` (CLI: `--candidates`). CLI twin: [`scat draw layered`](cli.md#scat-draw-layered).
 
 ### scat_kg.draw.trace
 
@@ -1399,7 +1399,7 @@ Draws what [`scat_kg.trace`](#scat_kgtrace) follows from a node: up toward the g
 |---|---|
 | `.png()` | The image, as bytes. |
 | `.svg()` | The image, as text. |
-| `.nodes()` | The nodes drawn, as `(name, layer)` pairs, column by column. |
+| `.nodes()` | The nodes drawn, as `(name, layer)` pairs: column by column, each from the top down as drawn, bands included. |
 | `.edges()` | The edges drawn, as `(from, to, dashed)`, the lines whose two ends are both drawn. |
 | `.save(path)` | Writes the image to `path` and returns a `Result`. It is the only call here that writes a drawing. |
 
