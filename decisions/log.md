@@ -3130,3 +3130,9 @@ as candidate C18 until a docs package is scoped.
 Asked to approve RS7's three defaults (readout at most about 2,000 words; local experiments on the RS5 spike server;
 client trials reuse RS5's setup with the ACE as coder), the chief engineer said (typed by the agent): "Defaults
 approved". RS7 has no open items; it awaits approval of the scope.
+
+## D-185 | 2026-11-27 | RS7 approved
+
+The chief engineer (typed by the agent): "Approve RS7". RS7 (`work-packages/RS7-asking-the-person.md`) is approved.
+Execution: a PM runs the desk and local-server parts (G1, G2, G3 locally); the client trials run with the chief
+engineer at a sitting he chooses, the ACE as coder.

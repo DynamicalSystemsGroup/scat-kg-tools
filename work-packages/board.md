@@ -42,6 +42,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP33 | One query, rendered as a plot, a table or both; one tool per view (D-174) | approved (D-175); after WP32 | `WP33.md` |
 | WP34 | What the figures hide, shown (orphans, candidates, the no-account flag) | approved (D-175); after WP33 | `WP34.md` |
 | WP35 | Legible layouts | approved (D-175); after WP34 | `WP35.md` |
+| RS7 | Research spike: how a tool asks the person (standards, practice, why the elicitation trial hung; D-182) | approved (D-185); desk and local parts with a PM, client trials with the chief engineer | `RS7-asking-the-person.md` |
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | approved (D-163); unblocked by RS5 (D-181); inputs D-177 to D-179 | `WP29.md` |
 | WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | approved (D-163) | `WP30.md` |
 | WP31 | The assistant's habits, stage by stage, tested by the probes (depends on WP30) | approved (D-163) | `WP31.md` |

@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | DRAFT. Approval is recorded in `decisions/log.md`, quoting the chief engineer. Feeds WP29 (how the server asks the coder for a stage or a decision) and WP31 (the assistant's habits). |
+| **Status** | Approved by the chief engineer (log D-185). Feeds WP29 (how the server asks the coder for a stage or a decision) and WP31 (the assistant's habits). |
 | **Branch** | `spike/asking` off `dev`; never merged into `dev`. The readout is merged into `dev` on its own. |
 | **Revert point** | `divergence/D-163` (shared) |
 
