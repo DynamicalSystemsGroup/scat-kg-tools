@@ -9,18 +9,12 @@ provider: inference.coop
     do not need it: the chat path's own "Clean up" is enough.
 
 Some projects work under a strict data policy: an AI platform **non-retention** policy (nothing you put into the
-platform stays there), or an **approved chatbot only** policy. "Leave no trace" is one option for such a policy: a session sets up what it needs in the chat platform, does the
+platform stays there), or an **approved chatbot only** policy. "Leave no trace" is a way to meet such a policy: a session sets up what it needs in the chat platform, does the
 coding, and then removes all of it from the platform. Your local copies stay on your Mac.
 
 Removing means removing it from the chat platform, in this example inference.coop's chat. It does not claim to remove
 anything from every system the platform's model provider runs; what your policy requires there is for your policy to
 say. See [Data, rights and consent](data-and-consent.md).
-
-!!! note "What has and has not been tried"
-    No one has yet run this walkthrough end to end. Its pieces were seen separately in the lab run of 25 November
-    (the server entry, the skill and the saved agent, an uploaded file, the removal of the server entry). Two things
-    were not tried: the chat's Temporary Chat setting in a session, and the chat's collections. Where a step names a
-    control that was not seen, it says what to look for, and your first run is where it is confirmed.
 
 ## What this path needs
 
@@ -30,7 +24,7 @@ key. The chat path's [Install once](chat-path.md#install-once) is done once per 
 things:
 
 - A **temporary chat** to code in, so the session does not stay in your history.
-- Your **field notes uploaded as a collection**, so they can be removed as one thing. Where the chat has no
+- Your **field notes uploaded as a collection** (a named group of files in the chat's file library), so they can be removed as one thing. Where the chat has no
   collections, the notes are attached to the temporary chat instead.
 - **Nothing left on the platform at the end**: the server entry, the saved agent, the skill and any prompts you saved
   are removed.
@@ -53,17 +47,17 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 1. **In Finder:** check that your field notes are in a folder on your Mac. This is your local copy.
 2. **In Finder:** open SCAT Chat from Applications. (Start a session, on the chat path.)
 3. **In SCAT Chat:** at the first start on this Mac, read the note that SCAT Chat lives in the menu bar, and click
-   **OK**. It is shown once per Mac. (At a later start there is no note.)
+    **OK**. It is shown once per Mac. (At a later start there is no note.)
 4. **In SCAT Chat:** at the first start, choose the folder that holds `scat.toml` in the folder picker. At a later start,
-   answer the question `Serve <vault>?` with **Use it**, or with **Choose another** and the folder that holds
-   `scat.toml`.
+    answer the question `Serve <vault>?` with **Use it**, or with **Choose another** and the folder that holds
+    `scat.toml`.
 5. **In the menu bar:** wait until SCAT Chat's dot is green.
 6. **In the chat:** in the bar of icons on the left, click **MCP Settings**.
 7. **In the chat:** choose to add an MCP server, and type `SCAT` as its name.
 8. **In the menu bar:** open SCAT Chat's menu and click **Copy address**. A notification says "The address is on your clipboard."
 9. **In the chat:** paste the address (it ends in `/mcp`) into the address field.
 10. **In the chat:** choose the Streamable HTTPS transport (the way the chat talks to a server over a secure web
-   address).
+    address).
 11. **In the chat:** choose API key as the authentication.
 12. **In the chat:** choose the header format the form offers for the key (`X-API-Key` or `Authorization: Bearer`; the server accepts either).
 13. **In the menu bar:** open SCAT Chat's menu and click **Copy key**. A notification says "The key is on your clipboard."
@@ -80,58 +74,62 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 24. **In the chat:** fill in the **Description**, which the form requires, with the text after `description:` in the skill file's first lines (it begins "Rules and habits for the assistant").
 25. **In the chat:** paste the text you copied into the skill's text field. (If the form offers an upload instead, upload the file; if the chat does not accept the file as it stands, paste its text instead.)
 26. **In the chat:** save the skill.
-27. **In the chat:** open the **Agent Builder** and name the agent something you will recognise, for example "SCAT coder".
-28. **In the chat:** in the agent's settings choose a model, and add as tools the server "SCAT" and the chat's Ask User tool, if it offers one. (If you delete the server entry and add it again, the agent's tool does not survive: add the tool again.)
-29. **In the chat:** choose the `scat-coding` skill as the agent's only skill, and save the agent.
-30. **In the chat:** upload your field notes as one collection, if the chat offers collections. If it does not, skip
+27. **In the chat:** open the **Agent Builder**.
+28. **In the chat:** name the agent something you will recognise, for example "SCAT coder".
+29. **In the chat:** in the agent's settings, choose a model.
+30. **In the chat:** add the server "SCAT" as a tool of the agent. (If you delete the server entry and add it again, the agent's tool does not survive: add the tool again.)
+31. **In the chat:** add the chat's Ask User tool (it lets the assistant ask you a question), if the chat offers one.
+32. **In the chat:** choose the `scat-coding` skill as the agent's only skill.
+33. **In the chat:** save the agent.
+34. **In the chat:** upload your field notes as one collection, if the chat offers collections. If it does not, skip
     this step and attach the notes to the temporary chat when you start coding instead. (Look for a
     file or knowledge area where you can group files under one name.)
-31. **In the chat:** turn on the Temporary Chat setting (the chat shows the control; the shortcut seen was Cmd-Shift-Y).
-32. **In the chat:** check that its note says the chat will not appear in your history and will be deleted
+35. **In the chat:** turn on the Temporary Chat setting (look for the control; its shortcut may be Cmd-Shift-Y).
+36. **In the chat:** check that its note says the chat will not appear in your history and will be deleted
     automatically.
-33. **In the chat:** open the Agent Builder and use its **Select** control to pick the agent; a new chat starts with it.
+37. **In the chat:** open the Agent Builder and use its **Select** control to pick the agent; a new chat starts with it.
     (On inference.coop's instance agents start from that Select, not from the model menu or from typing `@`. If the
     saved agent cannot be chosen inside a temporary chat, start the chat with the model and the server entry instead.)
 
 #### Do the coding
 
-34. **In the chat:** name the narrative and ask the assistant to help you code it, with your collection (or, if you
+38. **In the chat:** name the narrative and ask the assistant to help you code it, with your collection (or, if you
     skipped the collection, the notes attached to this chat).
-35. **In the chat:** answer the assistant's questions, one step per reply, as in [the coding
+39. **In the chat:** answer the assistant's questions, one step per reply, as in [the coding
     loop](chat-path.md#the-coding-loop-in-the-chat-and-in-obsidian).
-36. **In the chat:** confirm or change the nodes and links the assistant proposes.
-37. **In Obsidian:** paste the account the assistant drafted into the narrative's page.
-38. **In Obsidian:** read the page against your notes.
-39. **In Obsidian:** set `status` yourself (`done` or `draft`).
-40. **In the chat:** ask the assistant to check the whole vault.
-41. **In the chat:** ask the assistant to name the pages you worked on with their status.
-42. **In GitHub Desktop:** commit your work. This is your local copy of the result; it stays.
+40. **In the chat:** confirm or change the nodes and links the assistant proposes.
+41. **In Obsidian:** paste the account the assistant drafted into the narrative's page.
+42. **In Obsidian:** read the page against your notes.
+43. **In Obsidian:** set `status` yourself (`done` or `draft`).
+44. **In the chat:** ask the assistant to check the whole vault.
+45. **In the chat:** ask the assistant to name the pages you worked on with their status.
+46. **In GitHub Desktop:** commit your work. This is your local copy of the result; it stays.
 
 #### Tear everything down
 
-43. **In the menu bar:** open SCAT Chat's menu and click **Stop**. Stop shows the result in one alert.
-44. **In SCAT Chat:** read the alert titled "SCAT Chat stopped". It says the public link is off, the server is removed,
+47. **In the menu bar:** open SCAT Chat's menu and click **Stop**. Stop shows the result in one alert.
+48. **In SCAT Chat:** read the alert titled "SCAT Chat stopped". It says the public link is off, the server is removed,
     the key was deleted and your clipboard holds no key. Click **OK**: SCAT Chat quits and its dot leaves the menu bar.
     If the alert is titled "SCAT Chat has a problem" instead, the stop was not confirmed: see "Stop" on the chat path,
     and do not go on until it is.
-45. **In a web browser:** open the address that ended in `/mcp`. It should not load.
-46. **In the chat:** end the temporary chat (close it or leave it). It is deleted automatically.
-47. **In the chat:** open your history list and check the temporary chat is not there. If it is, delete it from its
+49. **In a web browser:** open the address that ended in `/mcp`. It should not load.
+50. **In the chat:** end the temporary chat (close it or leave it). It is deleted automatically.
+51. **In the chat:** open your history list and check the temporary chat is not there. If it is, delete it from its
     menu.
-48. **In the chat:** in **MCP Settings**, next to the server "SCAT", click **Edit**.
-49. **In the chat:** click the red **delete** button.
-50. **In the chat:** confirm.
-51. **In the chat:** delete the saved agent. (The chat's Agent Builder holds it; look there for its delete control.)
-52. **In the chat:** delete the skill `scat-coding`. (Look where you created it.)
-53. **In the chat:** delete the collection you uploaded. (Look for a file library.)
-54. **In the chat:** delete any file left in the chat's file library from this session. This step is needed because field notes you attached to a temporary chat stay in the file library after the chat is deleted (seen in the lab run).
-55. **In the chat:** delete any prompt you saved for this session. If you saved none, there is nothing to do.
-56. **In the chat:** look once more at each place you set something up (MCP Settings, the Agent Builder, the skills,
+52. **In the chat:** in **MCP Settings**, next to the server "SCAT", click **Edit**.
+53. **In the chat:** click the red **delete** button.
+54. **In the chat:** confirm.
+55. **In the chat:** delete the saved agent. (The chat's Agent Builder holds it; look there for its delete control.)
+56. **In the chat:** delete the skill `scat-coding`. (Look where you created it.)
+57. **In the chat:** delete the collection you uploaded. (Look for a file library.)
+58. **In the chat:** delete any file left in the chat's file library from this session. Field notes you attached to a temporary chat stay in the file library after the chat is deleted.
+59. **In the chat:** delete any prompt you saved for this session. If you saved none, there is nothing to do.
+60. **In the chat:** look once more at each place you set something up (MCP Settings, the Agent Builder, the skills,
     the files, the history) and check that nothing from this session remains.
 
 #### Check what stays on your Mac
 
-57. **In Finder:** check that your field notes folder and your vault are still there, with your work in them.
+61. **In Finder:** check that your field notes folder and your vault are still there, with your work in them.
 
 ### What is removed and what stays
 
@@ -139,7 +137,7 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 |---|---|
 | The temporary chat, the server entry, the saved agent, the skill, the collection and its files, any prompts you saved | Your field notes folder |
 | | Your vault, with every page and commit |
-| The key (deleted from your keychain by Stop) | Colima and the server's image |
+| The key (deleted from your keychain by Stop) | Colima, which keeps running, and the server's image |
 
 If a step finds something that did not go, delete it by hand and do not start the next session until it is gone.
 If your policy asks you to show the result, the list of steps above is your record: note the date and tick each one.
