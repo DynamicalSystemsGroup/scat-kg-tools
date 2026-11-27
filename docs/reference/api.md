@@ -39,7 +39,7 @@
 | [`scat_kg.review`](#scat_kgreview) | [`scat review`](cli.md#scat-review) | View: pairs of node pages that may be one node, and pages whose accounts tell them to different other ends. |
 | [`scat_kg.attribution`](#scat_kgattribution) | [`scat attribution`](cli.md#scat-attribution) | View: the narratives by contributor (where the vault's attribution mode allows it). |
 | [`scat_kg.export_edges`](#scat_kgexport_edges) | [`scat export-edges`](cli.md#scat-export-edges) | Write the edge tables as CSV and Markdown. |
-| [`scat_kg.draw.fingerprint`](#scat_kgdrawfingerprint), [`scat_kg.draw.layered`](#scat_kgdrawlayered), [`scat_kg.draw.trace`](#scat_kgdrawtrace) | [`scat draw`](cli.md#scat-draw) | Draw a view as an image (needs the extra `draw`). |
+| [`scat_kg.draw.render`](#scat_kgdrawrender), [`scat_kg.draw.fingerprint`](#scat_kgdrawfingerprint), [`scat_kg.draw.layered`](#scat_kgdrawlayered), [`scat_kg.draw.trace`](#scat_kgdrawtrace) | [`scat draw`](cli.md#scat-draw) | Draw a view, or a view's result, as an image (needs the extra `draw`). |
 
 ## Machine-readable output
 
@@ -1356,6 +1356,16 @@ The CSV has the columns `from`, `to`, `narratives` (joined by `;`) and `status`.
 
 A drawing shows a view as columns, one for each layer, in layer order, with the edges as lines between them. The columns are labelled stakeholder, concern, affordance and technology; the first holds the nodes of the `group` layer. SVG and PNG are the same drawing in two formats. It needs the extra `draw`: `pip install "scat-kg[draw]"`. Without it, the call returns a refusal that says so. In the vault template it is already installed. Import the module with `from scat_kg import draw`. Where a view refuses, the drawing refuses with the same refusal.
 
+A view's query returns a result: its document is the table of nodes and edges. A drawing and a table are two renderings of one result, and drawing never runs the query again. [`draw.render`](#scat_kgdrawrender) draws a result you already hold; `draw.fingerprint`, `draw.layered` and `draw.trace` run the query once and render it. To have the picture and the table from one query, run the view once and pass its result to `draw.render`. A drawing's `.nodes()` and `.edges()` always equal the table of the result it was drawn from, except that a fingerprint of an architecture or a scenario leaves out one column, as the note under the drawing says.
+
+### scat_kg.draw.render
+
+```text
+draw.render(result)
+```
+
+Draws a query result you already hold, without running any query: a fingerprint of one narrative, a layered view or a trace, as returned by [`scat_kg.fingerprint`](#scat_kgfingerprint), [`scat_kg.layered`](#scat_kglayered) or [`scat_kg.trace`](#scat_kgtrace). Returns a `Drawing`. A refusal passed in comes back unchanged. Any other result (an edge table, for example), or a fingerprint of more than one narrative, is refused with what to pass instead.
+
 ### scat_kg.draw.fingerprint
 
 ```text
@@ -1386,6 +1396,8 @@ Draws what [`scat_kg.trace`](#scat_kgtrace) follows from a node: up toward the g
 |---|---|
 | `.png()` | The image, as bytes. |
 | `.svg()` | The image, as text. |
+| `.nodes()` | The nodes drawn, as `(name, layer)` pairs, column by column. |
+| `.edges()` | The edges drawn, as `(from, to, dashed)`, the lines whose two ends are both drawn. |
 | `.save(path)` | Writes the image to `path` and returns a `Result`. It is the only call here that writes a drawing. |
 
 In Jupyter, a drawing shows itself. `.save` makes the folder if needed, rewrites a file only when its content differs, and refuses a name that does not end in `.png` or `.svg`, or that is a folder. The same view gives the same bytes.
