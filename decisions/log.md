@@ -3197,3 +3197,13 @@ the ACE brought it in line before acceptance (it says, as checked, that the CLI 
 
 Follow-ups: the template re-pin is folded into WP30's (the WP30 PM is told; the template names no `draw_*` tool);
 the rest is candidate C19. Accepted by the ACE.
+
+## D-191 | 2026-11-27 | The no-account flag: a UX spike first
+
+WP34's PM noted that the no-account flag fires only when a narrative has no text outside its `Edges told` table, while
+a narrative whose prose links no node gets equally uninformative candidates and no flag. Asked whether the flag should
+mean "no text at all" or "no links in the text", the chief engineer said (typed by the agent): "ux spike and consider
+alternatives. please respect our "mak the right way the easy way and as simple as possible but now simpler
+heurisics"". Outcome: no change to WP34's flag now; a UX spike (RS8, to be scoped) considers the alternatives for
+telling a coder when candidate links carry no evidence, held to "make the right way the easy way" and "as simple as
+possible but no simpler".
