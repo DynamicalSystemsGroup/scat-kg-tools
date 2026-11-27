@@ -56,8 +56,7 @@ You should see `scat.toml` in the list, with folders such as `concern` and `narr
     use that name wherever you see `my-vault`.
 
 !!! note "If you see only `README.md`"
-    SCAT is a preview that is still being tried before its first release (version 0.1.0). In this preview, the
-    template's default branch is `dev`, and `main` is only a stub that holds a README. If `ls` shows nothing but `README.md`, you are on the stub. Run this, then `ls` again:
+    The template's working branch is `dev`; `main` holds only a README. If `ls` shows nothing but `README.md`, you are on `main`. Run this, then `ls` again:
 
     ```text
     git checkout dev
