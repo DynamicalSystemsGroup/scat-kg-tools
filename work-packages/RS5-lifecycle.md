@@ -29,6 +29,12 @@ unknown stage gets "a result asking for clarification". A spike answers question
 - **RS5-G4. How the server can scope what it exposes.** Whether a stage can change the listed tools, prompts and
   resources mid-session (the protocol's list-changed notifications) and whether Claude, inference.coop and VS Code's
   Copilot honour it; what to do where a client does not (refuse an out-of-stage call with a clarification result).
+  Includes the chief engineer's option (typed by the agent): "if forced to, we could make it so each stage is its own
+  MCP server, and that Scat-lab is actually a mini app hosting those servers together plus one additional top level
+  server that handles the state machine and routes to the server for the current state. that would be a clean
+  functional decomposition". The spike tries it: whether the top-level server can route (proxy) to per-stage servers
+  inside one client connection, whether that avoids or only moves the need for a mid-session tool-list change, and what
+  hosting several servers costs in SCAT Chat (ports, keys, one public address or several).
 - **RS5-G5. Predicates.** Which transition predicates the existing tools can already evaluate (`status`, `check`, the
   views, `scat.toml`), and which need the user's word.
 
@@ -52,6 +58,7 @@ unknown stage gets "a result asking for clarification". A spike answers question
 | RS5-R1 | Each goal has findings with sources (cited literature, code tried, or a client trial) and states what is not known. | The readout |
 | RS5-R2 | Each way of carrying stage (G3) is tried in the spike server and reported as works, partly works or does not, with the SDK version. | The readout; the branch |
 | RS5-R3 | For each of Claude, inference.coop and VS Code's Copilot, the readout says whether a mid-session change of tools is honoured, from a trial. | The readout |
+| RS5-R3b | The per-stage-servers-with-a-router option is tried in the spike server and compared with a single stage-scoped server on the same questions (client support, routing, hosting cost). | The readout; the branch |
 | RS5-R4 | The readout ends with the questions WP29 must decide, each with its options. | The readout |
 
 ## Definition of good enough
