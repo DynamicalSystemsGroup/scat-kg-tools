@@ -71,7 +71,7 @@ not a new finding; once it is, it is.
 
 **Done.** You can say in a sentence what SCAT turns into what; what S, C, A and T stand for; and where to go next
 ([Where next](../docs/index.md#where-next)). The navigation lists Home, The flow, Data, rights and consent, Getting
-started, Planning, Facilitating (Scenarios, Architectures), Coding, Coding in a chat, Coding in an IDE, Analysis and
+started, Planning, Facilitating (Scenarios, Architectures), Coding paths (By hand, An AI chatbot, An AI IDE, A local LLM), Analysis and
 Reference.
 
 **Record.** The style you named, before the explanation. Any broken web link (page and its text), broken image, or anything
@@ -266,8 +266,8 @@ language hid an instruction.
 [`facilitate-architectures.md`](../docs/facilitate-architectures.md).
 
 **Steps.** You are not running a workshop. Read each guide as a facilitator would, then write, in plain sentences
-outside the vault, field notes of your own, in the shape each guide's [Take the notes into a narrative
-page](../docs/facilitate-scenarios.md#take-the-notes-into-a-narrative-page) gives: one scenario and one architecture,
+outside the vault, field notes of your own, in the shape each guide's [From notes to a narrative
+page](../docs/narratives.md#from-notes-to-a-narrative) gives: one scenario and one architecture,
 each headed by the group, never a name, with no `[[link]]` yet. Mark each past, future or mixed, using the [phrase
 list](../docs/facilitate-scenarios.md#past-or-future-one-at-a-time).
 
