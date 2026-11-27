@@ -61,7 +61,7 @@ A drawing is never written to the vault. To keep a picture as a file, the coder 
 
 A refusal is returned as the refusal document, as for every other tool, and no image, for every `output`: a name that is not a page, a narrative given to `trace`, a narrative that is excluded, a `direction`, `output` or `format` that is not offered, a plot of no narrative (or of every narrative) from `fingerprint`, which draws one narrative, a vault whose pages the view refuses (the document lists the problems), and a server without the `draw` extra (the document says how to install it). `fingerprint` as a `table` with no `narrative` still returns every narrative's view.
 
-`draw_fingerprint`, `draw_layered` and `draw_trace` are not offered. Ask for the plot from the view tool: `fingerprint` with `output` set to `plot`, `layered` with `output` set to `plot`, and `trace` with `output` set to `plot`; each takes the `format` the matching `draw_` tool took.
+`draw_fingerprint`, `draw_layered` and `draw_trace` are not offered. Ask for the plot from the view tool: `fingerprint` with `output` set to `plot`, `layered` with `output` set to `plot`, and `trace` with `output` set to `plot`.
 
 ## Prompts and the rules
 
