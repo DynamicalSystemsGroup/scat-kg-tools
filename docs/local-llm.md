@@ -7,9 +7,9 @@ provider: Ollama
 !!! tip "Your next step"
     Read "What this path needs", then follow the worked example to see one complete setup.
 
-Code with a language model that runs on your own computer, which you supply, so your notes and your chat go to a model on your own computer. You code as on
-the [chat path](chat-path.md): the assistant drafts and proposes, you decide, and the tool checks. This page says what
-the SCAT side needs from any local setup, then shows one setup, Ollama and Open WebUI in Docker, from start to stop.
+Code with a language model that runs on your own computer. You bring that model yourself; this page does not
+prescribe one. You code as on the [chat path](chat-path.md): the assistant drafts and proposes, you decide, and the tool checks. This page says what
+the SCAT side needs from any local setup, then shows one worked way, Ollama and Open WebUI in Docker, from start to stop.
 Another model runner or another chat client that meets the same needs works the same way.
 
 ## What this path needs
@@ -100,7 +100,7 @@ WebUI fetches for itself from huggingface.co. Your chat text goes only to the mo
     password is created. The SCAT server is not published at all; only Open WebUI reaches it, over the Docker network.
 
 2. **In a terminal:** name your clone, your vault and a new key, then start everything. The first start downloads
-   the images and builds the server: it took about 40 minutes on a slow connection, and later starts take seconds.
+   several GB of images and builds the server, which can take long on a slow connection. Later starts take seconds.
 
     ```text
     export SCAT_SRC=~/scat-kg-tools
@@ -190,7 +190,7 @@ WebUI fetches for itself from huggingface.co. Your chat text goes only to the mo
     match the tool's two, and do its words ("not fully conformant" in the example) match the tool's line? The tool's line
     says no errors; the two warnings are fields to fill in before the narrative is done. The tool's output settles it.
 
-11. **In a terminal:** stop the session. 
+11. **In a terminal:** stop the session.
 
     ```text
     cd ~/local-llm
@@ -198,7 +198,7 @@ WebUI fetches for itself from huggingface.co. Your chat text goes only to the mo
     ```
 
     You should see the three containers removed. The downloaded model and Open WebUI's data stay in their volumes for
-    the next session. Each session has a new key: start again with step 2, then in Open WebUI open Settings >
-    Integrations, choose the gear on the **SCAT** row, paste the new key (`echo $SCAT_MCP_KEY`) and choose **Save**.
+    the next session. Each session has a new key: start again with step 2, then in Open WebUI open
+    <http://localhost:3000/admin/settings/integrations>, choose the gear on the **SCAT** row, paste the new key (`echo $SCAT_MCP_KEY`) and choose **Save**.
     Open WebUI keeps the old key until you do, and the server answers it with 401. To remove the volumes too, run
     `docker compose down --volumes`.
