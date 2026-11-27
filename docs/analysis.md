@@ -18,7 +18,7 @@ A **view** is a purposeful picture or table made from a conformant vault. The to
 
 **Layered view.** What is the big picture across several narratives? It joins their fingerprints in the four layers. Read across a column to see what is shared. It does not weigh a node by how many lines meet it.
 
-![The layered view of four narratives, as four columns: stakeholders, concerns, affordances and technologies, with a line for each edge between neighbouring columns.](assets/layered-case-study.png)
+![The layered view of four narratives, as four columns: groups, concerns, affordances and technologies, with a line for each edge between neighbouring columns.](assets/layered-case-study.png)
 
 **Trace.** What does this node reach? Following edges up goes toward groups, down toward technologies. It does not say how strongly a node depends on what it reaches.
 
