@@ -259,7 +259,7 @@ def _parser() -> argparse.ArgumentParser:
         help="Draw a view as an image (needs the extra `draw`): `.png` or `.svg`.",
         description="Draw a view as an image, four columns in layer order. Needs the extra `draw`: "
         '`pip install "scat-kg[draw]"`. The only write is the image file you name with --out.',
-        epilog="REPL: `from scat_kg import draw`, then `draw.fingerprint(...)` or `draw.layered(...)`",
+        epilog="REPL: `from scat_kg import draw`, then `draw.fingerprint(...)`, `draw.layered(...)` or `draw.trace(...)`",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     which = drawing.add_subparsers(dest="drawing", metavar="<drawing>", required=True)
@@ -290,6 +290,23 @@ def _parser() -> argparse.ArgumentParser:
         action="append",
         metavar="NARRATIVE",
         help="include this narrative; repeat it for each narrative",
+    )
+    p.add_argument("--out", required=True, metavar="FILE", help=out_help)
+    p = command(
+        "trace",
+        "Draw what a node reaches: up toward the groups, down toward the technologies, or both, with the "
+        "node itself in its column. Refuses where `scat trace` would, and then writes nothing.",
+        '`draw.trace("<node>").save("<file>")`, `draw.trace("<node>", "<direction>").save("<file>")`',
+        which,
+    )
+    p.add_argument(
+        "node", metavar="NODE", help="the name of a group, concern, affordance or technology"
+    )
+    p.add_argument(
+        "--direction",
+        default="both",
+        metavar="DIRECTION",
+        help="up, down or both (default: both)",
     )
     p.add_argument("--out", required=True, metavar="FILE", help=out_help)
     return top
@@ -339,11 +356,13 @@ def run(args: argparse.Namespace):
         case "export-edges":
             return scat_kg.export_edges(args.out, root=root)
         case "draw":
-            made = (
-                draw.fingerprint(args.narrative, candidates=args.candidates, root=root)
-                if args.drawing == "fingerprint"
-                else draw.layered(args.narrative, root=root)
-            )
+            match args.drawing:
+                case "fingerprint":
+                    made = draw.fingerprint(args.narrative, candidates=args.candidates, root=root)
+                case "layered":
+                    made = draw.layered(args.narrative, root=root)
+                case "trace":
+                    made = draw.trace(args.node, args.direction, root=root)
             return made.save(args.out) if isinstance(made, draw.Drawing) else made
     raise AssertionError(args.command)  # argparse requires a command
 

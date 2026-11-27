@@ -2187,18 +2187,22 @@ positional arguments:
     layered      Draw the layered view of the narratives named by --narrative
                  or, without it, of every narrative. Refuses where `scat
                  layered` would, and then writes nothing.
+    trace        Draw what a node reaches: up toward the groups, down toward
+                 the technologies, or both, with the node itself in its
+                 column. Refuses where `scat trace` would, and then writes
+                 nothing.
 
 options:
   -h, --help     show this help message and exit
 
-REPL: `from scat_kg import draw`, then `draw.fingerprint(...)` or `draw.layered(...)`
+REPL: `from scat_kg import draw`, then `draw.fingerprint(...)`, `draw.layered(...)` or `draw.trace(...)`
 ```
 
-Draws a view as an image in four columns, one for each layer, in layer order, with the layer's name at the top. Each node is a box labelled with its name, and with its status in brackets when that is not `done`; each edge is a line between neighbouring columns. Within a column the nodes are in order of name. `scat draw fingerprint` draws one narrative's fingerprint and shows no candidates unless you add `--candidates`, which draws the links with no row as dashed lines. `scat draw layered` draws the layered view of the narratives you name with `--narrative`, or of every narrative.
+Draws a view as an image in four columns, one for each layer, in layer order, with the layer's name at the top. Each node is a box labelled with its name, and with its status in brackets when that is not `done`; each edge is a line between neighbouring columns. Within a column the nodes are in order of name. `scat draw fingerprint` draws one narrative's fingerprint and shows no candidates unless you add `--candidates`, which draws the links with no row as dashed lines. `scat draw layered` draws the layered view of the narratives you name with `--narrative`, or of every narrative. `scat draw trace` draws what `scat trace` follows from a node, up, down or both (`--direction`, both unless you say), with the node itself in its own layer's column and the title naming it.
 
 Drawing needs the extra `draw`: `pip install "scat-kg[draw]"`. Without it, the command refuses and says so. The same command gives the same image, byte for byte.
 
-`--out FILE` is required. A file ending in `.png` or `.svg` is written, and any other ending is refused. A file that is there is rewritten only when its content differs. It is the only thing `scat draw` writes. It refuses, writing nothing, where `scat fingerprint` or `scat layered` would. Paths inside the vault folder are shown from it; a file outside it is shown as you gave it.
+`--out FILE` is required. A file ending in `.png` or `.svg` is written, and any other ending is refused. A file that is there is rewritten only when its content differs. It is the only thing `scat draw` writes. It refuses, writing nothing, where `scat fingerprint`, `scat layered` or `scat trace` would. Paths inside the vault folder are shown from it; a file outside it is shown as you gave it.
 
 Exit codes: 0, or 1 for a refusal.
 
@@ -2269,6 +2273,32 @@ REPL: `draw.layered().save("<file>")`, `draw.layered(["<narrative>"]).save("<fil
     ```text
     created layered.png
     ```
+
+### scat draw trace
+
+```text
+usage: scat draw trace [-h] [--root ROOT] [--json] [--direction DIRECTION]
+                       --out FILE
+                       NODE
+
+Draw what a node reaches: up toward the groups, down toward the technologies, or both, with the node itself in its column. Refuses where `scat trace` would, and then writes nothing.
+
+positional arguments:
+  NODE                  the name of a group, concern, affordance or technology
+
+options:
+  -h, --help            show this help message and exit
+  --root ROOT           the vault folder, the one with scat.toml (default:
+                        here)
+  --json                print the result as one JSON document (machine-
+                        interface contract), nothing else
+  --direction DIRECTION
+                        up, down or both (default: both)
+  --out FILE            the image file to write, ending in `.png` or `.svg`
+                        (no default)
+
+REPL: `draw.trace("<node>").save("<file>")`, `draw.trace("<node>", "<direction>").save("<file>")`
+```
 
 ## Where next
 
