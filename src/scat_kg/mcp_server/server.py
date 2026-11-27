@@ -7,15 +7,19 @@ not an exception. Nothing here writes a vault except the tool's own operations.
 from pathlib import Path
 from typing import Any
 
+import pydantic_core
 from mcp.server.fastmcp import FastMCP, Image
+from mcp.types import CallToolResult, TextContent
 
 import scat_kg
-from scat_kg import draw
+from scat_kg import draw, views
 from scat_kg.mcp_server import prompts
 from scat_kg.ops.result import refused, stamp
 
 CITE = prompts.CITE
 VIEWS_FOLDER = "views"
+OUTPUTS = ("table", "plot", "both")
+FORMATS = ("png", "svg")
 _OWN = f"The tool owns conformance, the coder owns interpretation, the assistant holds no authority ({CITE}). "
 
 
@@ -23,6 +27,15 @@ def build(vault: str | Path, **settings) -> FastMCP:
     """The server for the vault folder `vault`, read afresh on each call. `settings` go to FastMCP (host, port)."""
     root = Path(vault)
     mcp = FastMCP("scat-kg", **settings)
+
+    def _text(doc: dict[str, Any]) -> TextContent:
+        return TextContent(
+            type="text", text=pydantic_core.to_json(doc, fallback=str, indent=2).decode()
+        )
+
+    def _as_doc(doc: dict[str, Any]) -> CallToolResult:
+        """The document as a tool result: its text, and the same document as structured content."""
+        return CallToolResult(content=[_text(doc)], structuredContent=doc)
 
     def _doc(result) -> dict[str, Any]:
         """The document of a result, with the vault's attribution mode (every result reports it)."""
@@ -160,14 +173,67 @@ def build(vault: str | Path, **settings) -> FastMCP:
     def index() -> dict[str, Any]:
         return _doc(scat_kg.index(root=root))
 
+    def _view(run, output: str, fmt: str) -> CallToolResult:
+        """Run a view's query once; give back what `output` asks of that one result, or the refusal document."""
+        if output not in OUTPUTS:
+            return _as_doc(
+                _doc(
+                    refused(
+                        "view",
+                        f"output {output!r}",
+                        "a view is returned as `table`, `plot` or `both`",
+                        "pass `output` as `table` (the default), `plot` or `both`",
+                    )
+                )
+            )
+        if fmt not in FORMATS:
+            return _as_doc(
+                _doc(
+                    refused(
+                        "view",
+                        f"format {fmt!r}",
+                        "a plot is returned as `png` or `svg`",
+                        "pass `format` as `png` (the default) or `svg`",
+                    )
+                )
+            )
+        result = run()
+        table = _doc(result)
+        if output == "table" or not isinstance(result, views.View):
+            return _as_doc(table)
+        drawing = draw.render(result)
+        if not isinstance(drawing, draw.Drawing):
+            return _as_doc(_doc(drawing))
+        plot = (
+            Image(data=drawing.png(), format="png").to_image_content()
+            if fmt == "png"
+            else TextContent(type="text", text=drawing.svg())
+        )
+        content = [plot] if output == "plot" else [plot, _text(table)]
+        return CallToolResult(content=content)
+
+    same = (
+        "`output` is `table` (the view document, the default), `plot` (the picture `scat draw` and the notebook "
+        "make) or `both` (the plot, then the table); `format` is `png` (an image, the default) or `svg` (text) "
+        "and applies to the plot. One call runs the query once and renders from that one result. A refusal is "
+        "returned as the document, never an image."
+    )
+
     @mcp.tool(
         description=_OWN
         + "View: a narrative's fingerprint (its nodes by layer and the edges its rows tell; with `candidates` "
-        "true, also the links with no row); without `narrative`, every narrative. Writes nothing. "
-        "Returns the view document."
+        "true, also the links with no row); without `narrative`, every narrative (a plot needs one). Writes "
+        "nothing. " + same
     )
-    def fingerprint(narrative: str | None = None, candidates: bool = False) -> dict[str, Any]:
-        return _doc(scat_kg.fingerprint(narrative, candidates=candidates, root=root))
+    def fingerprint(
+        narrative: str | None = None,
+        candidates: bool = False,
+        output: str = "table",
+        format: str = "png",
+    ) -> CallToolResult:
+        return _view(
+            lambda: scat_kg.fingerprint(narrative, candidates=candidates, root=root), output, format
+        )
 
     @mcp.tool(
         description=_OWN
@@ -180,71 +246,22 @@ def build(vault: str | Path, **settings) -> FastMCP:
     @mcp.tool(
         description=_OWN
         + "View: the layered view, the union of the fingerprints of `narratives`, or of every narrative. "
-        "Writes nothing. Returns the view document."
+        "Writes nothing. " + same
     )
-    def layered(narratives: list[str] | None = None) -> dict[str, Any]:
-        return _doc(scat_kg.layered(narratives, root=root))
+    def layered(
+        narratives: list[str] | None = None, output: str = "table", format: str = "png"
+    ) -> CallToolResult:
+        return _view(lambda: scat_kg.layered(narratives, root=root), output, format)
 
     @mcp.tool(
         description=_OWN
         + "View: follow edges from `node` up toward the groups, down toward the technologies, or both "
-        "(`direction`: up, down or both). Writes nothing. Returns the view document."
+        "(`direction`: up, down or both). Writes nothing. " + same
     )
-    def trace(node: str, direction: str = "both") -> dict[str, Any]:
-        return _doc(scat_kg.trace(node, direction, root=root))
-
-    def _picture(make, fmt: str) -> Image | str | dict[str, Any]:
-        """The drawing `make()` as a PNG image or SVG text; a refusal, or an unknown `fmt`, as its document."""
-        if fmt not in ("png", "svg"):
-            return _doc(
-                refused(
-                    "draw",
-                    f"format {fmt!r}",
-                    "a drawing is returned as `png` or `svg`",
-                    "pass `format` as `png` (the default) or `svg`",
-                )
-            )
-        drawing = make()
-        if not isinstance(drawing, draw.Drawing):
-            return _doc(drawing)
-        return Image(data=drawing.png(), format="png") if fmt == "png" else drawing.svg()
-
-    same = (
-        "The picture is the one `scat draw` and the notebook make; `format` is `png` (an image, the default) "
-        "or `svg` (text). Writes nothing: the coder saves a file with `scat draw --out`. A refusal is "
-        "returned as the document, not an image."
-    )
-
-    @mcp.tool(
-        description=_OWN
-        + "Draw the fingerprint of `narrative` (with `candidates` true, also the links with no row). "
-        + same,
-        structured_output=False,
-    )
-    def draw_fingerprint(
-        narrative: str, candidates: bool = False, format: str = "png"
-    ) -> Image | str | dict[str, Any]:
-        return _picture(
-            lambda: draw.fingerprint(narrative, candidates=candidates, root=root), format
-        )
-
-    @mcp.tool(
-        description=_OWN + "Draw the layered view of `narratives`, or of every narrative. " + same,
-        structured_output=False,
-    )
-    def draw_layered(
-        narratives: list[str] | None = None, format: str = "png"
-    ) -> Image | str | dict[str, Any]:
-        return _picture(lambda: draw.layered(narratives, root=root), format)
-
-    @mcp.tool(
-        description=_OWN + "Draw what `node` reaches, up, down or both (`direction`). " + same,
-        structured_output=False,
-    )
-    def draw_trace(
-        node: str, direction: str = "both", format: str = "png"
-    ) -> Image | str | dict[str, Any]:
-        return _picture(lambda: draw.trace(node, direction, root=root), format)
+    def trace(
+        node: str, direction: str = "both", output: str = "table", format: str = "png"
+    ) -> CallToolResult:
+        return _view(lambda: scat_kg.trace(node, direction, root=root), output, format)
 
     @mcp.tool(
         description=_OWN

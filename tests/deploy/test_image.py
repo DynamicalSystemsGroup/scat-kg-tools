@@ -16,7 +16,7 @@ IMAGE = os.environ.get("SCAT_IMAGE", "scat-kg-tools:ci")
 EXAMPLES = Path(__file__).parents[2] / "contracts" / "examples"
 
 # Runs inside the image with the installed package: imports matplotlib, builds the server the entrypoint serves,
-# lists its tools and calls the drawing tools, which must return PNG bytes.
+# lists its tools and calls the view tools asking for the plot, which must return PNG bytes.
 PROBE = r"""
 import asyncio, base64
 import matplotlib
@@ -27,9 +27,14 @@ async def main():
     assert os.listdir("/vault"), "the vault is empty: the docker VM cannot see the folder (set SCAT_IMAGE_TMP to one it shares, e.g. under $HOME)"
     server = build("/vault")
     names = {t.name for t in await server.list_tools()}
-    assert {"draw_fingerprint", "draw_layered", "draw_trace"} <= names, names
-    for tool, args in (("draw_layered", {}), ("draw_trace", {"node": "self-checkout"})):
+    assert {"fingerprint", "layered", "trace"} <= names, names
+    assert not {"draw_fingerprint", "draw_layered", "draw_trace"} & names, names
+    for tool, args in (
+        ("layered", {"output": "plot"}),
+        ("trace", {"node": "self-checkout", "output": "plot"}),
+    ):
         content = await server.call_tool(tool, args)
+        content = getattr(content, "content", content)  # a CallToolResult, or the content list
         content = content[0] if isinstance(content, tuple) else content
         assert len(content) == 1 and content[0].type == "image", content
         data = base64.b64decode(content[0].data)
@@ -78,4 +83,4 @@ def test_the_image_imports_matplotlib_and_serves_the_drawing_tools():
         )
     sys.stdout.write(run.stdout)
     assert run.returncode == 0, run.stderr[-2000:]
-    assert "draw_layered png" in run.stdout and "draw_trace png" in run.stdout
+    assert "layered png" in run.stdout and "trace png" in run.stdout
