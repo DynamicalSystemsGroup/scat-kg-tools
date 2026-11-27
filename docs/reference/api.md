@@ -206,7 +206,7 @@ To see a problem with a fix a program can apply, change `[[cap-setting]]` to `[[
                 "action": "delete-line",
                 "file": "narrative/groups-under-a-cap-pitch.md",
                 "line": 22,
-                "find": "| [[groups-clustered-under-a-cap]] | is provided by | [[cap-settin]] | The cap setting is what fixes the number of groups. The cap is a per-instance parameter; the example vault sets it to 3. |"
+                "find": "| [[groups-clustered-under-a-cap]] | is provided by | [[cap-settin]] | The cap setting is what fixes the number of groups. The cap is a per-instance parameter; the example vault sets it to 6. |"
               }
             ]
           }
@@ -686,7 +686,7 @@ The returned plan has `node`, `node_type` and `pages` (each with `file`, `name`,
       narrative/two-branches-and-tags-pitch.md (narrative, done): links at line 13
     note: you assign each narrative to `project-leads` or to a new page: make the new page with `scat stub <name> --type group`, then edit each link and row by hand
     note: narratives that are `done` are yours to reopen before you edit them: false-start-and-clean-restart, two-branches-and-tags-pitch
-    note: the vault allows 3 groups and has 3; a new group page makes 4; raise `stakeholder_group_cap` in `scat.toml` first
+    note: the vault allows 6 groups and has 3; a new group page makes 4
     ```
 
 === "CLI"
@@ -1128,7 +1128,7 @@ Returns everything the vault says of one node page: the narratives that link it,
         groups-under-a-cap-pitch [done, architecture, future]
           line 12
             - [[groups-clustered-under-a-cap|The vault holds groups]], and [[cap-setting|an instance setting]] caps their number.
-            - The cap is set for each vault, in the vault's own configuration. The example vault sets it to 3.
+            - The cap is set for each vault, in the vault's own configuration. The example vault sets it to 6.
             - A group is named by its role. No group stands for one identifiable person.
             - >>Reason given: the people in the data are groups under the Chatham House rule, so [[anonymity|no individual is identifiable]].<<
         notes-at-a-chatham-house-session [done, scenario, mixed]
