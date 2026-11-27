@@ -32,7 +32,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | all units done; merged into `dev`; waiting on the ACE's acceptance and the chief engineer's sitting | `WP22.md` |
 | WP23 | Three disjoint attribution modes, and the edge's formal name (D-129) | all units done on `pm-wp23`; landing on `dev` with the template pin; waiting on the ACE's acceptance | `WP23.md` |
 | WP24 | Node-page help and merge (D-145) | all units done on `pm-wp24`, tier 1 green (3165 passed); pushed to `dev`; waiting on the ACE's acceptance and three rulings from the re-sweep | `WP24.md` |
-| WP25 | Coding paths, facilitating and planning (D-149) | U1 spike in flight; U2 onward waits on the ACE's decision on the readout and on WP24 landing on `dev` | `WP25.md` |
+| WP25 | Coding paths, facilitating and planning (D-149) | all units done on `pm-wp25` except U10 (the chief engineer's sitting: Claude, Codex and inference.coop runs and screenshots; by-hand Obsidian screenshots); tier 1 and CI before push | `WP25.md` |
 
 ## Units
 
@@ -348,28 +348,28 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP24-U9 | simulated users (3 Haiku, 1 Sonnet control; G6), haiku | 2 | 3 | `wp24/u9` | done |  | 2026-11-26T19:37:51-05:00 | four testers (3 Haiku, 1 Sonnet control) on three modes; reports returned as text, PM wrote the findings record |
 | WP24-U9r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T19:37:51-05:00 | no separate reviewer agent ran: the PM did the void check from the returned reports (recorded in the findings file) |
 | WP24-U10 | change consultant (S1 re-sweep, counts and greps), haiku | 1 | 2 | `wp24/u10` | done |  | 2026-11-26T19:37:51-05:00 | clock fix and re-sweep; the sweep found six items, three for the ACE |
-| WP25-U1 | research engineer (spike: local LLM path, Claude and Codex MCP set-up), sonnet | 3 |  | `wp25/u1` | in flight |  |  |  |
-| WP25-U1r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U1 done |  |  |
-| WP25-U2 | Python developer and technical writer (nav, coding-paths.md overview, docs tests: nav, provider field, alt text, word budget), sonnet | 3 |  | `wp25/u2` | queued | the ACE's logged decision on the U1 readout; WP24 landed on dev |  |  |
-| WP25-U2r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U2 done |  |  |
-| WP25-U3 | technical writer (by-hand path front in coding.md), sonnet | 2 |  | `wp25/u3` | queued | U2; WP24 landed (shares coding.md) |  |  |
-| WP25-U3r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U3 done |  |  |
-| WP25-U4 | technical writer (docs/local-llm.md), sonnet | 3 |  | `wp25/u4` | queued | U2; the ACE's decision on U1 |  |  |
-| WP25-U4r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U4 done |  |  |
-| WP25-U5 | technical writer (chatbot path, Claude, in chat-path.md; Docker Desktop box untouched), sonnet | 3 |  | `wp25/u5` | queued | U2 |  |  |
-| WP25-U5r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U5 done |  |  |
-| WP25-U6 | technical writer and developer (IDE path, Codex, ide.md; template AGENTS.md on wp25/template), sonnet | 3 |  | `wp25/u6`, `wp25/template` | queued | U2 |  |  |
-| WP25-U6r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U6 done |  |  |
-| WP25-U7 | technical writer (leave no trace as the chatbot path's option, leave-no-trace.md), sonnet | 2 |  | `wp25/u7` | queued | U2 |  |  |
-| WP25-U7r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U7 done |  |  |
-| WP25-U8 | technical writer (narratives.md, facilitate-timeframe.md, facilitating nav and pages), sonnet | 3 |  | `wp25/u8` | queued | WP24 landed on dev |  |  |
-| WP25-U8r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U8 done |  |  |
-| WP25-U9 | technical writer (planning.md by event kind, 1,500-word budget), sonnet | 3 |  | `wp25/u9` | queued | WP24 landed on dev |  |  |
-| WP25-U9r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U9 done |  |  |
-| WP25-U10 | chief engineer's sitting with the ACE (Claude, Codex, inference.coop walkthrough runs, screenshots, run records), ACE | 3 |  | `-` | queued | the chief engineer's sitting; U5, U6, U7 written first |  |  |
-| WP25-U11 | simulated user (cold reader, no accounts), haiku | 2 |  | `wp25/u11` | queued | U3 to U9 |  |  |
-| WP25-U11r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U11 done |  |  |
-| WP25-U12 | change consultant (S1 to S3 re-sweep, counts and greps), haiku | 1 |  | `wp25/u12` | queued | U10, U11 |  |  |
+| WP25-U1 | research engineer (spike: local LLM path, Claude and Codex MCP set-up), sonnet | 3 | 3 | `wp25/u1` | done |  | 2026-11-26T22:47:00-05:00 | spike run by the first PM on the ACE's Intel iMac; readout reviewed fresh (PASS), three small corrections from the review applied |
+| WP25-U1r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T22:47:00-05:00 | one fresh review: URLs fetched, claims checked against the repo |
+| WP25-U2 | Python developer and technical writer (nav, coding-paths.md overview, docs tests: nav, provider field, alt text, word budget), sonnet | 3 | 5 | `wp25/u2` | done |  | 2026-11-26T22:47:00-05:00 | nav, overview and six test families; one push-back (four items) and the walkthrough-shape test added after the chief engineer's shape ruling |
+| WP25-U2r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T22:47:00-05:00 | two fresh reviews (first with four fixes, then the whole branch with break demos) |
+| WP25-U3 | technical writer (by-hand path front in coding.md), sonnet | 2 | 4 | `wp25/u3` | done |  | 2026-11-26T22:48:00-05:00 | by-hand front written and run at file level; the Obsidian run was blocked (no full-screen control), so no screenshots; one push-back and one cold-reader fix round |
+| WP25-U3r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T22:48:00-05:00 | one fresh review that re-ran the page on a scratch clone |
+| WP25-U4 | technical writer (docs/local-llm.md), sonnet | 3 | 8 | `wp25/u4` | done |  | 2026-11-26T22:48:00-05:00 | a real end-to-end Docker run (Ollama, SCAT server, Open WebUI), six screenshots, a first turn of about five minutes, a 3B model that never called a tool; one push-back, one cold-reader fix round and one review fix round |
+| WP25-U4r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T22:48:00-05:00 | one fresh review: compose file checked, images viewed, leftovers checked |
+| WP25-U5 | technical writer (chatbot path, Claude, in chat-path.md; Docker Desktop box untouched), sonnet | 3 | 4 | `wp25/u5` | done |  | 2026-11-26T22:48:00-05:00 | the chatbot path from Claude's docs; one push-back (connector form, skill upload, plan wording), a cold-reader round and a review round |
+| WP25-U5r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T22:48:00-05:00 | one fresh review against the support articles |
+| WP25-U6 | technical writer and developer (IDE path, Codex, ide.md; template AGENTS.md on wp25/template), sonnet | 3 | 4 | `wp25/u6`, `wp25/template` | done |  | 2026-11-26T22:48:00-05:00 | the IDE page from Codex's docs and the template's AGENTS.md on a fresh clone, pushed to the template; one push-back, a cold-reader round and a review round |
+| WP25-U6r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T22:48:00-05:00 | one fresh review of the page and the template change |
+| WP25-U7 | technical writer (leave no trace as the chatbot path's option, leave-no-trace.md), sonnet | 2 | 2 | `wp25/u7` | done |  | 2026-11-26T22:48:00-05:00 | restructure of the leave-no-trace page; one push-back (three cuts) |
+| WP25-U7r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T22:48:00-05:00 | one fresh review, step lines diffed |
+| WP25-U8 | technical writer (narratives.md, facilitate-timeframe.md, facilitating nav and pages), sonnet | 3 | 3 | `wp25/u8` | done |  | 2026-11-26T22:47:00-05:00 | four pages and a test file; passed review first time |
+| WP25-U8r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T22:47:00-05:00 | one fresh review, rendered at desktop and 375 px |
+| WP25-U9 | technical writer (planning.md by event kind, 1,500-word budget), sonnet | 3 | 4 | `wp25/u9` | done |  | 2026-11-26T22:47:00-05:00 | planning by event kind; one push-back (dangling reference, cut content, a dead anchor) and two reviews |
+| WP25-U9r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T22:47:00-05:00 | two fresh reviews (the second found a broken anchor, fixed) |
+| WP25-U10 | chief engineer's sitting with the ACE (Claude, Codex, inference.coop walkthrough runs, screenshots, run records), ACE | 3 |  | `-` | queued | the chief engineer's sitting (Claude, Codex, inference.coop runs and screenshots) and, with full-screen control, the by-hand Obsidian screenshots; pages and run-record slots are written |  |  |
+| WP25-U11 | simulated user (cold reader, no accounts), haiku | 2 | 3 | `wp25/u11` | done |  | 2026-11-26T22:49:00-05:00 | three Haiku cold readers (by hand run, local-LLM read-through, account-bound read-through); findings record; four fix rounds |
+| WP25-U11r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T22:49:00-05:00 | one fresh review of the fix round, which found five more items |
+| WP25-U12 | change consultant (S1 to S3 re-sweep, counts and greps), haiku | 1 | 1 | `wp25/u12` | done |  | 2026-11-26T22:49:00-05:00 | change-consultant sweep S1 to S3 and link checks; found stale acceptance names and two mission lines for the ACE |
 
 ## Iterations and velocity
 
@@ -412,6 +412,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 36 | WP21-U10, U10r, U10b, U10br (U10b, U10br added by the PM after D-119) | 9 | 13 | 1.44 | 1.7 h | 7.65 |
 | 37 | WP22-U1, U1r, U2, U2r | 6 | 9 | 1.50 | 0.3 h | 30.0 |
 | 38 | WP22-U3, U3r, U4, U4r, U5, U5r, U6 | 22 | 38 | 1.73 | 1.9 h | 20.0 |
+| 44 | WP25-U1, WP25-U1r, WP25-U2, WP25-U2r, WP25-U8, WP25-U8r, WP25-U9, WP25-U9r | 16 | 21 | 1.31 | 1.00 h | 21.0 |
+| 45 | WP25-U3, WP25-U3r, WP25-U4, WP25-U4r, WP25-U5, WP25-U5r, WP25-U6, WP25-U6r, WP25-U7, WP25-U7r | 18 | 27 | 1.50 | 1.25 h | 21.6 |
+| 46 | WP25-U11, WP25-U11r, WP25-U12 | 4 | 6 | 1.50 | 0.50 h | 12.0 |
 
 ## Velocity and forecast
 
