@@ -3020,3 +3020,9 @@ the other or both, with guaranteed consistency if the query is the same". Asked 
 tool per view" (the three `draw_*` tools folded into `fingerprint`, `layered` and `trace` with an output choice).
 WP33 is rewritten; it now follows WP32 (both touch `draw.py`), and WP34 follows WP33. Revert point for the four:
 `divergence/D-174`.
+
+## D-175 | 2026-11-27 | WP32 to WP35 approved
+
+After the Claude tests, the full read of the four scopes ("list them out for me to read"), WP33's rescope around the
+query layer (D-174) and WP34's revision to follow it, the chief engineer: "now i approve". WP32, WP33, WP34 and WP35
+run in sequence (they share `draw.py`), with the agent's defaults as written. Revert point `divergence/D-174`.
