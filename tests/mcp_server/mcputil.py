@@ -9,6 +9,7 @@ import socket
 import subprocess
 import sys
 import time
+import tomllib
 from pathlib import Path
 
 from mcp import ClientSession
@@ -19,8 +20,30 @@ ASSISTANT = Path(__file__).parents[2] / "contracts" / "assistant.md"
 KEY = "test-key-0123456789"
 
 
-def copy_vault(dest: Path) -> Path:
+def put_stage(vault: Path, stage: str) -> None:
+    """Record `stage` for the vault, as `set_stage` would (a test that walks tools sets the stage it needs)."""
+    (vault / "lifecycle.toml").write_text(
+        f'stage = "{stage}"\nset_by = "the test"\nset_at = "2026-01-01T00:00:00Z"\n',
+        encoding="utf-8",
+    )
+
+
+def offer(vault: Path, tool: str) -> None:
+    """Put the vault in the first stage that offers `tool`, unless its stage does already."""
+    from scat_kg import guides
+
+    stages = guides.instance()["stages"]
+    now = tomllib.loads((vault / "lifecycle.toml").read_text(encoding="utf-8"))["stage"]
+    if tool not in stages[now]["tools"]:
+        put_stage(vault, next(n for n, s in stages.items() if tool in s["tools"]))
+
+
+def copy_vault(dest: Path, stage: str | None = "code") -> Path:
+    """A copy of the example vault. It is in the `code` stage (a `lifecycle.toml`), which offers the tools most
+    tests use; `stage=None` leaves no `lifecycle.toml`, the vault whose stage is unknown."""
     shutil.copytree(EXAMPLES, dest)
+    if stage is not None:
+        put_stage(dest, stage)
     return dest
 
 

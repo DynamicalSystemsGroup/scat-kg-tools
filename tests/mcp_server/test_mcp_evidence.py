@@ -5,7 +5,7 @@ import shutil
 from pathlib import Path
 
 import pytest
-from mcputil import call, serve, snapshot
+from mcputil import call, put_stage, serve, snapshot
 
 import scat_kg
 from scat_kg.cli import main
@@ -18,6 +18,7 @@ NODES = ("community-members", "forget-signal", "ethnographers", "closing-the-loo
 def served(tmp_path_factory):
     vault = tmp_path_factory.mktemp("range") / "vault"
     shutil.copytree(RANGE, vault)
+    put_stage(vault, "code")
     with serve(vault) as url:
         yield url, vault
 
