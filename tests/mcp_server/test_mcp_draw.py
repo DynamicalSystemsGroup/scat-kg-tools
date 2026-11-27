@@ -1,4 +1,4 @@
-"""WP28-R1, R2: the draw tools return the pictures `scat_kg.draw` makes, and the views' refusals as documents."""
+"""WP28-R1, R2, WP33-R3, R4: a view tool asked for its plot returns the picture `scat_kg.draw` makes, and the views' refusals as documents."""
 
 import base64
 import json
@@ -52,8 +52,10 @@ def flawed(tmp_path_factory):
 
 
 def tool(url, name, args):
+    """The content of the view tool `name` asked for its plot (`output` plot unless `args` says otherwise)."""
+
     async def go(s):
-        res = await s.call_tool(name, args)
+        res = await s.call_tool(name, {"output": "plot", **args})
         assert not res.isError, res.content
         return res.content
 
@@ -85,42 +87,44 @@ def refusal_of(content, root, made) -> dict:
 
 # (tool, arguments, the local draw call on the twin vault)
 CASES = [
-    ("draw_fingerprint", {"narrative": NARRATIVE}, lambda r: draw.fingerprint(NARRATIVE, root=r)),
+    ("fingerprint", {"narrative": NARRATIVE}, lambda r: draw.fingerprint(NARRATIVE, root=r)),
     (
-        "draw_fingerprint",
+        "fingerprint",
         {"narrative": OTHER, "candidates": True},
         lambda r: draw.fingerprint(OTHER, candidates=True, root=r),
     ),
-    ("draw_layered", {}, lambda r: draw.layered(root=r)),
+    ("layered", {}, lambda r: draw.layered(root=r)),
     (
-        "draw_layered",
+        "layered",
         {"narratives": [NARRATIVE, OTHER]},
         lambda r: draw.layered([NARRATIVE, OTHER], root=r),
     ),
-    ("draw_trace", {"node": NODE}, lambda r: draw.trace(NODE, root=r)),
+    ("trace", {"node": NODE}, lambda r: draw.trace(NODE, root=r)),
     (
-        "draw_trace",
+        "trace",
         {"node": NODE, "direction": "up"},
         lambda r: draw.trace(NODE, "up", root=r),
     ),
     (
-        "draw_trace",
+        "trace",
         {"node": NODE, "direction": "down"},
         lambda r: draw.trace(NODE, "down", root=r),
     ),
 ]
 
 
-def test_the_draw_tools_are_listed(url):
+def test_the_view_tools_offer_output_and_format_and_the_draw_tools_are_gone(url):
     async def names(s):
         return {t.name: t for t in (await s.list_tools()).tools}
 
     tools = with_session(url, names)
-    for n in ("draw_fingerprint", "draw_layered", "draw_trace"):
-        assert n in tools
+    assert not {"draw_fingerprint", "draw_layered", "draw_trace"} & set(tools)  # WP33-R4
+    for n in ("fingerprint", "layered", "trace"):
+        assert {"output", "format"} <= set(tools[n].inputSchema["properties"]), n
         assert "contracts/assistant.md" in tools[n].description
         assert "Writes nothing" in tools[n].description
-    assert "check" in tools and "fingerprint" in tools  # the others still list, with their schemas
+        assert "`table`" in tools[n].description and "`both`" in tools[n].description
+    assert "check" in tools  # the others still list, with their schemas
 
 
 @pytest.mark.parametrize("name,args,local", CASES)
@@ -149,20 +153,20 @@ def test_refusals_are_the_views_documents_and_no_image(url, vaults):
     before = snapshot(vaults[0])
     cases = [
         (
-            "draw_fingerprint",
+            "fingerprint",
             {"narrative": "no-such-page"},
             draw.fingerprint("no-such-page", root=own),
         ),
-        ("draw_fingerprint", {"narrative": NODE}, draw.fingerprint(NODE, root=own)),
+        ("fingerprint", {"narrative": NODE}, draw.fingerprint(NODE, root=own)),
         (
-            "draw_layered",
+            "layered",
             {"narratives": ["no-such-page"]},
             draw.layered(["no-such-page"], root=own),
         ),
-        ("draw_trace", {"node": "no-such-page"}, draw.trace("no-such-page", root=own)),
-        ("draw_trace", {"node": NARRATIVE}, draw.trace(NARRATIVE, root=own)),
+        ("trace", {"node": "no-such-page"}, draw.trace("no-such-page", root=own)),
+        ("trace", {"node": NARRATIVE}, draw.trace(NARRATIVE, root=own)),
         (
-            "draw_trace",
+            "trace",
             {"node": NODE, "direction": "sideways"},
             draw.trace(NODE, "sideways", root=own),
         ),
@@ -175,22 +179,35 @@ def test_refusals_are_the_views_documents_and_no_image(url, vaults):
 
 def test_a_bad_format_is_refused_with_a_fix(url, vaults):
     for name, args, _ in CASES:
-        doc = json.loads(tool(url, name, {**args, "format": "gif"})[0].text)
-        assert doc["ok"] is False and doc["operation"] == "draw"
-        assert "gif" in doc["refused"][0]["subject"]
-        assert "png" in json.dumps(doc["refused"][0]["fix"]) and "svg" in doc["refused"][0]["why"]
+        for output in ("plot", "table", "both"):
+            doc = json.loads(tool(url, name, {**args, "output": output, "format": "gif"})[0].text)
+            assert doc["ok"] is False and doc["operation"] == "view"
+            assert "gif" in doc["refused"][0]["subject"]
+            fix = json.dumps(doc["refused"][0]["fix"])
+            assert "png" in fix and "svg" in doc["refused"][0]["why"]
+
+
+def test_a_bad_output_is_refused_with_a_fix(url, vaults):
+    for name, args, _ in CASES:
+        content = tool(url, name, {**args, "output": "picture"})
+        assert [c.type for c in content] == ["text"]
+        doc = json.loads(content[0].text)
+        assert doc["ok"] is False and doc["operation"] == "view"
+        assert "picture" in doc["refused"][0]["subject"]
+        for word in ("table", "plot", "both"):
+            assert word in doc["refused"][0]["why"] and word in json.dumps(doc["refused"][0]["fix"])
 
 
 def test_an_excluded_narrative_is_refused(flawed):
     url, _, own = flawed
     doc = refusal_of(
-        tool(url, "draw_fingerprint", {"narrative": "uncoded"}),
+        tool(url, "fingerprint", {"narrative": "uncoded"}),
         own,
         draw.fingerprint("uncoded", root=own),
     )
     assert "excluded" in doc["refused"][0]["why"]
     refusal_of(
-        tool(url, "draw_layered", {"narratives": ["uncoded"]}),
+        tool(url, "layered", {"narratives": ["uncoded"]}),
         own,
         draw.layered(["uncoded"], root=own),
     )
@@ -200,17 +217,17 @@ def test_a_vault_the_view_refuses_gives_its_problems_and_no_image(flawed):
     url, served, own = flawed
     before = snapshot(served)
     for name, args, made in [
-        ("draw_layered", {}, draw.layered(root=own)),
-        ("draw_trace", {"node": NODE}, draw.trace(NODE, root=own)),
-        ("draw_fingerprint", {"narrative": "bad"}, draw.fingerprint("bad", root=own)),
+        ("layered", {}, draw.layered(root=own)),
+        ("trace", {"node": NODE}, draw.trace(NODE, root=own)),
+        ("fingerprint", {"narrative": "bad"}, draw.fingerprint("bad", root=own)),
     ]:
         doc = refusal_of(tool(url, name, args), own, made)
-        if name != "draw_trace":  # the trace refuses at the row, with no problems list
+        if name != "trace":  # the trace refuses at the row, with no problems list
             assert doc["problems"] and {p["severity"] for p in doc["problems"]} == {"error"}
         refusal_of(tool(url, name, {**args, "format": "svg"}), own, made)
     assert changed(before, snapshot(served)) == set()
     # a narrative the error does not touch still draws
     assert (
-        png_of(tool(url, "draw_fingerprint", {"narrative": OTHER}))
+        png_of(tool(url, "fingerprint", {"narrative": OTHER}))
         == draw.fingerprint(OTHER, root=own).png()
     )

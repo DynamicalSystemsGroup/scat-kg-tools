@@ -24,7 +24,7 @@ address and refuses to start on any other.
 
 ## Tools
 
-Twenty-two tools. Each returns the operation's own document, except the three that draw, which return a picture (see [Drawings](#drawings)).
+Nineteen tools. Each returns the operation's own document. The three view tools `fingerprint`, `layered` and `trace` can return a picture, or both, instead (see [Drawings](#drawings)).
 
 | Tool | What it does |
 |---|---|
@@ -38,26 +38,30 @@ Twenty-two tools. Each returns the operation's own document, except the three th
 | `merge` | Show the plan of folding node page `a` into node page `b`, two pages of one type: the files that would change, the links that would be rewritten, the `done` narratives whose text would change, or why it is refused. Writes nothing. Applying a merge (`plan` false) is refused, and the refusal names the coder's command, `scat merge a b`. |
 | `split_plan` | Show what must be re-linked to split node page `a`: the narratives that link it, with every link and every `Edges told` row that names it. Lists no contributor page. Writes nothing. |
 | `index` | Write the index page of each type that has none. |
-| `fingerprint` | View: a narrative's fingerprint, or every narrative's. |
+| `fingerprint` | View: a narrative's fingerprint, or every narrative's. Takes `output` (`table`, `plot` or `both`) and `format` (`png` or `svg`). |
 | `edge_table` | View: every edge of one type, with the narratives that tell it. |
-| `layered` | View: the layered view of some narratives, or all. |
-| `trace` | View: follow edges up, down or both from a node. |
+| `layered` | View: the layered view of some narratives, or all. Takes `output` and `format`. |
+| `trace` | View: follow edges up, down or both from a node. Takes `output` and `format`. |
 | `evidence` | View: one node page's narratives with the paragraph around each link, its edges with the narratives that tell them, and its adjacent nodes. Reads no `attributed_to` and lists no contributor page. |
 | `copy_share` | View: for each node page (or the one `node` named), the share of its text that repeats a narrative word for word, and the narratives it comes from, the most repeated first. The narratives named are those whose text the page repeats, whether or not they link the node. Reads no `attributed_to` and lists no contributor page. |
 | `review` | View: pairs of node pages of one type that may be one node (overlaps, twin rows, shared adjacent nodes with hubs marked, link texts), and pages whose accounts tell them to different other ends, with the narratives grouped. A prompt to read, not a finding. Reads no `attributed_to` and lists no contributor page. |
 | `attribution` | View: the narratives by contributor, and the narratives that name none. Refused where the attribution mode is `disallowed`. |
 | `export_edges` | Write the three edge tables as CSV and Markdown into `views/`. |
-| `draw_fingerprint` | Draw a narrative's fingerprint, with `candidates` also the links with no row. Returns an image. Writes nothing. |
-| `draw_layered` | Draw the layered view of some narratives, or all. Returns an image. Writes nothing. |
-| `draw_trace` | Draw what a node reaches, up, down or both. Returns an image. Writes nothing. |
 
 ## Drawings
 
-`draw_fingerprint`, `draw_layered` and `draw_trace` return the picture that `scat draw` and the notebook make for the same vault and arguments, byte for byte. Each takes `format`, `png` (the default) or `svg`. A `png` result is an image: the server sends it as MCP image content, so a client shows or passes on the picture as it does any image. An `svg` result is the drawing's text.
+`fingerprint`, `layered` and `trace` each take two arguments besides their own:
+
+- `output`: `table` (the default), `plot` or `both`.
+- `format`: `png` (the default) or `svg`; it applies to the plot.
+
+One call runs the view's query once and gives what `output` asks of that one result. `table` is the view's document, exactly what the tool returns without `output`. `plot` is only the picture `scat draw` and the notebook make for the same vault and arguments, byte for byte: a `png` is MCP image content, so a client shows or passes on the picture as it does any image, and an `svg` is the drawing's text. `both` is two items: the plot first, then the table as text, the JSON of the same document `table` returns. The plot and the table of one call tell the same nodes and edges, since both come from the one result.
 
 A drawing is never written to the vault. To keep a picture as a file, the coder runs `scat draw ... --out`, or saves it from the notebook.
 
-A refusal is returned as the refusal document, as for every other tool, and no image: a name that is not a page, a narrative given to `draw_trace`, a narrative that is excluded, a `direction` or `format` that is not offered, a vault whose pages the view refuses to draw (the document lists the problems), and a server without the `draw` extra (the document says how to install it).
+A refusal is returned as the refusal document, as for every other tool, and no image, for every `output`: a name that is not a page, a narrative given to `trace`, a narrative that is excluded, a `direction`, `output` or `format` that is not offered, a plot of no narrative (or of every narrative) from `fingerprint`, which draws one narrative, a vault whose pages the view refuses (the document lists the problems), and a server without the `draw` extra (the document says how to install it). `fingerprint` as a `table` with no `narrative` still returns every narrative's view.
+
+`draw_fingerprint`, `draw_layered` and `draw_trace` are not offered. Ask for the plot from the view tool: `fingerprint` with `output` set to `plot`, `layered` with `output` set to `plot`, and `trace` with `output` set to `plot`; each takes the `format` the matching `draw_` tool took.
 
 ## Prompts and the rules
 
