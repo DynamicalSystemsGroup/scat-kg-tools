@@ -9,16 +9,12 @@ provider: inference.coop
     do not need it: the chat path's own "Clean up" is enough.
 
 Some projects work under a strict data policy: an AI platform **non-retention** policy (nothing you put into the
-platform stays there), or an **approved chatbot only** policy. "Leave no trace" is the life cycle of a chat-path
-session that fits such a policy. A session sets up everything it needs in the chat platform, does the coding, and then
-removes all of it from the platform. Your local copies stay on your Mac.
+platform stays there), or an **approved chatbot only** policy. "Leave no trace" is one option for such a policy: a session sets up what it needs in the chat platform, does the
+coding, and then removes all of it from the platform. Your local copies stay on your Mac.
 
 Removing means removing it from the chat platform, in this example inference.coop's chat. It does not claim to remove
 anything from every system the platform's model provider runs; what your policy requires there is for your policy to
 say. See [Data, rights and consent](data-and-consent.md).
-
-The page follows [The chat path](chat-path.md), which has the one session start to clean-up that every project uses.
-This page only adds what a strict policy needs.
 
 !!! note "What has and has not been tried"
     No one has yet run this walkthrough end to end. Its pieces were seen separately in the lab run of 25 November
@@ -26,28 +22,33 @@ This page only adds what a strict policy needs.
     were not tried: the chat's Temporary Chat setting in a session, and the chat's collections. Where a step names a
     control that was not seen, it says what to look for, and your first run is where it is confirmed.
 
-## What this page does
+## What this path needs
 
-1. A **temporary chat**: the coding session runs in the chat's Temporary Chat setting, whose own text says the chat
-   will not appear in your history and is deleted automatically.
-2. The **field notes are uploaded as a collection**, so they can be removed as one thing.
-3. The **server entry, the saved agent, the skill and any prompts** are set up for this session only.
-4. The coding work.
-5. **Every one of them is removed from the platform** at the end.
-6. **Local copies stay** on your machine: your field notes, and your vault with every change.
+A leave-no-trace session needs everything [The chat path](chat-path.md#what-the-chat-path-is-and-what-it-needs)
+needs: a Mac, a vault, a container runtime, Tailscale, SCAT Chat, and a chat that accepts an MCP server and an API
+key. The chat path's [Install once](chat-path.md#install-once) is done once per Mac. A strict data policy adds four
+things:
 
-## Before you start
+- A **temporary chat** to code in, so the session does not stay in your history.
+- Your **field notes uploaded as a collection**, so they can be removed as one thing. Where the chat has no
+  collections, the notes are attached to the temporary chat instead.
+- **Nothing left on the platform at the end**: the server entry, the saved agent, the skill and any prompts you saved
+  are removed.
+- **Local copies kept**: your field notes folder and your vault stay on your Mac.
 
-- You have done "Install once" on [The chat path](chat-path.md) (once per Mac).
-- Your field notes are in a folder on your Mac. They stay there; the clean-up never touches that folder.
-- Your vault is outside Documents, Desktop, Downloads and iCloud, as the chat path says.
+Your field notes sit in a folder on your Mac, and the vault is outside Documents, Desktop, Downloads and iCloud, as the chat path says.
 
-## The walkthrough
+## Worked example: inference.coop
+
+The steps below run the session in inference.coop's chat. Another chat has its own names for these controls; the
+order is the same: set up, code, remove.
+
+### The walkthrough
 
 Each numbered step names where it is done and one outcome. It begins with where you do it: **In SCAT Chat** (the small Mac app that runs the server), **In the menu bar** (its dot and menu), **In the
 chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web browser**.
 
-### Set up for the session
+#### Set up for the session
 
 1. **In Finder:** check that your field notes are in a folder on your Mac. This is your local copy.
 2. **In Finder:** open SCAT Chat from Applications. (Start a session, on the chat path.)
@@ -92,7 +93,7 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
     (On inference.coop's instance agents start from that Select, not from the model menu or from typing `@`. If the
     saved agent cannot be chosen inside a temporary chat, start the chat with the model and the server entry instead.)
 
-### Do the coding
+#### Do the coding
 
 34. **In the chat:** name the narrative and ask the assistant to help you code it, with your collection (or, if you
     skipped the collection, the notes attached to this chat).
@@ -106,7 +107,7 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 41. **In the chat:** ask the assistant to name the pages you worked on with their status.
 42. **In GitHub Desktop:** commit your work. This is your local copy of the result; it stays.
 
-### Tear everything down
+#### Tear everything down
 
 43. **In the menu bar:** open SCAT Chat's menu and click **Stop**. Stop shows the result in one alert.
 44. **In SCAT Chat:** read the alert titled "SCAT Chat stopped". It says the public link is off, the server is removed,
@@ -128,11 +129,11 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 56. **In the chat:** look once more at each place you set something up (MCP Settings, the Agent Builder, the skills,
     the files, the history) and check that nothing from this session remains.
 
-### Check what stays on your Mac
+#### Check what stays on your Mac
 
 57. **In Finder:** check that your field notes folder and your vault are still there, with your work in them.
 
-## What is removed and what stays
+### What is removed and what stays
 
 | Removed from the chat platform | Stays on your Mac |
 |---|---|
