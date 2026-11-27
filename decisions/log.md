@@ -3033,3 +3033,17 @@ Asked how much of RS5's client-trial plan (`spike/lifecycle/TRIAL-PLAN.md` on `s
 (T1 to T4), the core with the stage carriers, elicitation and restart, or all ten tests including the router. The chief
 engineer chose (typed by the agent): "Full plan". The ACE runs them as coder in Claude, inference.coop and VS Code's
 Copilot, human-paced, with his accounts; RS5 is accepted when they are recorded (D-165).
+
+## D-177 | 2026-11-27 | Stage and status: two state machines at two time scales
+
+The chief engineer, during RS5's client trials (typed by the agent): "i am worried we're mixing the two abstraction
+levels. the lifecycle from the facilitators view is not the same as the lifecycle for a page", and then: "both can be
+addressed with state machines but they are different state machines that operate at different time scales. "coding" is
+a stage in the scat project lifecycle and "stub" is the state of a record in the knowledge graph. we will call "status"
+is the term for state of a record in the knowledge graph and "stage" is the name for where we are in the project
+lifecycle."
+
+Outcome: **stage** is where the project is in its lifecycle; **status** is the state of a record in the knowledge
+graph. They are different state machines, at different time scales. WP29 applies the ruling: G2 no longer lists
+`done` to `draft` as a stage transition, and G4 keeps stage apart from status in the glossary. The mixing found in the
+drafts is noted in `work-packages/WP28-WP31-inputs.md` (the MVC note, RS5's router gating plan to code on a `stub`).
