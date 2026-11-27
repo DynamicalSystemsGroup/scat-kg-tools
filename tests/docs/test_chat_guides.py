@@ -21,7 +21,7 @@ PLACES = (
     "In a terminal",
     "In any app",
     "In Claude",
-    "In Codex",
+    "In Copilot",
     "In Open WebUI",
     "In Docker",
     "In an editor",

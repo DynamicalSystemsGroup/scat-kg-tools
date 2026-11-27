@@ -12,7 +12,7 @@ tool checks the result and you own the interpretation; the assistant, where ther
 | [By hand](coding.md) | Your own editor and a terminal, no AI | none |
 | [An AI chatbot](chat-path.md) | A chat window in your browser | Claude |
 | [An AI chatbot, leave no trace](leave-no-trace.md) | A chat that keeps nothing on the platform | inference.coop |
-| [An AI IDE](ide.md) | An editor with an agent and a terminal inside it | Codex |
+| [An AI IDE](ide.md) | An editor with an agent and a terminal inside it | Copilot in VS Code |
 | [A local LLM](local-llm.md) | A model on your own computer, which you supply | Ollama in Docker |
 
 Each example is an example: another provider of the same kind works the same way, and each walkthrough names its

@@ -12,7 +12,7 @@ WALKTHROUGHS = {
     "coding.md": "none",
     "chat-path.md": "Claude",
     "leave-no-trace.md": "inference.coop",
-    "ide.md": "Codex",
+    "ide.md": "Copilot",
     "local-llm.md": "Ollama",
 }
 
@@ -171,5 +171,5 @@ def test_overview_says_each_example_is_an_example():
     assert not re.search(
         r"(?i)\b(recommend|we choose|best choice|prefer(red)? provider|the default)\b", text
     )
-    for example in ("Claude", "inference.coop", "Codex", "Ollama"):
+    for example in ("Claude", "inference.coop", "Copilot", "Ollama"):
         assert example in text
