@@ -36,19 +36,21 @@ the narrative. See [Coding](coding.md#the-three-actors).
 Codex is OpenAI's coding agent. It runs as an extension in VS Code, Cursor and Windsurf, or as a command in a
 terminal. Use either one; the steps below say which.
 
-1. **In an editor:** Install the Codex extension in VS Code, Cursor or Windsurf, and sign in when it asks. The
-   Codex icon appears in the sidebar. If you prefer a terminal, install the command instead: in Terminal, run
-   `curl -fsSL https://chatgpt.com/codex/install.sh | sh`, then see step 3.
+1. **In an editor:** Install the Codex extension in VS Code, Cursor or Windsurf. The Codex icon appears in the
+   sidebar.
 2. **In an editor:** Open your vault folder (the one with `scat.toml`) as the project, then select the Codex icon. If
    the icon is missing, run "Codex: Open Codex Sidebar" from the Command Palette. A chat opens on your vault.
-3. **In Codex:** Start the session on the vault. In the extension, the chat is already on the folder you opened. In a
-   terminal, go to the vault folder and run `codex`; the first run offers "Sign in with ChatGPT" among its
-   sign-in methods.
+3. **In Codex:** Sign in when it asks, the first time you use it. The chat is then ready for your vault.
 4. **In Codex:** Ask: "Set yourself up for this vault." Codex reads `AGENTS.md` at the vault's root when the session
    starts, follows it to `.claude/skills/scat-ide-setup/SKILL.md`, runs `uv sync` and then `uv run scat check`, and
    reads you the tool's own result.
-5. **In Codex:** Ask: "What are you not allowed to do here?" Codex answers from the skill: it does not set `done`, does not run
-   `set-status`, and does not write a narrative's text through the tool.
+5. **In Codex:** Ask: "What are you not allowed to do here?" Codex answers from the skill: it does not set `done`,
+   does not run `set-status`, and does not write a narrative's text through the tool.
+
+To use a terminal instead of an editor, replace steps 1 and 2 with this:
+
+**In a terminal:** Install the command with `curl -fsSL https://chatgpt.com/codex/install.sh | sh`, go to your vault
+folder, and run `codex`. Codex starts on the vault; continue from step 3.
 
 Codex also reads an `AGENTS.md` in any folder between the vault's root and the folder you work in, so a folder can add
 its own instructions. It stops reading once the instructions pass 32 KiB in all.

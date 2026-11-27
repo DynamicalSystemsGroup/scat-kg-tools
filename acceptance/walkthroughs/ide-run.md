@@ -14,11 +14,11 @@ any key cropped or blurred. Add each to the page with real alt text.
 | File | Must show | Step |
 |---|---|---|
 | `01-extension-installed.png` | The Codex extension page in the editor, installed | 1 |
-| `02-sign-in.png` | The sign-in choice Codex offers (no account details) | 1, 3 |
+| `02-sign-in.png` | The sign-in choice Codex offers (no account details) | 3 |
 | `03-sidebar-open.png` | The vault open, the Codex icon and the chat panel | 2 |
 | `04-setup-result.png` | Codex's reply after "Set yourself up": `uv sync`, `uv run scat check` and the tool's words | 4 |
 | `05-rules-answer.png` | Codex's answer to what it may not do (no `done`, no `set-status`) | 5 |
-| `06-cli-session.png` | The `codex` command running in the vault folder (optional path) | 3 |
+| `06-cli-session.png` | The `codex` command running in the vault folder (terminal alternative) | In a terminal paragraph |
 
 ## Doc facts (fetched 26 Nov 2026; the old developers.openai.com addresses redirect to learn.chatgpt.com)
 
