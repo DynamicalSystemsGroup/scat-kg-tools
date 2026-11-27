@@ -34,7 +34,7 @@ def test_no_page_gives_3_as_the_templates_cap():
         text = (DOCS / name).read_text(encoding="utf-8")
         assert not re.search(r"stakeholder_group_cap\s*=\s*3\b", text), name
         for s in re.split(r"(?<=[.;])\s+", text):
-            if re.search(r"template|example vault", s, re.IGNORECASE) and re.search(
-                r"cap", s, re.IGNORECASE
-            ):
-                assert not re.search(r"\b(to|\()\s*3\b|\b3 in the", s), (name, s)
+            if re.search(
+                r"template|example vault|by default|default", s, re.IGNORECASE
+            ) and re.search(r"\bcap\b", s, re.IGNORECASE):
+                assert not re.search(r"\b(3|three)\b", s, re.IGNORECASE), (name, s)

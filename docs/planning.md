@@ -21,20 +21,18 @@ Every vault sets a cap on the number of groups, one line in `scat.toml`. The exa
 stakeholder_group_cap = 6
 ```
 
-The cap keeps groups large enough that nobody can be picked out. Cluster the people you expect to fit under it:
+The cap keeps groups large enough that nobody can be picked out. Cluster expected people to fit under it:
 
 1. List who is likely to come, by role, never by name.
 2. Group them by shared standpoint, what they look at the world from. Not by size or by who is loudest.
 3. If more standpoints appear than the cap allows, widen a group's description so it holds them.
 4. If one identifiable person fills a role, widen the group around it. A group of one is a person. Where it is unclear which group someone belongs to, ask them.
 
-The cap and the attribution mode are vault settings, changed by the person who set up your tools (you, if you did). Settle both with that person before the first session.
-
-The test of a good group is a line a member would say of themselves: "From where operators sit, we keep the desk open and the tools safe." A group beyond the cap is refused: link an existing group, or have the cap raised if the plan allows. Clear the example groups before you add pages of your own: [Start your own content](getting-started.md#5-start-your-own-content).
+The test of a good group is a line a member would say of themselves: "From where operators sit, we keep the desk open and the tools safe." A group beyond the cap is refused: link an existing group, or have the cap raised if the plan allows. Clear the example groups before adding your own: [Start your own content](getting-started.md#5-start-your-own-content).
 
 ## Choose the attribution mode
 
-The vault has one **attribution mode**: whether a narrative names the people it is attributed to. You choose it, and the person who set up your tools writes the line in `scat.toml`, beside the cap. The template's line is the example's mode:
+The vault has one **attribution mode**: whether a narrative names the people it is attributed to. You choose it, and the person who set up your tools writes the line in `scat.toml`. The template's line is the example's mode:
 
 ```text
 attribution = "disallowed"
@@ -46,11 +44,13 @@ attribution = "disallowed"
 | `optional` | names its contributors, or none | a contributor page for each person who chose to be named |
 | `disallowed` | names no contributor; the Chatham House rule is this mode | no contributor page |
 
-The mode is the same for every session and participant. The tools enforce yours: [Norms](norms.md#writing-together) and [Coding](coding.md#contributor-pages-and-attributed_to) say how. Changing it later flags pages written under the old one, so choose before telling participants anything.
+The mode is the same for everyone. The tools enforce yours: [Norms](norms.md#writing-together) and [Coding](coding.md#contributor-pages-and-attributed_to) say how. Changing it later flags pages written under the old one, so choose before telling participants.
+
+The cap and the attribution mode are vault settings, changed by the person who set up your tools (you, if you did). Before the first session, tell that person the number of groups your plan needs and the mode you chose.
 
 ## A one-off online discussion
 
-Fix the call link, a shared notes page and the note-taker before you invite. Pick one kind of session and timeframe. Say the terms as the call opens and paste them at the top of the notes page. A recording is a second set of notes: match its settings to what you said.
+Fix the call link, a shared notes page and the note-taker before you invite. Pick one session kind and timeframe. Say the terms as the call opens and paste them at the top of the notes page. A recording is a second set of notes: match its settings to what you said.
 
 ## A recurring discussion
 

@@ -73,8 +73,9 @@ Your notes are about real groups of people.
     you need").
 6. **In GitHub Desktop:** choose **Clone**.
 
-Your vault is the cloned folder. It holds `scat.toml`, the vault's settings (the cap on groups and the attribution mode). The person who set up your tools changes them; the assistant cannot. The template's default branch is `dev`; GitHub
-Desktop shows the current branch at the top, and if it shows `main` choose `dev` from that list.
+Your vault is the cloned folder. It holds `scat.toml`, the vault's settings (the cap on groups and the attribution
+mode). The person who set up your tools changes them; the assistant cannot. The template's default branch is `dev`;
+GitHub Desktop shows the current branch at the top, and if it shows `main` choose `dev` from that list.
 
 **Remove the example: your hands do it.** The template holds a worked example that you remove before you add your own
 pages. **The assistant never deletes anything**, and the server has no operation that deletes a page or a folder (it can remove an edge's row, which only you ask for). You delete.

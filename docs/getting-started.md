@@ -138,8 +138,8 @@ no problems
 
 `scat.toml` is required. It sits in the vault folder and holds two keys: `stakeholder_group_cap`, the cap on groups, and
 `attribution`, the vault's attribution mode (`required`, `optional` or `disallowed`). The template sets the cap to 6 and the
-mode to `disallowed`; [Planning](planning.md#choose-the-attribution-mode) says how to choose yours. The person who set up your tools changes these two keys (you, if you set them up yourself). If either key is missing,
-the check reports an error (`SCAT-CAP-CONFIG` or `SCAT-MODE-CONFIG`). If the whole file is missing, you are probably in the wrong folder, or the file
+mode to `disallowed`; [Planning](planning.md#choose-the-attribution-mode) says how to choose yours. The person who set up your tools changes these two keys (you, if you set them up
+yourself). If either key is missing, the check reports an error (`SCAT-CAP-CONFIG` or `SCAT-MODE-CONFIG`). If the whole file is missing, you are probably in the wrong folder, or the file
 was deleted. In a wrong (empty) folder the check ends with `1 error, 0 warnings`:
 
 ```text
