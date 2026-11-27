@@ -1,0 +1,247 @@
+{
+  "q1_http_one_port_tools_listed": [
+    "stage",
+    "set_stage",
+    "status",
+    "check",
+    "stub"
+  ],
+  "q1_http_separate_ports_tools_listed": [
+    "stage",
+    "set_stage",
+    "status",
+    "check",
+    "stub"
+  ],
+  "q1_memory_tools_listed": [
+    "stage",
+    "set_stage",
+    "status",
+    "check",
+    "stub"
+  ],
+  "q2_fastmcp_default_tools_listChanged": false,
+  "q2_http_notifications": [
+    "notifications/tools/list_changed",
+    "notifications/prompts/list_changed",
+    "notifications/resources/list_changed"
+  ],
+  "q2_notifications_per_stage_change": [
+    "notifications/tools/list_changed",
+    "notifications/prompts/list_changed",
+    "notifications/resources/list_changed"
+  ],
+  "q2_tools_after": [
+    "stage",
+    "set_stage",
+    "status",
+    "check",
+    "set_status",
+    "record_edge",
+    "fingerprint",
+    "progress_demo",
+    "fail_demo",
+    "block"
+  ],
+  "q2_tools_before": [
+    "stage",
+    "set_stage",
+    "status",
+    "check",
+    "stub"
+  ],
+  "q3_a_listing_bytes": {
+    "analyse": 2707,
+    "plan": 1819
+  },
+  "q3_b_bad_args_text": "Error executing tool stub: 1 validation error for stubArguments\ntype\n  Field required [type=missing, input_value={'name': 'a'}, input_type=dict]\n    For further",
+  "q3_b_listing_bytes": 1070,
+  "q3_c_listing_bytes": 4962,
+  "q3_c_shared_names": [
+    "check",
+    "fingerprint",
+    "status"
+  ],
+  "q3_c_union_tool_count": 12,
+  "q5_deploy_facts": {
+    "container_port": 8765,
+    "entrypoint_count": 1,
+    "funnel": "funnel --bg 8765 (one public https address on 443)",
+    "key_gate": "gated(app, key) wraps the single ASGI app; header x-api-key or Bearer",
+    "published": "127.0.0.1:8765 only"
+  },
+  "q5_failure_modes": {
+    "i_block": {
+      "other_connection_status_latency_s": 0.013
+    },
+    "i_call_to_dead_stage": {
+      "isError": true,
+      "seconds": 5.01,
+      "structured": {
+        "detail": "TimeoutError()",
+        "ok": false,
+        "stage": "code",
+        "stage_server_unavailable": true
+      }
+    },
+    "i_new_connection_connect_s": 0.14,
+    "i_new_connection_down": [
+      "code"
+    ],
+    "i_new_connection_plan_works": true,
+    "i_other_stage_still_works": true,
+    "ii_after_tool_raises_still_works": true,
+    "ii_block": {
+      "other_connection_status_latency_s": 1.236
+    },
+    "ii_process_killed": "ClosedResourceError",
+    "ii_tool_raises": {
+      "isError": true,
+      "text": "Error executing tool fail_demo: fail_demo always fails"
+    }
+  },
+  "q5_hosting": {
+    "i": {
+      "listening_ports": [
+        52931,
+        52932,
+        52933,
+        52934
+      ],
+      "processes": 4,
+      "rss_kb": {
+        "analyse": 83484,
+        "code": 88152,
+        "plan": 86900,
+        "router": 100820
+      },
+      "rss_total_mb": 350.9,
+      "startup_s": 1.44
+    },
+    "ii": {
+      "listening_ports": [
+        53001
+      ],
+      "processes": 1,
+      "rss_kb": {
+        "router": 102600
+      },
+      "rss_total_mb": 100.2,
+      "startup_s": 1.37
+    },
+    "loc": {
+      "hosting_i_only": 13,
+      "hosting_ii_only": 17,
+      "hosting_shared": 10,
+      "lc_router.py": 362,
+      "lc_stages.py": 65
+    }
+  },
+  "q5_i_stage_ports_bypass_state_machine_locally": true,
+  "q5_ii_mounts_bypass_state_machine": true,
+  "q6_isError_by_call": [
+    [
+      "status",
+      false
+    ],
+    [
+      "record_edge",
+      false
+    ],
+    [
+      "record_edge",
+      true
+    ],
+    [
+      "fail_demo",
+      true
+    ],
+    [
+      "progress_demo",
+      false
+    ]
+  ],
+  "q6_latency_median_ms": {
+    "calls": 200,
+    "http": {
+      "direct_stage": 5.355,
+      "router_one_port": 11.064,
+      "router_separate_ports": 10.437
+    },
+    "memory": {
+      "direct_ms": 1.973,
+      "via_router_ms": 3.302
+    }
+  },
+  "q6_listing_compare": {
+    "analyse": {
+      "fields_compared": [
+        "annotations",
+        "description",
+        "execution",
+        "icons",
+        "inputSchema",
+        "meta",
+        "name",
+        "outputSchema",
+        "title"
+      ],
+      "prompts_equal": true,
+      "resources_equal": true,
+      "same_names": true,
+      "tool_field_diffs": {}
+    },
+    "code": {
+      "fields_compared": [
+        "annotations",
+        "description",
+        "execution",
+        "icons",
+        "inputSchema",
+        "meta",
+        "name",
+        "outputSchema",
+        "title"
+      ],
+      "prompts_equal": true,
+      "resources_equal": true,
+      "same_names": true,
+      "tool_field_diffs": {}
+    },
+    "plan": {
+      "fields_compared": [
+        "annotations",
+        "description",
+        "execution",
+        "icons",
+        "inputSchema",
+        "meta",
+        "name",
+        "outputSchema",
+        "title"
+      ],
+      "prompts_equal": true,
+      "resources_equal": true,
+      "same_names": true,
+      "tool_field_diffs": {}
+    }
+  },
+  "q6_progress_events": [
+    [
+      1.0,
+      3.0,
+      "step 1"
+    ],
+    [
+      2.0,
+      3.0,
+      "step 2"
+    ],
+    [
+      3.0,
+      3.0,
+      "step 3"
+    ]
+  ],
+  "sdk_version": "1.30.0"
+}
