@@ -28,5 +28,8 @@ provider in one place.
 4. Is any AI platform allowed? Use **an AI chatbot** if you prefer a chat window, or **an AI IDE** if you already work
    in an editor with a terminal.
 
+To weigh them side by side, including how each path stops an assistant from writing what only the tool or you
+should write, see [Pros and cons of each path](path-pros-and-cons.md).
+
 If two paths fit, the tools you already know decide. You can switch path between narratives: the nodes, edges and
 checks are the same.

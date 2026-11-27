@@ -53,6 +53,7 @@ nav:
       - Timeframe: facilitate-timeframe.md
   - Coding paths:
       - Overview: coding-paths.md
+      - Pros and cons: path-pros-and-cons.md
       - By hand: coding.md
       - An AI chatbot:
           - The chat path: chat-path.md
