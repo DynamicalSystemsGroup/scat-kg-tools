@@ -1,0 +1,21 @@
+B11 tools/list client=A4 raw-postonly config=stateful, SSE
+client saw: 13 tools; annotations: b10_preview={'readOnlyHint': True, 'destructiveHint': False, 'idempotentHint': True}; b10_apply={'readOnlyHint': False, 'destructiveHint': True, 'idempotentHint': False}; b10_instruct={'readOnlyHint': True}
+stream: none sent
+outcome: returned; server: did not ask; wall 0.07s
+
+[  0.06s] POST#1  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=no
+[  0.06s] POST#1     body: request initialize id=0 {"protocolVersion": "2025-11-25", "capabilities": {"elicitation": {}}, "clientInfo": {"name": "raw-postonly", 
+[  0.06s] POST#1  <- 200 content-type='text/event-stream'
+[  0.07s] POST#1     sse: response id=0 result={"protocolVersion": "2025-11-25", "capabilities": {"experimental": {}, "prompts": {"listChanged": false}, "res
+[  0.07s] POST#1     client disconnected
+[  0.07s] POST#1     exchange ended
+[  0.07s] POST#2  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.07s] POST#2     body: notification notifications/initialized id=None {}
+[  0.07s] POST#2  <- 202 content-type='application/json'
+[  0.07s] POST#2     exchange ended
+[  0.07s] POST#3  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.07s] POST#3     body: request tools/list id=1 {}
+[  0.07s] POST#3  <- 200 content-type='text/event-stream'
+[  0.07s] POST#3     sse: response id=1 result={"tools": [{"name": "b1_session", "description": "B1 baseline: ctx.session.elicit_form (no related_request_id)
+[  0.07s] POST#3     client disconnected
+[  0.07s] POST#3     exchange ended

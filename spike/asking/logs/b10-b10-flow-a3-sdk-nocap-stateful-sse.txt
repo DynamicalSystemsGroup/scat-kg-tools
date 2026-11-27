@@ -1,0 +1,53 @@
+B10 b10_flow client=A3 sdk-nocap config=stateful, SSE
+client saw: result {"preview_applied": false, "apply": true, "replay": false, "instruct": true}
+stream: none sent
+outcome: returned; server: did not ask; wall 0.12s
+
+[  0.07s] POST#1  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=no
+[  0.07s] POST#1     body: request initialize id=0 {"protocolVersion": "2025-11-25", "capabilities": {}, "clientInfo": {"name": "mcp", "version": "0.1.0"}}
+[  0.08s] POST#1  <- 200 content-type='text/event-stream'
+[  0.08s] POST#1     sse: response id=0 result={"protocolVersion": "2025-11-25", "capabilities": {"experimental": {}, "prompts": {"listChanged": false}, "res
+[  0.08s] POST#1     client disconnected
+[  0.08s] POST#1     exchange ended
+[  0.08s] POST#2  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.08s] POST#2     body: notification notifications/initialized id=None {}
+[  0.08s] POST#2  <- 202 content-type='application/json'
+[  0.08s] POST#2     exchange ended
+[  0.08s] GET#3   -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.08s] GET#3   <- 200 content-type='text/event-stream'
+[  0.09s] POST#4  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.09s] POST#4     body: request tools/call id=1 {"name": "b10_preview", "arguments": {"note": "hello"}}
+[  0.09s] POST#4  <- 200 content-type='text/event-stream'
+[  0.09s] POST#4     sse: response id=1 result={"content": [{"type": "text", "text": "{\n  \"applied\": false,\n  \"preview\": \"would write: hello\",\n  \"t
+[  0.09s] POST#4     client disconnected
+[  0.09s] POST#4     exchange ended
+[  0.09s] POST#5  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.09s] POST#5     body: request tools/list id=2 {}
+[  0.09s] POST#5  <- 200 content-type='text/event-stream'
+[  0.09s] POST#5     sse: response id=2 result={"tools": [{"name": "b1_session", "description": "B1 baseline: ctx.session.elicit_form (no related_request_id)
+[  0.10s] POST#5     client disconnected
+[  0.10s] POST#5     exchange ended
+[  0.10s] POST#6  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.10s] POST#6     body: request tools/call id=3 {"name": "b10_apply", "arguments": {"token": "810f8d0f"}}
+[  0.10s] POST#6  <- 200 content-type='text/event-stream'
+[  0.10s] POST#6     sse: response id=3 result={"content": [{"type": "text", "text": "{\n  \"applied\": true,\n  \"wrote\": \"hello\"\n}"}], "structuredConte
+[  0.10s] POST#6     client disconnected
+[  0.10s] POST#6     exchange ended
+[  0.11s] POST#7  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.11s] POST#7     body: request tools/call id=4 {"name": "b10_apply", "arguments": {"token": "810f8d0f"}}
+[  0.11s] POST#7  <- 200 content-type='text/event-stream'
+[  0.11s] POST#7     sse: response id=4 result={"content": [{"type": "text", "text": "{\n  \"applied\": false,\n  \"problem\": \"unknown or already used toke
+[  0.11s] POST#7     client disconnected
+[  0.11s] POST#7     exchange ended
+[  0.11s] POST#8  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.11s] POST#8     body: request tools/call id=5 {"name": "b10_instruct", "arguments": {}}
+[  0.11s] POST#8  <- 200 content-type='text/event-stream'
+[  0.12s] POST#8     sse: response id=5 result={"content": [{"type": "text", "text": "Stop. The coder decides the stage. Ask the coder which of: plan, code, 
+[  0.12s] POST#8     client disconnected
+[  0.12s] POST#8     exchange ended
+[  0.12s] DELETE#9 -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.12s] DELETE#9 <- 200 content-type='application/json'
+[  0.12s] DELETE#9    exchange ended
+[  0.12s] sdk     Read stream closed by client
+[  0.12s] GET#3      client disconnected
+[  0.12s] GET#3      exchange ended

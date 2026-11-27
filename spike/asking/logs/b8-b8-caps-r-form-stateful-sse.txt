@@ -1,0 +1,21 @@
+B8 b8_caps client=R {form:{}} config=stateful, SSE
+client saw: result {"declared": {"form": {}}, "check_empty": true, "check_form": true, "check_url": true, "form_by_spec": true}
+stream: none sent
+outcome: returned; server: did not ask; wall 0.07s
+
+[  0.06s] POST#1  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=no
+[  0.06s] POST#1     body: request initialize id=0 {"protocolVersion": "2025-11-25", "capabilities": {"elicitation": {"form": {}}}, "clientInfo": {"name": "raw-p
+[  0.07s] POST#1  <- 200 content-type='text/event-stream'
+[  0.07s] POST#1     sse: response id=0 result={"protocolVersion": "2025-11-25", "capabilities": {"experimental": {}, "prompts": {"listChanged": false}, "res
+[  0.07s] POST#1     client disconnected
+[  0.07s] POST#1     exchange ended
+[  0.07s] POST#2  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.07s] POST#2     body: notification notifications/initialized id=None {}
+[  0.07s] POST#2  <- 202 content-type='application/json'
+[  0.07s] POST#2     exchange ended
+[  0.07s] POST#3  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.07s] POST#3     body: request tools/call id=1 {"name": "b8_caps", "arguments": {}}
+[  0.07s] POST#3  <- 200 content-type='text/event-stream'
+[  0.07s] POST#3     sse: response id=1 result={"content": [{"type": "text", "text": "{\n  \"declared\": {\n    \"form\": {}\n  },\n  \"check_empty\": true,\
+[  0.07s] POST#3     client disconnected
+[  0.07s] POST#3     exchange ended

@@ -1,0 +1,36 @@
+B3 b3_ctx client=A4s sdk-postonly config=stateful, SSE
+client saw: prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}}
+stream: POST stream (tools/call response)
+outcome: returned; server: asked; answer POSTed; wall 0.10s
+
+[  0.08s] POST#1  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=no
+[  0.08s] POST#1     body: request initialize id=0 {"protocolVersion": "2025-11-25", "capabilities": {"elicitation": {"form": {}, "url": {}}}, "clientInfo": {"na
+[  0.08s] POST#1  <- 200 content-type='text/event-stream'
+[  0.08s] POST#1     sse: response id=0 result={"protocolVersion": "2025-11-25", "capabilities": {"experimental": {}, "prompts": {"listChanged": false}, "res
+[  0.08s] POST#1     client disconnected
+[  0.08s] POST#1     exchange ended
+[  0.08s] POST#2  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.08s] POST#2     body: notification notifications/initialized id=None {}
+[  0.08s] POST#2  <- 202 content-type='application/json'
+[  0.09s] POST#2     exchange ended
+[  0.09s] POST#3  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.09s] POST#3     body: request tools/call id=1 {"name": "b3_ctx", "arguments": {}, "_meta": {"progressToken": 1}}
+[  0.09s] POST#3  <- 200 content-type='text/event-stream'
+[  0.09s] POST#3     sse: request elicitation/create id=0 {"mode": "form", "message": "Which stage are we in? The coder decides.", "requestedSchema": {"properties": {"s
+[  0.09s] POST#4  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.09s] POST#4     body: response id=0 result={"action": "accept", "content": {"stage": "plan"}}
+[  0.09s] POST#4  <- 202 content-type='application/json'
+[  0.09s] POST#4     exchange ended
+[  0.09s] POST#3     sse: response id=1 result={"content": [{"type": "text", "text": "{\n  \"elicited\": true,\n  \"action\": \"accept\",\n  \"content\": {\n
+[  0.09s] POST#3     client disconnected
+[  0.09s] POST#3     exchange ended
+[  0.10s] POST#5  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.10s] POST#5     body: request tools/list id=2 {}
+[  0.10s] POST#5  <- 200 content-type='text/event-stream'
+[  0.10s] POST#5     sse: response id=2 result={"tools": [{"name": "b1_session", "description": "B1 baseline: ctx.session.elicit_form (no related_request_id)
+[  0.10s] POST#5     client disconnected
+[  0.10s] POST#5     exchange ended
+[  0.10s] DELETE#6 -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.10s] DELETE#6 <- 200 content-type='application/json'
+[  0.10s] DELETE#6    exchange ended
+[  0.10s] sdk     Read stream closed by client

@@ -1,0 +1,58 @@
+mcp SDK 1.30.0
+
+| variant | tool | server config | client | what the client saw | stream the request used | outcome | wall s |
+|---|---|---|---|---|---|---|---|
+| B1 | b1_session | stateful, SSE | A1 sdk-answers | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | GET stream (standalone) | returned (asked; answer POSTed) | 0.1 |
+| B1 | b1_session | stateful, SSE | A2 sdk-silent | prompt shown; no result | GET stream (standalone) | HUNG (client gave up after 3s) (asked; no answer POSTed) | 3.0 |
+| B1 | b1_session | stateful, SSE | A3 sdk-nocap | no prompt; result {"elicited": false, "reason": "client did not declare elicitation"} | none sent | returned (did not ask) | 0.1 |
+| B1 | b1_session | stateful, SSE | A4 raw-postonly | no prompt; no result | none: routed to GET stream, none open, dropped | HUNG (client gave up after 3s) (asked, dropped by SDK) | 3.0 |
+| B1 | b1_session | stateful, SSE | A4s sdk-postonly | no prompt; no result | none: routed to GET stream, none open, dropped | HUNG (client gave up after 3s) (asked, dropped by SDK) | 3.0 |
+| B2 | b2_related | stateful, SSE | A1 sdk-answers | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B2 | b2_related | stateful, SSE | A2 sdk-silent | prompt shown; no result | POST stream (tools/call response) | HUNG (client gave up after 3s) (asked; no answer POSTed) | 3.0 |
+| B2 | b2_related | stateful, SSE | A3 sdk-nocap | no prompt; result {"elicited": false, "reason": "client did not declare elicitation"} | none sent | returned (did not ask) | 0.1 |
+| B2 | b2_related | stateful, SSE | A4 raw-postonly | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B2 | b2_related | stateful, SSE | A4s sdk-postonly | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B2 | b2_related | stateful, SSE | A4q raw-silent | prompt shown; no result | POST stream (tools/call response) | HUNG (client gave up after 3s) (asked; no answer POSTed) | 3.0 |
+| B3 | b3_ctx | stateful, SSE | A1 sdk-answers | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B3 | b3_ctx | stateful, SSE | A2 sdk-silent | prompt shown; no result | POST stream (tools/call response) | HUNG (client gave up after 3s) (asked; no answer POSTed) | 3.0 |
+| B3 | b3_ctx | stateful, SSE | A3 sdk-nocap | no prompt; result {"elicited": false, "reason": "client did not declare elicitation"} | none sent | returned (did not ask) | 0.1 |
+| B3 | b3_ctx | stateful, SSE | A4 raw-postonly | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B3 | b3_ctx | stateful, SSE | A4s sdk-postonly | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B3 | b3_ctx | stateful, SSE | A4q raw-silent | prompt shown; no result | POST stream (tools/call response) | HUNG (client gave up after 3s) (asked; no answer POSTed) | 3.0 |
+| B4 | b1_session | stateless=True | A1 sdk-answers | no prompt; result {"elicited": false, "reason": "client did not declare elicitation"} | none sent | returned (did not ask) | 0.1 |
+| B4 | b1_session | stateless=True | A4 raw-postonly | no prompt; result {"elicited": false, "reason": "client did not declare elicitation"} | none sent | returned (did not ask) | 0.1 |
+| B4 | b1_session | stateless=True, check=False | A1 sdk-answers | no prompt; no result | none: routed to GET stream, none open, dropped | HUNG (client gave up after 3s) (asked, dropped by SDK) | 3.0 |
+| B4 | b1_session | stateless=True, check=False | A4 raw-postonly | no prompt; no result | none: routed to GET stream, none open, dropped | HUNG (client gave up after 3s) (asked, dropped by SDK) | 3.0 |
+| B4 | b2_related | stateless=True, check=False | A1 sdk-answers | prompt shown; no result | POST stream (tools/call response) | HUNG (client gave up after 3s) (asked; answer POSTed) | 3.0 |
+| B4 | b2_related | stateless=True, check=False | A4 raw-postonly | prompt shown; no result | POST stream (tools/call response) | HUNG (client gave up after 3s) (asked; answer POSTed) | 3.0 |
+| B4 | b3_ctx | stateless=True, check=False | A1 sdk-answers | prompt shown; no result | POST stream (tools/call response) | HUNG (client gave up after 3s) (asked; answer POSTed) | 3.0 |
+| B4 | b3_ctx | stateless=True, check=False | A4 raw-postonly | prompt shown; no result | POST stream (tools/call response) | HUNG (client gave up after 3s) (asked; answer POSTed) | 3.0 |
+| B5 | b1_session | json_response=True | A1 sdk-answers | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | GET stream (standalone) | returned (asked; answer POSTed) | 0.1 |
+| B5 | b1_session | json_response=True | A4 raw-postonly | no prompt; no result | none: routed to GET stream, none open, dropped | HUNG (client gave up after 3s) (asked, dropped by SDK) | 3.0 |
+| B5 | b2_related | json_response=True | A1 sdk-answers | no prompt; no result | none: routed to POST stream, JSON mode discards it | HUNG (client gave up after 3s) (asked, discarded by SDK) | 3.0 |
+| B5 | b2_related | json_response=True | A4 raw-postonly | no prompt; no result | none: routed to POST stream, JSON mode discards it | HUNG (client gave up after 3s) (asked, discarded by SDK) | 3.0 |
+| B5 | b3_ctx | json_response=True | A1 sdk-answers | no prompt; no result | none: routed to POST stream, JSON mode discards it | HUNG (client gave up after 3s) (asked, discarded by SDK) | 3.0 |
+| B5 | b3_ctx | json_response=True | A4 raw-postonly | no prompt; no result | none: routed to POST stream, JSON mode discards it | HUNG (client gave up after 3s) (asked, discarded by SDK) | 3.0 |
+| B6 | b6_url | stateful, SSE | A1 sdk-answers | prompt shown; result {"elicited": true, "action": "accept"} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B6 | b6_url | stateful, SSE | A3 sdk-nocap | no prompt; result {"elicited": false, "reason": "client did not declare elicitation"} | none sent | returned (did not ask) | 0.1 |
+| B6 | b6_url | stateful, SSE | A4 raw-postonly | prompt shown; result {"elicited": true, "action": "accept"} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B7 | b7_after_ctx | stateful, SSE | A1 sdk-answers | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B7 | b7_after_ctx | stateful, SSE | A4 raw-postonly | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B7 | b7_after_session | stateful, SSE | A1 sdk-answers | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | GET stream (standalone) | returned (asked; answer POSTed) | 0.1 |
+| B7 | b7_after_session | stateful, SSE | A4 raw-postonly | no prompt; no result | none: routed to GET stream, none open, dropped | HUNG (client gave up after 3s) (asked, dropped by SDK) | 3.0 |
+| B8 | b8_caps | stateful, SSE | A1 sdk-answers | result {"declared": {"form": {}, "url": {}}, "check_empty": true, "check_form": true, "check_url": true, "form_by_spe | none sent | returned (did not ask) | 0.1 |
+| B8 | b8_caps | stateful, SSE | A3 sdk-nocap | result {"declared": null, "check_empty": false, "check_form": false, "check_url": false, "form_by_spec": false} | none sent | returned (did not ask) | 0.1 |
+| B8 | b8_caps | stateful, SSE | R none | result {"declared": null, "check_empty": false, "check_form": false, "check_url": false, "form_by_spec": false} | none sent | returned (did not ask) | 0.1 |
+| B8 | b8_caps | stateful, SSE | R {elicitation:{}} | result {"declared": {}, "check_empty": true, "check_form": true, "check_url": true, "form_by_spec": true} | none sent | returned (did not ask) | 0.1 |
+| B8 | b8_caps | stateful, SSE | R {form:{}} | result {"declared": {"form": {}}, "check_empty": true, "check_form": true, "check_url": true, "form_by_spec": true} | none sent | returned (did not ask) | 0.1 |
+| B8 | b8_caps | stateful, SSE | R {url:{}} | result {"declared": {"url": {}}, "check_empty": true, "check_form": true, "check_url": true, "form_by_spec": false} | none sent | returned (did not ask) | 0.1 |
+| B8 | b8_nocheck | stateful, SSE | A3 sdk-nocap | no prompt; result {"elicited": false, "mcp_error": "-32600: Elicitation not supported"} | POST stream (tools/call response) | returned (asked; no answer POSTed) | 0.1 |
+| B8 | b8_nocheck | stateful, SSE | A1 sdk-answers | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B8 | b8_nocheck | stateful, SSE | A4 raw-postonly | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B9 | b9_timeout_session | stateful, SSE | A1 sdk-answers | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | GET stream (standalone) | returned (asked; answer POSTed) | 0.1 |
+| B9 | b9_timeout_session | stateful, SSE | A4q raw-silent | no prompt; result {"elicited": false, "reason": "no answer in 3 s", "assistant_instruction": "Ask the coder which stage in chat, | none: routed to GET stream, none open, dropped | returned (asked, dropped by SDK) | 3.1 |
+| B9 | b9_timeout_ctx | stateful, SSE | A1 sdk-answers | prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}} | POST stream (tools/call response) | returned (asked; answer POSTed) | 0.1 |
+| B9 | b9_timeout_ctx | stateful, SSE | A4q raw-silent | prompt shown; result {"elicited": false, "reason": "no answer in 3 s", "assistant_instruction": "Ask the coder which stage in chat, | POST stream (tools/call response) | returned (asked; no answer POSTed) | 3.1 |
+| B10 | b10_flow | stateful, SSE | A3 sdk-nocap | result {"preview_applied": false, "apply": true, "replay": false, "instruct": true} | none sent | returned (did not ask) | 0.1 |
+| B11 | tools/list | stateful, SSE | A3 sdk-nocap | 13 tools; annotations: b10_preview={'readOnlyHint': True, 'destructiveHint': False, 'idempotentHint': True}; b10_apply={'readOnlyHint': False, 'destructiveHint': True, 'idempotentHint': False}; b10_instruct={'readOnlyHint': True} | none sent | returned (did not ask) | 0.1 |
+| B11 | tools/list | stateful, SSE | A4 raw-postonly | 13 tools; annotations: b10_preview={'readOnlyHint': True, 'destructiveHint': False, 'idempotentHint': True}; b10_apply={'readOnlyHint': False, 'destructiveHint': True, 'idempotentHint': False}; b10_instruct={'readOnlyHint': True} | none sent | returned (did not ask) | 0.1 |
