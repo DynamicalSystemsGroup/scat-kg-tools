@@ -11,6 +11,78 @@ Coding means linking the nodes a narrative names and recording the edges it tell
 
 A **narrative** is one account drawn from your field notes, kept on one page. Coding is the step where that account becomes part of the knowledge graph. You write the account, link each group, concern, affordance or technology where the account names it, and add one row to the page's `Edges told` table for each edge the account tells. The tool checks the result and tells you in plain words what still disagrees. Nothing is copied to a second page: you code in the same page you wrote the account in. The [home page](index.md) defines the four kinds of node, and the [terms](reference/terms.md) page defines every other word used here.
 
+## What this path needs
+
+Coding by hand needs only these, in any setup:
+
+- A vault folder from the template, set up as in [Getting started](getting-started.md), with `uv sync` already run.
+- A Markdown editor that opens the vault folder and shows `[[links]]` and page properties. Any editor that does this works; Obsidian is the worked example below, and the index pages are Obsidian Bases, so they show only there.
+- A terminal in the vault folder, to run the check.
+- A narrative: your account of one session, on a page in `narrative/`.
+
+There is no account, key, server or assistant. You write every word, and the tool checks the result.
+
+## Worked example: Obsidian
+
+The example codes one narrative in the template vault, `groups-under-a-cap-pitch`: it adds one link and one row to the `Edges told` table, then runs the check until the tool says there is no problem. The same four steps of the [coding loop](#the-coding-loop) apply on every narrative.
+
+1. **In Obsidian:** open the vault folder as a vault (Manage vaults, then Open next to Open folder as vault), and see the folders `affordance`, `concern`, `group`, `index`, `narrative` and `technology` in the left pane.
+
+2. **In Obsidian:** open `narrative/groups-under-a-cap-pitch` and read it, so that you have the account and the two rows of its `Edges told` table in front of you.
+
+3. **In Obsidian:** change the `status` property from `done` to `draft`, so that you can edit a finished narrative; the check runs on it again when you set `done` at the end.
+
+4. **In Obsidian:** link a node where the account names it, by adding a line to the account that links the group `project-leads`:
+
+    ```text
+    - [[project-leads|Project leads]] set the cap, so that no group stands for one identifiable person.
+    ```
+
+    The page now links a node page where its account names one.
+
+5. **In Obsidian:** add one row at the foot of the `Edges told` table, so that the account tells that this group holds a concern:
+
+    ```text
+    | [[project-leads]] | holds | [[anonymity]] | They set the cap so that no group stands for one identifiable person. |
+    ```
+
+6. **In a terminal:** in the vault folder, run `uv run scat check groups-under-a-cap-pitch` and read what it says. A misspelt link is named with the line to change. A link written `[[projct-leads]]` produces this output:
+
+    ```text
+    attribution mode: disallowed
+    warning [SCAT-DRAFT-END-NOPAGE] narrative/groups-under-a-cap-pitch.md:24:3 row 3 cell `from`: [[projct-leads]] does not reach a page (no page is named projct-leads)
+      Fix, choose one:
+        1. replace `[[projct-leads]]` with `[[project-leads]]`
+        2. delete the row
+      (the vault is at its cap of 3 groups, so a new group page would break SCAT-CAP; choose an existing group)
+    0 errors, 1 warning
+    ```
+
+    Correct the link in Obsidian and run the check again until it reads `no problems`.
+
+7. **In a terminal:** start `uv run python`, then type the lines below, and see the same text the command printed:
+
+    ```python
+    import scat_kg
+    print(scat_kg.check("groups-under-a-cap-pitch"))
+    ```
+
+    ```text
+    attribution mode: disallowed
+    no problems
+    ```
+
+8. **In Obsidian:** confirm that the account still matches your notes and that the row is a correct use of SCAT, then change `status` back to `done`.
+
+9. **In a terminal:** run `uv run scat check` for the whole vault, and see a conformant result:
+
+    ```text
+    attribution mode: disallowed
+    no problems
+    ```
+
+The rest of this page is the reference for every step above: what the pages are, the loop, and each operation.
+
 ## Before you start
 
 - A vault set up as in [Getting started](getting-started.md): the folder holds `scat.toml`, you are inside it in Terminal, and `uv sync` has run.
@@ -115,7 +187,7 @@ warning [SCAT-UNCODED] narrative/saturday-at-the-tool-library.md body: the narra
 
 ### 2. Write the account
 
-Open the page in Obsidian and write the account under the front matter, as it was told. Set `kind` to `scenario` (a story of people doing things over time) or `architecture` (how parts fit into tools), set `timeframe` to `past`, `future` or `mixed` (see [past or future](facilitate-scenarios.md#past-or-future-one-at-a-time)), and change `status` to `draft`. The `description` can wait. The links come next.
+Open the page in Obsidian and write the account under the front matter, as it was told. Set `kind` to `scenario` (a story of people doing things over time) or `architecture` (how parts fit into tools), set `timeframe` to `past`, `future` or `mixed` (see [past or future](facilitate-timeframe.md)), and change `status` to `draft`. The `description` can wait. The links come next.
 
 ```text
 ---
