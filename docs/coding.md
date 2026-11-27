@@ -53,8 +53,8 @@ The example codes one narrative in the template vault, `groups-under-a-cap-pitch
     warning [SCAT-DRAFT-END-NOPAGE] narrative/groups-under-a-cap-pitch.md:23:3 row 3 cell `from`: [[workshop-participnts]] does not reach a page (no page is named workshop-participnts)
       Fix, choose one:
         1. replace `[[workshop-participnts]]` with `[[workshop-participants]]`
-        2. delete the row
-      (the vault is at its cap of 3 groups, so a new group page would break SCAT-CAP; choose an existing group)
+        2. run `scat stub workshop-participnts --type group` (REPL: `scat_kg.stub("workshop-participnts", type="group")`) to create a group page
+        3. delete the row
     0 errors, 1 warning
     ```
 
