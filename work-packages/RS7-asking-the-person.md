@@ -34,7 +34,8 @@ answers questions; it builds nothing that ships.
 
 ## Open decisions
 
-None open. O1 (client trials) decided: trials in Claude and inference.coop are included (log D-182).
+None. Every item was resolved through the decision loop: O1 (client trials) decided, included (D-182); the Agent's
+defaults approved (D-184). Counts: decided 2, deferred 0, raised 0.
 
 ## Deliverables
 

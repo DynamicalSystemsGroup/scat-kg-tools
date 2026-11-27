@@ -3124,3 +3124,9 @@ docs. Neither gets an end-to-end walkthrough: each page describes our side of th
 interface contracts our tool uses) with enough instruction to use our tools, and the user configures their IDE, or
 their local LLM with Open WebUI, themselves. Full walkthroughs stay for the chat paths, the current focus. Recorded
 as candidate C18 until a docs package is scoped.
+
+## D-184 | 2026-11-27 | RS7's defaults approved
+
+Asked to approve RS7's three defaults (readout at most about 2,000 words; local experiments on the RS5 spike server;
+client trials reuse RS5's setup with the ACE as coder), the chief engineer said (typed by the agent): "Defaults
+approved". RS7 has no open items; it awaits approval of the scope.
