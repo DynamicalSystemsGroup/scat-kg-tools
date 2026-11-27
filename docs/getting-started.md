@@ -9,6 +9,7 @@
 - Terminal. Open it from Applications, then Utilities. Type every command below in Terminal, one at a time, and press
   Return after each.
 - [Obsidian](https://obsidian.md), the app you will read the vault in. It is free to install.
+- To code in a chat window instead of Terminal, make the repository as step 1 shows, then follow the [chat path](chat-path.md).
 
 SCAT stands for Stakeholder groups, Concerns, Affordances and Technologies: the four kinds of thing your notes are coded into. If you have not read what that means, start at the [home page](index.md).
 

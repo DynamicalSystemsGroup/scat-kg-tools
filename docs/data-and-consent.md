@@ -79,3 +79,5 @@ One question for each choice above, to tick when it is documented.
 - [ ] Under what licence is anything published?
 - [ ] Who holds the rights to each kind of material?
 - [ ] How are commitments to participants followed through?
+
+Keep your answers with the consent records, outside the vault.

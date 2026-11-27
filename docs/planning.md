@@ -64,7 +64,7 @@ Give each kind of session its own block, and past and future separate blocks wit
 
 ## State the participation terms, aloud and on the page
 
-Frame every session under the participation terms agreed for the event: say them at the start, and write them on the page the notes go on. What you say follows from the attribution mode. The worked example's mode is `disallowed`, the Chatham House rule, so its script reads like this; yours says what you agreed:
+Frame every session under the participation terms agreed for the event: say them at the start, and write them on the page the notes go on. What you say follows from the attribution mode, and from your AI answer: if an assistant will read the notes, tell people so. The worked example's mode is `disallowed`, the Chatham House rule, so its script reads like this; yours says what you agreed:
 
 ```text
 Whatever is said here can be used. Nobody is named, and
