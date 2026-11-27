@@ -20,6 +20,11 @@ PLACES = (
     "In Tailscale",
     "In a terminal",
     "In any app",
+    "In Claude",
+    "In Codex",
+    "In Open WebUI",
+    "In Docker",
+    "In an editor",
 )
 STEP = re.compile(r"^\s*\d+\. (.*)$")
 # One place per step (D-119: a step names where it is done and one outcome).

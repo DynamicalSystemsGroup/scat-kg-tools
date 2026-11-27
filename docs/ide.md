@@ -1,3 +1,7 @@
+---
+provider: Codex
+---
+
 # The IDE path
 
 !!! tip "Your next step"

@@ -331,5 +331,5 @@ Set up? Then pick where to go next:
 
 - [The solo trial](#the-solo-trial): code one narrative of your own, start to finish, in one sitting.
 - [Planning](planning.md): decide your sessions, your groups and your framing, before the event.
-- [Coding](coding.md): when you already have field notes.
+- [Coding paths](coding-paths.md): when you already have field notes, by hand or with an assistant.
 - [Home](index.md): what SCAT is and why it has its name.
