@@ -64,5 +64,5 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **skill**: a package of instructions an assistant loads, in the chat or the IDE.
 - **saved agent**: the chat's saved assistant setup, from which a new chat starts.
 - **session key**: the key the coder pastes into the chat for one session; deleted at Stop.
-- **leave no trace**: the strict data-policy option: the chat's copies removed at the end, local copies kept.
+- **leave no trace**: the strict data-policy choice: the chat's copies removed at the end, local copies kept.
 - **range vault**: a vault that rebuilds a published case with groups, not named people, to test the tools; not field data.

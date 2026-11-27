@@ -538,7 +538,7 @@ ones are cut with "...".
 
 | SCAT Chat says | Do this |
 |---|---|
-| "SCAT Chat needs a container runtime: Colima (recommended) or Docker Desktop. Neither is installed. ..." | Install Colima as shown under "Install once" (or install Docker Desktop). If it says so although one is installed, tell the person who set this up. Then choose **Stop** in the SCAT Chat menu, then open SCAT Chat again. |
+| "SCAT Chat needs a container runtime: Colima or Docker Desktop. Neither is installed. ..." | Install Colima as shown under "Install once" (or install Docker Desktop). If it says so although one is installed, tell the person who set this up. Then choose **Stop** in the SCAT Chat menu, then open SCAT Chat again. |
 | "Colima would not start. Restart your Mac, then choose Stop in the SCAT Chat menu, then open SCAT Chat again. ..." | Do that. If it still fails, tell the person who set this up that Colima's start failed. |
 | "Docker Desktop is not running. Open Docker Desktop from your Applications folder, wait until it says it is running, ..." | You use Docker Desktop. Do that, then choose **Stop** in the SCAT Chat menu, then open SCAT Chat again. |
 | "Docker does not answer. Restart your Mac, then choose Stop in the SCAT Chat menu, then open SCAT Chat again." | Do that. |

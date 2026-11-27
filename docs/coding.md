@@ -32,10 +32,10 @@ The example codes one narrative in the template vault, `groups-under-a-cap-pitch
 
 3. **In Obsidian:** change the `status` property from `done` to `draft`, so that you can edit a finished narrative; the check runs on it again when you set `done` at the end.
 
-4. **In Obsidian:** link a node where the account names it. In the last bullet of the account, the one that begins "Reason given in the record", turn the words "the people in the data" into a link to the group `workshop-participants`:
+4. **In Obsidian:** link a node where the account names it. In the last bullet of the account, the one that begins "Reason given", turn the words "the people in the data" into a link to the group `workshop-participants`:
 
     ```text
-    - Reason given in the record: [[workshop-participants|the people in the data]] are groups under the Chatham House rule, so [[anonymity|no individual is identifiable]].
+    - Reason given: [[workshop-participants|the people in the data]] are groups under the Chatham House rule, so [[anonymity|no individual is identifiable]].
     ```
 
     The account now links a group where it names one.

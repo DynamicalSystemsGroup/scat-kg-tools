@@ -84,7 +84,7 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 34. **In the chat:** upload your field notes as one collection, if the chat offers collections. If it does not, skip
     this step and attach the notes to the temporary chat when you start coding instead. (Look for a
     file or knowledge area where you can group files under one name.)
-35. **In the chat:** turn on the Temporary Chat setting (look for the control; its shortcut may be Cmd-Shift-Y).
+35. **In the chat:** turn on the Temporary Chat setting (look for the control).
 36. **In the chat:** check that its note says the chat will not appear in your history and will be deleted
     automatically.
 37. **In the chat:** open the Agent Builder and use its **Select** control to pick the agent; a new chat starts with it.

@@ -37,4 +37,16 @@ messages, `skills/`, every command's `--help`. Marked keeps live in the test's `
 
 ## Record
 
-(Filled in as the sweep runs: pattern, hits found, fixed, kept with reason.)
+Run 1 (units U1 to U5, `dev` 932d3fb). Each unit read every page in its zone in full, not only the pattern hits.
+
+| Zone | Hits found | Fixed | Kept, with reason |
+|---|---|---|---|
+| `docs/chat-path.md`, `docs/leave-no-trace.md` | 21 (P2, P5: warning boxes, "untested alternative", "lab run" x2, "first run is the real test", "one option") | all: boxes became "If a step fails"; one Docker Desktop line; status removed | none |
+| Other `docs/` pages and `contracts/architecture.md` (symlinked as `docs/architecture.md`) | P4 21 (work-package, log and role names in the architecture page), P2 1, P5 3 ("stand-in for one person" in a script: another sense, reworded) | all; the architecture page's "Needed by" column and status words removed | "in one sitting" (ordinary English, not a test sitting) |
+| Template example narratives, `docs/reference/api.md`, `cli.md` samples | 9 notes and source lines quoting "(D-nnn)" or "the decision log"; "Reason given in the record" | all; edges unchanged | none |
+| `deploy/`, `skills/`, `contracts/assistant.md`, `src/scat_kg/` strings | 14 (launcher comments and dialog "recommended", test-override notes, `deploy/README.md` status list, WP and D numbers in code comments) | all; the status list removed | the assistant's rule keywords (P1) in `assistant.md` and `SKILL.md`; the mode rule in `checks/attribution.py`; "option" in fix messages (ordinary use) |
+| CLI `--help` (25 commands) | 0 | none needed | none |
+
+Not changed, with reason: the check, fix and operation messages (about 150 strings) and the MCP tool descriptions read
+plainly and are pinned by tests; the `--json` help line "(machine-interface contract)" and the footer "REPL" are
+pinned by the CLI reference's exact help output and by about 10 tests (a later finding if a tester trips on them).

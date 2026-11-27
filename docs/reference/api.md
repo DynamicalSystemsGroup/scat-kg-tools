@@ -1130,7 +1130,7 @@ Returns everything the vault says of one node page: the narratives that link it,
             - [[groups-clustered-under-a-cap|The vault holds groups]], and [[cap-setting|an instance setting]] caps their number.
             - The cap is set for each vault, in the vault's own configuration. The example vault sets it to 3.
             - A group is named by its role. No group stands for one identifiable person.
-            - >>Reason given in the record: the people in the data are groups under the Chatham House rule, so [[anonymity|no individual is identifiable]].<<
+            - >>Reason given: the people in the data are groups under the Chatham House rule, so [[anonymity|no individual is identifiable]].<<
         notes-at-a-chatham-house-session [done, scenario, mixed]
           line 12
             - [[workshop-participants|Workshop participants]] tell stories in conversations. The work is sized for manual note-taking in Obsidian.
