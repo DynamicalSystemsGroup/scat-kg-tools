@@ -18,7 +18,7 @@ Material: lab only. Template `scat-kg-template` cloned at the commit pinned in `
 | 8 `status` back to done | script edit | file changed |
 | 9 `uv run scat check` whole vault | yes | `no problems`, exit 0 |
 
-Steps 1 to 5 and 8 on the page are therefore written from the file-level result of the same edits, not from clicks in Obsidian. The menu names in step 1 (Manage vaults, Open folder as vault) are from Obsidian's menus as known, not seen on this machine.
+Steps 1 to 5 and 8 on the page are therefore written from the file-level result of the same edits, not from clicks in Obsidian. The menu names in step 1 follow help.obsidian.md/manage-vaults and were not seen on this machine.
 
 ## Why Obsidian steps were not run
 

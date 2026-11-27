@@ -26,7 +26,7 @@ There is no account, key, server or assistant. You write every word, and the too
 
 The example codes one narrative in the template vault, `groups-under-a-cap-pitch`: it adds one link and one row to the `Edges told` table, then runs the check until the tool says there is no problem. The same four steps of the [coding loop](#the-coding-loop) apply on every narrative.
 
-1. **In Obsidian:** open the vault folder as a vault (Manage vaults, then Open folder as vault), and see the folders `affordance`, `concern`, `group`, `index`, `narrative` and `technology` in the left pane.
+1. **In Obsidian:** open the vault folder as a vault (Manage vaults, then Open next to Open folder as vault), and see the folders `affordance`, `concern`, `group`, `index`, `narrative` and `technology` in the left pane.
 2. **In Obsidian:** open `narrative/groups-under-a-cap-pitch` and read it, so that you have the account and the two rows of its `Edges told` table in front of you.
 3. **In Obsidian:** change the `status` property from `done` to `draft`, so that you can edit a finished narrative; the check runs on it again when you set `done` at the end.
 4. **In Obsidian:** link a node where the account names it, by adding a line to the account that links the group `project-leads`:
@@ -36,13 +36,14 @@ The example codes one narrative in the template vault, `groups-under-a-cap-pitch
     ```
 
     The page now links a node page where its account names one.
+
 5. **In Obsidian:** add one row at the foot of the `Edges told` table, so that the account tells that this group holds a concern:
 
     ```text
     | [[project-leads]] | holds | [[anonymity]] | They set the cap so that no group stands for one identifiable person. |
     ```
 
-6. **In a terminal:** in the vault folder, run `uv run scat check groups-under-a-cap-pitch` and read what it says. A misspelt link is named with the line to change. This is what it printed for `[[projct-leads]]`:
+6. **In a terminal:** in the vault folder, run `uv run scat check groups-under-a-cap-pitch` and read what it says. A misspelt link is named with the line to change. A link written `[[projct-leads]]` produces this output:
 
     ```text
     attribution mode: disallowed
