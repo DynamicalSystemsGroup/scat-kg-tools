@@ -2888,3 +2888,14 @@ Outcome: the breakdown becomes WP27 (settings, cap 6), WP28 (drawings), RS5 (res
 machines and how the server can carry and enforce stage), WP29 (design: the formal model and its concrete instance,
 locked by his approval), WP30 (implementation: the server and skills organised and constrained by stage), WP31 (the
 assistant's habits and the probes), in a chain RS5 → WP29 → WP30 → WP31. Scope approval is recorded as D-163.
+
+## D-163 | 2026-11-27 | WP27, WP28, RS5, WP29, WP30 and WP31 approved; the agent's defaults approved
+
+The chief engineer reviewed the scopes in chat (the walkthrough of each; the trace definition is MISSION G12; the stage
+model is a small state machine, D-162; RS5 tries his per-stage-servers option). The open items were run through the
+decision loop: WP31's pass bar, his answer (typed by the agent) "both must pass. keep in mind that where we're using
+chat apps the ACE is roleplaying as me so you can make decisions that in live runs only human coder can make"; the
+breakdown, "this list is correct but make sure 30 is dependent on 29 ..."; the agent's defaults across the six scopes,
+"Defaults approved"; and the scopes, "Approve all six", with autonomous execution of WP27, WP28 and RS5 now and the
+account-bound trials (WP28-R5, RS5's client trials) held for his return. Revert point `divergence/D-163`. The chain is
+RS5 → WP29 (locked by his separate approval) → WP30 → WP31; WP30 also follows WP28.

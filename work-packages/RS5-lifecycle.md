@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | DRAFT. Approval: the chief engineer's word in chat, recorded verbatim in `decisions/log.md` (D-163, with WP27 to WP31). Rests on D-157 and D-162. Feeds WP29. |
+| **Status** | Approved by the chief engineer (log D-163).md` (D-163, with WP27 to WP31). Rests on D-157 and D-162. Feeds WP29. |
 | **Branch** | `spike/lifecycle` off `dev`; never merged into `dev`. The readout is merged into `dev` on its own. |
 | **Revert point** | `divergence/D-163` (shared) |
 
