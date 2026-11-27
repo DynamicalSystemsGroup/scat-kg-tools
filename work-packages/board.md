@@ -32,6 +32,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | all units done; merged into `dev`; waiting on the ACE's acceptance and the chief engineer's sitting | `WP22.md` |
 | WP23 | Three disjoint attribution modes, and the edge's formal name (D-129) | all units done on `pm-wp23`; landing on `dev` with the template pin; waiting on the ACE's acceptance | `WP23.md` |
 | WP24 | Node-page help and merge (D-145) | all units done on `pm-wp24`, tier 1 green (3165 passed); pushed to `dev`; waiting on the ACE's acceptance and three rulings from the re-sweep | `WP24.md` |
+| WP25 | Coding paths, facilitating and planning (D-149) | U1 spike in flight; U2 onward waits on the ACE's decision on the readout and on WP24 landing on `dev` | `WP25.md` |
 
 ## Units
 
@@ -347,6 +348,28 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP24-U9 | simulated users (3 Haiku, 1 Sonnet control; G6), haiku | 2 | 3 | `wp24/u9` | done |  | 2026-11-26T19:37:51-05:00 | four testers (3 Haiku, 1 Sonnet control) on three modes; reports returned as text, PM wrote the findings record |
 | WP24-U9r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T19:37:51-05:00 | no separate reviewer agent ran: the PM did the void check from the returned reports (recorded in the findings file) |
 | WP24-U10 | change consultant (S1 re-sweep, counts and greps), haiku | 1 | 2 | `wp24/u10` | done |  | 2026-11-26T19:37:51-05:00 | clock fix and re-sweep; the sweep found six items, three for the ACE |
+| WP25-U1 | research engineer (spike: local LLM path, Claude and Codex MCP set-up), sonnet | 3 |  | `wp25/u1` | in flight |  |  |  |
+| WP25-U1r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U1 done |  |  |
+| WP25-U2 | Python developer and technical writer (nav, coding-paths.md overview, docs tests: nav, provider field, alt text, word budget), sonnet | 3 |  | `wp25/u2` | queued | the ACE's logged decision on the U1 readout; WP24 landed on dev |  |  |
+| WP25-U2r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U2 done |  |  |
+| WP25-U3 | technical writer (by-hand path front in coding.md), sonnet | 2 |  | `wp25/u3` | queued | U2; WP24 landed (shares coding.md) |  |  |
+| WP25-U3r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U3 done |  |  |
+| WP25-U4 | technical writer (docs/local-llm.md), sonnet | 3 |  | `wp25/u4` | queued | U2; the ACE's decision on U1 |  |  |
+| WP25-U4r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U4 done |  |  |
+| WP25-U5 | technical writer (chatbot path, Claude, in chat-path.md; Docker Desktop box untouched), sonnet | 3 |  | `wp25/u5` | queued | U2 |  |  |
+| WP25-U5r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U5 done |  |  |
+| WP25-U6 | technical writer and developer (IDE path, Codex, ide.md; template AGENTS.md on wp25/template), sonnet | 3 |  | `wp25/u6`, `wp25/template` | queued | U2 |  |  |
+| WP25-U6r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U6 done |  |  |
+| WP25-U7 | technical writer (leave no trace as the chatbot path's option, leave-no-trace.md), sonnet | 2 |  | `wp25/u7` | queued | U2 |  |  |
+| WP25-U7r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U7 done |  |  |
+| WP25-U8 | technical writer (narratives.md, facilitate-timeframe.md, facilitating nav and pages), sonnet | 3 |  | `wp25/u8` | queued | WP24 landed on dev |  |  |
+| WP25-U8r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U8 done |  |  |
+| WP25-U9 | technical writer (planning.md by event kind, 1,500-word budget), sonnet | 3 |  | `wp25/u9` | queued | WP24 landed on dev |  |  |
+| WP25-U9r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U9 done |  |  |
+| WP25-U10 | chief engineer's sitting with the ACE (Claude, Codex, inference.coop walkthrough runs, screenshots, run records), ACE | 3 |  | `-` | queued | the chief engineer's sitting; U5, U6, U7 written first |  |  |
+| WP25-U11 | simulated user (cold reader, no accounts), haiku | 2 |  | `wp25/u11` | queued | U3 to U9 |  |  |
+| WP25-U11r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U11 done |  |  |
+| WP25-U12 | change consultant (S1 to S3 re-sweep, counts and greps), haiku | 1 |  | `wp25/u12` | queued | U10, U11 |  |  |
 
 ## Iterations and velocity
 
