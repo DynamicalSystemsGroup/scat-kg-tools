@@ -206,7 +206,7 @@ To see a problem with a fix a program can apply, change `[[cap-setting]]` to `[[
                 "action": "delete-line",
                 "file": "narrative/groups-under-a-cap-pitch.md",
                 "line": 22,
-                "find": "| [[groups-clustered-under-a-cap]] | is provided by | [[cap-settin]] | The cap setting is what fixes the number of groups. The cap is a per-instance parameter (D-020); the example vault sets it to 3. |"
+                "find": "| [[groups-clustered-under-a-cap]] | is provided by | [[cap-settin]] | The cap setting is what fixes the number of groups. The cap is a per-instance parameter; the example vault sets it to 3. |"
               }
             ]
           }
@@ -682,7 +682,7 @@ The returned plan has `node`, `node_type` and `pages` (each with `file`, `name`,
     ```text
     split plan for `project-leads` (group): 2 pages, 3 links, 1 row to re-link; nothing is written
       narrative/false-start-and-clean-restart.md (narrative, done): links at line 13, 28
-        row 1, line 28: | [[project-leads]] | holds | [[intent-without-drift]] | The log gives these as the concerns of the false-start story, which it places with project leads (D-020). |
+        row 1, line 28: | [[project-leads]] | holds | [[intent-without-drift]] | The project leads hold these as the concerns of the false-start story. |
       narrative/two-branches-and-tags-pitch.md (narrative, done): links at line 13
     note: you assign each narrative to `project-leads` or to a new page: make the new page with `scat stub <name> --type group`, then edit each link and row by hand
     note: narratives that are `done` are yours to reopen before you edit them: false-start-and-clean-restart, two-branches-and-tags-pitch
@@ -1140,7 +1140,7 @@ Returns everything the vault says of one node page: the narratives that link it,
             - >>[[attribution|Attribution]] and [[anonymity]] conflict as concerns, and the vault records that as a remark on one of them.<<
       edges
         holds: facilitator-analysts -> anonymity [done; told by notes-at-a-chatham-house-session]
-            notes-at-a-chatham-house-session: They take the field notes under the Chatham House rule, so no individual is identifiable (D-010).
+            notes-at-a-chatham-house-session: They take the field notes under the Chatham House rule, so no individual is identifiable.
         addressed-by: anonymity -> groups-clustered-under-a-cap [done; told by groups-under-a-cap-pitch, notes-at-a-chatham-house-session]
             groups-under-a-cap-pitch: Participants appear only as groups, so no group stands for one identifiable person.
             notes-at-a-chatham-house-session: The mission says the people in the data are groups under the Chatham House rule, so no individual is identifiable.
