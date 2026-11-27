@@ -75,9 +75,11 @@ draw.fingerprint("groups-under-a-cap-pitch").save("fingerprint.png")
 draw.layered().save("layered.png")
 ```
 
+A drawing is made from a view's result. To have the picture and the table from one query, run the view once and draw that result: `draw.render(scat_kg.layered())`.
+
 Every drawing labels its columns stakeholder, concern, affordance and technology, in that order. A fingerprint drawing follows its narrative's kind and leaves out one column (see Fingerprint above); the layered and trace drawings mix narratives and keep all four. SVG and PNG are the same drawing in two formats.
 
-In chat, the tools `draw_fingerprint`, `draw_layered` and `draw_trace` return the same drawings. Ask for one by naming the view and what it shows, for example "draw the fingerprint of groups-under-a-cap-pitch". The drawing comes back in the chat and is not saved in your vault. If your chat does not show the image, ask for it again as `svg`, which returns the drawing as text, or save the picture from Terminal with `uv run scat draw fingerprint --out fingerprint.png NARRATIVE`, or from the notebook. A name the vault does not have, or an error in the pages drawn, comes back as the same refusal the CLI gives, with what to do.
+In chat, the tools `fingerprint`, `layered` and `trace` each take `output`: `table` (the default), `plot` or `both`. A plot comes as `png` (the default) or, with `format`, as `svg`. One call asks the vault one question and returns the picture, the table or both, and they always agree. In `both`, the picture comes first, then the table. Ask for one by naming the view and what it shows, for example "plot the fingerprint of groups-under-a-cap-pitch". A plot of a fingerprint needs the name of one narrative. The picture comes back in the chat and is not saved in your vault. If your chat does not show the image, ask for `format` svg, which returns the plot as text, or for the table, or save the picture from Terminal with `uv run scat draw fingerprint --out fingerprint.png NARRATIVE`, or from the notebook. A name the vault does not have, or an error in the pages drawn, comes back as the same refusal the CLI gives, with what to do.
 
 ## Where next
 
