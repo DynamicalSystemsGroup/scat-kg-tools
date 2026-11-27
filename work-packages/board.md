@@ -377,6 +377,14 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP25-U11 | simulated user (cold reader, no accounts), haiku | 2 | 3 | `wp25/u11` | done |  | 2026-11-26T22:49:00-05:00 | three Haiku cold readers (by hand run, local-LLM read-through, account-bound read-through); findings record; four fix rounds |
 | WP25-U11r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T22:49:00-05:00 | one fresh review of the fix round, which found five more items |
 | WP25-U12 | change consultant (S1 to S3 re-sweep, counts and greps), haiku | 1 | 1 | `wp25/u12` | done |  | 2026-11-26T22:49:00-05:00 | change-consultant sweep S1 to S3 and link checks; found stale acceptance names and two mission lines for the ACE |
+| RS5-U1 | research engineer (state-machine literature, G1), sonnet | 5 | 5 | `spike/lifecycle-u1` | done |  | 2026-11-27 | as estimated; tests re-run by the PM |
+| RS5-U2 | research engineer (our instance's raw material and predicates, G2 and G5), sonnet | 5 | 5 | `spike/lifecycle-u2` | done |  | 2026-11-27 | as estimated; tests re-run by the PM |
+| RS5-U3 | Python developer (single stage-scoped throwaway server, G3 and G4), sonnet | 8 | 8 | `spike/lifecycle-u3` | done |  | 2026-11-27 | as estimated; tests re-run by the PM |
+| RS5-U4 | Python developer (router of per-stage servers, R3b), sonnet | 5 | 5 | `spike/lifecycle-u4` | done |  | 2026-11-27 | as estimated; tests re-run by the PM |
+| RS5-U5 | research engineer (client documentation: list-changed, headers, elicitation), sonnet | 3 | 3 | `spike/lifecycle-u5` | done |  | 2026-11-27 | as estimated; tests re-run by the PM |
+| RS5-U6 | technical writer (client trial plan for the ACE), sonnet | 2 |  | `spike/lifecycle` | in flight |  |  |  |
+| RS5-U7 | technical writer (readout), sonnet | 5 |  | `spike/lifecycle` | in flight |  |  |  |
+| RS5-U8 | reviewer (fresh, readout), sonnet | 2 |  | `-` | queued | RS5-U7 |  |  |
 
 ## Iterations and velocity
 

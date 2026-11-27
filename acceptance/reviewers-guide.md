@@ -567,9 +567,8 @@ live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
     uv gap is closed separately, D-112); the chat testers ran a pages-and-files pass for J1 to J4 and J6; the GitHub
     steps of J2 were not reached. Round 1's two blocking findings are fixed (the template's tools pin; a pointer to
     the chat path from `getting-started`).
-34. **"Install once" on the chat path uses Terminal (D-155).** The pages say the person who sets up does it, and the
-    mission says the organiser must not be required to open a terminal on that path. Flagged by the ACE for your
-    walkthrough. **Your answer:** accept the page's reading, or change one of the two.
+34. **"Install once" on the chat path uses Terminal (D-155), answered (D-164).** It is the setup person's job; one-time
+    Terminal use at setup is tolerated for v0.1, not wanted; a terminal-free install is candidate C16.
 35. **The duplicate-finding thresholds rest on one seeded positive each (D-147).** This is item 26's last point, kept
     here because the docs do not say it (D-146): the thresholds are code defaults, fitted to the G6 vault and checked
     on two small vaults; a second vault with known duplicates would settle them.
@@ -583,10 +582,10 @@ the table rules came after the audit.
 
 **Checklist.**
 
-- [ ] I gave items 1, 3, 4, 5, 11 and 34 my answer.
-- [ ] I read items 2, 6 to 10, 12 to 33, 35 and 36 and accept each, or I note it.
+- [ ] I gave items 1, 3, 4, 5 and 11 my answer.
+- [ ] I read items 2, 6 to 10, 12 to 36 and accept each, or I note it.
 
-**Your decision.** Items 1, 3, 4, 5, 11 and 34 each have your answer, and every other item is accepted or noted.
+**Your decision.** Items 1, 3, 4, 5 and 11 each have your answer, and every other item is accepted or noted.
 
 ### 4d. UA-A results
 
