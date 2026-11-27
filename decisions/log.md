@@ -3026,3 +3026,10 @@ WP33 is rewritten; it now follows WP32 (both touch `draw.py`), and WP34 follows 
 After the Claude tests, the full read of the four scopes ("list them out for me to read"), WP33's rescope around the
 query layer (D-174) and WP34's revision to follow it, the chief engineer: "now i approve". WP32, WP33, WP34 and WP35
 run in sequence (they share `draw.py`), with the agent's defaults as written. Revert point `divergence/D-174`.
+
+## D-176 | 2026-11-27 | RS5's client trials: the full plan
+
+Asked how much of RS5's client-trial plan (`spike/lifecycle/TRIAL-PLAN.md` on `spike/lifecycle`) to run: the core
+(T1 to T4), the core with the stage carriers, elicitation and restart, or all ten tests including the router. The chief
+engineer chose (typed by the agent): "Full plan". The ACE runs them as coder in Claude, inference.coop and VS Code's
+Copilot, human-paced, with his accounts; RS5 is accepted when they are recorded (D-165).
