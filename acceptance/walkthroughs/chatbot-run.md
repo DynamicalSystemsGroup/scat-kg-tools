@@ -2,8 +2,24 @@
 
 Page: `docs/chat-path.md`, sections "What this path needs" and "Worked example: Claude".
 
-Status: waiting for the chief engineer's sitting. The Claude screens were not run. Written 26 Nov 2026 from Claude's
-help articles (fetched, not signed in). No screenshot is referenced on the page yet.
+Status: **run 27 Nov 2026 in the chief engineer's sitting** (claude.ai in the built-in browser, his account; SCAT Chat
+serving the test vault `my-vault`). Passed to step 24: SCAT connected with its 19 tools, the skill installed, and the
+check in a chat answered "no problems found". The first draft below was written 26 Nov from Claude's help articles;
+the run found its menu names out of date (below). Screenshots are kept outside the repository (the sitting's evidence
+folder, `s2-claude-*`); the docs' slots are not filled yet (crop and blur first).
+
+## The run, 27 November
+
+| Step | What happened | Finding and disposition |
+|---|---|---|
+| 13 | **Customize** > **Connectors** now opens **Plugins** (tabs All, Connectors, Skills; an **Add** menu: Upload plugin, Add custom connector, ...) | Page updated (tools 3ba11c2) |
+| 14 to 15 | Two screens: name and **MCP server URL**, **Continue**; then Authentication, where **No sign-in** warns that the server required sign-in | Page updated |
+| 17 | **Add header** gives a list of header names (`authorization`, `x-api-key`, ...); value masked. With `authorization` and `Bearer <key>`, Claude could not connect ("Couldn't reach SCAT"); the server log showed no session, so the key never passed. Removed and added again with `x-api-key` and the key alone: **Connected**, 19 tools listed. Whether the first try failed on the paste or on Claude's handling of that header is not known. | Page now uses `x-api-key` and the bare key |
+| 22 | No "Create skill": **Plugins** > **Add** > **Upload plugin**, **browse**, the zip, **Upload**; listed as the plugin **Scat coding**. The page says a `SKILL.md` alone is also accepted (not tried). | Page updated; WP27 (D-157) reworks how the skill reaches the client |
+| Capabilities | The switch is **Run code in the cloud** ("Required for skills"), under **Code execution and file creation**; it was on | Page updated |
+| 23 | **+** > **Plugins** (not Connectors) > SCAT, already on; `scat-coding` listed too | Page updated |
+| 24 | "Run the SCAT check on my vault and tell me what it says." Claude called SCAT: Check and reported `ok: true`, no problems, and that the check tests structure only. It did not know what `mode: "disallowed"` means and guessed wrongly (an allowance for stubs or links). | Evidence for D-157: nothing the server sends explains the attribution mode |
+
 
 ## Screenshot slots (docs/assets/walkthroughs/chatbot/)
 
