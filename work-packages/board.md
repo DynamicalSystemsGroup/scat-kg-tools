@@ -37,7 +37,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP27 | Vault settings belong to the setup person; default cap 6 (D-159) | all units done and merged; ready for ACE acceptance | `WP27.md` |
 | WP28 | Drawings returned by the server (D-160) | R1 to R4 and R6 built on `dev`; R5 (on-screen check in Claude and inference.coop, both header forms) held for the ACE: needs the chief engineer's accounts and keys (iteration 50: 19 est, 19 realized, 1.2 h) | `WP28.md` |
 | RS5 | Research spike: the lifecycle as a state machine (D-162; branch `spike/lifecycle`, never merged into `dev`) | approved (D-163) | `RS5-lifecycle.md` |
-| RS6 | Research spike: the glossary, for the organiser (branch `spike/glossary`, never merged into `dev`) | approved (D-168) | `RS6-glossary.md` |
+| RS6 | Research spike: the glossary, for the organiser (branch `spike/glossary`, never merged into `dev`) | readout `research/glossary/readout.md` on `dev` (995d2c2); inventory data on `spike/glossary`; waits for the ACE (iteration 51: 22 est, 25 realized, 0.8 h) | `RS6-glossary.md` |
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | approved (D-163) | `WP29.md` |
 | WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | approved (D-163) | `WP30.md` |
 | WP31 | The assistant's habits, stage by stage, tested by the probes (depends on WP30) | approved (D-163) | `WP31.md` |
@@ -398,6 +398,11 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP28-U2r | reviewer (fresh, MCP drawing tools), sonnet, sonnet | 2 | 2 | `-` | done |  | 2026-11-27 | diffed tools/list of both trees, odd arguments, read a returned PNG; PASS |
 | WP28-U3 | test engineer (container image and its test), sonnet, sonnet | 3 | 3 | `wp28/u3` | done |  | 2026-11-27 | Dockerfile extra, real-image test and CI step; one launcher test needed its literal updated; Colima temp-dir quirk |
 | WP28-U3r | reviewer (fresh, container image), sonnet, sonnet | 2 | 2 | `-` | done |  | 2026-11-27 | rebuilt the image, ran the real entrypoint read-only; PASS |
+| RS6-U1 | terminologist (glossary term inventory, G1/G2), sonnet | 5 | 5 | `spike/glossary` | done |  | 2026-11-27 | 59 words classified with evidence and counts; PASS on re-checks |
+| RS6-U2 | technical writer (app terms the glossary lacks, G1), sonnet | 5 | 5 | `spike/glossary` | done |  | 2026-11-27 | 85 missing terms, 13 unused glossary words; sources visited per NOTES |
+| RS6-U3 | terminologist (inconsistencies, G3), sonnet | 5 | 5 | `spike/glossary` | done |  | 2026-11-27 | 41 findings, two high; quotes verified by reviewer |
+| RS6-U4 | technical writer (readout), sonnet | 5 | 8 | `spike/glossary` | done |  | 2026-11-27 | one review (8 must-fix) and a fix round; three appendices added; two CSV cell edits refused by the guard and left |
+| RS6-U5 | reviewer (fresh, readout), sonnet | 2 | 2 | `spike/glossary` | done |  | 2026-11-27 | ran checks and sampled 12 terms, 8 yes rows, 8 inconsistencies; 8 must-fix found |
 
 ## Iterations and velocity
 
@@ -446,6 +451,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 48 | WP27-U1 to WP27-U3r | 12 | 14 | 1.17 | 0.6 h | 23.3 |
 | 49 | RS5-U1 to U8 | 35 | 38 | 1.09 | 0.70 h | 54.3 |
 | 50 | WP28-U1 to WP28-U3r | 19 | 19 | 1.00 | 1.2 h | 15.8 |
+| 51 | RS6-U1 to U5 | 22 | 25 | 1.14 | 0.8 h | 31.3 |
 
 ## Velocity and forecast
 
