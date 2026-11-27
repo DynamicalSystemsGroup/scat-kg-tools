@@ -5,7 +5,7 @@ import shutil
 from pathlib import Path
 
 import pytest
-from mcputil import call, serve, snapshot
+from mcputil import call, put_stage, serve, snapshot
 
 import scat_kg
 from scat_kg.cli import main
@@ -17,6 +17,7 @@ G6 = Path(__file__).resolve().parents[2] / "research" / "node-pages" / "vault" /
 def served(tmp_path_factory):
     vault = tmp_path_factory.mktemp("g6") / "vault"
     shutil.copytree(G6, vault)
+    put_stage(vault, "code")
     with serve(vault) as url:
         yield url, vault
 

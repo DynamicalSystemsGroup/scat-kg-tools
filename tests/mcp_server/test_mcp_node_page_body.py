@@ -8,7 +8,7 @@ import shutil
 from pathlib import Path
 
 import pytest
-from mcputil import call, serve, with_session
+from mcputil import call, offer, put_stage, serve, with_session
 
 VAULT = Path(__file__).parents[2] / "research" / "node-pages" / "vault" / "required"
 NODE_FOLDERS = ("group", "concern", "affordance", "technology")
@@ -78,17 +78,21 @@ def _tool_names(url) -> set[str]:
 def run(tmp_path_factory):
     vault = tmp_path_factory.mktemp("body") / "v"
     shutil.copytree(VAULT, vault)
+    put_stage(vault, "code")
     before = _node_pages(vault)
     with serve(vault) as url:
         names = _tool_names(url)
         for tool, args in CALLS:
+            offer(vault, tool)
             call(url, tool, args)
     return names, before, _node_pages(vault)
 
 
 def test_every_tool_is_walked(run):
     names, _, _ = run
-    assert names == {tool for tool, _ in CALLS}, "a tool has no entry in CALLS (or one was removed)"
+    assert names - {"which_stage", "set_stage"} == {tool for tool, _ in CALLS}, (
+        "a tool has no entry in CALLS (or one was removed)"
+    )
 
 
 def test_no_node_page_body_changes(run):

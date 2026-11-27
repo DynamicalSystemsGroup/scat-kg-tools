@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 
 import pytest
-from mcputil import call, changed, copy_vault, serve, snapshot, with_session
+from mcputil import call, changed, copy_vault, offer, serve, snapshot, with_session
 
 import scat_kg
 
@@ -30,6 +30,8 @@ TOOLS = {
     "export_edges",
 }
 
+STAGE_TOOLS = {"which_stage", "set_stage"}  # the stage layer's two tools, tested in test_stage_*.py
+
 
 @pytest.fixture(scope="module")
 def vaults(tmp_path_factory):
@@ -49,7 +51,7 @@ def test_the_tools_listed(url):
     async def names(s):
         return {t.name for t in (await s.list_tools()).tools}
 
-    assert with_session(url, names) == TOOLS
+    assert with_session(url, names) == TOOLS | STAGE_TOOLS
 
 
 def test_the_reference_page_states_the_number_of_tools(url):
@@ -89,7 +91,7 @@ def test_the_reference_page_states_the_number_of_tools(url):
     async def count(s):
         return len((await s.list_tools()).tools)
 
-    assert words.index(said.group(1).lower()) == with_session(url, count)
+    assert words.index(said.group(1).lower()) == with_session(url, count) - len(STAGE_TOOLS)
 
 
 def test_every_tool_description_says_who_owns_what(url):
@@ -258,6 +260,8 @@ def test_every_tool_returns_the_data_of_the_tools_own_call(url, vaults):
     served, own, _ = vaults
     seen = set()
     for tool, args, own_call in SEQUENCE:
+        offer(served, tool)
+        offer(own, tool)
         got = call(url, tool, args)
         want = own_call(own).to_dict()
         assert got == want, (tool, args)
@@ -359,6 +363,7 @@ def test_after_an_operation_only_the_files_it_reports_changed(tmp_path):
             ("export_edges", {}),
             ("stub_links", {}),
         ]:
+            offer(vault, tool)
             before = snapshot(vault)
             doc = call(url, tool, args)
             assert doc["ok"], (tool, doc)
@@ -373,7 +378,7 @@ def test_after_an_operation_only_the_files_it_reports_changed(tmp_path):
 
 
 def test_export_writes_only_under_views(tmp_path):
-    vault = copy_vault(tmp_path / "v")
+    vault = copy_vault(tmp_path / "v", stage="analyse")
     before = snapshot(vault)
     with serve(vault) as url:
         for folder in ["narrative", "..", "../outside", "/tmp/x", ".", "views/../group", ""]:

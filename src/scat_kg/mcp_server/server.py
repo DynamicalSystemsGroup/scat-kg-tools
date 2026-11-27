@@ -13,7 +13,7 @@ from mcp.types import CallToolResult, TextContent
 
 import scat_kg
 from scat_kg import draw, views
-from scat_kg.mcp_server import prompts
+from scat_kg.mcp_server import prompts, stage
 from scat_kg.ops.result import refused, stamp
 
 CITE = prompts.CITE
@@ -389,4 +389,5 @@ def build(vault: str | Path, **settings) -> FastMCP:
     def assistant_rules() -> str:
         return prompts.RULES
 
+    stage.apply(mcp, root)
     return mcp

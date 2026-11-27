@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 from jsonschema import Draft202012Validator
-from mcp_server.mcputil import call, serve
+from mcp_server.mcputil import call, put_stage, serve
 from test_wp23_contributors import NARRATIVES, PEOPLE, vault, views
 from views.viewutil import tree_hash
 
@@ -190,6 +190,7 @@ def test_the_mcp_tool_equals_python_in_each_mode(tmp_path):
     for mode in ("optional", "required", "disallowed"):
         on = mode != "disallowed"
         root = vault(tmp_path, f"mcp-{mode}", mode, contributors=on, names=on)
+        put_stage(root, "code")
         with serve(root) as url:
             assert call(url, "attribution") == scat_kg.attribution(root=root).to_dict()
 
@@ -268,5 +269,6 @@ def test_the_mcp_stub_equals_python_in_each_mode(tmp_path):
         a, b = vault(tmp_path, f"ma-{mode}", mode), vault(tmp_path, f"mb-{mode}", mode)
         shutil.rmtree(a / ".gitkeep", ignore_errors=True)
         want = scat_kg.stub("dee-park", "contributor", root=a)
+        put_stage(b, "code")
         with serve(b) as url:
             assert call(url, "stub", {"name": "dee-park", "type": "contributor"}) == want.to_dict()

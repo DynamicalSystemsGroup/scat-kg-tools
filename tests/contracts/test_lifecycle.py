@@ -85,8 +85,9 @@ def test_every_stage_names_only_what_exists(server_names):
 
 def test_every_tool_and_prompt_belongs_to_a_stage(server_names):
     tools, prompts = server_names
-    stages = instance()["stages"].values()
-    assert tools <= {t for s in stages for t in s["tools"]}
+    data = instance()
+    stages = data["stages"].values()
+    assert tools == {t for s in stages for t in s["tools"]} | set(data["stage_tools"])
     assert prompts <= {p for s in stages for p in s["prompts"]}
 
 
@@ -122,6 +123,7 @@ def test_stages_that_do_not_edit_offer_no_writing_tool():
 def test_the_stage_tools_are_kept_apart(server_names):
     data = instance()
     assert data["stage_tools"] == ["which_stage", "set_stage"]
+    assert set(data["stage_tools"]) <= server_names[0]
     for stage in data["stages"].values():
         assert not set(stage["tools"]) & set(data["stage_tools"])
 

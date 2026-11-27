@@ -9,7 +9,7 @@ import pytest
 from viewutil import base_files, narrative, row, write
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "mcp_server"))
-from mcputil import call, serve, with_session
+from mcputil import call, put_stage, serve, with_session
 
 import scat_kg
 from scat_kg import draw
@@ -29,6 +29,7 @@ def root(tmp_path_factory):
 
 @pytest.fixture(scope="module")
 def url(root):
+    put_stage(root, "code")
     with serve(root) as u:
         yield u
 
