@@ -1378,13 +1378,15 @@ Returns the guide of one stage of the project's lifecycle (`"plan"`, `"capture"`
     scat_kg.guide("ideation").ok
     ```
 
+    The first line prints the guide. The other two give the stage's tools, and `False` for a name that is not a stage.
+
 === "CLI"
 
     ```bash
     uv run scat guide analyse
     ```
 
-    The first line prints the guide. The other two lines give the stage's tools, and `False`.
+    The command prints the guide.
 
 ## Drawings
 

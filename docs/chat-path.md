@@ -403,8 +403,7 @@ in the Agent Builder, remove the tool that no longer works, add the new entry, a
 
 98. **In the chat:** send it.
 
-On inference.coop, field notes may go in a collection instead of an attachment: we use collections on the regular
-inference.coop pass. Ask the person who set this up for you how your collection is used.
+On inference.coop, field notes may go in a collection on the regular pass instead of an attachment.
 
 Then follow the coding loop below, one step per reply.
 

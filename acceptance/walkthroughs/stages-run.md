@@ -11,9 +11,13 @@ tools and files named here are the ones in `docs/reference/mcp.md` ("Stages").
 
 ## Before the sitting
 
-- SCAT Chat rebuilt from tools `dev` with the stage layer, serving a lab vault (a copy of `contracts/examples`), as in
-  `drawings-run.md`. The vault is a git folder, so `git status` and `git diff` show every change.
-- The vault has no `lifecycle.toml`. Note the vault's `scat.toml` (`stakeholder_group_cap`) before step 6.
+- SCAT Chat rebuilt from tools `dev` with the stage layer, serving a lab vault, as in
+  `drawings-run.md`. The vault is a copy of `contracts/examples` made into a git folder (`git init`, add, commit), so
+  `git status` and `git diff` show every change. It holds the narratives `funders-meeting` (draft),
+  `saturday-at-the-lending-desk` and `self-service-kiosk-pitch` (both done), and the groups `borrowers`, `funders` and
+  `volunteer-staff`.
+- The vault has no `lifecycle.toml`. Its `scat.toml` has `stakeholder_group_cap = 3` and the vault holds 3 groups, so
+  the cap is already met (step 6 uses this).
 - Each client has the SCAT connector added the way `docs/chat-path.md` says (Claude: custom connector with
   `x-api-key`; inference.coop: API Key). Check the client's own tool list: it should show 21 tools, including
   `which_stage` and `set_stage`. The skill is loaded in both.
@@ -42,9 +46,9 @@ prompt as written. After each step, read `lifecycle.toml` and `git status` in th
 
 ### 3. A request outside the stage
 
-- Setup: move to analyse first (`We are analysing.`; from code this is move L5, which advises that every narrative be
-  `done`; the move is made and the advisory is relayed).
-- Prompt: `Add this edge: mutual-aid-group holds food-spoilage, told by lab-note-community-fridge.`
+- Setup: move to analyse first (`We are analysing.`; from code this is move L5, whose advice is that every narrative be
+  `done`; `funders-meeting` is a draft, so the advice does not hold, and the move is made with that advisory relayed).
+- Prompt: `Add this edge: borrowers holds careful-record-keeping, told by funders-meeting.` (a group holds a concern, both pages exist, and the narrative is a draft, so in code the tool would record it)
 - Look for: the refusal says `record_edge` is not offered in the analyse stage, names the stage that offers it (code),
   and says a move is the coder's say-so. The assistant relays it in full, does not work around it (no hand-written
   row, no other tool) and offers to move to code only if the coder says so. Nothing is written: `git status` is clean
@@ -69,15 +73,15 @@ prompt as written. After each step, read `lifecycle.toml` and `git status` in th
 
 ### 6. A move back
 
-- Analyse to code (L6): in analyse, `We need to revisit the coding of lab-note-community-fridge. Back to code.` The
+- Analyse to code (L6): in analyse, `We need to revisit the coding of funders-meeting. Back to code.` The
   move is made; `set_by` is the name given.
-- Code to plan when the group cap is met (L7): set `stakeholder_group_cap` in `scat.toml` to the number of group pages
-  the vault holds (the file is the setup person's; the ACE edits it for this check and restores it afterward). In
-  code, type `Make a new stakeholder group page called night-shift-neighbours.` Look for: `stub` refuses because the
-  cap is met; `which_stage` now shows L7 as holding (a detect predicate, advice only), and says the setup person
-  decides. Type `Move to plan.`: the move is made with `by` as the name given (the server does not check the role; say
-  so in the notes). Then the stub is allowed in plan only after the setup person raises the cap; type `Make that group
-  page.` before and after raising the cap to see both.
+- Code to plan when the group cap is met (L7): the example vault already holds 3 groups against a cap of 3, so L7
+  holds with no setup. In code, type `Make a new stakeholder group page called night-shift-neighbours.` Look for:
+  `stub` refuses because the cap is met; `which_stage` shows L7 as holding (a detect predicate, advice only), and says
+  the setup person decides. Type `Move to plan.`: the move is made with `by` as the name given (the server does not
+  check the role; say so in the notes). To see the stub allowed in plan, the setup person raises
+  `stakeholder_group_cap` in `scat.toml` (the ACE edits it for this check and restores it afterward); then type `Make
+  that group page.`
 - Look for: in every move, who decides is named as a reminder, and the assistant never proposes a move as already
   decided.
 

@@ -47,7 +47,7 @@ uv run scat guide code
 The first prints the five stages and the moves between them. The second prints one stage's guide: what the work is,
 what it needs and makes, which tools it offers, and where it can go next. The assistant offers only the work and the
 tools of the stage you name, and a move to another stage is yours to say. If your vault has a `lifecycle.toml` at its
-root, the assistant reads the stage from it.
+root, the assistant reads the stage from it. The file needs only one line, `stage = "code"`; `set_by` and `set_at` are optional.
 
 ## Worked example: Copilot in VS Code
 
