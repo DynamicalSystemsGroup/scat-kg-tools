@@ -9,9 +9,8 @@ provider: inference.coop
     do not need it: the chat path's own "Clean up" is enough.
 
 Some projects work under a strict data policy: an AI platform **non-retention** policy (nothing you put into the
-platform stays there), or an **approved chatbot only** policy. "Leave no trace" is the life cycle of a chat-path
-session that fits such a policy. A session sets up everything it needs in the chat platform, does the coding, and then
-removes all of it from the platform. Your local copies stay on your Mac.
+platform stays there), or an **approved chatbot only** policy. "Leave no trace" is one option for such a policy: a session sets up what it needs in the chat platform, does the
+coding, and then removes all of it from the platform. Your local copies stay on your Mac.
 
 Removing means removing it from the chat platform, in this example inference.coop's chat. It does not claim to remove
 anything from every system the platform's model provider runs; what your policy requires there is for your policy to
@@ -37,20 +36,7 @@ things:
   are removed.
 - **Local copies kept**: your field notes folder and your vault stay on your Mac.
 
-### What this page does
-
-1. A **temporary chat**: the coding session runs in the chat's Temporary Chat setting, whose own text says the chat
-   will not appear in your history and is deleted automatically.
-2. The **field notes are uploaded as a collection**, so they can be removed as one thing.
-3. The **server entry, the saved agent, the skill and any prompts** are set up for this session only.
-4. The coding work.
-5. **Every one of them is removed from the platform** at the end.
-6. **Local copies stay** on your machine: your field notes, and your vault with every change.
-
-### Before you start
-
-- Your field notes are in a folder on your Mac. They stay there; the clean-up never touches that folder.
-- Your vault is outside Documents, Desktop, Downloads and iCloud, as the chat path says.
+Your field notes sit in a folder on your Mac, and the vault is outside Documents, Desktop, Downloads and iCloud, as the chat path says.
 
 ## Worked example: inference.coop
 
