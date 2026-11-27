@@ -470,7 +470,7 @@ live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
     internal commit subjects (D-046; the check is your stage 2 `git log --oneline` in the new repository), and the
     round 1 to 5 findings in `acceptance/reports/r1-findings.md` to `r5-findings.md` were accepted in D-044 to D-050.
     The PM's WP12 cold reads of the Terms page are in `acceptance/reports/wp12-r3-round1.md` to `round4.md`.
-22. **No documented way to rename or delete a node page (UA-A round 1, W11; D-100).** Accepted for v0.1: a real
+22. **Merging two same-type node pages exists (a plan first); a split is a plan only; rename and delete stay file edits (UA-A round 1, W11; D-100).** Accepted for v0.1: a real
     organiser edits files and uses git. Evidence: `acceptance/reports/wp20-r1-findings.md`. Since WP24 two node pages of
     one type can be merged (`scat merge A B`, a plan first with `--plan`); a split is a plan only (`scat split-plan A`);
     a rename stays an Obsidian action.
