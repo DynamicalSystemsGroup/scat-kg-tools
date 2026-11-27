@@ -13,11 +13,11 @@ _spec = importlib.util.spec_from_file_location("check_metrics", SCRIPT)
 script = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(script)
 
-NOW = datetime.now().astimezone()
-
 
 def at(minutes):
-    return (NOW + timedelta(minutes=minutes)).isoformat(timespec="seconds")
+    # Read the clock here, per call: a run can last minutes, and a clock read at import would drift.
+    now = datetime.now().astimezone()
+    return (now + timedelta(minutes=minutes)).isoformat(timespec="seconds")
 
 
 def unit(ts, state="queued", unit_name="WP99-U1", **extra):
