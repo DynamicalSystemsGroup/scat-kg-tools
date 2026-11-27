@@ -2786,3 +2786,7 @@ screen and leaves them unchanged. `TEMPLATE_COMMIT` moved to 87accad (tools `dev
 Three items go to the chief engineer: V2 (Obsidian may rewrite `index/narrative.base` into its own form; `scat index`
 treats the forms as equal), V3 (the stub's timeframe hint is invisible in Obsidian's Properties panel), V4 (no page says
 whether node pages must be written before their narratives are done).
+
+One more fix under D-156 (V6): signed out, GitHub's template page shows no **Use this template**; `getting-started`'s
+website path now says to sign in first. The website path itself (creating the private repository) has never been run
+on screen and needs the chief engineer's account: it joins his sitting.

@@ -34,6 +34,7 @@ blocking finding.
 | V3 | `scat stub` writes `timeframe: # past \| future \| mixed`; Obsidian shows the property as empty, so the hint is invisible there. | Obsidian, Properties panel | **For the chief engineer:** accept (the Coding page shows the hint) or change the stub. |
 | V4 | Node pages made by `record-edge` stay stubs when their narratives are set done; no page says whether a node page must be written first, and the views show every node as `[stub]` without saying that is expected. | Terminal (views) | **For the chief engineer:** a page sentence, or accept. |
 | V5 | The persona's terms did not settle the attribution question, so the mode was a guess at planning. | Text | Accept: the page asks the question; the persona's terms did not answer it. |
+| V6 | Signed out, GitHub's template page shows no **Use this template** button; `getting-started`'s website path listed a GitHub account but did not say to sign in first. Checked on the live repository page by the ACE after the run (the tester's clones skipped this step). | Chrome, the template's page signed out | **Fixed:** the step now says to sign in first (tools `dev`). Creating the repository itself is left for the chief engineer's sitting: it needs his account. |
 
 The tester's other items (gaps in its own terms and plan, a transcription detail, the git identity in a clone with no
 setup) are not page or tool faults.
