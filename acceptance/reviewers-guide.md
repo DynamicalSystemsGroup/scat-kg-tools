@@ -557,3 +557,23 @@ after round 2.** The chat path's rounds run in your sittings (D-098), so their r
 | D-101 | The rest of round 2 | Accepted as the PM proposed | the same |
 
 **Your decision.** Keep or revert each call, as in 4a.
+
+### 4f. WP26: what the sweep moved here, and what only your sitting can confirm
+
+Moved out of the user pages (D-146), so the pages say only what a coder does:
+
+- **Chat path.** The launcher was run against Colima with a stand-in for the public-link service; Docker Desktop was
+  not tried; the first real run of the pages by a coder is the sitting. The launcher's search folders for `docker`
+  (`/usr/local/bin`, `/opt/homebrew/bin`, Docker.app) are no longer on the page.
+- **`deploy/README.md`** no longer lists what is unverified: iCloud Keychain sync of the session key, the locked-keychain
+  prompt, Docker Desktop, and the checks that need a screen. Each is yours to confirm.
+- **Leave no trace.** "Seen in the lab run" is gone from the file-library step; the Temporary Chat shortcut is no longer
+  named (it was not confirmed). The chat's form labels and control names are yours to check against the live chat.
+- **UA-A in WP26** (reports `acceptance/reports/wp26-r1-*.md`, `wp26-r2-*.md`, dispositions in `wp26-r*-findings.md`):
+  docs served from a local build, not the Pages deploy; uv preinstalled; the template pin was moved for the test only
+  (a request to the ACE, not pushed); the chat-path testers ran Sitting A (J1 to J4) and J6 as a read-and-write-files pass
+  with no chat, browser, key or sign-in, so the chat, J2's GitHub steps, J5 and J7 to J10 are yours.
+- **New wording the sweep added for you to confirm** (found by testers, not stated before): `docs/planning.md` says to tell
+  people if an assistant will read the notes; `docs/data-and-consent.md` says to keep the nine answers with the consent
+  records, outside the vault; `docs/flow.md` step 7 says field notes are plain text files that step 8 takes in;
+  `docs/getting-started.md` points a reader who will not use Terminal to the chat path.
