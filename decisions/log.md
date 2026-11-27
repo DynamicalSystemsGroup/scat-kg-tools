@@ -3011,3 +3011,12 @@ The chief engineer, during the run (typed by the agent): "by the way, i have dec
 scatlab (its meant to make someone think of matlab. its for scat coding (instead of math coding) and even if we leave it
 implicit people will appreciate the easter egg". What the rename covers (the SCAT Chat app, the tool, the repositories,
 the docs site) is to be settled with him and scoped as its own package.
+
+## D-174 | 2026-11-27 | WP33 rescoped: one query, rendered as a plot, a table or both; one tool per view
+
+Reading WP33's draft, the chief engineer (typed by the agent): "for this one, i think we may have overlooked a layer. in
+practice we need the query process, then the query result feeds both the plot and the table. this way we can have one,
+the other or both, with guaranteed consistency if the query is the same". Asked how the server should offer it: "One
+tool per view" (the three `draw_*` tools folded into `fingerprint`, `layered` and `trace` with an output choice).
+WP33 is rewritten; it now follows WP32 (both touch `draw.py`), and WP34 follows WP33. Revert point for the four:
+`divergence/D-174`.
