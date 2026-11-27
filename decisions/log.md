@@ -3077,3 +3077,15 @@ signature of sorts. for now we're just writing in who made the call. that is an 
 more robust tracking of on whose call a change was made can be deferred". Outcome: for WP29 and WP30, a stage move
 carries a field naming who made the call, written by the assistant; it is not proof of consent. Deferred by the chief
 engineer: robust tracking of on whose call a change was made (candidate C17).
+
+## D-180 | 2026-11-27 | Copilot's trials passed for now; the IDE path stays an option without a full walkthrough
+
+During RS5's client trials, Copilot in VS Code started the spike server but showed it as "Unsupported" and gave the
+model none of its tools; the tool picker could not be reached. The chief engineer (typed by the agent): "i think i am
+stuck again. i think maybe we need to pass on this for now. i don't strictly need to do the copilot support on this
+pass and it seems like the guards are going to make it hard. we should keep it in our list of options but we don't need
+to support a full walkthrough at this time. that leaves the configuration burden on the user but the idea is that the
+ide based user should be more sophisticated technically, and we're actually focused on the chat user". Outcome: RS5's
+client trials are recorded for Claude and inference.coop; Copilot's are deferred by the chief engineer (not run). The
+IDE path stays among the options, configured by its user, with no full walkthrough on this pass; the chat user is the
+focus.
