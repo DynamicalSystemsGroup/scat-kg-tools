@@ -2833,3 +2833,14 @@ uses Copilot (tools ae29efa), naming Codex as another agent. Separately, and not
 install on this Mac (npm's global folder was not on the PATH; `codex` linked into `/usr/local/bin`).
 
 Mission lines 160, 315 and R-20 now name Copilot in VS Code; the chief engineer: "Yes, change them".
+
+## D-159 | 2026-11-27 | Vault settings are the setup person's job; the default cap is 6
+
+In the inference.coop run the agent met the group cap (3, with three groups in the vault): the tool refused, the
+agent handed it back, and could not edit `scat.toml` (no server tool writes it; the platform's file tools failed). The
+chief engineer (typed by the agent): "i do like it in general ... but that may mean we need more conservative settings
+because for a noncoder they are now stuck". The ACE set out three ways (document a no-terminal edit; the setup
+person's job; a looser default cap). His answer: "setup person's job + loosen the default cap to 6". To do after the
+sitting: the pages say a vault setting is changed by whoever set the tools up (planning settles the cap with them
+first), and the template ships `stakeholder_group_cap = 6`, with every page and example that says 3 brought in line.
+For the run, the ACE raised the lab vault `my-vault` to 6 on his "raise the cap".
