@@ -57,7 +57,7 @@ None open. O1 (client trials) decided: trials in Claude and inference.coop are i
 
 ## Definition of good enough
 
-RS7-R1 to R5 met, with the client trials recorded.
+RS7-R1 to R6 met, with the client trials recorded.
 
 ## Definition of good
 

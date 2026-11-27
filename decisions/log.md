@@ -3108,3 +3108,14 @@ work. we may need a spike to understand standards and best practices". The ACE d
 (`work-packages/RS7-asking-the-person.md`) and corrected RS5's readout to limit the finding to what was tried. Asked
 whether RS7 runs new client trials or stays desk and local, the chief engineer said (typed by the agent): "Include
 trials". RS7's O1 is closed; R6 (each pattern tried is recorded) is added. RS7 is still a draft awaiting approval.
+
+## D-183 | 2026-11-27 | The IDE and local LLM paths: one category of guidance, not walkthroughs
+
+The chief engineer (typed by the agent): "we're still working through some UX and architecture refinements for the
+chat based interactions. i want to place the local LLM and the ide based in the same category of documentation. we
+provide some guidance but not full end to end walk through, in both cases we're assuming a higher level of technical
+sophistication on the part of the user and while we need to provide correct high level guidance we level the details
+up to them, focus on asserting and respecting interface contracts and API standards". Outcome: the docs group the IDE
+and local LLM paths together as guidance for technically sophisticated users: correct high-level guidance, details
+left to the user, with the emphasis on the interface contracts and API standards they must respect. Full end-to-end
+walkthroughs stay for the chat paths, the current focus. Recorded as candidate C18 until a docs package is scoped.
