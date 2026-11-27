@@ -92,3 +92,19 @@ and coding. this is in essence an MVC loop where the views inform exercise of th
 views (everything that writes nothing), Code the controls; moving a `done` narrative to `draft` is the coder's
 transition that reopens them; `review`'s merge candidates and `check`'s missing fields are analysis outputs that send
 the coder back to Code.
+
+## For WP29: two lifecycles, not one (27 Nov, during RS5's client trials)
+
+The chief engineer (typed by the agent): "i am worried we're mixing the two abstraction levels. the lifecycle from the
+facilitators view is not the same as the lifecycle for a page". Where the drafts mix them: WP29-G2's backward moves list
+"Analyse to Code; `done` to `draft`" side by side, as if both were stage transitions; the MVC note above calls "moving a
+`done` narrative to `draft`" "the coder's transition that reopens the controls"; and RS5's router spike gates plan to
+code on one successful `stub`. A page's status (`stub`, `draft`, `done`) is a per-page lifecycle the tool already
+enforces; the organiser's stages are the work's lifecycle. Open for WP29: how the two relate.
+
+## For WP29: rules by stage (D-178)
+
+Shared tools across stages; drawing tools in coding (the visual loop is part of coding); analysis draws and
+synthesises but does not edit existing content; stages are the human's work, aided by the assistant; a review-and-revise
+loop for every piece of content at every stage. The MVC note above ("Analyse is the views, Code the controls") is
+superseded where it implies the views belong to analysis only.

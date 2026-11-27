@@ -3026,3 +3026,113 @@ WP33 is rewritten; it now follows WP32 (both touch `draw.py`), and WP34 follows 
 After the Claude tests, the full read of the four scopes ("list them out for me to read"), WP33's rescope around the
 query layer (D-174) and WP34's revision to follow it, the chief engineer: "now i approve". WP32, WP33, WP34 and WP35
 run in sequence (they share `draw.py`), with the agent's defaults as written. Revert point `divergence/D-174`.
+
+## D-176 | 2026-11-27 | RS5's client trials: the full plan
+
+Asked how much of RS5's client-trial plan (`spike/lifecycle/TRIAL-PLAN.md` on `spike/lifecycle`) to run: the core
+(T1 to T4), the core with the stage carriers, elicitation and restart, or all ten tests including the router. The chief
+engineer chose (typed by the agent): "Full plan". The ACE runs them as coder in Claude, inference.coop and VS Code's
+Copilot, human-paced, with his accounts; RS5 is accepted when they are recorded (D-165).
+
+## D-177 | 2026-11-27 | Stage and status: two state machines at two time scales
+
+The chief engineer, during RS5's client trials (typed by the agent): "i am worried we're mixing the two abstraction
+levels. the lifecycle from the facilitators view is not the same as the lifecycle for a page", and then: "both can be
+addressed with state machines but they are different state machines that operate at different time scales. "coding" is
+a stage in the scat project lifecycle and "stub" is the state of a record in the knowledge graph. we will call "status"
+is the term for state of a record in the knowledge graph and "stage" is the name for where we are in the project
+lifecycle."
+
+Outcome: **stage** is where the project is in its lifecycle; **status** is the state of a record in the knowledge
+graph. They are different state machines, at different time scales. WP29 applies the ruling: G2 no longer lists
+`done` to `draft` as a stage transition, and G4 keeps stage apart from status in the glossary. The mixing found in the
+drafts is noted in `work-packages/WP28-WP31-inputs.md` (the MVC note, RS5's router gating plan to code on a `stub`).
+
+## D-178 | 2026-11-27 | Rules by stage: shared tools, the visual loop in coding, analysis does not edit, review and revise everywhere
+
+The chief engineer, during RS5's client trials (typed by the agent): "some thoughts on specific rules by stage:
+* some tools are available at more than one stage
+* coding stage needs to support visualization and writing content. the loop visual loop is part of coding.
+* analysis stage needs to support visualization and synthesis but not editing the existing content.
+there may be other places where there is overlap, keep stages focused on the work a human must do, aided by an
+assistant with skills and tools. never assume generated content will be right on first pass, giving humans clear review
+and revise loops for every peice of content produced, at every stage is how we ensure quality, explainability and our
+assertion that the human (not the assistant) is the author"
+
+Outcome, as inputs to WP29's instance (and WP30, WP31):
+- A tool may belong to more than one stage; stages are not a partition of the tools.
+- Coding includes the drawing tools: the view-to-control loop (D-173) is inside coding, not a move between stages.
+- Analysis has the drawing tools and synthesis, and does not edit existing content.
+- Each stage is defined by the work a human must do, aided by an assistant with skills and tools.
+- Every piece of content produced, at every stage, has a review-and-revise loop for the human; nothing generated is
+  assumed right on the first pass. This is how quality, explainability and human authorship are held.
+RS5's spike servers use stand-in tool sets (coding without drawing tools); they test client mechanics only and are not
+changed.
+
+## D-179 | 2026-11-27 | The coder's word is a signature slot; stronger tracking deferred
+
+Asked during RS5's client trials what the spike's `coder_word` is for (it moves the stage only when given; without it
+`set_stage` records a request), the chief engineer said (typed by the agent): "okay so this is basically a slot for a
+signature of sorts. for now we're just writing in who made the call. that is an okay simplification for now, putting a
+more robust tracking of on whose call a change was made can be deferred". Outcome: for WP29 and WP30, a stage move
+carries a field naming who made the call, written by the assistant; it is not proof of consent. Deferred by the chief
+engineer: robust tracking of on whose call a change was made (candidate C17).
+
+## D-180 | 2026-11-27 | Copilot's trials passed for now; the IDE path stays an option without a full walkthrough
+
+During RS5's client trials, Copilot in VS Code started the spike server but showed it as "Unsupported" and gave the
+model none of its tools; the tool picker could not be reached. The chief engineer (typed by the agent): "i think i am
+stuck again. i think maybe we need to pass on this for now. i don't strictly need to do the copilot support on this
+pass and it seems like the guards are going to make it hard. we should keep it in our list of options but we don't need
+to support a full walkthrough at this time. that leaves the configuration burden on the user but the idea is that the
+ide based user should be more sophisticated technically, and we're actually focused on the chat user". Outcome: RS5's
+client trials are recorded for Claude and inference.coop; Copilot's are deferred by the chief engineer (not run). The
+IDE path stays among the options, configured by its user, with no full walkthrough on this pass; the chat user is the
+focus.
+
+## D-181 | 2026-11-27 | RS5 accepted by the ACE: client trials recorded
+
+D-165 left RS5 to be accepted once its client trials were recorded. They ran in Claude and inference.coop (D-176); the
+chief engineer passed Copilot's (D-180). The readout now carries the results grid and findings ("Client trials"), and
+its status, G4, Q1 and F1 lines no longer call the trials held. RS5-R3 is met for the two chat clients and deferred
+for Copilot by the chief engineer. The main inputs for WP29: a session-held stage is unsafe in both clients (it leaks
+across chats in inference.coop and is lost on restart in both); static carriers (query, path, an approved header in
+Claude) work; refusals and clarifications are relayed; elicitation cannot be relied on; Claude does not re-list tools
+mid-conversation, inference.coop does. Evidence stays outside the repository. Accepted by the ACE.
+
+## D-182 | 2026-11-27 | RS7 (how a tool asks the person): client trials included
+
+RS5's trials tried MCP elicitation once (one implementation); it hung in Claude and was absent in inference.coop. The
+chief engineer (typed by the agent): "seems like we must be missing something. this is a common pattern in LLM based
+work. we may need a spike to understand standards and best practices". The ACE drafted RS7
+(`work-packages/RS7-asking-the-person.md`) and corrected RS5's readout to limit the finding to what was tried. Asked
+whether RS7 runs new client trials or stays desk and local, the chief engineer said (typed by the agent): "Include
+trials". RS7's O1 is closed; R6 (each pattern tried is recorded) is added. RS7 is still a draft awaiting approval.
+
+## D-183 | 2026-11-27 | The IDE and local LLM paths: one category of guidance, not walkthroughs
+
+The chief engineer (typed by the agent): "we're still working through some UX and architecture refinements for the
+chat based interactions. i want to place the local LLM and the ide based in the same category of documentation. we
+provide some guidance but not full end to end walk through, in both cases we're assuming a higher level of technical
+sophistication on the part of the user and while we need to provide correct high level guidance we level the details
+up to them, focus on asserting and respecting interface contracts and API standards". The ACE first summarised this as "one category"; the chief engineer corrected it (typed by the agent): "they are still
+listed as seperate approaches in the documentation we just don't attempt to provide a full walk through we cut at the
+api standards and interface contracts our tool uses and let the user configure their ide in one, then  local llm with
+openweb ui for the other. we still want to provide enough instructions for them to use our tools but we're just
+describing our side of the handshake". Outcome: the IDE path and the local LLM path stay separate approaches in the
+docs. Neither gets an end-to-end walkthrough: each page describes our side of the handshake (the API standards and
+interface contracts our tool uses) with enough instruction to use our tools, and the user configures their IDE, or
+their local LLM with Open WebUI, themselves. Full walkthroughs stay for the chat paths, the current focus. Recorded
+as candidate C18 until a docs package is scoped.
+
+## D-184 | 2026-11-27 | RS7's defaults approved
+
+Asked to approve RS7's three defaults (readout at most about 2,000 words; local experiments on the RS5 spike server;
+client trials reuse RS5's setup with the ACE as coder), the chief engineer said (typed by the agent): "Defaults
+approved". RS7 has no open items; it awaits approval of the scope.
+
+## D-185 | 2026-11-27 | RS7 approved
+
+The chief engineer (typed by the agent): "Approve RS7". RS7 (`work-packages/RS7-asking-the-person.md`) is approved.
+Execution: a PM runs the desk and local-server parts (G1, G2, G3 locally); the client trials run with the chief
+engineer at a sitting he chooses, the ACE as coder.
