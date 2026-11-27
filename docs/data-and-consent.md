@@ -11,8 +11,8 @@ notes carries that text into the model, and the rules for the model then apply t
 
 ## What the tool does
 
-- The four layers name groups, never individuals. The cap on groups, set in `scat.toml`, is enforced: the tool
-  refuses a group page beyond it.
+- The four layers name groups, never individuals. The cap on groups, set in `scat.toml` by the person who set up
+  your tools, is enforced: the tool refuses a group page beyond it.
 - Whether a narrative names the people it is attributed to is the vault's attribution mode, also set in `scat.toml`
   and enforced. See [Attribution mode](#attribution-mode).
 - The `scat` commands read and write the vault folder and make no network calls. They do not read the field notes.
@@ -51,9 +51,9 @@ Nine, made before the first session. Each is a dependency: a later step is plann
 
 ## Attribution mode
 
-Choice 4 fixes one setting for the whole vault, the **attribution mode**. You write it in `scat.toml` before the first
-session, and the check refuses a vault that has none. The mode says whether a narrative names the people it is
-attributed to. It is the same for every participant, so say which one it is in the consent you gather.
+Choice 4 fixes one setting for the whole vault, the **attribution mode**. The person who set up your tools writes it in `scat.toml` before
+the first session, and the check refuses a vault that has none. The mode says whether a narrative names the people it
+is attributed to. It is the same for every participant, so say which one it is in the consent you gather.
 
 | Mode | What participants are told | What the vault holds |
 |---|---|---|

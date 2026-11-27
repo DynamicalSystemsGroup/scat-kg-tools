@@ -524,7 +524,7 @@ after `description`: `kind` and `timeframe`. The second filter names the vault's
 
 ## 10. Vault configuration: the attribution mode and the group cap
 
-Neither is in the TBox. Both are set per vault in a file named **`scat.toml` at the vault root**, in TOML:
+Neither is in the TBox. Both are set per vault in a file named **`scat.toml` at the vault root**, in TOML. The file of the example vault in `contracts/examples` reads, with that vault's own cap of 3:
 
 ```
 attribution = "disallowed"

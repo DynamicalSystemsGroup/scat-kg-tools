@@ -39,3 +39,27 @@ the run record carries a summary. In short:
 
 D-157 (the manual in v0.1), D-158 (Copilot), D-159 (settings are the setup person's; cap 6), D-160 (drawings from the
 tools).
+
+## ACE addendum to RS5's readout, for WP29 (27 November)
+
+The ACE re-read the 2026-07-28 tools page at source: "MUST NOT vary per-connection or as a side effect of other
+requests on the connection. The set MAY vary by the authorization presented on the request — for example, returning
+only the tools the caller's granted scopes permit — since credentials are per-request input, not connection state."
+The readout carries the exception (G4, Appendix D) but does not list it among Q2's carriers. WP29 should weigh it:
+**stage carried as authorization**, a per-stage key or a key scoped to a stage, issued by SCAT Chat. It is legal in
+both spec eras, sits close to the chief engineer's "header for messages to the mcp server to carry stage", and bears on
+Q11 (the stage word's authority), since only the coder pastes a key. Its costs (a key per stage, or re-issuing a key
+to move stage; how each chat holds several connectors) are for WP29 to weigh, and the client trials can try it.
+
+## Input for WP29: a structure-aware commit at hand-over (the chief engineer, 27 November)
+
+Asked whether the WP27 guard denial was the development environment or the app (it was the development environment:
+Claude Code's auto-mode classifier on the build agents), the chief engineer said (typed by the agent): "if its our app
+then we should probably provide explicit tools with git commit, but we are committing to repos we know are templated so
+we can create narrow commands and checks that the applicable rules are passed before committing. between stages within
+the session, the template structures, and the page status, we should have all the structure we need for clean
+contextually relevant and contextually enforced rules". Asked where it goes: "Into WP29's design". WP29 designs a
+structure-aware commit as a stage tool (staging only the vault's template paths, never `.obsidian/` churn or stray files;
+running the checks the stage requires and refusing if they fail; still the coder's act, which the assistant may propose
+but not run). Evidence: V1 (a first `git add .` swept Obsidian's files in). Implementing it needs an amendment to WP30's
+scope once the design lands.

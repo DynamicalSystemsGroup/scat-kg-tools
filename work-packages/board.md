@@ -34,7 +34,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP24 | Node-page help and merge (D-145) | all units done on `pm-wp24`, tier 1 green (3165 passed); pushed to `dev`; waiting on the ACE's acceptance and three rulings from the re-sweep | `WP24.md` |
 | WP25 | Coding paths, facilitating and planning (D-149) | all units done on `pm-wp25` except U10 (the chief engineer's sitting: Claude, Codex and inference.coop runs and screenshots; by-hand Obsidian screenshots); tier 1 and CI before push | `WP25.md` |
 | WP26 | Prompt-residue sweep and user-test loops (D-154) | all units done on `pm-wp26` (iteration 47: 24 est, 28 realized, 1.0 h); two UA-A rounds, round 2 with no blocking finding; pushed to `dev`; `check_metrics.py --accept WP26` passes; waits on the ACE for the template pin and acceptance | `WP26.md` |
-| WP27 | Vault settings belong to the setup person; default cap 6 (D-159) | approved (D-163) | `WP27.md` |
+| WP27 | Vault settings belong to the setup person; default cap 6 (D-159) | all units done and merged; ready for ACE acceptance | `WP27.md` |
 | WP28 | Drawings returned by the server (D-160) | approved (D-163) | `WP28.md` |
 | RS5 | Research spike: the lifecycle as a state machine (D-162; branch `spike/lifecycle`, never merged into `dev`) | approved (D-163) | `RS5-lifecycle.md` |
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | approved (D-163) | `WP29.md` |
@@ -377,6 +377,20 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP25-U11 | simulated user (cold reader, no accounts), haiku | 2 | 3 | `wp25/u11` | done |  | 2026-11-26T22:49:00-05:00 | three Haiku cold readers (by hand run, local-LLM read-through, account-bound read-through); findings record; four fix rounds |
 | WP25-U11r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T22:49:00-05:00 | one fresh review of the fix round, which found five more items |
 | WP25-U12 | change consultant (S1 to S3 re-sweep, counts and greps), haiku | 1 | 1 | `wp25/u12` | done |  | 2026-11-26T22:49:00-05:00 | change-consultant sweep S1 to S3 and link checks; found stale acceptance names and two mission lines for the ACE |
+| RS5-U1 | research engineer (state-machine literature, G1), sonnet | 5 | 5 | `spike/lifecycle-u1` | done |  | 2026-11-27 | as estimated; tests re-run by the PM |
+| RS5-U2 | research engineer (our instance's raw material and predicates, G2 and G5), sonnet | 5 | 5 | `spike/lifecycle-u2` | done |  | 2026-11-27 | as estimated; tests re-run by the PM |
+| RS5-U3 | Python developer (single stage-scoped throwaway server, G3 and G4), sonnet | 8 | 8 | `spike/lifecycle-u3` | done |  | 2026-11-27 | as estimated; tests re-run by the PM |
+| RS5-U4 | Python developer (router of per-stage servers, R3b), sonnet | 5 | 5 | `spike/lifecycle-u4` | done |  | 2026-11-27 | as estimated; tests re-run by the PM |
+| RS5-U5 | research engineer (client documentation: list-changed, headers, elicitation), sonnet | 3 | 3 | `spike/lifecycle-u5` | done |  | 2026-11-27 | as estimated; tests re-run by the PM |
+| WP27-U1 | technical writer (template cap 6), haiku | 1 | 1 | `wp27/template` | done |  | 2026-11-27 | template `dev` eeb3ebe; check run |
+| WP27-U1r | reviewer (fresh, template), haiku | 1 | 1 | `-` | done |  | 2026-11-27 | six checks, all pass |
+| WP27-U2 | technical writer (settings are the setup person's job), sonnet | 3 | 5 | `wp27/u2` | done |  | 2026-11-27 | one review round, three minor fixes; planning at its word cap |
+| WP27-U2r | reviewer (fresh, prose and test), sonnet | 2 | 2 | `-` | done |  | 2026-11-27 | real refusal provoked; new test fails on old text |
+| WP27-U3 | test engineer (sweep of 3 as the default), sonnet | 3 | 3 | `wp27/u3` | done |  | 2026-11-27 | as estimated; grep table of remaining hits |
+| WP27-U3r | reviewer (fresh, sweep), sonnet | 2 | 2 | `-` | done |  | 2026-11-27 | every changed output replayed; no findings |
+| RS5-U6 | technical writer (client trial plan for the ACE), sonnet | 2 | 2 | `spike/lifecycle` | done |  | 2026-11-27 | commands run locally; client steps not run |
+| RS5-U7 | technical writer (readout), sonnet | 5 | 8 | `spike/lifecycle` | done |  | 2026-11-27 | one fresh review (5 must-fix items) and a fix round |
+| RS5-U8 | reviewer (fresh, readout), sonnet | 2 | 2 | `spike/lifecycle` | done |  | 2026-11-27 | one fresh review (5 must-fix items) and a fix round |
 
 ## Iterations and velocity
 
@@ -422,6 +436,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 44 | WP25-U1, WP25-U1r, WP25-U2, WP25-U2r, WP25-U8, WP25-U8r, WP25-U9, WP25-U9r | 16 | 21 | 1.31 | 1.00 h | 21.0 |
 | 45 | WP25-U3, WP25-U3r, WP25-U4, WP25-U4r, WP25-U5, WP25-U5r, WP25-U6, WP25-U6r, WP25-U7, WP25-U7r | 18 | 27 | 1.50 | 1.25 h | 21.6 |
 | 46 | WP25-U11, WP25-U11r, WP25-U12 | 4 | 6 | 1.50 | 0.50 h | 12.0 |
+| 48 | WP27-U1 to WP27-U3r | 12 | 14 | 1.17 | 0.6 h | 23.3 |
+| 49 | RS5-U1 to U8 | 35 | 38 | 1.09 | 0.70 h | 54.3 |
 
 ## Velocity and forecast
 
