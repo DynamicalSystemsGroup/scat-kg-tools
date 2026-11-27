@@ -16,7 +16,7 @@
       "enum": ["required", "optional", "disallowed", null]
     },
     "OperationName": {
-      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge, merge, split-plan, fingerprint, edges, layered, trace, evidence, copy-share, review, attribution, export-edges). New commands may appear, so the names are not enumerated.",
+      "description": "The command name as typed after scat (check, status, set-status, index, stub, stub-links, record-edge, remove-edge, merge, split-plan, fingerprint, edges, layered, trace, evidence, copy-share, review, attribution, export-edges, draw; draw covers the fingerprint, layered and trace drawings). New commands may appear, so the names are not enumerated.",
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]*$"
     },

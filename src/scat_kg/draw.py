@@ -4,10 +4,12 @@
     d = draw.fingerprint("dry-july")      # a narrative's nodes and edges
     d = draw.fingerprint("dry-july", candidates=True)   # and its rule-4 candidates dashed
     d = draw.layered(["dry-july"])        # the layered view; none: every narrative
+    d = draw.trace("water")               # what a node reaches: up, down or `direction="both"` (the default)
     d.png(); d.svg()                      # the image, as bytes and as text; Jupyter shows `d` itself
     d.save("dry-july.png")                # the explicit write: `.png` or `.svg`
 
-A drawing is the view's data first (`view.to_dict()`, never the graph again) and then marks. Each node is a box in
+A drawing is the view's data first (`view.to_dict()`, never the graph again) and then marks. A trace draws the
+nodes it reaches and the node it starts from, whose type and status come from `evidence`, another view. Each node is a box in
 its layer's column, labelled with its name (and its status, in brackets, when that is not `done`); each edge is a
 line between neighbouring columns; the layer is named at the top of its column and has its own colour, so colour
 is never the only sign. Within a column the nodes keep the view's order, by name. Nothing is ordered or sized by a
@@ -21,6 +23,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from scat_kg import views
+from scat_kg.evidence import evidence
 from scat_kg.ops.files import replace_file
 from scat_kg.ops.result import Refusal, Result, stamp
 from scat_kg.tbox import TBOX
@@ -100,6 +103,21 @@ def _layered_mark(data: dict) -> _Mark:
             if data.get("excluded")
             else ""
         ),
+    )
+
+
+def _trace_mark(data: dict, me: dict) -> _Mark:
+    """`data` is a trace view's; `me` is the traced node (name, type, status), which a trace leaves out."""
+    reached = [*data["up"], *data["down"], me]
+    by_layer = {layer: [x for x in reached if x["type"] == layer] for layer in TBOX.layers}
+    for nodes in by_layer.values():
+        nodes.sort(key=lambda x: x["name"])
+    way = {"up": "up", "down": "down", "both": "up and down"}[data["direction"]]
+    return _Mark(
+        f"trace of {me['type']} {me['name']}, {way}",
+        _columns(by_layer),
+        tuple((e["from"], e["to"], False) for e in data["edges"]),
+        f"solid line: an edge a row of a narrative tells, walked from {me['name']}.",
     )
 
 
@@ -301,3 +319,17 @@ def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> D
     if not isinstance(view, views.View):
         return view
     return Drawing(_layered_mark(view.data), Path(root))
+
+
+def trace(node: str, direction: str = "both", *, root: str | Path = ".") -> Drawing | Result:
+    """Draw what a node reaches, `direction` up, down or both (the default), with the node itself in its column."""
+    if bad := _need_matplotlib():
+        return bad
+    view = views.trace(node, direction, root=root)
+    if not isinstance(view, views.View):
+        return view
+    own = evidence(node, root=root)
+    if not isinstance(own, views.View):
+        return own
+    me = {"name": node, "type": own.data["node_type"], "status": own.data["node_status"]}
+    return Drawing(_trace_mark(view.data, me), Path(root))

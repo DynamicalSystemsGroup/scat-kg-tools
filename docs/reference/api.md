@@ -39,7 +39,7 @@
 | [`scat_kg.review`](#scat_kgreview) | [`scat review`](cli.md#scat-review) | View: pairs of node pages that may be one node, and pages whose accounts tell them to different other ends. |
 | [`scat_kg.attribution`](#scat_kgattribution) | [`scat attribution`](cli.md#scat-attribution) | View: the narratives by contributor (where the vault's attribution mode allows it). |
 | [`scat_kg.export_edges`](#scat_kgexport_edges) | [`scat export-edges`](cli.md#scat-export-edges) | Write the edge tables as CSV and Markdown. |
-| [`scat_kg.draw.fingerprint`](#scat_kgdrawfingerprint), [`scat_kg.draw.layered`](#scat_kgdrawlayered) | [`scat draw`](cli.md#scat-draw) | Draw a view as an image (needs the extra `draw`). |
+| [`scat_kg.draw.fingerprint`](#scat_kgdrawfingerprint), [`scat_kg.draw.layered`](#scat_kgdrawlayered), [`scat_kg.draw.trace`](#scat_kgdrawtrace) | [`scat draw`](cli.md#scat-draw) | Draw a view as an image (needs the extra `draw`). |
 
 ## Machine-readable output
 
@@ -1371,6 +1371,14 @@ draw.layered(narratives=None, *, root=".")
 ```
 
 Draws the layered view of the named narratives, or of every narrative. Returns a `Drawing`. CLI twin: [`scat draw layered`](cli.md#scat-draw-layered).
+
+### scat_kg.draw.trace
+
+```text
+draw.trace(node, direction="both", *, root=".")
+```
+
+Draws what [`scat_kg.trace`](#scat_kgtrace) follows from a node: up toward the groups, down toward the technologies, or both. The node itself is drawn too, in its own layer's column, and the title names it, its type and the direction (`trace of concern water, up and down`). Returns a `Drawing`. `node` is required: the name of a group, concern, affordance or technology. `direction` is `up`, `down` or `both` (the default; CLI: `--direction`). CLI twin: [`scat draw trace`](cli.md#scat-draw-trace).
 
 ### Drawing
 
