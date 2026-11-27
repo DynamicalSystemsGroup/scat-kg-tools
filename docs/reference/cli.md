@@ -72,7 +72,8 @@ positional arguments:
                   it and its status. Writes nothing.
     layered       Show the layered view: the union of the fingerprints of the
                   narratives named by --narrative, or, without it, of every
-                  narrative. Writes nothing.
+                  narrative; with --candidates, also the links that have no
+                  row. Writes nothing.
     trace         Follow edges from a node: up toward the groups, down toward
                   the technologies, or both. The node itself is left out.
                   Writes nothing.
@@ -1298,8 +1299,9 @@ $ uv run scat edges holds --json
 
 ```text
 usage: scat layered [-h] [--root ROOT] [--json] [--narrative NARRATIVE]
+                    [--candidates]
 
-Show the layered view: the union of the fingerprints of the narratives named by --narrative, or, without it, of every narrative. Writes nothing.
+Show the layered view: the union of the fingerprints of the narratives named by --narrative, or, without it, of every narrative; with --candidates, also the links that have no row. Writes nothing.
 
 options:
   -h, --help            show this help message and exit
@@ -1309,11 +1311,13 @@ options:
                         interface contract), nothing else
   --narrative NARRATIVE
                         include this narrative; repeat it for each narrative
+  --candidates          also show the candidates: links between two nodes that
+                        have no row
 
-REPL: `scat_kg.layered()`, `scat_kg.layered(["<narrative>"])`
+REPL: `scat_kg.layered()`, `scat_kg.layered(["<narrative>"], candidates=True)`
 ```
 
-Shows the layered view: the union of the fingerprints of the narratives you name, or of every narrative when you name none. The nodes are grouped by layer, in layer order, and the edges are the rows those narratives tell; there are no candidates. It writes nothing.
+Shows the layered view: the union of the fingerprints of the narratives you name, or of every narrative when you name none. The nodes are grouped by layer, in layer order, and the edges are the rows those narratives tell. With `--candidates` it also lists the candidates, the links between two nodes that have no row, each with its narrative; a narrative with no account text is flagged, since every pair of its adjacent nodes is then a candidate and says nothing about the text. The node pages that no row tells (orphans) are listed with their type and status. It writes nothing.
 
 Exit codes: 0, or 1 for a refusal (a name that is not a narrative, a page it draws that has an error).
 
@@ -2176,17 +2180,18 @@ $ uv run scat export-edges --out edge-tables --json
 ```text
 usage: scat draw [-h] <drawing> ...
 
-Draw a view as an image, four columns in layer order. Needs the extra `draw`: `pip install "scat-kg[draw]"`. The only write is the image file you name with --out.
+Draw a view as an image in columns by layer. Needs the extra `draw`: `pip install "scat-kg[draw]"`. The only write is the image file you name with --out.
 
 positional arguments:
   <drawing>
-    fingerprint  Draw a narrative's fingerprint: its nodes and edges in four
-                 columns; with --candidates, the links that have no row
-                 dashed. Refuses where `scat fingerprint` would, and then
-                 writes nothing.
+    fingerprint  Draw a narrative's fingerprint: its nodes and edges in
+                 columns that follow the narrative's kind; with --candidates,
+                 the links that have no row dashed. Refuses where `scat
+                 fingerprint` would, and then writes nothing.
     layered      Draw the layered view of the narratives named by --narrative
-                 or, without it, of every narrative. Refuses where `scat
-                 layered` would, and then writes nothing.
+                 or, without it, of every narrative; with --candidates, the
+                 links that have no row dashed. Refuses where `scat layered`
+                 would, and then writes nothing.
     trace        Draw what a node reaches: up toward the groups, down toward
                  the technologies, or both, with the node itself in its
                  column. Refuses where `scat trace` would, and then writes
@@ -2198,7 +2203,7 @@ options:
 REPL: `from scat_kg import draw`, then `draw.fingerprint(...)`, `draw.layered(...)` or `draw.trace(...)`
 ```
 
-Draws a view as an image in columns, one for each layer, in layer order, labelled stakeholder, concern, affordance and technology at the top. A fingerprint drawing follows its narrative's kind: an architecture has no stakeholder column, a scenario no technology column, and a narrative with no kind has all four; a note under the drawing says which column is not drawn, why, and how many linked nodes it leaves out. The layered and trace drawings keep all four columns. SVG and PNG are the same drawing in two formats. Each node is a box labelled with its name, and with its status in brackets when that is not `done`; each edge is a line between neighbouring columns. Within a column the nodes are in order of name. `scat draw fingerprint` draws one narrative's fingerprint and shows no candidates unless you add `--candidates`, which draws the links with no row as dashed lines. `scat draw layered` draws the layered view of the narratives you name with `--narrative`, or of every narrative. `scat draw trace` draws what `scat trace` follows from a node, up, down or both (`--direction`, both unless you say), with the node itself in its own layer's column and the title naming it.
+Draws a view as an image in columns, one for each layer, in layer order, labelled stakeholder, concern, affordance and technology at the top. A fingerprint drawing follows its narrative's kind: an architecture has no stakeholder column, a scenario no technology column, and a narrative with no kind has all four; a note under the drawing says which column is not drawn, why, and how many linked nodes it leaves out. The layered and trace drawings keep all four columns. SVG and PNG are the same drawing in two formats. Each node is a box labelled with its name, and with its status in brackets when that is not `done`; each edge is a line between neighbouring columns. Within a column the nodes are in order of name. `scat draw fingerprint` draws one narrative's fingerprint and shows no candidates unless you add `--candidates`, which draws the links with no row as dashed lines. `scat draw layered` draws the layered view of the narratives you name with `--narrative`, or of every narrative, and with `--candidates` draws the links with no row as dashed lines too. `scat draw trace` draws what `scat trace` follows from a node, up, down or both (`--direction`, both unless you say), with the node itself in its own layer's column and the title naming it.
 
 Drawing needs the extra `draw`: `pip install "scat-kg[draw]"`. Without it, the command refuses and says so. The same command gives the same image, byte for byte.
 
@@ -2213,7 +2218,7 @@ usage: scat draw fingerprint [-h] [--root ROOT] [--json] [--candidates] --out
                              FILE
                              NARRATIVE
 
-Draw a narrative's fingerprint: its nodes and edges in four columns; with --candidates, the links that have no row dashed. Refuses where `scat fingerprint` would, and then writes nothing.
+Draw a narrative's fingerprint: its nodes and edges in columns that follow the narrative's kind; with --candidates, the links that have no row dashed. Refuses where `scat fingerprint` would, and then writes nothing.
 
 positional arguments:
   NARRATIVE     the narrative's name
@@ -2234,9 +2239,9 @@ REPL: `draw.fingerprint("<narrative>", candidates=True).save("<file>")`
 
 ```text
 usage: scat draw layered [-h] [--root ROOT] [--json] [--narrative NARRATIVE]
-                         --out FILE
+                         [--candidates] --out FILE
 
-Draw the layered view of the narratives named by --narrative or, without it, of every narrative. Refuses where `scat layered` would, and then writes nothing.
+Draw the layered view of the narratives named by --narrative or, without it, of every narrative; with --candidates, the links that have no row dashed. Refuses where `scat layered` would, and then writes nothing.
 
 options:
   -h, --help            show this help message and exit
@@ -2246,10 +2251,11 @@ options:
                         interface contract), nothing else
   --narrative NARRATIVE
                         include this narrative; repeat it for each narrative
+  --candidates          also draw the candidates: links with no row, dashed
   --out FILE            the image file to write, ending in `.png` or `.svg`
                         (no default)
 
-REPL: `draw.layered().save("<file>")`, `draw.layered(["<narrative>"]).save("<file>")`
+REPL: `draw.layered().save("<file>")`, `draw.layered(["<narrative>"], candidates=True).save("<file>")`
 ```
 
 === "Python"
