@@ -2808,3 +2808,16 @@ on screen and needs the chief engineer's account: it joins his sitting.
 - V3: "just use the timeframe field", confirmed as the ACE's reading ("Yes, that": the stub writes `timeframe:` with no
   value and no comment hint). Done in tools 5e4ab16 (stub, contract section 6, Coding and API pages, tests). Pages
   already holding the old comment still read as missing, as before.
+
+## D-157 | 2026-11-27 | A lifecycle manual built into the tools, in v0.1
+
+In his sitting, connecting Claude to the server, the chief engineer said (typed by the agent): "the MCP server has all
+the tools but not the skills for using those tools or anything about how to assemble those skills and tools into the
+intended workflow. ... is this something where we can provide discovery, and retrieval of markdown files via the cli?
+like i am thinking of a simple skills registry organized around the scat project lifecycle. ... i think its fine for
+skills to direct the user to the documentation but i feel like the mcp server should have its "instruction manual"
+built into it. its not a random collection of tools they exist to support specific lifecycle". Today the server has
+19 tools, six prompts and one resource (the assistant's rules), no connect-time instructions, and no map from the
+lifecycle's stages to them; the skill is a separate upload. The ACE sketched lifecycle guides in markdown served as the
+server's instructions and as resources and by a `scat guide` command, and asked when it should land. His answer:
+"In v0.1". The ACE scopes it as WP27 after the sitting; the Claude walkthrough's skill steps re-run once it lands.
