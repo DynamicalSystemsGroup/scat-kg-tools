@@ -31,7 +31,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP21 | Rules and norms, the chat path's life cycle, the published image (D-114) | all units done and merged on `dev`; ready for ACE acceptance after the template pin | `WP21.md` |
 | WP22 | SCAT Chat, a small clear local app that runs the MCP server (D-125) | all units done; merged into `dev`; waiting on the ACE's acceptance and the chief engineer's sitting | `WP22.md` |
 | WP23 | Three disjoint attribution modes, and the edge's formal name (D-129) | all units done on `pm-wp23`; landing on `dev` with the template pin; waiting on the ACE's acceptance | `WP23.md` |
-| WP24 | Node-page help and merge (D-145) | A (U1 to U4) done and merged on `pm-wp24`; U5 spike done, its recommendation waits on the ACE's logged decision; U7 waits on that decision | `WP24.md` |
+| WP24 | Node-page help and merge (D-145) | all units done on `pm-wp24`, tier 1 green (3165 passed); pushed to `dev`; waiting on the ACE's acceptance and three rulings from the re-sweep | `WP24.md` |
 
 ## Units
 
@@ -338,15 +338,15 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP24-U4r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T16:48:44-05:00 | FAIL once on a test-strength defect, mutation-tested the guards |
 | WP24-U5 | research engineer (homonym and synonym spike on the U1 vault), sonnet | 2 | 2 | `wp24/u5` | done |  | 2026-11-26T16:51:47-05:00 | spike on the G6 vault; one fix round on how far the readout's claims reach |
 | WP24-U5r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T16:51:47-05:00 | PASS; re-ran all scripts and hand-checked the seeds; five claim fixes |
-| WP24-U6 | Python developer (merge: plan, apply, split plan, MCP plan only), sonnet | 5 |  | `wp24/u6` | queued | U4 |  |  |
-| WP24-U6r | reviewer (fresh), sonnet | 2 |  | `-` | queued | U6 done |  |  |
-| WP24-U7 | Python developer (review view), sonnet | 3 |  | `wp24/u7` | queued | U5 and the ACE's logged decision; U6 (shared files) |  |  |
-| WP24-U7r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U7 done |  |  |
-| WP24-U8 | technical writer (merge and review rules, docs, reviewers guide), sonnet | 2 |  | `wp24/u8` | queued | U6, U7 |  |  |
-| WP24-U8r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U8 done |  |  |
-| WP24-U9 | simulated users (3 Haiku, 1 Sonnet control; G6), haiku | 2 |  | `wp24/u9` | queued | U4, U1 |  |  |
-| WP24-U9r | reviewer (fresh), sonnet | 1 |  | `-` | queued | U9 done |  |  |
-| WP24-U10 | change consultant (S1 re-sweep, counts and greps), haiku | 1 |  | `wp24/u10` | queued | U8, U9 |  |  |
+| WP24-U6 | Python developer (merge: plan, apply, split plan, MCP plan only), sonnet | 5 | 7 | `wp24/u6` | done |  | 2026-11-26T19:37:51-05:00 | merge, split-plan, schema, docs over 20 files; review FAIL then a nine-item fix round and re-review PASS |
+| WP24-U6r | reviewer (fresh), sonnet | 2 | 3 | `-` | done |  | 2026-11-26T19:37:51-05:00 | two review rounds; mutation and graph-equality sweeps over 35 pairs |
+| WP24-U7 | Python developer (review view), sonnet | 3 | 4 | `wp24/u7` | done |  | 2026-11-26T19:37:51-05:00 | review view; one fix round for docs counts and threshold tests |
+| WP24-U7r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T19:37:51-05:00 | FAIL once, constants mutation-tested, re-review PASS |
+| WP24-U8 | technical writer (merge and review rules, docs, reviewers guide), sonnet | 2 | 3 | `wp24/u8` | done |  | 2026-11-26T19:37:51-05:00 | rules A18 to A20, prompt, norms by type, guide; two small fix rounds |
+| WP24-U8r | reviewer (fresh), sonnet | 1 | 2 | `-` | done |  | 2026-11-26T19:37:51-05:00 | PASS with four minor items; mutation-tested the guards |
+| WP24-U9 | simulated users (3 Haiku, 1 Sonnet control; G6), haiku | 2 | 3 | `wp24/u9` | done |  | 2026-11-26T19:37:51-05:00 | four testers (3 Haiku, 1 Sonnet control) on three modes; reports returned as text, PM wrote the findings record |
+| WP24-U9r | reviewer (fresh), sonnet | 1 | 1 | `-` | done |  | 2026-11-26T19:37:51-05:00 | no separate reviewer agent ran: the PM did the void check from the returned reports (recorded in the findings file) |
+| WP24-U10 | change consultant (S1 re-sweep, counts and greps), haiku | 1 | 2 | `wp24/u10` | done |  | 2026-11-26T19:37:51-05:00 | clock fix and re-sweep; the sweep found six items, three for the ACE |
 
 ## Iterations and velocity
 
