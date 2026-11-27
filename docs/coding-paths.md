@@ -20,12 +20,13 @@ provider in one place.
 
 ## Which path fits
 
-1. Does your data policy ask that nothing leaves your computer? Use **a local LLM**, or **by hand**.
-2. Does it allow an AI platform, but ask that nothing stays on the platform afterwards? Use **an AI chatbot**, in its
+1. Do you want no AI at all? Use **by hand**.
+2. Does your data policy (whether the field notes may leave your Mac) ask that nothing leaves your computer? Use **a local
+   LLM**, or **by hand**.
+3. Does it allow an AI platform, but ask that nothing stays on the platform afterwards? Use **an AI chatbot**, in its
    **leave no trace** variant (its example is inference.coop).
-3. Is any AI platform allowed? Use **an AI chatbot** if you prefer a chat window, or **an AI IDE** if you already work
+4. Is any AI platform allowed? Use **an AI chatbot** if you prefer a chat window, or **an AI IDE** if you already work
    in an editor with a terminal.
-4. Do you want no AI at all? Use **by hand**.
 
 If two paths fit, the tools you already know decide. You can switch path between narratives: the nodes, edges and
 checks are the same.

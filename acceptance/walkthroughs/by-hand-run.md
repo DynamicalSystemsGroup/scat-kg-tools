@@ -50,3 +50,12 @@ The page has no image references; add them with the slots when the sitting is do
 
 - Cloned `scat-kg-template` and ran `uv sync` (a `.venv` and uv cache entries) in the scratchpad folder `u3/vault`: removed at the end (the uv cache under the user's cache folder is shared and was left).
 - Temporary entry in Obsidian's `obsidian.json`: removed, file restored from backup, backup deleted.
+
+## Revision (cold-reader fixes), re-run on a fresh clone
+
+- Step 4 and 5 now use the link `[[workshop-participants|the people in the data]]` in the narrative's last bullet and the row `workshop-participants | holds | anonymity`, which the narrative's own text supports (the earlier `project-leads` line was not in the notes).
+- Re-run on a fresh scratch clone of the template (0a765a8): typo `workshop-participnts` gave SCAT-DRAFT-END-NOPAGE at line 23 (0 errors, 1 warning); after the fix `scat check <page>`, the REPL `scat_kg.check(...)` and the whole-vault `scat check` each printed `no problems`, exit 0. The output on the page is that output.
+- Prerequisite now says a plain clone of the template needs no sign-in, and gives the `cd` line.
+- The overview (coding-paths.md) lists the no-AI question first and glosses the data policy.
+- Obsidian steps and screenshots are still not run (same blockers as above).
+- Scratch clone and `.venv` removed at the end.
