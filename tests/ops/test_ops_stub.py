@@ -147,7 +147,7 @@ def test_stub_of_a_narrative_has_the_timeframe_line_after_the_title(make_vault):
     root = make_vault(CAP3)
     stub("story", "narrative", root=root)
     assert (root / "narrative/story.md").read_text() == (
-        '---\ntype: narrative\nstatus: stub\ntitle: "Story"\ntimeframe: # past | future | mixed\n---\n'
+        '---\ntype: narrative\nstatus: stub\ntitle: "Story"\ntimeframe:\n---\n'
     )
 
 

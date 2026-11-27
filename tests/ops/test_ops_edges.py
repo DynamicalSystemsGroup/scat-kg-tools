@@ -80,7 +80,7 @@ def test_record_stubs_a_missing_end_and_a_missing_narrative(vault):
     )
     page = (vault / "narrative/fresh-story.md").read_text()
     assert page.startswith(
-        '---\ntype: narrative\nstatus: stub\ntitle: "Fresh story"\ntimeframe: # past | future | mixed\n---\n'
+        '---\ntype: narrative\nstatus: stub\ntitle: "Fresh story"\ntimeframe:\n---\n'
     )
     assert "| [[a]] | is provided by | [[newtech]] | |" in page
     assert r.edge.type == "provided-by" and r.edge.narratives == ("fresh-story",)

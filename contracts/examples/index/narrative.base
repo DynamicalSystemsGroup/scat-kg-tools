@@ -1,17 +1,17 @@
 filters:
   and:
-    - 'note.type == "narrative"'
+    - note.type == "narrative"
     - '!file.inFolder("templates")'
 views:
   - type: table
-    name: "Narratives"
+    name: Narratives
     order:
       - file.name
-      - note.title
-      - note.status
-      - note.description
-      - note.kind
-      - note.timeframe
+      - title
+      - status
+      - description
+      - kind
+      - timeframe
     sort:
       - property: file.name
         direction: ASC

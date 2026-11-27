@@ -42,8 +42,8 @@ def account(v, narrative, body, status="draft"):
     path = f"narrative/{narrative}.md"
     text = v.read(path)
     text = text.replace(
-        "timeframe: # past | future | mixed",
-        f'description: "The {narrative} account."\ntimeframe: past',
+        "timeframe:\n",
+        f'description: "The {narrative} account."\ntimeframe: past\n',
     )
     text = text.replace("status: stub", f"status: {status}")
     head, sep, rest = text.partition("\n---\n")

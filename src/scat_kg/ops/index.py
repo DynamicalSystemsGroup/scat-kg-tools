@@ -27,18 +27,18 @@ def _quoted(expr: str) -> str:
 
 
 def base_text(type_: str, templates_folder: str) -> str:
-    """The Base file of one type: LF, one final newline."""
+    """The Base file of one type: LF, one final newline, in the form Obsidian itself saves it (quotes only where YAML
+    needs them, properties by their bare names), so opening the index in Obsidian leaves the file unchanged."""
     folder = templates_folder.replace("\\", "\\\\").replace('"', '\\"')
-    columns = ["file.name", "note.title", "note.status", "note.description"]
-    columns += [f"note.{k}" for k in EXTRA.get(type_, ())]
+    columns = ["file.name", "title", "status", "description", *EXTRA.get(type_, ())]
     lines = [
         "filters:",
         "  and:",
-        "    - " + _quoted(f'note.type == "{type_}"'),
+        f'    - note.type == "{type_}"',
         "    - " + _quoted(f'!file.inFolder("{folder}")'),
         "views:",
         "  - type: table",
-        f'    name: "{_plural(TBOX.page_types[type_].label)}"',
+        f"    name: {_plural(TBOX.page_types[type_].label)}",
         "    order:",
         *(f"      - {c}" for c in columns),
         "    sort:",

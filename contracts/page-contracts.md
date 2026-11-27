@@ -281,7 +281,7 @@ later operation the attribution mode gates). It also refuses a name that is ille
 already taken (any existing `.md` file name counts), when the name is given directly and not derived: it creates
 nothing and says why. With no type, it creates nothing and reports the link. The usual way to give such a link a type
 is to add the row that tells the edge, which entails the stub with that type and makes the link resolve. A stub of a
-`narrative` has the line `timeframe: # past | future | mixed` after `title`, with no value for the author to fill.
+`narrative` has the line `timeframe:` after `title`, with no value, for the author to fill.
 
 **Other cases.**
 - A link that is not an exact slug name (2) entails nothing: it is corrected in the link.
@@ -495,22 +495,23 @@ template folder (10).
 
 `scat index` writes the five files `index/group.base`, `index/concern.base`, `index/affordance.base`,
 `index/technology.base` and `index/narrative.base`. It writes only a file that does not exist and never rewrites one
-(an author may add columns). The file is UTF-8 with LF line endings and ends with one newline. A person can write the
-same file by hand. The content, for the type `concern`:
+(an author may add columns). The file is UTF-8 with LF line endings and ends with one newline. It is written in the
+form Obsidian itself saves a Base, so opening the index in Obsidian leaves it unchanged. A person can write the same
+file by hand. The content, for the type `concern`:
 
 ```
 filters:
   and:
-    - 'note.type == "concern"'
+    - note.type == "concern"
     - '!file.inFolder("templates")'
 views:
   - type: table
-    name: "Concerns"
+    name: Concerns
     order:
       - file.name
-      - note.title
-      - note.status
-      - note.description
+      - title
+      - status
+      - description
     sort:
       - property: file.name
         direction: ASC
@@ -518,7 +519,7 @@ views:
 
 For another type, replace `concern` in the first filter and the view's name with the type and its plural title: `group`
 and "Groups", `affordance` and "Affordances", `technology` and "Technologies". The narrative's file has two more columns
-after `note.description`: `note.kind` and `note.timeframe`. The second filter names the vault's
+after `description`: `kind` and `timeframe`. The second filter names the vault's
 `templates_folder` (10), here the default `templates`.
 
 ## 10. Vault configuration: the attribution mode and the group cap

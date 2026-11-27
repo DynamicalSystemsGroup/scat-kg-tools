@@ -37,10 +37,11 @@ def test_the_example_bases_are_what_the_tool_writes(example_vault):
 def test_base_text_is_lf_with_one_final_newline_and_the_columns_of_the_contract():
     text = base_text("concern", "templates")
     assert text.endswith("direction: ASC\n") and "\r" not in text and not text.endswith("\n\n")
-    assert 'name: "Concerns"' in text and "note.kind" not in text
+    assert "name: Concerns\n" in text and "- kind" not in text
+    assert '    - note.type == "concern"\n' in text  # Obsidian's own form: no quotes where YAML needs none
     n = base_text("narrative", "templates")
-    assert n.index("note.description") < n.index("note.kind") < n.index("note.timeframe")
-    assert 'name: "Technologies"' in base_text("technology", "templates")
+    assert n.index("- description") < n.index("- kind") < n.index("- timeframe")
+    assert "name: Technologies\n" in base_text("technology", "templates")
 
 
 def test_the_filter_follows_the_templates_folder_of_scat_toml(make_vault):

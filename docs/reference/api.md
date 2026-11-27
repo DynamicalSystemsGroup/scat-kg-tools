@@ -807,9 +807,9 @@ refused [SCAT-DONE-REFUSED] narrative/desk-notes-one.md: 2 error(s) would stand 
       2. run `scat set-status desk-notes-one draft` (REPL: `scat_kg.set_status("desk-notes-one", "draft")`) if the page is not finished
   error [SCAT-DONE-FIELD] narrative/desk-notes-one.md field `timeframe`: missing on a page with status: done
     Fix, choose one:
-      1. replace the line `timeframe: # past | future | mixed` with `timeframe: past` (author)
-      2. replace the line `timeframe: # past | future | mixed` with `timeframe: future` (author)
-      3. replace the line `timeframe: # past | future | mixed` with `timeframe: mixed` (author)
+      1. replace the line `timeframe:` with `timeframe: past` (author)
+      2. replace the line `timeframe:` with `timeframe: future` (author)
+      3. replace the line `timeframe:` with `timeframe: mixed` (author)
       4. run `scat set-status desk-notes-one draft` (REPL: `scat_kg.set_status("desk-notes-one", "draft")`) if the page is not finished
   Fix, choose one:
     1. fix the problems above, then run `scat set-status desk-notes-one done` again

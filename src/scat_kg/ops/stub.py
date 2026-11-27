@@ -30,11 +30,11 @@ NARRATIVE = TBOX.table_type.slug
 
 def stub_text(slug: str, title: str) -> str:
     """The skeleton of page contracts 6: `type`, `status: stub`, `title`, and for a type with a value-set field
-    required from `done` (a narrative's `timeframe`) the line with no value and the values as a comment."""
+    required from `done` (a narrative's `timeframe`) the key with no value."""
     out = f"---\ntype: {slug}\nstatus: stub\ntitle: {quote(title)}\n"
     for f in TBOX.page_types[slug].required:
         if f.value_set is not None and f.required_from == "done":
-            out += f"{f.key}: # {' | '.join(f.value_set)}\n"
+            out += f"{f.key}:\n"
     return out + "---\n"
 
 

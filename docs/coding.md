@@ -164,7 +164,7 @@ The page starts as a stub, with only what every page needs:
 type: narrative
 status: stub
 title: "Saturday at the tool library"
-timeframe: # past | future | mixed
+timeframe:
 ---
 ```
 
@@ -175,9 +175,9 @@ $ uv run scat check saturday-at-the-tool-library
 attribution mode: disallowed
 warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `timeframe`: missing (required once the page is done)
   Fix, choose one before you set status: done:
-    1. replace the line `timeframe: # past | future | mixed` with `timeframe: past` (author)
-    2. replace the line `timeframe: # past | future | mixed` with `timeframe: future` (author)
-    3. replace the line `timeframe: # past | future | mixed` with `timeframe: mixed` (author)
+    1. replace the line `timeframe:` with `timeframe: past` (author)
+    2. replace the line `timeframe:` with `timeframe: future` (author)
+    3. replace the line `timeframe:` with `timeframe: mixed` (author)
 warning [SCAT-UNCODED] narrative/saturday-at-the-tool-library.md body: the narrative links no node page, so it is excluded from the knowledge graph and every view
   Fix, choose one:
     1. link a node page where the account names one, as `[[<node-name>]]` (or list it under a heading such as `Linked beyond the text`); a node the account names with no edge needs only this link

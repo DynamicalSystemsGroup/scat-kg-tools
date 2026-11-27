@@ -1,15 +1,15 @@
 filters:
   and:
-    - 'note.type == "technology"'
+    - note.type == "technology"
     - '!file.inFolder("templates")'
 views:
   - type: table
-    name: "Technologies"
+    name: Technologies
     order:
       - file.name
-      - note.title
-      - note.status
-      - note.description
+      - title
+      - status
+      - description
     sort:
       - property: file.name
         direction: ASC
