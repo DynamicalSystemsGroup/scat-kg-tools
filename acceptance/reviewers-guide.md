@@ -22,8 +22,8 @@ are in `MISSION.md`, "User acceptance" and "Requirements". The ACE and your two 
 
 > **The candidate (refreshed 27 November, D-156).**
 >
-> - Tools candidate commit (the last commit that changed `src/` or `docs/`): `65c733b`
-> - Template `dev`, which pins tools `bc66409` (same `src/` as `65c733b`): `87accad`
+> - Tools candidate commit (the last commit that changed `src/` or `docs/`): `5e4ab16`
+> - Template `dev`, which pins tools `5e4ab16`: `6ccfd9d`
 > - Pages URL: https://dynamicalsystemsgroup.github.io/scat-kg-tools/ (pre-release banner on)
 
 Check them yourself:
@@ -34,9 +34,8 @@ git diff <candidate> dev -- src docs
 git ls-remote https://github.com/DynamicalSystemsGroup/scat-kg-template refs/heads/dev
 ```
 
-The first prints the tools candidate, the second prints nothing, the third shows the template's `dev` commit. To see
-that the template's pin has the same `src/`, run `git diff bc66409 65c733b -- src`; it prints nothing (with `docs` added it
-shows only D-156's sign-in line in `getting-started`, which the pin does not need). The
+The first prints the tools candidate, the second prints nothing, the third shows the template's `dev` commit. The
+template pins the candidate itself (`rev` in its `pyproject.toml`). The
 figures quoted in sittings 2 and 3 were taken earlier, on `dev` at `66d8dc3` (before WP21 to WP26); sitting 3's
 command block reruns every one on the candidate, so read its output rather than the quoted numbers. The packages'
 own acceptance entries (D-121 to D-156) give their test counts on their own heads.
@@ -574,12 +573,9 @@ live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
 35. **The duplicate-finding thresholds rest on one seeded positive each (D-147).** This is item 26's last point, kept
     here because the docs do not say it (D-146): the thresholds are code defaults, fitted to the G6 vault and checked
     on two small vaults; a second vault with known duplicates would settle them.
-36. **What the visual pass left for you (D-156).** V2: viewing the narrative index in Obsidian can rewrite
-    `index/narrative.base` into Obsidian's own form, which shows in `git status` (`scat index` reads both forms as the
-    same). V3: the stub's `timeframe` hint is a YAML comment, so Obsidian's Properties panel shows the field empty. V4:
-    node pages made by `record-edge` stay stubs when their narratives are done, and no page says whether that is
-    expected. The GitHub website path of `getting-started` step 1 has not yet been run on screen; it needs your
-    account. **Your answer:** for V2 to V4, accept or change.
+36. **The visual pass's items (D-156), answered by you.** V2: `scat index` now writes Obsidian's own form, so opening
+    an index no longer changes it. V3: the stub writes a plain empty `timeframe:`. V4: statuses stay independent. The
+    GitHub website path ran on screen (V7). Nothing left to answer here.
 
 **The note on the rule audit (D-052, D-053).** The audit covered the v0.1 catalogue as it stood then. The rules in
 force, with their ids and severities, are in `contracts/rule-catalogue.md`; `SCAT-NOEDGES` (G1, added in WP18-U6) and
@@ -587,10 +583,10 @@ the table rules came after the audit.
 
 **Checklist.**
 
-- [ ] I gave items 1, 3, 4, 5, 11, 34 and 36 my answer.
-- [ ] I read items 2, 6 to 10, 12 to 33 and 35 and accept each, or I note it.
+- [ ] I gave items 1, 3, 4, 5, 11 and 34 my answer.
+- [ ] I read items 2, 6 to 10, 12 to 33, 35 and 36 and accept each, or I note it.
 
-**Your decision.** Items 1, 3, 4, 5, 11, 34 and 36 each have your answer, and every other item is accepted or noted.
+**Your decision.** Items 1, 3, 4, 5, 11 and 34 each have your answer, and every other item is accepted or noted.
 
 ### 4d. UA-A results
 

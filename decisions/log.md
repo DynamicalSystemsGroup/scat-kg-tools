@@ -2799,3 +2799,12 @@ on screen and needs the chief engineer's account: it joins his sitting.
   cloned, and checked clean. One fix: the chat path's steps now name **Commit to dev** (tools `dev`).
 - V4: "all individual pages get independent status. we use neighborhood level checks which can programatically ask
   whether all nodes in a narrative are also done." Decided: statuses stay independent; no change.
+- V2, after the ACE set out three choices (accept; ship Obsidian's form; document it): "B. Ship Obsidian's form".
+  Done: `scat index` writes each index file in the form Obsidian saves it (tools 5e4ab16; contract section 9 and its
+  examples updated); the template pins tools 5e4ab16 with its five index files regenerated (template 6ccfd9d);
+  `TEMPLATE_COMMIT` moved to it (docs tests 297 passed; full suite 3298 passed, with one deploy test deselected
+  because this checkout holds the built SCAT Chat app). Checked on screen: a fresh clone with all five indexes opened in
+  Obsidian leaves `git status` clean.
+- V3: "just use the timeframe field", confirmed as the ACE's reading ("Yes, that": the stub writes `timeframe:` with no
+  value and no comment hint). Done in tools 5e4ab16 (stub, contract section 6, Coding and API pages, tests). Pages
+  already holding the old comment still read as missing, as before.
