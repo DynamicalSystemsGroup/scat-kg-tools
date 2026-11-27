@@ -87,6 +87,8 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 36. **In the chat:** open the Agent Builder and use its **Select** control to pick the agent; a new chat starts with it.
     (On inference.coop's instance agents start from that Select, not from the model menu or from typing `@`. If the
     saved agent cannot be chosen inside a temporary chat, start the chat with the model and the server entry instead.)
+    The message box then names the agent. The model menu at the top may still say **Select a model**: leave it, since
+    the agent brings its own model, and choosing a model there replaces the agent.
 37. **In the chat:** attach your field notes to this chat: the paperclip in the message box, then the file from your
     field notes folder. The chat shows the file attached.
 
