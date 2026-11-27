@@ -45,6 +45,8 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **contributor page**: a page of type `contributor`, outside the four layers, naming a person a narrative is attributed to, where the mode allows; the narrative's `attributed_to` field links to it. "Contributor" alone still means a participant.
 - **index page**: the page generated for a type (`index`), listing its entries; an Obsidian Base, 1.9 or later.
 - **status**: how far an entry has got: `stub` (a name), `draft` (content, incomplete) or `done` (complete, conformant, signed off by the coder).
+- **stage**: where a project is in its lifecycle: plan, capture, code, analyse or report; decided by a person. Not a status: a page changes status many times within one stage.
+- **transition**: a move from one stage to another, forward or backward, made on a person's word.
 - **mismatch**: a link and an edge that disagree about the same relationship, reported with a fix.
 
 ## The work
