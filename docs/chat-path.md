@@ -116,7 +116,7 @@ No terminal is needed for the coding; [Install once](#install-once) uses one.
 Claude in the browser (claude.ai) is one example; another chatbot that meets the needs above works the same way,
 with its own menus. Every Claude plan, Free to Enterprise, can add a connector and a skill. On Free, Pro and Max you
 add them yourself, and Free allows one connector. On Team and Enterprise an owner adds the connector and turns on what
-skills need (below); you then connect it under **Customize** > **Connectors**.
+skills need (below); you then connect it under **Plugins** > **Connectors**.
 
 The connector's address is public while the session runs, and only the key lets a request through (see
 [The session key](#the-session-key)). Stop switches it off.
@@ -124,19 +124,20 @@ The connector's address is public while the session runs, and only the key lets 
 Do [Install once](#install-once) and [Start a session](#start-a-session) first; come back when the dot is green.
 
 **Add the connector.** Claude cannot edit a connector, so unlike [Connect the chat](#connect-the-chat), where you keep the
-entry and paste the new key, each session you remove the connector (**Customize** > **Connectors**, the three dots, **Remove**) and add it again with the new key.
+entry and paste the new key, each session you remove the connector (**Plugins**, choose **SCAT**, the three dots, **Remove**) and add it again with the new key.
 
 12. **In the menu bar:** click the dot, then **Copy address**. The address, which ends in `/mcp`, is on your
     clipboard.
-13. **In Claude:** click **Customize**, then **Connectors**, then **+ Add**, then **Add custom connector**. A form
-    asks for a name and a URL.
-14. **In Claude:** in the form, type `SCAT` as the **Name** and paste the address as the **URL**. The first two
-    fields are filled.
-15. **In Claude:** under **Authentication**, choose **No sign in**. The key goes in a header, not a sign-in.
+13. **In Claude:** click **Plugins** in the left sidebar, then **Add** at the top right, then **Add custom connector**.
+    A form asks for a name and an address.
+14. **In Claude:** type `SCAT` as the name and paste the address as the **MCP server URL**, then click **Continue**.
+    The form shows SCAT and the address, and asks how to authenticate.
+15. **In Claude:** under **Authentication**, choose **No sign-in**. Claude may warn that the server required sign-in:
+    that is expected, because the key goes in a header instead.
 16. **In the menu bar:** click the dot, then **Copy key**. The key is on your clipboard.
-17. **In Claude:** under **Request headers**, add a header named `Authorization` whose value is `Bearer `, a space,
-    then the pasted key.
-18. **In Claude:** click **Add**. SCAT appears in your connectors.
+17. **In Claude:** under **Request headers**, click **Add header**, choose `x-api-key` from the list of header names,
+    and paste the key alone into **Value**.
+18. **In Claude:** click **Add**. SCAT shows as **Connected**, with its tools listed.
 19. **In any app:** copy a word from anywhere, so your clipboard no longer holds the key.
 
 **Load the rules, once.** Claude takes a skill as a zip of its folder.
@@ -145,22 +146,22 @@ entry and paste the new key, each session you remove the connector (**Customize*
     <https://raw.githubusercontent.com/DynamicalSystemsGroup/scat-kg-tools/dev/skills/scat-coding/SKILL.md>
     and save it as `SKILL.md` into a new folder named `scat-coding`. The folder holds the file.
 21. **In Finder:** right-click the `scat-coding` folder and choose **Compress**. A file `scat-coding.zip` appears.
-22. **In Claude:** click **Customize**, then **Skills**, then **+**, then **Create skill**, then **Upload a skill**,
-    and choose `scat-coding.zip`. The skill is listed with its switch on.
+22. **In Claude:** click **Plugins**, then **Add**, then **Upload plugin**; click **browse** and choose
+    `scat-coding.zip`, then **Upload**. Claude lists the plugin **Scat coding**, holding the skill.
 
-Skills need code execution. On Free, Pro and Max, switch on **Code execution and file creation** under **Settings**
-> **Capabilities**. On Team and Enterprise, an owner switches it on under **Organization settings** > **Plugins &
+Skills need code execution. On Free, Pro and Max, switch on **Run code in the cloud** under **Settings**
+> **Capabilities** > **Code execution and file creation**. On Team and Enterprise, an owner switches it on under **Organization settings** > **Plugins &
 skills** > **Policy**; on Enterprise the owner also switches on **Skills** there.
 
 **Start a chat and check.**
 
-23. **In Claude:** start a new chat, click **+** at the lower left, choose **Connectors**, and switch **SCAT** on.
+23. **In Claude:** start a new chat, click **+** at the lower left, choose **Plugins**, and switch **SCAT** on.
     The chat lists SCAT as on.
 24. **In Claude:** type `Run the SCAT check on my vault and tell me what it says.` and send it. The reply gives the
     result of the tool's check, and the check decides, not the model.
 
 From here, [Use](#use) shows the coding loop in the chat and in Obsidian. When you stop, [Stop](#stop) and
-[Clean up](#clean-up) apply; also remove the SCAT connector in **Customize** > **Connectors**.
+[Clean up](#clean-up) apply; also remove the SCAT connector under **Plugins**.
 
 ## Install once
 
