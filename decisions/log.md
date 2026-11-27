@@ -2899,3 +2899,13 @@ breakdown, "this list is correct but make sure 30 is dependent on 29 ..."; the a
 "Defaults approved"; and the scopes, "Approve all six", with autonomous execution of WP27, WP28 and RS5 now and the
 account-bound trials (WP28-R5, RS5's client trials) held for his return. Revert point `divergence/D-163`. The chain is
 RS5 → WP29 (locked by his separate approval) → WP30 → WP31; WP30 also follows WP28.
+
+## D-164 | 2026-11-27 | Install once is the setup person's job; one-time Terminal tolerated for v0.1
+
+The open judgement from D-155 (the chat path's Install once uses Terminal; the mission says the organiser must not be
+required to open a terminal on that path). The chief engineer (typed by the agent): "it is the setup persons job. i
+prefer not needing terminal but id permit it if thats the best solution at this time. we're trying to tighten down for
+a release. i am willing tolerate one time terminal use at setup but that doesn't mean i want that". Outcome: the page's
+reading stands (the setup person runs Install once, as D-159 makes settings theirs); the mission line holds, since the
+organiser is not required to open a terminal; a terminal-free Install once is candidate C16 for after v0.1. Reviewer's
+guide item 34 is answered.
