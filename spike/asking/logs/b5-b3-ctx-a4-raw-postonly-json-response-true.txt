@@ -1,0 +1,17 @@
+B5 b3_ctx client=A4 raw-postonly config=json_response=True
+client saw: no prompt; no result
+stream: none: routed to POST stream, JSON mode discards it
+outcome: HUNG (client gave up after 3s); server: asked, discarded by SDK; wall 3.05s
+
+[  0.08s] POST#1  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=no
+[  0.08s] POST#1     body: request initialize id=0 {"protocolVersion": "2025-11-25", "capabilities": {"elicitation": {}}, "clientInfo": {"name": "raw-postonly", 
+[  0.08s] POST#1  <- 200 content-type='application/json'
+[  0.08s] POST#1     json: response id=0 result={"protocolVersion": "2025-11-25", "capabilities": {"experimental": {}, "prompts": {"listChanged": false}, "res
+[  0.08s] POST#1     exchange ended
+[  0.08s] POST#2  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.08s] POST#2     body: notification notifications/initialized id=None {}
+[  0.08s] POST#2  <- 202 content-type='application/json'
+[  0.08s] POST#2     exchange ended
+[  0.08s] POST#3  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.08s] POST#3     body: request tools/call id=1 {"name": "b3_ctx", "arguments": {}}
+[  0.08s] sdk     received: elicitation/create

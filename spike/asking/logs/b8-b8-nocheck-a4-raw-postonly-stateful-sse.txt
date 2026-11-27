@@ -1,0 +1,26 @@
+B8 b8_nocheck client=A4 raw-postonly config=stateful, SSE
+client saw: prompt shown; result {"elicited": true, "action": "accept", "content": {"stage": "plan"}}
+stream: POST stream (tools/call response)
+outcome: returned; server: asked; answer POSTed; wall 0.08s
+
+[  0.07s] POST#1  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=no
+[  0.07s] POST#1     body: request initialize id=0 {"protocolVersion": "2025-11-25", "capabilities": {"elicitation": {}}, "clientInfo": {"name": "raw-postonly", 
+[  0.07s] POST#1  <- 200 content-type='text/event-stream'
+[  0.07s] POST#1     sse: response id=0 result={"protocolVersion": "2025-11-25", "capabilities": {"experimental": {}, "prompts": {"listChanged": false}, "res
+[  0.07s] POST#1     client disconnected
+[  0.07s] POST#1     exchange ended
+[  0.07s] POST#2  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.07s] POST#2     body: notification notifications/initialized id=None {}
+[  0.07s] POST#2  <- 202 content-type='application/json'
+[  0.07s] POST#2     exchange ended
+[  0.07s] POST#3  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.07s] POST#3     body: request tools/call id=1 {"name": "b8_nocheck", "arguments": {}}
+[  0.07s] POST#3  <- 200 content-type='text/event-stream'
+[  0.08s] POST#3     sse: request elicitation/create id=0 {"mode": "form", "message": "Which stage are we in? The coder decides.", "requestedSchema": {"properties": {"s
+[  0.08s] POST#4  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.08s] POST#4     body: response id=0 result={"action": "accept", "content": {"stage": "plan"}}
+[  0.08s] POST#4  <- 202 content-type='application/json'
+[  0.08s] POST#4     exchange ended
+[  0.08s] POST#3     sse: response id=1 result={"content": [{"type": "text", "text": "{\n  \"elicited\": true,\n  \"action\": \"accept\",\n  \"content\": {\n
+[  0.08s] POST#3     client disconnected
+[  0.08s] POST#3     exchange ended

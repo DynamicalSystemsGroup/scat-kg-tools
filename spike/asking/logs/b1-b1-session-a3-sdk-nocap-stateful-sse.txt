@@ -1,0 +1,35 @@
+B1 b1_session client=A3 sdk-nocap config=stateful, SSE
+client saw: no prompt; result {"elicited": false, "reason": "client did not declare elicitation"}
+stream: none sent
+outcome: returned; server: did not ask; wall 0.10s
+
+[  0.07s] POST#1  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=no
+[  0.07s] POST#1     body: request initialize id=0 {"protocolVersion": "2025-11-25", "capabilities": {}, "clientInfo": {"name": "mcp", "version": "0.1.0"}}
+[  0.07s] POST#1  <- 200 content-type='text/event-stream'
+[  0.07s] POST#1     sse: response id=0 result={"protocolVersion": "2025-11-25", "capabilities": {"experimental": {}, "prompts": {"listChanged": false}, "res
+[  0.07s] POST#1     client disconnected
+[  0.07s] POST#1     exchange ended
+[  0.07s] POST#2  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.08s] POST#2     body: notification notifications/initialized id=None {}
+[  0.08s] POST#2  <- 202 content-type='application/json'
+[  0.08s] POST#2     exchange ended
+[  0.08s] GET#3   -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.08s] GET#3   <- 200 content-type='text/event-stream'
+[  0.08s] POST#4  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.08s] POST#4     body: request tools/call id=1 {"name": "b1_session", "arguments": {}, "_meta": {"progressToken": 1}}
+[  0.08s] POST#4  <- 200 content-type='text/event-stream'
+[  0.08s] POST#4     sse: response id=1 result={"content": [{"type": "text", "text": "{\n  \"elicited\": false,\n  \"reason\": \"client did not declare elici
+[  0.08s] POST#4     client disconnected
+[  0.08s] POST#4     exchange ended
+[  0.09s] POST#5  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.09s] POST#5     body: request tools/list id=2 {}
+[  0.09s] POST#5  <- 200 content-type='text/event-stream'
+[  0.09s] POST#5     sse: response id=2 result={"tools": [{"name": "b1_session", "description": "B1 baseline: ctx.session.elicit_form (no related_request_id)
+[  0.09s] POST#5     client disconnected
+[  0.09s] POST#5     exchange ended
+[  0.09s] DELETE#6 -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.09s] DELETE#6 <- 200 content-type='application/json'
+[  0.09s] DELETE#6    exchange ended
+[  0.09s] sdk     Read stream closed by client
+[  0.09s] GET#3      client disconnected
+[  0.09s] GET#3      exchange ended

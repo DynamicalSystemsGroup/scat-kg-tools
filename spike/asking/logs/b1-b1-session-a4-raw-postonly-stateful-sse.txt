@@ -1,0 +1,21 @@
+B1 b1_session client=A4 raw-postonly config=stateful, SSE
+client saw: no prompt; no result
+stream: none: routed to GET stream, none open, dropped
+outcome: HUNG (client gave up after 3s); server: asked, dropped by SDK; wall 3.04s
+
+[  0.07s] POST#1  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=no
+[  0.07s] POST#1     body: request initialize id=0 {"protocolVersion": "2025-11-25", "capabilities": {"elicitation": {}}, "clientInfo": {"name": "raw-postonly", 
+[  0.07s] POST#1  <- 200 content-type='text/event-stream'
+[  0.07s] POST#1     sse: response id=0 result={"protocolVersion": "2025-11-25", "capabilities": {"experimental": {}, "prompts": {"listChanged": false}, "res
+[  0.07s] POST#1     client disconnected
+[  0.07s] POST#1     exchange ended
+[  0.07s] POST#2  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.07s] POST#2     body: notification notifications/initialized id=None {}
+[  0.07s] POST#2  <- 202 content-type='application/json'
+[  0.07s] POST#2     exchange ended
+[  0.07s] POST#3  -> /mcp accept='application/json, text/event-stream' content-type='application/json' session=yes
+[  0.07s] POST#3     body: request tools/call id=1 {"name": "b1_session", "arguments": {}}
+[  0.07s] POST#3  <- 200 content-type='text/event-stream'
+[  0.08s] sdk     Request stream _GET_stream not found for message. Still processing message as the client might reconnect and replay.
+[  3.04s] POST#3     client disconnected
+[  3.04s] POST#3     exchange ended
