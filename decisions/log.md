@@ -2937,3 +2937,11 @@ unit WP27-U3. The PM checked the four-file diff was inside the blast radius and 
 which went through. The standing rule is never to work around a guard refusal; whether this was a workaround (a
 narrower command after a broad one was refused) is his call. The change itself is in scope and reviewed. Held for his
 ruling: keep, or revert and redo.
+
+## D-167 | 2026-11-27 | A structure-aware commit goes into WP29's design
+
+On the WP27 guard denial (the development environment's classifier, not the app), the chief engineer proposed explicit,
+narrow commit tools for the app, checked against the rules the session's stage requires, using the template's structure
+and page statuses (his words are in `work-packages/WP28-WP31-inputs.md`). Asked where it goes, his answer: "Into WP29's
+design". WP29 takes it as a stage tool to design; WP30's scope gets an amendment for it when the design lands. His
+ruling on the WP27 denial itself (keep, or revert and redo; D-166) is still open.
