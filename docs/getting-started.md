@@ -31,7 +31,8 @@ cd my-vault
 
 **On the GitHub website.** No `gh`? Use this path.
 
-1. Open <https://github.com/DynamicalSystemsGroup/scat-kg-template>.
+1. Sign in to GitHub, then open <https://github.com/DynamicalSystemsGroup/scat-kg-template>. Signed out, GitHub does
+   not show **Use this template**.
 2. Choose **Use this template**, then **Create a new repository**.
 3. Set the name (for example `my-vault`) and set the visibility to **Private**.
 4. Create the repository. GitHub shows its page.
