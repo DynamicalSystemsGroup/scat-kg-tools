@@ -72,5 +72,5 @@ screenshots in the sitting's evidence folder (`r5/`), outside the repository.
 - **SVG is a fine output**: the model can read it as structure (which node, which line), and it renders as a figure
   when saved.
 - **inference.coop's model does not see images**: the chat shows a PNG to the person, but the model receives nothing
-  from it; Claude, by contrast, shows the image and can look at it. This is a difference between the paths to state
-  beside the others (the pros-and-cons page).
+  from it. Claude showed the image too; whether Claude's model receives it was not tested (a question for the next
+  run). Once known, it is a difference between the paths to state beside the others (the pros-and-cons page).
