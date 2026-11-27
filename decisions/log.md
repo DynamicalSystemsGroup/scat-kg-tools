@@ -2655,3 +2655,13 @@ Jaccard >= 0.5) finds the seeded synonym and duplicate-row cases and never the d
   line per type (G2 "by type"); `tests/scripts/test_check_metrics.py`'s fixed clock is fixed; `evidence`'s `line` stays a
   file line, as in every check message; A17's place between A8 and A9 stands (ids stable); the stale schema sample in
   `contracts/rule-catalogue.md` is updated. U7 is unblocked.
+
+## D-148 | 2026-11-26 | Four coding paths in the mission (C14)
+
+WP25's scope check found that `MISSION.md` (G14, "Users and how they work", R-20) named three paths and tested no
+provider but inference.coop. Asked to amend it so that coding has four paths (by hand; an AI IDE, example Codex; an AI
+chatbot, example Claude; a local LLM, example Ollama in Docker), each with a walkthrough; leave no trace an option of
+the chatbot path (example inference.coop); different providers per walkthrough; v0.1 running each walkthrough once
+with its example provider, the chief engineer chose "Yes, amend it". The ACE made the edits on `dev`. They remove G14's
+sentence "Testing with Claude would be cheating, since Claude is the development team", which the chief engineer's
+choice of Claude as the chatbot example supersedes. The docs say "path", not "approach".

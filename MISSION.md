@@ -148,16 +148,21 @@ separate user, and the docs make that first try easy.
 
 The organiser is also the **coder** of the data. They are technically savvy but not a software developer, and works on macOS for v0.1 (see
 Governance). They navigate GitHub's web interface, including creating a repository from a template; read, write and
-follow links in Obsidian; and follow documentation literally, step by step. They code by one of three paths (G14), and
-each has its own user experience:
+follow links in Obsidian; and follow documentation literally, step by step. They code by one of four paths (G14), and
+each has its own user experience and a walkthrough with screenshots:
 1. **By hand in Obsidian**, with the tools in an **interactive session**: the Python REPL (`import scat_kg`), with the
    `scat` CLI as an equal path to the same operations and messages. The docs lead with the REPL, because CLI commands
    get long when run through uv. Its future state is an Obsidian community plugin, which is out of scope for v0.1
    (see Non-goals).
-2. **Through a chat with an MCP server**, editing in Obsidian. On this path, the organiser must not be required to open a terminal. The docs explain how to
-   configure inference.coop, as an example of an OpenAI-API-compatible interface, to use the MCP server.
-3. **Through an IDE with agents**, such as Cursor, or VS Code with an agent. The docs point to the skills that help the
-   AI coding assistant set itself up.
+2. **Through an AI chatbot with an MCP server**, editing in Obsidian. On this path, the organiser must not be required
+   to open a terminal. The walkthrough's example is Claude. **Leave no trace** is an option of this path for a strict
+   data policy; its example is inference.coop, an OpenAI-API-compatible interface.
+3. **Through an AI IDE with agents**; the walkthrough's example is Codex. The docs point to the skills that help the AI
+   coding assistant set itself up.
+4. **Through a local LLM**, running on the organiser's own machine; the walkthrough's example is Ollama running in
+   Docker. It suits a project that keeps its material local.
+
+The walkthroughs use different providers, so no tool is favoured.
 
 **Three actors, two authorities.** Whatever the path:
 - the **coder** (a person) is the interpretive authority: they look at the Markdown in Obsidian and confirm that it
@@ -288,7 +293,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
   Relationship annotations (G1) stay out of the views.
 - **G13. Ripple-aware change.** A change to a term, a contract, a rule or this mission reaches every artifact that
   depends on it, in one package, and no two packages edit the same file in turn (see Governance).
-- **G14. Three coding paths.** The tools support the three paths in "Users and how they work". None is forced to look
+- **G14. Four coding paths.** The tools support the four paths in "Users and how they work". None is forced to look
   like another.
   - **By hand in Obsidian** is the base: LLM use is never assumed (R-19).
   - **The chat path** is the priority for design and testing in v0.1. The first field deployment may use one private
@@ -304,9 +309,10 @@ matters without claiming to be exhaustive. No particular project's choices appea
     technical route to build now (how the chat reaches the tools, and where that service runs), and may document
     another route as the preferred long-term one; R-20 holds either way. inference.coop is the interoperability test
     case: it follows the OpenAI-compatible API standard, so working through it is expected to carry over to other
-    providers that follow the same standard, though v0.1 tests no other. Testing with Claude would be cheating, since
-    Claude is the development team.
-  - **The IDE path** is supported, not the priority.
+    providers that follow the same standard. The chatbot walkthrough's example is Claude, and inference.coop is the
+    example of the leave-no-trace option.
+  - **The IDE path** is supported, not the priority; its walkthrough's example is Codex.
+  - **The local-LLM path** is supported, not the priority; its walkthrough's example is Ollama running in Docker.
 - **G15. A usable Obsidian layout.** The vault as Obsidian shows it is where the human coder codes and checks that
   meaning is preserved. Each narrative is one page, nothing is duplicated, and the layout uses what Obsidian offers rather
   than folders of near-empty pages. The design may decide which other entries are pages and which are fields, and so
@@ -392,7 +398,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault. Its fingerprint view gives, for each coded narrative, exactly its fingerprint, with no relationship annotation; it exports the three edge tables; and a trace from a node of each type returns exactly the nodes reachable up and down the layers. | The notebook executed in the template's CI, with tests on the views and the traces |
 | R-18 | **Ripple-complete changes.** Before a package that changes a term, contract, rule or this mission is approved, its impact map lists every artifact that refers to what changes, each marked change, keep (with why) or historical. At acceptance, the same sweep finds no reference that is unmarked or still says the old thing. | The impact map in the scope; the sweep's output in the acceptance record |
 | R-19 | **Manual first.** Every step, from field notes to coded vault to analysis, can be done by a person by hand, in Obsidian and the REPL or CLI, with no LLM. The process stays consistent with ethnographic coding practice, so a project whose data rights rule out AI loses nothing but speed. Any AI assistance is optional and provider-agnostic, and holds no authority: the coder is the interpretive authority and the tool the conformance authority (see "Three actors, two authorities"). | The UA-M walkthrough and the docs test, run with no LLM; the ACE's review of each spike readout against it |
-| R-20 | **The chat path works, at two test levels.** The MCP server's tools pass automated tests, its views equal the notebook's on the same vault, and the chat path (G14) is run end to end in the inference.coop browser chat at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents, which stand in for field notes. The field test comes after v0.1 and is not part of this repository. Other providers are not tested in v0.1. | The automated tests in CI; each end-to-end run recorded step by step with screenshots in the acceptance record |
+| R-20 | **The chat path works, at two test levels.** The MCP server's tools pass automated tests, its views equal the notebook's on the same vault, and the chat path (G14) is run end to end in the inference.coop browser chat at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents, which stand in for field notes. The field test comes after v0.1 and is not part of this repository. Beyond these runs, v0.1 runs each path's walkthrough once with its example provider (Claude, Codex, Ollama). | The automated tests in CI; each end-to-end run recorded step by step with screenshots in the acceptance record |
 | R-21 | **Coding happens in Obsidian.** A coder can code a narrative and review its fingerprint in Obsidian alone, without the same content held on two pages, and without opening pages that carry no content of their own. | A review in Obsidian with screenshots in the record; UA-M |
 | R-22 | **Architecture before detailed design.** The architecture document names the model, the views and the control plane, each module's interface contract and responsibilities, and is reviewed by architecture reviewers before any further package starts detailed design. | The review record; the ACE's approval, logged |
 | R-23 | **Links and edges reconcile.** The forms that must agree are a closed list: a narrative's link to a node, an edge's entry, and an edge's references to its nodes and to its narratives. Links outside these forms carry no graph meaning and are checked only as links (R-1). The tool detects each mismatch between these forms and gives a fix that reconciles it. A mismatch that involves a narrative is a warning while the narrative is a draft and an error once it is `done`; an edge cannot be `done` unless every narrative it names links both its nodes. Incremental coding, breadth first or depth first, never leaves a mismatch the tool can't see. The docs show both ways of working. | Tests that generate vaults with mismatches and check each mismatch is reported with a working fix; a named architecture reviewer for this area; a UX review in Obsidian of an incremental coding session, with screenshots |
