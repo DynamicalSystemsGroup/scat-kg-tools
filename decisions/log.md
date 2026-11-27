@@ -2747,3 +2747,26 @@ message wording may change but not operations, fields or schema versions, and wo
 testers run Sitting A (J1 to J4) and J6 only; R6 re-runs the sweep's patterns; "by-hand path" with UA-A's "manual path"
 as its label; candidates: none taken, and C7 marked done by WP21-U8 (an ACE bookkeeping slip). Revert point
 `divergence/D-154`. The ACE approves WP26.
+
+## D-155 | 2026-11-27 | WP26 accepted; the timeframe glossary entry; the template pin moved
+
+WP26 landed (tools `dev` bc66409, template `dev` 0b8b4c4, CI green in both): the residue and status sweep (record
+`acceptance/residue-sweep.md`; docs, template, launcher, skill, contracts, CLI help and messages read in full), every
+carried item (G4), three new tests (docs-code agreement, the residue patterns re-run, list numbering; each made to fail
+on planted violations), and two UA-A rounds with reports filed as the testers returned them
+(`acceptance/reports/wp26-r1-*`, `wp26-r2-*`). Round 1 had two blocking findings: the template pinned tools from before
+WP24, so the commands the docs describe were missing; and `getting-started` gave a reader who will not use Terminal no
+pointer to the chat path. Both fixed; round 2 had no blocking finding. The ACE adopts the PM's dispositions. One is
+flagged for the chief engineer's walkthrough: the chat path's "Install once" uses Terminal (the pages say a person who
+sets up does it; the mission says the organiser must not be required to open a terminal on that path).
+
+The ACE moved the template's tools pin to bc66409 (template `dev` d4d5654, CI green) and `TEMPLATE_COMMIT` to it (tools
+`dev` ad96d61; docs tests 297 passed).
+
+**Glossary call:** **timeframe** is added ("Said of a narrative: whether its account tells what happened (`past`), what
+would or will happen (`future`), or both (`mixed`). It is the narrative's `timeframe` field, required at `done`, and
+the author's reading of the text."), listed for the chief engineer's review at acceptance.
+
+Departures recorded in the findings: docs served from a local build of the same commit; uv preinstalled (the uv gap
+is closed separately, D-112); chat testers ran a pages-and-files pass for J1 to J4 and J6; the GitHub steps of J2 not
+reached. `check_metrics.py --accept WP26` passes (iteration 47: 24 est, 28 realized). The ACE accepts WP26.
