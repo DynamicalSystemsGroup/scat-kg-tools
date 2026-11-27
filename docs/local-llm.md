@@ -140,7 +140,7 @@ WebUI fetches for itself from huggingface.co. Your chat text goes only to the mo
 
     Choose **Save**. You should see "Connections saved successfully" and a row **SCAT** under External Tool Servers.
     The URL uses the server's name on the Docker network, because inside Open WebUI's container `localhost` is Open
-    WebUI itself. The filter list offers the model two tools instead of all nineteen, which keeps each request short. It uses the
+    WebUI itself. The filter list offers the model two tools instead of all twenty-two, which keeps each request short. It uses the
     server's tool names, `check` and `status`; Open WebUI shows a tool as the connection's ID plus its name, so `check`
     appears as `scat_check`.
 

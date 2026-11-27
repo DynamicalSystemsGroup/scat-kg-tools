@@ -62,7 +62,7 @@ uv run scat trace anonymity --direction up
 uv run scat export-edges --out exports
 ```
 
-A view's data is the same in the notebook, the CLI and later in chat.
+A view's data is the same in the notebook, the CLI and in chat.
 
 ## Drawings
 
@@ -74,6 +74,8 @@ from scat_kg import draw
 draw.fingerprint("groups-under-a-cap-pitch").save("fingerprint.png")
 draw.layered().save("layered.png")
 ```
+
+In chat, the tools `draw_fingerprint`, `draw_layered` and `draw_trace` return the same drawings. Ask for one by naming the view and what it shows, for example "draw the fingerprint of groups-under-a-cap-pitch". The drawing comes back in the chat and is not saved in your vault. If your chat does not show the image, ask for it again as `svg`, which returns the drawing as text, or save the picture from Terminal with `uv run scat draw fingerprint --out fingerprint.png NARRATIVE`, or from the notebook. A name the vault does not have, or an error in the pages drawn, comes back as the same refusal the CLI gives, with what to do.
 
 ## Where next
 

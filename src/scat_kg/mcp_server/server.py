@@ -7,9 +7,10 @@ not an exception. Nothing here writes a vault except the tool's own operations.
 from pathlib import Path
 from typing import Any
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp import FastMCP, Image
 
 import scat_kg
+from scat_kg import draw
 from scat_kg.mcp_server import prompts
 from scat_kg.ops.result import refused, stamp
 
@@ -191,6 +192,59 @@ def build(vault: str | Path, **settings) -> FastMCP:
     )
     def trace(node: str, direction: str = "both") -> dict[str, Any]:
         return _doc(scat_kg.trace(node, direction, root=root))
+
+    def _picture(make, fmt: str) -> Image | str | dict[str, Any]:
+        """The drawing `make()` as a PNG image or SVG text; a refusal, or an unknown `fmt`, as its document."""
+        if fmt not in ("png", "svg"):
+            return _doc(
+                refused(
+                    "draw",
+                    f"format {fmt!r}",
+                    "a drawing is returned as `png` or `svg`",
+                    "pass `format` as `png` (the default) or `svg`",
+                )
+            )
+        drawing = make()
+        if not isinstance(drawing, draw.Drawing):
+            return _doc(drawing)
+        return Image(data=drawing.png(), format="png") if fmt == "png" else drawing.svg()
+
+    same = (
+        "The picture is the one `scat draw` and the notebook make; `format` is `png` (an image, the default) "
+        "or `svg` (text). Writes nothing: the coder saves a file with `scat draw --out`. A refusal is "
+        "returned as the document, not an image."
+    )
+
+    @mcp.tool(
+        description=_OWN
+        + "Draw the fingerprint of `narrative` (with `candidates` true, also the links with no row). "
+        + same,
+        structured_output=False,
+    )
+    def draw_fingerprint(
+        narrative: str, candidates: bool = False, format: str = "png"
+    ) -> Image | str | dict[str, Any]:
+        return _picture(
+            lambda: draw.fingerprint(narrative, candidates=candidates, root=root), format
+        )
+
+    @mcp.tool(
+        description=_OWN + "Draw the layered view of `narratives`, or of every narrative. " + same,
+        structured_output=False,
+    )
+    def draw_layered(
+        narratives: list[str] | None = None, format: str = "png"
+    ) -> Image | str | dict[str, Any]:
+        return _picture(lambda: draw.layered(narratives, root=root), format)
+
+    @mcp.tool(
+        description=_OWN + "Draw what `node` reaches, up, down or both (`direction`). " + same,
+        structured_output=False,
+    )
+    def draw_trace(
+        node: str, direction: str = "both", format: str = "png"
+    ) -> Image | str | dict[str, Any]:
+        return _picture(lambda: draw.trace(node, direction, root=root), format)
 
     @mcp.tool(
         description=_OWN
