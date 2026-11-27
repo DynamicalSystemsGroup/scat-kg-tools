@@ -2844,3 +2844,14 @@ person's job; a looser default cap). His answer: "setup person's job + loosen th
 sitting: the pages say a vault setting is changed by whoever set the tools up (planning settles the cap with them
 first), and the template ships `stakeholder_group_cap = 6`, with every page and example that says 3 brought in line.
 For the run, the ACE raised the lab vault `my-vault` to 6 on his "raise the cap".
+
+## D-160 | 2026-11-27 | Drawings come from the tools, returned as images
+
+In the inference.coop run, asked for pictures of the views, the agent called `layered` and `fingerprint` and wrote
+Mermaid diagrams itself; the server has no drawing tool (the Python `draw` module is CLI and notebook only). The chief
+engineer (typed by the agent): "totally not looking like what i expected. we had been drawing previously using python.
+i don't want you to be authoring mermaid manually. i want the tools to generate and return svg or png". Before
+teardown he set the aim (typed by the agent): "we need the analysis stage of the lifecycle to be support which means
+call python tools that produce visualizations and providing help interpreting those visuals and where necessary
+revisiting the coded data". The ACE folds it into WP27 (D-157), as the analysis stage: the MCP server's drawing tools
+return the `draw` module's images, and the guide has the assistant interpret them and hand revisits back to the coder.
