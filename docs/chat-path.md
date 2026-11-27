@@ -84,15 +84,15 @@ pages. **The assistant never deletes anything**, and the server has no operation
     `technology`. Keep the `index` folder and everything else.
 9. **In GitHub Desktop:** in the **Summary** box type `Remove the example`. (The **Changes** list above it shows the
     deleted pages.)
-10. **In GitHub Desktop:** choose the button at the bottom left of the list, **Commit to main**. On a branch called
-    `dev` it reads **Commit to dev**: it carries the current branch's name.
+10. **In GitHub Desktop:** choose the button at the bottom left of the list, **Commit to dev**. It carries the current
+    branch's name, and a repository made from the template has the one branch, `dev`.
 11. **In GitHub Desktop:** choose **Push origin** in the top bar.
 
 Then, in the chat once the session is running, ask the assistant to run the check. It should say there are no problems.
 
 **Commit and push your work, any time.** After the assistant records edges and you have read and set pages to `done`
 in Obsidian, GitHub Desktop's **Changes** list shows every changed page. Read it. Type a summary, such as
-`Code the notes from my first session`, choose **Commit to main** (or the branch's name), then **Push origin**. The
+`Code the notes from my first session`, choose **Commit to dev**, then **Push origin**. The
 assistant does not commit or push; you do. Check the whole vault is clean first.
 
 ## What this path needs
