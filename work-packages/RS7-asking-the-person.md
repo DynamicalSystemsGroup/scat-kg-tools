@@ -34,8 +34,7 @@ answers questions; it builds nothing that ships.
 
 ## Open decisions
 
-- **O1.** Whether RS7 runs new client trials in Claude and inference.coop (your accounts, an hour or so at the screen,
-  human-paced), or stays a desk and local-server study whose client claims are "documented, not tried".
+None open. O1 (client trials) decided: trials in Claude and inference.coop are included (log D-182).
 
 ## Deliverables
 
@@ -43,7 +42,7 @@ answers questions; it builds nothing that ships.
 |---|---|---|
 | The readout: standards, practice, our trial's cause, options | `research/asking/readout.md` (merged to `dev`) | G1 to G4 |
 | Variant servers and their notes | `spike/asking` branch | G3 |
-| Trial record, if O1 says so | the readout's evidence section; screenshots outside the repository | G3 |
+| Client trials in Claude and inference.coop, human-paced, with the ACE as coder | the readout's evidence section; screenshots outside the repository | G2, G3 |
 
 ## Requirements
 
@@ -54,10 +53,11 @@ answers questions; it builds nothing that ships.
 | RS7-R3 | G3 ends in a stated cause with its evidence, or says what is still unknown and why. | The readout |
 | RS7-R4 | The readout ends with WP29's options, each with its cost and the clients it works in. | The readout |
 | RS7-R5 | No file on `dev` changes except the readout. | git |
+| RS7-R6 | Each pattern tried in a client is recorded with what the person saw and what the server received. | The trial record |
 
 ## Definition of good enough
 
-RS7-R1 to R5 met and O1 resolved.
+RS7-R1 to R5 met, with the client trials recorded.
 
 ## Definition of good
 

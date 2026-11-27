@@ -3099,3 +3099,12 @@ for Copilot by the chief engineer. The main inputs for WP29: a session-held stag
 across chats in inference.coop and is lost on restart in both); static carriers (query, path, an approved header in
 Claude) work; refusals and clarifications are relayed; elicitation cannot be relied on; Claude does not re-list tools
 mid-conversation, inference.coop does. Evidence stays outside the repository. Accepted by the ACE.
+
+## D-182 | 2026-11-27 | RS7 (how a tool asks the person): client trials included
+
+RS5's trials tried MCP elicitation once (one implementation); it hung in Claude and was absent in inference.coop. The
+chief engineer (typed by the agent): "seems like we must be missing something. this is a common pattern in LLM based
+work. we may need a spike to understand standards and best practices". The ACE drafted RS7
+(`work-packages/RS7-asking-the-person.md`) and corrected RS5's readout to limit the finding to what was tried. Asked
+whether RS7 runs new client trials or stays desk and local, the chief engineer said (typed by the agent): "Include
+trials". RS7's O1 is closed; R6 (each pattern tried is recorded) is added. RS7 is still a draft awaiting approval.
