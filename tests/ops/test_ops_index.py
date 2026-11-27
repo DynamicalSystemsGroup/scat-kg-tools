@@ -38,7 +38,9 @@ def test_base_text_is_lf_with_one_final_newline_and_the_columns_of_the_contract(
     text = base_text("concern", "templates")
     assert text.endswith("direction: ASC\n") and "\r" not in text and not text.endswith("\n\n")
     assert "name: Concerns\n" in text and "- kind" not in text
-    assert '    - note.type == "concern"\n' in text  # Obsidian's own form: no quotes where YAML needs none
+    assert (
+        '    - note.type == "concern"\n' in text
+    )  # Obsidian's own form: no quotes where YAML needs none
     n = base_text("narrative", "templates")
     assert n.index("- description") < n.index("- kind") < n.index("- timeframe")
     assert "name: Technologies\n" in base_text("technology", "templates")
