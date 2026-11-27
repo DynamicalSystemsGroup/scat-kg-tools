@@ -3153,3 +3153,10 @@ section 3). R5: D-186. R6: CI green on `wp29/design` (run 46069968582), full sui
 (`tests/docs/test_terms.py`, the word cap), approved in D-186. `wp29/design` is merged into `dev`. RS7's readout (how a
 tool asks the person) found the RS5 elicitation hang most likely came from the spike's own call; the model's section 3
 leaves how the server asks open to RS7, so nothing in it changes. Accepted by the ACE.
+
+## D-188 | 2026-11-27 | WP30 starts now, alongside WP34 and WP35
+
+Asked whether WP30 (the server built to the locked lifecycle model, D-186) should start now or after WP35, given that
+both touch the server's `layered` tool, the chief engineer said (typed by the agent): "Start WP30 now". A PM runs
+WP30 except R6's on-screen check, which is held for a sitting with the chief engineer. The WP34 and WP35 PM keeps the
+view tools; WP30's PM rebases on `dev` often and keeps stage handling in its own layer.
