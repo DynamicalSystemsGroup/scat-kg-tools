@@ -261,7 +261,8 @@ ones; the steps say which.
     grey while SCAT Chat starts, green while it runs and red when there is a problem.
 42. **In SCAT Chat:** at the first start, no vault is remembered, so a folder picker opens with the prompt "Choose your
     vault: the folder that holds your narratives (it has a file called scat.toml)." Choose the folder that holds
-    `scat.toml`.
+    `scat.toml`. If macOS then asks whether SCAT Chat may access files in a folder, click **Allow**: it needs to read
+    and write your vault.
 43. **In SCAT Chat:** at every later start it instead asks `Serve <vault>?`, naming the vault it remembers. Click
     **Use it**, or click **Choose another** and choose a different folder that holds `scat.toml` in the folder picker.
     It never serves a vault you have not just confirmed. If the remembered folder is gone, a note says so and the folder
