@@ -41,9 +41,8 @@ You need:
   iCloud (macOS hides those from the server's container; the launcher offers a copy if yours is there).
 - A container runtime: Colima (the one this page uses). Docker Desktop is the untested alternative.
 - Tailscale, with its command line.
-- A chat that accepts an MCP server and an API key, and your own account there. This page uses
-  inference.coop's chat as one example, because it is the one that was tried. Any chat that works with the
-  OpenAI API and lets you add an MCP server should do; that has not been checked for any other.
+- A chat that accepts an MCP server and an API key, and your own account there (see "What this path needs"). The
+  steps under "Connect the chat" are for inference.coop's chat.
 - The app `SCAT Chat.app` (under "Install once").
 
 ## The three actors
@@ -100,6 +99,67 @@ Then, in the chat once the session is running, ask the assistant to run the chec
 in Obsidian, GitHub Desktop's **Changes** list shows every changed page. Read it. Type a summary, such as
 `Code the notes from my first session`, choose **Commit to main** (or the branch's name), then **Push origin**. The
 assistant does not commit or push; you do. Check the whole vault is clean first.
+
+## What this path needs
+
+Any setup of this path has five parts.
+
+- **A chatbot that takes a remote MCP server** (a server the chatbot's own service calls over the internet) and sends
+  a fixed key with each request.
+- **The SCAT server, reachable from the chatbot's cloud.** That means a public `https` address on the standard
+  port (443). SCAT Chat makes one for the session (see [Start a session](#start-a-session)).
+- **The key.** SCAT Chat makes a new one each session (see [The session key](#the-session-key)). The chatbot holds it
+  and sends it with every request.
+- **The skill or rules.** The assistant's rules are in `skills/scat-coding/SKILL.md`. Load them the way your chatbot
+  loads instructions.
+- **Your vault, edited in Obsidian.** The chatbot drafts text; you write it into the vault and set `done` yourself.
+
+No terminal is needed for the coding. The one-time install under [Install once](#install-once) uses one.
+
+## Worked example: Claude
+
+Claude in the browser (claude.ai). Free accounts can add one custom connector, and skills are listed for Free through Enterprise. On a Team or Enterprise plan, an
+owner adds the connector in the organization's settings, then you connect it under **Customize** > **Connectors**.
+
+Do [Install once](#install-once) and [Start a session](#start-a-session) first. Come back when the dot is green.
+
+**Add the connector.** Claude cannot edit a connector, so each session you remove it and add it again with the
+new key.
+
+1. **In the menu bar:** click the dot, then **Copy address**. The address, which ends in `/mcp`, is on your
+   clipboard.
+2. **In Claude:** click **Customize**, then **Connectors**, then **+ Add**, then **Add custom connector**. A form
+   asks for a name and a URL.
+3. **In Claude:** in the form, type `SCAT` as the **Name** and paste the address as the **URL**. The first two
+   fields are filled.
+4. **In Claude:** under **Authentication**, choose **No sign in**. The key goes in a header, not a sign-in.
+5. **In the menu bar:** click the dot, then **Copy key**. The key is on your clipboard.
+6. **In Claude:** under **Request headers**, add a header named `Authorization` whose value is `Bearer `, a space,
+   then the pasted key. Click **Add**. SCAT appears in your connectors.
+7. **In any app:** copy a word from anywhere, so your clipboard no longer holds the key.
+
+**Load the rules, once.** Claude takes a skill as a zip of its folder.
+
+8. **In a web browser:** open
+   <https://raw.githubusercontent.com/DynamicalSystemsGroup/scat-kg-tools/dev/skills/scat-coding/SKILL.md>
+   and save it as `SKILL.md` into a new folder named `scat-coding`. The folder holds the file.
+9. **In Finder:** right-click the `scat-coding` folder and choose **Compress**. A file `scat-coding.zip` appears.
+10. **In Claude:** click **Customize**, then **Skills**, then **+**, then **Create skill**, then **Upload a skill**,
+    and choose `scat-coding.zip`. The skill is listed with its switch on.
+
+Skills need code execution. On Free, Pro and Max, switch on **Code execution and file creation** under **Settings**
+> **Capabilities**. On Team and Enterprise, an owner switches it on under **Organization settings** > **Plugins &
+skills** > **Policy**; on Enterprise the owner also switches on **Skills** there.
+
+**Start a chat and check.**
+
+11. **In Claude:** start a new chat, click **+** at the lower left, choose **Connectors**, and switch **SCAT** on.
+    The chat lists SCAT as on.
+12. **In Claude:** type `Run the SCAT check on my vault and tell me what it says.` and send it. The reply gives the
+    result of the tool's check, and the check decides, not the model.
+
+From here, [Use](#use) shows the coding loop in the chat and in Obsidian. When you stop, [Stop](#stop) and
+[Clean up](#clean-up) apply; also remove the SCAT connector in **Customize** > **Connectors**.
 
 ## Install once
 
