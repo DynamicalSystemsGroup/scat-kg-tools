@@ -6,6 +6,14 @@ screenshot references yet. Template side: `AGENTS.md` added on branch `wp25/temp
 Environment, date, material (lab only, `contracts/examples`), steps as run, deviations and steps a script could remove:
 to be filled at the sitting. Nothing installed or removed so far.
 
+## Decisions in the page text
+
+- Terminal route kept, but the page links to Codex's own CLI page instead of giving a piped `curl ... | sh` command.
+  The sitting checks that page's install command for the Mac.
+- Account: the page says only that Codex asks for sign-in and names "Sign in with ChatGPT" as one method the CLI page
+  lists. Which plans work is not stated by the docs; the sitting records it.
+- `uv sync` is run by the assistant at set-up; the coder reads the report (the page and the template skill agree).
+
 ## Screenshot slots
 
 Files go under `docs/assets/walkthroughs/ide/`, each under about 300 KB, with personal details, usernames, paths and
