@@ -16,26 +16,14 @@ What is here:
   red a problem); its menu shows State, Vault and Address, a "Problem:" line only in a problem, then Copy address, Copy key, Change vault and Stop. A problem raises one alert. Stop in the menu runs the launcher's stop and shows its result in one alert, then quits; if the stop cannot be confirmed the alert says so, the dot stays red and the app stays, so Stop can be chosen again. Quitting any other way (Cmd-Q, the system) runs the stop silently, once. It reads `ui` while it idles and calls the launcher's verbs. `deploy/build-app.sh [output folder]` writes `SCAT Chat.app`
   (default `deploy/build`) with the launcher and the server source inside, sets `LSUIElement` (no Dock icon) and signs it ad hoc (no certificate). The built app is not committed.
 
-Test-only settings (a double-clicked app has none of them): `SCAT_CHAT_VAULT` names the vault and skips the "Serve <vault>?" question,
-which breaks the rule that every start shows the coder the vault (the tests use it; it is honoured only with `SCAT_CHAT_UI=plain`, which the app never sets, so a dialog-mode start ignores it); the applet reads `SCAT_CHAT_LAUNCHER` (a stand-in launcher),
+Settings for tests (a double-clicked app has none of them): `SCAT_CHAT_VAULT` names the vault and skips the "Serve <vault>?" question; it works only with `SCAT_CHAT_UI=plain`, which the app never sets, so the app always asks. The app reads `SCAT_CHAT_LAUNCHER` (another launcher to call),
 `SCAT_CHAT_HOME` (the state folder) and `SCAT_CHAT_APPLET_LOG` (a file that receives its menu lines).
 
-How it is tested: `tests/deploy` runs the script with stand-ins for docker, colima, tailscale, openssl, security, osascript, curl, pbcopy and
+`tests/deploy` runs the script with replacements for docker, colima, tailscale, openssl, security, osascript, curl, pbcopy and
 caffeinate (environment overrides `SCAT_CHAT_*`; `SCAT_CHAT_UI=plain` replaces dialogs with text and
-`SCAT_CHAT_A_<KEY>` answers) against a fake server, and checks order, flags, refusals, teardown, and that the session key is in no argument and no file.
-The AppleScript compile test is skipped where `osacompile` is absent. A real build and run against Colima, with a
-stand-in `tailscale`, is done by hand before acceptance; the real Tailscale is not run by any test.
+`SCAT_CHAT_A_<KEY>` answers). It checks order, flags, refusals, teardown, and that the session key is in no argument and no file.
+The AppleScript compile test is skipped where `osacompile` is absent.
 
-## What is not verified
-
-The macOS-only tools sit behind the launcher's own functions or in the app: `security` (the session key) lives only in the `key_*` functions of
-`scat-chat.sh` (`SCAT_CHAT_SECURITY` replaces the program), and the tests use a stand-in. `plutil` and `codesign` are used only in `build-app.sh`, and AppleScriptObjC
-(the menu-bar item) only in `SCAT Chat.applescript`. The tests do not run them; the built app is checked by hand on a Mac. Not verified by any test or
-by hand:
-
-- the dot's look and a real click on a menu item (they need a screen);
-
-- a keychain prompt when the launcher runs from the built app (a different parent process), or when the login
-  keychain is locked;
-- that the item is not synchronised to iCloud Keychain;
-- Docker Desktop (the runs were against Colima and stand-ins).
+The macOS-only tools sit behind the launcher's own functions or in the app: `security` (the session key) is called only from the `key_*` functions of
+`scat-chat.sh` (`SCAT_CHAT_SECURITY` replaces the program). `plutil` and `codesign` are used only in `build-app.sh`, and AppleScriptObjC
+(the menu-bar item) only in `SCAT Chat.applescript`. The tests do not run the real versions of these tools or of Tailscale; check the built app by hand on a Mac.

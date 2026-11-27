@@ -74,7 +74,7 @@ def neighborhood(vault: Vault, page: Page | str) -> list[Page]:
 
 
 def check_neighborhood(vault: Vault, page: Page | str) -> Report:
-    """The page and everything one link away, in either direction (G4)."""
+    """The page and everything one link away, in either direction."""
     return _run(vault, neighborhood(vault, page), False, _resolve(vault, page))
 
 

@@ -5,7 +5,7 @@
 -- launcher with verbs only. No value is ever an argument, and the session key is never read or shown here:
 -- `copy-key` is the one path to the clipboard. Stop runs the launcher's stop and shows its sentence in one alert, then quits; if the stop is not confirmed it stays,
 -- red, so Stop can be tried again. Any other quit runs the launcher's stop silently, once.
--- Test settings (unset in a double-clicked app): SCAT_CHAT_LAUNCHER (a stand-in launcher), SCAT_CHAT_HOME (the
+-- Settings for tests (unset in a double-clicked app): SCAT_CHAT_LAUNCHER (another launcher to call), SCAT_CHAT_HOME (the
 -- state folder, as for the launcher) and SCAT_CHAT_APPLET_LOG (a file that receives the menu's lines).
 use AppleScript version "2.4"
 use framework "Foundation"

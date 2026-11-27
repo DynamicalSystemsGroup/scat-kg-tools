@@ -25,7 +25,7 @@ _FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
 _KEY_LINE = re.compile(r"""^(?:"([^"]*)"|'([^']*)'|([^\s#:'"-][^:]*?))\s*:(?:\s|$)""")
 
 
-# The Obsidian page-template folder, skipped whole (D-034); `.obsidian/` is a dot-folder, skipped too.
+# The Obsidian page-template folder, skipped whole; `.obsidian/` is a dot-folder, skipped too.
 DEFAULT_TEMPLATES_FOLDER = "templates"
 
 # The attribution modes (section 10): a vault declares one in `scat.toml`, key `attribution`.

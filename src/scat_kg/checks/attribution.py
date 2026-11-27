@@ -1,4 +1,4 @@
-"""The one mode-dependent rule (WP23-G2, D-133): what the vault's attribution mode makes of contributors.
+"""The one mode-dependent rule: what the vault's attribution mode makes of contributors.
 
 The TBox says only that a narrative's `attributed_to` is optional and that a `contributor` page is a page type;
 the mode is the vault's (`scat.toml`), so the grading is stated here and nowhere else. `MODE_RULE` is its wording,
