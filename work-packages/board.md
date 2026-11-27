@@ -45,6 +45,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | approved (D-163) | `WP29.md` |
 | WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | approved (D-163) | `WP30.md` |
 | WP31 | The assistant's habits, stage by stage, tested by the probes (depends on WP30) | approved (D-163) | `WP31.md` |
+| WP32 | Fingerprints follow the narrative's kind; columns read stakeholder, concern, affordance, technology (D-172, D-175) | all units done and merged on `dev`; ready for ACE acceptance | `WP32.md` |
 
 ## Units
 
@@ -407,6 +408,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | RS6-U3 | terminologist (inconsistencies, G3), sonnet | 5 | 5 | `spike/glossary` | done |  | 2026-11-27 | 41 findings, two high; quotes verified by reviewer |
 | RS6-U4 | technical writer (readout), sonnet | 5 | 8 | `spike/glossary` | done |  | 2026-11-27 | one review (8 must-fix) and a fix round; three appendices added; two CSV cell edits refused by the guard and left |
 | RS6-U5 | reviewer (fresh, readout), sonnet | 2 | 2 | `spike/glossary` | done |  | 2026-11-27 | ran checks and sampled 12 terms, 8 yes rows, 8 inconsistencies; 8 must-fix found |
+| WP32-U1 | Python developer and test engineer (kind-aware fingerprint drawing, tests), sonnet | 3 | 3 | `wp32/u1` | done |  | 2026-11-27 | one worker; footer wording reworked once; six existing test edits listed; PASS first review |
+| WP32-U2 | technical writer (drawing columns in docs), sonnet | 2 | 3 | `wp32/u2` | done |  | 2026-11-27 | review found the image alt text said stakeholders over an image saying group; one follow-up commit restored it |
+| WP32-U1r | reviewer (fresh, WP32), sonnet | 2 | 2 | `-` | done |  | 2026-11-27 | mutation-tested each requirement in a scratch copy, looked at the PNGs, found the alt-text mismatch |
 
 ## Iterations and velocity
 
@@ -456,6 +460,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 49 | RS5-U1 to U8 | 35 | 38 | 1.09 | 0.70 h | 54.3 |
 | 50 | WP28-U1 to WP28-U3r | 19 | 19 | 1.00 | 1.2 h | 15.8 |
 | 51 | RS6-U1 to U5 | 22 | 25 | 1.14 | 0.8 h | 31.3 |
+| 52 | WP32-U1 to WP32-U1r | 7 | 8 | 1.14 | 0.65 h | 12.3 |
 
 ## Velocity and forecast
 
