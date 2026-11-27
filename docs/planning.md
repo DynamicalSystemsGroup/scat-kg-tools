@@ -123,7 +123,7 @@ Name a note-taker for every session before it starts, someone other than the fac
 
 ## Compiling several sets of field notes
 
-With several note-takers, agree one layout before the event: the terms line first, then each group's account under its own heading, with a time, as the guides for [scenarios](facilitate-scenarios.md#take-the-notes-into-a-narrative-page) show. Each note-taker keeps one file per session, named by date and session.
+With several note-takers, agree one layout before the event: the terms line first, then each group's account under its own heading, with a time, as the guides for [Narratives](narratives.md#what-good-field-notes-hold) show. Each note-taker keeps one file per session, named by date and session.
 
 [Coding](coding.md) takes in one plain text file per story, with each group's account under its own heading, pasted as taken under the front matter of a narrative page. [The flow](flow.md) shows where that step sits. One named compiler therefore does this after each session:
 
