@@ -15,7 +15,7 @@ A **narrative** is one account drawn from your field notes, kept on one page. Co
 
 Coding by hand needs only these, in any setup:
 
-- A vault folder from the template, set up as in [Getting started](getting-started.md), with `uv sync` already run.
+- A vault folder from the template, set up as in [Getting started](getting-started.md), with `uv sync` already run. For a trial, a plain clone of the template needs no sign-in.
 - A Markdown editor that opens the vault folder and shows `[[links]]` and page properties. Any editor that does this works; Obsidian is the worked example below, and the index pages are Obsidian Bases, so they show only there.
 - A terminal in the vault folder, to run the check.
 - A narrative: your account of one session, on a page in `narrative/`.
@@ -32,27 +32,27 @@ The example codes one narrative in the template vault, `groups-under-a-cap-pitch
 
 3. **In Obsidian:** change the `status` property from `done` to `draft`, so that you can edit a finished narrative; the check runs on it again when you set `done` at the end.
 
-4. **In Obsidian:** link a node where the account names it, by adding a line to the account that links the group `project-leads`:
+4. **In Obsidian:** link a node where the account names it. In the last bullet of the account, the one that begins "Reason given in the record", turn the words "the people in the data" into a link to the group `workshop-participants`:
 
     ```text
-    - [[project-leads|Project leads]] set the cap, so that no group stands for one identifiable person.
+    - Reason given in the record: [[workshop-participants|the people in the data]] are groups under the Chatham House rule, so [[anonymity|no individual is identifiable]].
     ```
 
-    The page now links a node page where its account names one.
+    The account now links a group where it names one.
 
 5. **In Obsidian:** add one row at the foot of the `Edges told` table, so that the account tells that this group holds a concern:
 
     ```text
-    | [[project-leads]] | holds | [[anonymity]] | They set the cap so that no group stands for one identifiable person. |
+    | [[workshop-participants]] | holds | [[anonymity]] | They appear only as groups, so no individual is identifiable. |
     ```
 
-6. **In a terminal:** in the vault folder, run `uv run scat check groups-under-a-cap-pitch` and read what it says. A misspelt link is named with the line to change. A link written `[[projct-leads]]` produces this output:
+6. **In a terminal:** in the vault folder, run `uv run scat check groups-under-a-cap-pitch` and read what it says. A misspelt link is named with the line to change. A link written `[[workshop-participnts]]` produces this output:
 
     ```text
     attribution mode: disallowed
-    warning [SCAT-DRAFT-END-NOPAGE] narrative/groups-under-a-cap-pitch.md:24:3 row 3 cell `from`: [[projct-leads]] does not reach a page (no page is named projct-leads)
+    warning [SCAT-DRAFT-END-NOPAGE] narrative/groups-under-a-cap-pitch.md:23:3 row 3 cell `from`: [[workshop-participnts]] does not reach a page (no page is named workshop-participnts)
       Fix, choose one:
-        1. replace `[[projct-leads]]` with `[[project-leads]]`
+        1. replace `[[workshop-participnts]]` with `[[workshop-participants]]`
         2. delete the row
       (the vault is at its cap of 3 groups, so a new group page would break SCAT-CAP; choose an existing group)
     0 errors, 1 warning
@@ -85,7 +85,7 @@ The rest of this page is the reference for every step above: what the pages are,
 
 ## Before you start
 
-- A vault set up as in [Getting started](getting-started.md): the folder holds `scat.toml`, you are inside it in Terminal, and `uv sync` has run.
+- A vault set up as in [Getting started](getting-started.md): the folder holds `scat.toml`, and `uv sync` has run. For a trial, a plain clone of the template works with no sign-in: `git clone https://github.com/DynamicalSystemsGroup/scat-kg-template`. In Terminal, go into the vault folder with `cd` and its name (for a clone, `cd scat-kg-template`) before any `uv` command.
 - Obsidian 1.9 or later, with the vault open. The index pages are Obsidian Bases, which older versions do not show.
 - Field notes from a session, as in [Facilitating scenarios](facilitate-scenarios.md) or [Facilitating architectures](facilitate-architectures.md). In hand, you need a few plain sentences of notes, written as they were told.
 - Your groups, planned in the [planning guide](planning.md) and named by role. A group is a role, never a person: the vault holds at most the cap of groups set in `scat.toml`.
