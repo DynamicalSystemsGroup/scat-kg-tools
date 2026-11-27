@@ -12,13 +12,13 @@ A **view** is a purposeful picture or table made from a conformant vault. The to
 
 ## The four views
 
-**Fingerprint.** What does this narrative touch? It shows the nodes the narrative links and the edges it tells, in four columns, one for each layer. It does not mean the narrative is complete or wrong.
+**Fingerprint.** What does this narrative touch? It shows the nodes the narrative links and the edges it tells, in columns, one for each layer. The columns follow the narrative's kind: an architecture has concern, affordance and technology, with no stakeholder column; a scenario has stakeholder, concern and affordance, with no technology column; a narrative with no kind has all four. A missing column is the kind's, not a gap in the coding; a note under the drawing says which column is not drawn and how many linked nodes of that layer it leaves out. It does not mean the narrative is complete or wrong.
 
 **Edge table.** Which edges of one type exist, and who tells them? Read it as a table, one row per edge. Exported as CSV, it feeds documents. It does not rank the edges.
 
 **Layered view.** What is the big picture across several narratives? It joins their fingerprints in the four layers. Read across a column to see what is shared. It does not weigh a node by how many lines meet it.
 
-![The layered view of four narratives, as four columns: groups, concerns, affordances and technologies, with a line for each edge between neighbouring columns.](assets/layered-case-study.png)
+![The layered view of four narratives, as four columns: stakeholders, concerns, affordances and technologies, with a line for each edge between neighbouring columns.](assets/layered-case-study.png)
 
 **Trace.** What does this node reach? Following edges up goes toward groups, down toward technologies. It does not say how strongly a node depends on what it reaches.
 
@@ -74,6 +74,8 @@ from scat_kg import draw
 draw.fingerprint("groups-under-a-cap-pitch").save("fingerprint.png")
 draw.layered().save("layered.png")
 ```
+
+Every drawing labels its columns stakeholder, concern, affordance and technology, in that order. A fingerprint drawing follows its narrative's kind and leaves out one column (see Fingerprint above); the layered and trace drawings mix narratives and keep all four. SVG and PNG are the same drawing in two formats.
 
 In chat, the tools `draw_fingerprint`, `draw_layered` and `draw_trace` return the same drawings. Ask for one by naming the view and what it shows, for example "draw the fingerprint of groups-under-a-cap-pitch". The drawing comes back in the chat and is not saved in your vault. If your chat does not show the image, ask for it again as `svg`, which returns the drawing as text, or save the picture from Terminal with `uv run scat draw fingerprint --out fingerprint.png NARRATIVE`, or from the notebook. A name the vault does not have, or an error in the pages drawn, comes back as the same refusal the CLI gives, with what to do.
 

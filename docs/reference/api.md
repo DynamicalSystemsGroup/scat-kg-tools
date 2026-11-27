@@ -1354,7 +1354,7 @@ The CSV has the columns `from`, `to`, `narratives` (joined by `;`) and `status`.
 
 ## Drawings
 
-A drawing shows a view as four columns, one for each layer, in layer order, with the edges as lines between them. It needs the extra `draw`: `pip install "scat-kg[draw]"`. Without it, the call returns a refusal that says so. In the vault template it is already installed. Import the module with `from scat_kg import draw`. Where a view refuses, the drawing refuses with the same refusal.
+A drawing shows a view as columns, one for each layer, in layer order, with the edges as lines between them. The columns are labelled stakeholder, concern, affordance and technology; the first holds the nodes of the `group` layer. SVG and PNG are the same drawing in two formats. It needs the extra `draw`: `pip install "scat-kg[draw]"`. Without it, the call returns a refusal that says so. In the vault template it is already installed. Import the module with `from scat_kg import draw`. Where a view refuses, the drawing refuses with the same refusal.
 
 ### scat_kg.draw.fingerprint
 
@@ -1362,7 +1362,7 @@ A drawing shows a view as four columns, one for each layer, in layer order, with
 draw.fingerprint(narrative, *, candidates=False, root=".")
 ```
 
-Draws a narrative's fingerprint; with `candidates=True` its candidates are added as dashed lines. Returns a `Drawing`. `narrative` is required: one name. `candidates` is `False` unless you pass `True` (CLI: `--candidates`). CLI twin: [`scat draw fingerprint`](cli.md#scat-draw-fingerprint).
+Draws a narrative's fingerprint. The drawing follows the narrative's kind: an architecture has three columns (concern, affordance, technology), a scenario three (stakeholder, concern, affordance), and a narrative with no kind all four. A note under the drawing says which column is not drawn, why, and how many nodes of that layer the narrative links that it leaves out. The view's data, [`scat_kg.fingerprint`](#scat_kgfingerprint), keeps every node. With `candidates=True` its candidates are added as dashed lines. Returns a `Drawing`. `narrative` is required: one name. `candidates` is `False` unless you pass `True` (CLI: `--candidates`). CLI twin: [`scat draw fingerprint`](cli.md#scat-draw-fingerprint).
 
 ### scat_kg.draw.layered
 
@@ -1370,7 +1370,7 @@ Draws a narrative's fingerprint; with `candidates=True` its candidates are added
 draw.layered(narratives=None, *, root=".")
 ```
 
-Draws the layered view of the named narratives, or of every narrative. Returns a `Drawing`. CLI twin: [`scat draw layered`](cli.md#scat-draw-layered).
+Draws the layered view of the named narratives, or of every narrative. It keeps all four columns, because it mixes narratives. Returns a `Drawing`. CLI twin: [`scat draw layered`](cli.md#scat-draw-layered).
 
 ### scat_kg.draw.trace
 
@@ -1378,7 +1378,7 @@ Draws the layered view of the named narratives, or of every narrative. Returns a
 draw.trace(node, direction="both", *, root=".")
 ```
 
-Draws what [`scat_kg.trace`](#scat_kgtrace) follows from a node: up toward the groups, down toward the technologies, or both. The node itself is drawn too, in its own layer's column, and the title names it, its type and the direction (`trace of concern water, up and down`). Returns a `Drawing`. `node` is required: the name of a group, concern, affordance or technology. `direction` is `up`, `down` or `both` (the default; CLI: `--direction`). CLI twin: [`scat draw trace`](cli.md#scat-draw-trace).
+Draws what [`scat_kg.trace`](#scat_kgtrace) follows from a node: up toward the groups, down toward the technologies, or both. The node itself is drawn too, in its own layer's column, and the title names it, its type and the direction (`trace of concern water, up and down`). It keeps all four columns. Returns a `Drawing`. `node` is required: the name of a group, concern, affordance or technology. `direction` is `up`, `down` or `both` (the default; CLI: `--direction`). CLI twin: [`scat draw trace`](cli.md#scat-draw-trace).
 
 ### Drawing
 
