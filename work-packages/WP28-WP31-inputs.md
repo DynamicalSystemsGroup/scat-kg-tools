@@ -70,3 +70,10 @@ Both Claude and inference.coop show a PNG the server returns. In inference.coop 
 as its own markdown image (a broken placeholder), and on a second request it chose SVG, which a chat shows as text, not
 a picture. For WP30's analysis guide and WP31's habits: ask for PNG to show, SVG only to save; never re-embed a tool's
 image. Claude: `authorization: Bearer <key>` fails to connect twice; `x-api-key` works.
+
+## From the chief engineer's analysis session in inference.coop (27 November)
+
+See `acceptance/walkthroughs/analysis-session-inference-coop.md`. For WP30's analysis stage: lead with the drawing and
+pair it with its table of explicit nodes and edges (his words: "any figure generated can be matched with a set of
+tables containing explicit nodes and edges"); PNG to show; figure legibility at chat width. For WP31: no re-embedding,
+no wrong claims about what the channel can show. Baseline: no skill or agent, the server's tool descriptions only.
