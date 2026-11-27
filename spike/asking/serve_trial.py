@@ -21,7 +21,7 @@ from urllib.parse import parse_qs
 import uvicorn
 from asking_server import build
 
-DEFAULT_LOG = "/private/tmp/claude-501/-Users-z-Documents-GitHub/b40c0a13-b60e-4132-b167-1824838bc4cf/scratchpad/trial-wire.log"
+DEFAULT_LOG = "trial-wire.log"
 
 
 def rpc(d: object) -> str:
