@@ -27,8 +27,11 @@ There is no account, key, server or assistant. You write every word, and the too
 The example codes one narrative in the template vault, `groups-under-a-cap-pitch`: it adds one link and one row to the `Edges told` table, then runs the check until the tool says there is no problem. The same four steps of the [coding loop](#the-coding-loop) apply on every narrative.
 
 1. **In Obsidian:** open the vault folder as a vault (Manage vaults, then Open next to Open folder as vault), and see the folders `affordance`, `concern`, `group`, `index`, `narrative` and `technology` in the left pane.
+
 2. **In Obsidian:** open `narrative/groups-under-a-cap-pitch` and read it, so that you have the account and the two rows of its `Edges told` table in front of you.
+
 3. **In Obsidian:** change the `status` property from `done` to `draft`, so that you can edit a finished narrative; the check runs on it again when you set `done` at the end.
+
 4. **In Obsidian:** link a node where the account names it, by adding a line to the account that links the group `project-leads`:
 
     ```text
@@ -56,6 +59,7 @@ The example codes one narrative in the template vault, `groups-under-a-cap-pitch
     ```
 
     Correct the link in Obsidian and run the check again until it reads `no problems`.
+
 7. **In a terminal:** start `uv run python`, then type the lines below, and see the same text the command printed:
 
     ```python
@@ -69,6 +73,7 @@ The example codes one narrative in the template vault, `groups-under-a-cap-pitch
     ```
 
 8. **In Obsidian:** confirm that the account still matches your notes and that the row is a correct use of SCAT, then change `status` back to `done`.
+
 9. **In a terminal:** run `uv run scat check` for the whole vault, and see a conformant result:
 
     ```text
