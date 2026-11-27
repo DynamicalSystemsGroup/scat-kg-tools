@@ -28,14 +28,14 @@ Docker against native, llama3.2:1b, same prompt: 21.5 vs 23 tokens/s; load 1.1 s
 
 ## Claude, from its docs
 
-- Chat (claude.ai and Desktop): Customize > Connectors > Add custom connector; name and URL; "Request headers" take a fixed bearer key. The server must be reachable from Anthropic's cloud on the standard port 443; a private network or custom port will not connect. Free accounts get one custom connector ([support article](https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp)). SCAT Chat's Tailscale public address fits.
+- Chat (claude.ai and Desktop): Customize > Connectors > Add custom connector; name and URL; "Request headers" take a fixed bearer key. The server must be reachable from Anthropic's cloud on the standard port 443; a private network needs an allowlist of Anthropic's IP addresses, and a custom port will not work. Custom connectors in Customize > Connectors are on Pro and Max plans (Free accounts get one); Team and Enterprise Owners add them under Organization settings ([support article](https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp)). SCAT Chat's Tailscale public address fits.
 - Claude Code: `claude mcp add --transport http <name> <url> --header "Authorization: Bearer <key>"`; scopes local, project, user; check with `/mcp` ([docs](https://code.claude.com/docs/en/mcp)).
 
 ## Codex, from its docs
 
 - Config `~/.codex/config.toml` (or `.codex/config.toml`, trusted projects), shared by CLI and IDE extension: `[mcp_servers.<name>]` with `url` and `bearer_token_env_var` (or `http_headers`) ([MCP page](https://learn.chatgpt.com/docs/extend/mcp?surface=cli)).
 - IDE extension: gear menu > MCP servers > Add server > Streamable HTTP > URL > Restart extension; the form has no token field, so the key goes in `config.toml` ([IDE page](https://learn.chatgpt.com/docs/extend/mcp?surface=ide)).
-- Instructions come from `AGENTS.md` in the project, root down to the working folder ([guide](https://developers.openai.com/codex/guides/agents-md)); that is the template's `AGENTS.md` (WP25 scope). Which editors the extension supports, and what sign-in needs, the pages do not say: for the sitting.
+- Instructions come from `AGENTS.md` in the project, root down to the working folder ([guide](https://learn.chatgpt.com/docs/agent-configuration/agents-md)); that is the template's `AGENTS.md` (WP25 scope). Which editors the extension supports, and what sign-in needs, the pages do not say: for the sitting.
 
 ## Installed and removed
 
