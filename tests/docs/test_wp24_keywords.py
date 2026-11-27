@@ -67,3 +67,64 @@ def test_no_upper_case_keyword(label):
 
 def test_the_exceptions_are_real_places():
     assert set(EXCEPTIONS) <= set(SOURCES)
+
+
+# WP25-R6 (D-146): no test or work status in a user page.
+STATUS = re.compile(
+    r"not been tried|untested|lab run|not recorded|nobody has yet|your first run is the real test",
+    re.IGNORECASE,
+)
+# Lines that still hold status wording, by page: the start of each line. WP26 rewrites these two pages and
+# removes every entry; an entry that no longer matches a line fails test_status_exceptions_are_real.
+STATUS_EXCEPTIONS: dict[str, list[str]] = {
+    "docs/chat-path.md": [
+        '!!! warning "What has and has not been tried"',
+        "lab run with lab material only. Version 0.1 i",
+        "Colima** and has not been run end to end with",
+        "following this page, so your first run is the",
+        "- A container runtime: Colima (the one this p",
+        "Desktop is the untested alternative: if you u",
+        "As an example, in inference.coop's chat (lab ",
+        "in the lab run of 26 November). Deleting the ",
+        '| "SCAT Chat needs a container runtime: Colim',
+        "If you use Docker Desktop and the first run f",
+    ],
+    "docs/leave-no-trace.md": [
+        '!!! note "What has and has not been tried"',
+        "No one has yet run this walkthrough end to en",
+        "54. **In the chat:** delete any file left in ",
+    ],
+}
+
+
+def _status_hits(label: str) -> list[str]:
+    allowed = STATUS_EXCEPTIONS.get(label, [])
+    return [
+        ln.strip()
+        for ln in SOURCES[label].splitlines()
+        if STATUS.search(ln) and not any(ln.strip().startswith(a) for a in allowed)
+    ]
+
+
+@pytest.mark.parametrize("label", sorted(k for k in SOURCES if k.startswith("docs/")))
+def test_no_status_wording_in_a_user_page(label):
+    assert not _status_hits(label), f"{label}: state what a coder does, not what was tried"
+
+
+def test_status_exceptions_are_real():
+    for label, starts in STATUS_EXCEPTIONS.items():
+        lines = [ln.strip() for ln in SOURCES[label].splitlines() if STATUS.search(ln)]
+        for start in starts:
+            assert any(ln.startswith(start) for ln in lines), (label, start)
+
+
+def test_status_pattern_catches_each_phrase():
+    for phrase in (
+        "has not been tried",
+        "is untested",
+        "a lab run",
+        "not recorded",
+        "nobody has yet",
+        "Your first run is the real test",
+    ):
+        assert STATUS.search(phrase), phrase

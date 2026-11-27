@@ -1,3 +1,7 @@
+---
+provider: Claude
+---
+
 # The chat path
 
 !!! tip "Your next step"

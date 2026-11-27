@@ -23,7 +23,7 @@ SCAT (Stakeholder groups, Concerns, Affordances and Technologies) is built for a
 
 Following through on commitments to participants comes after step 10 and depends on step 4.
 
-To code with an assistant, see [The chat path](chat-path.md) (a chat window, no terminal) or [The IDE path](ide.md).
+To code with an assistant, see the [coding paths](coding-paths.md): [the chat path](chat-path.md) (a chat window, no terminal), [the IDE path](ide.md) or [a local LLM](local-llm.md).
 
 A **narrative** is one page: the account, a link wherever it names a node, and a table of the edges it tells. A
 **node** is a group, concern, affordance or technology page. An **edge** is a row in that table, not a page.

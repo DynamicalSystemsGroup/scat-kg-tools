@@ -1,3 +1,7 @@
+---
+provider: inference.coop
+---
+
 # Leave no trace
 
 !!! note "For a strict data policy"
