@@ -2770,3 +2770,19 @@ the author's reading of the text."), listed for the chief engineer's review at a
 Departures recorded in the findings: docs served from a local build of the same commit; uv preinstalled (the uv gap
 is closed separately, D-112); chat testers ran a pages-and-files pass for J1 to J4 and J6; the GitHub steps of J2 not
 reached. `check_metrics.py --accept WP26` passes (iteration 47: 24 est, 28 realized). The ACE accepts WP26.
+
+## D-156 | 2026-11-27 | Visual pass round 1 (p2); the template's Obsidian settings fixed
+
+On the chief engineer's "Yes, run it now" and his grant of computer control across apps for the walkthrough, the ACE
+ran a visual user-test pass: a Haiku tester (persona p2, Terminal path) sent requests, and the ACE carried them out on
+the live Pages site, in Obsidian and in Terminal, saving a screenshot or the exact output for each. J1 to J10 reached,
+no blocking finding (`acceptance/reports/visual-r1-p2.md`).
+
+One fix applied: opening a vault in Obsidian rewrote the template's `.obsidian/app.json` and `core-plugins.json` and
+created `appearance.json`, so a user's first `git add .` committed them. The template now ships both files as Obsidian
+writes them and ignores `appearance.json` (template `dev` 87accad); a fresh clone opened in Obsidian was checked on
+screen and leaves them unchanged. `TEMPLATE_COMMIT` moved to 87accad (tools `dev`; docs tests 297 passed).
+
+Three items go to the chief engineer: V2 (Obsidian may rewrite `index/narrative.base` into its own form; `scat index`
+treats the forms as equal), V3 (the stub's timeframe hint is invisible in Obsidian's Properties panel), V4 (no page says
+whether node pages must be written before their narratives are done).
