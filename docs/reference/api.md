@@ -944,7 +944,7 @@ Shows the fingerprint of a narrative: the nodes it links, the edges its rows tel
 | `candidates` | `True` to add the candidates. Default `False`. CLI: `--candidates`. |
 | `root` | The vault folder. |
 
-It refuses when the name is not a narrative, when two pages share it, and on an error in a page it draws.
+It refuses when the name is not a narrative, when two pages share it, and on an error in a page it draws. With `candidates=True`, a narrative whose account text is empty (its body outside its `Edges told` section, headings aside) carries `no_account: true`: its only links are its rows, so every adjacent pair is a candidate and the candidates say nothing about any text. The text form says so on a line.
 
 === "Python"
 
@@ -1011,7 +1011,7 @@ It refuses on any other type, and on an error in a page it draws.
 ## scat_kg.layered
 
 ```text
-layered(narratives=None, *, root=".")
+layered(narratives=None, *, candidates=False, root=".")
 ```
 
 Shows the layered view: the union of the fingerprints of the narratives you name, as four layers. Without `narratives`, every narrative. CLI twin: [`scat layered`](cli.md#scat-layered), with one `--narrative` for each name.
@@ -1019,9 +1019,12 @@ Shows the layered view: the union of the fingerprints of the narratives you name
 | Parameter | Meaning |
 |---|---|
 | `narratives` | A list of narrative names. |
+| `candidates` | `True` to add the candidates. Default `False`. CLI: `--candidates`. |
 | `root` | The vault folder. |
 
-It refuses on a name that is not a narrative, on a value that is not a list of names, and on an error in a page it draws. It shows no candidates.
+The result also carries `orphans` when there are any: each node page that is an end of no edge anywhere in the vault (the whole vault, whichever narratives you name), with its name, type and status. With `candidates=True` it carries `candidates`, each `{type, from, to, narrative}` for the chosen narratives, and `no_account`, the names of the chosen narratives whose account text is empty (their body outside the `Edges told` section, headings aside). A narrative with no account has only its rows as links, so every adjacent pair of its nodes is a candidate and its candidates say nothing about any text. The text form lists the candidates, the narratives with no account and the orphans.
+
+It refuses on a name that is not a narrative, on a value that is not a list of names, on a `candidates` that is not `True` or `False`, and on an error in a page it draws.
 
 === "Python"
 
@@ -1377,10 +1380,10 @@ Draws a narrative's fingerprint. The drawing follows the narrative's kind: an ar
 ### scat_kg.draw.layered
 
 ```text
-draw.layered(narratives=None, *, root=".")
+draw.layered(narratives=None, *, candidates=False, root=".")
 ```
 
-Draws the layered view of the named narratives, or of every narrative. It keeps all four columns, because it mixes narratives. Returns a `Drawing`. CLI twin: [`scat draw layered`](cli.md#scat-draw-layered).
+Draws the layered view of the named narratives, or of every narrative. It keeps all four columns, because it mixes narratives. With `candidates=True` the candidates are added as dashed lines, and the footer names the narratives that have no account text. The footer also names the node pages no row tells, at most ten, then "and N more". Returns a `Drawing`. `candidates` is `False` unless you pass `True` (CLI: `--candidates`). CLI twin: [`scat draw layered`](cli.md#scat-draw-layered).
 
 ### scat_kg.draw.trace
 

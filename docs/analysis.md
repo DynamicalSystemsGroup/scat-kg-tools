@@ -18,6 +18,8 @@ A **view** is a purposeful picture or table made from a conformant vault. The to
 
 **Layered view.** What is the big picture across several narratives? It joins their fingerprints in the four layers. Read across a column to see what is shared. It does not weigh a node by how many lines meet it.
 
+The picture hides three things, and the view shows each. **Orphans:** a node page that no row tells has no line, so no column shows it; the view names it in the footer (at most ten, then "and N more") and lists it in the table, whichever narratives you chose. **Candidates:** a link in the text with no row has no line either; with `candidates`, the picture draws it dashed and the table lists it, so you see what is left to code. **No account:** a narrative with no text outside its `Edges told` section has only its rows as links, so every adjacent pair of its nodes is a candidate and the candidates say nothing about any text; the footer and the table name that narrative, and its dashed lines are not evidence.
+
 ![The layered view of four narratives, as four columns: groups, concerns, affordances and technologies, with a line for each edge between neighbouring columns.](assets/layered-case-study.png)
 
 **Trace.** What does this node reach? Following edges up goes toward groups, down toward technologies. It does not say how strongly a node depends on what it reaches.
@@ -75,11 +77,11 @@ draw.fingerprint("groups-under-a-cap-pitch").save("fingerprint.png")
 draw.layered().save("layered.png")
 ```
 
-A drawing is made from a view's result. To have the picture and the table from one query, run the view once and draw that result: `draw.render(scat_kg.layered())`.
+Both `draw.fingerprint` and `draw.layered` take `candidates=True` (CLI: `--candidates`), which adds the candidates as dashed lines. A drawing is made from a view's result. To have the picture and the table from one query, run the view once and draw that result: `draw.render(scat_kg.layered())`.
 
 Every drawing labels its columns stakeholder, concern, affordance and technology, in that order. A fingerprint drawing follows its narrative's kind and leaves out one column (see Fingerprint above); the layered and trace drawings mix narratives and keep all four. SVG and PNG are the same drawing in two formats.
 
-In chat, the tools `fingerprint`, `layered` and `trace` each take `output`: `table` (the default), `plot` or `both`. A plot comes as `png` (the default) or, with `format`, as `svg`. One call asks the vault one question and returns the picture, the table or both, and they always agree. In `both`, the picture comes first, then the table. Ask for one by naming the view and what it shows, for example "plot the fingerprint of groups-under-a-cap-pitch". A plot of a fingerprint needs the name of one narrative. The picture comes back in the chat and is not saved in your vault. If your chat does not show the image, ask for `format` svg, which returns the plot as text, or for the table, or save the picture from Terminal with `uv run scat draw fingerprint --out fingerprint.png NARRATIVE`, or from the notebook. A name the vault does not have, or an error in the pages drawn, comes back as the same refusal the CLI gives, with what to do.
+In chat, the tools `fingerprint`, `layered` and `trace` each take `output`: `table` (the default), `plot` or `both`. A plot comes as `png` (the default) or, with `format`, as `svg`. One call asks the vault one question and returns the picture, the table or both, and they always agree. In `both`, the picture comes first, then the table. `fingerprint` and `layered` also take `candidates`. Ask for one by naming the view and what it shows, for example "plot the fingerprint of groups-under-a-cap-pitch". A plot of a fingerprint needs the name of one narrative. The picture comes back in the chat and is not saved in your vault. If your chat does not show the image, ask for `format` svg, which returns the plot as text, or for the table, or save the picture from Terminal with `uv run scat draw fingerprint --out fingerprint.png NARRATIVE`, or from the notebook. A name the vault does not have, or an error in the pages drawn, comes back as the same refusal the CLI gives, with what to do.
 
 ## Where next
 
