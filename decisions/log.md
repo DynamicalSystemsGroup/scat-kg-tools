@@ -3047,3 +3047,24 @@ Outcome: **stage** is where the project is in its lifecycle; **status** is the s
 graph. They are different state machines, at different time scales. WP29 applies the ruling: G2 no longer lists
 `done` to `draft` as a stage transition, and G4 keeps stage apart from status in the glossary. The mixing found in the
 drafts is noted in `work-packages/WP28-WP31-inputs.md` (the MVC note, RS5's router gating plan to code on a `stub`).
+
+## D-178 | 2026-11-27 | Rules by stage: shared tools, the visual loop in coding, analysis does not edit, review and revise everywhere
+
+The chief engineer, during RS5's client trials (typed by the agent): "some thoughts on specific rules by stage:
+* some tools are available at more than one stage
+* coding stage needs to support visualization and writing content. the loop visual loop is part of coding.
+* analysis stage needs to support visualization and synthesis but not editing the existing content.
+there may be other places where there is overlap, keep stages focused on the work a human must do, aided by an
+assistant with skills and tools. never assume generated content will be right on first pass, giving humans clear review
+and revise loops for every peice of content produced, at every stage is how we ensure quality, explainability and our
+assertion that the human (not the assistant) is the author"
+
+Outcome, as inputs to WP29's instance (and WP30, WP31):
+- A tool may belong to more than one stage; stages are not a partition of the tools.
+- Coding includes the drawing tools: the view-to-control loop (D-173) is inside coding, not a move between stages.
+- Analysis has the drawing tools and synthesis, and does not edit existing content.
+- Each stage is defined by the work a human must do, aided by an assistant with skills and tools.
+- Every piece of content produced, at every stage, has a review-and-revise loop for the human; nothing generated is
+  assumed right on the first pass. This is how quality, explainability and human authorship are held.
+RS5's spike servers use stand-in tool sets (coding without drawing tools); they test client mechanics only and are not
+changed.

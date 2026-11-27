@@ -101,3 +101,10 @@ facilitators view is not the same as the lifecycle for a page". Where the drafts
 `done` narrative to `draft`" "the coder's transition that reopens the controls"; and RS5's router spike gates plan to
 code on one successful `stub`. A page's status (`stub`, `draft`, `done`) is a per-page lifecycle the tool already
 enforces; the organiser's stages are the work's lifecycle. Open for WP29: how the two relate.
+
+## For WP29: rules by stage (D-178)
+
+Shared tools across stages; drawing tools in coding (the visual loop is part of coding); analysis draws and
+synthesises but does not edit existing content; stages are the human's work, aided by the assistant; a review-and-revise
+loop for every piece of content at every stage. The MVC note above ("Analyse is the views, Code the controls") is
+superseded where it implies the views belong to analysis only.
