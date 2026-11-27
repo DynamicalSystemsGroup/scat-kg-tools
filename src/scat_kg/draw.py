@@ -12,8 +12,10 @@ A fingerprint of an architecture has no stakeholder column and one of a scenario
 says how many nodes of the dropped layer the narrative links and why they are not drawn. The first column is labelled
 "stakeholder" (the layer `group`).
 
-A drawing is the view's data first (`view.to_dict()`, never the graph again) and then marks. A trace draws the
-nodes it reaches and the node it starts from, whose type and status come from `evidence`, another view. Each node is a box in
+A drawing is a query result first (a `views.View`: `view.to_dict()` is its table, never the graph again) and then
+marks. `draw.render(result)` draws a result without running any query; `fingerprint`, `layered` and `trace` run the
+query once and render it. `Drawing.nodes()` and `Drawing.edges()` read back what is drawn. A trace draws the
+nodes it reaches and the node it starts from, whose type and status the trace result carries (`View.traced`). Each node is a box in
 its layer's column, labelled with its name (and its status, in brackets, when that is not `done`); each edge is a
 line between neighbouring columns; the layer is named at the top of its column and has its own colour, so colour
 is never the only sign. Within a column the nodes keep the view's order, by name. Nothing is ordered or sized by a
@@ -23,11 +25,10 @@ by `save`. Where a view refuses, so does the drawing, with the same refusal.
 
 import io
 import textwrap
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 from scat_kg import views
-from scat_kg.evidence import evidence
 from scat_kg.ops.files import replace_file
 from scat_kg.ops.result import Refusal, Result, stamp
 from scat_kg.tbox import TBOX
@@ -290,6 +291,15 @@ class Drawing:
     def svg(self) -> str:
         return _render(self.mark, "svg").decode("utf-8")
 
+    def nodes(self) -> list[tuple[str, str]]:
+        """The nodes drawn, as (name, layer), column by column."""
+        return [(name, layer) for layer, col in self.mark.columns for name, _ in col]
+
+    def edges(self) -> list[tuple[str, str, bool]]:
+        """The edges drawn, as (from, to, dashed): the lines whose two ends are both drawn."""
+        drawn = {name for name, _ in self.nodes()}
+        return [(a, b, d) for a, b, d in self.mark.lines if a in drawn and b in drawn]
+
     def _repr_png_(self) -> bytes:
         return self.png()
 
@@ -346,6 +356,48 @@ def _need_matplotlib() -> Result | None:
     return None
 
 
+def render(result: views.View | Result) -> Drawing | Result:
+    """Draw a query result (a fingerprint of one narrative, a layered view or a trace) without running any query.
+
+    A result that is not a view, or a view this does not draw, is refused.
+    """
+    if bad := _need_matplotlib():
+        return bad
+    if not isinstance(result, views.View):
+        return (
+            result if isinstance(result, Result) else _cannot(repr(result), "is not a query result")
+        )
+    data, op = result.data, result.operation
+    if op == "fingerprint":
+        if len(data.get("narratives", ())) != 1:
+            return _cannot(
+                "fingerprint",
+                f"a fingerprint of {len(data.get('narratives', ()))} narratives is not drawn",
+                "ask for the fingerprint of one narrative",
+            )
+        return Drawing(_fingerprint_mark(data))
+    if op == "layered":
+        return Drawing(_layered_mark(data))
+    if op == "trace":
+        if result.traced is None:
+            return _cannot(
+                "trace", "this trace result does not carry its starting node", "run `trace`"
+            )
+        return Drawing(_trace_mark(data, result.traced))
+    return _cannot(
+        op, f"a {op} result is not drawn", "draw a fingerprint, a layered view or a trace"
+    )
+
+
+def _cannot(subject: str, why: str, fix: str = "pass a query result from `views`") -> Result:
+    return Result(OPERATION, refused=(Refusal(subject, why, fix),))
+
+
+def _drawn_with(result, root) -> Drawing | Result:
+    drawing = render(result)
+    return replace(drawing, root=Path(root)) if isinstance(drawing, Drawing) else drawing
+
+
 def fingerprint(
     narrative: str, *, candidates: bool = False, root: str | Path = "."
 ) -> Drawing | Result:
@@ -360,9 +412,7 @@ def fingerprint(
             "pass the name of one narrative as a string",
         )
     view = views.fingerprint(narrative, candidates=candidates, root=root)
-    if not isinstance(view, views.View):
-        return view
-    return Drawing(_fingerprint_mark(view.data), Path(root))
+    return _drawn_with(view, root) if isinstance(view, views.View) else view
 
 
 def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> Drawing | Result:
@@ -370,9 +420,7 @@ def layered(narratives: list[str] | None = None, *, root: str | Path = ".") -> D
     if bad := _need_matplotlib():
         return bad
     view = views.layered(narratives, root=root)
-    if not isinstance(view, views.View):
-        return view
-    return Drawing(_layered_mark(view.data), Path(root))
+    return _drawn_with(view, root) if isinstance(view, views.View) else view
 
 
 def trace(node: str, direction: str = "both", *, root: str | Path = ".") -> Drawing | Result:
@@ -380,10 +428,4 @@ def trace(node: str, direction: str = "both", *, root: str | Path = ".") -> Draw
     if bad := _need_matplotlib():
         return bad
     view = views.trace(node, direction, root=root)
-    if not isinstance(view, views.View):
-        return view
-    own = evidence(node, root=root)
-    if not isinstance(own, views.View):
-        return own
-    me = {"name": node, "type": own.data["node_type"], "status": own.data["node_status"]}
-    return Drawing(_trace_mark(view.data, me), Path(root))
+    return _drawn_with(view, root) if isinstance(view, views.View) else view
