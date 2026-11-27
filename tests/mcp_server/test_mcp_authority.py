@@ -146,6 +146,7 @@ def test_the_assistants_file_has_the_may_not_rules_this_server_is_built_to():
         11: "The assistant SHALL NOT claim a narrative is correct because the check passed.",
         12: "The assistant SHALL NOT touch the inputs (the field notes)",
         17: "The assistant SHALL NOT write a node page's body through the tool.",
+        19: "The assistant SHALL NOT apply a merge or a split.",
     }
     for n, start in key.items():
         assert _rule(n).startswith(start), n
@@ -218,6 +219,7 @@ def test_prompts_and_tools_cite_the_assistants_file_and_say_the_coder_sets_done(
         prompts.REVIEW_BEFORE_DONE,
         prompts.DRAFT_A_NODE_PAGE,
         prompts.FILL_IN_NODE_PAGES,
+        prompts.LOOK_FOR_DUPLICATES,
         prompts.RULES,
     ):
         assert "contracts/assistant.md" in p
@@ -243,6 +245,7 @@ def test_the_prompts_through_the_server(tmp_path):
         "review-before-done",
         "draft-a-node-page",
         "fill-in-node-pages",
+        "look-for-duplicates",
     } <= set(got)
     for name, text in got.items():
         assert "contracts/assistant.md" in text, name
@@ -270,7 +273,7 @@ def test_a16_a17_the_prompts_say_it():
     assert (
         "write a node page's body through the tool (the coder pastes or edits it)" in rules
     )  # A17
-    assert "`evidence` and `copy_share`" in rules
+    assert "`evidence`, `copy_share` and `review`" in rules
     for p in (prompts.DRAFT_A_NODE_PAGE, prompts.FILL_IN_NODE_PAGES):
         flat = " ".join(p.split())
         assert rules in flat
@@ -306,3 +309,22 @@ def test_r6_the_merge_plan_is_shown_and_applying_is_refused(tmp_path):
         assert split["ok"] is True and split["node"] == "funders" and split["pages"]
         assert call(url, "split_plan", {"a": "nobody"})["ok"] is False
         assert snapshot(vault) == files
+
+
+def test_a18_a19_a20_the_prompts_say_it():
+    rules = " ".join(prompts.RULES.split())
+    assert "show a merge plan (call `merge` with plan true or `split_plan`)" in rules  # A18
+    assert (
+        "apply a merge or a split (the coder runs `scat merge A B` after reading the plan)" in rules
+    )
+    assert "present a possible duplicate or a page to re-read as a prompt to look" in rules  # A20
+    assert "(the coder decides)" in rules and "`review`" in rules
+    flat = " ".join(prompts.LOOK_FOR_DUPLICATES.split())
+    assert rules in flat
+    assert "call merge with plan true" in flat and "call split_plan" in flat
+    assert "you do not apply a merge or a split" in flat
+    assert "already `done` stays `done` after a merge" in flat
+    assert not re.search(r"\b(SHALL NOT|SHALL|SHOULD|MAY)\b", prompts.LOOK_FOR_DUPLICATES)
+    text = " ".join(ASSISTANT.read_text().split())
+    assert "A7 to A12, A17 and A19 hold by this file" in text
+    assert "refuses to apply a merge (A19)" in text

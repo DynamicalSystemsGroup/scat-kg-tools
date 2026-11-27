@@ -324,6 +324,10 @@ written (**flag for the ACE**: confirm it was skipped and not lost).
 | D-119 | ACE | WP21-R7 reworded after three reviews read it three ways; SCAT-UNCODED warns at every status | `work-packages/WP21.md` | none |
 | D-120 | Yours | Iteration 36's metrics record corrected, after the guard refused the PM | `work-packages/metrics.jsonl` | none |
 | D-121, D-122 | ACE | WP21 and WP18 accepted | D-121, D-122 | none |
+| D-144 | Yours | Merge of two node pages added to the mission's G4, with a plan shown first | `MISSION.md` G4 | none |
+| D-145 | ACE | WP24 approved: twelve scope-check fixes applied | `work-packages/WP24.md`, `impact/WP24.md` | `divergence/D-145` |
+| D-146 | Yours | Test and work status belongs in the plans and this guide, not in the user pages | the entry; WP24's keyword test | none |
+| D-147 | ACE | Possible duplicates by structure; homonyms as pages to re-read; the thresholds are code defaults | `research/node-pages/spike-b/readout.md` | none |
 | WP10 default | ACE | `SCAT-DRAFT-FIELD` fires at `stub` for a field with a value set, so a fresh stub warns until `timeframe` is filled. An ACE default, for you to confirm | `contracts/rule-catalogue.md` | none |
 
 Your own decisions or directions that the ACE only recorded and applied are marked "Yours" above. D-015 and D-016 are
@@ -467,7 +471,9 @@ live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
     round 1 to 5 findings in `acceptance/reports/r1-findings.md` to `r5-findings.md` were accepted in D-044 to D-050.
     The PM's WP12 cold reads of the Terms page are in `acceptance/reports/wp12-r3-round1.md` to `round4.md`.
 22. **No documented way to rename or delete a node page (UA-A round 1, W11; D-100).** Accepted for v0.1: a real
-    organiser edits files and uses git. Evidence: `acceptance/reports/wp20-r1-findings.md`.
+    organiser edits files and uses git. Evidence: `acceptance/reports/wp20-r1-findings.md`. Since WP24 two node pages of
+    one type can be merged (`scat merge A B`, a plan first with `--plan`); a split is a plan only (`scat split-plan A`);
+    a rename stays an Obsidian action.
 23. **Small accepted findings from UA-A round 1 (D-100).** W8: `scat_kg.check(neighborhood=False)` works but the API page
     does not show it. W12: a concern with no addressing row is not named by the Analysis page; the views show it by
     absence. W13: the layered drawing has lines through other nodes' boxes. W14: testers' own wording for prompts, plan
@@ -484,6 +490,19 @@ live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
     first push of the published image, which also waits on the mission's Release step 3. (g) WP22: SCAT Chat as a menu-bar app (the dot, its menu, the first-start note, `Serve <vault>?`, Change
     vault) and the guides' account of the chat's forms (the consent, the header format, Connect, the skill's
     Description, the saved agent's tool added again), none confirmed on a real Mac and chat.
+26. **Node-page help and merge (WP24; D-144 to D-147).** What shipped: the views `evidence`, `copy-share` and `review`;
+    `merge` (plan first, then applied by the coder) and `split-plan`; the assistant's rules A16 to A20 in the contract,
+    the skill and the server's rules text; the prompts `draft-a-node-page`, `fill-in-node-pages` and
+    `look-for-duplicates`; the norms page's line for each node type. The review view's basis is provisional: its
+    thresholds are code defaults, fitted to the seeded cases of the G6 vault (`research/node-pages/vault`) and checked
+    on two small vaults (the spike readout is `research/node-pages/spike-b/readout.md`). Each rests on one seeded
+    positive; a second vault with known duplicates would settle them. The pages-to-re-read list had a precision of 1
+    of 4 on the G6 vault, and the range vault's `community-members` has three narratives, so it is not listed. UA-A
+    round 1 (`acceptance/reports/wp24-r1-findings.md`): no blocking finding; X1 to X10 dispositioned there (X2 fixed
+    in the copy-share entries). Open grey spots for you: `schema_version` 3 with new operations; the machine
+    interface contract page's word cap raised from 646 to 774 over the package; the command-line `scat set-status
+    done` works, as it is the coder's own tool, and the refusal of `done` is the MCP server's and the assistant's
+    rules (X1).
 
 **The note on the rule audit (D-052, D-053).** The audit covered the v0.1 catalogue as it stood then. The rules in
 force, with their ids and severities, are in `contracts/rule-catalogue.md`; `SCAT-NOEDGES` (G1, added in WP18-U6) and
@@ -492,7 +511,7 @@ the table rules came after the audit.
 **Checklist.**
 
 - [ ] I gave items 1, 3, 4, 5 and 11 my answer.
-- [ ] I read items 2 and 6 to 25 and accept each, or I note it.
+- [ ] I read items 2 and 6 to 26 and accept each, or I note it.
 
 **Your decision.** Items 1, 3, 4, 5 and 11 each have your answer, and every other item is accepted or noted.
 

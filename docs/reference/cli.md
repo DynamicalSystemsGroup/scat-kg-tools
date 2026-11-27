@@ -1756,7 +1756,7 @@ REPL: `scat_kg.copy_share()`, `scat_kg.copy_share("<node>")`
 Shows, for each node page, how much of its text repeats a narrative, so that you can see which pages were written from one account. It prints the vault's attribution mode first, then one line for each node page, the most repeated first:
 
 - **share**: the part of the page's five-word runs that appear word for word in a narrative, from 0 to 1. A page of fewer than five words, such as a stub, has no share.
-- **from**: the narratives those runs come from, the one with most runs first.
+- **from**: the narratives those runs come from, the one with most runs first. The narratives named are those whose text the page repeats, whether or not they link the node.
 
 The page's text is its `description` and its body, without an `Edges told` section. A narrative's text is its body. Case, punctuation, line breaks and table bars count for nothing, a link counts as the text it shows (its name when it shows none), and a run may cross a sentence. A narrative that links no node page is excluded: its text is not compared, and it is listed at the end, as in the other views.
 

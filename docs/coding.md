@@ -50,6 +50,8 @@ The [norms](norms.md) say what the tool requires and what is only guidance, and 
 
 A node page is written across the narratives that link it, not from one of them. The norms section [What a node page holds](norms.md#what-a-node-page-holds) says what it holds, and `scat evidence <node>` shows every narrative that links the node, with the paragraph around each link.
 
+**Two pages for one node.** `scat review` shows node pages of one type that may be one node, and pages to re-read. To see what a merge does, run `scat merge A B --plan`; then `scat merge A B` does it, and A is folded into B. `scat split-plan A` lists what to re-link if you split A in two.
+
 When the check passes and you confirm both, set the narrative to `done`. Done is not frozen: to change a `done` narrative you set it back to `draft`, edit, then set `done` again, and the tool checks it again then.
 
 ### The three actors

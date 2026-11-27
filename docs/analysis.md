@@ -22,7 +22,7 @@ A **view** is a purposeful picture or table made from a conformant vault. The to
 
 **Trace.** What does this node reach? Following edges up goes toward groups, down toward technologies. It does not say how strongly a node depends on what it reaches.
 
-Two more views serve the node pages. **Evidence** (`scat evidence <node>`) shows every narrative that links one node, with the paragraph around each link, its edges and its adjacent nodes: read it before you write the page. **Copy-share** (`scat copy-share`) shows, for each node page, how much of its text repeats a narrative word for word, and which narratives. A high share is a prompt to look at the page, not a fault.
+Two more views serve the node pages. **Evidence** (`scat evidence <node>`) shows every narrative that links one node, with the paragraph around each link, its edges and its adjacent nodes: read it before you write the page. **Copy-share** (`scat copy-share`) shows, for each node page, how much of its text repeats a narrative word for word, and which narratives. A high share is a prompt to look at the page, not a fault. **Review** (`scat review`) lists node pages of one type that may be one node, and pages whose accounts tell them to different other ends; both are prompts to look, not findings.
 
 ## The notebook
 

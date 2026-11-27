@@ -48,6 +48,13 @@ that link it. Never paste one account into it.
   forces broad groups) says so and names the senses.
 - **What is thin**: what no narrative says.
 
+What "what it is" means depends on the type:
+
+- **A group:** who they are as the narratives tell them, and what they hold.
+- **A concern:** what is at stake and who holds it, and what addresses it.
+- **An affordance:** what it offers, and which technologies provide it.
+- **A technology:** what it is as the narratives tell it, and which affordances rest on it.
+
 To look, run `scat evidence <node>`: it shows every narrative that links the node, with the paragraph around each
 link. `scat copy-share` shows how much of each page repeats a narrative word for word. A high share is a prompt to
 look at the page, not a fault. The assistant may draft a page as text; you write it into the vault and decide what

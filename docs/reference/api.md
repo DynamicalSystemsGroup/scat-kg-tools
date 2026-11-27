@@ -1179,7 +1179,7 @@ refused nobody: no node has this name
 copy_share(node=None, *, root=".")
 ```
 
-Returns, for each node page (or the one named), the share of its five-word runs that appear word for word in a narrative, from 0 to 1, and the narratives those runs come from, the one with most runs first. The pages come most repeated first. A page of fewer than five words, such as a stub, has a share of `None`. A high share is a prompt to look at the page (see [`scat_kg.evidence`](#scat_kgevidence)), not a fault. CLI twin: [`scat copy-share`](cli.md#scat-copy-share).
+Returns, for each node page (or the one named), the share of its five-word runs that appear word for word in a narrative, from 0 to 1, and the narratives those runs come from, the one with most runs first. The narratives named are those whose text the page repeats, whether or not they link the node. The pages come most repeated first. A page of fewer than five words, such as a stub, has a share of `None`. A high share is a prompt to look at the page (see [`scat_kg.evidence`](#scat_kgevidence)), not a fault. CLI twin: [`scat copy-share`](cli.md#scat-copy-share).
 
 | Parameter | Meaning |
 |---|---|

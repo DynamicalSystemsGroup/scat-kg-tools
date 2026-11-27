@@ -28,6 +28,7 @@ G4_HEADINGS = {
     "offering a description": "## Offering a description",
     "drafting a node page": "## Drafting a node page",
     "sweeping the stub node pages": "## Sweeping the stub node pages",
+    "possible duplicates and merging": "## Possible duplicates and merging",
     "pages to tag at the end": "## At the end of a session",
     "norms pointer": "## Norms",
 }

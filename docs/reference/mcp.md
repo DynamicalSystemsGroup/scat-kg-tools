@@ -43,14 +43,14 @@ Nineteen tools. Each returns the operation's own document.
 | `layered` | View: the layered view of some narratives, or all. |
 | `trace` | View: follow edges up, down or both from a node. |
 | `evidence` | View: one node page's narratives with the paragraph around each link, its edges with the narratives that tell them, and its adjacent nodes. Reads no `attributed_to` and lists no contributor page. |
-| `copy_share` | View: for each node page (or the one `node` named), the share of its text that repeats a narrative word for word, and the narratives it comes from, the most repeated first. Reads no `attributed_to` and lists no contributor page. |
+| `copy_share` | View: for each node page (or the one `node` named), the share of its text that repeats a narrative word for word, and the narratives it comes from, the most repeated first. The narratives named are those whose text the page repeats, whether or not they link the node. Reads no `attributed_to` and lists no contributor page. |
 | `review` | View: pairs of node pages of one type that may be one node (overlaps, twin rows, shared adjacent nodes with hubs marked, link texts), and pages whose accounts tell them to different other ends, with the narratives grouped. A prompt to read, not a finding. Reads no `attributed_to` and lists no contributor page. |
 | `attribution` | View: the narratives by contributor, and the narratives that name none. Refused where the attribution mode is `disallowed`. |
 | `export_edges` | Write the three edge tables as CSV and Markdown into `views/`. |
 
 ## Prompts and the rules
 
-Five prompts, each citing `contracts/assistant.md`:
+Six prompts, each citing `contracts/assistant.md`:
 
 | Prompt | What it gives the assistant |
 |---|---|
@@ -59,6 +59,7 @@ Five prompts, each citing `contracts/assistant.md`:
 | `review-before-done` | A review of a narrative before the coder sets `done`. |
 | `draft-a-node-page` | A draft of one node page as text in the reply, from the evidence view, across the narratives and citing them. You write it into the vault and set `done`. |
 | `fill-in-node-pages` | The same for each stub node page in turn, one page per step, each handed back to you before the next. |
+| `look-for-duplicates` | The possible duplicates and pages to re-read from `review`, one proposal per step, with the merge plan shown. You run the merge yourself, and each step is handed back to you. |
 
 The server also offers one resource, `scat://assistant-rules`, the assistant's rules as text.
 
