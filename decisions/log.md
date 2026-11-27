@@ -2821,3 +2821,13 @@ built into it. its not a random collection of tools they exist to support specif
 lifecycle's stages to them; the skill is a separate upload. The ACE sketched lifecycle guides in markdown served as the
 server's instructions and as resources and by a `scat guide` command, and asked when it should land. His answer:
 "In v0.1". The ACE scopes it as WP27 after the sitting; the Claude walkthrough's skill steps re-run once it lands.
+
+## D-158 | 2026-11-27 | The IDE path's example is Copilot in VS Code
+
+In his sitting, before the Codex run, the chief engineer asked (typed by the agent): "what if we do copilot in vscode
+instead? just trying to show breadth in tools". The ACE set out the trade (breadth across Anthropic, GitHub, a co-op
+host and a local model, and an assistant organisers' institutions often have; against a rewrite of the worked example
+and a dependence on Copilot reading `AGENTS.md`). His answer: "Copilot in VS Code". The run passed (set-up through the
+vault's `AGENTS.md` and skill, then the rules named), recorded in `acceptance/walkthroughs/ide-run.md`; the page now
+uses Copilot (tools ae29efa), naming Codex as another agent. Separately, and not as project work, the ACE fixed Codex's
+install on this Mac (npm's global folder was not on the PATH; `codex` linked into `/usr/local/bin`).

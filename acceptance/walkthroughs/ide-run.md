@@ -1,6 +1,19 @@
-# IDE path run record (Codex)
+# IDE path run record (Copilot in VS Code; first drafted for Codex)
 
-Status: waiting for the chief engineer's sitting. The Codex screens have not been run; `docs/ide.md` has no
+Status: **run 27 Nov 2026 in the chief engineer's sitting, with Copilot in VS Code** (his choice, D-158, for breadth
+of tools; Codex had been installed and is named on the page as another agent). Screenshots are in the sitting's
+evidence folder (`s3-copilot-*`), outside the repository. The run, on the test vault `my-vault` (an Intel Mac, VS Code
+1.143, Copilot built in):
+
+| Step | What happened |
+|---|---|
+| Open | The vault opened as the folder; the chat view ("Chat with Copilot") was there, already in **Agent** mode, model Auto. No sign-in was asked: he was signed in to GitHub. |
+| Set up | "Set yourself up for this vault." Copilot asked before running terminal commands (he approved), then reported: `scat.toml` confirmed, `uv 0.13.1` available, `uv sync` completed, `uv run scat check`: "attribution mode: disallowed; no problems", and "Coder's next act: review the vault in Obsidian". It read `AGENTS.md` and the setup skill. `git status` stayed clean. |
+| Rules | "What are you not allowed to do here?" Copilot listed: not set or move a narrative's status, nor run `set-status` or edit `status:`; not write narrative text through the tool; not hand-write rows of an Edges told table (use `record-edge`); not resolve doubts of interpretation; not claim a narrative correct because the check passed; not edit field notes; not commit or push; no write operation without confirmation. |
+
+The page's worked example was rewritten from this run (tools ae29efa).
+
+Earlier status, kept for the record: the Codex screens had not been run; `docs/ide.md` had no
 screenshot references yet. Template side: `AGENTS.md` added on branch `wp25/template` of scat-kg-template (not pushed).
 
 Environment, date, material (lab only, `contracts/examples`), steps as run, deviations and steps a script could remove:
