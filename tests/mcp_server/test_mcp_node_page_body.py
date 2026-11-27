@@ -86,9 +86,16 @@ def run(tmp_path_factory):
     return names, before, _node_pages(vault)
 
 
+# These return an image or SVG, not a document `call` can read; test_mcp_draw.py walks them and checks that the
+# whole vault tree is byte-identical after.
+DRAW_TOOLS = {"draw_fingerprint", "draw_layered", "draw_trace"}
+
+
 def test_every_tool_is_walked(run):
     names, _, _ = run
-    assert names == {tool for tool, _ in CALLS}, "a tool has no entry in CALLS (or one was removed)"
+    assert names - DRAW_TOOLS == {tool for tool, _ in CALLS}, (
+        "a tool has no entry in CALLS (or one was removed)"
+    )
 
 
 def test_no_node_page_body_changes(run):

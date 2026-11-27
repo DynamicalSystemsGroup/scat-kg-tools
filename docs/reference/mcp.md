@@ -24,7 +24,7 @@ address and refuses to start on any other.
 
 ## Tools
 
-Nineteen tools. Each returns the operation's own document.
+Twenty-two tools. Each returns the operation's own document, except the three that draw, which return a picture (see [Drawings](#drawings)).
 
 | Tool | What it does |
 |---|---|
@@ -47,6 +47,17 @@ Nineteen tools. Each returns the operation's own document.
 | `review` | View: pairs of node pages of one type that may be one node (overlaps, twin rows, shared adjacent nodes with hubs marked, link texts), and pages whose accounts tell them to different other ends, with the narratives grouped. A prompt to read, not a finding. Reads no `attributed_to` and lists no contributor page. |
 | `attribution` | View: the narratives by contributor, and the narratives that name none. Refused where the attribution mode is `disallowed`. |
 | `export_edges` | Write the three edge tables as CSV and Markdown into `views/`. |
+| `draw_fingerprint` | Draw a narrative's fingerprint, with `candidates` also the links with no row. Returns an image. Writes nothing. |
+| `draw_layered` | Draw the layered view of some narratives, or all. Returns an image. Writes nothing. |
+| `draw_trace` | Draw what a node reaches, up, down or both. Returns an image. Writes nothing. |
+
+## Drawings
+
+`draw_fingerprint`, `draw_layered` and `draw_trace` return the picture that `scat draw` and the notebook make for the same vault and arguments, byte for byte. Each takes `format`, `png` (the default) or `svg`. A `png` result is an image: the server sends it as MCP image content, so a client shows or passes on the picture as it does any image. An `svg` result is the drawing's text.
+
+A drawing is never written to the vault. To keep a picture as a file, the coder runs `scat draw ... --out`, or saves it from the notebook.
+
+A refusal is returned as the refusal document, as for every other tool, and no image: a name that is not a page, a narrative given to `draw_trace`, a narrative that is excluded, a `direction` or `format` that is not offered, a vault whose pages the view refuses to draw (the document lists the problems), and a server without the `draw` extra (the document says how to install it).
 
 ## Prompts and the rules
 

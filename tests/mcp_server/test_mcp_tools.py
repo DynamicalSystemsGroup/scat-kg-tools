@@ -28,7 +28,12 @@ TOOLS = {
     "review",
     "attribution",
     "export_edges",
+    "draw_fingerprint",
+    "draw_layered",
+    "draw_trace",
 }
+
+DRAW_TOOLS = {"draw_fingerprint", "draw_layered", "draw_trace"}
 
 
 @pytest.fixture(scope="module")
@@ -262,7 +267,7 @@ def test_every_tool_returns_the_data_of_the_tools_own_call(url, vaults):
         want = own_call(own).to_dict()
         assert got == want, (tool, args)
         seen.add(tool)
-    assert seen == TOOLS
+    assert seen == TOOLS - DRAW_TOOLS  # the draw tools return images: see test_mcp_draw.py
     assert snapshot(served) == snapshot(own)
 
 
