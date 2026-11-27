@@ -2909,3 +2909,14 @@ a release. i am willing tolerate one time terminal use at setup but that doesn't
 reading stands (the setup person runs Install once, as D-159 makes settings theirs); the mission line holds, since the
 organiser is not required to open a terminal; a terminal-free Install once is candidate C16 for after v0.1. Reviewer's
 guide item 34 is answered.
+
+## D-165 | 2026-11-27 | RS5 delivered; its client trials held; an ACE addendum for WP29
+
+RS5's readout is on `dev` (`research/lifecycle/readout.md`, tools 9c8d7f4); the spike servers and notes are on
+`spike/lifecycle` (2e02a65, never merged). RS5-R1, R2, R3b and R4 are met on the evidence; R3 (whether Claude,
+inference.coop and VS Code's Copilot honour a mid-session tool change) and the client parts of G4 and R3b are held for
+the chief engineer's return, with a trial plan on the spike branch (`spike/lifecycle/TRIAL-PLAN.md`). The main text is
+2,728 words against the default of about 2,500; accepted as is. The PM did not re-review after the fix round; the ACE
+spot-checked the readout and re-read the load-bearing spec claim at source (it holds), and added one option for WP29
+(stage carried as per-request authorization, which the newer spec allows) in `work-packages/WP28-WP31-inputs.md`.
+`check_metrics.py --accept RS5` passes (iteration 48). RS5 is accepted when its client trials are recorded.
