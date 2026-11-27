@@ -63,6 +63,14 @@ Throwaway lab key only; crop or blur the address, account name and any key; each
   `docs/leave-no-trace.md` use, i.e. the template repo's `skills/scat-coding/SKILL.md`. It follows `dev` until a
   release tag exists; the ACE confirms that is the stable source.
 
+## Added after the cold read
+
+- Plan wording: connector and skill both listed Free to Enterprise; Free one connector; Team/Enterprise owners add the
+  connector. The article also lets an owner turn off user-created skills (the upload option then disappears): not on the
+  page; the sitting notes whether it shows.
+- Reachability sentence links "The session key"; the existing page says the address is public while a session runs
+  (What the chat path is, Start a session).
+
 ## Steps a script could remove
 
 - Steps 8 and 9 (save the file in a folder, compress it): a downloadable `scat-coding.zip` from the release.

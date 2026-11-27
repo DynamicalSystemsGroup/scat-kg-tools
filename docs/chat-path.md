@@ -104,27 +104,34 @@ assistant does not commit or push; you do. Check the whole vault is clean first.
 
 Any setup of this path has five parts.
 
-- **A chatbot that takes a remote MCP server** (a server the chatbot's own service calls over the internet) and sends
-  a fixed key with each request.
+- **A chatbot that takes a remote MCP server** (MCP is the standard way a chatbot calls a tool; a remote one is
+  reached over the internet) and sends a fixed key with each request.
 - **The SCAT server, reachable from the chatbot's cloud.** That means a public `https` address on the standard
   port (443). SCAT Chat makes one for the session (see [Start a session](#start-a-session)).
 - **The key.** SCAT Chat makes a new one each session (see [The session key](#the-session-key)). The chatbot holds it
   and sends it with every request.
 - **The skill or rules.** The assistant's rules are in `skills/scat-coding/SKILL.md`. Load them the way your chatbot
   loads instructions.
-- **Your vault, edited in Obsidian.** The chatbot drafts text; you write it into the vault and set `done` yourself.
+- **Your vault, edited in Obsidian.** The vault is the folder of Markdown files Obsidian opens (see
+  [Terms](reference/terms.md)). The chatbot drafts text; you write it into the vault and set `done` yourself.
 
 No terminal is needed for the coding. The one-time install under [Install once](#install-once) uses one.
 
 ## Worked example: Claude
 
-Claude in the browser (claude.ai). Free accounts can add one custom connector, and skills are listed for Free through Enterprise. On a Team or Enterprise plan, an
-owner adds the connector in the organization's settings, then you connect it under **Customize** > **Connectors**.
+Claude in the browser (claude.ai). Every plan, Free to Enterprise, can add a custom connector and a skill. On Free,
+Pro and Max you add them yourself, and Free allows one connector. On Team and Enterprise an owner adds the connector
+in the organization's settings and turns on what skills need (below); you then connect it under **Customize** >
+**Connectors**.
+
+The connector's address is public while the session runs, and only the key lets a request through (see
+[The session key](#the-session-key)). Stop switches it off.
 
 Do [Install once](#install-once) and [Start a session](#start-a-session) first. Come back when the dot is green.
 
-**Add the connector.** Claude cannot edit a connector, so each session you remove it and add it again with the
-new key.
+**Add the connector.** The address stays the same, but Claude cannot edit a connector, so this differs from
+[Connect the chat](#connect-the-chat), where you keep the entry and paste the new key: each session, remove the
+connector (**Customize** > **Connectors**, the three dots, **Remove**) and add it again with the new key.
 
 1. **In the menu bar:** click the dot, then **Copy address**. The address, which ends in `/mcp`, is on your
    clipboard.
