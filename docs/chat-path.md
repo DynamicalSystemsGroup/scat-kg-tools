@@ -73,7 +73,7 @@ Your notes are about real groups of people.
     you need").
 6. **In GitHub Desktop:** choose **Clone**.
 
-Your vault is the cloned folder. It holds `scat.toml`. The template's default branch is `dev`; GitHub
+Your vault is the cloned folder. It holds `scat.toml`, the vault's settings (the cap on groups and the attribution mode). The person who set up your tools changes them; the assistant cannot. The template's default branch is `dev`; GitHub
 Desktop shows the current branch at the top, and if it shows `main` choose `dev` from that list.
 
 **Remove the example: your hands do it.** The template holds a worked example that you remove before you add your own
@@ -549,6 +549,7 @@ ones are cut with "...".
 | "Tailscale is not running or you are not signed in. Open Tailscale from the menu bar at the top of your screen, sign in, ..." | Do that, then choose **Stop** in the SCAT Chat menu, then open SCAT Chat again. |
 | "Tailscale needs HTTPS switched on, once, before the public link can work." (a dialog with **Open the page** and **Close**), then "Nothing was started: HTTPS is not switched on in Tailscale yet" | The HTTPS setting above. Read the Mac's name the dialog shows, click **Open the page**, switch on Enable HTTPS, then choose **Stop** in the SCAT Chat menu, then open SCAT Chat again. |
 | "The public link did not start." (a dialog with **Open the page** and **Close**), then "The public link did not start (Funnel is probably not allowed yet: ...)" | The Funnel setting above. Click **Open the page**, approve Funnel, then choose **Stop** in the SCAT Chat menu, then open SCAT Chat again. |
+| The assistant says the vault is at its cap of N groups, so a new group page would break SCAT-CAP (the tool refuses it). | Link an existing group instead, or ask the person who set up your tools to raise `stakeholder_group_cap` in `scat.toml`. Tell them how many groups your plan needs. The assistant cannot change it. |
 | "The vault folder I remembered is gone (...). Choose it again on the next screen." | Not an error. Choose the folder that holds `scat.toml` in the folder picker. |
 | "No vault was confirmed, so nothing was started." or "No vault was chosen, so nothing was started." | You closed the question or the folder picker. Choose **Stop** in the SCAT Chat menu, then open SCAT Chat again and answer it. |
 | "I cannot open that folder." | Choose **Stop** in the SCAT Chat menu, then open SCAT Chat again and choose your vault folder. |

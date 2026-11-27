@@ -15,10 +15,10 @@ Scenarios hear people in a situation, doing things over time. Architectures hear
 
 ## Groups and the cap
 
-Every vault sets a cap on the number of groups, one line in `scat.toml`. The example vault sets it to 3:
+Every vault sets a cap on the number of groups, one line in `scat.toml`. The example vault sets it to 6:
 
 ```text
-stakeholder_group_cap = 3
+stakeholder_group_cap = 6
 ```
 
 The cap keeps groups large enough that nobody can be picked out. Cluster the people you expect to fit under it:
@@ -28,11 +28,13 @@ The cap keeps groups large enough that nobody can be picked out. Cluster the peo
 3. If more standpoints appear than the cap allows, widen a group's description so it holds them.
 4. If one identifiable person fills a role, widen the group around it. A group of one is a person. Where it is unclear which group someone belongs to, ask them.
 
-The test of a good group is a line a member would say of themselves: "From where operators sit, we keep the desk open and the tools safe." A group beyond the cap is refused, with this fix: link an existing group, or raise `stakeholder_group_cap` in `scat.toml` if the plan allows. Clear the example groups before you add pages of your own: [Start your own content](getting-started.md#5-start-your-own-content).
+The cap and the attribution mode are vault settings, changed by the person who set up your tools (you, if you did). Settle both with that person before the first session.
+
+The test of a good group is a line a member would say of themselves: "From where operators sit, we keep the desk open and the tools safe." A group beyond the cap is refused: link an existing group, or have the cap raised if the plan allows. Clear the example groups before you add pages of your own: [Start your own content](getting-started.md#5-start-your-own-content).
 
 ## Choose the attribution mode
 
-The vault has one **attribution mode**: whether a narrative names the people it is attributed to. You choose it at set-up, before the first session, with one line in `scat.toml`, beside the cap. The template's line is the worked example's mode:
+The vault has one **attribution mode**: whether a narrative names the people it is attributed to. You choose it, and the person who set up your tools writes the line in `scat.toml`, beside the cap. The template's line is the example's mode:
 
 ```text
 attribution = "disallowed"
@@ -44,15 +46,15 @@ attribution = "disallowed"
 | `optional` | names its contributors, or none | a contributor page for each person who chose to be named |
 | `disallowed` | names no contributor; the Chatham House rule is this mode | no contributor page |
 
-The mode is the same for every session and participant. The check refuses a vault with no mode, and the tools enforce yours: [Norms](norms.md#writing-together) and [Coding](coding.md#contributor-pages-and-attributed_to) say how. Changing it later flags pages written under the old one, so choose before you tell participants anything.
+The mode is the same for every session and participant. The tools enforce yours: [Norms](norms.md#writing-together) and [Coding](coding.md#contributor-pages-and-attributed_to) say how. Changing it later flags pages written under the old one, so choose before telling participants anything.
 
 ## A one-off online discussion
 
-Fix the call link, a shared notes page and the note-taker before you invite. Pick one kind of session and one timeframe. Say the terms as the call opens and paste them at the top of the notes page. A recording is a second set of notes: match its settings to what you told people.
+Fix the call link, a shared notes page and the note-taker before you invite. Pick one kind of session and timeframe. Say the terms as the call opens and paste them at the top of the notes page. A recording is a second set of notes: match its settings to what you said.
 
 ## A recurring discussion
 
-The same people return, so set the terms and groups once and restate them briefly each time. Keep one dated notes page per session. Tell newcomers the terms before they speak. The cap holds across the whole series, so plan the groups for all of it.
+The same people return, so set the terms and groups once and restate them briefly each time. Keep one dated notes page per session; tell newcomers the terms first. The cap holds across the whole series, so plan the groups for all of it.
 
 ## An in-person meetup
 

@@ -137,8 +137,8 @@ no problems
 ### Two things the tools do that may surprise you
 
 `scat.toml` is required. It sits in the vault folder and holds two keys: `stakeholder_group_cap`, the cap on groups, and
-`attribution`, the vault's attribution mode (`required`, `optional` or `disallowed`). The template sets the cap to 3 and the
-mode to `disallowed`; [Planning](planning.md#choose-the-attribution-mode) says how to choose yours. If either key is missing,
+`attribution`, the vault's attribution mode (`required`, `optional` or `disallowed`). The template sets the cap to 6 and the
+mode to `disallowed`; [Planning](planning.md#choose-the-attribution-mode) says how to choose yours. The person who set up your tools changes these two keys (you, if you set them up yourself). If either key is missing,
 the check reports an error (`SCAT-CAP-CONFIG` or `SCAT-MODE-CONFIG`). If the whole file is missing, you are probably in the wrong folder, or the file
 was deleted. In a wrong (empty) folder the check ends with `1 error, 0 warnings`:
 
@@ -214,7 +214,7 @@ one narrative is coded, you have seen its fingerprint, and it is `done`. Nothing
 The commands below show your names in capitals: `NARRATIVE`, `GROUP`, `CONCERN` and `AFFORDANCE`. Replace each with a
 name of your own before you run the line. The pages and outputs show a made-up account, `saturday-at-the-tool-library`,
 a Saturday at a community tool library, so you can see what each step looks like. A name is lower-case letters,
-digits and single hyphens, so a command run with a capitalised name is refused and nothing is written. Your vault holds at most the number of groups that `scat.toml` allows (3 in the
+digits and single hyphens, so a command run with a capitalised name is refused and nothing is written. Your vault holds at most the number of groups that `scat.toml` allows (6 in the
 template), so name a broad group such as `workshop-participants`, never a person.
 
 **1. Set up.** Do steps 1 to 5 above: create your private repository, run `uv sync`, run `uv run scat check`, open the
