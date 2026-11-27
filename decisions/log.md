@@ -2695,3 +2695,15 @@ decision-log residue; WP26's sweep takes it, in the template and the samples. (3
 at 774 is confirmed (each step judged minimal). (4) The impact map's stale "stays 2" and its no-op `\b` grep are noted
 for WP26's sweep. (5) The cold users' reports were filed as the PM's condensed record, not originals: weaker evidence,
 listed in the reviewer's guide.
+
+## D-151 | 2026-11-26 | WP25-U1 decided: the local path is Ollama in Docker, started with commands
+
+The spike (`research/approaches/readout.md`, on `wp25/u1`): local models drive the SCAT tools end to end but pick tools
+unreliably; on a Mac, Ollama in Docker gets no GPU and gains nothing over native Ollama; SCAT Chat publishes only
+through Tailscale, which a local client may not reach. Asked which route the walkthrough leads with, the chief
+engineer chose "Docker only"; asked whether the local path may need a terminal or SCAT Chat gains a local-only mode, he
+chose "Terminal is fine". The ACE decides the rest: the local-LLM walkthrough runs Ollama, the SCAT MCP server and an
+MCP-capable chat client (Open WebUI, bearer key) in Docker, started with a few terminal commands the page gives;
+`deploy/` stays untouched; the page says the check decides conformance, not the model, and what hardware to expect
+(memory per model size, and that a turn on an older Mac can take minutes), without test status (D-146). Claude's and
+Codex's set-up follow the readout's cited docs and are corrected in the chief engineer's sitting.
