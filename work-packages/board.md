@@ -35,7 +35,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP25 | Coding paths, facilitating and planning (D-149) | all units done on `pm-wp25` except U10 (the chief engineer's sitting: Claude, Codex and inference.coop runs and screenshots; by-hand Obsidian screenshots); tier 1 and CI before push | `WP25.md` |
 | WP26 | Prompt-residue sweep and user-test loops (D-154) | all units done on `pm-wp26` (iteration 47: 24 est, 28 realized, 1.0 h); two UA-A rounds, round 2 with no blocking finding; pushed to `dev`; `check_metrics.py --accept WP26` passes; waits on the ACE for the template pin and acceptance | `WP26.md` |
 | WP27 | Vault settings belong to the setup person; default cap 6 (D-159) | all units done and merged; ready for ACE acceptance | `WP27.md` |
-| WP28 | Drawings returned by the server (D-160) | approved (D-163) | `WP28.md` |
+| WP28 | Drawings returned by the server (D-160) | R1 to R4 and R6 built on `dev`; R5 (on-screen check in Claude and inference.coop, both header forms) held for the ACE: needs the chief engineer's accounts and keys (iteration 50: 19 est, 19 realized, 1.2 h) | `WP28.md` |
 | RS5 | Research spike: the lifecycle as a state machine (D-162; branch `spike/lifecycle`, never merged into `dev`) | approved (D-163) | `RS5-lifecycle.md` |
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | approved (D-163) | `WP29.md` |
 | WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | approved (D-163) | `WP30.md` |
@@ -391,6 +391,12 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | RS5-U6 | technical writer (client trial plan for the ACE), sonnet | 2 | 2 | `spike/lifecycle` | done |  | 2026-11-27 | commands run locally; client steps not run |
 | RS5-U7 | technical writer (readout), sonnet | 5 | 8 | `spike/lifecycle` | done |  | 2026-11-27 | one fresh review (5 must-fix items) and a fix round |
 | RS5-U8 | reviewer (fresh, readout), sonnet | 2 | 2 | `spike/lifecycle` | done |  | 2026-11-27 | one fresh review (5 must-fix items) and a fix round |
+| WP28-U1 | Python developer and technical writer (draw.trace, scat draw trace, schema note, reference), sonnet, sonnet | 5 | 5 | `wp28/u1` | done |  | 2026-11-27 | one worker; draw.trace, CLI, 30 tests, schema description note, two reference pages; reviewer PASS first time |
+| WP28-U1r | reviewer (fresh, draw.trace), sonnet, sonnet | 2 | 2 | `-` | done |  | 2026-11-27 | ran the CLI on the examples, compared old drawings byte for byte; PASS with three nits |
+| WP28-U2 | Python developer and technical writer (MCP drawing tools, docs), sonnet, sonnet | 5 | 5 | `wp28/u2` | done |  | 2026-11-27 | three tools, 7 byte-equality cases and refusals, count edits in existing tests and docs; PASS first time |
+| WP28-U2r | reviewer (fresh, MCP drawing tools), sonnet, sonnet | 2 | 2 | `-` | done |  | 2026-11-27 | diffed tools/list of both trees, odd arguments, read a returned PNG; PASS |
+| WP28-U3 | test engineer (container image and its test), sonnet, sonnet | 3 | 3 | `wp28/u3` | done |  | 2026-11-27 | Dockerfile extra, real-image test and CI step; one launcher test needed its literal updated; Colima temp-dir quirk |
+| WP28-U3r | reviewer (fresh, container image), sonnet, sonnet | 2 | 2 | `-` | done |  | 2026-11-27 | rebuilt the image, ran the real entrypoint read-only; PASS |
 
 ## Iterations and velocity
 
@@ -438,6 +444,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 46 | WP25-U11, WP25-U11r, WP25-U12 | 4 | 6 | 1.50 | 0.50 h | 12.0 |
 | 48 | WP27-U1 to WP27-U3r | 12 | 14 | 1.17 | 0.6 h | 23.3 |
 | 49 | RS5-U1 to U8 | 35 | 38 | 1.09 | 0.70 h | 54.3 |
+| 50 | WP28-U1 to WP28-U3r | 19 | 19 | 1.00 | 1.2 h | 15.8 |
 
 ## Velocity and forecast
 
