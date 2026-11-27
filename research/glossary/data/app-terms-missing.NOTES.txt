@@ -1,0 +1,38 @@
+RS6-U2 notes (G1 part 2). Written 2026-11-27. Worker output only; nothing else changed.
+FILES: app-terms-missing.csv (85 rows, 17 cols), glossary-terms-unused.csv (13 rows, 12 cols); both parse, every row has the header's width.
+COUNTS (computed): needs_glossary_entry = yes 25, no 54, assistant 6. multi_sense=yes 15 rows. class: see column "class".
+  glossary-terms-unused.csv: 64 glossary words checked (58 entry terms plus 6 words used inside entries); 4 unused (element,
+  analysing, range vault, life cycle) and 9 rarely used (docs<=3 pages, none in template, CLI help, MCP).
+METHOD: docs set = docs/*.md and docs/reference/{cli,mcp,terms}.md, 22 files; docs/reference/api.md excluded (1468 lines,
+  no mkdocstrings ':::' directives found, so I cannot say it is generated; it is the Python twins reference). Counts are the number
+  of those files matching the row's regex (same result as grep -il -E; spot-checked six rows by grep -ilE: session 17, consent 9,
+  node page 10, participation terms 5, notebook 3, candidate 5). docs_pages_using includes terms.md for the missing table (it
+  lacks all of these by construction; in_terms_md_hits column shows any mention). In the unused table terms.md is excluded.
+  Counting tool: scratchpad u2/cnt.py (Python re, case-insensitive). The regex is in the generator, not the CSV: counts are WORD hits,
+  not sense hits (e.g. "problem", "session", "account" count every use). Where a word has several senses the sense column says so.
+GREPS (examples): grep -rhoE 'SCAT-[A-Z-]+' src docs; grep -oE '\*\*[^*]{2,40}\*\*' docs (bold-defined words); grep -n '^#' docs/*.md
+  (headings); grep -n 'name=\|@mcp' src/scat_kg/mcp_server; grep -c '^REPL:' cli-help.txt (20); SEVERITY keys in checks/problem.py (22).
+SOURCES VISITED (brief list): GLOSSARY.md (read; all 58 entries listed); docs/reference/terms.md (read in full); docs pages: flow.md,
+  data-and-consent.md, facilitate-timeframe.md (read in full); planning.md, chat-path.md, getting-started.md, norms.md "What done
+  needs" (read in part); coding.md, architecture.md, analysis.md, ide.md, leave-no-trace.md, local-llm.md, path-pros-and-cons.md,
+  index.md, narratives.md, coding-paths.md, facilitate-scenarios/architectures.md (headings plus targeted greps and line reads only).
+  CLI: read the help dump (cli-help.txt) for all 20 commands and ran `uv run scat check|status|review|copy-share|layered --root
+  tpl-pin3` to see real messages. MCP: read docs/reference/mcp.md in full; grepped server.py/prompts.py for tool and prompt names
+  and descriptions, did not read every description string. Template (tpl-pin3): read README.md, AGENTS.md, SKILL.md, scat.toml, one
+  narrative, one group page, one .base; grepped the other pages. skills/scat-coding/SKILL.md: counted word hits only, not read.
+NOT CHECKED: rule message wording (only rule ids and severity pairs, 22 plus 9 pairs; not each "what" string); the JSON examples in
+  docs/reference/cli.md; src/scat_kg/{draw,views,review}.py strings beyond help text; the MCP image
+  and "gate" behaviour; docs/overrides and mkdocs.yml navigation; whether any page is rendered differently on the site. Journey
+  tags (J1..J7) are my reading of each page, not a source statement; the lifecycle's stage words are out of scope.
+CAVEATS: (1) Class/level/needs are recommendations; nothing was changed. (2) "needs=no" often means covered by an entry or by the CLI
+  help, not that the word is unimportant. (3) Rows whose term is one of the twenty commands (check ... draw) are listed because the
+  brief asks for command names; only "check" and evidence/review are recommended yes. (4) 'stage', 'transition' skipped by instruction
+  (the flow's "step" word is noted once under "the flow").
+NOTABLE FINDINGS: (a) GLOSSARY has no entries for the four node types, 'node page', 'check', 'session', 'consent', 'participation
+  terms', 'refused', 'REPL' and the review/evidence views, all of which the docs rely on. (b) Collisions: 'tool' (package vs MCP operation),
+  'review' (command) vs 'reviewing' (coder's step), 'session' (event vs SCAT Chat run vs IDE chat), 'candidate' (link without row vs release
+  candidate), 'consent' (participants' vs a UI checkbox), 'merge' (scat merge vs git merge vs merging note files), 'prompt' (3 senses),
+  'account' (narrative text vs a person's telling vs platform account). (c) Two spellings of edge types (table "is addressed by" vs
+  CLI "addressed-by"). (d) Docs use "participant" on 8 pages and "contributor" on 10 though GLOSSARY fixes contributor as participant.
+  (e) "cluster" is used only for the planning act (grouping people under the cap), never for analysis. (f) 'link_suggestions'
+  (third scat.toml key, SCAT-MENTION) appears in norms.md:26 and coding.md:223 only and in no glossary text.

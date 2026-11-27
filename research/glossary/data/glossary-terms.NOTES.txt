@@ -1,0 +1,37 @@
+glossary-terms.csv  (RS6-U1: the glossary's own terms; changes no term)
+Method
+- GLOSSARY.md parsed by script (rows starting "| **"): 53 table rows = 53 distinct parent entries in the CSV.
+  Four compound rows split into words (column 'row' names the parent): coded/uncoded, coder/assistant/tool,
+  inputs/model/analysis, rule/norm. 53 + 1 + 2 + 2 + 1 = 59 CSV rows (computed: 59). The stage words are not in
+  GLOSSARY.md, so none are listed.
+- def_words = whitespace word count of the Definition cell (the parent row's, so split words share it).
+- Counts come from one regex per term (case-insensitive, word-bounded, plural/-ing variants; "SCAT" case-sensitive):
+  docs_pages_n = docs/*.md + docs/reference/*.md (22 files) EXCLUDING docs/reference/terms.md (it lists every term).
+  cli_cmds = `uv run scat <cmd> --help` for the 19 commands (+ `draw` as one), run 2026-11-27 into the scratchpad,
+  plus `scat --help` ("(top)"); mcp_files = src/scat_kg/mcp_server/server.py, prompts.py (tool and prompt text);
+  src_files_n = count of other src/scat_kg/**/*.py files that contain the pattern (code, docstrings and messages
+  together, not messages alone); template_files = tpl-pin3 README.md, AGENTS.md, .claude/skills/*/SKILL.md;
+  skill_files = skills/*/*.md (only skills/scat-coding/SKILL.md exists).
+- class, level, journeys, organiser_meets_it and why are my judgement, each citing a page or command; they are
+  not computed. Journeys use the brief's J1..J7. docs/flow.md has its own 10 steps and docs/index.md four stages; the
+  mapping to J1..J7 is mine.
+- formal_column_not_for_organiser: the Formal-concept cell, copied when it matches a regex of formal jargon (simplex,
+  k-partite, ABox/TBox, OWL, bipartite, support (math), model-view-controller, bearer token, description logic,
+  reachability, neighbourhood, vertex): 17 rows. Rows with "Authored in SCAT" or Obsidian terms are not flagged.
+What could not be checked
+- Regex counts are hits, not senses: common words (tool, model, page, field, link, type, view, status, rule, entry, cap,
+  analysis, coding, author, review) inflate counts. I did not read each hit for sense. "architecture" also hits the
+  builders' page docs/architecture.md; "element" etc. as stated in 'meets'.
+- docs/reference/{cli,api,mcp}.md embed help text, so a term in the CLI help also counts as a docs hit. Whether api.md
+  is generated: not determined (no generator found by grep; it is hand-listed with help-like blocks).
+- terms.md vs GLOSSARY.md compared by eye; 'same sense' means I saw no material difference.
+- Not run: the MCP server (tool/prompt text read from source via regex only); template example pages (narrative/,
+  group/ ...) not searched; ORG.md, contracts/, MISSION.md not searched for the terms.
+- Low-evidence ORG rows (<=3 docs pages, no CLI/MCP use): organiser (3), inputs (3), mismatch (2), a finished model (1),
+  saved agent (2), session key (2), analysing (0, docs say "Analysis"). Kept ORG because the organiser meets the
+  concept on a named page; the PM may weigh them.
+Counts of rows (computed, 59)
+- by class: ORG 52, RED 5 (element, layered graph, entry, model x2), ASST 2 (the ontology, range vault)
+- by level: L-model 21, L-journey 14, L-vault 9, L-policy 8, L-tool 6, L-formal 1
+- class x level: ORG: model 17, journey 14, policy 8, vault 7, tool 6; RED: model 4, vault 1; ASST: formal 1, vault 1
+- in terms.md: yes 56, partial 2 (inputs, analysis), no 1 (model in the compound row; the separate row "model" is there)

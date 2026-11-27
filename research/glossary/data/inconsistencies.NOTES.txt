@@ -1,0 +1,38 @@
+inconsistencies.csv NOTES (RS6-U3). Worktree: scat-wt/rs6, branch spike/glossary. Nothing outside this file and the CSV was written.
+METHOD. Read GLOSSARY.md and docs/reference/terms.md in full; diffed them by script (headword set, definition lengths);
+counted variants with scripts over the source set below; opened every first-hit line before quoting it.
+SOURCE SET (computed): docs/*.md + docs/reference/{terms,cli,mcp}.md = 22 files (api.md excluded from variant counts,
+the "all docs" page counts use 23 files incl. api.md); src/scat_kg/*.py, checks, ops, mcp_server = 47 files; template tpl-pin3
+README.md, AGENTS.md, scat.toml, .claude/skills/*/SKILL.md and */*.md pages = 20 files; skills/scat-coding/SKILL.md; the CLI
+help dump scratchpad/cli-help.txt (431 lines).
+COMMANDS (scripts kept in the PM scratchpad: wc.py, cnt.py, pg.py, g.sh, mk.py). Pattern:
+  python3 cnt.py 'label=REGEX' ...   prints per source group {docs,src,tpl,skills,cli} occurrence counts and first hits
+  python3 pg.py                      prints (docs pages with a hit, occurrences) for 40 patterns
+  g.sh LABEL REGEX N WIDTH           = xargs grep -nHiE REGEX over the source list, then a total
+ Regexes used: \bcontributors?\b(?! pages?) ; \bparticipants?\b ; \binputs?\b ; \bmodels?\b ; \bsessions?\b ; \bkinds? of ...
+ ; \bentr(y|ies)\b ; server entry ; \bviews?\b ; \bchecks?\b|checking ; validat\w+ ; verif\w+ ; \bstubs?\b ; \bdrafts?\b ;
+ \btools?\b ; \bthe tool\b ; \bassistants?\b|\bagents?\b|chatbot|\bAI\b|\bLLM\b ; organi[sz]ers? ; facilitators? ;
+ facilitator-analysts? ; \bcoders?\b ; \bstor(y|ies)\b ; \baccounts?\b ; field notes? ; \b(?<!field )notes\b ; source material ;
+ transcripts? ; \bgroups?\b ; stakeholder groups? ; \bvaults?\b ; \bprojects?\b ; \brepositor(y|ies)\b ; node pages? ;
+ SCAT Chat ; note-?takers? ; \bworkshops?\b ; \bevents?\b ; \banalysis\b ; \banalys(e|ing|ed)\b ; \bstatus\b ; \bfinished\b.
+ Word counts: awk-free python over GLOSSARY.md rows starting "| **" (definition column), and the same over terms.md bullets.
+COUNTS BY KIND: a 15, b 8, c 6, d 12 = 41 rows. BY SEVERITY: high 2, medium 26, low 13. Every row names >=2 places.
+HIGH: I1 contributor (participant vs attributed person: tool, CLI, MCP, skill vs glossary); I2 inputs/model/analysis
+ (data-and-consent.md:7 puts narratives in the inputs, the glossary in the model).
+PER-DEFINITION WORD COUNT (glossary definition column, 53 rows): min 4 (element), median 27, max 79 (coded, uncoded), mean 28.6,
+ total 1516 words. terms.md: 53 bullets, min 2, median 12, max 35, total 745 words.
+ Ten longest: coded,uncoded 79; rule,norm 71; contributor page 66; a finished model 57; coder,assistant,tool 51;
+ leave no trace 50; attribution mode 44; attribution 42; knowledge graph 41; Edges told 39.
+ Shortest: element 4; field notes 8; page 9; trace 10; vault 10; field 11.
+ Rows with decision/WP/rule IDs in the source column: 7 (28,29 WP21-G2; 60,61 D-129; 62 D-138; 65 R-23; 86 WP21-G7), plus
+ R-18 and decisions/log.md in the intro paragraph (line 12-13). Rows whose source cell names a specialist concept: 22 of 53.
+ Longest source cell: 18 words (rule, norm). Rows that combine terms: 4 (28, 72, 73, 82).
+GLOSSARY vs terms.md: headwords: 52 of 53 match; glossary only "inputs, model, analysis", terms.md only "inputs, analysis".
+WHAT I COULD NOT CHECK. (1) MISSION.md, ORG.md and contracts/ were read only by grep for contributor/participant, not in full;
+ (2) the rendered docs site and Obsidian UI strings (no screenshots); (3) docs/reference/api.md and cli.md: I could not tell whether
+ they are generated (tests/docs/test_reference_docstring.py exists; mkdocs.yml lists them as plain pages), so counts include cli.md
+ and mcp.md as if hand-written; example vault names (e.g. facilitator-analysts as a group node) inflate some docs counts;
+ (4) src counts include docstrings and comments, not only user-visible messages; I did not separate them; (5) the template's
+ narrative/node pages (tpl-pin3/*/*.md) are counted in "tpl" but the cost column counts only docs pages; (6) I did not
+ run `uv run scat ... --help` again: help quotes come from the supplied dump; (7) the stage words stage and transition are excluded.
+ (8) Kind-a/d rows are judgements of "same word, different sense"; the places and quotes are checkable, the severity is mine.
