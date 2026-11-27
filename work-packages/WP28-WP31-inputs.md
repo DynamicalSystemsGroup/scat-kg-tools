@@ -39,3 +39,14 @@ the run record carries a summary. In short:
 
 D-157 (the manual in v0.1), D-158 (Copilot), D-159 (settings are the setup person's; cap 6), D-160 (drawings from the
 tools).
+
+## ACE addendum to RS5's readout, for WP29 (27 November)
+
+The ACE re-read the 2026-07-28 tools page at source: "MUST NOT vary per-connection or as a side effect of other
+requests on the connection. The set MAY vary by the authorization presented on the request — for example, returning
+only the tools the caller's granted scopes permit — since credentials are per-request input, not connection state."
+The readout carries the exception (G4, Appendix D) but does not list it among Q2's carriers. WP29 should weigh it:
+**stage carried as authorization**, a per-stage key or a key scoped to a stage, issued by SCAT Chat. It is legal in
+both spec eras, sits close to the chief engineer's "header for messages to the mcp server to carry stage", and bears on
+Q11 (the stage word's authority), since only the coder pastes a key. Its costs (a key per stage, or re-issuing a key
+to move stage; how each chat holds several connectors) are for WP29 to weigh, and the client trials can try it.
