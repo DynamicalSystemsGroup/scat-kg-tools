@@ -1047,7 +1047,7 @@ Keep the reference close:
 - [Python API reference](reference/api.md): every REPL call, with all its options.
 - [CLI reference](reference/cli.md): every command and its full help text.
 - [The flow](flow.md): where coding sits between capture and analysis.
-- [The chat path](chat-path.md) and [the IDE path](ide.md): coding with an assistant.
+- [Coding paths](coding-paths.md): coding with an assistant, in [an AI chatbot](chat-path.md) (with its [leave no trace](leave-no-trace.md) variant), [an AI IDE](ide.md) or [a local LLM](local-llm.md).
 - [Facilitating scenarios](facilitate-scenarios.md) and [Facilitating architectures](facilitate-architectures.md): collect the next round of notes.
 - [Planning](planning.md): revisit your groups before the next workshop.
 - [Home](index.md)

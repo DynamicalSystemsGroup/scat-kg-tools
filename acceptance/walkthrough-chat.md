@@ -30,7 +30,7 @@ new finding; once it is, it is.
 ## How to split the walk into sittings and resume
 
 - **Start page:** the Pages preview, <https://dynamicalsystemsgroup.github.io/scat-kg-tools/>. The chat page is
-  [`chat-path.md`](../docs/chat-path.md), "Coding in a chat" in the navigation. Do not open `src/` or `tests/`. The
+  [`chat-path.md`](../docs/chat-path.md), "Coding paths > An AI chatbot" in the navigation. Do not open `src/` or `tests/`. The
   links below go to the same pages in this repository, for checking this script.
 - **Sittings.** Stop only at the end of a stage. Each "Start a session" and "Stop" is a boundary: the server, its
   address and its key do not survive a stop, so each sitting that uses the chat begins with a new session and ends with
@@ -76,7 +76,7 @@ every name or button that differed on your screen.
 
 **Enter.** Open <https://dynamicalsystemsgroup.github.io/scat-kg-tools/> ([`index.md`](../docs/index.md)).
 
-**Steps.** Read the page. Find the chat path from the navigation ("Coding in a chat") and from [Where next](../docs/index.md#where-next).
+**Steps.** Read the page. Find the chat path from the navigation ("Coding paths > An AI chatbot") and from [Where next](../docs/index.md#where-next).
 
 **Done.** You can say what SCAT turns into what, and where the chat path starts.
 
