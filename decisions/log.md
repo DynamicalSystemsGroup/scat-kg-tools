@@ -2677,3 +2677,21 @@ to WP26; run records and place labels named; a `provider` field for the provider
 D-146's patterns in the grep; alt text and choice-point screenshots checked; the spike's readout path and a logged
 decision after it; a cold reader without accounts. It branches from `dev` after WP24 lands. Impact map
 `work-packages/impact/WP25.md` (merged). Revert point `divergence/D-149`. The ACE approves WP25.
+
+## D-150 | 2026-11-26 | WP24 accepted, with five rulings
+
+WP24 landed (`dev` 8c91073; CI, Image and Pages green): `scat evidence`, the node-page norm with a line per node type,
+`scat copy-share`, rules A16 to A20 and three prompts (draft a node page, fill in node pages, look for duplicates),
+`scat merge A B [--plan]` and `scat split-plan` (MCP shows the plan and refuses to apply), `scat review` (possible
+duplicates by structure; pages to re-read, D-147), schema version 3, the three-mode test vault, four cold users (no
+blocking finding; X1 to X10 in `acceptance/reports/wp24-r1-findings.md`), the re-sweep and the clock fix. Every unit had
+a fresh reviewer except U9 (the PM's void check) and U10 (mechanical). `check_metrics.py --accept WP24` passes
+(iterations 41 to 43: 50 est, 59 realized). The ACE accepts WP24.
+
+Rulings on the PM's points: (1) `split-plan` keeps naming, in a note, a contributor page that links the node being split
+(it is never changed or offered for re-linking; merge lists such pages too when it refuses); D-143's "never return"
+applies to evidence and the review view. (2) "(D-020)" in two reference samples is the template example's own text,
+decision-log residue; WP26's sweep takes it, in the template and the samples. (3) The machine-interface page's word cap
+at 774 is confirmed (each step judged minimal). (4) The impact map's stale "stays 2" and its no-op `\b` grep are noted
+for WP26's sweep. (5) The cold users' reports were filed as the PM's condensed record, not originals: weaker evidence,
+listed in the reviewer's guide.
