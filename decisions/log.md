@@ -3115,7 +3115,12 @@ The chief engineer (typed by the agent): "we're still working through some UX an
 chat based interactions. i want to place the local LLM and the ide based in the same category of documentation. we
 provide some guidance but not full end to end walk through, in both cases we're assuming a higher level of technical
 sophistication on the part of the user and while we need to provide correct high level guidance we level the details
-up to them, focus on asserting and respecting interface contracts and API standards". Outcome: the docs group the IDE
-and local LLM paths together as guidance for technically sophisticated users: correct high-level guidance, details
-left to the user, with the emphasis on the interface contracts and API standards they must respect. Full end-to-end
-walkthroughs stay for the chat paths, the current focus. Recorded as candidate C18 until a docs package is scoped.
+up to them, focus on asserting and respecting interface contracts and API standards". The ACE first summarised this as "one category"; the chief engineer corrected it (typed by the agent): "they are still
+listed as seperate approaches in the documentation we just don't attempt to provide a full walk through we cut at the
+api standards and interface contracts our tool uses and let the user configure their ide in one, then  local llm with
+openweb ui for the other. we still want to provide enough instructions for them to use our tools but we're just
+describing our side of the handshake". Outcome: the IDE path and the local LLM path stay separate approaches in the
+docs. Neither gets an end-to-end walkthrough: each page describes our side of the handshake (the API standards and
+interface contracts our tool uses) with enough instruction to use our tools, and the user configures their IDE, or
+their local LLM with Open WebUI, themselves. Full walkthroughs stay for the chat paths, the current focus. Recorded
+as candidate C18 until a docs package is scoped.
