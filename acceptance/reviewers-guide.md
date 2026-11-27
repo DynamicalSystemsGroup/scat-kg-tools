@@ -20,10 +20,10 @@ are in `MISSION.md`, "User acceptance" and "Requirements". The ACE and your two 
 
 ## Before you start: the candidate
 
-> **The candidate (refreshed 27 November, D-155).**
+> **The candidate (refreshed 27 November, D-156).**
 >
-> - Tools candidate commit (the last commit that changed `src/` or `docs/`): `71a0faf` (`dev` f096040)
-> - Template `dev`, which pins tools `bc66409` (same `src/` and `docs/` as `71a0faf`): `d4d5654`
+> - Tools candidate commit (the last commit that changed `src/` or `docs/`): `65c733b`
+> - Template `dev`, which pins tools `bc66409` (same `src/` as `65c733b`): `87accad`
 > - Pages URL: https://dynamicalsystemsgroup.github.io/scat-kg-tools/ (pre-release banner on)
 
 Check them yourself:
@@ -35,10 +35,11 @@ git ls-remote https://github.com/DynamicalSystemsGroup/scat-kg-template refs/hea
 ```
 
 The first prints the tools candidate, the second prints nothing, the third shows the template's `dev` commit. To see
-that the template's pin has the same `src/` and `docs/`, run `git diff bc66409 71a0faf -- src docs`; it prints nothing. The
+that the template's pin has the same `src/`, run `git diff bc66409 65c733b -- src`; it prints nothing (with `docs` added it
+shows only D-156's sign-in line in `getting-started`, which the pin does not need). The
 figures quoted in sittings 2 and 3 were taken earlier, on `dev` at `66d8dc3` (before WP21 to WP26); sitting 3's
 command block reruns every one on the candidate, so read its output rather than the quoted numbers. The packages'
-own acceptance entries (D-121 to D-155) give their test counts on their own heads.
+own acceptance entries (D-121 to D-156) give their test counts on their own heads.
 
 | Sitting | Entry point | The decision you make |
 |---|---|---|
@@ -353,6 +354,7 @@ written (**flag for the ACE**: confirm it was skipped and not lost).
 | D-153 | ACE | WP25 built; U10 waits on your sitting; two more mission lines brought in line with D-148 | the entry | none |
 | D-154 | ACE | WP26 approved after nine scope-check fixes | `work-packages/WP26.md` | `divergence/D-154` |
 | D-155 | ACE | WP26 accepted; the template's tools pin moved to `bc66409`; glossary gains "timeframe" | `acceptance/residue-sweep.md`; `acceptance/reports/wp26-r1-*`, `wp26-r2-*` | none |
+| D-156 | ACE | Visual pass round 1 (p2) on screen; two fixes (the template's Obsidian settings; sign in before Use this template); three items for you | `acceptance/reports/visual-r1-p2.md` | none |
 | WP10 default | ACE | `SCAT-DRAFT-FIELD` fires at `stub` for a field with a value set, so a fresh stub warns until `timeframe` is filled. An ACE default, for you to confirm | `contracts/rule-catalogue.md` | none |
 
 Your own decisions or directions that the ACE only recorded and applied are marked "Yours" above. D-015 and D-016 are
@@ -572,6 +574,12 @@ live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
 35. **The duplicate-finding thresholds rest on one seeded positive each (D-147).** This is item 26's last point, kept
     here because the docs do not say it (D-146): the thresholds are code defaults, fitted to the G6 vault and checked
     on two small vaults; a second vault with known duplicates would settle them.
+36. **What the visual pass left for you (D-156).** V2: viewing the narrative index in Obsidian can rewrite
+    `index/narrative.base` into Obsidian's own form, which shows in `git status` (`scat index` reads both forms as the
+    same). V3: the stub's `timeframe` hint is a YAML comment, so Obsidian's Properties panel shows the field empty. V4:
+    node pages made by `record-edge` stay stubs when their narratives are done, and no page says whether that is
+    expected. The GitHub website path of `getting-started` step 1 has not yet been run on screen; it needs your
+    account. **Your answer:** for V2 to V4, accept or change.
 
 **The note on the rule audit (D-052, D-053).** The audit covered the v0.1 catalogue as it stood then. The rules in
 force, with their ids and severities, are in `contracts/rule-catalogue.md`; `SCAT-NOEDGES` (G1, added in WP18-U6) and
@@ -579,10 +587,10 @@ the table rules came after the audit.
 
 **Checklist.**
 
-- [ ] I gave items 1, 3, 4, 5, 11 and 34 my answer.
+- [ ] I gave items 1, 3, 4, 5, 11, 34 and 36 my answer.
 - [ ] I read items 2, 6 to 10, 12 to 33 and 35 and accept each, or I note it.
 
-**Your decision.** Items 1, 3, 4, 5, 11 and 34 each have your answer, and every other item is accepted or noted.
+**Your decision.** Items 1, 3, 4, 5, 11, 34 and 36 each have your answer, and every other item is accepted or noted.
 
 ### 4d. UA-A results
 
@@ -599,6 +607,7 @@ after round 2.** The chat path's rounds run in your sittings (D-098), so their r
 | 2 | p1b, Python session (fresh tester) | Haiku | manual | `reports/wp20-r2-p1b.md` | yes | tag, commit, recipient | none | yes (D-101) |
 | 2 | p2, command line (fresh tester) | Haiku | manual | `reports/wp20-r2-p2.md` | yes | tag, commit, recipient | none | yes (D-101) |
 | 2 | p3, control (fresh tester) | Sonnet | manual | `reports/wp20-r2-p3.md` | yes | tag, commit, recipient | none | yes (D-101) |
+| visual 1 | p2, command line, on screen (Pages, Obsidian, Terminal) | Haiku | manual | `reports/visual-r1-p2.md` | yes | tag, commit, recipient | none | yes (D-156) |
 | | chat tester 1 | Haiku | chat | your sitting | | | | |
 | | chat tester 2 | Haiku | chat | your sitting | | | | |
 | | chat tester 3 | Sonnet | chat | your sitting | | | | |

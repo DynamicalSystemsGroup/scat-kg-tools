@@ -10,10 +10,10 @@ Updated 27 November. Earlier versions are in git history. Words follow `GLOSSARY
 | WP25 coding paths, facilitating, planning | built; accepted when its account-bound walkthrough runs (U10) are done in your sitting |
 | WP20 candidate and user acceptance | AI user tests pass on both paths (by hand to J10; chat path J1 to J4 and J6); the live chat stages wait on your sitting |
 
-Candidate: tools `dev` (CI green), template `dev` 87accad pinning tools bc66409, Pages preview current. A visual
+Candidate: tools `dev` (CI green), template `dev` 87accad pinning tools bc66409, tools candidate 65c733b, Pages preview current. A visual
 user-test pass (persona p2, by-hand path, on screen in Pages, Obsidian and Terminal) reached J10 with no blocking
 finding; two fixes applied (D-156, `acceptance/reports/visual-r1-p2.md`). The reviewer's
-guide is current to D-155; D-156's two fixes are not yet in it.
+guide is current to D-156.
 
 ## Your sitting (the next step)
 
