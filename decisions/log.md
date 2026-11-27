@@ -3068,3 +3068,12 @@ Outcome, as inputs to WP29's instance (and WP30, WP31):
   assumed right on the first pass. This is how quality, explainability and human authorship are held.
 RS5's spike servers use stand-in tool sets (coding without drawing tools); they test client mechanics only and are not
 changed.
+
+## D-179 | 2026-11-27 | The coder's word is a signature slot; stronger tracking deferred
+
+Asked during RS5's client trials what the spike's `coder_word` is for (it moves the stage only when given; without it
+`set_stage` records a request), the chief engineer said (typed by the agent): "okay so this is basically a slot for a
+signature of sorts. for now we're just writing in who made the call. that is an okay simplification for now, putting a
+more robust tracking of on whose call a change was made can be deferred". Outcome: for WP29 and WP30, a stage move
+carries a field naming who made the call, written by the assistant; it is not proof of consent. Deferred by the chief
+engineer: robust tracking of on whose call a change was made (candidate C17).
