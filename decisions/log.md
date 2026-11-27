@@ -2958,3 +2958,16 @@ organiser, "consistent and aligned with our app and workflows", not "huge", with
 of abstraction"). Proposed and answered: "Yes, RS6 then cleanup", then "Approve RS6". RS6 (`work-packages/RS6-glossary.md`)
 runs now; the cleanup package is scoped after WP29 locks the stages. The pending glossary changes are held for that
 pass, not accepted or rejected.
+
+## D-169 | 2026-11-27 | WP28 built; R5 held; the template re-pinned
+
+WP28 is on tools `dev` (c7ebf69; CI, Image and Pages green): `draw_fingerprint`, `draw_layered` and `draw_trace` on the
+server, made by the `draw` module (PNG as image content, SVG as text); `draw.trace` and `scat draw trace`; the `draw`
+extra in the image, with a real-image test in CI. The ACE re-ran the drawing tests (50 passed) and drew a trace from the
+lab vault: a concern shows its group one layer up, its affordance one down and two technologies two down, as G12 says;
+a technology traced up and both ways on the contract examples stays within G12. R1 to R4 and R6 are met; R5 (the
+on-screen check in Claude and inference.coop, and Claude's two header forms) is held for the chief engineer's return,
+with `acceptance/walkthroughs/drawings-run.md` written then. Accepted as is: files outside the blast radius
+(`.github/workflows/image.yml` for R4's CI step; `docs/local-llm.md`'s tool count), and the reviewers' nits. The image
+grew from 177 MB to 343 MB (matplotlib). The ACE re-pinned the template to tools c7ebf69 (template `dev` f04fcc3) and
+`TEMPLATE_COMMIT` to it (tools dc9c0a1; docs tests 310 passed). WP28 is accepted when R5 is recorded.
