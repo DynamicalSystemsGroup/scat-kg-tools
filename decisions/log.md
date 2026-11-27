@@ -3089,3 +3089,13 @@ ide based user should be more sophisticated technically, and we're actually focu
 client trials are recorded for Claude and inference.coop; Copilot's are deferred by the chief engineer (not run). The
 IDE path stays among the options, configured by its user, with no full walkthrough on this pass; the chat user is the
 focus.
+
+## D-181 | 2026-11-27 | RS5 accepted by the ACE: client trials recorded
+
+D-165 left RS5 to be accepted once its client trials were recorded. They ran in Claude and inference.coop (D-176); the
+chief engineer passed Copilot's (D-180). The readout now carries the results grid and findings ("Client trials"), and
+its status, G4, Q1 and F1 lines no longer call the trials held. RS5-R3 is met for the two chat clients and deferred
+for Copilot by the chief engineer. The main inputs for WP29: a session-held stage is unsafe in both clients (it leaks
+across chats in inference.coop and is lost on restart in both); static carriers (query, path, an approved header in
+Claude) work; refusals and clarifications are relayed; elicitation cannot be relied on; Claude does not re-list tools
+mid-conversation, inference.coop does. Evidence stays outside the repository. Accepted by the ACE.

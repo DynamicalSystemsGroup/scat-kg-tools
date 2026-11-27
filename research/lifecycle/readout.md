@@ -1,10 +1,9 @@
 # Lifecycle readout (RS5): the stage machine, what the evidence says and what WP29 must decide
 
-**Status.** Desk and server experiments are done (27 Nov 2026). Client trials (RS5-R3, and the client parts of G4 and
-R3b) are **HELD** for the chief engineer's accounts and the ACE; their plan is `spike/lifecycle/TRIAL-PLAN.md` on branch
-`spike/lifecycle` of `scat-kg-tools` (summarised below). Nothing here was tried in Claude, inference.coop's chat or
-VS Code's Copilot; client statements are "documented, not tried" or "source read, not run". RS5's definition of good
-enough includes R3, which is held, so **R3 is an open gap until the trials run**. The spike notes and code exist only
+**Status.** Desk and server experiments are done (27 Nov 2026). The client trials ran the same day in Claude and
+inference.coop's chat, with the ACE as coder (D-176); VS Code's Copilot was passed by the chief engineer (D-180). Their
+results are in "Client trials" below; the evidence (notes, request log, screenshots) is kept outside the repository.
+Statements about Copilot remain "documented, not tried". The spike notes and code exist only
 on that branch; they are cited as `spike/lifecycle:<path>`, and every finding the readout needs is repeated in the
 appendices. "Stage" and "transition" are not yet glossary words (WP29 adds them); here "stage" means a state of the
 lifecycle. Evidence refs such as (B:E7) point to the appendices.
@@ -21,7 +20,7 @@ No option is chosen for WP29. What the evidence says:
   argument (any client, at a byte cost) and `_meta` (SDK only). No documented way exists from a user-added connector in
   claude.ai, VS Code or the co-op's form to send a changing header; admin-edited LibreChat YAML can; nothing tried (D:b3).
 - **A per-session tool-list change works in the SDK, with overrides**, and a refusal makes it optional (B:E6, E7). Of
-  the three trial clients, one documents re-listing (LibreChat), one is source-read (VS Code), one unknown (claude.ai)
+  the three trial clients, one documents re-listing (LibreChat), one is source-read (VS Code), one unknown (claude.ai); the trials found LibreChat re-lists and claude.ai does not
   (D:a1). The latest spec limits it (G4).
 - **A router does not remove the list change**; only its static facade does, at a price (B:Q2, Q3).
 - **Most predicates are evaluable or the coder's word**; no tool reads `scat.toml` (G5).
@@ -92,11 +91,11 @@ form one API-key header; only an administrator's LibreChat YAML sends a header p
 protocol error (B:E5, Q4). Elicitation works only if the client declares it; the SDK test did. Documented in VS Code Copilot sessions; unknown for
 claude.ai; none seen in LibreChat's code read (D:c1). **Out of stage.** A call outside
 the stage returns a result naming the tool, the stage, where it is available and how to move (B:E6). `isError` true or
-false differ only in that flag; which a client shows is not tried (D:c3).
+false differ only in that flag; in the trials Claude marked it "Failed" and inference.coop did not pass the flag on (T4).
 
 **Not known:** whether any chat connector can set a custom header; how reliably an assistant carries an argument.
 
-## G4. Scoping what the server exposes (RS5-R3b; R3 held)
+## G4. Scoping what the server exposes (RS5-R3b; R3 in Client trials)
 
 **Per-session `list_changed` (SDK).** Works with three code details: replace FastMCP's list handlers and `call_tool`
 via the low-level server (private `_mcp_server`), patch the initialisation options so `listChanged` is advertised
@@ -133,7 +132,7 @@ column is reasoned; B:E7 tests the single server, not as a head-to-head:
 The chat sees one server either way (B:Q5). Listing sizes: 1070 (B), 1819 to 2707 (A), 4962 (C: 14 tools, all listed,
 refuse out of stage). Facade B's costs for a model are not tried.
 
-**Not known:** every client's behaviour (held); router cost under many connections (F5).
+**Not known:** Copilot's behaviour (not tried, D-180; Claude and inference.coop in Client trials); router cost under many connections (F5).
 
 ## G5. Predicates
 
@@ -144,21 +143,35 @@ partly (set up, cap met, all done, views generated, done changed); 4 are the cod
 finished, committed). **Gaps:** no tool reads `scat.toml`, so "cap met" shows only as a refused write; no stored or
 derived stage; check covers structure, not interpretation. **Not known:** git-side predicates.
 
-## What is held for the client trials
+## Client trials (27 Nov 2026; RS5-R3, client parts of G4 and R3b)
 
-Plan: `spike/lifecycle:spike/lifecycle/TRIAL-PLAN.md`; the ACE as coder, the chief engineer's accounts, human-paced, one
-client at a time, budgets of 40 (Claude), 35 (inference.coop), 40 (VS Code) messages, about 5.5 hours. Question: is a
-mid-session change of tools honoured, and what does the assistant see when it is not?
+Plan: `spike/lifecycle:spike/lifecycle/TRIAL-PLAN.md`, all ten tests, the ACE as coder, the chief engineer's accounts,
+human-paced. Claude: claude.ai custom connector, Opus 5.5, 24 of 40 messages. inference.coop: LibreChat,
+tinfoil/deepseek-v4-1-flash, 28 of 35 messages. Copilot: not run (D-180).
 
-Tests: T1 connect and list tools; T2 `set_stage`, then whether the list changes in the same and in a new conversation (R3);
-T3 out-of-stage call from a stale list; T4 unknown stage, normal result and `isError`; T5 custom header `x-scat-stage`;
-T6 query and path fallbacks; T7 elicitation; T8 router runs D, E, F (dynamic, facade, all tools; R3b); T9 session loss;
-T10 tool count and cap (above 14 untestable).
+| Test | Claude | inference.coop |
+|---|---|---|
+| T1 list tools | works | works |
+| T2 list changes mid-session (R3) | does not: the list is fixed when a conversation opens its session; only the connector's "Refresh tools list" updates the catalogue | works: the client re-lists on `list_changed`; the new tools apply from the next turn |
+| T3 out-of-stage call | works: refusal quoted, the move left to the coder | works |
+| T4 unknown stage (normal / `isError`) | works / works, marked "Failed" | works / works, the error flag not passed to the model |
+| T5 stage in a header | works only under an approved header name (`x-environment`); custom names need Anthropic's approval | does not apply: one header slot, used by the key |
+| T6 stage in query / path | works / works | works / works (a new entry needed a second Initialize) |
+| T7 elicitation | does not: the call hangs (the client declares support, shows no prompt) | does not, cleanly: `elicited: false` |
+| T8 router D / E / F (R3b) | as T2 / works / works | works / works / works |
+| T9 server restart | works: silent re-initialise; a session-held stage is lost without notice | works: all entries re-initialise; the stage is lost without notice |
+| T10 tool count | 3 to 14, no limit seen | 3 to 14, no limit seen |
 
-**Prerequisites.** The spike servers have no committed launcher, key gate or request log; the plan embeds a wrapper
-that borrows the repo's key gate and logs requests. Claude and inference.coop call from their cloud, so they need a public
-https route, only the existing approved short-lived, key-gated route, torn down afterward; VS Code is local. The router
-has no header, query, path or elicitation, so T5 to T7 apply to the single server only.
+Findings for WP29 beyond the grid:
+- **Sessions differ by client.** Claude opens an MCP session per conversation; inference.coop keeps one session per
+  server across all chats, so a session-held stage leaked from one chat into a new one. A stage held only in the
+  session is unsafe in both: it leaks (inference.coop) or is lost on restart (both).
+- **Static carriers work in both chat clients:** a URL query or path per connector entry, and in Claude an approved
+  header name. Claude allows one connector per URL, so entries per stage need distinct URLs.
+- **The refusal and the clarification text are relayed in full by both,** and both left the stage to the coder.
+- **The model's account of its own tools is unreliable** (inference.coop): after a stage move it recited stale tool
+  lists, then disowned a real call; the client's tool set was right. WP31's habits, not the server, must handle this.
+- **Elicitation cannot be relied on:** it hangs in Claude and is absent in inference.coop.
 
 ## Questions WP29 must decide (RS5-R4)
 
@@ -168,7 +181,7 @@ stages differ per narrative at once (A:S10). (c) Per session, the coder names it
 connection; restart gives `unknown` (B:E2). Cost: (a) and (b) need persistence across sessions, not tried (F4).
 
 **Q2. How stage travels.** (a) Per-connection header, query or path: works, one connector per stage, the coder edits the
-entry to move (B:E1; D:b1); whether any chat connector accepts a stage header is held (T5). (b) Session value by a
+entry to move (B:E1; D:b1); the trials found Claude accepts one only under an approved header name and inference.coop has no slot (T5). (b) Session value by a
 tool: needs a stateful server; breaks on restart or on the newer spec (B:E2; G4). (c) Argument: works everywhere, +98
 bytes a tool, the assistant must carry it (B:E3). (d) None: the server holds stage; the list stays stable and
 out-of-stage calls are refused (B:E6). `_meta` is not expected from chat clients (B:E4).
@@ -368,7 +381,7 @@ server read of `scat.toml`; no stored or derived stage; check is structure only;
 
 | Id | Item |
 |---|---|
-| F1 | Every client behaviour: held for the trials (R3, and client parts of G4 and R3b). |
+| F1 | Copilot's behaviour: not tried (D-180). Claude and inference.coop were tried (see Client trials). |
 | F2 | 2026-07-28 spec: the tools-page claims were read twice (U5's summarising fetch; a reviewer's fetch); the transports-page claims (no `initialize`, no `Mcp-Session-Id`, no standalone stream) only by U5; this writer re-fetched neither; which clients speak it is unknown except Claude Code's docs. |
 | F3 | Weak sources: Susman and Evered (S9) not read; Harel's original not read; Stage-Gate is a summary of Cooper; hermeneutics authors not checked; S20 and S21 abstract only. |
 | F4 | Persistence of stage across sessions or restarts: not tried. |
