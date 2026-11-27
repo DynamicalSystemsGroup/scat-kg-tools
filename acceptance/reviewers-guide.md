@@ -20,10 +20,10 @@ are in `MISSION.md`, "User acceptance" and "Requirements". The ACE and your two 
 
 ## Before you start: the candidate
 
-> **The candidate (staged 25 November, D-121).**
+> **The candidate (refreshed 27 November, D-155).**
 >
-> - Tools candidate commit (the last commit that changed `src/` or `docs/`): `c89411e` (`dev` 834490f, CI green)
-> - Template `dev`, which pins tools `7f0ed05` (same `src/` and `docs/` as `c89411e`): `271c3e9`
+> - Tools candidate commit (the last commit that changed `src/` or `docs/`): `71a0faf` (`dev` f096040)
+> - Template `dev`, which pins tools `bc66409` (same `src/` and `docs/` as `71a0faf`): `d4d5654`
 > - Pages URL: https://dynamicalsystemsgroup.github.io/scat-kg-tools/ (pre-release banner on)
 
 Check them yourself:
@@ -34,9 +34,11 @@ git diff <candidate> dev -- src docs
 git ls-remote https://github.com/DynamicalSystemsGroup/scat-kg-template refs/heads/dev
 ```
 
-The first prints the tools candidate, the second prints nothing, the third shows the template's `dev` commit. The
-results quoted in this guide were taken on `dev` at `66d8dc3`, before the candidate existed (the last commit that
-changed `src/` or `docs/` was `84fd58b`); the PM refreshes them at staging.
+The first prints the tools candidate, the second prints nothing, the third shows the template's `dev` commit. To see
+that the template's pin has the same `src/` and `docs/`, run `git diff bc66409 71a0faf -- src docs`; it prints nothing. The
+figures quoted in sittings 2 and 3 were taken earlier, on `dev` at `66d8dc3` (before WP21 to WP26); sitting 3's
+command block reruns every one on the candidate, so read its output rather than the quoted numbers. The packages'
+own acceptance entries (D-121 to D-155) give their test counts on their own heads.
 
 | Sitting | Entry point | The decision you make |
 |---|---|---|
@@ -324,17 +326,40 @@ written (**flag for the ACE**: confirm it was skipped and not lost).
 | D-119 | ACE | WP21-R7 reworded after three reviews read it three ways; SCAT-UNCODED warns at every status | `work-packages/WP21.md` | none |
 | D-120 | Yours | Iteration 36's metrics record corrected, after the guard refused the PM | `work-packages/metrics.jsonl` | none |
 | D-121, D-122 | ACE | WP21 and WP18 accepted | D-121, D-122 | none |
+| D-123 | Yours | Node-page help (C12): a research spike first, then a decision | his typed choice "A spike first" in the entry | none |
+| D-124 | Yours | The launcher fixes (C10) come before the release PRs; WP22 scoped | his typed choice in the entry | none |
+| D-125 | ACE | WP22 approved (SCAT Chat as a small, clear local app) after nine scope-check fixes | `work-packages/WP22.md`, `impact/WP22.md` | `divergence/D-125` |
+| D-126, D-127 | Yours | Attribution of narratives (C13) in v0.1; three disjoint attribution modes (required, optional, disallowed; Chatham House is disallowed); `scat:Attributes` renamed; the mission's non-goal rewritten | his typed words, quoted in D-127 | none |
+| D-128 | ACE | The ontology gains one optional narrative field, `attributed_to`; TBox version 0.3.0 | `ontology/scat.ttl`; the entry | none |
+| D-129 | ACE | WP23 approved after eight scope-check fixes | `work-packages/WP23.md`, `impact/WP23.md` | `divergence/D-129` |
+| D-130 | ACE | SCAT Chat is a menu-bar item with a status dot, no window; one first-start note | `research/chat-path/launcher-ui.md` | none |
+| D-131 | ACE | The terms page's word cap rises from 820 to 850 for the two attribution terms | `tests/docs/test_terms.py` | none |
+| D-132 | ACE | The node-page research spike (RS4) approved | `work-packages/RS4-node-pages.md` | none |
+| D-133, D-134, D-135 | Yours + ACE | The deontic pass comes before release; the attribution mode is a repository metaparameter that sets what is conformant; contributor pages when attribution is on; the mission's attribution line rewritten; WP23 revised | his typed words, quoted in D-133 | none |
+| D-136, D-137 | Yours | Node-page help (RS4's packages A and B) in v0.1; merge leaves `done` narratives `done`; one docs package (WP25) after WP23 and WP24 | his typed choices in each entry | none |
+| D-138 | Yours + ACE | The mission's line about people in the data rewritten; the knowledge graph widened to hold contributor pages; the attribution view; terms cap raised again (see 4b) | his typed "Yes, use that" in the entry | none |
+| D-139 | Yours | User-test loops and a sweep for prompt residue before your walkthrough (planned as WP26) | his typed words, quoted in the entry | none |
+| D-140, D-142 | ACE / Yours | A guard refusal in WP23 held for you; the command may be retried as separate steps | his typed choice in D-142 | none |
+| D-141 | ACE | WP22 accepted; the chat-path guide's session flow corrected (keep the server entry, paste the new key) | `check_metrics.py --accept WP22` | none |
+| D-143 | ACE | WP23 accepted | `check_metrics.py --accept WP23` | none |
 | D-144 | Yours | Merge of two node pages added to the mission's G4, with a plan shown first | `MISSION.md` G4 | none |
 | D-145 | ACE | WP24 approved: twelve scope-check fixes applied | `work-packages/WP24.md`, `impact/WP24.md` | `divergence/D-145` |
 | D-146 | Yours | Test and work status belongs in the plans and this guide, not in the user pages | the entry; WP24's keyword test | none |
 | D-147 | ACE | Possible duplicates by structure; homonyms as pages to re-read; the thresholds are code defaults | `research/node-pages/spike-b/readout.md` | none |
+| D-148 | Yours | Four coding paths in the mission (by hand, AI IDE, AI chatbot, local LLM), each with a walkthrough; leave no trace is an option of the chatbot path | his typed "Yes, amend it"; `MISSION.md` G14 | none |
+| D-149 | ACE | WP25 approved after thirteen scope-check fixes | `work-packages/WP25.md`, `impact/WP25.md` | `divergence/D-149` |
+| D-150 | ACE | WP24 accepted, with five rulings (the cold users' reports are a condensed record, see 4c) | `check_metrics.py --accept WP24`; `acceptance/reports/wp24-r1-findings.md` | none |
+| D-151, D-152 | Yours | The local-LLM path: Docker only, a terminal is fine; the coder brings their own model and Ollama in Docker is one worked example; every path page has one shape | his typed words, quoted in D-152; `research/approaches/readout.md` | none |
+| D-153 | ACE | WP25 built; U10 waits on your sitting; two more mission lines brought in line with D-148 | the entry | none |
+| D-154 | ACE | WP26 approved after nine scope-check fixes | `work-packages/WP26.md` | `divergence/D-154` |
+| D-155 | ACE | WP26 accepted; the template's tools pin moved to `bc66409`; glossary gains "timeframe" | `acceptance/residue-sweep.md`; `acceptance/reports/wp26-r1-*`, `wp26-r2-*` | none |
 | WP10 default | ACE | `SCAT-DRAFT-FIELD` fires at `stub` for a field with a value set, so a fresh stub warns until `timeframe` is filled. An ACE default, for you to confirm | `contracts/rule-catalogue.md` | none |
 
 Your own decisions or directions that the ACE only recorded and applied are marked "Yours" above. D-015 and D-016 are
 absent (see above).
 
 **The tags.** All exist on `origin` for the tools repository. Check with
-`git ls-remote --tags origin | grep divergence` (13 lines expected), and for the template repository with
+`git ls-remote --tags origin | grep divergence` (19 lines expected), and for the template repository with
 `git ls-remote --tags https://github.com/DynamicalSystemsGroup/scat-kg-template | grep -E 'divergence|checkpoint'`.
 
 | Tag | Commit | Marks (the commit's subject) |
@@ -352,6 +377,12 @@ absent (see above).
 | `divergence/D-091` | `1c6c9f3` | WP16 and RS3 accepted; glossary gains SCAT (log D-091) |
 | `divergence/D-093` | `171baaf` | WP17 held on a guard refusal; metrics correction and check gaps (log D-093) |
 | `divergence/D-096` | `3686a14` | WP18-U7f: make the missing-docker launcher test hermetic; WP20's named revert point |
+| `divergence/D-114` | `43d2669` | Morning list rewritten: WP17 accepted, history rewrites held (WP21's revert point, log D-114) |
+| `divergence/D-125` | `169e8db` | WP22 scope drafted (log D-125) |
+| `divergence/D-129` | `5ad54e8` | WP23 scope drafted (log D-129) |
+| `divergence/D-145` | `6183e29` | D-143: WP23 accepted; the point before WP24 (log D-145) |
+| `divergence/D-149` | `fb487d0` | D-148: four coding paths in the mission (log D-149) |
+| `divergence/D-154` | `9e247cf` | WP26: carried items added (log D-154) |
 | `divergence/D-037`, `divergence/D-043` | template repository | the template before D-037 and D-043 |
 | `checkpoint/v0.1-rc1` | tools `169061b`, template `9e9bad8` | the first candidate, the revert point for D-052 |
 
@@ -379,12 +410,18 @@ acceptance.
 | "index page" for what a user sees | D-081, call 4 | Messages, docs, the folder and the `type` value say "index page"; the ontology's own identifiers may keep formal names. Not a glossary edit; a use rule. |
 | Eleven terms added (WP21-G9) | D-117, D-118 | coded and uncoded, excluded, Edges told, rule and norm, skill, saved agent, session key, leave no trace, range vault. "Edges told" names a narrative's own table; "edge table" keeps its sense (the view). "Coded" is at least one node link; done means adequately coded as the coder judges. The assistant's rules are norms the server enforces only where it refuses an act. |
 
+| **knowledge graph** widened; **contributor page** added | D-138 | The knowledge graph now holds contributor pages as well as the nodes, edges and narratives; contributor pages are in it but not in the layered graph. **Contributor page** is a new term: a page outside the four layers naming a person a narrative is attributed to, present only where the attribution mode allows it. "Contributor" alone keeps its sense of a participant. |
+| **attribution mode** and **attribution** added | D-128, D-131 | Attribution mode: required, optional or disallowed, set in `scat.toml`; disallowed is the Chatham House rule. Attribution: the people a narrative is attributed to, held as its `attributed_to` links; never a node or an edge of the four layers. The glossary rows name D-129 as their ACE call; the field is D-128 and the room on the terms page is D-131. |
+| **timeframe** added | D-155 | "Whether a narrative's account tells what happened (`past`), what would or will happen (`future`), or both (`mixed`). It is the narrative's `timeframe` field, required at `done`, and the author's reading of the text." An addition: the term had no entry (D-153). |
+| The terms page's word cap, 820 to 850 to 910 | D-131, D-138 | Each rise is a logged ACE call (the first, 811 of 820 words to 820, is D-117). 850 fits the two attribution terms with real definitions; 910 fits the contributor page and the wider knowledge graph. The cap is `WORD_CAP` in `tests/docs/test_terms.py`. |
+
 To see each edit as text: `git log -p --follow -- GLOSSARY.md`, or `git show a8356a8 -- GLOSSARY.md` (cap) and
-`git show 1c6c9f3 -- GLOSSARY.md` (SCAT).
+`git show 1c6c9f3 -- GLOSSARY.md` (SCAT). The WP23 and WP26 rows: `git log -p -- GLOSSARY.md` from `ad8f961` on, and
+`git log -p -- tests/docs/test_terms.py` for the cap.
 
-- [ ] I read the two additions and accept them, or I note the entry I would change.
+- [ ] I read the two additions, the three further terms and the widened knowledge graph, and the cap moves, and accept them, or I note the entry I would change.
 
-**Your decision.** Accept the two additions and the one use rule, or name the one you would change.
+**Your decision.** Accept the additions, the widened term, the use rule and the cap moves, or name the one you would change.
 
 ### 4c. What is known to be weak
 
@@ -504,16 +541,48 @@ live chat-path run, WP18-R4, still waits on the chief engineer's key (item 2).
     done` works, as it is the coder's own tool, and the refusal of `done` is the MCP server's and the assistant's
     rules (X1).
 
+27. **SCAT Chat as a menu-bar app, and the chat-path guide: left for your sitting (D-130, D-141).** Not confirmed on a
+    real Mac: the dot's colours and look and a real click with no flicker; the menu and the alerts; the Stop alert in
+    front; reopening after an unconfirmed Stop; the Gatekeeper prompt and copying the app to Applications; keychain
+    prompts; real Colima and Tailscale; the chat's form labels. Item 25 (g) holds the earlier part of this list.
+28. **Attribution: grey spots (D-143).** `schema_version` stays 2 with the new `attribution` operation, which the
+    contract's closed-list wording allows; the machine-schema page's word cap is 646 in D-143 and 774 after WP24 (item
+    26). WP23's cold read was one Haiku reader.
+29. **Reviews without a fresh reviewer (D-141, D-150).** WP22's two late commits (`99e15cf`, `42d5a1d`) were checked by
+    the PM without a fresh review, and in WP24 the void check (U9) and U10 had none. The ACE's own read of the chat-path
+    guide found the defect corrected in D-141.
+30. **The cold users' records for WP24 and WP25 are the PM's condensed record, not their originals (D-150, D-153).** Weaker
+    evidence than the originals filed for WP26 (`acceptance/reports/wp26-r1-*`, `wp26-r2-*`). WP24's are in
+    `acceptance/reports/wp24-r1-findings.md`.
+31. **WP25 unit U10 is not done: your sitting runs it (D-153).** The Claude, Codex and inference.coop walkthrough runs
+    with screenshots, and the by-hand Obsidian screenshots. WP25 is accepted when U10 is done (`check_metrics.py --accept
+    WP25` fails only on U10). Claude's and Codex's set-up steps follow the cited docs and are corrected in the sitting
+    (D-151). The local server image is built from a clone until the release publishes it.
+32. **The local-LLM path (D-151, D-153).** Local models drive the tools but pick them unreliably; on a Mac, Ollama in
+    Docker has no GPU; SCAT Chat publishes only through Tailscale, which a local client may not reach. The walkthrough
+    ran once for real and was removed after. Open WebUI ran with its login off on 127.0.0.1, which the ACE confirmed
+    for a single person's local run; the page says so for that case.
+33. **Departures in WP26's UA-A rounds (D-155).** Docs served from a local build of the same commit; uv preinstalled (the
+    uv gap is closed separately, D-112); the chat testers ran a pages-and-files pass for J1 to J4 and J6; the GitHub
+    steps of J2 were not reached. Round 1's two blocking findings are fixed (the template's tools pin; a pointer to
+    the chat path from `getting-started`).
+34. **"Install once" on the chat path uses Terminal (D-155).** The pages say the person who sets up does it, and the
+    mission says the organiser must not be required to open a terminal on that path. Flagged by the ACE for your
+    walkthrough. **Your answer:** accept the page's reading, or change one of the two.
+35. **The duplicate-finding thresholds rest on one seeded positive each (D-147).** This is item 26's last point, kept
+    here because the docs do not say it (D-146): the thresholds are code defaults, fitted to the G6 vault and checked
+    on two small vaults; a second vault with known duplicates would settle them.
+
 **The note on the rule audit (D-052, D-053).** The audit covered the v0.1 catalogue as it stood then. The rules in
 force, with their ids and severities, are in `contracts/rule-catalogue.md`; `SCAT-NOEDGES` (G1, added in WP18-U6) and
 the table rules came after the audit.
 
 **Checklist.**
 
-- [ ] I gave items 1, 3, 4, 5 and 11 my answer.
-- [ ] I read items 2 and 6 to 26 and accept each, or I note it.
+- [ ] I gave items 1, 3, 4, 5, 11 and 34 my answer.
+- [ ] I read items 2, 6 to 10, 12 to 33 and 35 and accept each, or I note it.
 
-**Your decision.** Items 1, 3, 4, 5 and 11 each have your answer, and every other item is accepted or noted.
+**Your decision.** Items 1, 3, 4, 5, 11 and 34 each have your answer, and every other item is accepted or noted.
 
 ### 4d. UA-A results
 
