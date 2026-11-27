@@ -1,28 +1,36 @@
 # Morning list for the chief engineer
 
-Updated 25 November, afternoon. Earlier versions are in git history. Words follow `GLOSSARY.md`.
+Updated 27 November. Earlier versions are in git history. Words follow `GLOSSARY.md`.
 
 ## Where the release stands
 
 | Package | State |
 |---|---|
-| WP14 to WP19, WP21 | accepted (WP17 D-111, WP18 D-122, WP21 D-121) |
-| WP20 candidate and user acceptance | manual path passes UA-A; uv gap closed (D-112); chat-path UA-A waits on your sitting |
+| WP14 to WP24, WP26 | accepted (latest: WP22 D-141, WP23 D-143, WP24 D-150, WP26 D-155) |
+| WP25 coding paths, facilitating, planning | built; accepted when its account-bound walkthrough runs (U10) are done in your sitting |
+| WP20 candidate and user acceptance | AI user tests pass on both paths (by hand to J10; chat path J1 to J4 and J6); the live chat stages wait on your sitting |
 
-Candidate: tools `dev` 834490f (CI green), template `dev` 271c3e9 pinning tools 7f0ed05, Pages preview current.
-Before the release PRs: your chat-path sitting (item 1).
+Candidate: tools `dev` (CI green), template `dev` d4d5654 pinning tools bc66409, Pages preview current. The reviewer's
+guide is being brought up to date to D-155.
 
-## Waiting on you
+## Your sitting (the next step)
 
-1. **A chat-path sitting (after WP21):** the three chat-path user tests (D-098), the "leave no trace" walkthrough run,
-   and loading the skill package. You sign in and paste each key; I drive.
-2. **After the release:** the w3id namespace registration PR from your fork, citing the release (D-116).
+1. **SCAT Chat by eye** (WP22): open it from `deploy/build` or copy it to Applications; the menu-bar dot's colours, the
+   menu, Copy address and Copy key, the vault confirmation, the first-start note, the alerts, a Stop, the Gatekeeper and
+   keychain prompts.
+2. **The walkthrough runs with your accounts** (WP25-U10), each taking its screenshots:
+   - the AI chatbot path with **Claude**;
+   - the AI IDE path with **Codex**;
+   - **leave no trace** with **inference.coop**;
+   - the by-hand screenshots in Obsidian (or let me take them with full-screen control).
+3. **The chat-path user tests' live stages** (c1 to c3, J5 and J7 to J10), human-paced, as `acceptance/chat-path/plan.md`
+   says; you sign in and paste each key, I drive.
+4. **One judgement for you:** the chat path's "Install once" uses Terminal (the pages say a person who sets it up does
+   it); the mission says the organiser must not be required to open a terminal on that path (D-155).
 
-Settled today: D-102 to D-108, D-110, D-116 (release scope C1 to C8; U3b; Colima default; the published image and
-the mission edits; leave no trace; the uv test; WP8-U1; history rewrites dropped; no further chat clean-up; your
-template checkout's scratch edits discarded; commit-as-trigger noted as candidate C9).
+Then: your walkthrough (UA-M) from `acceptance/reviewers-guide.md`, and I open the release PRs.
 
-## For your walkthrough (UA-M)
+## After the release
 
-Start from `acceptance/reviewers-guide.md`: sitting 1 is your walkthrough on both paths, with scripts in
-`acceptance/`. Sitting 4 lists every call I made with its evidence and revert tag.
+- The w3id namespace registration PR from your fork, citing the release (D-116).
+- Candidate C9 (a commit as the trigger to read written content into the knowledge graph) stays a candidate.
