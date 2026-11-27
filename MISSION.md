@@ -244,7 +244,8 @@ matters without claiming to be exhaustive. No particular project's choices appea
   avoids politically loaded illustrations. It doubles as the test fixture and the documentation example.
 - **G7. Documentation on GitHub Pages**, from `scat-kg-tools`, with a light musical reference (R-15). It has a page for
   each stage of the journey (J1–J10): getting started, a planning guide, a scenario facilitation guide, an architecture
-  facilitation guide, a coding guide, an analysis guide, a guide for the chat path, and a short note on the IDE path. It summarises the end-to-end flow on one
+  facilitation guide, a page on narratives and one on timeframe, a coding guide, an analysis guide, and a page on the
+  coding paths with a walkthrough for each (by hand, an AI chatbot with its leave-no-trace option, an AI IDE, a local LLM). It summarises the end-to-end flow on one
   page, makes data storage, rights and consent explicit, and gives a reference for the terms, the Python API and the
   CLI. Each operational choice (participation terms, AI use, where each kind of material is kept, who it is released
   to and under what licence, and how commitments to participants are kept) is named as a dependency, with "for
@@ -339,7 +340,8 @@ matters without claiming to be exhaustive. No particular project's choices appea
   affordances or compatible technologies. They are parked on the feature branch `feature/same-type-edges` as a design,
   not work to build, and nothing in the release refers to them.
 - The Obsidian plugin. It stays on its feature branch, `spike/obsidian-plugin`; v0.1 provides the stable interface it builds on (R-16).
-- Testing AI assistance against any provider other than inference.coop in v0.1. Broader testing comes later.
+- Testing AI assistance in v0.1 beyond the R-20 runs and one run of each path's walkthrough with its example provider
+  (D-148). Broader testing comes later.
 - Faces or triangles of any sort, including ones inferred from scenarios and architectures.
 - Letting a project's own repository extend the ontology, and evolving the ontology after v0.1.
 - Checking that pages named in a page's text are linked, beyond a basic warning.

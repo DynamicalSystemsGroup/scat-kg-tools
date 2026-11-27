@@ -2719,3 +2719,21 @@ example, run and tested once, not as the required route.
 The chief engineer added: "it should match the pattern of the other examples which also had examples". So every path
 page (and leave no trace) has one shape: what the path needs in general, provider-neutral, then the worked example run
 once with its screenshots (Claude, Codex, Ollama in Docker with Open WebUI, inference.coop).
+
+## D-153 | 2026-11-26 | WP25 built; U10 waits on the sitting; mission lines brought in line with D-148
+
+WP25 landed (`dev` 5027ba9; CI and Pages green; template `dev` e825083 with `AGENTS.md`, `TEMPLATE_COMMIT` moved): the
+coding-paths navigation and overview; five walkthroughs, each "What this path needs" then "Worked example" (D-152);
+narratives, scenarios, architectures and timeframe pages; planning by event kind (1,476 words); docs tests for the
+navigation, providers, alt text, the planning budget and D-146's patterns (with 13 lines allowed for WP26); three
+cold readers (the PM's condensed record, weaker evidence as in D-150). The local-LLM walkthrough ran for real in Docker
+and was removed after; Open WebUI ran with its login switched off on 127.0.0.1, which the ACE confirms for a
+single-person local lab run (the page says so for that case). `check_metrics.py --accept WP25` fails only on U10: the
+Claude, Codex and inference.coop runs with screenshots, and the by-hand Obsidian screenshots, all in the chief engineer's
+sitting. WP25 is accepted when U10 is done.
+
+Following D-148, the ACE brought two more `MISSION.md` lines in line: G7's page list now names the narratives and
+timeframe pages and the coding-paths page with its four walkthroughs; the non-goal "Testing AI assistance against any
+provider other than inference.coop in v0.1" now reads as testing beyond the R-20 runs and one run of each walkthrough.
+Left for WP26: "timeframe" has no glossary entry; the 13 status lines; the local server image is built from a clone
+until the release publishes it.
