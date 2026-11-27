@@ -41,3 +41,36 @@ screenshots in the sitting's evidence folder (`r5/`), outside the repository.
   click enlarges them was not checked. A question for WP30 (figure size, or one figure per reply).
 - **No skill or agent was used** in this session; the behaviour above is the model with the server's tool descriptions
   only. That is a useful baseline for WP30: what the server alone gets right and wrong.
+
+## Turns 7 to 14 (read later the same afternoon)
+
+7. **The chief engineer, on the model's caveat** ("a line means a row a narrative tells … the candidate lists … are
+   where those live"): "this is precisely why we expect a feedback loop between analysis and coding. this is in essence
+   an MVC loop where the views inform exercise of the available controls". The model mapped it: model (node pages, and
+   edges only as rows), views (everything that writes nothing: the draw tools, fingerprint with candidates, layered,
+   trace, edge tables, evidence, copy-share, review), controls (record and remove an edge, stub, set status, index). It
+   noted the controls are partial in its hands (no `done`, plan-only merges), so on a `done` narrative the loop closes
+   only after the coder moves it back to `draft`.
+8. **"suggest to me some potential revisions in the coded data based on the visualizations"**: six calls, grounded in
+   `review`, the edge tables, `layered` and `check`. It separated what the tools report (two merge candidates:
+   painted-ground-numbers and printed-plan-at-gate at Jaccard 1.0, which it read as plausibly one; fair-to-newcomers and
+   not-decide-every-week at 0.5, which it read as distinct; two missing fields that block `done`) from its own readings
+   (the two fridge concerns are dead ends in the whole vault; whiteboard-at-gate is the only affordance with no
+   technology; market-committee is attached in one narrative and not the other; one concern linked under two phrasings).
+   It named the one edit it could make without a demotion and left the interpretation to the coder. Its "dead end"
+   reading did not account for the scenario's kind (D-172).
+9. **"can you not view the images?"**: the model said it cannot see them. With PNG the tool result reached the model as
+   nothing (the chat showed the picture to the person, not to the model); with SVG it read the drawing as text (labels
+   and path coordinates). It corrected its earlier "this channel can't display a bitmap" as a guess stated too firmly.
+10. **The chief engineer**: "svg is a fine output. we should record that as a learning. we also need to note that this
+    platform currently lacks visual inspection capabilities. that is OK but it is something we need to note as compared
+    to the alternativs". The model noted the vault has no page type for a learning (rightly: the graph models the
+    domain, not the tooling) and offered wording for a separate note.
+
+## Learnings recorded here (the chief engineer's)
+
+- **SVG is a fine output**: the model can read it as structure (which node, which line), and it renders as a figure
+  when saved.
+- **inference.coop's model does not see images**: the chat shows a PNG to the person, but the model receives nothing
+  from it; Claude, by contrast, shows the image and can look at it. This is a difference between the paths to state
+  beside the others (the pros-and-cons page).
