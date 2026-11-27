@@ -33,6 +33,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP23 | Three disjoint attribution modes, and the edge's formal name (D-129) | all units done on `pm-wp23`; landing on `dev` with the template pin; waiting on the ACE's acceptance | `WP23.md` |
 | WP24 | Node-page help and merge (D-145) | all units done on `pm-wp24`, tier 1 green (3165 passed); pushed to `dev`; waiting on the ACE's acceptance and three rulings from the re-sweep | `WP24.md` |
 | WP25 | Coding paths, facilitating and planning (D-149) | all units done on `pm-wp25` except U10 (the chief engineer's sitting: Claude, Codex and inference.coop runs and screenshots; by-hand Obsidian screenshots); tier 1 and CI before push | `WP25.md` |
+| WP26 | Prompt-residue sweep and user-test loops (D-154) | all units done on `pm-wp26` (iteration 47: 24 est, 28 realized, 1.0 h); two UA-A rounds, round 2 with no blocking finding; pushed to `dev`; `check_metrics.py --accept WP26` passes; waits on the ACE for the template pin and acceptance | `WP26.md` |
 
 ## Units
 
