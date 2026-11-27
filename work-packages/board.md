@@ -48,6 +48,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP31 | The assistant's habits, stage by stage, tested by the probes (depends on WP30) | approved (D-163) | `WP31.md` |
 | WP32 | Fingerprints follow the narrative's kind; columns read stakeholder, concern, affordance, technology (D-172, D-175) | all units done and merged on `dev`; ready for ACE acceptance | `WP32.md` |
 | WP33 | One query, rendered as a plot, a table or both; one tool per view (D-174, D-175) | all units done and merged on `dev`; ready for ACE acceptance | `WP33.md` |
+| WP34 | What the figures hide, shown: orphans, layered candidates, the no-account flag (D-175) | all units done and merged on `dev`; ready for ACE acceptance | `WP34.md` |
 
 ## Units
 
@@ -426,6 +427,10 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | RS7-U3b | Python developer (trial server runner), sonnet | 2 | 2 | `spike/asking` | done |  | 2026-11-27 | one pass; 3 tests; ran in review |
 | RS7-U4 | PM (readout synthesis; no worker), sonnet | 3 | 5 | `rs7/readout` | done |  | 2026-11-27 | review found 3 defects, one fix round; 2270 words against about 2000 |
 | RS7-U5 | reviewer (fresh, RS7), sonnet | 3 | 3 | `-` | done |  | 2026-11-27 | re-fetched 15 claims, 9 GitHub items, reran 16 tests and the trial server; 3 defects |
+| WP34-U1 | Python developer and test engineer (orphans, candidates, no-account flag; both renderers), sonnet | 5 | 5 | `wp34/u1` | done |  | 2026-11-27 | three result keys, footers and text forms; three existing tests adjusted for the fixture's orphan; PASS first review |
+| WP34-U2 | Python developer and test engineer (CLI, server, schema, parity test), sonnet | 5 | 5 | `wp34/u2` | done |  | 2026-11-27 | flag on two commands, server option, additive schema, parity test with mutations; two false help strings fixed; no push-back |
+| WP34-U3 | technical writer (api.md, analysis.md), sonnet | 2 | 2 | `wp34/u3` | done |  | 2026-11-27 | layered and fingerprint entries and the reading paragraph; no push-back |
+| WP34-U1r | reviewer (fresh, WP34), sonnet | 3 | 3 | `-` | done |  | 2026-11-27 | 18 mutants killed, real vault by CLI and server, PNGs viewed, byte-identity against the old tree; PASS with four nits |
 
 ## Iterations and velocity
 
@@ -478,6 +483,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 52 | WP32-U1 to WP32-U1r | 7 | 8 | 1.14 | 0.65 h | 12.3 |
 | 53 | WP33-U1 to WP33-U1r | 15 | 19 | 1.27 | 1.4 h | 13.6 |
 | 54 | RS7-U1 to RS7-U5 | 19 | 28 | 1.47 | 1.1 h | 25.5 |
+| 56 | WP34-U1 to WP34-U1r | 15 | 15 | 1.00 | 1.3 h | 11.5 |
 
 ## Velocity and forecast
 
