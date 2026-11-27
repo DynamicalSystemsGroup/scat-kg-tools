@@ -2866,3 +2866,25 @@ return the `draw` module's images, and the guide has the assistant interpret the
 - A docs page, Pros and cons of each path (tools eeb1a99), on his: "the main con of the IDE approach is that we cannot
   truly prevent the LLM assistent from handwriting files which are supposed to be written with the tools we provided. i
   want us to add to our documentation a simple page reviewing pros and cons of each documented approach."
+
+## D-162 | 2026-11-27 | The lifecycle is a small state machine; stage scopes what the server exposes
+
+Reviewing the scopes, the chief engineer split the lifecycle work into research, design and implementation, and set the
+design's form (typed by the agent): "we need to do a spike for research, then design, before we get to lockin in the
+lifecycle model spec and then the impliementation is essentially using it as an organizing principle for the tools and
+skills." On the order: "make sure 30 is dependent on 29, since if 30 is done well it should be much easier to stabilize
+the assistants habits. at any given stage in the lifecycle the relevant skills and tools, as well as the relevant input
+data and output data will be much smaller than if we're trying to cover everything at the same time. this stage
+approach exists to chunk up the workflow." And: "a non linear process is a state machine. we have a small finite state
+machine where each state is a stage, and each stage has a narrower set of expected inputs, outputs, tools and skills
+that keep the agent on track. predicates help detect or request state-transistions (changes to stage). this should be
+an as simple as possible but no simpler formal model which gets a concrete instance, we may even want to change the
+header for messages to the mcp server to carry stage. or if stage is unknown the MCP server should be capable of
+returning a result asking for clarification. knowing what stage the user is in (or wants to be treated as in) will
+alter what tools and skills are exposed, as well as what data is treated as required inputs and what kinds of data it
+can produce as output. these are enabling constraints which should make it easier to stabilize the intended behavior."
+
+Outcome: the breakdown becomes WP27 (settings, cap 6), WP28 (drawings), RS5 (research spike: lifecycle state
+machines and how the server can carry and enforce stage), WP29 (design: the formal model and its concrete instance,
+locked by his approval), WP30 (implementation: the server and skills organised and constrained by stage), WP31 (the
+assistant's habits and the probes), in a chain RS5 → WP29 → WP30 → WP31. Scope approval is recorded as D-163.
