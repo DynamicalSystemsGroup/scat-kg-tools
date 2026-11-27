@@ -77,3 +77,10 @@ See `acceptance/walkthroughs/analysis-session-inference-coop.md`. For WP30's ana
 pair it with its table of explicit nodes and edges (his words: "any figure generated can be matched with a set of
 tables containing explicit nodes and edges"); PNG to show; figure legibility at chat width. For WP31: no re-embedding,
 no wrong claims about what the channel can show. Baseline: no skill or agent, the server's tool descriptions only.
+
+## Analysis in practice, and every figure with its table (27 November)
+
+See `acceptance/walkthroughs/analysis-in-practice.md`: what each figure answers, kind-aware reading of gaps, what the
+figures hide (orphans, candidates, near-duplicates), the moves out of Analyse (to Code, Capture or Plan, Hand over),
+and the chief engineer's ask that every image have a data dump of its nodes and edges viewable as a table (each view
+already is one; the pairing in one result is missing). For WP29's transitions and WP30's analysis guide and tools.
