@@ -142,3 +142,34 @@ def test_r5_planning_has_field_notes_and_compiling_sections(topic):
     if not _planning_landed():
         pytest.skip("planning.md has not been rewritten")
     assert re.search(rf"(?mi)^#{{2,3}} .*{topic}", _planning())
+
+
+NEEDS = "## What this path needs"
+EXAMPLE = re.compile(r"(?m)^## Worked example: \S")
+
+
+@pytest.mark.parametrize("name", sorted(WALKTHROUGHS))
+def test_walkthrough_shape(name):
+    text = (DOCS / name).read_text(encoding="utf-8")
+    needs = re.search(rf"(?m)^{re.escape(NEEDS)}\s*$", text)
+    example = EXAMPLE.search(text)
+    if not needs and not example:
+        pytest.skip("the walkthrough has not been rewritten to the shared shape")
+    assert needs, f"{name} has no '{NEEDS}' heading"
+    assert example, f"{name} has no '## Worked example: <name>' heading"
+    assert needs.start() < example.start(), f"{name}: 'What this path needs' comes first"
+
+
+def test_walkthrough_shape_detects_wrong_order():
+    text = "## Worked example: X\n\n## What this path needs\n"
+    assert re.search(rf"(?m)^{NEEDS}", text).start() > EXAMPLE.search(text).start()
+
+
+def test_overview_says_each_example_is_an_example():
+    text = (DOCS / "coding-paths.md").read_text(encoding="utf-8")
+    assert "is an example" in text
+    assert not re.search(
+        r"(?i)\b(recommend|we choose|best choice|prefer(red)? provider|the default)\b", text
+    )
+    for example in ("Claude", "inference.coop", "Codex", "Ollama"):
+        assert example in text
