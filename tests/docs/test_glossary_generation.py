@@ -24,6 +24,7 @@ _spec.loader.exec_module(glossary)
 # listed only in the sense that matters: "model" and "entry" appear as the full phrase or the dropped form.
 DROPPED = [
     r"knowledge graphs?",
+    r"\banalysis\b",
     r"layered graphs?",
     r"\bcoded\b",
     r"\buncoded\b",

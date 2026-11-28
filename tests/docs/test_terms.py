@@ -18,8 +18,8 @@ from scat_kg.tbox import TBOX
 ROOT = Path(__file__).resolve().parents[2]
 PAGE = ROOT / "docs" / "reference" / "terms.md"
 GLOSSARY = ROOT / "GLOSSARY.md"
-# WP38-R3: the generated page has 842 words (`wc -w`); the cap is that plus 10%, rounded up (842 * 1.1 = 926.2, so 927).
-WORD_CAP = 927
+# WP38-R3: the generated page has 854 words (`wc -w`); the cap is that plus 10%, rounded up (854 * 1.1 = 939.4, so 940).
+WORD_CAP = 940
 
 # Backticked names that are not in the TBox but are real: the vault's configuration file and its key.
 CONFIG_NAMES = {"scat.toml", "stakeholder_group_cap"}

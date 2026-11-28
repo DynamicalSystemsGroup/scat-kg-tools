@@ -546,7 +546,7 @@ In a table cell the bar of an alias link is written `\|`: the replacement is `[[
 
 ### SCAT-NOEDGES
 - **Severity:** warning. **Fires:** `done` only (MISSION G1: a `done` narrative whose fingerprint has no edges gets a warning, not an error). **Runs at:** all; reads its page.
-- **Trigger:** a coded narrative (page contracts 4) at `done` has no `Edges told` table, or a well-formed one with no rows, so its fingerprint has no edges (it may still have nodes: a node linked in the account with no edge is conformant). A table with a malformed header, a narrative with any row, and an uncoded narrative (SCAT-UNCODED reports it, once) give nothing from this rule (the table's own rules judge what is there). A narrative may tell no edge on purpose, so the rule never blocks: the coder decides.
+- **Trigger:** a narrative that links a node page (page contracts 4) at `done` has no `Edges told` table, or a well-formed one with no rows, so its fingerprint has no edges (it may still have nodes: a node linked in the account with no edge is conformant). A table with a malformed header, a narrative with any row, and an uncoded narrative (SCAT-UNCODED reports it, once) give nothing from this rule (the table's own rules judge what is there). A narrative may tell no edge on purpose, so the rule never blocks: the coder decides.
 - **Message:**
 ```
 warning [SCAT-NOEDGES] <file> table: the narrative is `done` and tells no edge: its fingerprint has no edges

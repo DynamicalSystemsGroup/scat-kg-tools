@@ -4,7 +4,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 
 ## Across the work
 
-- **SCAT**: The four node types, groups, concerns, affordances and technologies, that a narrative tells.
+- **SCAT**: The method this tool supports: it codes each narrative into four node types, groups, concerns, affordances and technologies.
 - **node**: One group, concern, affordance or technology; its page is a node page.
 - **group**: A set of people who share a stake in the work, the first layer.
 - **concern**: What a group cares about, in the group's own words: a need, a worry or a goal.
@@ -53,7 +53,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **account**: The prose of a narrative: its text outside the `Edges told` table.
 - **link**: An Obsidian `[[...]]` reference from one page to another; never an edge by itself.
 - **Edges told**: The table headed `Edges told` on a `narrative` page, one row for each edge the account tells.
-- **candidate**: Two nodes a narrative links that have no row in its `Edges told` table.
+- **candidate**: A pair of nodes in neighbouring layers that a narrative links but tells in no row of its `Edges told` table.
 - **mismatch**: A link and an edge that disagree about the same relationship, reported with a fix.
 - **attribution**: The people a narrative is attributed to, held as its `attributed_to` links to `contributor` pages.
 - **contributor**: A participant whose name a narrative is attributed to.

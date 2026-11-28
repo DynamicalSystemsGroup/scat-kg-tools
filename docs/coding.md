@@ -18,7 +18,7 @@ Coding by hand needs only these, in any setup:
 - A vault folder from the template, set up as in [Getting started](getting-started.md), with `uv sync` already run. For a trial, a plain clone of the template needs no sign-in.
 - A Markdown editor that opens the vault folder and shows `[[links]]` and page properties. Any editor that does this works; Obsidian is the worked example below, and the index pages are Obsidian Bases, so they show only there.
 - A terminal in the vault folder, to run the check.
-- A narrative: your account of one session, on a page in `narrative/`.
+- A narrative: your narrative of one session, on a page in `narrative/`.
 
 There is no account, key, server or assistant. You write every word, and the tool checks the result.
 

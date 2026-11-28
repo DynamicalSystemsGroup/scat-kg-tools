@@ -21,7 +21,7 @@ None of the three is a form to fill in. They tell you what to ask next and what 
 
 ## What good field notes hold
 
-- **The group.** Every account is headed by the group it comes from, with a rough time.
+- **The group.** Every story is headed by the group it comes from, with a rough time.
 - **The account as offered.** In the speaker's words, in the order told. Concerns get a line each, quoted.
 - **Differences, kept.** Two accounts of one moment are written side by side. A group that said nothing is written down as "no account offered".
 - **Withdrawals.** Anything a group asks to leave out is left out, with a line saying so.

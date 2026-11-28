@@ -7,7 +7,7 @@ Part 1 says what became of every word; part 2 says what became of the 41 inconsi
 
 The glossary now has 53 entries: core 22, plan 7, capture 5, code 12, analyse 6, report 1. Sections are `core` (words
 met across the work) and the stages of `contracts/lifecycle.md`, each holding the words first met in that stage's
-work. The terms page has 842 words; the test's cap is 927 (842 plus 10%, rounded up), below the old 960.
+work. The terms page has 854 words; the test's cap is 940 (854 plus 10%, rounded up), below the old 960.
 
 Counting rule for added words (WP38 default): pages among `docs/*.md` and `docs/reference/*.md` (22 files) other
 than `docs/reference/terms.md`, case-insensitive and word-bounded, as RS6 did; 6 or more pages keeps a word.
@@ -253,3 +253,17 @@ Reading: contributor (apart from "contributor page") falls where it meant partic
 | `contracts/page-contracts.md:13`, `ontology/scat.ttl:7` | "An edge ... is a row" | "is told by a row" |
 | `acceptance/walkthroughs/leave-no-trace-run.md:40-43` | Names the chat run section "Set up for the session" (history); the heading is now "Set up for the chat run" | none (history) |
 | `MISSION.md:66,532` | Commit the glossary to a formal-concept column; the column stays in `GLOSSARY.md`, so both lines remain true | none |
+
+## Part 5. Review fixes (PM)
+
+The fresh reviewer's findings, each fixed or accepted:
+
+- `docs/flow.md` links to words the terms page no longer defines: unlinked or relinked to a kept word (`check`, `view`).
+- The `SCAT` first sentence had no verb: it now says what SCAT is.
+- `candidate`'s first sentence: now a pair of nodes in neighbouring layers that a narrative links but tells in no row.
+- The R4 test lacked `analysis`: added (the ledger moves it to the architecture page).
+- `docs/coding.md` and `docs/narratives.md` used "account" for a whole narrative or a group's story: changed to "narrative" and "story". `contracts/rule-catalogue.md` said "a coded narrative": now "a narrative that links a node page".
+- Accepted: the headings "Start a session" and "The session key" in `docs/chat-path.md` and the app's own dialog ("when you start a session", `deploy/SCAT Chat.applescript`) keep the app's word, which `tests/docs/test_chat_guides.py` also fixes; the `session` entry is about the facilitated event only. The rename of the app and its words belongs to WP37.
+- Accepted: Start and Stop are dropped on a case-sensitive count (4 and 2 pages; the other counts are case-insensitive). Counted case-insensitively they are common words ("start", "stop"), so the case-sensitive count is the one that measures the buttons.
+- Accepted: `plot` is on 3 pages by a recount, 2 in part 1; under 6 either way.
+- Flagged for the ACE: `organiser` is used in six definitions and is not an entry (the `coder` entry names it in one clause).

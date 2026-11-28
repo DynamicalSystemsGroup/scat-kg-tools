@@ -39,7 +39,7 @@ entries:
   - term: SCAT
     section: core
     definition: >-
-      The four node types, groups, concerns, affordances and technologies, that a narrative tells.
+      The method this tool supports: it codes each narrative into four node types, groups, concerns, affordances and technologies.
       The name also nods to scat singing in improvised jazz.
     example: SCAT codes each narrative into its four node types.
     formal: Authored in SCAT
@@ -326,7 +326,7 @@ entries:
   - term: candidate
     section: code
     definition: >-
-      Two nodes a narrative links that have no row in its `Edges told` table.
+      A pair of nodes in neighbouring layers that a narrative links but tells in no row of its `Edges told` table.
       The tool cannot know whether the account tells that edge, so the coder decides: add a row, or leave it.
     example: The fingerprint view shows the candidates when asked.
     formal: ""
