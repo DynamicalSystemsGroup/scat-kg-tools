@@ -149,7 +149,7 @@ def test_every_detect_names_its_reader_and_is_used():
     }
     assert used == set(data["detects"])
     for check, how in data["detects"].items():
-        assert how["reader"] and how["exists"] in {"yes", "partly", "no"}, check
+        assert how["reader"], check
 
 
 def test_the_required_backward_moves_are_present():

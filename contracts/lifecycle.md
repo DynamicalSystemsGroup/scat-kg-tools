@@ -124,9 +124,9 @@ stages:
     prompts: [explain-a-problem]
     skill_sections: [The words, The vault's mode, Where it holds, At the end of a session, Norms]
 
-detects:   # each detect predicate, the reader that evaluates it, and whether that reader exists today
-  every narrative is done and the whole-vault check has no errors: {reader: status and check (a count over status; WP30), exists: "partly"}
-  the stakeholder-group count is at the cap: {reader: status and a scat.toml reader (WP30), exists: "no"}
+detects:   # each detect predicate and the reader that evaluates it
+  every narrative is done and the whole-vault check has no errors: {reader: status and check (a count over status; WP30)}
+  the stakeholder-group count is at the cap: {reader: status and a scat.toml reader (WP30)}
 
 transitions:
   - {id: L1, from: unknown, to: any, dir: start, trigger: the first call on a vault with no stage recorded, predicate: {kind: person, says: the person names the stage}, decides: coder}

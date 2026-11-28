@@ -3247,3 +3247,13 @@ stale `detects` "exists" values, for the chief engineer. WP30 is accepted once R
 The chief engineer (typed by the agent): "Approve RS8". RS8 (`work-packages/RS8-candidate-evidence.md`) is approved.
 A PM runs the desk parts (G1, G2, and G3's coder reading); the assistant readings in Claude and inference.coop run at a
 sitting the chief engineer chooses, with the ACE as coder.
+
+## D-196 | 2026-11-27 | Amendment to the lifecycle model: the detects' `exists` field removed
+
+The model's two `detects` entries carried `exists: "partly"` and `"no"`, build progress written before WP30, which then
+built both readers. The ACE showed that no code reads the field, that its only check was one line of the consistency
+test (the value is one of three words), and that the guarantee that matters (the server's readers are exactly the
+model's detects) is `tests/mcp_server/test_stage_moves.py`, which stays. The chief engineer first asked (typed by the
+agent): "seems like these flags were build progress which would imply removing it but i want to make sure that
+interpretation is correct. i don't want to remove a test for something we actually need", then, given that, chose
+"Remove the field". Applied: the field and that one-line check are gone; the lifecycle, stage and guide tests pass.
