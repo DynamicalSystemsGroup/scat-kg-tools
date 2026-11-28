@@ -7,7 +7,9 @@ at `wp40/audit` (from `dev` d1c519c). Pointers name the report and section:
 - **[Q]** [qual-researcher](reviews/qual-researcher.md): method fit, from someone who codes field notes;
 - **[O]** [first-organiser](reviews/first-organiser.md): usability, from a first-time organiser on the chat path;
 - **[M]** [minimalist-maintainer](reviews/minimalist-maintainer.md): the machinery that could go;
-- **[K]** [kg-modeller](reviews/kg-modeller.md): the meta-model.
+- **[K]** [kg-modeller](reviews/kg-modeller.md): the meta-model;
+- **[S]** [systems-engineer](reviews/systems-engineer.md): structure, the lifecycle and the contracts. Added after decision 1
+  (D-218), when the chief engineer noted the first four were "thinking like coders and user. none like systems engineers".
 
 The test throughout is the chief engineer's (D-217): "the coders job is to identify patterns, label those patterns and
 organize the data according to them. we provide a meta-model, tools, and guidance for that. ... we're not trying to add
@@ -113,6 +115,28 @@ Each claim below was checked; the evidence column is the ACE's.
 | **The group cap as a blocking error** | [Q]: downgrade it to a count. [O], [M], [K]: keep. | A privacy device, not an analytic one (MISSION.md:178-181). |
 | **SCAT-NAME's ASCII slugs** | [Q]: they lose in vivo and non-Latin labels. [O] and [M] keep them; [K] simplifies. | `title` keeps the label either way. |
 | **The chat-path install** | [O §3.5]: a terminal, Colima, Tailscale and a new key every run contradict "must not be required to open a terminal". The others don't judge it. | Verified: the connector must be removed and re-added with a new key every run (`docs/chat-path.md:127-128`), and the notebook starts from a terminal (`docs/analysis.md:4`). This session hit the stale key today. |
+
+## 4a. The systems engineer's view [S]
+
+[S] also puts the stage machine first among its cuts ([S §3.1]). D-218 keeps it. [S]'s reasons are different from the
+other four, though: they are failures of the structure to be applied the same way everywhere, which is exactly what
+D-218 says the structure is for. Its structural findings ([S §5]), each checked:
+
+| # | Finding | Verified |
+|---|---|---|
+| S1 | The stage is enforced at three strengths: the MCP server refuses, the IDE path is advisory, the CLI has none; the template ships no `lifecycle.toml`, so a new vault's first MCP call is refused as unknown | Yes for the template: `tpl-pin3/lifecycle.toml` does not exist. |
+| S2 | Two actor models: the architecture has coder, tool and assistant; the lifecycle adds organiser and setup person, and the organiser, who decides most moves, is in no authority table | Yes: "organiser" appears 0 times in `contracts/assistant.md`, once in `contracts/architecture.md`. |
+| S3 | `analyse` offers `review` and `evidence` but not `merge`, `split_plan` or `look-for-duplicates`, so synthesis needs a move back to `code` | Yes (`contracts/lifecycle.md:96-108`). |
+| S4 | Whether the assistant may set status has three answers: A3 omits it, the template's AGENTS.md forbids it, the server exposes it and `code` offers it | Yes (`contracts/assistant.md:17`; `tpl-pin3/AGENTS.md:12`; `mcp_server/server.py:67`). |
+| S5 | `kind` has meaning in code that no contract states: drawings drop a layer by kind, and the mention rule discourages a layer by kind | Yes (`draw.py:63-66`, `checks/mention.py:12-14`). |
+| S6 | Contributor stub: the page contract and the catalogue say `stub` refuses a contributor; the CLI help says it makes one where the mode allows | Yes (`contracts/page-contracts.md:278-280`; `cli.py:83`). |
+| S7 | Rules restate what the ontology already fixes (TABLE-TYPE, TABLE-LAYERS and the value rules vs `endpointOrder`, `verb`/`slug`, `valueSet`); `mapsTo` and `discouragedField` are read by no code | Yes for the second half: `mapsTo` and `discouragedField` have no reader in `src/`. |
+| S8 | Duplicated text and overloaded words: `contracts/architecture.md` is identical to `docs/architecture.md`; the assistant rules are copied into the skill and the prompts; `kind` has four meanings | Yes: the two `architecture.md` are identical (`diff -q`). |
+
+[S]'s other cuts agree with the rest: one id per rule with severity by status, folding the row rules into "the row does
+not fit its edge type" ([S §3.2]); stop validating `kind` and `timeframe` and cut MENTION ([S §3.3]); strip the TTL to
+what the code reads ([S §3.4]); state the assistant's authority once ([S §3.5]). Its missing items add a way to read
+tensions in `analyse` to the recurrence view and the link to field notes.
 
 ## 5. What is missing for the point of the exercise
 
@@ -257,8 +281,7 @@ the same item; this table carries no reason column of its own.
 One line each, for the chief engineer to answer one at a time. Each is a cut or a simplification. Every one would
 become its own small package.
 
-1. **Stages.** Cut the lifecycle stage machine (tools, `lifecycle.toml`, refusals, stage guides). Keep the guides as
-   plain help? All four reviewers say cut. Note that WP30 is built and waiting for acceptance.
+1. **Stages.** Decided (D-218): the stage machine stays. [S]'s findings S1 to S3 become item 16.
 2. **Attribution.** Cut it entirely, or keep one switch ("no names" enforced, or names as free text)?
 3. **One record or two.** Keep both prose links and table rows (MISSION G17, WP39), or make one of them the only record
    of an edge? [Q] alone.
@@ -282,3 +305,10 @@ become its own small package.
     that setup needs a helper?
 15. **C22 (D-216).** Reconsider the reified narrative-to-node page in light of §5 (no reviewer asked for more pages;
     [K] proposes `skos:broader`).
+16. **The lifecycle, respected everywhere.** Ship the template with a starting stage so the first call is not refused;
+    one strength of enforcement across the MCP, IDE and CLI paths; and whether `analyse` may consolidate codes (merge)
+    or synthesis goes back to `code` ([S] S1 to S3).
+17. **Consistency fixes, one package.** One actor model with the organiser in the authority tables; one answer on
+    whether the assistant sets status; `kind`'s effects stated in the contract or removed; the contributor-stub
+    contradiction; one copy of the assistant rules and of `architecture.md`; terms no code reads out of the TTL ([S] S2,
+    S4 to S8). These are contradictions, not choices: the ACE would settle each by the ontology and the contracts.
