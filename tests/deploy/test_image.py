@@ -70,6 +70,9 @@ def test_the_image_imports_matplotlib_and_serves_the_drawing_tools():
     with tempfile.TemporaryDirectory(dir=os.environ.get("SCAT_IMAGE_TMP")) as tmp:
         vault = Path(tmp) / "vault"
         shutil.copytree(EXAMPLES, vault)
+        (vault / "lifecycle.toml").write_text(
+            'stage = "analyse"\n'
+        )  # the stage tools refuse every call until a stage is recorded
         vault.chmod(0o777)  # the container runs as the host's uid:gid; the server may write views/
         user = f"{os.getuid()}:{os.getgid()}" if hasattr(os, "getuid") else "1000:1000"
         run = subprocess.run(
