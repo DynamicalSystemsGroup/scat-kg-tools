@@ -3266,3 +3266,9 @@ we'll test them out later. there is nothing stopping a user from using those pat
 not whether its possible". Outcome: those rows describe what our side returns (PNG as MCP image content, SVG as text,
 the table as JSON) and what to ask for, in line with D-183; no "not tried" wording; trials of the two paths are
 deferred by the chief engineer to a later package. WP36's goals, R1 and deliverables are edited to match.
+
+## D-198 | 2026-11-27 | WP36's defaults approved
+
+Asked to approve WP36's three defaults (one fingerprint as PNG, SVG and table per trial; any trial with his accounts
+and the ACE as coder; one line per path in the existing Pros and Cons lists), the chief engineer said (typed by the
+agent): "Defaults approved". WP36 has no open items; it awaits approval of the scope.
