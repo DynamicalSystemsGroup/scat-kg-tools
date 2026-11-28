@@ -456,7 +456,7 @@ generated through the MCP server, and a clean check of a private repository, the
   hosted on localhost from a fresh clone, and clicks through it; uses the tools in their user interfaces: Claude and
   inference.coop in the browser, Obsidian on the desktop, the menu-bar app and, where its role's docs say so, a
   terminal; and follows only what the docs say. Reading the code instead of using the interfaces is not user
-  acceptance. inference.coop is used gently, one chat and one step at a time. The roles that code do so on the manual
+  acceptance. The roles that code do so on the manual
   path and on the chat path, at least once each, each with material in a domain of its own, different from the
   worked example.
 - **Reporting.** Testers may not read `src/` or `tests/`, and every claim comes with a screenshot of what the tester saw. A
@@ -470,7 +470,7 @@ generated through the MCP server, and a clean check of a private repository, the
 
 **UA-M, the chief engineer's test** (the core of acceptance):
 
-- On a Mac of his own, he clones both repositories, switches to `dev`, and previews the documentation site on
+- On a Mac, he clones both repositories, switches to `dev`, and previews the documentation site on
   localhost. Following only the docs, he installs SCATLAB, uses it from Claude and from inference.coop, and codes a
   real project of his own in one of the two chats.
 - **Pass:** he is satisfied enough to give minor feedback, if any, to prepare the release.
