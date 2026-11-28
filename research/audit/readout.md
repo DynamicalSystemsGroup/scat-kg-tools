@@ -312,3 +312,27 @@ become its own small package.
     whether the assistant sets status; `kind`'s effects stated in the contract or removed; the contributor-stub
     contradiction; one copy of the assistant rules and of `architecture.md`; terms no code reads out of the TTL ([S] S2,
     S4 to S8). These are contradictions, not choices: the ACE would settle each by the ontology and the contracts.
+
+## 8. Outcomes
+
+The chief engineer answered every item on 28 November (decisions/log.md D-218 to D-236):
+
+| Item | Outcome | Log |
+|---|---|---|
+| 1 Stages | Stay; the stage machine is the scaffolding that keeps the rest simple | D-218 |
+| 2 Attribution | Stays as built; it serves two real use cases | D-219 |
+| 3 One record or two | The table is the coding of record; prose links are a subset of its nodes (warning in draft, error at done) | D-220, D-221 |
+| 4 Type column | Stays | D-222 |
+| 5 Rule catalogue | One id per condition, severity by status; TABLE-SECOND, TABLE-DUPLICATE, MENTION, SUGGEST-CONFIG cut | D-223 |
+| 6 Marks | `timeframe` (as actual / hypothetical / unclassified) and `kind` become analysis filters, gating nothing | D-224 |
+| 7 copy-share, review | copy-share cut; review keeps plain signals | D-225 |
+| 8 Fixes as data | Stay; an item-by-item review later | D-226 |
+| 9 Commands | `split-plan` becomes `where-used`; the rest stay | D-227 |
+| 10 Names | ASCII slugs stay | D-228 |
+| 11 Recurrence | A separate view | D-229 |
+| 12 Abstraction | A guide page, `rename`, a documentation pass, core glossary terms; the purpose statement | D-230, D-232 |
+| 13 TTL | Stripped to the model | D-231 |
+| 14 Chat setup | The docs say a helper sets it up | D-232 |
+| 15 C22 | Stands; the link page is an optional slot; the assistant is guided on every slot | D-233 |
+| 16 Lifecycle | Template starts in plan; same strength everywhere; roles replace authority tables; a sixth stage, `synthesise` | D-234, D-235 |
+| 17 Consistency | One package, settled by the ACE | D-236 |
