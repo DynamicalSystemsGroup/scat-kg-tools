@@ -457,8 +457,14 @@ From the point of view of [[workshop-participants|Workshop participants]] (about
 ```text
 $ uv run scat check saturday-at-the-tool-library
 attribution mode: disallowed
-no problems
+warning [SCAT-DRAFT-LINK-NOTINTABLE] narrative/saturday-at-the-tool-library.md:10:27 link [[workshop-participants]]: the account links it but no row of the table has it as an end; the table is the coding of record
+  Fix, choose one:
+    1. record the row for it: run `scat record-edge <type> <from> <to> --told-by saturday-at-the-tool-library` (REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["saturday-at-the-tool-library"])`), with `workshop-participants` as `<from>` or `<to>`
+    2. or take the link out of the account: write `workshop-participants` without its brackets and keep the words
+0 errors, 1 warning
 ```
+
+The link to `workshop-participants` stays in the account, and no row ends at it now, so the check reports it. Record a row for it or take the brackets off before you set `done`.
 
 ## Coding in increments
 
@@ -491,10 +497,22 @@ From the point of view of [[workshop-participants|Workshop participants]]: [[lat
 ```text
 $ uv run scat check sunday-at-the-desk --neighborhood
 attribution mode: disallowed
-no problems
+warning [SCAT-DRAFT-LINK-NOTINTABLE] narrative/sunday-at-the-desk.md:10:27 link [[workshop-participants]]: the account links it but no row of the table has it as an end; the table is the coding of record
+  Fix, choose one:
+    1. record the row for it: run `scat record-edge <type> <from> <to> --told-by sunday-at-the-desk` (REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["sunday-at-the-desk"])`), with `workshop-participants` as `<from>` or `<to>`
+    2. or take the link out of the account: write `workshop-participants` without its brackets and keep the words
+warning [SCAT-DRAFT-LINK-NOTINTABLE] narrative/sunday-at-the-desk.md:10:76 link [[late-returns]]: the account links it but no row of the table has it as an end; the table is the coding of record
+  Fix, choose one:
+    1. record the row for it: run `scat record-edge <type> <from> <to> --told-by sunday-at-the-desk` (REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["sunday-at-the-desk"])`), with `late-returns` as `<from>` or `<to>`
+    2. or take the link out of the account: write `late-returns` without its brackets and keep the words
+warning [SCAT-DRAFT-LINK-NOTINTABLE] narrative/sunday-at-the-desk.md:10:124 link [[reminder-text]]: the account links it but no row of the table has it as an end; the table is the coding of record
+  Fix, choose one:
+    1. record the row for it: run `scat record-edge <type> <from> <to> --told-by sunday-at-the-desk` (REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["sunday-at-the-desk"])`), with `reminder-text` as `<from>` or `<to>`
+    2. or take the link out of the account: write `reminder-text` without its brackets and keep the words
+0 errors, 3 warnings
 ```
 
-Linking two nodes of a pair says nothing yet, so there is no message, and each step is cheap. Then the edges, one row each:
+Each link is reported, as a warning at `draft`, until a row ends at it. Then the edges, one row each, which end every link:
 
 ```text
 $ uv run scat record-edge holds workshop-participants late-returns --told-by sunday-at-the-desk --note "Said as the main worry."
