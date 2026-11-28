@@ -3494,3 +3494,32 @@ pieces to be simple."
 
 Outcome: the stages, `lifecycle.toml`, the stage tools and the refusals stay; WP30 goes on to acceptance. The WP40
 panel had no systems-engineering view; the readout's verdicts are read with that gap in mind.
+
+## D-219 | 2026-11-28 | WP40 decision 2: attribution stays as built
+
+Asked whether to cut attribution or reduce it to one switch, the chief engineer said (typed by the agent): "we need to
+keep that as built its. minimalist structure for distinguishing two modes. the attribution rules allow us to handle the
+needs of our two real use cases. one that involves activists that needs to explicitly reject named contributions and
+one for a community that explicitly wants to surface and track contributions. this dimension is there to protect that
+variety. still good that you surfaced it, but i am telling you why its needed".
+
+Outcome: the modes, contributor pages, `attributed_to`, the ATTR rules, the attribution view and tool stay. The
+reviewers judged it without the two real use cases it serves; the readout's attribution rows are read with that in mind.
+
+## D-220 | 2026-11-28 | WP40 decision 3: the table is the coding of record; prose links are a subset of it
+
+Asked whether an edge keeps two records (prose links and table rows), the chief engineer said (typed by the agent):
+"we can relax the demand that the prose be linked. the tables are the coding of record. linking the prose is desired
+but not required. to avoid confusion though the prose links should be a subset (potentially empty) of the table. the
+table is structural its what gets held in step with the underlying knowledge graph. the prose is interpretive and
+connective tissue. if we're linking something either, it belongs in the table (official coding) or it shouldn't be
+linked. which way it goes is up to the coder. warn in draft and error if done."
+
+Outcome: a node linked in the account must be an end of a row of the narrative's table (warning while stub or draft,
+error at `done`); a row end need not be linked in the account. This reverses the direction of WP39's approved rule
+(D-214), which was about to land; the ACE stopped WP39's PM before any push. WP39 needs an amended scope.
+
+## D-221 | 2026-11-28 | WP39 amendment 1 approved (the rule reversed)
+
+Shown amendment 1 to WP39 (the rule follows D-220: a node the account links must be a row end; row ends need not be
+linked; the dropped fixture rows restored), the chief engineer said (typed by the agent): "Approve amendment".
