@@ -17,7 +17,7 @@ what you will have at the end. The next page walks you through the first command
 SCAT turns facilitated discussions into a structured set of notes you can read, follow and check.
 
 You run workshops. Participants tell stories and propose designs. You take field notes. Afterwards you write each
-account as a narrative page and code it, using four kinds of node:
+account as a narrative page and code it, using four node types:
 
 - **S**takeholder groups: the groups of people the notes come from.
 - **C**oncerns: what a group cares about.
@@ -67,7 +67,7 @@ that address them, and to the technologies behind those. The git history is the 
 
 ## Who it is for
 
-SCAT is for a facilitator-analyst: you are comfortable with technology but you are not a software developer, and you
+SCAT is for an organiser: you are comfortable with technology but you are not a software developer, and you
 work on a Mac. You plan and run workshops, take notes, and code them. You follow instructions step by step, and these
 pages are written for that.
 

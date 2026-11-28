@@ -119,9 +119,9 @@ and listed `model` twice). Every one of the 61 is here.
 | candidate | 7 | Entry, section `code`: two nodes a narrative links that have no row in its `Edges told` table. |
 | account text | 3 | Not an entry (under 6); the sense is covered by `account`. |
 
-### Words the moved words need (for the next unit to place)
+### Words the moved words need
 
-The next unit places these; this unit did not edit `docs/architecture.md` or `contracts/`.
+Placed in unit U2: the first nine in `docs/architecture.md` (section "Words this page uses"), relationship annotation in `contracts/page-contracts.md` section 7, and the four assistant words in `contracts/assistant.md` ("The words").
 
 | Word | Where | One-line definition |
 |---|---|---|
@@ -129,7 +129,7 @@ The next unit places these; this unit did not edit `docs/architecture.md` or `co
 | layered graph | docs/architecture.md | The nodes and edges only, in their four layers: the knowledge graph without narratives and relationship annotations. |
 | knowledge graph | docs/architecture.md | The nodes, edges and narratives the tool builds from a vault and checks against the ontology, with the contributor pages where the attribution mode allows them. |
 | the ontology | docs/architecture.md | The project's fixed definitions of the types and their rules, which the tool checks against; the TBox, in Turtle. |
-| entry | docs/architecture.md | One node, edge, narrative or relationship annotation as stored in the vault: a page, or a field on a page. |
+| entry | docs/architecture.md | One node, edge, narrative or relationship annotation as stored in the vault: a page, a table row or a body line. |
 | model | docs/architecture.md | The ontology plus a conformant vault; also, as a kind of material, the git repository that holds them. |
 | inputs | docs/architecture.md | The field notes: the supplied material. |
 | analysis | docs/architecture.md | The reports derived from the model; also the step that reads the views. |
@@ -149,4 +149,108 @@ The next unit places these; this unit did not edit `docs/architecture.md` or `co
 
 ## Part 2. The 41 inconsistencies
 
-(next unit)
+FIXED 24, ACCEPTED 17. "Part 4" lists what lies outside the blast radius.
+
+| ID | Term | Disposition | What changed and where, or the reason |
+| --- | --- | --- | --- |
+| I1 | contributor / participant | FIXED | `docs/flow.md:7,17`, `docs/data-and-consent.md:44,50`: "contributors" meaning people who take part now "participants". The attribution pages (`coding.md`, `norms.md`, `planning.md`) already used contributor for the named person. `src/` and CLI help agree with the entry. |
+| I2 | inputs, model, analysis | FIXED | `docs/data-and-consent.md:7-10,20,30,40,43-44,50`: the three sorts of material are the field notes, the vault (the narratives, nodes and edges) and the reports; narratives are no longer inputs and no longer in two sorts. Words defined in `docs/architecture.md` for builders. |
+| I3 | model | FIXED | The vault sense said in plain words: `docs/flow.md:22`, `chat-path.md:467`, `coding.md:991,998`, `getting-started.md:177,324,327`, `data-and-consent.md`. "Language model" and "the assistant's model" stay (a different thing, named so in `architecture.md`). |
+| I4 | analysis | ACCEPTED | `docs/analysis.md` is the page of the analyse stage and keeps its title; the reports sense is now "reports" (`data-and-consent.md`), the step sense is the stage. Template README is outside the blast radius (Part 4). |
+| I5 | session | FIXED | One sense, a facilitated event. A run of the chat is "a chat run": about 45 lines in `chat-path.md`, `local-llm.md`, `leave-no-trace.md`, `path-pros-and-cons.md:45,57`; `analysis.md:39` (browser tab), `ide.md:73`. Kept: the headings "Start a session" and "The session key" (a test fixes them; `session key` is a moved word), the REPL as "a Python session", file names in `acceptance/`. |
+| I6 | type / kind | FIXED | Node categories are types: `index.md:20`, `getting-started.md:14`, `planning.md:8`, `coding.md:12` ("four node types"); "kinds of material" is "sorts of material" (`data-and-consent.md`). `kind` stays for scenario and architecture (`planning.md` "two kinds of session" matches it). |
+| I7 | node as a page | ACCEPTED | The docs already say a node page is a node's page; only the template README (`tpl-pin3`) says a node is a page. Outside the blast radius (Part 4). |
+| I8 | edge is a row | FIXED | `docs/architecture.md` section 6: "A narrative tells an edge in one row". The wording "it is a row" in `contracts/page-contracts.md:13` and `ontology/scat.ttl:7` is outside the changes allowed (Part 4). |
+| I9 | status, done, finished | FIXED | `docs/coding.md:33` "finished narrative" is "`done` narrative". "The vault is finished" at hand-over is a statement, not a status. A derived edge status is kept in `architecture.md` and `coding.md:114`; `src/` derives it (the entry says page status). |
+| I10 | entry stored as | FIXED | The glossary no longer holds `entry`. Its builder definition (`architecture.md`) says page, table row or body line. This ledger's one-line definition ("a field on a page") was wrong and is corrected in part 1. |
+| I11 | entry (server entry) | ACCEPTED | `chat-path.md`, `leave-no-trace.md`: "the server entry" is the chat platform's record of the MCP server; the glossary no longer defines `entry`, so no clash. `coding.md:626` ("two entries" meaning pages) is fixed: "pages". |
+| I12 | view | ACCEPTED | `docs/analysis.md` says four views plus evidence and copy-share, as the `view` and `evidence` entries say. "View:" in MCP text and "graph view" (Obsidian) are `src/` and Obsidian's names; `node` says the Obsidian sense. |
+| I13 | review / reviewing | ACCEPTED | The docs write the command as `scat review` and the step as "reviewing" (`coding.md:123`, `chat-path.md:427`); "git review" is another act. Flagged in part 1. |
+| I14 | check | ACCEPTED | One entry for the command and the gate. `architecture.md` "rules 1 and 2" are builder text; docs say "the check". |
+| I15 | tool | ACCEPTED | The entry covers "the tools" and says the MCP server is a front end. Chat-platform "tool" (the agent's tool) is the platform's word; the template README is outside. |
+| I16 | attribution | ACCEPTED | The entry is the people; the mode has its own entry (`attribution mode`); the `attribution` key and command are code names that the docs mark as such. |
+| I17 | who sets mode and cap | ACCEPTED | The docs (`planning.md:49`, `coding.md:714`, `data-and-consent.md`) agree with the entries. `src/scat_kg/views.py:417`, `checks/attribution.py:75` tell the coder; Part 4. |
+| I18 | organiser / facilitator-analyst / you | FIXED | `docs/index.md:70` "facilitator-analyst" is "organiser". "You" in guides is the reader. The facilitator and the note-taker stay two roles (`planning.md:120,124`). `src/` and skills say "coder"; Part 4. |
+| I19 | assistant / agent / chatbot | ACCEPTED | "An AI chatbot" and "an AI IDE" are names of coding paths, not of the actor; the actor is the assistant. "Agent" is the IDE's or chat's name (`saved agent` is in the assistant contract). |
+| I20 | narrative / story / account | FIXED | A narrative is one story; its prose is the account: `docs/coding.md:12`, `narratives.md:6,45`, `facilitate-scenarios.md:24,46`. Residual: guides call what a group tells at the event "an account" (ordinary English; flagged). |
+| I21 | field notes / notes / inputs | FIXED | "Inputs" is gone from the guides but for `architecture.md:127` (defined there); "notes" is the short form of field notes. |
+| I22 | group / stakeholder group | FIXED | `docs/narratives.md:24` "stakeholder group" is "group". The acronym expansion keeps it. |
+| I23 | vault / project / repository | ACCEPTED | The vault entry says one git repository; "repository" is used for the GitHub copy and "project" for the organiser's work; no page uses them as the folder's name against the entry. |
+| I24 | check / validate / verify | FIXED | `docs/norms.md:65` "validation" is "your confirmation" (the coder's act). |
+| I25 | stub / draft | ACCEPTED | `stub` and `draft` are status values in the entry; "draft" as a verb is ordinary English and is the assistant's act (`assistant` entry). |
+| I26 | edge type names | ACCEPTED | The `edge` entry names the three phrases; `coding.md:108-113` gives the slugs beside them. The CLI names are code. |
+| I27 | no entry | FIXED | `node page` (folded into `node`), `session`, `account`, `participant`, `coding path`, `check` and others now have entries. `SCAT Chat`, `note-taker`, `workshop` stay without (under 6 pages or ordinary English). |
+| I28 | layer vs type | ACCEPTED | Two entries, each one sense: `layer` is the group of nodes of one type; `type` the category. The entries say so. |
+| I29 | longest definitions | FIXED | U1: longest definition is 50 words (narrative), 53 entries one term each. |
+| I30 | shortest definitions | FIXED | U1: `element` moved; `field notes`, `page`, `vault`, `trace` are one sentence with an example. |
+| I31 | IDs in rows | FIXED | U1: no WP, D- or R- ID in `glossary.yml`. |
+| I32 | process text | FIXED | U1: the preface has no process paragraph. |
+| I33 | rows that mix levels | FIXED | U1: one term per entry; mixed words moved or folded (part 1). |
+| I34 | formal column | ACCEPTED | Deliberate: the formal column stays in `GLOSSARY.md` (MISSION.md lines 66 and 532 commit to it) and is empty or short for most words; `terms.md` omits it. |
+| I35 | "The work" section | FIXED | U1: sections are the stages, platform and test words moved. |
+| I36 | SCAT definition | FIXED | U1: the entry names the four types in order. |
+| I37 | glossary vs terms.md, entries | FIXED | U1: both are generated from one file; the entry sets are equal. |
+| I38 | timeframe wording | FIXED | U1: one definition, one sentence for both files. |
+| I39 | who chooses cap and mode | ACCEPTED | `terms.md` carries the first sentence only by design; `GLOSSARY.md` and `planning.md:49` say who. |
+| I40 | extra clauses in one file | ACCEPTED | As I39: the terms page is the first sentence of the same definition, so differences in length are by design. |
+| I41 | duplication | FIXED | U1: one source, two generated files; a test checks them. |
+
+Other word fixes in the same pass (not inconsistencies of their own): `docs/coding.md:114,136,145,147,208,662` and `docs/norms.md:8-23` no longer define "coded", "excluded" or "knowledge graph" as terms; they say a narrative that links no node page is left out of the graph and the views, and quote the tool's word "excluded" once. The heading "A coded narrative" in `norms.md` is now "A narrative that links a node page" and `tests/docs/test_norms.py` (its heading list) follows.
+
+## Part 3. Re-run of RS6's checks
+
+Counts of occurrences / pages over `docs/*.md` and `docs/reference/*.md` without `terms.md` (case-insensitive, word-bounded), before and after. `docs/architecture.md` now holds the builders' words, so "element", "range vault" and the ontology rise there.
+
+| Word | Before | After |
+|---|---|---|
+| contributor (not page) | 56 / 9 | 52 / 9 |
+| participant | 103 / 8 | 107 / 8 |
+| session | 155 / 17 | 107 / 14 |
+| status | 249 / 12 | 249 / 12 |
+| finished | 18 / 8 | 17 / 8 |
+| done | 367 / 19 | 368 / 19 |
+| type | 265 / 13 | 270 / 15 |
+| kind | 96 / 14 | 85 / 13 |
+| review (cmd) | 11 / 5 | 11 / 5 |
+| review/reviewing | 43 / 10 | 43 / 10 |
+| reviewing | 5 / 5 | 5 / 5 |
+| node page | 141 / 10 | 143 / 10 |
+| organiser | 12 / 3 | 14 / 5 |
+| facilitator | 31 / 4 | 30 / 3 |
+| facilitator-analyst | 1 / 1 | 0 / 0 |
+| knowledge graph | 20 / 7 | 15 / 5 |
+| element | 0 / 0 | 1 / 1 |
+| entry/entries | 43 / 6 | 43 / 5 |
+| model | 94 / 13 | 86 / 10 |
+| layered graph | 3 / 2 | 4 / 2 |
+| inputs | 8 / 3 | 3 / 2 |
+| analysis | 26 / 7 | 23 / 8 |
+| coded/uncoded | 22 / 6 | 17 / 6 |
+| excluded | 36 / 6 | 33 / 6 |
+| analysing | 0 / 0 | 0 / 0 |
+| leave no trace | 12 / 6 | 12 / 6 |
+| range vault | 0 / 0 | 1 / 1 |
+| the ontology | 4 / 2 | 5 / 2 |
+| relationship annotation | 7 / 6 | 9 / 6 |
+| norm | 25 / 4 | 25 / 4 |
+| saved agent | 18 / 2 | 18 / 2 |
+| session key | 9 / 2 | 9 / 2 |
+| Linked beyond the text | 2 / 1 | 2 / 1 |
+| stakeholder group | 4 / 4 | 3 / 3 |
+
+Reading: contributor (apart from "contributor page") falls where it meant participant; session falls by the chat-run lines; model, knowledge graph, inputs, coded and excluded fall in the guides and stay in `architecture.md`, `reference/` (tool output quoted as it prints) and the contracts. "facilitator-analyst" is gone. The rises in type and participant are the fixes above. The remaining "excluded" and "coded" are in `docs/reference/` and `docs/coding.md` output blocks, which print the tool's own messages.
+
+## Part 4. Outside the blast radius
+
+| Where | Why | Change needed |
+|---|---|---|
+| `skills/scat-coding/SKILL.md` (rules text after the title, near line 14) | Copies the body of `contracts/assistant.md` verbatim; `tests/skills/test_scat_coding_skill.py::test_rules_text_equals_the_contract` fails until it is copied again (my attempt to edit `skills/` was not permitted) | Copy the new "Four more words" paragraph of `contracts/assistant.md` under "The words" into the skill; the test names the rule |
+| `ORG.md` (the line that says GLOSSARY.md is changed by hand) | GLOSSARY.md is generated | Say it is regenerated from `glossary.yml` by `scripts/glossary.py` |
+| `.claude/agents/*.md` (three files name GLOSSARY.md) | Same | Same wording |
+| `src/scat_kg/views.py:417`, `src/scat_kg/checks/attribution.py:75` | Fix text tells the coder to edit `scat.toml`; the entry says the person who set up the tools writes it | "the person who set up the tools" |
+| `src/scat_kg/views.py:534`, `scat attribution --help`, MCP tool `attribution` | "contributor" as the person a narrative is attributed to: this agrees with the contributor entry; no change | none |
+| `src/scat_kg/checks/mention.py` (comment naming GLOSSARY.md), `src/` messages "excluded from the knowledge graph" | Dropped words in tool messages; docs quote them | Say "left out of the graph" when the messages are next changed; tests `tests/checks/helpers.py:203`, `tests/independent/test_seeded_defects.py` quote them |
+| `tpl-pin3/README.md:66`, `tpl-pin3/narrative/false-start-and-clean-restart.md:13` | Template says a node is a page and an edge is a row; "stakeholder conversation" | "A node page is one page ..."; "an edge is told by a row" |
+| `contracts/page-contracts.md:13`, `ontology/scat.ttl:7` | "An edge ... is a row" | "is told by a row" |
+| `acceptance/walkthroughs/leave-no-trace-run.md:40-43` | Names the chat run section "Set up for the session" (history); the heading is now "Set up for the chat run" | none (history) |
+| `MISSION.md:66,532` | Commit the glossary to a formal-concept column; the column stays in `GLOSSARY.md`, so both lines remain true | none |

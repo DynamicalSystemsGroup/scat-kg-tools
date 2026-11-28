@@ -9,7 +9,7 @@ DOCS = ROOT / "docs"
 PAGE = DOCS / "norms.md"
 CATALOGUE = ROOT / "contracts" / "rule-catalogue.md"
 HEADINGS = [
-    "A coded narrative",
+    "A narrative that links a node page",
     "Links in the account",
     "Descriptions",
     "What a node page holds",

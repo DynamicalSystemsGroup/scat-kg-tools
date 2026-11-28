@@ -3,6 +3,20 @@
 How SCAT is built, for people who build or change it. Words follow the [terms](reference/terms.md). Two aims run through
 every choice: for users, make the right way the easy way; for builders, as simple as possible but no simpler.
 
+## Words this page uses
+
+The [terms](reference/terms.md) hold the organiser's words. These are the builders' words: the terms page leaves them out, and the contracts use them.
+
+- **Element.** A node or an edge.
+- **Entry.** One node, edge, narrative or relationship annotation as stored in the vault: a page, a table row or a body line.
+- **The ontology.** The project's fixed definitions of the types and their rules, in `ontology/scat.ttl` (the TBox). The tool checks a vault against it.
+- **Knowledge graph.** The nodes, edges and narratives the tool builds from a vault, with the contributor pages where the attribution mode allows them. Derived on every call, never held.
+- **Layered graph.** The nodes and edges only, in their four layers: the knowledge graph without narratives, contributor pages and relationship annotations.
+- **Model.** The ontology plus a conformant vault, the M of section 1. As a kind of material, the git repository that holds them. An assistant's language model is neither.
+- **Inputs.** The field notes: the supplied material, outside the tool.
+- **Analysis.** The reports derived from the model; also the step that reads the views.
+- **Range vault.** A vault that rebuilds a published case with groups, not named people, to test the tools. It is not field data.
+
 ## 1. Model, views and control
 
 Model, view and control (MVC):
@@ -134,13 +148,13 @@ interface, GitHub Desktop, an Obsidian git plugin), not M8.
 
 ## 6. Design choices
 
-- **The edge row.** An edge is one row of a narrative's "Edges told" table (`from | type | to | note`, both ends
-  links), the first table under that heading, at any level. The graph holds one edge per (type, from, to) naming every
-  narrative with a row; its status is derived, with no edge sign-off. Page types: `group`, `concern`, `affordance`,
+- **The edge row.** A narrative tells an edge in one row of its "Edges told" table (`from | type | to | note`, both ends
+  links), the first table under that heading, at any level. The graph holds one edge per
+  (type, from, to) naming every narrative with a row for it; its status is derived, with no edge sign-off. Page types: `group`, `concern`, `affordance`,
   `technology`, `narrative` (`kind` scenario or architecture; `timeframe` stays), `contributor`, `index`. Operations:
   `record_edge(type, from_, to, told_by, note="")` and `remove_edge(from_, to, told_by=None)`, with the CLI commands
   `scat record-edge` and `scat remove-edge`; recording adds a row only where none exists. A relationship annotation is
-  a body line with a link, with no meaning to the tool. Bases need Obsidian 1.9 or later.
+  a body line with a link, with no meaning to the tool: not an edge, and in no view. Bases need Obsidian 1.9 or later.
 - **The view document.** Kind `view`; `operation` is `fingerprint`, `edges`, `layered` or `trace`, each a `scat`
   command with a REPL twin. Nodes are `{name, type, status}`; an edge names every narrative that tells it; the
   fingerprint adds rule-4 candidates only when asked for (`candidates`; default off). A view refuses, as an operation

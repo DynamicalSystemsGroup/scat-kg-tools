@@ -9,6 +9,8 @@ no authority. Without it nothing is lost but speed.
 SHALL, SHALL NOT, SHOULD and MAY mean what RFC 2119 gives them. SHALL: required. SHALL NOT: forbidden. SHOULD:
 expected, unless the assistant has a reason it can state. MAY: allowed, never required.
 
+Four more words. A **norm** is guidance to coders and assistants, the same for a person as for an LLM, carried in the docs and the skill files; the tool does not enforce it. A **skill** is a package of instructions that an assistant loads and follows; the assistant is still the actor and holds no authority. A **saved agent** is the chat's feature that keeps an assistant set up for a purpose, so a new chat starts from it. The **session key** is the key the coder pastes into the chat for one chat run so the chat reaches the tool; it is kept in the login keychain and deleted at Stop.
+
 ## What it does
 
 - **A1.** The assistant MAY draft narrative text for the coder to read and edit, as text in the reply or as a proposed edit, using the

@@ -22,7 +22,7 @@ Another model runner or another chat client that meets the same needs works the 
 - **The SCAT server, reachable from the client.** The server is the `scat-mcp` command, from the `scat-kg-tools`
   repository ([MCP server reference](reference/mcp.md)). It serves one vault folder, which you mount into its
   container. The client reaches it by address and port: here, by the server's name on a Docker network.
-- **The key.** The server answers 401 to a request without its key. Make a new key for each session and keep it in
+- **The key.** The server answers 401 to a request without its key. Make a new key for each chat run and keep it in
   your terminal, not in a file.
 - **The assistant's rules.** `contracts/assistant.md` in the repository is the assistant's file. Give it to the model
   as its system prompt. The server also offers the same text as the resource `scat://assistant-rules` and as prompts.
@@ -111,7 +111,7 @@ WebUI fetches for itself from huggingface.co. Your chat text goes only to the mo
     ```
 
     You should see three containers started. `docker compose ps` lists them as running. Keep this terminal open
-    for the rest of the session.
+    for the rest of the chat run.
 
 3. **In a terminal:** pull the model into Ollama's volume (4.7 GB; a few minutes on a fast connection).
 
@@ -190,7 +190,7 @@ WebUI fetches for itself from huggingface.co. Your chat text goes only to the mo
     match the tool's two, and do its words ("not fully conformant" in the example) match the tool's line? The tool's line
     says no errors; the two warnings are fields to fill in before the narrative is done. The tool's output settles it.
 
-11. **In a terminal:** stop the session.
+11. **In a terminal:** stop the chat run.
 
     ```text
     cd ~/local-llm
@@ -198,7 +198,7 @@ WebUI fetches for itself from huggingface.co. Your chat text goes only to the mo
     ```
 
     You should see the three containers removed. The downloaded model and Open WebUI's data stay in their volumes for
-    the next session. Each session has a new key: start again with step 2, then in Open WebUI open
+    the next chat run. Each chat run has a new key: start again with step 2, then in Open WebUI open
     <http://localhost:3000/admin/settings/integrations>, choose the gear on the **SCAT** row, paste the new key (`echo $SCAT_MCP_KEY`) and choose **Save**.
     Open WebUI keeps the old key until you do, and the server answers it with 401. To remove the volumes too, run
     `docker compose down --volumes`.

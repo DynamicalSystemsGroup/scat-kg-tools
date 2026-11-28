@@ -11,7 +11,7 @@
 - [Obsidian](https://obsidian.md), the app you will read the vault in. It is free to install.
 - To code in a chat window instead of Terminal, make the repository as step 1 shows, then follow the [chat path](chat-path.md).
 
-SCAT stands for Stakeholder groups, Concerns, Affordances and Technologies: the four kinds of thing your notes are coded into. If you have not read what that means, start at the [home page](index.md).
+SCAT stands for Stakeholder groups, Concerns, Affordances and Technologies: the four node types your notes are coded into. If you have not read what that means, start at the [home page](index.md).
 
 ## 1. Create your private repository
 
@@ -174,7 +174,7 @@ the `index` folder to see every page of one type. Create pages with `scat stub`.
 
 ## 5. Start your own content
 
-The example is only there to show you the shape. You will use it as a model while you plan, then remove it from your
+The example is only there to show you the shape. You will use it as a pattern while you plan, then remove it from your
 own vault before you code your own notes. Do this step **before you add any page of your own**. Do not do it yet if
 you want the example open while you read the other guides. You can remove it at any time.
 
@@ -321,10 +321,10 @@ git add .
 git commit -m "My first narrative"
 ```
 
-`git add .` stages everything in the folder that git does not ignore, so it also stages a drawing such as `fingerprint.png` and a plan file if you have one, not only the model. To leave one out, name the files you want instead (`git add narrative group concern affordance`) or list the file in `.gitignore`. To keep one, do nothing: it goes into the commit with the rest. Run `git status` first to see which files are in.
+`git add .` stages everything in the folder that git does not ignore, so it also stages a drawing such as `fingerprint.png` and a plan file if you have one, not only your pages. To leave one out, name the files you want instead (`git add narrative group concern affordance`) or list the file in `.gitignore`. To keep one, do nothing: it goes into the commit with the rest. Run `git status` first to see which files are in.
 
 That is the solo trial. If it worked, plan your first event in [Planning](planning.md), or code more notes with
-[Coding](coding.md). To hand a finished model over, see [Lock a version](coding.md#lock-a-version).
+[Coding](coding.md). To hand the finished vault over, see [Lock a version](coding.md#lock-a-version).
 
 ## Where next
 

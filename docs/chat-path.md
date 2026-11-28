@@ -6,10 +6,10 @@ provider: Claude
 
 !!! tip "Your next step"
     Read "What the chat path is, and what it needs", then do "Install once". You do that one time per Mac. After that,
-    every session runs the same way: start, connect the chat, use, stop.
+    every chat run goes the same way: start, connect the chat, use, stop.
 
 The chat path lets you code a narrative by talking to an assistant in a chat window in your browser, with no
-terminal in the coding itself. Obsidian stays where you read and decide. This page walks one session from start to
+terminal in the coding itself. Obsidian stays where you read and decide. This page walks one chat run from start to
 clean-up. Each numbered step names one outcome and says where you do it: **In the chat**, **In SCAT Chat** (the small Mac app
 that runs the server), **In the menu bar** (SCAT Chat's coloured dot and its menu), **In Finder**, **In GitHub Desktop**, **In Obsidian**, **In Tailscale** or **In a terminal**.
 
@@ -18,19 +18,19 @@ that runs the server), **In the menu bar** (SCAT Chat's coloured dot and its men
     for you which step and what the message said.
 
 If your project's data policy is strict (an AI platform that must keep nothing, or "approved chatbot only"), see
-[Leave no trace](leave-no-trace.md). You do not need it for an ordinary session.
+[Leave no trace](leave-no-trace.md). You do not need it for an ordinary chat run.
 
 ## What the chat path is, and what it needs
 
 A small program, the server, runs on your own Mac, inside a container (a sealed box that can reach only your vault),
 and offers the tool's operations to a chat. The chat's own service calls the server over the internet, so the
 server gets a public address (SCAT Chat calls it the public link) for the time you are working. Every request must
-carry a key, a long random password that SCAT Chat makes new for each session (the session key). Without it the
+carry a key, a long random password that SCAT Chat makes new for each chat run (the session key). Without it the
 server answers with a 401 status and a short "unauthorised" message, and nothing else.
 
 You need:
 
-- A Mac that stays awake and online while you work (SCAT Chat keeps it awake while a session runs).
+- A Mac that stays awake and online while you work (SCAT Chat keeps it awake for the whole chat run).
 - A vault, as in [Getting started](getting-started.md) or, with no terminal, [GitHub Desktop](#your-vault-with-no-terminal-github-desktop), kept in a folder outside Documents, Desktop, Downloads and
   iCloud (macOS hides those from the server's container; the launcher offers a copy if yours is there).
 - A container runtime, the program that runs the container: Colima, which this page uses. If Docker Desktop is
@@ -89,7 +89,7 @@ pages. **The assistant never deletes anything**, and the server has no operation
     branch's name, and a repository made from the template has the one branch, `dev`.
 11. **In GitHub Desktop:** choose **Push origin** in the top bar.
 
-Then, in the chat once the session is running, ask the assistant to run the check. It should say there are no problems.
+Then, in the chat once the chat run has started, ask the assistant to run the check. It should say there are no problems.
 
 **Commit and push your work, any time.** After the assistant records edges and you have read and set pages to `done`
 in Obsidian, GitHub Desktop's **Changes** list shows every changed page. Read it. Type a summary, such as
@@ -103,8 +103,8 @@ Any setup of this path has five parts.
 - **A chatbot that takes a remote MCP server** (MCP is the standard way a chatbot calls a tool; a remote one is
   reached over the internet) and sends a fixed key with each request.
 - **The SCAT server, reachable from the chatbot's cloud.** That means a public `https` address on the standard
-  port (443). SCAT Chat makes one for the session (see [Start a session](#start-a-session)).
-- **The key.** SCAT Chat makes a new one each session (see [The session key](#the-session-key)).
+  port (443). SCAT Chat makes one for the chat run (see [Start a session](#start-a-session)).
+- **The key.** SCAT Chat makes a new one each chat run (see [The session key](#the-session-key)).
 - **The skill or rules.** A skill is a file of instructions the chat loads for the assistant. The assistant's rules
   are in `skills/scat-coding/SKILL.md`. Load them the way your chatbot loads instructions.
 - **Your vault, edited in Obsidian.** The vault is the folder of Markdown files Obsidian opens (see
@@ -119,13 +119,13 @@ with its own menus. Every Claude plan, Free to Enterprise, can add a connector a
 add them yourself, and Free allows one connector. On Team and Enterprise an owner adds the connector and turns on what
 skills need (below); you then connect it under **Plugins** > **Connectors**.
 
-The connector's address is public while the session runs, and only the key lets a request through (see
+The connector's address is public during the chat run, and only the key lets a request through (see
 [The session key](#the-session-key)). Stop switches it off.
 
 Do [Install once](#install-once) and [Start a session](#start-a-session) first; come back when the dot is green.
 
 **Add the connector.** Claude cannot edit a connector, so unlike [Connect the chat](#connect-the-chat), where you keep the
-entry and paste the new key, each session you remove the connector (**Plugins**, choose **SCAT**, the three dots, **Remove**) and add it again with the new key.
+entry and paste the new key, each chat run you remove the connector (**Plugins**, choose **SCAT**, the three dots, **Remove**) and add it again with the new key.
 
 12. **In the menu bar:** click the dot, then **Copy address**. The address, which ends in `/mcp`, is on your
     clipboard.
@@ -171,7 +171,7 @@ You do these steps one time per Mac. Each ends with what you should see.
 ### Get SCAT Chat.app
 
 **What SCAT Chat is.** SCAT Chat is a small Mac app that runs the SCAT MCP server, the tool's front end for the chat.
-It has no window of its own: while a session runs it is a coloured dot in the Mac's menu bar (the strip at the top of
+It has no window of its own: during a chat run it is a coloured dot in the Mac's menu bar (the strip at the top of
 the screen), with a menu under it. It starts the server, makes the public address and the session key, and stops them
 again. **Where it is:** in your Applications folder, once you do the step below. That step moves the app there. Nothing is installed system-wide: the copy is the whole app, and deleting it removes it.
 
@@ -180,7 +180,7 @@ Today the app is not a download. The person who set this up builds it from the `
 this guide cannot build it for you.
 
 25. **In Finder:** open `SCAT Chat.app` where you were given it. It asks whether to move itself to your Applications
-    folder: choose **Move to Applications**. It moves itself, says so, and closes; it starts no session yet. If it says
+    folder: choose **Move to Applications**. It moves itself, says so, and closes; it starts no chat run yet. If it says
     it can't move itself, drag `SCAT Chat.app` into your Applications folder in Finder. You should see an app called
     SCAT Chat in your Applications folder.
 
@@ -188,7 +188,7 @@ this guide cannot build it for you.
 
 Something on your Mac has to run the server's container. This page uses Colima, the default. If Docker Desktop is
 already installed and Colima is not, SCAT Chat uses Docker Desktop instead: open it and wait until it says it is
-running before each session, and skip the rest of this section. If both are installed, SCAT Chat uses Colima.
+running before each chat run, and skip the rest of this section. If both are installed, SCAT Chat uses Colima.
 
 Colima has no graphical installer. It comes through Homebrew, the Mac's package manager.
 
@@ -272,7 +272,7 @@ ones; the steps say which.
 44. **In SCAT Chat:** wait. The first time it needs the internet to get the server. It fetches the published image
     for its version ("Fetching the server, once."), and when none is published yet, as with a candidate before its
     release, it builds the server on your Mac ("Building the server, once. The first time takes a few minutes."). Later
-    sessions reuse it. The server runs as your own Mac user, set each time it starts, so it can read and write your vault.
+    chat runs reuse it. The server runs as your own Mac user, set each time it starts, so it can read and write your vault.
 45. **In the menu bar:** check that the dot is green. A notification then says "SCAT Chat is running. Click its dot in
     the menu bar: Copy address, then Copy key, and paste each into the chat." A problem shows as a red dot, a **Problem:** line in the menu and
     one alert, "SCAT Chat has a problem", that repeats the line (see "When something goes wrong").
@@ -285,7 +285,7 @@ pull in the original).
 
 ### Change vault
 
-**Change vault** stops the server and starts it again, so the new session has a new session key. It asks for the vault
+**Change vault** stops the server and starts it again, so the new chat run has a new session key. It asks for the vault
 with the folder picker, not with `Serve <vault>?`. The chat's server entry still holds the old key, and the saved
 agent's tool must be added again. (A saved agent is an assistant the chat keeps set up for you; see "Set up the
 skill and the saved agent".) Do these steps after the dot is green again.
@@ -319,7 +319,7 @@ again even though you only edited the entry.
 ## Connect the chat
 
 The first time, you add a server entry to the chat with the address and the key. The address stays the same from
-session to session; the key is new each session. So in later sessions you keep the entry and only paste the new key
+chat run to chat run; the key is new each chat run. So in later chat runs you keep the entry and only paste the new key
 into it: open **MCP Settings**, click **Edit** next to the entry, paste the key, and save.
 
 As an example, in inference.coop's chat:
@@ -464,7 +464,7 @@ folder of your vault, which open in Obsidian like any file and are versioned wit
 
 ### Lock a version
 
-Locking a version is tagging a commit once the model is finished (see [Coding](coding.md#lock-a-version)). With
+Locking a version is tagging a commit once the vault is finished (see [Coding](coding.md#lock-a-version)). With
 GitHub's features and no terminal:
 
 **A GitHub Release, on the website.** Push your work first. Then open your repository on github.com, choose
@@ -476,7 +476,7 @@ create that new tag. Add a title and choose **Publish release**. The tag now nam
 ## The session key
 
 The session key is the key the chat sends with every request, so the server answers only the chat you connected. It
-exists for one session. Here is where it lives and what to do with it.
+exists for one chat run. Here is where it lives and what to do with it.
 
 - **Where it lives.** SCAT Chat makes a new key at each start and keeps it in your Mac's login keychain (the Mac's store for passwords). It is never
   written to a file in your vault or in the repository, and it is never put where another program on your Mac can
@@ -493,15 +493,15 @@ Good practice, for the key:
 - Choose **Copy key** only when you are about to paste. After pasting, copy something else (a word from anywhere), so
   the clipboard no longer holds it.
 - Do not screenshot or share your screen while you paste it.
-- If you think the key has been seen by someone, choose **Stop** at once, then start again. A new session has a new
+- If you think the key has been seen by someone, choose **Stop** at once, then start again. A new chat run has a new
   key; the old one no longer works.
-- You never need to look at, write down or reuse a key. The next session has its own.
+- You never need to look at, write down or reuse a key. The next chat run has its own.
 
 What each Stop removes, and what stays:
 
 | Removed by Stop | Stays until you remove it |
 |---|---|
-| The public link (Funnel), the server's container, the key in your keychain, the key on your clipboard, the keep-awake | The server entry in the chat (keep it; next session paste the new key into it) |
+| The public link (Funnel), the server's container, the key in your keychain, the key on your clipboard, the keep-awake | The server entry in the chat (keep it; next chat run paste the new key into it) |
 | | A skill or a saved agent you set up in the chat |
 | | Your uploaded field notes, and your conversations, in the chat |
 | | Your vault, and every change in it, on your Mac |
@@ -509,7 +509,7 @@ What each Stop removes, and what stays:
 
 ## Stop
 
-Stopping has two parts: stop the session on your Mac, and check that it stopped.
+Stopping has two parts: stop the chat run on your Mac, and check that it stopped.
 
 108. **In the menu bar:** open SCAT Chat's menu and click **Stop**. Stop switches off the public link, removes the server,
     lets your Mac sleep again, deletes the key from your keychain and clears your clipboard of the key. It shows the
@@ -522,7 +522,7 @@ Stopping has two parts: stop the session on your Mac, and check that it stopped.
 
 **When Stop could not confirm.** The alert is then titled "SCAT Chat has a problem" and says "Stopped, but I could not
 confirm:" followed by what it could not confirm, then "choose Stop in the SCAT Chat menu to try again, or restart your
-Mac, to be sure." SCAT Chat stays open, with a red dot. Do not open SCAT Chat again: that would start a new session.
+Mac, to be sure." SCAT Chat stays open, with a red dot. Do not open SCAT Chat again: that would start a new chat run.
 Choose **Stop** in its menu again, or restart your Mac. If the public link may still be on, open Tailscale and switch Funnel off. If the public link could not be checked
 because Tailscale was not found, install or open Tailscale and check it. If the server container is still there, restart
 your Mac to be sure. If your Mac may stay awake, restart it to be sure. If the key could not be deleted, open Keychain
@@ -537,15 +537,15 @@ Stop does not stop Colima: it keeps running in the background, and you can leave
 
 ## Clean up
 
-Nothing has to be removed from the chat at the end of a session. Stop has already deleted the key, so the server
+Nothing has to be removed from the chat at the end of a chat run. Stop has already deleted the key, so the server
 entry is harmless until you paste the next key into it. Keep the entry, the skill and the saved agent for your next
-session.
+chat run.
 
 What stays in the chat account until you delete it there: the server entry, the skill, the saved agent, your uploaded
 field notes and your conversations. How long the chat provider keeps them is set by the provider: ask it, or read its
 terms. Your vault is on your Mac and is not touched.
 
-If your project's data policy asks for everything to be removed from the platform after each session, follow
+If your project's data policy asks for everything to be removed from the platform after each chat run, follow
 [Leave no trace](leave-no-trace.md).
 
 ## What leaves your machine

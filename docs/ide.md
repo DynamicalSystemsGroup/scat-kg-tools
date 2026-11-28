@@ -70,7 +70,7 @@ it, and GitHub's own pages list its plans.
    or run `set-status`, does not write a narrative's text through the tool, does not hand-write rows of an
    "Edges told" table, and does not commit or push.
 
-To end a session, close the chat. Then run `git diff` in the vault folder and read what changed before you commit.
+To finish, close the chat. Then run `git diff` in the vault folder and read what changed before you commit.
 
 Copilot in VS Code can also connect to a server through MCP. The IDE path does not need it: the assistant runs the
 `scat` commands in the vault itself.

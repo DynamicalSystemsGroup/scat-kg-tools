@@ -5,10 +5,10 @@ A **rule** is what the tool checks. A breach is reported by `scat check` with a 
 guidance for coding well, the same for a person as for an assistant; the tool does not enforce it. Each section below
 opens by saying which it is.
 
-## A coded narrative
+## A narrative that links a node page
 
-*A rule and a norm.* The rule: a narrative is **coded** when it links at least one node page anywhere in its body; an
-**uncoded** narrative is **excluded** from the knowledge graph and every view, and `scat check` reports it as a
+*A rule and a norm.* The rule: a narrative links at least one node page anywhere in its body; one that links none is
+left out of the graph and every view (the messages say "excluded"), and `scat check` reports it as a
 warning (SCAT-UNCODED). The warning never blocks, and the narrative is included as soon as it links a node page.
 
 The norm is the shape to aim for: a coherent account of what was told, plus the set of nodes and edges the account
@@ -19,7 +19,7 @@ narratives, which you read in the layered view.
 
 *A norm, resting on one rule.* You may link a node wherever the account names it, and you should when the name
 matters to the story. A link adds no edge; only a row of the `Edges told` table does. A link in the account is also
-the conformant place to declare a lone node, one the account names with no edge: that link codes the narrative and
+the conformant place to declare a lone node, one the account names with no edge: that link brings the narrative into the graph and
 puts the node in its fingerprint (SCAT-UNCODED; a `done` narrative with no row only gets a warning, SCAT-NOEDGES).
 
 When the account names a node page in plain text, the tool can suggest the link (SCAT-MENTION). That is a warning, and
@@ -62,7 +62,7 @@ stays.
 ## Writing together
 
 *A norm.* Writing the account and the description is a mixed loop. You may go first, or the assistant may, and you
-may go any number of rounds. Whoever drafts, your move to `done` is the validation of what the page says.
+may go any number of rounds. Whoever drafts, your move to `done` is your confirmation of what the page says.
 
 You own interpretation: that the account matches the field notes and the coding is right. The tool owns conformance:
 it checks structure only, so a passing check does not say a narrative is correct. The assistant helps and holds no

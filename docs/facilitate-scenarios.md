@@ -21,7 +21,7 @@ Take what has happened in one block and what could happen in another: see [Facil
 
 ## The stages
 
-**1. Opening.** Say the participation terms for your vault's [attribution mode](planning.md#choose-the-attribution-mode). Say that today is for stories, and that accounts can differ. The worked example's mode is `disallowed`:
+**1. Opening.** Say the participation terms for your vault's [attribution mode](planning.md#choose-the-attribution-mode). Say that today is for stories, and that two stories of one moment can differ. The worked example's mode is `disallowed`:
 
 ```text
 Whatever is said here can be used. Nobody is named; the
@@ -43,7 +43,7 @@ What was contested, or came apart?
 
 The note-taker writes what was done in order, each thing a tool let people do or stopped them doing, and each concern in the teller's words on a line of its own.
 
-**3. Taking up.** A second story from the same moment is a second account beside the first, not a rival. Ask the next group: "Yes, and what did that look like from where you sit?"
+**3. Taking up.** A second story from the same moment is a second story beside the first, not a rival. Ask the next group: "Yes, and what did that look like from where you sit?"
 
 **4. Placing in perspective.** Name the group each time you turn to someone: "From where the borrowers sit, what did that morning look like?" The note-taker heads each account `From the point of view of GROUP (about 10:20)`, with a name too where the attribution mode says so.
 

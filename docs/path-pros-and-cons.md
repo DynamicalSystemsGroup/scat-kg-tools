@@ -42,7 +42,7 @@ as SVG text: ask for `output` `table` or `both`, or for `format` svg. See [Analy
   uses one); the assistant drafts, proposes links and records edges for you; the server holds the rules, as above.
 - **Cons:** what you share in the chat, such as field notes and narrative text, goes to the chat's provider, so your
   data policy has to allow it; the most setup of any path (SCAT Chat, a container runtime, Tailscale); the server's
-  address is public while a session runs, and only the session key lets a request through; each session has a new
+  address is public during a chat run, and only the session key lets a request through; each chat run has a new
   key to paste into the chat.
 - **Drawings:** the chat shows you the picture the tool returns. In claude.ai, the model received the image and
   described it in the recorded run (`acceptance/walkthroughs/mvc-loop-claude.md`). In inference.coop's chat, the chat's
@@ -54,7 +54,7 @@ as SVG text: ask for `output` `table` or `both`, or for `format` svg. See [Analy
 
 - **Pros:** everything the chatbot path gives, and nothing stays on the platform afterwards: a temporary chat, the
   field notes attached to it and then deleted, and the server entry, agent and skill removed at the end.
-- **Cons:** the content still passes through the platform during the session; the clean-up is yours, every session,
+- **Cons:** the content still passes through the platform during the chat run; the clean-up is yours, every chat run,
   so there are more steps.
 - **Drawings:** this is the chatbot path with the same server, and its walkthrough uses inference.coop's chat, so the
   inference.coop line above applies; there is no separate run of this path

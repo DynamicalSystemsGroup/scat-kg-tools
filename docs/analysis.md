@@ -36,7 +36,7 @@ uv run jupyter lab analysis.ipynb
 
 JupyterLab opens the notebook in your browser and keeps running in Terminal until you press Control and C there. In the browser, choose **Run**, then **Run All Cells**, then read. A cell that stops with an `AssertionError` means the picture and the pages disagree: run `uv run scat check`. If the browser does not open, copy the address that starts `http://localhost:` from Terminal into it.
 
-To get the finished notebook as a page to read, with no browser session to keep open, run it from Terminal:
+To get the finished notebook as a page to read, with no browser tab to keep open, run it from Terminal:
 
 ```text
 uv run jupyter nbconvert --to html --execute analysis.ipynb --output-dir executed

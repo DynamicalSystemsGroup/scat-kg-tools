@@ -5,7 +5,7 @@
 
 Planning settles who takes part, in which session, who writes the notes and what participants are told, before the first session. Save your event plan as a plain text file named `plan.txt` in your vault folder, outside the page folders. The check does not read it.
 
-A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. The [home page](index.md) defines these and the other two kinds of thing.
+A **concern** is something a group cares about. An **affordance** is something a tool or arrangement lets someone do. The [home page](index.md) defines these and the other two node types.
 
 Before you start, have a vault set up and passing its check ([Getting started](getting-started.md)), a rough list of who might come by role, and the participation terms answered as in [Data, rights and consent](data-and-consent.md).
 

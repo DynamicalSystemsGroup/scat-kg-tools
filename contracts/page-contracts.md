@@ -301,7 +301,7 @@ Pulls against [[quick-checkout]]: a loan written down takes time.
 ```
 
 It is ordinary body text. It has no field, no type and no meaning to the tool: it is a link like any other, so the
-link must resolve, and it stays out of every view and of the knowledge graph. Write it on whichever of the two entries
+link must resolve, and it stays out of every view and of the knowledge graph. It is not an edge. Write it on whichever of the two entries
 is read first; it is not repeated on the other.
 
 ## 8. Types: fields

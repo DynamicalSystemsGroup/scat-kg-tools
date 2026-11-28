@@ -9,7 +9,7 @@ provider: none
 
 Coding means linking the nodes a narrative names and recording the edges it tells, on the narrative's own page.
 
-A **narrative** is one account drawn from your field notes, kept on one page. Coding is the step where that account becomes part of the knowledge graph. You write the account, link each group, concern, affordance or technology where the account names it, and add one row to the page's `Edges told` table for each edge the account tells. The tool checks the result and tells you in plain words what still disagrees. Nothing is copied to a second page: you code in the same page you wrote the account in. The [home page](index.md) defines the four kinds of node, and the [terms](reference/terms.md) page defines every other word used here.
+A **narrative** is one story drawn from your field notes, kept on one page. Coding is the step where that story becomes part of the graph. You write the account, link each group, concern, affordance or technology where the account names it, and add one row to the page's `Edges told` table for each edge the account tells. The tool checks the result and tells you in plain words what still disagrees. Nothing is copied to a second page: you code in the same page you wrote the account in. The [home page](index.md) defines the four node types, and the [terms](reference/terms.md) page defines every other word used here.
 
 ## What this path needs
 
@@ -30,7 +30,7 @@ The example codes one narrative in the template vault, `groups-under-a-cap-pitch
 
 2. **In Obsidian:** open `narrative/groups-under-a-cap-pitch` and read it, so that you have the account and the two rows of its `Edges told` table in front of you.
 
-3. **In Obsidian:** change the `status` property from `done` to `draft`, so that you can edit a finished narrative; the check runs on it again when you set `done` at the end.
+3. **In Obsidian:** change the `status` property from `done` to `draft`, so that you can edit a `done` narrative; the check runs on it again when you set `done` at the end.
 
 4. **In Obsidian:** link a node where the account names it. In the last bullet of the account, the one that begins "Reason given", turn the words "the people in the data" into a link to the group `workshop-participants`:
 
@@ -111,7 +111,7 @@ An **edge** is no page. It is one row of a narrative's `Edges told` table, and t
 | `is addressed by` | `addressed-by` | `concern` | `affordance` |
 | `is provided by` | `provided-by` | `affordance` | `technology` |
 
-The tool builds the knowledge graph from the pages on every call and never holds it. It has one edge for each (type, from, to), and the edge names every narrative that has a row for it. An edge is `done` when every narrative that tells it is `done`, so you sign off edges by signing off narratives. A **link** is only "this page refers to that one". A link never makes an edge; only a row does. A contributor page is no node either: it sits outside the four layers, and a narrative's link to one says who the account is attributed to, not what it tells.
+The tool builds the graph of nodes and edges from the pages on every call and never holds it. It has one edge for each (type, from, to), and the edge names every narrative that has a row for it. An edge is `done` when every narrative that tells it is `done`, so you sign off edges by signing off narratives. A **link** is only "this page refers to that one". A link never makes an edge; only a row does. A contributor page is no node either: it sits outside the four layers, and a narrative's link to one says who the account is attributed to, not what it tells.
 
 ## The coding loop
 
@@ -133,7 +133,7 @@ When the check passes and you confirm both, set the narrative to `done`. Done is
 ### The three actors
 
 - **You, the coder,** own interpretation. You alone move a narrative into or out of `done`.
-- **The tool** owns conformance. It checks that the knowledge graph matches the pages and that it obeys the ontology. No part of the tool can tell who is calling it.
+- **The tool** owns conformance. It checks that the graph matches the pages and that it obeys the rules. No part of the tool can tell who is calling it.
 - **An assistant,** where your participation terms allow one, helps and holds no authority. It may draft and may run the commands. Which data an assistant may touch is settled before the first session: see [Data, rights and consent](data-and-consent.md).
 
 On the chat path, the server never moves a page into or out of `done`, so the assistant cannot, by construction. On the IDE path an assistant can run `scat set-status`, because the command cannot tell who types it. There, authority rests on the rules written for the assistant and on your review of what it changed in git (`git diff` before every commit), not on the tool.
@@ -142,9 +142,9 @@ On the chat path, the server never moves a page into or out of `done`, so the as
 
 Everything starts in the field notes, and only you read them. You turn what a session told into one narrative page, with `scat stub` making the empty page and you writing the account. The narrative is where each edge comes from: a row of its `Edges told` table says "this account tells that a group holds that concern". There is no other place an edge is written, and no page to open for one.
 
-A narrative is **coded** when it links at least one node page, in a row of its table or in its account; until then it is **excluded**. The knowledge graph and every view leave an excluded narrative out, and `scat check` and the views name it and say how to include it: link one node page. A link in the account is also the place for a node the narrative names with no edge. A new stub is excluded until you link a node.
+A narrative that links at least one node page, in a row of its table or in its account, is read into the graph and the views. Until it does, the graph and every view leave it out, and `scat check` and the views name it (their messages say "excluded") and say how to include it: link one node page. A link in the account is also the place for a node the narrative names with no edge. A new stub is left out until you link a node.
 
-Two narratives can tell the same edge. Each has its own row and its own note, and the knowledge graph has one edge naming both. A narrative that mentions two nodes without a row for the pair has not told an edge, even if the notes would support one: the row is your statement that the account tells it.
+Two narratives can tell the same edge. Each has its own row and its own note, and the graph has one edge naming both. A narrative that mentions two nodes without a row for the pair has not told an edge, even if the notes would support one: the row is your statement that the account tells it.
 
 ## A narrative, start to finish
 
@@ -205,7 +205,7 @@ From the point of view of Workshop participants (about 10:20)
 - The sign-out sheet lets us see who has what. It stops us seeing tools that are late.
 ```
 
-The check shows the to-do for the `description`, and says the page is still excluded (it links no node page):
+The check shows the to-do for the `description`, and says the page is still left out (it links no node page):
 
 ```text
 $ uv run scat check saturday-at-the-tool-library
@@ -623,7 +623,7 @@ no problems
 
 ### Relationship annotations
 
-Two entries of one type can pull against each other, such as two concerns. SCAT records that as a **relationship annotation**: a line in the body of one of the two pages, with a link to the other. It has no meaning to the tool, is not an edge and stays out of every view. The link must still reach a page, like any link:
+Two pages of one type can pull against each other, such as two concerns. SCAT records that as a **relationship annotation**: a line in the body of one of the two pages, with a link to the other. It has no meaning to the tool, is not an edge and stays out of every view. The link must still reach a page, like any link:
 
 ```text
 ---
@@ -659,7 +659,7 @@ A contributor page is no node and a link to one is no edge. The page holds a nam
 
 The [norms](norms.md#writing-together) state the same three cases. Every check prints the mode first, so you see which applies.
 
-The examples start from a copy of the template with `attribution = "required"` in `scat.toml`, and a draft narrative `saturday-at-the-tool-library` that is coded and has its `description` and `timeframe`, as in step 6 above, but names nobody. The check warns, and setting `done` is refused:
+The examples start from a copy of the template with `attribution = "required"` in `scat.toml`, and a draft narrative `saturday-at-the-tool-library` that links a node page and has its `description` and `timeframe`, as in step 6 above, but names nobody. The check warns, and setting `done` is refused:
 
 ```text
 $ uv run scat check saturday-at-the-tool-library
@@ -988,14 +988,14 @@ Run `git status` first and read the list: it shows what the commit will hold. `g
 
 ## Lock a version
 
-To state that the model is finished, lock the version: a git tag on the commit you pushed, then push the tag. Like the commands above, these are not tool commands:
+To state that the vault is finished, lock the version: a git tag on the commit you pushed, then push the tag. Like the commands above, these are not tool commands:
 
 ```text
 git tag v1
 git push origin v1
 ```
 
-The tag name is yours to choose: `v1` is only an example, and any name that is not already a tag will do. The tag names that commit for good; later commits do not move it. Locking is your statement that the model is finished, and `git tag` does not run the tool. Stub pages do not stop you: the tool never faults a page for being unfinished. Run the whole-vault check first, so the version you lock is clean.
+The tag name is yours to choose: `v1` is only an example, and any name that is not already a tag will do. The tag names that commit for good; later commits do not move it. Locking is your statement that the vault is finished, and `git tag` does not run the tool. Stub pages do not stop you: the tool never faults a page for being unfinished. Run the whole-vault check first, so the version you lock is clean.
 
 ### See which commit a tag pins
 

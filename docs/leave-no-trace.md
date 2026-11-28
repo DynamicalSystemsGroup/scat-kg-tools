@@ -9,7 +9,7 @@ provider: inference.coop
     do not need it: the chat path's own "Clean up" is enough.
 
 Some projects work under a strict data policy: an AI platform **non-retention** policy (nothing you put into the
-platform stays there), or an **approved chatbot only** policy. "Leave no trace" is a way to meet such a policy: a session sets up what it needs in the chat platform, does the
+platform stays there), or an **approved chatbot only** policy. "Leave no trace" is a way to meet such a policy: a chat run sets up what it needs in the chat platform, does the
 coding, and then removes all of it from the platform. Your local copies stay on your Mac.
 
 Removing means removing it from the chat platform, in this example inference.coop's chat. It does not claim to remove
@@ -18,12 +18,12 @@ say. See [Data, rights and consent](data-and-consent.md).
 
 ## What this path needs
 
-A leave-no-trace session needs everything [The chat path](chat-path.md#what-the-chat-path-is-and-what-it-needs)
+A leave-no-trace chat run needs everything [The chat path](chat-path.md#what-the-chat-path-is-and-what-it-needs)
 needs: a Mac, a vault, a container runtime, Tailscale, SCAT Chat, and a chat that accepts an MCP server and an API
 key. The chat path's [Install once](chat-path.md#install-once) is done once per Mac. A strict data policy adds four
 things:
 
-- A **temporary chat** to code in, so the session does not stay in your history.
+- A **temporary chat** to code in, so the chat run does not stay in your history.
 - Your **field notes attached to the temporary chat**, not kept in a collection, and deleted from the chat's file
   library at the end.
 - **Nothing left on the platform at the end**: the server entry, the saved agent, the skill and any prompts you saved
@@ -34,7 +34,7 @@ Your field notes sit in a folder on your Mac, and the vault is outside Documents
 
 ## Worked example: inference.coop
 
-The steps below run the session in inference.coop's chat. Another chat has its own names for these controls; the
+The steps below take the chat run through inference.coop's chat. Another chat has its own names for these controls; the
 order is the same: set up, code, remove.
 
 ### The walkthrough
@@ -42,7 +42,7 @@ order is the same: set up, code, remove.
 Each numbered step names where it is done and one outcome. It begins with where you do it: **In SCAT Chat** (the small Mac app that runs the server), **In the menu bar** (its dot and menu), **In the
 chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web browser**.
 
-#### Set up for the session
+#### Set up for the chat run
 
 1. **In Finder:** check that your field notes are in a folder on your Mac. This is your local copy.
 2. **In Finder:** open SCAT Chat from Applications. (Start a session, on the chat path.)
@@ -123,10 +123,10 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 55. **In the chat:** delete the saved agent. (The chat's Agent Builder holds it; look there for its delete control.)
 56. **In the chat:** delete the skill `scat-coding`. (Look where you created it.)
 57. **In the chat:** in the file library, delete the notes you attached: they stay after the temporary chat is deleted.
-58. **In the chat:** check that the file library holds no other file from this session, and delete any that is there.
-59. **In the chat:** delete any prompt you saved for this session. If you saved none, there is nothing to do.
+58. **In the chat:** check that the file library holds no other file from this chat run, and delete any that is there.
+59. **In the chat:** delete any prompt you saved for this chat run. If you saved none, there is nothing to do.
 60. **In the chat:** look once more at each place you set something up (MCP Settings, the Agent Builder, the skills,
-    the files, the history) and check that nothing from this session remains.
+    the files, the history) and check that nothing from this chat run remains.
 
 #### Check what stays on your Mac
 
@@ -140,5 +140,5 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 | | Your vault, with every page and commit |
 | The key (deleted from your keychain by Stop) | Colima, which keeps running, and the server's image |
 
-If a step finds something that did not go, delete it by hand and do not start the next session until it is gone.
+If a step finds something that did not go, delete it by hand and do not start the next chat run until it is gone.
 If your policy asks you to show the result, the list of steps above is your record: note the date and tick each one.
