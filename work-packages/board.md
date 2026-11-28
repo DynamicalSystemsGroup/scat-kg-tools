@@ -46,7 +46,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | RS8 | Research spike: telling a coder when candidate links carry no evidence (D-191) | desk parts done and reviewed; readout `research/candidates/readout.md` on `dev`; prototypes and fixtures on `spike/candidates`; the ACE's and the assistants' readings (RS8-R3 recorded reading) held for a sitting (iteration 59: 11 est, 11 realized, 0.9 h) | `RS8-candidate-evidence.md` |
 | WP36 | What each path's model can see in a drawing (D-197, D-198) | all units done on `dev` (iteration 60: 5 est, 5 realized, 0.9 h); the rendered pages were not looked at in a browser; ready for ACE acceptance | `WP36.md` |
 | WP37 | The rename: SCATLAB app, scat-tools, scat-template, before v0.1 (D-199 to D-201) | approved (D-204); repository renames are the chief engineer's to do | `WP37.md` |
-| WP38 | The organiser's glossary: core plus stage sections, held as YAML (D-202, D-203) | approved (D-204) | `WP38.md` |
+| WP38 | The organiser's glossary: core plus stage sections, held as YAML (D-202, D-203) | all units done on `dev` (iteration 61: 19 est, 19 realized, 0.9 h); ledger `research/glossary/cleanup-ledger.md`; items outside the blast radius in its Part 4; ready for ACE acceptance | `WP38.md` |
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | accepted (D-186, D-187); model locked; `contracts/lifecycle.md` | `WP29.md` |
 | WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | all units done and on `dev` (tools 20c03c2; template pinned, TEMPLATE_COMMIT f1d7cce); model amendment D-192; WP30-R6 (on-screen check) queued for a sitting. Followed the locked model over WP30.md in five places: no stage on requests and stable lists (not stage-scoped listings); a normal refusal document (not a clarification result) for an out-of-stage call; the server never asks at a transition (set_stage by a person only); required inputs shown, not enforced; prompts and resources unscoped | `WP30.md` |
 | WP31 | The assistant's habits, stage by stage, tested by the probes (depends on WP30) | approved (D-163) | `WP31.md` |
@@ -437,6 +437,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | RS8-U3 | reviewer (fresh, RS8), sonnet | 3 | 3 | `-` | done |  | 2026-11-27 | reran cases and render, byte-identical PNGs, called the shipped view; 3 must-fix, 7 nits |
 | WP36-U1 | technical writer (two docs pages, record, docs test), sonnet | 3 | 3 | `-` | done |  | 2026-11-27 | reviewer found four claims beyond their record (client and model scope, borrowed leave-no-trace evidence, IDE inference); one fix round, then green |
 | WP36-U1r | reviewer (fresh, WP36), sonnet | 2 | 2 | `-` | done |  | 2026-11-27 | checked every claim against the two records and the server code, ran the gates; no browser, so the rendered part is unsigned |
+| WP38-U1 | lexicographer and Python test engineer (glossary.yml, generator, generation tests, ledger part 1), sonnet | 8 | 8 | `wp38/glossary` | done |  | 2026-11-27 | 53 entries, generator with --check, 17 test_terms tests unchanged in meaning, full suite green; cap reset after review fixes |
+| WP38-U2 | technical writer and terminologist (41 inconsistencies, moved words, ledger parts 2 to 4), sonnet | 8 | 8 | `wp38/glossary` | done |  | 2026-11-27 | 15 docs pages and 3 contracts edited, 24 fixed and 17 accepted; a skills copy of assistant.md blocked one placement, so the PM moved four words to the architecture page |
+| WP38-U1r | reviewer (fresh, WP38), sonnet | 3 | 3 | `wp38/glossary` | done |  | 2026-11-27 | recomputed the R2 set, opened 15 ledger rows, 4 mutations, rendered terms and architecture pages at desktop and 375 px; five must-fix items, fixed by the PM in one pass |
 | WP34-U1 | Python developer and test engineer (orphans, candidates, no-account flag; both renderers), sonnet | 5 | 5 | `wp34/u1` | done |  | 2026-11-27 | three result keys, footers and text forms; three existing tests adjusted for the fixture's orphan; PASS first review |
 | WP34-U2 | Python developer and test engineer (CLI, server, schema, parity test), sonnet | 5 | 5 | `wp34/u2` | done |  | 2026-11-27 | flag on two commands, server option, additive schema, parity test with mutations; two false help strings fixed; no push-back |
 | WP34-U3 | technical writer (api.md, analysis.md), sonnet | 2 | 2 | `wp34/u3` | done |  | 2026-11-27 | layered and fingerprint entries and the reading paragraph; no push-back |
@@ -507,6 +510,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 58 | WP30-U1 to WP30-U1r, WP30-U4 | 23 | 27 | 1.17 | 2.7 h | 10.0 |
 | 59 | RS8-U1 to RS8-U3 | 11 | 11 | 1.00 | 0.9 h | 12.2 |
 | 60 | WP36-U1 to WP36-U1r | 5 | 5 | 1.00 | 0.9 h | 5.6 |
+| 61 | WP38-U1 to WP38-U1r | 19 | 19 | 1.00 | 0.9 h | 21.1 |
 
 ## Velocity and forecast
 
