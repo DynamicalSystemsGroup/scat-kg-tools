@@ -446,7 +446,7 @@ The group also found the [[attention-limit-on-participation|attention limit]] le
         "draft",
         "The emailed digest reached members who never opened the forum, with mixed results.",
         "past",
-        """The [[digest-email|digest email]] reached some members who never opened the forum. It went out through the [[mail-relay|mail relay]], and a few weeks in the relay marked a batch as junk. The working group did not find out until a member mentioned it. For [[members-lose-the-thread|members who lose the thread]], the email was the only summary they saw, since the posted [[weekly-digest|weekly digest]] never reached their inbox.""",
+        """The [[digest-email|digest email]] reached some members who never opened the forum. It went out through the [[mail-relay|mail relay]], and a few weeks in the relay marked a batch as junk. The working group did not find out until a member mentioned it. For [[members-lose-the-thread|members who lose the thread]], the email was the only summary they saw, since the posted weekly digest never reached their inbox.""",
         [
             ("members-lose-the-thread", A, "digest-email", "Only summary some members saw."),
             ("digest-email", P, "mail-relay", "A batch was marked as junk."),

@@ -10,9 +10,9 @@ attributed_to: ["[[lab-member-a]]", "[[lab-member-b]]"]
 
 Source: research/range/koi/inputs/koi-08-the-data-set-and-the-two-layers.md
 
-Architectural view. The KOI data set is the shared knowledge graph the infrastructure accumulates and maintains. It is a club good: its [[shared-data-set-integrity|integrity and completeness]] are something all participants depend on collectively.
+Architectural view. The KOI data set is the shared knowledge graph the infrastructure accumulates and maintains. It is a club good: its integrity and completeness are something all participants depend on collectively.
 
-As far as the sources say, the architectural source speaks of the operative and constitutive layers only in its account of forget. A routine invocation of the [[forget-signal|forget signal]] mutates the data, which the system is designed to permit, but does not change the rules or systems that afford that power, so it does not confuse the two layers. Its effect on the data set is bounded and expected.
+As far as the sources say, the architectural source speaks of the operative and constitutive layers only in its account of forget. A routine invocation of the forget signal mutates the data, which the system is designed to permit, but does not change the rules or systems that afford that power, so it does not confuse the two layers. Its effect on the data set is bounded and expected.
 
 The architectural source is silent on the human acts of governance that the ethnographic view foregrounds. The data set is where the two accounts meet. The ethnographic source records a case where forget degraded the shared graph (told in the forget incident). The sources do not say how the infrastructure should settle the difference, and the vault holds both accounts and does not settle it.
 

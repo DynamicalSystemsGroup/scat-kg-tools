@@ -10,9 +10,9 @@ attributed_to: ["[[lab-member-a]]"]
 
 Source: research/range/koi/inputs/koi-07-what-koi-is-and-the-rid.md
 
-Architectural view. KOI stands for Knowledge Organization Infrastructure: a protocol for organising knowledge where authority is scoped, running across subnets and coordinator nodes. The [[koi-doctrine|KOI doctrine]] frames the assembly in terms of "ASoT" and "MOSA" (the source uses the abbreviations without spelling them out) and sets it against two things, a single source of truth and a walled garden. It is explicitly neither. The infrastructure performs six functions of identification, which the source names as a set but does not list.
+Architectural view. KOI stands for Knowledge Organization Infrastructure: a protocol for organising knowledge where authority is scoped, running across subnets and coordinator nodes. The KOI doctrine frames the assembly in terms of "ASoT" and "MOSA" (the source uses the abbreviations without spelling them out) and sets it against two things, a single source of truth and a walled garden. It is explicitly neither. The infrastructure performs six functions of identification, which the source names as a set but does not list.
 
-It works over Resource Identifiers. The [[resource-identifier|RID]] is the stable handle the infrastructure assigns so that a resource can be referenced, related, updated and forgotten across subnets without a single source of truth: the concern is that [[resources-referable-across-subnets|resources stay referable across subnets]]. Alongside the handle the infrastructure carries three FUN signals: new, update and [[forget-signal|forget]]. The forget signal is the one that figures in the forget incident.
+It works over Resource Identifiers. The [[resource-identifier|RID]] is the stable handle the infrastructure assigns so that a resource can be referenced, related, updated and forgotten across subnets without a single source of truth: the concern is that [[resources-referable-across-subnets|resources stay referable across subnets]]. Alongside the handle the infrastructure carries three FUN signals: new, update and forget. The forget signal is the one that figures in the forget incident.
 
 The doctrine also names per-relationship discipline; the source gives no more of it.
 

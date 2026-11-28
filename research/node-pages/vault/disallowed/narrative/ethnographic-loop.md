@@ -9,7 +9,7 @@ timeframe: past
 
 Source: research/range/koi/inputs/koi-01-the-ethnographic-loop.md
 
-From the point of view of the [[ethnographers|ethnographers]], who work in online forum communities that use KOI. Their method is participatory: they do not observe from outside, the [[community-members|community]] takes part in collecting, and the ethnographers respond to what it says. They call the result building the loop, [[closing-the-loop|closing the loop]]: the study is fed back into the community it studies.
+From the point of view of the [[ethnographers|ethnographers]], who work in online forum communities that use KOI. Their method is participatory: they do not observe from outside, the community takes part in collecting, and the ethnographers respond to what it says. They call the result building the loop, [[closing-the-loop|closing the loop]]: the study is fed back into the community it studies.
 
 In practice they return their analysis and talk it over with the community. Once they do, the study becomes part of the community's own history, and what it showed members can become part of how the community later sees itself. The notes hold that this separates the work from conventional ethnography, since the loop closes continuously and is not a one-off report.
 

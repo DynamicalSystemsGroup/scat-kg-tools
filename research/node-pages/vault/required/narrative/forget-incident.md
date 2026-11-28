@@ -14,7 +14,7 @@ At the Metagov field site, a contributor, one of the [[community-members|communi
 
 The contributor had by then built up a large footprint in the shared data set. Forgetting it punched a hole and degraded the data set for other participants, far beyond what forget does in ordinary use (described elsewhere as routine, with a bounded and expected effect). The data set is a shared resource that all participants depend on together, so its [[shared-data-set-integrity|integrity]] is something they all hold, and one person's forgetting hurt everyone.
 
-The [[ethnographers|ethnographers]] place this within the vehement uptake of the consent and emoji processes. They read the contributor as joining in so as to use the tools' features against the configuration, which they call enrolment into resistance. The team saw damage to the shared data set. From the contributor's side it was advocacy, a way of speaking for something and not just running a command.
+The ethnographers place this within the vehement uptake of the consent and emoji processes. They read the contributor as joining in so as to use the tools' features against the configuration, which they call enrolment into resistance. The team saw damage to the shared data set. From the contributor's side it was advocacy, a way of speaking for something and not just running a command.
 
 The source keeps both readings and the vault does not choose between them. The page holds both, under community members. The incident shows a feature turned to advocacy that degraded a club good, a matter of intent and consequence that the architecture alone does not show.
 
