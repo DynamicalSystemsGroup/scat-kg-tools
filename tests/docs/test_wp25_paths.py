@@ -48,7 +48,9 @@ def test_r1_nav_shape():
     assert chatbot == [{"The chat path": "chat-path.md"}, {"Leave no trace": "leave-no-trace.md"}]
     assert section[3] == {"An AI IDE": "ide.md"}
     assert section[4] == {"A local LLM": "local-llm.md"}
-    assert section[5] == {"Pros and cons": "path-pros-and-cons.md"}  # last, after the paths it compares
+    assert section[5] == {
+        "Pros and cons": "path-pros-and-cons.md"
+    }  # last, after the paths it compares
     assert len(section) == 6
 
 
