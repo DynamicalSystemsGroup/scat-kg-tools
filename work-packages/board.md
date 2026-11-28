@@ -48,7 +48,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP37 | The rename: SCATLAB app, scat-tools, scat-template, before v0.1 (D-199 to D-201) | approved (D-204); repository renames are the chief engineer's to do | `WP37.md` |
 | WP38 | The organiser's glossary: core plus stage sections, held as YAML (D-202, D-203) | accepted (D-210) | `WP38.md` |
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | accepted (D-186, D-187); model locked; `contracts/lifecycle.md` | `WP29.md` |
-| WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | all units done and on `dev` (tools 20c03c2; template pinned, TEMPLATE_COMMIT f1d7cce); model amendment D-192; WP30-R6 (on-screen check) queued for a sitting. Followed the locked model over WP30.md in five places: no stage on requests and stable lists (not stage-scoped listings); a normal refusal document (not a clarification result) for an out-of-stage call; the server never asks at a transition (set_stage by a person only); required inputs shown, not enforced; prompts and resources unscoped | `WP30.md` |
+| WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | all units done and on `dev` (tools 20c03c2; template pinned, TEMPLATE_COMMIT f1d7cce); model amendment D-192; trimmed by D-209 (no pending request, no set_at, no tool limits, L7 and L13 merged; WP30-U5); WP30-R6 (on-screen check) queued for a sitting. Followed the locked model over WP30.md in five places: no stage on requests and stable lists (not stage-scoped listings); a normal refusal document (not a clarification result) for an out-of-stage call; the server never asks at a transition (set_stage by a person only); required inputs shown, not enforced; prompts and resources unscoped | `WP30.md` |
 | WP31 | The assistant's habits, stage by stage, tested by the probes (depends on WP30) | approved (D-163) | `WP31.md` |
 | WP32 | Fingerprints follow the narrative's kind; columns read stakeholder, concern, affordance, technology (D-172, D-175) | accepted by the ACE (D-189) | `WP32.md` |
 | WP33 | One query, rendered as a plot, a table or both; one tool per view (D-174, D-175) | accepted by the ACE (D-189) | `WP33.md` |
@@ -452,6 +452,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP30-U3 | technical writer (skill Stages section, pages, template IDE skill, R6 plan), sonnet | 5 | 8 | `wp30/u3` | done |  | 2026-11-27 | skill task blocked by the byte-equality test and ruled to a final Stages table; review fixes in a second round (plan vault, residue, tab text); planned and recorded at close |
 | WP30-U1r | reviewer (fresh, WP30), sonnet | 3 | 3 | `wp30/u1r` | done |  | 2026-11-27 | 25 mutations in a copy, real stdio server with odd input, docs built and viewed in a browser; found the YAML comma split (amended, D-192) and 4 should-fix; planned and recorded at close |
 | WP30-U4 | PM (merge, template re-pin, CI fixes), sonnet | 2 | 3 | `wp30/u4` | done |  | 2026-11-27 | image CI red twice (Dockerfile lacked lifecycle.md; image test vault had no stage), fixed forward; word cap and two doc lines; template pinned to 20c03c2 with TEMPLATE_COMMIT; planned and recorded at close |
+| WP30-U5 | Python developer and test engineer (trim of the lifecycle model and build, D-209), sonnet | 5 | 5 | `wp30/trim` | done |  | 2026-11-27 | one worker, one consistent change over model, code, tests and docs; full suite green first time; two review nits in a follow-up commit; planned and recorded at close |
+| WP30-U5r | reviewer (fresh, WP30-U5), sonnet | 3 | 2 | `-` | done |  | 2026-11-27 | real stdio server, 10 mutations (one harmless survivor), schema validation, docs built; PASS with two nits; planned and recorded at close |
 | WP30-U6 | the ACE as coder with the chief engineer's accounts (R6 on-screen check) | 3 |  | `-` | queued | a sitting with the chief engineer and the ACE | | plan: `acceptance/walkthroughs/stages-run.md` |
 
 ## Iterations and velocity
@@ -511,6 +513,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 59 | RS8-U1 to RS8-U3 | 11 | 11 | 1.00 | 0.9 h | 12.2 |
 | 60 | WP36-U1 to WP36-U1r | 5 | 5 | 1.00 | 0.9 h | 5.6 |
 | 61 | WP38-U1 to WP38-U1r | 19 | 19 | 1.00 | 0.9 h | 21.1 |
+| 62 | WP30-U5, WP30-U5r | 8 | 7 | 0.88 | 1.0 h | 7.0 |
 
 ## Velocity and forecast
 
