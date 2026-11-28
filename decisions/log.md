@@ -3575,3 +3575,10 @@ there is doing its job per this comment".
 Outcome: structured fixes stay. A later package reviews them item by item against that purpose: every check a guard
 with a remediation, clear instructions to the assistant, and clear about what is conformance and what is the coder's
 judgement.
+
+## D-227 | 2026-11-28 | WP40 decision 9: `split-plan` becomes `where-used`; the other commands stay
+
+Shown every command mapped to the coder's activity (`research/audit/commands.md` on `wp40/audit`) and asked what
+`split-plan` does, the chief engineer said (typed by the agent): "rename it where-used, keep the rest as built".
+Outcome: `split-plan` (CLI) and `split_plan` (MCP tool) are renamed `where-used` / `where_used`; every other command and
+tool stays as built (apart from `copy-share`, cut by D-225).
