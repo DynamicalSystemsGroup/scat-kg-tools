@@ -16,6 +16,10 @@ The [terms](reference/terms.md) hold the organiser's words. These are the builde
 - **Inputs.** The field notes: the supplied material, outside the tool.
 - **Analysis.** The reports derived from the model; also the step that reads the views.
 - **Range vault.** A vault that rebuilds a published case with groups, not named people, to test the tools. It is not field data.
+- **Norm.** Guidance to coders and assistants, the same for a person as for an LLM, carried in the docs and the skill files; the tool does not enforce it.
+- **Skill.** A package of instructions that an assistant loads and follows; the assistant is still the actor and holds no authority.
+- **Saved agent.** The chat's feature that keeps an assistant set up for a purpose, so a new chat starts from it.
+- **Session key.** The key the coder pastes into the chat for one chat run so the chat reaches the tool; it is kept in the login keychain and deleted at Stop.
 
 ## 1. Model, views and control
 

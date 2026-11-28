@@ -75,10 +75,10 @@ and listed `model` twice). Every one of the 61 is here.
 | analysing | dropped | | RS6: unused in docs, template, CLI help, MCP text, skills. |
 | a finished model | dropped | | RS6: on 1 page; the report stage covers the hand-over. |
 | rule | kept | code | R2 word. |
-| norm | moved to contracts/assistant.md | | Not R2; guidance for the assistant. |
-| skill | moved to contracts/assistant.md | | Assistant word. |
-| saved agent | moved to contracts/assistant.md | | Assistant word; RS6: on 2 pages. |
-| session key | moved to contracts/assistant.md | | Assistant and builder word; RS6: on 2 pages. |
+| norm | moved to docs/architecture.md | | Not R2; guidance for the assistant. |
+| skill | moved to docs/architecture.md | | Assistant word. |
+| saved agent | moved to docs/architecture.md | | Assistant word; RS6: on 2 pages. |
+| session key | moved to docs/architecture.md | | Assistant and builder word; RS6: on 2 pages. |
 | leave no trace | dropped | | Not R2; `docs/leave-no-trace.md` defines it where it is used. |
 | range vault | moved to docs/architecture.md | | A test fixture; RS6 class ASST. |
 
@@ -121,7 +121,7 @@ and listed `model` twice). Every one of the 61 is here.
 
 ### Words the moved words need
 
-Placed in unit U2: the first nine in `docs/architecture.md` (section "Words this page uses"), relationship annotation in `contracts/page-contracts.md` section 7, and the four assistant words in `contracts/assistant.md` ("The words").
+Placed in unit U2: the first nine and the four assistant words in `docs/architecture.md` (section "Words this page uses"), relationship annotation in `contracts/page-contracts.md` section 7. The four assistant words were first put in `contracts/assistant.md`, but `skills/scat-coding/SKILL.md` copies that file's body verbatim under a test and `skills/` is outside this package's blast radius, so the PM moved them to the architecture page.
 
 | Word | Where | One-line definition |
 |---|---|---|
@@ -135,10 +135,10 @@ Placed in unit U2: the first nine in `docs/architecture.md` (section "Words this
 | analysis | docs/architecture.md | The reports derived from the model; also the step that reads the views. |
 | range vault | docs/architecture.md | A vault that rebuilds a published case with groups, not named people, to test the tools; it is not field data. |
 | relationship annotation | contracts/page-contracts.md | A free-text remark between two entries of the same type, written as a body line with a link; not an edge, in no view. |
-| norm | contracts/assistant.md | Guidance to coders and assistants, the same for a person as for an LLM, carried in the docs and skill files; the tool does not enforce it. |
-| skill | contracts/assistant.md | A package of instructions that an assistant loads and follows; the assistant is still the actor and holds no authority. |
-| saved agent | contracts/assistant.md | The chat's feature that keeps an assistant set up for a purpose, so a new chat starts from it. |
-| session key | contracts/assistant.md | The key the coder pastes into the chat for one chat run so the chat reaches the tool; kept in the login keychain and deleted at Stop. |
+| norm | docs/architecture.md | Guidance to coders and assistants, the same for a person as for an LLM, carried in the docs and skill files; the tool does not enforce it. |
+| skill | docs/architecture.md | A package of instructions that an assistant loads and follows; the assistant is still the actor and holds no authority. |
+| saved agent | docs/architecture.md | The chat's feature that keeps an assistant set up for a purpose, so a new chat starts from it. |
+| session key | docs/architecture.md | The key the coder pastes into the chat for one chat run so the chat reaches the tool; kept in the login keychain and deleted at Stop. |
 
 ### Flagged
 
@@ -244,7 +244,6 @@ Reading: contributor (apart from "contributor page") falls where it meant partic
 
 | Where | Why | Change needed |
 |---|---|---|
-| `skills/scat-coding/SKILL.md` (rules text after the title, near line 14) | Copies the body of `contracts/assistant.md` verbatim; `tests/skills/test_scat_coding_skill.py::test_rules_text_equals_the_contract` fails until it is copied again (my attempt to edit `skills/` was not permitted) | Copy the new "Four more words" paragraph of `contracts/assistant.md` under "The words" into the skill; the test names the rule |
 | `ORG.md` (the line that says GLOSSARY.md is changed by hand) | GLOSSARY.md is generated | Say it is regenerated from `glossary.yml` by `scripts/glossary.py` |
 | `.claude/agents/*.md` (three files name GLOSSARY.md) | Same | Same wording |
 | `src/scat_kg/views.py:417`, `src/scat_kg/checks/attribution.py:75` | Fix text tells the coder to edit `scat.toml`; the entry says the person who set up the tools writes it | "the person who set up the tools" |
