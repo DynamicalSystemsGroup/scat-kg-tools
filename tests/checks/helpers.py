@@ -204,9 +204,8 @@ def uncoded(file) -> str:
     return msg(
         f"warning [SCAT-UNCODED] {file} body: the narrative links no node page, so it is excluded from the knowledge graph and every view",
         *choose(
-            "link a node page where the account names one, as `[[<node-name>]]` (or list it under a "
-            "heading such as `Linked beyond the text`); a node the account names with no edge needs "
-            "only this link",
+            "link a node page where the account names one, as `[[<node-name>]]`; a node the account "
+            "names with no edge needs only this link",
             "or tell an edge: a row of the table whose ends are links to node pages; if the node has "
             "no page, `scat stub <name> --type <type>` makes one",
         ),

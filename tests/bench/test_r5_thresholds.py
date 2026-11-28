@@ -50,7 +50,8 @@ def generate(root):
             ("is addressed by", hub if i % 2 == 0 else c[(i + 1) % 149], a[i % 100]),
             ("is provided by", a[i % 100], t[i % 60]),
         ]
-        links = " ".join(f"[[{n}]]" for n in (g[(i + 1) % 20], c[(i + 2) % 149]))
+        told = dict.fromkeys([g[(i + 1) % 20], c[(i + 2) % 149], *(n for r in rows for n in r[1:])])
+        links = " ".join(f"[[{n}]]" for n in told)  # the account names every end of its rows
         n = f"narrative-{i:03d}"
         pages[f"narrative/{n}.md"] = _narrative(n, rows, body=f"The account names {links}.\n")
     for rel, text in pages.items():

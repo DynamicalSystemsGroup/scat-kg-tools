@@ -21,6 +21,7 @@ from scat_tools.checks.rows import (
 )
 from scat_tools.checks.text import article, is_missing
 from scat_tools.fix import FixOption
+from scat_tools.graph import account_links
 from scat_tools.tbox import TBOX
 from scat_tools.vault import Page
 
@@ -162,12 +163,35 @@ def _notnode(ctx: Ctx, page: Page, rule: str, end: End, target: Page):
     )
 
 
+def _notinaccount(ctx: Ctx, page: Page, rule: str, end: End, target: str):
+    cell = end.cell
+    fix = fixes.alternatives(
+        [
+            FixOption(
+                "advisory",
+                f"link it in the account where the account names it, as `[[{target}]]`",
+            ),
+            FixOption("advisory", "or delete the row if the narrative does not tell the edge"),
+        ]
+    )
+    return ctx.problem(
+        rule,
+        page.path,
+        end.where,
+        f"[[{target}]] is not linked in the account; name it in the account and link it there, then keep the row",
+        fix,
+        line=cell.line,
+        column=cell.column,
+    )
+
+
 @page_rule
 def row_ends(ctx: Ctx, page: Page):
     reading = ctx.reading(page)
     if reading is None or reading.table is None or not reading.table.well_formed:
         return []
     out = []
+    told = {l.target for l in account_links(page)}
     for row in reading.table.rows:
         if not row.well_formed:
             continue
@@ -191,4 +215,13 @@ def row_ends(ctx: Ctx, page: Page):
                 rule = ctx.pair(page, "END-NOTNODE")
                 if rule:
                     out.append(_notnode(ctx, page, rule, end, found[0]))
+            elif (
+                len(found) == 1
+                and found[0].frontmatter_error is None
+                and ctx.type_key(found[0]) in NODE_TYPES
+                and target not in told
+            ):
+                rule = ctx.pair(page, "END-NOTINACCOUNT")
+                if rule:
+                    out.append(_notinaccount(ctx, page, rule, end, target))
     return out

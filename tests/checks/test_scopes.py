@@ -152,7 +152,7 @@ def test__errors_block_and_warnings_do_not(make_vault):
 
 def test__every_rule_has_one_severity_and_none_is_deferred():
     stated = catalogue_severities()
-    assert len(stated) == 40
+    assert len(stated) == 42
     assert SEVERITY == stated
     assert DEFERRED == {}
     assert PAGE_RULES and VAULT_RULES
@@ -168,7 +168,7 @@ def test__every_rule_has_one_severity_and_none_is_deferred():
             "warning",
             "error",
         )
-    for stem in ("END-NOLINK", "END-NOPAGE", "END-NOTNODE"):
+    for stem in ("END-NOLINK", "END-NOPAGE", "END-NOTNODE", "END-NOTINACCOUNT"):
         assert (SEVERITY[f"SCAT-DRAFT-{stem}"], SEVERITY[f"SCAT-DONE-{stem}"]) == (
             "warning",
             "error",

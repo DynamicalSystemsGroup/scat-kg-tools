@@ -22,7 +22,9 @@ def seed(make_vault, rows):
             **CAP3,
             "group/g.md": fm("group", "G", "done", DESC),
             "concern/c.md": fm("concern", "C", "done", DESC),
-            "narrative/n.md": narrative("N", rows, "draft"),
+            "narrative/n.md": narrative(
+                "N", rows, "draft", account="The account: [[g]] and [[c]].\n"
+            ),
         }
     )
 

@@ -29,7 +29,16 @@ from typing import Any
 
 from scat_tools.checks import Problem, check_vault
 from scat_tools.contract import SCHEMA_VERSION
-from scat_tools.graph import Candidate, Edge, Graph, Narrative, Node, _headings, load
+from scat_tools.graph import (
+    Candidate,
+    Edge,
+    Graph,
+    Narrative,
+    Node,
+    _headings,
+    edges_told_section,
+    load,
+)
 from scat_tools.ops.result import Refusal, Result, reports_mode
 from scat_tools.tbox import TBOX
 from scat_tools.vault import fenced_lines
@@ -124,13 +133,10 @@ def _no_account(g: Graph, nar: Narrative) -> bool:
         return False
     lines = page.body.split("\n")
     fenced = fenced_lines(lines)
-    heads = _headings(lines, fenced)
-    drop = {i for i, _, _ in heads}
-    named = [h for h in heads if h[2].casefold() == TBOX.table.heading.casefold()]
-    if named:
-        start, level, _ = named[0]
-        end = next((i for i, lv, _ in heads if i > start and lv <= level), len(lines))
-        drop |= set(range(start, end))
+    drop = {i for i, _, _ in _headings(lines, fenced)}
+    section = edges_told_section(lines)
+    if section:
+        drop |= set(range(*section))
     return not any(ln.strip() for i, ln in enumerate(lines) if i not in drop)
 
 

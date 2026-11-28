@@ -22,9 +22,8 @@ def uncoded(ctx: Ctx, page: Page):
         [
             FixOption(
                 "advisory",
-                "link a node page where the account names one, as `[[<node-name>]]` (or list it under "
-                "a heading such as `Linked beyond the text`); a node the account names with no edge "
-                "needs only this link",
+                "link a node page where the account names one, as `[[<node-name>]]`; a node the "
+                "account names with no edge needs only this link",
             ),
             FixOption(
                 "advisory",

@@ -34,7 +34,11 @@ def fm(type_: str, title: str, status: str = "draft", extra: str = "", body: str
 
 
 def narrative(
-    title: str, rows: list[str] | None = None, status: str = "draft", extra: str = ""
+    title: str,
+    rows: list[str] | None = None,
+    status: str = "draft",
+    extra: str = "",
+    account: str = "The account.\n",
 ) -> str:
     """A narrative page: frontmatter, a line of account, and a table of edges with `rows` (whole row lines)."""
     table = ""
@@ -42,7 +46,7 @@ def narrative(
         table = "\n## Edges told\n\n| from | type | to | note |\n|---|---|---|---|\n" + "".join(
             r + "\n" for r in rows
         )
-    return fm("narrative", title, status, extra, "The account.\n" + table)
+    return fm("narrative", title, status, extra, account + table)
 
 
 CAP3 = {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n"}

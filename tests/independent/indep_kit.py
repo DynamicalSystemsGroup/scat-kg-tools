@@ -553,7 +553,12 @@ def unseen_mismatches(v: Vault, problems: list[Problem] | None = None) -> list[s
     rules with no such end."""
     problems = problems if problems is not None else v.check()
     ends = oracle_ends(v)
-    have = {(p.file, p.where): p for p in problems if "-END-" in p.rule}
+    # SCAT-*-END-NOTINACCOUNT judges a sound end against the account, not the end: the oracle has no such kind
+    have = {
+        (p.file, p.where): p
+        for p in problems
+        if "-END-" in p.rule and not p.rule.endswith("-END-NOTINACCOUNT")
+    }
     out = []
     seen = set()
     for file, n, cell, kind, st in ends:
