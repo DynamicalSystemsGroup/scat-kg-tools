@@ -3679,3 +3679,16 @@ stage lists are settled in the package's scope.
 The chief engineer chose (typed by the agent): "Yes, one package". Outcome: the ACE settles each verified contradiction
 (who may set status; the contributor stub; the duplicate `architecture.md`; one copy of the assistant rules; `kind`'s
 four meanings) by the ontology and the contracts, as one package, and lists its choices at acceptance.
+
+## D-237 | 2026-11-28 | The S layer is the stakeholder, everywhere
+
+Reading the WP40 readout ("group (a collective with a stake, never a person)"), the chief engineer said (typed by the
+agent): "why does this still say "group" its supposed to be stakeholder, calling it group breaks the acronym". The ACE
+traced it: the TBox commit for D-030 (23 November) shortened "stakeholder group" to `scat:Group`, key `group`, an agent's
+choice he never made; D-172 asked for "stakeholder" in the plots, and only the plots changed. Asked how far the rename
+goes, he said (typed by the agent): "full rename. i asked for this earlier but it seems you lost it".
+
+Outcome: a full rename. `scat:Stakeholder`, key, folder and `type: stakeholder`; the cap key renamed; every
+contract, doc, glossary entry, example, the template and the tests; a one-time migration for existing vaults. Lesson
+for the ACE: D-172's request was applied to its narrowest reading (the plots) and the wider intent was lost; a
+request that names a term is checked across the whole vocabulary.
