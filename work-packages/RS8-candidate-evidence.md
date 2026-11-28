@@ -36,7 +36,8 @@ heurisics"". A spike answers questions; it changes nothing that ships.
 
 ## Open decisions
 
-None. The assistant reading in G3 uses Claude and inference.coop as in RS5's trials (see the Agent's defaults).
+None. Every item was resolved through the decision loop: the Agent's defaults approved (D-193). Counts: decided 1,
+deferred 0, raised 0.
 
 ## Deliverables
 

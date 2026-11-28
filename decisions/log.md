@@ -3216,3 +3216,9 @@ trigger was cut at "(solo trial" with a stray key. The ACE's error; its consiste
 it. Asked to approve the fix (quote the two strings, no change in meaning, and a test that catches such splits), the
 chief engineer said (typed by the agent): "Approve the fix". Applied on `dev`; the new test fails on the unfixed
 document and passes on the fixed one.
+
+## D-193 | 2026-11-27 | RS8's defaults approved
+
+Asked to approve RS8's two defaults (a readout of at most about 1,500 words; assistant readings reusing RS5's trial
+setup, at most 10 messages per client, the ACE as coder, desk parts first), the chief engineer said (typed by the
+agent): "Defaults approved". RS8 has no open items; it awaits approval of the scope.
