@@ -662,12 +662,12 @@ Options 1 and 2 cannot both apply. The swap's `find` is the text from the first 
 ### Pairs: the mismatches (SCAT-DRAFT-END-* and SCAT-DONE-END-*)
 
 A mismatch (R-23) is a link and an edge that should agree and do not. In the row model it happens at a row end, and
-page contracts 4 names the cases: an end that is not a link, and an end that is a link reaching no page or a page that
-is not a node. These are graded as pairs: a warning while the narrative is `stub` or `draft` (R-3), an error once it
-is `done`. A mismatch is always anchored on the narrative, at the cell. The knowledge graph has no row for an end that
+page contracts 4 names the cases: an end that is not a link, an end that is a link reaching no page or a page that
+is not a node, and a row end that the account does not link. These are graded as pairs: a warning while the narrative
+is `stub` or `draft` (R-3), an error once it is `done`. A mismatch is always anchored on the narrative, at the cell. The knowledge graph has no row for an end that
 is not a node, so the narrative's fingerprint does not include it. **Runs at:** all. **Needs status**, narratives only.
 A table with a malformed header, and a row with the wrong number of cells, are not checked here (cascade guard).
-A duplicated row, a row in the wrong direction and a row between the wrong layers are *other problems* of the table (page contracts 4), covered under the pair E-N rules (section 6); they are not mismatches, and R-23's closed list is the three end rules.
+A duplicated row, a row in the wrong direction and a row between the wrong layers are *other problems* of the table (page contracts 4), covered under the pair E-N rules (section 6); they are not mismatches, and R-23's closed list is the four end rules.
 
 #### SCAT-*-END-NOLINK
 - **Reads:** its page, and the vault when it looks for pages of the layer. **Trigger:** a `from` or `to` cell is not exactly one link: (a) it is empty; (b) it holds text and no link; (c) it holds more than one link, or a link beside other text. An embed `![[name]]` is one link, and an alias link is one link.
@@ -733,7 +733,7 @@ Architecture section 4, rule 4 (the *candidate*): a narrative that links both en
 has not said it tells the edge has not told it, and conformance does not judge content (R-1). Only the fingerprint
 view lists such a pair as a candidate. Seed (a test for the absence): a narrative linking a group and a concern that
 are not joined by any row, at every status and at every scope, gives zero messages, and a table with a row for the
-pair gives zero as well. A row alone, with its ends linked, is conformant as to rule 4; the account must still link its ends (SCAT-*-END-NOTINACCOUNT).
+pair gives zero as well. Rule 4 gives a row no message; a row end the account does not link is SCAT-*-END-NOTINACCOUNT.
 
 ## 5. The done check
 

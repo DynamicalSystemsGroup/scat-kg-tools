@@ -1,8 +1,8 @@
 """The mismatches at a row's end: SCAT-DRAFT-END-* and SCAT-DONE-END-* (catalogue, "Pairs: the mismatches").
 
 A mismatch (R-23) is a link and an edge that should agree and do not. In the row model it is a row end that is
-not one link, one that reaches no page, or one that reaches a page that is not a node. Rule 4 (a narrative that
-links both ends of a pair and has no row for it) has no rule: nothing here, or anywhere, reports it (section 4).
+not one link, one that reaches no page, one that reaches a page that is not a node, or one the account does not
+link. Rule 4 (an account that links both ends of a pair and has no row for it) has no rule: nothing here, or anywhere, reports it (section 4).
 """
 
 from scat_tools.checks import fixes

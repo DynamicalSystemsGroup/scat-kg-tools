@@ -30,8 +30,8 @@ def test__scat_uncoded__silent_when_the_account_links_a_node_page_and_there_is_n
     assert "SCAT-UNCODED" not in rules_of(report_of(make_vault, {DESK: page}))
 
 
-def test__scat_uncoded__silent_when_the_link_is_in_a_list_beyond_the_text(make_vault):
-    page = narrative(account="No names.\n\n## Linked beyond the text\n\n- [[staff]]\n", section="")
+def test__scat_uncoded__silent_when_the_link_is_in_a_see_also_list(make_vault):
+    page = narrative(account="No names.\n\n## See also\n\n- [[staff]]\n", section="")
     assert "SCAT-UNCODED" not in rules_of(report_of(make_vault, {DESK: page}))
 
 

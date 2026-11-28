@@ -744,8 +744,8 @@ def test_a_pair_with_a_row_in_any_form_is_no_candidate(make_vault):
     assert load(vault(make_vault, body)).candidates == ()
 
 
-def test_a_link_beyond_the_text_counts_and_a_pair_across_two_layers_does_not(make_vault):
-    body = "[[g]] and [[a]] and [[t]]\n\n## Linked beyond the text\n\n- [[c]]\n"
+def test_a_see_also_link_counts_and_a_pair_across_two_layers_does_not(make_vault):
+    body = "[[g]] and [[a]] and [[t]]\n\n## See also\n\n- [[c]]\n"
     g = load(vault(make_vault, body))
     assert {(c.from_node, c.to_node) for c in g.candidates} == {("g", "c"), ("c", "a"), ("a", "t")}
     assert ("g", "a") not in {(c.from_node, c.to_node) for c in g.candidates}

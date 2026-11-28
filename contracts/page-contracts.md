@@ -204,7 +204,8 @@ waits on one.
 
   The tools write the verb. Both spellings in one table are fine.
 - *The `from` and `to` cells* each hold exactly one link and nothing else, as in 3 (an alias link `[[name\|text]]`
-  is one link; the name is read; an embed `![[name]]` is accepted as an end).
+  is one link; the name is read; an embed `![[name]]` is accepted as an end). Each end is also a node the account (the
+  narrative's body outside `Edges told`) links.
 - *The `note` cell* is free text on one line, and it may be empty. A `|` in it is written `\|`. It has no meaning to
   the tool; a link in it is a link of the narrative like any other.
 
@@ -214,11 +215,12 @@ waits on one.
 tells the same pair it has its own row with its own note; nothing is copied between them.
 
 **Mismatches.** A mismatch is a link and an edge that should agree and do not (glossary). In a narrative that happens
-at a row's end, and the contract names two cases; the catalogue grades them and gives a fix for each:
+at a row's end, and the contract names three cases; the catalogue grades them and gives a fix for each:
 - an end that is not a link;
-- an end that is a link that reaches no page, or reaches a page that is not a node.
+- an end that is a link that reaches no page, or reaches a page that is not a node;
+- an end that is a node the account does not link.
 
-The other disagreement, a link at both ends of a pair with no row for it, is the *candidate* above and gets no message.
+The other disagreement, an account that links both ends of a pair with no row for it, is the *candidate* above and gets no message.
 
 **Other problems of the table.** These are not mismatches; the catalogue grades them too:
 - an end whose node is of the wrong layer for the type (a `concern` at the `from` end of `holds`), including the pair

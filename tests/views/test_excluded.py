@@ -152,8 +152,8 @@ def test_a_narrative_coded_by_an_account_link_alone_is_included_and_conformant(m
     assert scat_tools.set_status("ghost", "done", root=root).ok
 
 
-def test_a_link_in_a_list_beyond_the_text_codes_a_narrative(make):
-    root = make(ghost("No names.\n\n## Linked beyond the text\n\n- [[cost]]\n"))
+def test_a_link_in_a_see_also_list_codes_a_narrative(make):
+    root = make(ghost("No names.\n\n## See also\n\n- [[cost]]\n"))
     assert load(root).narrative("ghost").nodes == ("cost",)
 
 

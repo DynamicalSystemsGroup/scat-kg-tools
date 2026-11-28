@@ -448,7 +448,7 @@ class Contributor:
 
 @dataclass(frozen=True)
 class Candidate:
-    """Rule 4: a narrative links both ends of a pair and has no row for it. No message; a view lists it."""
+    """Rule 4: a narrative's account links both ends of a pair and it has no row for it. No message; a view lists it."""
 
     narrative: str
     type: str  # the edge type whose layers the pair fits

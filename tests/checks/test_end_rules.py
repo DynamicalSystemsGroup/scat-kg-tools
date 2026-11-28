@@ -530,7 +530,7 @@ def test__scat_draft_end_notinaccount__a_link_after_the_section_is_in_the_accoun
         status=status,
         rows=(UNTOLD_ROW,),
         account=account_without(),
-        extra="\n## Linked beyond the text\n\n- [[safe-handling]]\n",
+        extra="\n## See also\n\n- [[safe-handling]]\n",
     )
     seeded(make_vault, {DESK: page})
 

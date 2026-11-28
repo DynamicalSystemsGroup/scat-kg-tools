@@ -249,7 +249,7 @@ def fingerprint(
 ) -> View | Result:
     """A narrative's fingerprint: its nodes and the edges its rows tell.
 
-    With `candidates=True` it adds the rule-4 candidates (linked pairs with no row). With no name:
+    With `candidates=True` it adds the candidates (pairs the account links, with no row). With no name:
     the fingerprint of every narrative, in path order.
     """
     op = "fingerprint"
