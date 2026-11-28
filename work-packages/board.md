@@ -47,7 +47,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP36 | What each path's model can see in a drawing (D-197, D-198) | accepted (D-212) | `WP36.md` |
 | WP37 | The rename: SCATLAB app, scat-tools, scat-template, before v0.1 (D-199 to D-201) | landed on `dev` (D-213); accepted once R2's on-screen run is done | `WP37.md` |
 | WP38 | The organiser's glossary: core plus stage sections, held as YAML (D-202, D-203) | accepted (D-210) | `WP38.md` |
-| WP39 | A narrative is its account: the list retired, one rule, candidates from the account (D-205, D-208) | approved (D-214) | `WP39.md` |
+| WP39 | A narrative is its account: the list retired, one rule (links in the account are row ends; Amendment 1), candidates from the account (D-205, D-208, D-220) | all units done; landed on `dev` with template `dev` b6eeb8f; waiting on the ACE's acceptance | `WP39.md` |
 | WP40 | An audit against the point of SCAT coding: five peer reviews, the ACE synthesis, the final report (D-217) | accepted (D-239) | `WP40.md` |
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | accepted (D-186, D-187); model locked; `contracts/lifecycle.md` | `WP29.md` |
 | WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | all units done and on `dev` (tools 20c03c2; template pinned, TEMPLATE_COMMIT f1d7cce); model amendment D-192; trimmed by D-209 (no pending request, no set_at, no tool limits, L7 and L13 merged; WP30-U5); WP30-R6 (on-screen check) queued for a sitting. Followed the locked model over WP30.md in five places: no stage on requests and stable lists (not stage-scoped listings); a normal refusal document (not a clarification result) for an out-of-stage call; the server never asks at a transition (set_stage by a person only); required inputs shown, not enforced; prompts and resources unscoped | `WP30.md` |
@@ -447,6 +447,18 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP38-U1 | lexicographer and Python test engineer (glossary.yml, generator, generation tests, ledger part 1), sonnet | 8 | 8 | `wp38/glossary` | done |  | 2026-11-27 | 53 entries, generator with --check, 17 test_terms tests unchanged in meaning, full suite green; cap reset after review fixes |
 | WP38-U2 | technical writer and terminologist (41 inconsistencies, moved words, ledger parts 2 to 4), sonnet | 8 | 8 | `wp38/glossary` | done |  | 2026-11-27 | 15 docs pages and 3 contracts edited, 24 fixed and 17 accepted; a skills copy of assistant.md blocked one placement, so the PM moved four words to the architecture page |
 | WP38-U1r | reviewer (fresh, WP38), sonnet | 3 | 3 | `wp38/glossary` | done |  | 2026-11-27 | recomputed the R2 set, opened 15 ledger rows, 4 mutations, rendered terms and architecture pages at desktop and 375 px; five must-fix items, fixed by the PM in one pass |
+| WP39-U1 | Python developer, conformance rules (the first rule pair, END-NOTINACCOUNT, and the account helpers), sonnet | 5 | 5 | `wp39/u1` | done |  | 2026-11-28 | rule, catalogue entry, 95+240 tests, helpers account_links; the pair was superseded by Amendment 1 (D-220), the helpers stayed |
+| WP39-U3 | technical writer (list retired from guides and example; candidate entry; no-list test), sonnet | 3 | 3 | `wp39/u3` | done |  | 2026-11-28 | page contract, coding guide, example, glossary entry regenerated, one test; full suite green |
+| WP39-U2 | Python developer and test engineer (candidates from the account; no_account removed), sonnet | 5 | 5 | `wp39/u2` | done |  | 2026-11-28 | graph, views, draw, schema, CLI and server wording, docs; R3 tests |
+| WP39-U5 | test engineer (research fixture rows removed under D-217), sonnet | 2 | 3 | `wp39/u2` | done |  | 2026-11-28 | permission denial first, then an option choice for the .base drift and a hub threshold; reverted by U7 under Amendment 1 |
+| WP39-U6 | technical writer and Python developer (first review's fixes), sonnet | 2 | 2 | `wp39/u2` | done |  | 2026-11-28 | counts, contract clauses, stale wording, renamed tests, docstrings |
+| WP39-U7 | Python developer and conformance-rule engineer (the rule reversed: LINK-NOTINTABLE), sonnet | 8 | 8 | `wp39/u2` | done |  | 2026-11-28 | new rule and catalogue entry, END-NOTINACCOUNT removed, fixture restored, 14 narratives unlinked, many tests re-expected; 122 tool uses |
+| WP39-U8 | technical writer (coding guide, norms, catalogue and fixture prose follow the reversed rule; three replay rounds), sonnet | 3 | 5 | `wp39/u2` | done |  | 2026-11-28 | section 5 rewritten, two stale walkthroughs, step 6 output; each replayed on the fixed template |
+| WP39-U4 | vault maintainer (template: list removed, three account links unbracketed), sonnet | 2 | 2 | `wp39/u2` | done |  | 2026-11-28 | checker before and after pasted; no pin |
+| WP39-U4b | vault maintainer (template re-pin to tools 087e733, lock regenerated), sonnet | 1 | 1 | `wp39/u2` | done |  | 2026-11-28 | uv lock plain; sync, check and notebook run green; template dev b6eeb8f |
+| WP39-R1 | reviewer (fresh, first rule direction), sonnet | 3 | 3 | `wp39/u2` | done |  | 2026-11-28 | scratch vaults, every check; two must-fix, four should-fix |
+| WP39-R2 | reviewer (fresh, reversed rule, 39191ce), sonnet | 3 | 5 | `wp39/u2` | done |  | 2026-11-28 | scratch vault matrix, full suite on a copy, judged every out-of-radius edit; three must-fix in prose |
+| WP39-R3 | reviewer (fresh, final tree 9acd0f8), sonnet | 2 | 2 | `wp39/u2` | done |  | 2026-11-28 | replayed the walkthrough on the template; one should-fix, two nits |
 | WP34-U1 | Python developer and test engineer (orphans, candidates, no-account flag; both renderers), sonnet | 5 | 5 | `wp34/u1` | done |  | 2026-11-27 | three result keys, footers and text forms; three existing tests adjusted for the fixture's orphan; PASS first review |
 | WP34-U2 | Python developer and test engineer (CLI, server, schema, parity test), sonnet | 5 | 5 | `wp34/u2` | done |  | 2026-11-27 | flag on two commands, server option, additive schema, parity test with mutations; two false help strings fixed; no push-back |
 | WP34-U3 | technical writer (api.md, analysis.md), sonnet | 2 | 2 | `wp34/u3` | done |  | 2026-11-27 | layered and fingerprint entries and the reading paragraph; no push-back |
@@ -521,6 +533,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 60 | WP36-U1 to WP36-U1r | 5 | 5 | 1.00 | 0.9 h | 5.6 |
 | 61 | WP38-U1 to WP38-U1r | 19 | 19 | 1.00 | 0.9 h | 21.1 |
 | 62 | WP30-U5, WP30-U5r | 8 | 7 | 0.88 | 1.0 h | 7.0 |
+| 65 | WP39-U1 to WP39-R3 | 39 | 44 | 1.13 | 4.3 h | 10.2 |
 
 ## Velocity and forecast
 
@@ -531,6 +544,8 @@ the unit lands, from what it actually took. The two are expected to differ, and 
   that weights recent iterations most, v̂ₙ = α·vₙ + (1 − α)·v̂ₙ₋₁, with α = 0.5 *(default)* and v̂₁ = v₁.
 - **A forecast** to the candidate only once the smoothed velocity exists: (remaining estimated points × the running
   realized-to-estimated ratio) ÷ v̂. Before then, the board says so instead of forcing a number.
+
+Current: WP39 all units done (iteration 65: 39 est, 44 realized, ratio 1.13, 4.3 h; U5, U8 and R2 ran over: a permission refusal, then Amendment 1 (D-220) reversed the rule after the first build, so U7 redid the rule and U8 replayed the coding guide three times; lesson: when a rule's direction can change a guide's shown outputs, plan the guide's replay against the template as its own unit after the rule is settled). Landed on `dev`; template `dev` b6eeb8f pins tools 087e733. `check_metrics.py --accept WP39` passes. Waiting on the ACE: acceptance.
 
 Current: WP22 all units done and merged (iteration 38: 22 est, 38 realized, ratio 1.73, 1.9 h; U3 ran over: the menu-bar app's wording, stale-state and Stop paths took three fix rounds and three reviews; lesson: brief a launcher worker with every state the coder can be in (running, problem, stopped, mid-start) and what each menu item does in it, and plan the guides after the launcher is final). `check_metrics.py --accept WP22` passes. Waiting on the chief engineer's sitting: the real dot, menu and alerts, Applications, the address and key paste.
 
