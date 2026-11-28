@@ -3523,3 +3523,55 @@ error at `done`); a row end need not be linked in the account. This reverses the
 
 Shown amendment 1 to WP39 (the rule follows D-220: a node the account links must be a row end; row ends need not be
 linked; the dropped fixture rows restored), the chief engineer said (typed by the agent): "Approve amendment".
+
+## D-222 | 2026-11-28 | WP40 decision 4: the type column stays
+
+Asked whether a row should drop its type cell (the type follows from the ends' layers), the chief engineer said (typed
+by the agent): "keep it the type of node provides important semantic information and the names of the types are
+literally the description of what from-to means". Outcome: a row stays from | type | to | note. How many rules check it
+is item 5.
+
+## D-223 | 2026-11-28 | WP40 decision 5: one id per rule, severity by status; four rules cut
+
+Asked about the rule catalogue, the chief engineer chose (typed by the agent): "Merge twins and cut four". Outcome: each
+DRAFT/DONE twin becomes one id whose severity follows status (warning while stub or draft, error at `done`);
+TABLE-SECOND, TABLE-DUPLICATE, MENTION and SUGGEST-CONFIG (with `link_suggestions`) are cut. Attribution rules stay
+(D-219).
+
+## D-224 | 2026-11-28 | WP40 decision 6: the narrative marks are analysis filters, not gates
+
+Asked about `timeframe` (required at `done`, analysed by nothing) and `kind`'s unstated effects, the chief engineer said
+(typed by the agent): "i think it should be a filtering criteria we use in analysis. but i think the concern that it
+silently changes meaning is a bigger issue. we may need to reframe it as "actual" vs "hypothetical" and maybe
+"unclassified". the filter we need is to tease apart things people are actually only conjecturing versus facts about
+the world that could be independently verified."
+
+The ACE read this back as: replace past/future/mixed with actual / hypothetical / unclassified, a filter in the
+analysis views, unclassified the default so it never blocks `done`; and asked about `kind`. He answered (typed by the
+agent): "kind becomes a filter too, but the guidance for the planner and he facilitator still distinguish what we're
+trying to capture. same foes for the hypothetical vs actual. we cannot strictly force the narratives into these buckets
+but we're guiding them along these lines to try to get more interpretable data."
+
+Outcome: both marks are filters in the analysis views and gate nothing; no tool changes its output by a mark unless
+the person filters by it (drawings stop dropping a layer by `kind`). The planning and facilitation guidance keeps both
+distinctions as guidance toward more interpretable data. The field's name and values (actual / hypothetical /
+unclassified) are settled in the package's scope.
+
+## D-225 | 2026-11-28 | WP40 decision 7: copy-share cut; review keeps its plain signals
+
+The chief engineer chose (typed by the agent): "Cut copy-share; plain review". Outcome: `copy-share` (CLI, MCP tool,
+view) is removed; `review` keeps its plain signals (two pages told by the same row, shared neighbours) and drops the
+hidden scores and thresholds.
+
+## D-226 | 2026-11-28 | WP40 decision 8: structured fixes stay; an item-by-item review of them
+
+Asked whether check messages keep structured fixes (kinds, edits, commands, the JSON schema), the chief engineer said
+(typed by the agent): "i am inclined to keep this. i tend to agree this is what makes the right way the easy way.
+essentially this is like a mini ci/cd framework for the content. the idea that every check has a gaurd and a
+remediation, with clear instructions to returned to the AI assistant, including clarity about what is conformance and
+what is coder judgement is central to the architecture. i am okay with an itemwise review of this to make sure what is
+there is doing its job per this comment".
+
+Outcome: structured fixes stay. A later package reviews them item by item against that purpose: every check a guard
+with a remediation, clear instructions to the assistant, and clear about what is conformance and what is the coder's
+judgement.
