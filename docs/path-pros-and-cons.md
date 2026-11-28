@@ -23,8 +23,7 @@ write others: a narrative's text, a node page's body, and `status: done`. An ass
 ## What the model sees in a drawing
 
 A drawing is made for you to look at. Whether the assistant's model can look at it too depends on the path. Each
-path's list below has a **Drawings** line. Where a line says what a model receives, it names the run record it rests
-on, in `acceptance/walkthroughs/`; the IDE and local LLM lines say what the tool returns, since the client decides what
+path's list below has a **Drawings** line. Where a line says what a model received, it says what a recorded run showed; the IDE and local LLM lines say what the tool returns, since the client decides what
 its model does with it. Whatever the path, a model that cannot see the picture can read the same drawing as a table or
 as SVG text: ask for `output` `table` or `both`, or for `format` svg. See [Analysis](analysis.md#drawings).
 
@@ -45,10 +44,9 @@ as SVG text: ask for `output` `table` or `both`, or for `format` svg. See [Analy
   address is public during a chat run, and only the session key lets a request through; each chat run has a new
   key to paste into the chat.
 - **Drawings:** the chat shows you the picture the tool returns. In claude.ai, the model received the image and
-  described it in the recorded run (`acceptance/walkthroughs/mvc-loop-claude.md`). In inference.coop's chat, the chat's
+  described it in the recorded run. In inference.coop's chat, the chat's
   default model (`tinfoil/deepseek-v4-1-flash`) received nothing from a PNG, so it could not look at the drawing,
-  though it read an SVG as text; ask it for the table or for `format` svg
-  (`acceptance/walkthroughs/analysis-session-inference-coop.md`).
+  though it read an SVG as text; ask it for the table or for `format` svg.
 
 ## An AI chatbot, leave no trace
 
@@ -57,8 +55,7 @@ as SVG text: ask for `output` `table` or `both`, or for `format` svg. See [Analy
 - **Cons:** the content still passes through the platform during the chat run; the clean-up is yours, every chat run,
   so there are more steps.
 - **Drawings:** this is the chatbot path with the same server, and its walkthrough uses inference.coop's chat, so the
-  inference.coop line above applies; there is no separate run of this path
-  (`acceptance/walkthroughs/analysis-session-inference-coop.md`).
+  inference.coop line above applies; there is no separate run of this path.
 
 ## An AI IDE
 
