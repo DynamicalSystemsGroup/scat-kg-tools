@@ -384,7 +384,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
 | D-3 | The template repository: vault skeleton, index pages, the vault's configuration (the caps, the attribution mode), the starting stage, the pinned tools, the case study, the analysis notebook, and a setup skill for IDE agents | G5, G6, G9, G12, G14, G15 |
 | D-4 | The documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9, G11, G14, G17 |
 | D-5 | The decision records, and the research readouts behind the choices this mission states as settled | G8, G10, G11, G13, G14, G16 |
-| D-6 | The reviewer's guide for the chief engineer, in the `scat-tools` release PR. It is sized for a person and split into sittings: (1) the end-to-end walkthroughs (UA-M); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
+| D-6 | The reviewer's guide for the chief engineer, in the `scat-tools` release PR: one short page listing the ACE's calls since the last mission merge, each with its evidence, and what is known to be weak | all |
 | D-7 | The user-acceptance kit, in `scat-tools/acceptance/`: one tester brief per role, the report template, every test report with its screenshots and dispositions | G9 |
 
 ## Requirements
@@ -489,7 +489,7 @@ generated through the MCP server, and a clean check of a private repository, the
 
 - R-1 to R-23 met, with evidence.
 - UA-A passes on the candidate, for every role.
-- The candidate is staged for UA-M, with the reviewer's guide ready.
+- The candidate is ready for the chief engineer's test (UA-M), with the reviewer's guide (D-6) ready.
 - The architecture document is current (R-22), and the docs give every ontology term's source, or say it is
   authored and why.
 
