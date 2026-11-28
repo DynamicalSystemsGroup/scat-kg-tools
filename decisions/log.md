@@ -3317,3 +3317,10 @@ Asked to approve WP38's four defaults (RS6's 32 words plus stage and transition,
 or more pages added; the terms cap at the cleaned page's size plus 10%; history keeps its words; `glossary.yml` at the
 root with term, section, definition, example and formal, the terms page using each definition's first sentence), the
 chief engineer said (typed by the agent): "Defaults approved". WP38 has no open items; it awaits approval of the scope.
+
+## D-204 | 2026-11-27 | WP36, WP37 and WP38 approved
+
+With no open items left in any of the three (D-197 to D-203), the chief engineer said (typed by the agent): "Approve all
+three". Order of execution (the ACE's): WP36, then WP38, then WP37 last, since the rename touches every page and is best
+done once the others land. Renaming the GitHub repositories is an account action the chief engineer does himself when
+WP37 reaches it; everything else in WP37 is prepared for it.
