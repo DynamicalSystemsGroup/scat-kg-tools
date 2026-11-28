@@ -103,7 +103,8 @@ def test_nodes_linked_by_many_narratives(g):
     }
     for node, layer in hubs.items():
         assert g.node(node).type == layer
-        assert len(linked_by(g, node)) >= 4, node
+        # D-217: two rows the accounts do not tell were removed, so durable-shared-records has 3.
+        assert len(linked_by(g, node)) >= (3 if node == "durable-shared-records" else 4), node
     assert len({layer for layer in hubs.values()}) >= 3
     assert len(linked_by(g, "closing-the-loop")) >= 6
     assert len(linked_by(g, "ethnographers")) >= 6
