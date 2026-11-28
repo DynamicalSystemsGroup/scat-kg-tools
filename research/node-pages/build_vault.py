@@ -10,7 +10,7 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
-import scat_tools
+import scat_kg
 
 HERE = Path(__file__).resolve().parent
 RANGE = HERE.parent / "range" / "koi" / "vault"
@@ -190,6 +190,8 @@ On the Thursday they switched on the [[direct-message-reminder|reminder]], which
                 "closing-the-loop",
                 "The loop depends on members answering first.",
             ),
+            ("closing-the-loop", A, "durable-shared-records", "Written up for the next round."),
+            ("durable-shared-records", P, "telescope", ""),
             ("ethnographers", H, "unanswered-direct-messages", "Counted to thirty and stopped."),
             (
                 "unanswered-direct-messages",
@@ -224,6 +226,8 @@ The notes do not say whether the group meant to keep the two phrases apart. They
             ("unanswered-direct-messages", A, "direct-message-reminder", "The same reminder."),
             ("direct-message-reminder", P, "forum-bot", ""),
             ("ethnographers", H, "closing-the-loop", "The larger worry both sit inside."),
+            ("closing-the-loop", A, "durable-shared-records", "Tracked round by round."),
+            ("durable-shared-records", P, "telescope", ""),
         ],
     ),
     (
@@ -560,7 +564,7 @@ def build(mode: str) -> None:
                 f"---\ntype: contributor\nstatus: done\ntitle: {q(title)}\n---\n",
             )
     write(root / "scat.toml", f'attribution = "{mode}"\nstakeholder_group_cap = 4\n')
-    scat_tools.index(root=root)
+    scat_kg.index(root=root)
 
 
 def main() -> None:
