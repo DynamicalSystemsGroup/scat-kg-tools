@@ -14,7 +14,7 @@ changes from version 1.
 - **Python.** A result's `to_dict()` returns the CLI's data.
 - **Paths** are vault-relative (`/`, no leading `/`, no `..`), except in `export-edges` and `draw` results: outside the vault, as given. `line` and `column` count from 1, or are null.
 
-`kind` is `check`, `status`, `operation` or `view` (`fingerprint`, `edges`, `layered`, `trace`, `evidence`, `copy-share`, `review`, `attribution`). A refusal, even by `check` or `status`, gives kind `operation` with `ok` false.
+`kind` is `check`, `status`, `operation` or `view` (`fingerprint`, `edges`, `layered`, `trace`, `evidence`, `copy-share`, `review`, `attribution`). A refusal, even by `check` or `status`, gives kind `operation` with `ok` false. `guide` is `scat guide`'s kind; `stage` is the server's `which_stage` and `set_stage`.
 
 ## Fields you may rely on
 
