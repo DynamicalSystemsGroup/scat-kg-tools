@@ -3408,3 +3408,16 @@ inference.coop's default model received nothing from a PNG and read SVG as text)
 what our side returns, never "not tried" (R1, R3). The analysis page's section named `table` and `both` but not `plot`;
 the ACE added the one line (R2, now by the ACE's read, since D-209 cut its test). CI green; `check_metrics.py --accept
 WP36` passes (R4). Accepted by the ACE.
+
+## D-213 | 2026-11-28 | WP37 landed: the repositories renamed, the rename merged
+
+Asked whether he needed to rename the repositories, the chief engineer, after the ACE confirmed this Mac's GitHub login
+has admin rights and the new names were free, said (typed by the agent): "go ahead and rename them and land wp37". The
+ACE renamed `DynamicalSystemsGroup/scat-kg-tools` to `scat-tools` and `scat-kg-template` to `scat-template` (the
+template is still a template repository with default branch `dev`), pointed every local clone at the new addresses,
+re-ran CI on both `wp37/rename` branches (both green once the addresses existed), fast-forwarded the template's `dev`
+to 9defb3f (the commit the tools pin), merged `dev` into the tools branch and ran lint, the full suite (3,670 passed)
+and the strict docs build, then merged the tools branch into `dev` with a merge commit (d080871).
+`check_metrics.py --accept WP37` passes (iteration 63). The PM's three calls on the morning list (the silent retirement
+of the old app, the names test's three allowed files, `scat-vault`) stand unless the chief engineer changes them. WP37
+is accepted once R2's on-screen run (install SCATLAB over SCAT Chat) is done in his sitting.
