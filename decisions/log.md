@@ -3463,3 +3463,23 @@ Outcome: the planted duplicate pair stays as a test input. Merge's expected resu
 carried body; git keeps the history), and detail that belongs to one narrative's account goes on a reified
 narrative-to-node link with notes, not in the node page and not in the table. This changes the data model and an
 accepted tool, so it is candidate C22 and needs its own scope; WP39 is unaffected.
+
+## D-217 | 2026-11-28 | WP39 lands as approved; WP40 (an audit against the point of SCAT coding) approved
+
+After D-216 the chief engineer said (typed by the agent): "i still think you are overthinking this. and over
+complicating it. the whole point of an exercise like this is synthesis. the coders job is to identify patterns, label
+those patterns and organize the data according to them. we provide a meta-model, tools, and guidance for that. you
+seem to be trying to make this data denser. we're not trying to add detail we're moving the other way, identifying
+abstract patterns in the concrete accounts." Then: "i need you to rethink more than just this rule. i am worried that
+you are missing the whole point of this kind of coding exercise and that you have introduced. unnecessary and
+undesirable rules and machinery. do an audit across the repo ... this is its own work package. i think you should do
+it yourself, but i also think you should have the PM deploy a few peer review agents with different personas so we can
+get a few different perspectives. i really need to get this into a releasable usable state".
+
+WP39's research fixture: the ACE decided, as a detail, to drop the two rows the accounts do not tell (less data, not
+more links); it is listed in WP39's defaults at acceptance. Asked whether WP39 waits for the audit, he said (typed by
+the agent): "Land WP39 now".
+
+WP40's defaults: he changed them (typed by the agent): "don't do your own audit until after the other audits come in.
+your job is to compare and contrast them, as we well as independently verify their claims before bringing me a
+synthesized report with pointers back the peer reviewer reports". Then (typed by the agent): "Approve WP40".
