@@ -3483,3 +3483,14 @@ the agent): "Land WP39 now".
 WP40's defaults: he changed them (typed by the agent): "don't do your own audit until after the other audits come in.
 your job is to compare and contrast them, as we well as independently verify their claims before bringing me a
 synthesized report with pointers back the peer reviewer reports". Then (typed by the agent): "Approve WP40".
+
+## D-218 | 2026-11-28 | WP40 decision 1: the stage machine stays
+
+Asked whether to cut the lifecycle stage machine (all four WP40 reviewers proposed it), the chief engineer said (typed
+by the agent): "i want the state machine its what makes it possible to stabilize the behavior. all your reviewers are
+thinking like coders and user. none like systems engineers. that is the scaffolding that breaks the problem into simple
+peices. keeping it and having a tight ontology that is respected across the lifecycle is what allows all the other
+pieces to be simple."
+
+Outcome: the stages, `lifecycle.toml`, the stage tools and the refusals stay; WP30 goes on to acceptance. The WP40
+panel had no systems-engineering view; the readout's verdicts are read with that gap in mind.
