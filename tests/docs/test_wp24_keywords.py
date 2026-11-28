@@ -71,7 +71,7 @@ def test_the_exceptions_are_real_places():
 
 # WP25-R6 (D-146): no test or work status in a user page.
 STATUS = re.compile(
-    r"not been tried|untested|lab run|not recorded|nobody has yet|your first run is the real test",
+    r"not been tried|untested|\blab run|not recorded|nobody has yet|your first run is the real test",
     re.IGNORECASE,
 )
 

@@ -18,7 +18,7 @@ PATTERNS = {
         r"\bD-\d{3}\b|decision log|as decided|\bACE\b|chief engineer|\bWP\d+", re.IGNORECASE
     ),
     "P5": re.compile(
-        r"not been tried|untested|lab run|not recorded|nobody has yet|first run is the real test"
+        r"not been tried|untested|\blab run|not recorded|nobody has yet|first run is the real test"
         r"|stand-in|not yet (run|tried|tested)",
         re.IGNORECASE,
     ),
