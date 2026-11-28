@@ -52,7 +52,7 @@ This is synthesized from [Q §1], [O §1], [M §1] and [K §1]. Where they diffe
 
 **Semantics (what the parts mean).**
 - **Four codes in layers:**
-  - group (a collective with a stake, never a person);
+  - stakeholder (a collective with a stake, never a person; today the type key and folder are `group`);
   - concern (an interest);
   - affordance (what a technology offers);
   - technology (a part of the system).
