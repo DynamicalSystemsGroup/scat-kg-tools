@@ -1,0 +1,415 @@
+# The glossary: the single source. GLOSSARY.md and docs/reference/terms.md are generated from this file
+# by `python3 scripts/glossary.py`; edit here, then regenerate. The terms page shows the first sentence of
+# each definition, so the first sentence must stand alone. See scripts/glossary.py for the rules.
+
+preface: >-
+  The words an organiser meets, each in one sense. The mission, the scopes of work, the contracts, the code and
+  the docs use the plain term in the first column. The last column maps it, once, to the formal concept it
+  stands for and where that concept comes from; formal terms appear elsewhere only where a document is precise
+  on purpose.
+
+  Three vocabularies meet in this project: graph theory, the semantic web, and Obsidian. The same idea wears
+  different words in each, and the same word can mean different things. This glossary keeps them apart.
+
+  The words are in a core, the words met across the work, and one section for each stage of the work, the words
+  first met there.
+
+sections:
+  - id: core
+    title: Across the work
+    blurb: The words met in every stage.
+  - id: plan
+    title: Plan
+    blurb: Setting the terms of the elicitation, setting up the vault, planning the sessions.
+  - id: capture
+    title: Capture
+    blurb: Facilitating the sessions and gathering field notes.
+  - id: code
+    title: Code
+    blurb: Turning field notes into narratives, nodes and edges.
+  - id: analyse
+    title: Analyse
+    blurb: Reading the views of the whole graph.
+  - id: report
+    title: Report
+    blurb: Handing the work over.
+
+entries:
+  # ---- core
+  - term: SCAT
+    section: core
+    definition: >-
+      The four node types, groups, concerns, affordances and technologies, that a narrative tells.
+      The name also nods to scat singing in improvised jazz.
+    example: SCAT codes each narrative into its four node types.
+    formal: Authored in SCAT
+  - term: node
+    section: core
+    definition: >-
+      One group, concern, affordance or technology; its page is a node page.
+      In Obsidian's graph view every page is drawn as a node, so that one is always spelled out as "a node in
+      Obsidian's graph view", which is a page.
+    example: "`watershed-stewards` is a group node."
+    formal: Vertex (graph theory); a 0-simplex (knowledge complex)
+  - term: group
+    section: core
+    definition: >-
+      A set of people who share a stake in the work, the first layer.
+      Groups are few and broad, so that none points to one person; the cap limits how many a vault holds.
+    example: Farm irrigators are a group.
+    formal: ""
+  - term: concern
+    section: core
+    definition: >-
+      What a group cares about, in the group's own words: a need, a worry or a goal.
+      A group holds concerns, and an affordance addresses them.
+    example: Guaranteed irrigation allocation is a concern.
+    formal: ""
+  - term: affordance
+    section: core
+    definition: >-
+      What a technology offers that addresses a concern.
+      An affordance is something a person can do, not a tool.
+    example: Getting an alert when a pipe leaks is an affordance.
+    formal: ""
+  - term: technology
+    section: core
+    definition: >-
+      A tool, device or service that provides an affordance.
+    example: A soil sensor is a technology.
+    formal: ""
+  - term: edge
+    section: core
+    definition: >-
+      A typed connection between two nodes in neighbouring layers: `holds`, `is addressed by` or `is provided by`.
+      The three types read as "holds" (group to concern), "is addressed by" (concern to affordance) and "is
+      provided by" (affordance to technology). There is at most one edge per pair.
+    example: Farm irrigators *hold* guaranteed irrigation allocation.
+    formal: Edge (graph theory); a 1-simplex (knowledge complex); in the TBox, Heldby, Addresses and ProvidedBy
+  - term: layer
+    section: core
+    definition: >-
+      All the nodes of one type, in the order `group`, `concern`, `affordance`, `technology`.
+      "Up" is toward groups.
+    example: Tracing a concern goes one layer up to groups.
+    formal: Partition of a layered (k-partite) graph (graph theory)
+  - term: narrative
+    section: core
+    definition: >-
+      One story drawn from the field notes, on one `narrative` page.
+      It is usually a scenario or an architecture. Each edge it tells is a row of its `Edges told` table. A
+      narrative that links no node page is left out of the views and reported until it links one.
+    example: The dry-July narrative is a scenario.
+    formal: Authored in SCAT, from the coding practice of `ant-rdf`
+  - term: vault
+    section: core
+    definition: >-
+      The folder of Markdown files Obsidian opens; one git repository.
+    example: Open the vault in Obsidian.
+    formal: Obsidian
+  - term: page
+    section: core
+    definition: >-
+      One Markdown file with a `type` in its frontmatter.
+    example: The narrative page holds the account.
+    formal: Obsidian note
+  - term: field
+    section: core
+    definition: >-
+      One key in a page's frontmatter, such as `status` or `kind`.
+      Obsidian shows fields as "Properties".
+    example: The `status` field reads `draft`.
+    formal: YAML frontmatter (Obsidian)
+  - term: type
+    section: core
+    definition: >-
+      A defined category of page, named in the page's `type` field.
+      The node types are group, concern, affordance and technology; a narrative has a kind, scenario or
+      architecture.
+    example: "`technology` is a node type."
+    formal: Class (OWL, RDFS)
+  - term: status
+    section: core
+    definition: >-
+      How far a page has got: `stub` (a name), `draft` (content, incomplete) or `done` (complete and signed off by
+      the coder).
+    example: "The narrative is `done`: linked and signed off."
+    formal: Authored in SCAT
+  - term: stage
+    section: core
+    definition: >-
+      Where a project is in its lifecycle: plan, capture, code, analyse or report.
+      A person decides it; the tool offers the tools that stage's work needs and refuses the rest. Not a status:
+      a page changes status many times within one stage.
+    example: The vault is in the code stage.
+    formal: State of the lifecycle machine (authored; `contracts/lifecycle.md`)
+  - term: transition
+    section: core
+    definition: >-
+      A move from one stage to another, forward or backward, made on a person's word.
+      The tool may say a move is open.
+    example: "Reading the views sent the project back to code: a backward transition."
+    formal: Transition of the lifecycle machine (authored)
+  - term: coder
+    section: core
+    definition: >-
+      The person who owns interpretation: reads the field notes, writes and links the narratives, and signs off `done`.
+      The organiser, who runs the elicitation, may also be the coder.
+    example: The coder sees that the farmers never mention price.
+    formal: Authored in SCAT
+  - term: assistant
+    section: core
+    definition: >-
+      An LLM, where allowed, that helps the coder and holds no authority.
+      It proposes and the coder decides; the server refuses it the act of setting `done`.
+    example: The assistant drafts; the coder writes the final wording.
+    formal: Authored in SCAT
+  - term: tool
+    section: core
+    definition: >-
+      The program that owns conformance: it checks the vault and records only what the coder accepts.
+      It is the Python package scat-kg with its command line, also called "the tools"; the MCP server is a front
+      end to it, not part of it.
+    example: The tool checks that the graph matches the pages.
+    formal: Authored in SCAT
+  - term: check
+    section: core
+    definition: >-
+      The command that tests a vault against the rules and reports problems; a clean check has no errors.
+      Warnings may remain on a clean check. The same word names the gate a page passes before the coder sets
+      `done`.
+    example: "The check is clean: no errors."
+    formal: Conformance checking (authored rule catalogue, against the TBox)
+  - term: problem
+    section: core
+    definition: >-
+      What a check reports: an error blocks, a warning is a to-do.
+      Each comes with a fix.
+    example: The check reports one error and two warnings.
+    formal: ""
+  - term: refused
+    section: core
+    definition: >-
+      Said of an operation the tool will not do: it writes nothing and says why.
+      A refusal is not an error in the vault.
+    example: Setting `done` is refused; the coder sets it in Obsidian.
+    formal: ""
+
+  # ---- plan
+  - term: session
+    section: plan
+    definition: >-
+      A facilitated event at which participants tell the organiser what they know.
+      Only that event is called a session here; a run of the chat is called a chat run.
+    example: The second session heard from the crew leads.
+    formal: ""
+  - term: participant
+    section: plan
+    definition: >-
+      Anyone who takes part in the elicitation.
+      A participant is a contributor only where a narrative is attributed to them.
+    example: Three participants came to the first session.
+    formal: ""
+  - term: consent
+    section: plan
+    definition: >-
+      The agreement of participants to what is recorded, kept and shared, settled before the first session.
+    example: Participants gave consent to the notes being kept.
+    formal: ""
+  - term: attribution mode
+    section: plan
+    definition: >-
+      The vault's setting for naming people: attribution required, optional or disallowed.
+      Disallowed is the Chatham House rule. The organiser chooses it before the first session and the person who
+      set up the tools writes it in `scat.toml`.
+    example: The vault runs in attribution-disallowed mode, so no narrative names who said it.
+    formal: Authored in SCAT; the Chatham House rule
+  - term: cap
+    section: plan
+    definition: >-
+      The most groups one vault may hold, set in `scat.toml` (key `stakeholder_group_cap`).
+      The organiser chooses it, so that few, broad groups cannot point to one person.
+    example: The cap is 3, so a fourth group is refused.
+    formal: Authored in SCAT
+  - term: coding path
+    section: plan
+    definition: >-
+      A way of coding the field notes: by hand, in an AI IDE, in a chat, or with a local LLM.
+      The organiser picks one when setting up.
+    example: The coding path for this project is chat.
+    formal: ""
+  - term: MCP server
+    section: plan
+    definition: >-
+      The program that lets a chat or an IDE assistant call the tool.
+      It is a front end to the tool; "connector" is a chat platform's name for it.
+    example: The chat reaches the tool through the MCP server.
+    formal: Model Context Protocol server
+  # ---- capture
+  - term: facilitating
+    section: capture
+    definition: >-
+      Running a session: drawing out what participants know while another person takes the notes.
+    example: Facilitating a scenario session means asking what people do over time.
+    formal: ""
+  - term: field notes
+    section: capture
+    definition: >-
+      The supplied material, in whatever form it arrives.
+      They are gathered in a session and read by the coder.
+    example: Draft two narratives from the workshop's field notes.
+    formal: The inputs (authored)
+  - term: timeframe
+    section: capture
+    definition: >-
+      Whether a narrative tells what happened (`past`), what will happen (`future`) or both (`mixed`).
+      It is the narrative's `timeframe` field, required at `done`, and the author's reading of the text.
+    example: A narrative about a proposed tool has timeframe `future`.
+    formal: Authored in SCAT (page contracts)
+  - term: scenario
+    section: capture
+    definition: >-
+      A narrative with `kind` `scenario`: people doing things over time.
+      It tells groups, concerns and affordances.
+    example: A scenario rarely names a technology.
+    formal: Authored in SCAT
+  - term: architecture
+    section: capture
+    definition: >-
+      A narrative with `kind` `architecture`: parts put together into tools.
+      It tells concerns, affordances and technologies.
+    example: An architecture rarely names a group.
+    formal: Authored in SCAT
+  # ---- code
+  - term: coding
+    section: code
+    definition: >-
+      Identifying and linking the nodes a narrative tells, and recording the edges it tells.
+      It is one step of the coding loop: interpreting the field notes, authoring the narrative, coding it and
+      reviewing it, repeated until the coder sets it `done`.
+    example: Coding links `quick-leak-response` where the account names it.
+    formal: Qualitative coding (ethnographic practice)
+  - term: reviewing
+    section: code
+    definition: >-
+      The coder's check that a narrative matches the field notes and that its coding is a correct use of SCAT.
+      Both are the coder's judgement; the tool checks conformance alongside.
+    example: Reviewing found the narrative overstated the crew's concern.
+    formal: Authored in SCAT
+  - term: rule
+    section: code
+    definition: >-
+      What the check tests; a breach is reported as a problem.
+      The rules are in a catalogue and the tool enforces them.
+    example: A narrative with a broken link breaks a rule.
+    formal: Conformance checking (rule catalogue)
+  - term: account
+    section: code
+    definition: >-
+      The prose of a narrative: its text outside the `Edges told` table.
+      A link stands wherever the account names a node.
+    example: The account names the leak response, so it links `quick-leak-response`.
+    formal: Authored in SCAT
+  - term: link
+    section: code
+    definition: >-
+      An Obsidian `[[...]]` reference from one page to another; never an edge by itself.
+    example: Link `quick-leak-response` where the account names it.
+    formal: Wikilink (Obsidian)
+  - term: Edges told
+    section: code
+    definition: >-
+      The table headed `Edges told` on a `narrative` page, one row for each edge the account tells.
+      Its columns are `from`, `type`, `to` and `note`, and each row reads as a sentence. It is not an edge table.
+    example: "Add a row to the Edges told table: parents *hold* bike-safe-for-children."
+    formal: Authored in SCAT (page contracts); a table of subject, predicate, object
+  - term: candidate
+    section: code
+    definition: >-
+      Two nodes a narrative links that have no row in its `Edges told` table.
+      The tool cannot know whether the account tells that edge, so the coder decides: add a row, or leave it.
+    example: The fingerprint view shows the candidates when asked.
+    formal: ""
+  - term: mismatch
+    section: code
+    definition: >-
+      A link and an edge that disagree about the same relationship, reported with a fix.
+      It is one of the problems a check reports, and the fix says which side to change.
+    example: The tool reports a mismatch between the page and the graph.
+    formal: Divergence (authored)
+  - term: attribution
+    section: code
+    definition: >-
+      The people a narrative is attributed to, held as its `attributed_to` links to `contributor` pages.
+      Where the mode disallows attribution there are none. It is never a node or an edge.
+    example: The narrative's attribution names the two engineers who told it.
+    formal: Authored in SCAT; attribution (provenance)
+  - term: contributor
+    section: code
+    definition: >-
+      A participant whose name a narrative is attributed to.
+      Only where the attribution mode allows it.
+    example: The engineer who told it is the narrative's contributor.
+    formal: Authored in SCAT
+  - term: contributor page
+    section: code
+    definition: >-
+      A page of type `contributor`, outside the four layers, naming one contributor.
+      A narrative's `attributed_to` field links to it. It is not a node.
+    example: The narrative's `attributed_to` links to the contributor page for the engineer who told it.
+    formal: Authored in SCAT
+  - term: REPL
+    section: code
+    definition: >-
+      Python's interactive prompt, where each command of the tool has a twin function.
+    example: In the REPL, `candidates=True` does what `--candidates` does on the command line.
+    formal: Read-eval-print loop
+  # ---- analyse
+  - term: view
+    section: analyse
+    definition: >-
+      A picture or table drawn from a vault whose check passes.
+      The fingerprint, the edge table, the layered view and the trace are views.
+    example: The views are generated after the check passes.
+    formal: View in model-view-controller (software architecture)
+  - term: fingerprint
+    section: analyse
+    definition: >-
+      The nodes a narrative links and the edges that name it.
+      Drawn joined to the narrative, it is everything the narrative touches. It may have no edges and may be
+      disconnected.
+    example: The sensor-first pitch's fingerprint has seven nodes and two edges.
+    formal: "Support (mathematics: where a function is non-zero, here the narrative's indicator over nodes and edges); neighbourhood (graph theory)"
+  - term: edge table
+    section: analyse
+    definition: >-
+      All edges of one type, between two neighbouring layers, as a table.
+      It is not a narrative's `Edges told` table.
+    example: Export the *holds* table as CSV.
+    formal: Bipartite graph (graph theory)
+  - term: layered view
+    section: analyse
+    definition: >-
+      The fingerprints of chosen narratives together, up to the whole vault, drawn as the four layers.
+    example: In the layered view, three groups share one concern.
+    formal: Layered graph drawing (graph theory)
+  - term: trace
+    section: analyse
+    definition: >-
+      Following edges from one node up or down the layers.
+    example: Trace this concern down to the technologies behind it.
+    formal: Reachability (graph theory); traceability (requirements engineering)
+  - term: evidence
+    section: analyse
+    definition: >-
+      The view of one node page: the narratives that link it, with the paragraph around each link.
+    example: The evidence for this concern shows three narratives.
+    formal: ""
+  # ---- report
+  - term: index page
+    section: report
+    definition: >-
+      The page the tool generates for each type (`index`), listing that type's pages.
+      It is an Obsidian Base, 1.9 or later.
+    example: The concern index page lists 18 concerns.
+    formal: Class page (authored)

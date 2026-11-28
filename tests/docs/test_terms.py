@@ -2,7 +2,8 @@
 
 Two checks, both read from their source (nothing is listed here that a source could give):
 - against GLOSSARY.md: the page defines exactly the glossary's terms, each in bold, uses no retired word, and is
-  at most 820 words (WP12) with no prescriptive sentence (WP13-R3);
+  within its word cap, with no prescriptive sentence (WP13-R3). The page and GLOSSARY.md are generated from
+  `glossary.yml` (tests/docs/test_glossary_generation.py checks that), and the terms are read here from GLOSSARY.md;
 - against the ontology (`ontology/scat.ttl` through `scat_kg.tbox`): every vault name the page backticks is a page
   type, field, status, value, edge type or table name of the TBox, and the page shows every one of them.
 """
@@ -17,7 +18,8 @@ from scat_kg.tbox import TBOX
 ROOT = Path(__file__).resolve().parents[2]
 PAGE = ROOT / "docs" / "reference" / "terms.md"
 GLOSSARY = ROOT / "GLOSSARY.md"
-WORD_CAP = 960  # raised by D-131, raised by D-138, raised by WP29 (stage, transition)
+# WP38-R3: the generated page has 842 words (`wc -w`); the cap is that plus 10%, rounded up (842 * 1.1 = 926.2, so 927).
+WORD_CAP = 927
 
 # Backticked names that are not in the TBox but are real: the vault's configuration file and its key.
 CONFIG_NAMES = {"scat.toml", "stakeholder_group_cap"}
