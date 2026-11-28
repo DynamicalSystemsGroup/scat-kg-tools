@@ -3338,3 +3338,9 @@ narrative and one template narrative. Asked what should happen to it, he said: "
 narrative only if its account names it; the list leaves the page contract, the rule catalogue, the coding guide, the
 example and the template, and `check` flags such a list. RS8's evidence rule is "the account links both nodes". The
 change is a small package of its own (candidate C20), to be scoped; WP38's glossary defines "account" without the list.
+
+## D-206 | 2026-11-27 | C20 and RS8's recommendation scoped as one package (WP39)
+
+Asked whether to scope the list's retirement (C20) with RS8's recommendation as one package, the chief engineer said
+(typed by the agent): "Yes, one package". WP39 (`work-packages/WP39.md`) is drafted, with one open decision (adopt
+RS8's option (e) now or after RS8's held assistant readings) and three defaults.
