@@ -132,7 +132,7 @@ def test_example_vault_narratives_and_their_fingerprints():
     sat = g.narrative("saturday-at-the-lending-desk")
     assert (sat.status, sat.kind, sat.timeframe) == ("done", "scenario", "past")
     assert sat.nodes == (
-        "borrowers", "funders", "volunteer-staff",
+        "borrowers", "volunteer-staff",
         "careful-record-keeping", "quick-checkout", "safe-handling-of-tools",
         "safety-briefing", "self-checkout",
     )  # fmt: skip
@@ -152,7 +152,7 @@ def test_example_vault_candidates_include_the_pair_the_readme_names():
     assert pair in g.candidates
     # told by the pitch, linked in both ends by the scenario with no row there: a candidate, no message
     assert g.edge("addressed-by", "safe-handling-of-tools", "safety-briefing") is not None
-    assert len(g.candidates) == 15
+    assert len(g.candidates) == 12
     assert (
         Candidate("funders-meeting", "holds", "funders", "careful-record-keeping")
         not in g.candidates
@@ -169,7 +169,7 @@ def test_example_vault_candidates_include_the_pair_the_readme_names():
 
 def test_example_vault_links_are_kept_apart_from_edges():
     g = load(EXAMPLES)
-    assert len(g.links) == 38 == sum(len(p.links) for p in g.vault.pages)
+    assert len(g.links) == 37 == sum(len(p.links) for p in g.vault.pages)
     careful = [l for l in g.links if l.source == "concern/careful-record-keeping.md"]
     assert [(l.target, l.line, l.column) for l in careful] == [("quick-checkout", 8, 15)]
     assert (
@@ -181,8 +181,8 @@ def test_example_vault_links_are_kept_apart_from_edges():
         "excluded": 0,
         "edges": 9,
         "edge_status": {"stub": 0, "draft": 1, "done": 8},
-        "candidates": 15,
-        "links": 38,
+        "candidates": 12,
+        "links": 37,
     }
 
 

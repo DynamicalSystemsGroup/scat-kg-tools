@@ -333,7 +333,7 @@ entries:
   - term: candidate
     section: code
     definition: >-
-      A pair of nodes in neighbouring layers that a narrative links but tells in no row of its `Edges told` table.
+      A pair of nodes that the account links, in adjacent layers, and that no row of the `Edges told` table joins.
       The tool cannot know whether the account tells that edge, so the coder decides: add a row, or leave it.
     example: The fingerprint view shows the candidates when asked.
     formal: ""

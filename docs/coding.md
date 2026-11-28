@@ -119,7 +119,7 @@ You work each narrative round the same four steps, as often as it takes:
 
 1. **Interpreting.** Read the field notes, and later the views, and decide what they say. This is yours alone.
 2. **Authoring.** Write or revise the account on the narrative page. An assistant may draft it; the wording you keep is yours.
-3. **Coding.** Link each node where the account names it, and record each edge it tells.
+3. **Coding.** Link each node where the account names it, and record each edge it tells. Name a node in the account, then record its row.
 4. **Reviewing.** Run the check, then fix what it reports. You confirm two things yourself: the account matches the field notes, and the coding is a correct use of SCAT. The tool cannot judge either.
 
 The [norms](norms.md) say what the tool requires and what is only guidance, and what `done` needs.
@@ -180,7 +180,7 @@ warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `time
     3. replace the line `timeframe:` with `timeframe: mixed` (author)
 warning [SCAT-UNCODED] narrative/saturday-at-the-tool-library.md body: the narrative links no node page, so it is excluded from the knowledge graph and every view
   Fix, choose one:
-    1. link a node page where the account names one, as `[[<node-name>]]` (or list it under a heading such as `Linked beyond the text`); a node the account names with no edge needs only this link
+    1. link a node page where the account names one, as `[[<node-name>]]`; a node the account names with no edge needs only this link
     2. or tell an edge: a row of the table whose ends are links to node pages; if the node has no page, `scat stub <name> --type <type>` makes one
 0 errors, 2 warnings
 ```
@@ -214,7 +214,7 @@ warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `desc
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
 warning [SCAT-UNCODED] narrative/saturday-at-the-tool-library.md body: the narrative links no node page, so it is excluded from the knowledge graph and every view
   Fix, choose one:
-    1. link a node page where the account names one, as `[[<node-name>]]` (or list it under a heading such as `Linked beyond the text`); a node the account names with no edge needs only this link
+    1. link a node page where the account names one, as `[[<node-name>]]`; a node the account names with no edge needs only this link
     2. or tell an edge: a row of the table whose ends are links to node pages; if the node has no page, `scat stub <name> --type <type>` makes one
 0 errors, 2 warnings
 ```

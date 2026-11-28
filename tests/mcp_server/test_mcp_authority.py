@@ -288,18 +288,20 @@ def test_r6_the_merge_plan_is_shown_and_applying_is_refused(tmp_path):
     vault = copy_vault(tmp_path / "v")
     with serve(vault) as url:
         files = snapshot(vault)
-        plan = call(url, "merge", {"a": "funders", "b": "borrowers"})  # plan is the default
+        plan = call(
+            url, "merge", {"a": "self-checkout", "b": "safety-briefing"}
+        )  # plan is the default
         assert plan["ok"] is True and plan["plan"] is True and plan["operation"] == "merge"
-        assert plan["removed"] == ["group/funders.md"] and plan["done_narratives"]
+        assert plan["removed"] == ["affordance/self-checkout.md"] and plan["done_narratives"]
         assert snapshot(vault) == files
         for args in (
-            {"a": "funders", "b": "borrowers", "plan": False},
-            {"a": "funders", "b": "borrowers", "plan": 0},
+            {"a": "self-checkout", "b": "safety-briefing", "plan": False},
+            {"a": "self-checkout", "b": "safety-briefing", "plan": 0},
         ):
             doc = call(url, "merge", args)
             assert doc["ok"] is False and doc["refused"]
             assert "coder" in doc["refused"][0]["why"]
-            assert "scat merge funders borrowers" in str(doc["refused"][0]["fix"])
+            assert "scat merge self-checkout safety-briefing" in str(doc["refused"][0]["fix"])
             assert snapshot(vault) == files
         # a refused plan, and a string guard
         assert call(url, "merge", {"a": "funders", "b": "safety-briefing"})["ok"] is False

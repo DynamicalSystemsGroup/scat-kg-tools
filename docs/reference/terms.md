@@ -54,7 +54,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **account**: The prose of a narrative: its text outside the `Edges told` table.
 - **link**: An Obsidian `[[...]]` reference from one page to another; never an edge by itself.
 - **Edges told**: The table headed `Edges told` on a `narrative` page, one row for each edge the account tells.
-- **candidate**: A pair of nodes in neighbouring layers that a narrative links but tells in no row of its `Edges told` table.
+- **candidate**: A pair of nodes that the account links, in adjacent layers, and that no row of the `Edges told` table joins.
 - **mismatch**: A link and an edge that disagree about the same relationship, reported with a fix.
 - **attribution**: The people a narrative is attributed to, held as its `attributed_to` links to `contributor` pages.
 - **contributor**: A participant whose name a narrative is attributed to.

@@ -8,8 +8,7 @@ serious a breach is, or what message a tool gives: that is the rule catalogue (`
 "the catalogue" below means it.
 
 The shape of the model, in one paragraph. The four node types are pages: `group`, `concern`, `affordance` and
-`technology`. A `narrative` is one page: the account, with links where names appear, an optional list of what it
-refers to beyond the text, and a table under the heading `Edges told` with one row for each edge the account tells.
+`technology`. A `narrative` is one page: the account, with links where names appear, and a table under the heading `Edges told` with one row for each edge the account tells.
 An edge is no page and no field: it is a row. The tool builds the knowledge graph from the pages on every call; it
 holds one edge per (type, from, to) and names every narrative with a row for it. An index is a generated Obsidian
 Base file, not a page. Where the vault's attribution mode allows it (10), a fifth kind of page, the `contributor`,
@@ -152,10 +151,7 @@ is fixed):
 1. **The account**: free text in the body, with a link wherever a name appears (a group, concern, affordance or
    technology; another page it should point to). Write the link where the name appears, and use `[[name|text]]` to
    keep the sentence natural.
-2. **Linked beyond the text** (optional): a list of links to nodes the narrative refers to that the account does not
-   name in words. Its heading is not read; it is any other part of the page, so its links count as links of the
-   narrative like every other.
-3. **`## Edges told`**: the table.
+2. **`## Edges told`**: the table.
 
 ```
 ## Edges told
@@ -166,13 +162,13 @@ is fixed):
 | [[quick-checkout]] | is addressed by | [[self-checkout]] | Covers part of the concern. |
 ```
 
-**What a narrative's links are.** Every link on the page: the account, the list, the table's ends and its notes. Its
-**fingerprint** is the nodes it links and the edges its rows tell. A link at one end of a pair and a link at the other
-without a row for the pair is a *candidate*: the narrative has not said whether it tells the edge, and no message is
+**What a narrative's links are.** Every link on the page: the account, the table's ends and its notes. Its
+**fingerprint** is the nodes it links and the edges its rows tell. Two nodes the account links, in adjacent layers,
+without a row for the pair are a *candidate*: the narrative has not said whether it tells the edge, and no message is
 given (the fingerprint view lists the candidate pair).
 
 **Coded and uncoded.** A narrative is *coded* when it links at least one node page anywhere in its body (a row end of
-its table, or a link in its account or its list); it is *uncoded* when it links none. An uncoded narrative is
+its table, or a link in its account); it is *uncoded* when it links none. An uncoded narrative is
 *excluded*: the knowledge graph and every view (fingerprints, edge tables, the layered view, traces, exports, drawings)
 leave it out, and `scat check` (SCAT-UNCODED) and each view that draws every narrative report it by name, with how to
 include it: link one node page. It is included as soon as it is coded. A link in the account to a node page is the
@@ -413,7 +409,7 @@ text.
 
 ### `narrative`
 
-One account on one page: the account, an optional list of links, and the table of edges it tells (4).
+One account on one page: the account and the table of edges it tells (4).
 
 | Key | Value | Required from |
 |---|---|---|

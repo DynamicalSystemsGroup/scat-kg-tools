@@ -9,10 +9,6 @@ timeframe: past
 
 The queue was out of the door by ten. The [[volunteer-staff|volunteers]] on the desk wrote every loan in the book, because losing a tool is what they dread ([[careful-record-keeping]]). One [[borrowers|borrower]] took a saw without asking how the guard works, so a volunteer called him back and gave him the [[safety-briefing]]; everyone agreed [[safe-handling-of-tools|nobody should get hurt]]. Another walked off after ten minutes in line. The borrowers wanted [[quick-checkout]], and the [[self-checkout]] stand was the thing they asked for.
 
-## Linked beyond the text
-
-- [[funders]]
-
 ## Edges told
 
 | from                | type            | to                         | note                                      |
