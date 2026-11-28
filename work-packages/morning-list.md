@@ -8,7 +8,7 @@ Updated 28 November (overnight). Earlier versions are in git history. Words foll
 |---|---|
 | WP27, WP28, WP29, WP32 to WP36, WP38, RS5, RS6 | accepted (latest: WP36 D-212, WP38 D-210, WP29 D-187) |
 | WP30 stages on the server | built and trimmed (D-194, D-209); accepted once its on-screen check runs in your sitting |
-| WP37 the rename (SCATLAB, scat-tools, scat-template) | prepared overnight on branches, not merged; lands after you rename the two repositories |
+| WP37 the rename (SCATLAB, scat-tools, scat-template) | ready on branches (tools `wp37/rename` 0ca6c7b, template 9defb3f), reviewed; its CI is red only because the new addresses do not exist until you rename the two repositories |
 | WP39 a narrative is its account | scoped (D-208); waits for your approval |
 | WP31 the assistant's habits | waits on WP30's acceptance |
 | RS7 how a tool asks the person | desk parts done (likely cause: our spike's call, not Claude); client trials in your sitting |
@@ -20,6 +20,13 @@ Updated 28 November (overnight). Earlier versions are in git history. Words foll
    account only; one sentence in the coding guide. Approve?
 2. **RS8's assistant readings**: they compare designs (a) to (e), all replaced by D-208's rule. Drop them and accept
    RS8 on its desk parts, or keep them?
+
+3. **WP37, three calls the PM made, for your review before landing** (none blocks it):
+   - On the first start of SCATLAB, `deploy/retire-old.sh` removes the old SCAT Chat silently: its app in
+     Applications, its keychain item, container, images and state folder, moving the remembered vault over. It
+     asks nothing (an upgrade shows only the new name). A copy outside Applications is left alone.
+   - The names test allows three files that must name the old app (the retire script, its test, the names test).
+   - The template's own package `scat-kg-vault` becomes `scat-vault` (D-199 did not name it).
 
 ## Your sitting (one session)
 
