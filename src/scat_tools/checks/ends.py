@@ -1,13 +1,14 @@
 """The mismatches at a row's end: SCAT-DRAFT-END-* and SCAT-DONE-END-* (catalogue, "Pairs: the mismatches").
 
 A mismatch (R-23) is a link and an edge that should agree and do not. In the row model it is a row end that is
-not one link, one that reaches no page, one that reaches a page that is not a node, or one the account does not
-link. Rule 4 (an account that links both ends of a pair and has no row for it) has no rule: nothing here, or anywhere, reports it (section 4).
+not one link, one that reaches no page, or one that reaches a page that is not a node. SCAT-*-LINK-NOTINTABLE is
+the converse: a node the account links that no row ends at. Rule 4 (an account that links both ends of a pair and has no row for it) has no rule: nothing here, or anywhere, reports it (section 4).
 """
 
 from scat_tools.checks import fixes
 from scat_tools.checks.ctx import NODE_TYPES, Ctx, page_rule
 from scat_tools.checks.dangling import cap_note, classify, derive, fix_of, repairs
+from scat_tools.checks.noedges import EDGE_ARGS
 from scat_tools.checks.rows import (
     End,
     candidates,
@@ -163,35 +164,12 @@ def _notnode(ctx: Ctx, page: Page, rule: str, end: End, target: Page):
     )
 
 
-def _notinaccount(ctx: Ctx, page: Page, rule: str, end: End, target: str):
-    cell = end.cell
-    fix = fixes.alternatives(
-        [
-            FixOption(
-                "advisory",
-                f"link it in the account where the account names it, as `[[{target}]]`",
-            ),
-            FixOption("advisory", "or delete the row if the narrative does not tell the edge"),
-        ]
-    )
-    return ctx.problem(
-        rule,
-        page.path,
-        end.where,
-        f"[[{target}]] is not linked in the account; name it in the account and link it there, then keep the row",
-        fix,
-        line=cell.line,
-        column=cell.column,
-    )
-
-
 @page_rule
 def row_ends(ctx: Ctx, page: Page):
     reading = ctx.reading(page)
     if reading is None or reading.table is None or not reading.table.well_formed:
         return []
     out = []
-    told = {l.target for l in account_links(page)}
     for row in reading.table.rows:
         if not row.well_formed:
             continue
@@ -215,13 +193,71 @@ def row_ends(ctx: Ctx, page: Page):
                 rule = ctx.pair(page, "END-NOTNODE")
                 if rule:
                     out.append(_notnode(ctx, page, rule, end, found[0]))
-            elif (
-                len(found) == 1
-                and found[0].frontmatter_error is None
-                and ctx.type_key(found[0]) in NODE_TYPES
-                and target not in told
-            ):
-                rule = ctx.pair(page, "END-NOTINACCOUNT")
-                if rule:
-                    out.append(_notinaccount(ctx, page, rule, end, target))
     return out
+
+
+@page_rule
+def link_notintable(ctx: Ctx, page: Page):
+    """SCAT-*-LINK-NOTINTABLE: a node page the account links that is no end of a row of the table (the table is
+    the coding of record). A narrative with no table has no row ends; a malformed table is reported by its own
+    rules, and this one is silent then. A row that is malformed, or whose end is not one link, counts for nothing."""
+    rule = ctx.pair(page, "LINK-NOTINTABLE") if ctx.is_narrative(page) else None
+    reading = ctx.reading(page)
+    if (
+        rule is None
+        or reading is None
+        or (reading.table is not None and not reading.table.well_formed)
+    ):
+        return []
+    ends = {
+        end.cell.target
+        for row in (reading.table.rows if reading.table else ())
+        if row.well_formed
+        for end in ends_of(row)
+        if end.cell.target is not None
+    }
+    out, seen = [], set()
+    for link in account_links(page):
+        target = link.target
+        if target in seen or target in ends:
+            continue
+        found = ctx.vault.by_name.get(target, ())
+        if len(found) != 1 or found[0].frontmatter_error is not None:
+            continue
+        if ctx.type_key(found[0]) not in NODE_TYPES:
+            continue
+        seen.add(target)
+        out.append(_notintable(ctx, page, rule, link))
+    return out
+
+
+def _notintable(ctx: Ctx, page: Page, rule: str, link):
+    target = link.target
+    record = (
+        f"`scat record-edge {EDGE_ARGS} --told-by {page.name}` (REPL: "
+        f'`scat_tools.record_edge("<type>", "<from>", "<to>", ["{page.name}"])`)'
+    )
+    fix = fixes.alternatives(
+        [
+            FixOption(
+                "advisory",
+                f"record the row for it: run {record}, with `{target}` as `<from>` or `<to>`",
+            ),
+            FixOption(
+                "advisory",
+                f"or take the link out of the account: write `{target}` without its brackets and "
+                "keep the words",
+            ),
+        ]
+    )
+    return ctx.problem(
+        rule,
+        page.path,
+        f"link [[{target}]]",
+        "the account links it but no row of the table has it as an end; the table is the coding of record",
+        fix,
+        line=link.line,
+        column=link.column,
+        pos=link.column,
+        target=target,
+    )
