@@ -3438,3 +3438,28 @@ for the v0.1 release, he said (typed by the agent): "Pull dev instead". `main` w
 the remote branches already in `dev` (tools: wp17/build, wp18/build, wp20/build and wp20/u2 to u8, wp29/design (its
 two commits are in `dev` under new ids), wp37/rename; template: wp21/template, wp37/rename). The `spike/*` branches
 stay: readouts cite their code.
+
+## D-216 | 2026-11-28 | A merge synthesizes one node; the narrative-to-node link becomes a page with notes
+
+Reviewing the research fixture page `two-names-for-the-same-silence` in Obsidian (for WP39's failing fixture), the
+chief engineer said (typed by the agent): "it seems like you are over complicating our design. there should only be
+one node, it seems like you are trying to hard to preserve provenance in the vault itself rather than letting the git
+history do that work. if we had originally had two seperate notes in an earlier commit then we merged them into a
+single node. then that node would be "abstracting away details" by synthesizing the observations. the information
+about how the abstracted node lives in each of the narratives that mentions it is edge level data. it shouldn't
+require more pages."
+
+The ACE pointed out that today's `scat merge` adds A's body to B under a heading that names A, and asked which part
+he meant. He answered (typed by the agent): "you can use the duplicate as a test but the expected behavior is to
+synthesize them into one node and move any detail specific to the narrative account its linked from into the edge
+between the node-in-question and the narrative".
+
+Asked whether that detail should go in the existing row notes or in a new narrative-to-node note, he answered
+(typed by the agent): "the table needs to stay focused on metadata, you can make a page for the row in the table
+since its also strictly speaking an object in the know knowledge graph. think of this as reifying that narrative to
+node edge with space for notes".
+
+Outcome: the planted duplicate pair stays as a test input. Merge's expected result is one synthesized node page (no
+carried body; git keeps the history), and detail that belongs to one narrative's account goes on a reified
+narrative-to-node link with notes, not in the node page and not in the table. This changes the data model and an
+accepted tool, so it is candidate C22 and needs its own scope; WP39 is unaffected.
