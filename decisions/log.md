@@ -3257,3 +3257,12 @@ model's detects) is `tests/mcp_server/test_stage_moves.py`, which stays. The chi
 agent): "seems like these flags were build progress which would imply removing it but i want to make sure that
 interpretation is correct. i don't want to remove a test for something we actually need", then, given that, chose
 "Remove the field". Applied: the field and that one-line check are gone; the lifecycle, stage and guide tests pass.
+
+## D-197 | 2026-11-27 | WP36's O1: the IDE and local LLM rows describe our side; their trials deferred
+
+Asked whether WP36 tries the IDE and local LLM paths or marks them "not tried", the chief engineer said (typed by the
+agent): "defer those tests but don't mark not tried. that reads badly just document them up to their api standards and
+we'll test them out later. there is nothing stopping a user from using those paths. the gap is documentation on how,
+not whether its possible". Outcome: those rows describe what our side returns (PNG as MCP image content, SVG as text,
+the table as JSON) and what to ask for, in line with D-183; no "not tried" wording; trials of the two paths are
+deferred by the chief engineer to a later package. WP36's goals, R1 and deliverables are edited to match.
