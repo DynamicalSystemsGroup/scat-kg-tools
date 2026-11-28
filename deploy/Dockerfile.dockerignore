@@ -3,5 +3,6 @@
 !pyproject.toml
 !src
 !ontology/scat.ttl
+!contracts/lifecycle.md
 **/__pycache__
 **/*.pyc
