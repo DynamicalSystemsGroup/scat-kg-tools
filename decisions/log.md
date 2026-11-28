@@ -3300,3 +3300,13 @@ instructions; the on-screen run with his accounts and the ACE as coder), the chi
 Outcome: the app's name is SCATLAB wherever a person reads it; code, tools, the CLI, file names and identifiers stay
 lower case. The ACE reads "otherwise" as approving the other three defaults. WP37 has no open items; it awaits
 approval of the scope.
+
+## D-202 | 2026-11-27 | WP38's O1: a core plus stage sections, held as YAML
+
+Asked how the organiser's glossary is organised (by stage; model first; a core plus a builders' page; alphabetical),
+the chief engineer said (typed by the agent): "Core + by stage. core covers terms broadly relevant for organizers. but
+i want you to build the glossary in yml and use a field for core or which stage its assigned to so we can make it easy
+to reference and reuse the definitions and avoid drift". Outcome: one core section for words met across the work, then
+one section per stage; the glossary is `glossary.yml`, one entry per word with a section field, and `GLOSSARY.md` and
+the terms page are generated from it. WP38 gains G5, a generator and a generation test; its blast radius gains
+`glossary.yml` and `scripts/glossary.py`; R3's cap is set against today's 960.
