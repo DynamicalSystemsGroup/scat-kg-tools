@@ -1,41 +1,44 @@
 # Morning list for the chief engineer
 
-Updated 27 November. Earlier versions are in git history. Words follow `GLOSSARY.md`.
+Updated 28 November (overnight). Earlier versions are in git history. Words follow `GLOSSARY.md`.
 
-## Where the release stands
+## Where things stand
 
 | Package | State |
 |---|---|
-| WP14 to WP24, WP26 | accepted (latest: WP22 D-141, WP23 D-143, WP24 D-150, WP26 D-155) |
-| WP25 coding paths, facilitating, planning | built; accepted when its account-bound walkthrough runs (U10) are done in your sitting |
-| WP20 candidate and user acceptance | AI user tests pass on both paths (by hand to J10; chat path J1 to J4 and J6); the live chat stages wait on your sitting |
+| WP27, WP28, WP29, WP32 to WP36, WP38, RS5, RS6 | accepted (latest: WP36 D-212, WP38 D-210, WP29 D-187) |
+| WP30 stages on the server | built and trimmed (D-194, D-209); accepted once its on-screen check runs in your sitting |
+| WP37 the rename (SCATLAB, scat-tools, scat-template) | ready on branches (tools `wp37/rename` 0ca6c7b, template 9defb3f), reviewed; its CI is red only because the new addresses do not exist until you rename the two repositories |
+| WP39 a narrative is its account | scoped (D-208); waits for your approval |
+| WP31 the assistant's habits | waits on WP30's acceptance |
+| RS7 how a tool asks the person | desk parts done (likely cause: our spike's call, not Claude); client trials in your sitting |
+| RS8 candidate evidence | desk parts done; its question was settled by D-205 and D-208 |
 
-Candidate: tools `dev` (CI green), template `dev` 6ccfd9d pinning the tools candidate 5e4ab16, Pages preview current. A visual
-user-test pass (persona p2, by-hand path, on screen in Pages, Obsidian and Terminal) reached J10 with no blocking
-finding; its fixes and your answers on V2 to V4 are in D-156 (`acceptance/reports/visual-r1-p2.md`). The reviewer's
-guide is current to D-156.
+## Decisions waiting (one at a time)
 
-## Your sitting (the next step)
+1. **WP39's scope**: retire the list; one rule (every table node is linked in the account); candidates from the
+   account only; one sentence in the coding guide. Approve?
+2. **RS8's assistant readings**: they compare designs (a) to (e), all replaced by D-208's rule. Drop them and accept
+   RS8 on its desk parts, or keep them?
 
-1. **SCAT Chat by eye** (WP22): open it from `deploy/build` or copy it to Applications; the menu-bar dot's colours, the
-   menu, Copy address and Copy key, the vault confirmation, the first-start note, the alerts, a Stop, the Gatekeeper and
-   keychain prompts.
-2. **The walkthrough runs with your accounts** (WP25-U10), each taking its screenshots:
-   - the AI chatbot path with **Claude**;
-   - the AI IDE path with **Codex**;
-   - **leave no trace** with **inference.coop**;
-   - the by-hand screenshots in Obsidian (or let me take them with full-screen control).
-3. **The chat-path user tests' live stages** (c1 to c3, J5 and J7 to J10), human-paced, as `acceptance/chat-path/plan.md`
-   says; you sign in and paste each key, I drive.
-4. **For your review:** the glossary call on **cap** and **attribution mode** (organiser chooses, setup person writes;
-   D-166).
-5. **When you're back from errands:** a short sitting for the account-bound trials held from WP28 (images in Claude
-   and inference.coop; Claude's two header forms) and RS5 (client trials, from its trial plan); then WP29's stage
-   model for your approval.
+3. **WP37, three calls the PM made, for your review before landing** (none blocks it):
+   - On the first start of SCATLAB, `deploy/retire-old.sh` removes the old SCAT Chat silently: its app in
+     Applications, its keychain item, container, images and state folder, moving the remembered vault over. It
+     asks nothing (an upgrade shows only the new name). A copy outside Applications is left alone.
+   - The names test allows three files that must name the old app (the retire script, its test, the names test).
+   - The template's own package `scat-kg-vault` becomes `scat-vault` (D-199 did not name it).
 
-Then: your walkthrough (UA-M) from `acceptance/reviewers-guide.md`, and I open the release PRs.
+## Your sitting (one session)
 
-## After the release
+1. **Land WP37** (a few minutes; `work-packages/WP37-landing.md` on the `wp37/rename` branch): you rename
+   `scat-kg-tools` to `scat-tools` and `scat-kg-template` to `scat-template` in GitHub's settings; I merge, re-pin and
+   check the docs site.
+2. **SCATLAB over SCAT Chat** (WP37-R2, `acceptance/walkthroughs/rename-run.md` on the branch): build, install over the
+   old app, start a session; one app, one keychain item, one image.
+3. **The stages on screen** (WP30-R6, `acceptance/walkthroughs/stages-run.md`): steps 1 to 9 in Claude, then in
+   inference.coop, on a copy of the examples served by SCATLAB.
+4. **How a tool asks the person** (RS7, `research/asking/readout.md` Appendix C): the trial runner instead of SCATLAB;
+   Claude up to 16 messages, inference.coop up to 12, human-paced.
+5. **Teardown**: the server and the public route off, the connectors removed, the key deleted.
 
-- The w3id namespace registration PR from your fork, citing the release (D-116).
-- Candidate C9 (a commit as the trigger to read written content into the knowledge graph) stays a candidate.
+You paste keys and sign in; I drive and record. inference.coop stays gentle: one chat, one step at a time.
