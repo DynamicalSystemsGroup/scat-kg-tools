@@ -3310,3 +3310,10 @@ to reference and reuse the definitions and avoid drift". Outcome: one core secti
 one section per stage; the glossary is `glossary.yml`, one entry per word with a section field, and `GLOSSARY.md` and
 the terms page are generated from it. WP38 gains G5, a generator and a generation test; its blast radius gains
 `glossary.yml` and `scripts/glossary.py`; R3's cap is set against today's 960.
+
+## D-203 | 2026-11-27 | WP38's defaults approved
+
+Asked to approve WP38's four defaults (RS6's 32 words plus stage and transition, with "needs an entry" words used on six
+or more pages added; the terms cap at the cleaned page's size plus 10%; history keeps its words; `glossary.yml` at the
+root with term, section, definition, example and formal, the terms page using each definition's first sentence), the
+chief engineer said (typed by the agent): "Defaults approved". WP38 has no open items; it awaits approval of the scope.
