@@ -1,5 +1,9 @@
 # Audit: the first-time organiser on the chat path
 
+> **Background, not direction.** This page records reviewers' and the ACE's proposals before the chief engineer
+> decided. Most proposed cuts were **not** adopted. The direction is in [final-report.md](../final-report.md) and decisions/log.md
+> (D-216 to D-238).
+
 Reviewer persona: first-time organiser of a community elicitation, not a programmer, coding through a chat assistant with the SCAT tools and reading in Obsidian. Read-only: I ran `uv run scat check/layered/review/copy-share` against `../tpl-pin3` (clean, 0 problems) and changed nothing. Paths are relative to `wp40-audit/` unless they begin `tpl-pin3`. I am unsure where I say so; where I say "I believe" I am inferring from outside this repo.
 
 Verdict words: keep / simplify / cut. Lens throughout: the coder's job is to find abstract patterns in concrete accounts (a few reusable concerns, affordances and technologies that many stories point at), label them, and organise the data under them. Heuristics: "make the right way the easy way" and "as simple as possible but no simpler".

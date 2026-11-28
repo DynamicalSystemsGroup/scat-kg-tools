@@ -1,5 +1,9 @@
 # SCAT tooling audit: the qualitative researcher
 
+> **Background, not direction.** This page records reviewers' and the ACE's proposals before the chief engineer
+> decided. Most proposed cuts were **not** adopted. The direction is in [final-report.md](../final-report.md) and decisions/log.md
+> (D-216 to D-238).
+
 Reviewer persona: years of coding field notes (grounded theory, thematic analysis, codebooks). Read-only. I read MISSION.md, ontology/scat.ttl, the rule catalogue, page contracts, the CLI and MCP surfaces, the skill, the lifecycle contract, deploy/README, one docs page (coding.md, partly) and the template vault. I ran `scat --help`, `scat check`, `scat review` and `scat guide code` against the template. I did not read the tests, the notebook, or most of the docs site, so claims about those are absent, not negative. Where I am unsure I say so.
 
 Paths are relative to `/Users/z/Documents/GitHub/scat-wt/wp40-audit` unless marked `tpl:` (the template, `/Users/z/Documents/GitHub/scat-wt/tpl-pin3`).

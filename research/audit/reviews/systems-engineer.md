@@ -1,5 +1,9 @@
 # Audit: systems engineer (MBSE, 42010, state machines, interface contracts)
 
+> **Background, not direction.** This page records reviewers' and the ACE's proposals before the chief engineer
+> decided. Most proposed cuts were **not** adopted. The direction is in [final-report.md](../final-report.md) and decisions/log.md
+> (D-216 to D-238).
+
 Reviewer persona: structure and lifecycle. Read-only. Repos: `wp40-audit` (tools) and `tpl-pin3` (template). I did not read work-packages, decisions or other audits. Where I am unsure I say so. "Row" in the table means one rule id or, for DRAFT/DONE pairs, one condition naming both ids (the pair is one condition at two severities, rule-catalogue.md:64, `Status behaviour` table).
 
 Yardstick: the coder's job is synthesis, that is, finding patterns in concrete accounts, labelling them, and filing the data under them. Every feature is asked: does it help the coder label a pattern or see one, or does it only guard structure that nobody needed guarded? The two heuristics are "right way = easy way" and "as simple as possible but no simpler".

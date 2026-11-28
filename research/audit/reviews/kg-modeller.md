@@ -1,5 +1,9 @@
 # Audit: the SCAT meta-model, read as a knowledge-graph / ontology modeller
 
+> **Background, not direction.** This page records reviewers' and the ACE's proposals before the chief engineer
+> decided. Most proposed cuts were **not** adopted. The direction is in [final-report.md](../final-report.md) and decisions/log.md
+> (D-216 to D-238).
+
 Reviewer persona: RDF/OWL/SKOS modeller, reification-minded. Read-only. Repos: `scat-wt/wp40-audit` (tools) and `scat-wt/tpl-pin3` (template). I ran `scat check`, `scat layered` and `scat review` in `tpl-pin3` (read-only; it printed "no problems", a 4-layer view with 8 edges, and one duplicate proposal). Paths below are relative to `wp40-audit` unless noted. "ttl:N" is `ontology/scat.ttl`, "RC:N" is `contracts/rule-catalogue.md`, "PC:N" is `contracts/page-contracts.md`.
 
 Short verdict. The conceptual core is small and good: four node types, three edge types between neighbouring layers, one page type for accounts (the narrative), and an edge that remembers which narratives tell it. That core is about 10 terms. Around it sits a lot that does not help a coder get from concrete accounts to abstract patterns. There is a ~40-id rule catalogue, most of it policing a hand-typed table whose `type` column repeats what the node layers already say. There is an attribution subsystem (a page type, three modes, six rules, a view, a CLI command, an MCP tool) that the shipped template turns off. There is a five-stage lifecycle state machine gating the MCP tools. And the TBox is half meta-vocabulary describing itself (13 annotation properties, `Field`, `TableColumn`, `Index`). Separately, the most important structure for pattern-finding, "this edge is told by these narratives", is nowhere in the ontology file.

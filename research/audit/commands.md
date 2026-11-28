@@ -1,5 +1,9 @@
 # WP40 item 9: every command, by what the coder does with it
 
+> **Background, not direction.** This page records reviewers' and the ACE's proposals before the chief engineer
+> decided. Most proposed cuts were **not** adopted. The direction is in [final-report.md](final-report.md) and decisions/log.md
+> (D-216 to D-238).
+
 Asked for by the chief engineer: "list them out and map them to what activity the coder uses them for. what are they
 interpreting or reviewing". There are 22 CLI commands (`scat --help`, plus `draw`) and 21 MCP tools (19 that mirror a
 command, plus `which_stage` and `set_stage`). "Stages" lists where the MCP server offers the tool (`contracts/lifecycle.md:45-122`).

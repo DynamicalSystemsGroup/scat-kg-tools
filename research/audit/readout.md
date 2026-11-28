@@ -1,5 +1,9 @@
 # WP40 readout: SCAT audited against the point of the exercise
 
+> **Background, not direction.** This page records reviewers' and the ACE's proposals before the chief engineer
+> decided. Most proposed cuts were **not** adopted. The direction is in [final-report.md](final-report.md) and decisions/log.md
+> (D-216 to D-238).
+
 Four peer reviewers audited the repository on their own, each through one persona, before the ACE wrote anything. This
 readout compares and contrasts their reports, and marks each claim it relies on as verified or refuted against the code
 at `wp40/audit` (from `dev` d1c519c). Pointers name the report and section:

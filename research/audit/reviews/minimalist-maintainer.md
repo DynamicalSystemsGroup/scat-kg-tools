@@ -1,5 +1,9 @@
 # Audit of SCAT tooling: the minimalist maintainer
 
+> **Background, not direction.** This page records reviewers' and the ACE's proposals before the chief engineer
+> decided. Most proposed cuts were **not** adopted. The direction is in [final-report.md](../final-report.md) and decisions/log.md
+> (D-216 to D-238).
+
 Persona: the person who has to support this after release. I judge machinery: what could go with no loss to a coder who is
 drawing abstract patterns from concrete accounts. Read-only; I ran `scat --help`, `scat check`, `scat status`,
 `scat fingerprint`, `scat review` and `scat guide` against `tpl-pin3` and changed nothing. Paths are relative to
