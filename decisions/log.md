@@ -3698,3 +3698,12 @@ request that names a term is checked across the whole vocabulary.
 Told that D-224 (drawings stop dropping a layer by `kind`) reverses part of D-172, the chief engineer said (typed by the
 agent): "don't reverse my more recent decision. just rename group to stakeholder." Outcome: D-224 stands; the marks
 package does not reopen it. D-237's rename goes ahead.
+
+## D-239 | 2026-11-28 | WP40 accepted
+
+Shown WP40's contents (five audits; the verified readout, its 95-row verdict table with outcomes and reasons, and the 17
+answered decisions; the command map; D-216 to D-238), the chief engineer asked for a final report "that focuses on what
+i decided and why. i am worried the report you wrote will inadvertently leak wrong direction behavior." The ACE wrote
+`research/audit/final-report.md` (the decisions and his reasons, quoted; guidance for agents) and marked the readout,
+the command map and the reviews "Background, not direction". He then said (typed by the agent): "Accept WP40".
+`check_metrics.py --accept WP40` passes (iteration 64). Every package from WP40 cites the final report as its direction.
