@@ -3582,3 +3582,100 @@ Shown every command mapped to the coder's activity (`research/audit/commands.md`
 `split-plan` does, the chief engineer said (typed by the agent): "rename it where-used, keep the rest as built".
 Outcome: `split-plan` (CLI) and `split_plan` (MCP tool) are renamed `where-used` / `where_used`; every other command and
 tool stays as built (apart from `copy-share`, cut by D-225).
+
+## D-228 | 2026-11-28 | WP40 decision 10: names stay ASCII slugs
+
+The chief engineer chose (typed by the agent): "Keep ASCII slugs". The `title` field carries the label as said.
+
+## D-229 | 2026-11-28 | WP40 decision 11: a recurrence view
+
+The chief engineer chose (typed by the agent): "Separate view". Outcome: a new view lists nodes and edges by how many
+narratives and how many groups reach them, singletons marked. `layered` is unchanged.
+
+## D-230 | 2026-11-28 | WP40 decision 12: what SCAT coding is for; a guide page, `rename`, and a documentation pass
+
+Asked what abstraction help to add, the chief engineer said (typed by the agent): "guide page and rename. + other edits
+to the documentation. you can use the "broken drill" to "unsafe equipment" example. i think these concepts of patterns,
+synthesis and abstraction where what was missing. working with the LLM to build this caused a tendency to add detail and
+to ask for details. this whole exercise is one where humans telling their own accounts of their own experiences,
+provides the details. the coding work is to organize many detailed things into an expression of common patterns. our
+tool + facilitation and planning provides the metamodel; then the humans at the events provide the details and those
+details are captured as field notes and organized into narratives which are then coded. coding focuses on identifying
+and interrelating common elements. this is the purpose of what we're doing. the resulting output is a synthesis. that
+is why it requires human judgement: synthesis is interpretive; recognizing two things that look different are
+structurally the same, or that two things that sound the same are structurally different requires human intuition. our
+metamodel (ontology) provides the language for describing structure so the human coder can draw out those patterns. my
+gut is that we will need to go back through the documentation to make sure this is clear."
+
+Outcome: (1) a short guide page on patterns, synthesis and abstraction, using "broken drill" becoming "unsafe
+equipment"; (2) a `rename` operation that rewrites every link and row; (3) a pass over the documentation so the purpose
+above is clear throughout. This statement is the test for every later package: the people at the events supply the
+detail; coding organizes it into common, interrelated patterns; the tools must not push toward more detail.
+
+## D-231 | 2026-11-28 | WP40 decision 13: the TTL holds the model only
+
+The chief engineer chose (typed by the agent): "Strip to the model". Outcome: terms no code reads (`mapsTo`,
+`discouragedField`) are removed; `Index`, the table-column resources and `carriesStatus` move to the contracts (or code
+constants); the per-term source/authored/verification triples move to a docs table.
+
+## D-232 | 2026-11-28 | WP40 decision 14: the chat path says a helper sets it up
+
+The chief engineer chose (typed by the agent): "Say a helper is needed". Outcome: the chat-path setup stays as built;
+the docs say plainly that a technical helper sets it up once (Terminal, Colima, Tailscale, building SCATLAB), and the
+organiser works from there.
+
+During this decision he added (typed by the agent): ""synthesis", "abstract vs concrete" and "pattern" OR similiar may
+need to make it into the core glossary." Outcome: the D-230 package adds core glossary entries for synthesis, pattern
+and abstract versus concrete (or close words), within the terms page's word cap.
+
+## D-233 | 2026-11-28 | WP40 decision 15: C22 stands; the link page is an optional slot
+
+Asked whether C22's reified narrative-to-node page still stands, the chief engineer said (typed by the agent): "i want
+to keep this as decided but these are not required pages. they are optional. they should be treated like the
+relationships between nodes. its a slot to address notes not a required page. in practice i think they will get used
+some of the time. we should ensure the assistant get guidance for where, when and how to put notes in the addressed
+slots we've made available".
+
+Outcome: C22 stands. The narrative-to-node link page is optional, like the relationship annotation between nodes: an
+addressed slot for notes, never required, never checked for presence. The assistant's guidance says where, when and how
+to put notes in each addressed slot (row note, relationship annotation, link page).
+
+## D-234 | 2026-11-28 | WP40 decision 16: the lifecycle respected everywhere; roles instead of an authority table
+
+Item 16 (the systems engineer's findings S1 to S3, plus the actor model). The chief engineer chose (typed by the agent):
+"(a) Template starts in plan,(b) Same strength everywhere,(c) Consolidate in analyse", and asked about the authority
+tables. Shown them (coder, tool, assistant; the organiser and setup person appear only in the lifecycle), he said (typed
+by the agent): "i am not sure like the idea of an authority table. I would prefer to define roles. imagine you were in
+the planning stage and you gather together a group of people to do this work. what roles need to be filled: the
+organizer is the project lead the (Accountable) for the whole project if this were a RACI chart. the other roles map to
+the required activities: setting rules, inviting participants and managing their expectations; setting up / maintaining
+the scatlab; scheduling and event logistics; event agenda and facilitation; field note taking; field note organization;
+coding field notes into SCAT; analyzing data once conformed to SCAT; report writing based on analysis.
+
+my intuition is we need to reorganize this as roles. describe what each role is responsible for in each stage. the
+Organizer remains responsible for ensuring overall project success (and making good on any promises regarding data use,
+release, retention, attribution, etc)"
+
+Outcome: (a) the template ships `lifecycle.toml` with `stage = "plan"`; (b) the CLI and IDE paths respect the stage at
+the same strength as the MCP server; (c) `analyse` offers consolidation (merge, where-used; see D-235); (d) the
+authority tables give way to a roles model: the organiser is accountable for the whole project and its promises (data
+use, release, retention, attribution); the other roles follow the activities he listed; for each role, what it is
+responsible for in each stage. The tool and the assistant stay non-human actors (conformance; no authority).
+
+## D-235 | 2026-11-28 | A sixth stage, `synthesise`, between code and analyse
+
+Item 16(c) conflicted with D-178 (analyse edits nothing; a merge edits). Asked how consolidation in analyse should
+work, the chief engineer said (typed by the agent): "it almost seems like we're missing a stage between code and
+analyze that is focused on exactly this activity." Asked to name it, he chose (typed by the agent): "synthesise".
+
+Outcome: the lifecycle gains a stage `synthesise` between `code` and `analyse`. Its work is consolidating codes across
+narratives: `review`, `where-used`, `merge`, `rename`, drafting node-page definitions; recognising that things that
+look different are structurally the same, and the reverse. `code` stays per narrative; `analyse` stays read-only
+(D-178). This supersedes 16(c) in D-234 and amends the locked lifecycle model (D-186): its transitions, detects and
+stage lists are settled in the package's scope.
+
+## D-236 | 2026-11-28 | WP40 decision 17: the consistency fixes are one package
+
+The chief engineer chose (typed by the agent): "Yes, one package". Outcome: the ACE settles each verified contradiction
+(who may set status; the contributor stub; the duplicate `architecture.md`; one copy of the assistant rules; `kind`'s
+four meanings) by the ontology and the contracts, as one package, and lists its choices at acceptance.
