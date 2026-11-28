@@ -43,7 +43,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP34 | What the figures hide, shown (orphans, candidates, the no-account flag) | accepted (D-190) | `WP34.md` |
 | WP35 | Legible layouts | accepted (D-190) | `WP35.md` |
 | RS7 | Research spike: how a tool asks the person (standards, practice, why the elicitation trial hung; D-182) | desk and local parts done and reviewed; readout `research/asking/readout.md` on `dev`; variants and notes on `spike/asking`; client trials and acceptance held for the ACE (iteration 54: 19 est, 28 realized, 1.1 h) | `RS7-asking-the-person.md` |
-| RS8 | Research spike: telling a coder when candidate links carry no evidence (D-191) | approved (D-195); desk parts with a PM, assistant readings with the chief engineer | `RS8-candidate-evidence.md` |
+| RS8 | Research spike: telling a coder when candidate links carry no evidence (D-191) | desk parts done and reviewed; readout `research/candidates/readout.md` on `dev`; prototypes and fixtures on `spike/candidates`; the ACE's and the assistants' readings (RS8-R3 recorded reading) held for a sitting (iteration 59: 11 est, 11 realized, 0.9 h) | `RS8-candidate-evidence.md` |
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | accepted (D-186, D-187); model locked; `contracts/lifecycle.md` | `WP29.md` |
 | WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | all units done and on `dev` (tools 20c03c2; template pinned, TEMPLATE_COMMIT f1d7cce); model amendment D-192; WP30-R6 (on-screen check) queued for a sitting. Followed the locked model over WP30.md in five places: no stage on requests and stable lists (not stage-scoped listings); a normal refusal document (not a clarification result) for an out-of-stage call; the server never asks at a transition (set_stage by a person only); required inputs shown, not enforced; prompts and resources unscoped | `WP30.md` |
 | WP31 | The assistant's habits, stage by stage, tested by the probes (depends on WP30) | approved (D-163) | `WP31.md` |
@@ -429,6 +429,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | RS7-U3b | Python developer (trial server runner), sonnet | 2 | 2 | `spike/asking` | done |  | 2026-11-27 | one pass; 3 tests; ran in review |
 | RS7-U4 | PM (readout synthesis; no worker), sonnet | 3 | 5 | `rs7/readout` | done |  | 2026-11-27 | review found 3 defects, one fix round; 2270 words against about 2000 |
 | RS7-U5 | reviewer (fresh, RS7), sonnet | 3 | 3 | `-` | done |  | 2026-11-27 | re-fetched 15 claims, 9 GitHub items, reran 16 tests and the trial server; 3 defects |
+| RS8-U1 | research engineer (PM did the work: G1 cases, fixtures, prototypes, drawings), sonnet | 5 | 5 | `spike/candidates` | done |  | 2026-11-27 | vaults counted, 6 fixtures, 5 alternatives rendered with the shipped renderer; no push-back |
+| RS8-U2 | PM (readout synthesis; no worker), sonnet | 3 | 3 | `rs8/readout` | done |  | 2026-11-27 | one review fix round; main text about 1,540 words |
+| RS8-U3 | reviewer (fresh, RS8), sonnet | 3 | 3 | `-` | done |  | 2026-11-27 | reran cases and render, byte-identical PNGs, called the shipped view; 3 must-fix, 7 nits |
 | WP34-U1 | Python developer and test engineer (orphans, candidates, no-account flag; both renderers), sonnet | 5 | 5 | `wp34/u1` | done |  | 2026-11-27 | three result keys, footers and text forms; three existing tests adjusted for the fixture's orphan; PASS first review |
 | WP34-U2 | Python developer and test engineer (CLI, server, schema, parity test), sonnet | 5 | 5 | `wp34/u2` | done |  | 2026-11-27 | flag on two commands, server option, additive schema, parity test with mutations; two false help strings fixed; no push-back |
 | WP34-U3 | technical writer (api.md, analysis.md), sonnet | 2 | 2 | `wp34/u3` | done |  | 2026-11-27 | layered and fingerprint entries and the reading paragraph; no push-back |
@@ -497,6 +500,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 56 | WP34-U1 to WP34-U1r | 15 | 15 | 1.00 | 1.3 h | 11.5 |
 | 57 | WP35-U1 to WP35-U1r | 10 | 11 | 1.10 | 1.2 h | 9.2 |
 | 58 | WP30-U1 to WP30-U1r, WP30-U4 | 23 | 27 | 1.17 | 2.7 h | 10.0 |
+| 59 | RS8-U1 to RS8-U3 | 11 | 11 | 1.00 | 0.9 h | 12.2 |
 
 ## Velocity and forecast
 
