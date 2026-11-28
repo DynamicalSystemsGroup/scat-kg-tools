@@ -10,7 +10,7 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
-import scat_kg
+import scat_tools
 
 HERE = Path(__file__).resolve().parent
 RANGE = HERE.parent / "range" / "koi" / "vault"
@@ -564,7 +564,7 @@ def build(mode: str) -> None:
                 f"---\ntype: contributor\nstatus: done\ntitle: {q(title)}\n---\n",
             )
     write(root / "scat.toml", f'attribution = "{mode}"\nstakeholder_group_cap = 4\n')
-    scat_kg.index(root=root)
+    scat_tools.index(root=root)
 
 
 def main() -> None:
