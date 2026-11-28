@@ -1363,8 +1363,7 @@ def _(v, st):
 
 # ======================================================================================= uncoded (WP21-G2)
 UNCODED_ONE = (
-    "link a node page where the account names one, as `[[<node-name>]]`; a node the account "
-    "names with no edge needs only this link"
+    "link a node page where the account names one, as `[[<node-name>]]`, and record its row"
 )
 UNCODED_TWO = (
     "or tell an edge: a row of the table whose ends are links to node pages; if the node has "

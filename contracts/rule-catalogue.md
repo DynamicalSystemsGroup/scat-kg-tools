@@ -549,7 +549,7 @@ In a table cell the bar of an alias link is written `\|`: the replacement is `[[
 
 ### SCAT-NOEDGES
 - **Severity:** warning. **Fires:** `done` only (MISSION G1: a `done` narrative whose fingerprint has no edges gets a warning, not an error). **Runs at:** all; reads its page.
-- **Trigger:** a narrative that links a node page (page contracts 4) at `done` has no `Edges told` table, or a well-formed one with no rows, so its fingerprint has no edges (it may still have nodes: a node linked in the account with no edge is conformant). A table with a malformed header, a narrative with any row, and an uncoded narrative (SCAT-UNCODED reports it, once) give nothing from this rule (the table's own rules judge what is there). A narrative may tell no edge on purpose, so the rule never blocks: the coder decides.
+- **Trigger:** a narrative that links a node page (page contracts 4) at `done` has no `Edges told` table, or a well-formed one with no rows, so its fingerprint has no edges (a node its account links is then no row end, and SCAT-*-LINK-NOTINTABLE reports it). A table with a malformed header, a narrative with any row, and an uncoded narrative (SCAT-UNCODED reports it, once) give nothing from this rule (the table's own rules judge what is there). A narrative may tell no edge on purpose, so the rule never blocks: the coder decides.
 - **Message:**
 ```
 warning [SCAT-NOEDGES] <file> table: the narrative is `done` and tells no edge: its fingerprint has no edges
@@ -562,12 +562,12 @@ warning [SCAT-NOEDGES] <file> table: the narrative is `done` and tells no edge: 
 
 ### SCAT-UNCODED
 - **Severity:** warning. **Fires:** every status (WP21-G2). **Runs at:** all; reads its page and the pages its links name (to know which are node pages).
-- **Trigger:** a narrative has no link, anywhere in its body (the account, a list, a row end, a note), whose target is the name of exactly one node page. It is *uncoded* (page contracts 4): the knowledge graph and every view leave it out, and the views list it as excluded. A narrative with a link to a node page is *coded*, and the rule is silent on it, whether the link is a row end or sits in the account with no row (a lone node). The rule never blocks: the coder decides.
+- **Trigger:** a narrative has no link, anywhere in its body (the account, a row end, a note), whose target is the name of exactly one node page. It is *uncoded* (page contracts 4): the knowledge graph and every view leave it out, and the views list it as excluded. A narrative with a link to a node page is *coded*, and the rule is silent on it, whether the link is a row end or sits in the account (SCAT-*-LINK-NOTINTABLE judges an account link no row ends at). The rule never blocks: the coder decides.
 - **Message:**
 ```
 warning [SCAT-UNCODED] <file> body: the narrative links no node page, so it is excluded from the knowledge graph and every view
   Fix, choose one:
-    1. link a node page where the account names one, as `[[<node-name>]]` ; a node the account names with no edge needs only this link
+    1. link a node page where the account names one, as `[[<node-name>]]`, and record its row
     2. or tell an edge: a row of the table whose ends are links to node pages; if the node has no page, `scat stub <name> --type <type>` makes one
 ```
 - **Fix kind:** options; both options advisory and without edits: which node the account names is the coder's reading.

@@ -18,9 +18,10 @@ narratives, which you read in the layered view.
 ## Links in the account
 
 *A norm, resting on one rule.* You may link a node wherever the account names it, and you should when the name
-matters to the story. A link adds no edge; only a row of the `Edges told` table does. A link in the account is also
-the conformant place to declare a lone node, one the account names with no edge: that link brings the narrative into the graph and
-puts the node in its fingerprint (SCAT-UNCODED; a `done` narrative with no row only gets a warning, SCAT-NOEDGES).
+matters to the story. A link adds no edge; only a row of the `Edges told` table does. The nodes the account links are a
+subset of the nodes the table holds: a link in the account to a node no row ends at is reported (SCAT-DRAFT-LINK-NOTINTABLE,
+a warning at `stub` and `draft`; SCAT-DONE-LINK-NOTINTABLE, an error at `done`), so a node is declared by a row, not by a link.
+A row end need not be linked in the account.
 
 When the account names a node page in plain text, the tool can suggest the link (SCAT-MENTION). That is a warning, and
 it shows only when `scat.toml` sets `link_suggestions = true`. Taking a suggestion is your choice.

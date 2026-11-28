@@ -142,7 +142,7 @@ On the chat path, the server never moves a page into or out of `done`, so the as
 
 Everything starts in the field notes, and only you read them. You turn what a session told into one narrative page, with `scat stub` making the empty page and you writing the account. The narrative is where each edge comes from: a row of its `Edges told` table says "this account tells that a group holds that concern". There is no other place an edge is written, and no page to open for one.
 
-A narrative that links at least one node page, in a row of its table or in its account, is read into the graph and the views. Until it does, the graph and every view leave it out, and `scat check` and the views name it (their messages say "excluded") and say how to include it: link one node page. A link in the account is also the place for a node the narrative names with no edge. A new stub is left out until you link a node.
+A narrative that links at least one node page, in a row of its table or in its account, is read into the graph and the views. Until it does, the graph and every view leave it out, and `scat check` and the views name it (their messages say "excluded") and say how to include it: link one node page. A new stub is left out until you link a node.
 
 Two narratives can tell the same edge. Each has its own row and its own note, and the graph has one edge naming both. A narrative that mentions two nodes without a row for the pair has not told an edge, even if the notes would support one: the row is your statement that the account tells it.
 
@@ -180,7 +180,7 @@ warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `time
     3. replace the line `timeframe:` with `timeframe: mixed` (author)
 warning [SCAT-UNCODED] narrative/saturday-at-the-tool-library.md body: the narrative links no node page, so it is excluded from the knowledge graph and every view
   Fix, choose one:
-    1. link a node page where the account names one, as `[[<node-name>]]`; a node the account names with no edge needs only this link
+    1. link a node page where the account names one, as `[[<node-name>]]`, and record its row
     2. or tell an edge: a row of the table whose ends are links to node pages; if the node has no page, `scat stub <name> --type <type>` makes one
 0 errors, 2 warnings
 ```
@@ -214,7 +214,7 @@ warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `desc
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
 warning [SCAT-UNCODED] narrative/saturday-at-the-tool-library.md body: the narrative links no node page, so it is excluded from the knowledge graph and every view
   Fix, choose one:
-    1. link a node page where the account names one, as `[[<node-name>]]`; a node the account names with no edge needs only this link
+    1. link a node page where the account names one, as `[[<node-name>]]`, and record its row
     2. or tell an edge: a row of the table whose ends are links to node pages; if the node has no page, `scat stub <name> --type <type>` makes one
 0 errors, 2 warnings
 ```
@@ -315,7 +315,7 @@ Check one page, or a page and every page one link away, as here, as you go.
 
 ### 5. A link without a row
 
-You may link a node that the account only mentions. Here the first bullet gains a link to a second group, the project leads:
+The links in the account are a subset of the nodes the table holds: a node you link must be an end of a row. Here the first bullet gains a link to a second group, the project leads, which no row ends at:
 
 ```text
 - Saturday, desk opens at 9. Three people ask for the same drill, and the [[project-leads|project leads]] hear of it.
@@ -328,29 +328,48 @@ $ uv run scat check saturday-at-the-tool-library --neighborhood
 attribution mode: disallowed
 warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
   Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
+warning [SCAT-DRAFT-LINK-NOTINTABLE] narrative/saturday-at-the-tool-library.md:11:75 link [[project-leads]]: the account links it but no row of the table has it as an end; the table is the coding of record
+  Fix, choose one:
+    1. record the row for it: run `scat record-edge <type> <from> <to> --told-by saturday-at-the-tool-library` (REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["saturday-at-the-tool-library"])`), with `project-leads` as `<from>` or `<to>`
+    2. or take the link out of the account: write `project-leads` without its brackets and keep the words
+0 errors, 2 warnings
+```
+
+At `done` this is an error. A link declares no node: only a row does, so record the row, or take the brackets off. A row end need not be linked in the account. Here the project leads hold the concern of anonymity:
+
+```text
+$ uv run scat record-edge holds project-leads anonymity --told-by saturday-at-the-tool-library --note "They hear of the drills."
+changed narrative/saturday-at-the-tool-library.md
+note: added `| [[project-leads]] | holds | [[anonymity]] | They hear of the drills. |` to narrative/saturday-at-the-tool-library.md at line 21
+$ uv run scat check saturday-at-the-tool-library --neighborhood
+attribution mode: disallowed
+warning [SCAT-DRAFT-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing (required once the page is done)
+  Fix: add the line `description: "<one sentence you write>"` (author) before you set status: done
 0 errors, 1 warning
 ```
 
-No message. A narrative that links both nodes of a pair but has no row for it is a **candidate**: the tool does not know whether the account tells that edge, and that is your judgement of the field notes, not a defect. The fingerprint view shows the fingerprint (the nodes the page links and the edges it tells) and leaves such pairs out; ask for them with `--candidates` (in the REPL, `candidates=True`), so that you can decide for each whether to add a row. Run it for the narrative:
+Now the account links `project-leads` and the concern `tools-come-back-in-good-order`, and each is an end of a row (of a different row). A narrative that links two nodes of neighbouring layers, each already a row end, but has no row joining them, has a **candidate**: the tool does not know whether the account tells that edge, and that is your judgement of the field notes, not a defect. The fingerprint view shows the fingerprint (the nodes the page links and the edges it tells) and leaves such pairs out; ask for them with `--candidates` (in the REPL, `candidates=True`), so that you can decide for each whether to add a row. Run it for the narrative:
 
 ```text
 $ uv run scat fingerprint saturday-at-the-tool-library --candidates
 fingerprint saturday-at-the-tool-library (scenario, draft)
   group
-    project-leads [stub]
-    workshop-participants [stub]
+    project-leads [done]
+    workshop-participants [done]
   concern
+    anonymity [done]
     tools-come-back-in-good-order [stub]
   affordance
     sign-out-sheet [stub]
   edges
+    holds: project-leads -> anonymity [draft; told by saturday-at-the-tool-library]
     holds: workshop-participants -> tools-come-back-in-good-order [draft; told by saturday-at-the-tool-library]
     addressed-by: tools-come-back-in-good-order -> sign-out-sheet [draft; told by saturday-at-the-tool-library]
   candidates (linked, no row)
     holds: project-leads -> tools-come-back-in-good-order
 ```
 
-The last block is the candidate: the page links `project-leads` and the concern but tells no row for the pair. Add a row if the account tells the edge, and leave it if it does not. Without `--candidates` the view shows the nodes and edges only. Without a narrative name, `uv run scat fingerprint` shows every narrative. In Obsidian, the Outgoing links panel for the page shows the nodes it links, and its table shows the edges it tells. Together they are the narrative's **fingerprint**; [Analysis](analysis.md) shows the same view as a drawing.
+The last block is the candidate: the page links `project-leads` and the concern, each is a row end, but no row joins the pair. Add a row if the account tells the edge, and leave it if it does not. Without `--candidates` the view shows the nodes and edges only. Without a narrative name, `uv run scat fingerprint` shows every narrative. In Obsidian, the Outgoing links panel for the page shows the nodes it links, and its table shows the edges it tells. Together they are the narrative's **fingerprint**; [Analysis](analysis.md) shows the same view as a drawing.
 
 ### 6. Set it to done
 
@@ -378,10 +397,11 @@ check of narrative/saturday-at-the-tool-library.md: no problems
 $ uv run scat status saturday-at-the-tool-library --neighborhood
 done         narrative/saturday-at-the-tool-library.md
 stub         affordance/sign-out-sheet.md
+done         concern/anonymity.md
 stub         concern/tools-come-back-in-good-order.md
 done         group/project-leads.md
 done         group/workshop-participants.md
-2 stub, 3 done
+2 stub, 4 done
 ```
 
 `done` is your word that the account matches the field notes and the coding is right. The tool has checked only the structure.
@@ -431,6 +451,7 @@ From the point of view of [[workshop-participants|Workshop participants]] (about
 | from | type | to | note |
 |---|---|---|---|
 | [[tools-come-back-in-good-order]] | is addressed by | [[sign-out-sheet]] | |
+| [[project-leads]] | holds | [[anonymity]] | They hear of the drills. |
 ```
 
 ```text

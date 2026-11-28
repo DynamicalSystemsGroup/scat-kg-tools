@@ -18,7 +18,7 @@ The architectural source is silent on the human acts of governance that the ethn
 
 This is read as the baseline, what exists and what happened.
 
-Thin spots: the sources say nothing on how the infrastructure answers the integrity concern, so no "is addressed by" edge is coded; the page tells no edge. The forget signal is linked as the thing whose routine use the architectural source describes, and the data set itself has no node beyond the concern that names it. No group and no technology is named, and "all participants" is not read as a group.
+Thin spots: the sources say nothing on how the infrastructure answers the integrity concern, so no "is addressed by" edge is coded; the page tells no edge. The forget signal is named as the thing whose routine use the architectural source describes, and the data set itself has no node beyond the concern that names it. No group and no technology is named, and "all participants" is not read as a group.
 
 ## Edges told
 
