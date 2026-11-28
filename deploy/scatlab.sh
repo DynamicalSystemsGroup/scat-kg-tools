@@ -70,6 +70,7 @@ URL=""
 
 have() { command -v "$1" >/dev/null 2>&1; }
 
+# shellcheck source=/dev/null
 . "$HERE/retire-old.sh" # retire_old: an installed copy of the earlier name is replaced, once per Mac
 
 # ---------------------------------------------------------------- UI
