@@ -3207,3 +3207,12 @@ alternatives. please respect our "mak the right way the easy way and as simple a
 heurisics"". Outcome: no change to WP34's flag now; a UX spike (RS8, to be scoped) considers the alternatives for
 telling a coder when candidate links carry no evidence, held to "make the right way the easy way" and "as simple as
 possible but no simpler".
+
+## D-192 | 2026-11-27 | Amendment to the locked lifecycle model: two strings quoted
+
+WP30's fresh reviewer found that two unquoted strings in the model's `yaml lifecycle` block contain commas, so YAML
+split them: code's required input "field notes (from capture, or the organiser's own)" read as two items, and L3's
+trigger was cut at "(solo trial" with a stray key. The ACE's error; its consistency test and its fresh reviewer missed
+it. Asked to approve the fix (quote the two strings, no change in meaning, and a test that catches such splits), the
+chief engineer said (typed by the agent): "Approve the fix". Applied on `dev`; the new test fails on the unfixed
+document and passes on the fixed one.
