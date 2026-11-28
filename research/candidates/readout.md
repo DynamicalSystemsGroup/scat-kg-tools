@@ -1,7 +1,6 @@
 # Telling a coder when candidate links carry no evidence (RS8)
 
-**Status.** Desk parts done (27 Nov 2026): the cases (G1), five alternatives drawn and tabled (G2), the coder's next step
-as the ACE will read it (G3, desk part) and a recommendation (G4). The assistant readings in Claude and inference.coop
+**Status.** Desk parts done (27 Nov 2026): the cases (G1), five alternatives drawn and tabled (G2), the coder's next step as the author reads it for the ACE to check (G3, desk part) and a recommendation (G4). RS8-R3 asks for a recorded reading: it is met on the author's reading only until the ACE's and the assistants' readings are recorded. The assistant readings in Claude and inference.coop
 have not run; their plan is in appendix C. The prototypes, fixtures and raw outputs are on branch `spike/candidates`
 and cited as `spike/candidates:<path>`; nothing there is merged. Words are those of `GLOSSARY.md`. "Account" is the body
 of a narrative outside its `Edges told` section. A candidate **carries evidence** when the account links both of its
@@ -20,13 +19,11 @@ nodes. Figures and counts are in appendices A and B.
   left out.** One test (does the account link both nodes?) replaces the flag and covers F1 to F3. It is the simplest
   alternative that makes the right step the easy one (G4).
 - **"Evidence" is weaker than it sounds.** It means two links in the account, not an account that relates the two
-  nodes. In the lab vault only 7 of the 25 candidates have both nodes in one paragraph (A1). The dashed line must keep
-  meaning "look", which `docs/coding.md` already says: add a row if the account tells the edge, leave it if not.
+  nodes. In the lab vault only 7 of the 25 candidates have both nodes in one paragraph (A1). The dashed line must keep meaning "look" (the shipped captions call a candidate "a link with no row"; a candidate is a pair, so WP38 may reword them), which `docs/coding.md` already says: add a row if the account tells the edge, leave it if not.
 
 ## G1. The cases
 
-A candidate is a pair of linked nodes in neighbouring layers with no `Edges told` row (`graph.py`, rule 4). Rows are
-links too, so a row's two ends are in the pool: a narrative with rows and no account links gets a candidate for every
+A candidate is a pair of linked nodes in neighbouring layers with no `Edges told` row (`graph.py`, rule 4). A row's two ends are links to nodes, so they are in the pool: a narrative with rows and no account links gets a candidate for every
 neighbouring pair of its row ends that no row joins. The fixtures hold the rows fixed (six rows, eight nodes) and vary
 only the account, so the causes can be compared on one drawing (A2):
 
@@ -62,17 +59,15 @@ The right step is: read the account and the field notes, and add a link or a row
 a row because the figure drew a line. A coder reading a figure takes the easy reading, so the test is what that reading
 says (the readings are the author's, for the ACE-as-coder to check; the assistant's follow in C).
 
-| Alt | F1 (no account) | F2 (prose, no links) | F3 (some links) | Finished vault |
+| Alt (author's reading) | F1 (no account) | F2 (prose, no links) | F3 (some links) | Finished vault |
 |---|---|---|---|---|
 | (a) | Reads the flag: writes an account. **Right.** | Six dashed lines, no flag: "six rows to add". **Wrong.** | Same six; four rest on row ends only. **Wrong for four.** | Reads, decides. Right. |
 | (b) | Right. | Flag read: right. | No flag, six dashed: **wrong for four**, the miss that (b) cannot fix. | Right. |
 | (c) | Nothing drawn: nothing to add. Right, but identical to F6 (everything told). | Same as F1; the uncoded prose is not cued. | Two dashed; reads the account for them. **Right**, if the legend's "look" is kept. | Right. |
-| (d) | Six grey dotted lines: "weaker suggestions", some will be added. **Wrong risk.** | Same. | Two dashed and four dotted: key needed to read. Dotted also collides with the dotted narrative mark of `mark_narratives`. | Right (all dashed, key never shown). |
+| (d) | Six grey dotted lines: "weaker suggestions", some will be added. **Wrong risk.** | Same. | Two dashed and four dotted: key needed to read. Dotted also collides with the dotted narrative mark of `mark_narratives` (`draw.py`, `LINE_STYLES`). | Right (all dashed; the key lists only the styles present). |
 | (e) | One line: six pairs not drawn, no account link. The count says the account is not linked: **right step is a link.** | Same: tells F2 from F6. | Two dashed and a count of four. **Right.** | Silent. Right. |
 
-(a) and (b) put the burden on a flag that cannot know what the prose does; (d) keeps the wrong lines on screen and
-adds a second thing to learn; (c) removes the wrong lines but gives F2 and F6 the same picture; (e) is the only one in
-which a figure with nothing to say differs from a figure that cannot say anything.
+(a) and (b) rest on a flag that cannot know what the prose does; (d) keeps the wrong lines and adds a key to learn; (c) removes them but draws F2 and F6 alike; (e) alone tells a figure with nothing to say from one that cannot say.
 
 ## G4. Recommendation
 
@@ -80,25 +75,24 @@ which a figure with nothing to say differs from a figure that cannot say anythin
 where it is above zero. Simpler fails: (c) cannot tell F2 from F6; (a) and (b) fail on F3; (0) removes the feature
 that finds what is left to code. (d) is not simpler than (e) and keeps the wrong lines.
 
-Cost, estimated and not built (3 points). **Code:** replace `_no_account` (17 lines, `views.py`) by a helper that
+Cost, estimated and not built (3 points). **Code:** replace `_no_account` (21 lines with its docstring, `views.py`) by a helper that
 returns the nodes the account links, reusing its section logic; filter candidates by it in `fingerprint` and `layered`;
 replace the two flag branches in `draw.py` by one count line. Net lines about the same. The rule-4 candidate in
 `graph.py` stays as it is. **Contract:** `no_account` leaves `contracts/machine-interface.schema.json` and is replaced
 by a count; WP34 added the key on 27 Nov, so whether `schema_version` moves is an ACE call. **Docs:** the paragraph in
 `docs/analysis.md`, one sentence in `docs/coding.md` (the right step), `docs/reference/{api,cli,mcp}.md`, and the tool
 description in `mcp_server/server.py`. **Tests:** `tests/views/test_draw_hidden.py` (the flag tests become evidence and
-count tests), `test_layered_parity.py` and `test_schema.py` (24 lines name the flag).
+count tests), `tests/views/test_layered_parity.py` and `tests/views/test_schema.py` (6 lines name the flag).
 
 Open for the chief engineer, one decision: does a link in a list item count as the account (the simple reading, used
-here, over-counts in F5 and in three candidates of the examples) or only a link in prose (the prototype's version is one regular expression and one set)? A
+here, over-counts in F5 and in three candidates of the examples) or only a link in prose (the prototype's version is a regular expression and a set, `proto/evidence.py`)? A
 stricter proximity test (one paragraph) would trim 21 of 40 evidenced candidates and is not recommended: an account may
 tell an edge across paragraphs.
 
 ## What this readout does not show
 
 The assistant readings (C) and the coder reading by the ACE have not been run. The readings in G3 are the author's.
-The 40 real candidates are from one range vault and the contract examples; no vault from field data was read. Whether
-the chat path's assistants produce rows-first narratives was not measured; it is inferred from `record-edge`'s help.
+The 40 real candidates come from one range vault and the examples; no field vault was read. That the chat path produces rows-first narratives is inferred from `record-edge`'s help, not measured.
 
 ---
 
