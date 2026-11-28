@@ -452,10 +452,14 @@ generated through the MCP server, and a clean check of a private repository, the
   everything in the docs. What each reads, what it tries to do, and whether it is satisfied with what it finds follow
   from its role's activities in their stages. **Most run on Haiku**, so the test doesn't depend on much reasoning: if
   the right way needs reasoning to find, it isn't yet the easy way.
-- **Setup.** Each tester starts in a clean user environment and follows only what the docs say, previewed on
-  localhost from a fresh clone. The roles that code do so on the manual path and on the chat path, at least once each.
-  Each codes material in a domain of its own, different from the worked example.
-- **Reporting.** Testers may not read `src/` or `tests/`, and every claim comes with pasted output or a screenshot. A
+- **Through the user interfaces, as a person would.** Humans are visual. A tester reads the docs site in a browser,
+  hosted on localhost from a fresh clone, and clicks through it; uses the tools in their user interfaces: Claude and
+  inference.coop in the browser, Obsidian on the desktop, the menu-bar app and, where its role's docs say so, a
+  terminal; and follows only what the docs say. Reading the code instead of using the interfaces is not user
+  acceptance. inference.coop is used gently, one chat and one step at a time. The roles that code do so on the manual
+  path and on the chat path, at least once each, each with material in a domain of its own, different from the
+  worked example.
+- **Reporting.** Testers may not read `src/` or `tests/`, and every claim comes with a screenshot of what the tester saw. A
   report says, activity by activity, where the tester got stuck, what it had to guess, and whether it was satisfied.
 - **Pass bar.** Every tester completes its role's activities. A finding is **blocking** if it stopped the tester short,
   or if a docs command doesn't work as shown. A finding is fixed by simplifying or trimming the docs, not by adding
