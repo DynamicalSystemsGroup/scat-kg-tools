@@ -3349,3 +3349,16 @@ RS8's option (e) now or after RS8's held assistant readings) and three defaults.
 
 Asked whether WP39 adopts RS8's option (e) now or after RS8's held assistant readings, the chief engineer said (typed
 by the agent): "Adopt (e) now". The readings still run at the planned sitting and may amend it.
+
+## D-208 | 2026-11-27 | WP39 cut to its simplest form
+
+Asked to approve WP39's defaults (a `candidates_not_drawn` counter with a format version bump; a `check` warning on a
+list of links; RS8's six fixtures as the test), the chief engineer said (typed by the agent): "explain candidates not
+drawn? why do i feel like you added a bunch of cruft. i need you to sweep everything you added and make sure you can
+justify it. this is not keeping to "as simple as possible but no simpler"". The ACE swept its additions: the counter,
+the version bump and the list warning could not be justified (the counter worked around narratives that break D-205);
+it proposed one rule instead (every row end is linked in the account; all 12 real narratives already pass), with
+candidates taken from the account alone and the flag removed with nothing in its place. The chief engineer: "Rewrite it
+so". WP39 is rewritten to four goals (retire the list; the rule; candidates from the account; one sentence in the
+coding guide) and two naming and review defaults. This supersedes D-207's adoption of RS8's option (e): its count line
+is dropped; its drawing only evidenced candidates follows from the rule.
