@@ -17,8 +17,6 @@ On the Thursday they switched on the [[direct-message-reminder|reminder]], which
 | from | type | to | note |
 |---|---|---|---|
 | [[ethnographers]] | holds | [[closing-the-loop]] | The loop depends on members answering first. |
-| [[closing-the-loop]] | is addressed by | [[durable-shared-records]] | Written up for the next round. |
-| [[durable-shared-records]] | is provided by | [[telescope]] |  |
 | [[ethnographers]] | holds | [[unanswered-direct-messages]] | Counted to thirty and stopped. |
 | [[unanswered-direct-messages]] | is addressed by | [[direct-message-reminder]] | About half answered by Sunday. |
 | [[direct-message-reminder]] | is provided by | [[forum-bot]] |  |

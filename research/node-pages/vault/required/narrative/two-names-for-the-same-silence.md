@@ -24,5 +24,3 @@ The notes do not say whether the group meant to keep the two phrases apart. They
 | [[unanswered-direct-messages]] | is addressed by | [[direct-message-reminder]] | The same reminder. |
 | [[direct-message-reminder]] | is provided by | [[forum-bot]] |  |
 | [[ethnographers]] | holds | [[closing-the-loop]] | The larger worry both sit inside. |
-| [[closing-the-loop]] | is addressed by | [[durable-shared-records]] | Tracked round by round. |
-| [[durable-shared-records]] | is provided by | [[telescope]] |  |
