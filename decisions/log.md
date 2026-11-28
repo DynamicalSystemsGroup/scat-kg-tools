@@ -3324,3 +3324,17 @@ With no open items left in any of the three (D-197 to D-203), the chief engineer
 three". Order of execution (the ACE's): WP36, then WP38, then WP37 last, since the rename touches every page and is best
 done once the others land. Renaming the GitHub repositories is an account action the chief engineer does himself when
 WP37 reaches it; everything else in WP37 is prepared for it.
+
+## D-205 | 2026-11-27 | The "Linked beyond the text" list is retired; evidence means the account links both nodes
+
+RS8 asked whether a link in a narrative's "Linked beyond the text" list counts as the account for its evidence rule.
+The ACE explained that the account is the narrative's prose and that the page contract defines the list as nodes the
+account does not name in words. The chief engineer (typed by the agent): "something seems fishy here. i feel like
+concepts are either part of the narrative or they are not. it seems like adding lots of other links is an easy way to
+make clutter. i am disinclined to include them but further i would discourage link dumping at the end. why did we
+introduce that". The ACE found the list was its own addition at WP16 (D-088), carried through every layout variant
+with no recorded reason, and now in the page contract, the rule catalogue, the coding guide's step, one example
+narrative and one template narrative. Asked what should happen to it, he said: "Retire it". Outcome: a concept is in a
+narrative only if its account names it; the list leaves the page contract, the rule catalogue, the coding guide, the
+example and the template, and `check` flags such a list. RS8's evidence rule is "the account links both nodes". The
+change is a small package of its own (candidate C20), to be scoped; WP38's glossary defines "account" without the list.
