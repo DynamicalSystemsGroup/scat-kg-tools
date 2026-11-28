@@ -3421,3 +3421,11 @@ and the strict docs build, then merged the tools branch into `dev` with a merge 
 `check_metrics.py --accept WP37` passes (iteration 63). The PM's three calls on the morning list (the silent retirement
 of the old app, the names test's three allowed files, `scat-vault`) stand unless the chief engineer changes them. WP37
 is accepted once R2's on-screen run (install SCATLAB over SCAT Chat) is done in his sitting.
+
+## D-214 | 2026-11-28 | WP39 approved
+
+Reviewing WP39 with the ACE, the chief engineer was asked whether its rule (every row end is linked in the account)
+stays an error at `done`, like the other row-end rules, given that a `done` narrative in someone else's vault could
+start failing `check`; he said (typed by the agent): "Error at done". Asked to approve the two defaults (the rule
+pair's names; a fresh reviewer) and with them the scope, he said: "Approve WP39". WP39's paths were brought in line with
+the WP37 rename (`src/scat_tools`) before the review.
