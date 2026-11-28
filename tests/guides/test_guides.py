@@ -179,7 +179,7 @@ def test_the_index_covers_every_stage_and_every_transition():
     text = guides.guide_text("index")
     for name, spec in INST["stages"].items():
         assert f"- {name}: {spec['work']}" in text
-    assert [t["id"] for t in INST["transitions"]] == [f"L{i}" for i in range(1, 14)]
+    assert [t["id"] for t in INST["transitions"]] == [f"L{i}" for i in range(1, 13)]
     for t in INST["transitions"]:
         p = t["predicate"]
         line = next(ln for ln in text.splitlines() if ln.startswith(f"- {t['id']} "))

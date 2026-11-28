@@ -43,7 +43,7 @@ def exit_(id_, to, dir_, trigger, decides, predicate):
 
 L2 = exit_("L2", "capture", "forward", "the sessions are planned", "organiser", PERSON)
 L5 = exit_("L5", "analyse", "forward", "the narratives are coded", "coder", DETECT_FALSE)
-L7 = exit_("L7", "plan", "backward", "the cap refuses a new group", "setup person", DETECT_TRUE)
+L7 = exit_("L7", "plan", "backward", "the cap refuses a new group", "organiser", PERSON)
 L1 = exit_(
     "L1",
     "any",
@@ -74,7 +74,7 @@ GUIDE = {
     "text": "# code\n...",
     "docs": "docs/coding.md",
     "tools": ["check", "status"],
-    "exits": ["L5", "L7", "L8", "L13"],
+    "exits": ["L5", "L7", "L8"],
 }
 INDEX = GUIDE | {
     "stage": "index",
@@ -86,8 +86,6 @@ WHICH = stage_doc(
     "which-stage",
     stage="code",
     set_by="Ana",
-    set_at="2026-11-27T10:00:00Z",
-    pending=None,
     work="Go round the coding loop for each narrative.",
     required_inputs=["field notes", "a set-up vault"],
     tools=["check", "status"],
@@ -96,13 +94,10 @@ WHICH = stage_doc(
     text="The project is in the code stage, set by Ana.",
     guide="scat://guide/code",
 )
-WHICH_PENDING = WHICH | {"pending": {"to": "analyse", "requested_at": "2026-11-27T11:00:00Z"}}
 WHICH_UNKNOWN = stage_doc(
     "which-stage",
     stage="unknown",
     set_by=None,
-    set_at=None,
-    pending=None,
     work="No stage is recorded.",
     stages=[
         {"name": "plan", "work": "Set the terms."},
@@ -124,22 +119,12 @@ SET_MOVED = stage_doc(
     text="Moved from code to analyse.",
     stage="analyse",
 )
-SET_PENDING = stage_doc(
-    "set-stage",
-    moved=False,
-    to="analyse",
-    transition="L5",
-    pending={"to": "analyse", "requested_at": "2026-11-27T11:00:00Z"},
-    text="Recorded a request; the person must say so and who they are, then call again with `by`.",
-)
 SAMPLES = {
     "guide": GUIDE,
     "index": INDEX,
     "which_stage": WHICH,
-    "which_stage with a pending request": WHICH_PENDING,
     "which_stage unknown": WHICH_UNKNOWN,
     "set_stage moved": SET_MOVED,
-    "set_stage pending": SET_PENDING,
 }
 
 
@@ -197,9 +182,6 @@ MALFORMED = {
         WHICH, lambda d: d["exits"][0].update(predicate={"kind": "person", "check": "x"})
     ),
     "an exit with a bad direction": mutated(WHICH, lambda d: d["exits"][0].update(dir="sideways")),
-    "a pending request without a time": mutated(
-        WHICH_PENDING, lambda d: d["pending"].pop("requested_at")
-    ),
     "set_stage without moved": mutated(SET_MOVED, lambda d: d.pop("moved")),
     "a moved set_stage without a transition": mutated(SET_MOVED, lambda d: d.pop("transition")),
     "a moved set_stage without advisory": mutated(SET_MOVED, lambda d: d.pop("advisory")),

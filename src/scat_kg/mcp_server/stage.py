@@ -12,7 +12,6 @@ import os
 import tempfile
 import tomllib
 from dataclasses import dataclass
-from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -34,16 +33,6 @@ _OWN = (
     f"({prompts.CITE}). "
 )
 
-# `tool_limits` of the instance, enforced: keyed by the tool and the limit's text, each a check of the call's
-# arguments that returns why it breaks the limit, or None. A limit in the instance with no entry here fails a test.
-LIMITS = {
-    ("stub", "group pages only"): lambda args: (
-        None
-        if args.get("type") == "group"
-        else f"in this stage `stub` makes group pages only, and `type` is {args.get('type')!r}"
-    ),
-}
-
 
 @dataclass(frozen=True)
 class State:
@@ -51,12 +40,7 @@ class State:
 
     stage: str | None = None
     set_by: str | None = None
-    set_at: str | None = None
-    pending: dict | None = None
     problem: str | None = None  # why the stage is unknown, when there is a file
-    writable_pending: bool = (
-        True  # False for a malformed file or an unknown stage name: only `by` overwrites it
-    )
 
 
 def read_state(root: Path) -> State:
@@ -67,18 +51,9 @@ def read_state(root: Path) -> State:
     try:
         data = tomllib.loads(path.read_bytes().decode("utf-8"))
     except (tomllib.TOMLDecodeError, UnicodeDecodeError) as e:
-        return State(problem=f"`{FILE}` is not valid TOML ({e})", writable_pending=False)
+        return State(problem=f"`{FILE}` is not valid TOML ({e})")
     except OSError as e:
-        return State(problem=f"`{FILE}` could not be read ({e})", writable_pending=False)
-    pending = data.get("pending")
-    if not (
-        isinstance(pending, dict)
-        and isinstance(pending.get("to"), str)
-        and isinstance(pending.get("requested_at"), str)
-    ):
-        pending = None
-    else:
-        pending = {"to": pending["to"], "requested_at": pending["requested_at"]}
+        return State(problem=f"`{FILE}` could not be read ({e})")
 
     def text(key: str) -> str | None:
         v = data.get(key)
@@ -86,15 +61,11 @@ def read_state(root: Path) -> State:
 
     names = ", ".join(guides.STAGES)
     if "stage" not in data:
-        return State(pending=pending, problem=f"`{FILE}` has no `stage`")
+        return State(problem=f"`{FILE}` has no `stage`")
     stage = data["stage"]
     if not isinstance(stage, str) or stage not in guides.STAGES:
-        return State(
-            pending=pending,
-            problem=f"`{FILE}` names the stage {stage!r}, which is not one of {names}",
-            writable_pending=False,
-        )
-    return State(stage, text("set_by"), text("set_at"), pending)
+        return State(problem=f"`{FILE}` names the stage {stage!r}, which is not one of {names}")
+    return State(stage, text("set_by"))
 
 
 def _q(s: str) -> str:
@@ -102,24 +73,13 @@ def _q(s: str) -> str:
     return json.dumps(s, ensure_ascii=False).replace("\x7f", "\\u007f")
 
 
-def write_state(
-    root: Path,
-    stage: str | None,
-    set_by: str | None,
-    set_at: str | None,
-    pending: dict | None = None,
-) -> None:
+def write_state(root: Path, stage: str | None, set_by: str | None) -> None:
     """Write `lifecycle.toml` atomically: a temp file in the same folder, then a replace."""
     lines = []
     if stage is not None:
         lines.append(f"stage = {_q(stage)}")
         if set_by is not None:
             lines.append(f"set_by = {_q(set_by)}")
-        if set_at is not None:
-            lines.append(f"set_at = {_q(set_at)}")
-    if pending:
-        lines += ["", "[pending]", f"to = {_q(pending['to'])}"]
-        lines.append(f"requested_at = {_q(pending['requested_at'])}")
     body = "\n".join(lines).strip("\n") + "\n"
     fd, tmp = tempfile.mkstemp(dir=root, prefix=".lifecycle-", suffix=".tmp")
     try:
@@ -134,10 +94,6 @@ def write_state(
         except OSError:
             pass
         raise
-
-
-def _now() -> str:
-    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 # ---- the instance, read per call (it is cached and copied by `guides`)
@@ -221,24 +177,13 @@ def _out_of_stage_refusal(root: Path, tool: str, inst: dict, stage: str) -> dict
     )
 
 
-def _limit_refusal(root: Path, tool: str, limit: str, why: str, stage: str) -> dict:
-    return _refusal(
-        root,
-        tool,
-        f"tool `{tool}`",
-        f"in the {stage} stage `{tool}` is limited: {limit}. {why}. Nothing was changed",
-        "make a call within the limit, or ask the person whether to move to a stage without it "
-        "(a move is the person's say-so).",
-    )
-
-
 def _as_result(doc: dict) -> CallToolResult:
     text = pydantic_core.to_json(doc, fallback=str, indent=2).decode()
     return CallToolResult(content=[TextContent(type="text", text=text)], structuredContent=doc)
 
 
-def check_call(root: Path, tool: str, args: dict) -> dict | None:
-    """The refusal document for a call to `tool` with `args` in the vault's stage now, or None when it may run."""
+def check_call(root: Path, tool: str) -> dict | None:
+    """The refusal document for a call to `tool` in the vault's stage now, or None when it may run."""
     inst = guides.instance()
     state = read_state(root)
     if state.stage is None:
@@ -246,17 +191,12 @@ def check_call(root: Path, tool: str, args: dict) -> dict | None:
     spec = inst["stages"][state.stage]
     if tool not in spec["tools"]:
         return _out_of_stage_refusal(root, tool, inst, state.stage)
-    for limited, limit in (spec.get("tool_limits") or {}).items():
-        if limited == tool:
-            why = LIMITS[(tool, limit)](args)
-            if why:
-                return _limit_refusal(root, tool, limit, why, state.stage)
     return None
 
 
 def _guarded(root: Path, tool: str, inner):
     def run(**kwargs):
-        doc = check_call(root, tool, kwargs)
+        doc = check_call(root, tool)
         return _as_result(doc) if doc is not None else inner(**kwargs)
 
     return run
@@ -291,8 +231,6 @@ def which_stage_doc(root: Path) -> dict:
         doc |= {
             "stage": UNKNOWN,
             "set_by": None,
-            "set_at": None,
-            "pending": state.pending,
             "work": "No stage is recorded; a person names one.",
             "required_inputs": [],
             "tools": list(inst["stage_tools"]),
@@ -308,14 +246,8 @@ def which_stage_doc(root: Path) -> dict:
     spec = inst["stages"][state.stage]
     exits = [_exit_doc(t, root) for t in _transitions_out(inst, state.stage)]
     lines = [f"Stage: {state.stage}. {spec['work']}"]
-    if state.set_by or state.set_at:
-        lines.append(
-            f"Set by {state.set_by or 'nobody named'} at {state.set_at or 'a time not recorded'}."
-        )
-    if state.pending:
-        lines.append(
-            f"A request to move to {state.pending['to']} is pending (since {state.pending['requested_at']})."
-        )
+    if state.set_by:
+        lines.append(f"Set by {state.set_by}.")
     lines.append("Tools: " + ", ".join(spec["tools"] + list(inst["stage_tools"])) + ".")
     for e in exits:
         p = e["predicate"]
@@ -330,8 +262,6 @@ def which_stage_doc(root: Path) -> dict:
     doc |= {
         "stage": state.stage,
         "set_by": state.set_by,
-        "set_at": state.set_at,
-        "pending": state.pending,
         "work": spec["work"],
         "required_inputs": list(spec["required_inputs"]),
         "tools": list(spec["tools"]),
@@ -343,16 +273,9 @@ def which_stage_doc(root: Path) -> dict:
     return doc
 
 
-def _pick_transition(inst: dict, frm: str, to: str, root: Path) -> dict | None:
-    """The listed transition for a move. Where two list the same move, the one whose detect holds now, else a person's."""
+def _pick_transition(inst: dict, frm: str, to: str) -> dict | None:
+    """The listed transition for a move: a move has one."""
     found = [t for t in _transitions_out(inst, frm) if t["to"] in (to, "any")]
-    for t in found:
-        p = t["predicate"]
-        if p["kind"] == "detect" and detects.evaluate(p["check"], root)[0]:
-            return t
-    for t in found:
-        if t["predicate"]["kind"] == "person":
-            return t
     return found[0] if found else None
 
 
@@ -377,7 +300,7 @@ def set_stage_doc(root: Path, to: str, by: str | None) -> dict:
             f"the project is already in the {to} stage",
             f"from {frm} the exits are: {_exits_text(inst, frm)}",
         )
-    t = _pick_transition(inst, frm, to, root)
+    t = _pick_transition(inst, frm, to)
     if t is None:
         return _refusal(
             root,
@@ -387,41 +310,16 @@ def set_stage_doc(root: Path, to: str, by: str | None) -> dict:
             f"from {frm} the exits are: {_exits_text(inst, frm)}",
         )
     by = (by or "").strip()
-    now = _now()
     if not by:
-        if not state.writable_pending:
-            return _refusal(
-                root,
-                "set_stage",
-                f"`{FILE}`",
-                f"{state.problem}, and a request cannot be recorded without overwriting it",
-                f"the person says the move and who they are, then call `set_stage(to={to!r}, by)` with `by`, "
-                f"which overwrites the file",
-            )
-        pending = {"to": to, "requested_at": now}
-        try:
-            write_state(root, state.stage, state.set_by, state.set_at, pending)
-        except OSError as e:
-            return _refusal(
-                root,
-                "set_stage",
-                f"`{FILE}`",
-                f"could not write: {e}",
-                "check the folder's permissions",
-            )
-        return _base(root, "set-stage") | {
-            "stage": frm,
-            "moved": False,
-            "to": to,
-            "transition": t["id"],
-            "decides": t["decides"],
-            "pending": pending,
-            "text": (
-                f"Recorded a request to move from {frm} to {to} ({t['id']}); the stage did not move. "
-                f"The {t['decides']} decides: the person must say so and say who they are, "
-                f"then call `set_stage(to={to!r}, by)` with `by` set to their name."
-            ),
-        }
+        return _refusal(
+            root,
+            "set_stage",
+            f"move {frm} to {to}",
+            "`by` is needed: a move is signed with the name of the person who said so, and none was given, "
+            "so nothing moved and nothing was written",
+            f"the person says the move and gives the name to sign with; then call `set_stage(to={to!r}, by)` "
+            "with that name",
+        )
     advisory = []
     p = t["predicate"]
     if p["kind"] == "detect":
@@ -432,7 +330,7 @@ def set_stage_doc(root: Path, to: str, by: str | None) -> dict:
                 "because a detect predicate only advises"
             )
     try:
-        write_state(root, to, by, now, None)
+        write_state(root, to, by)
     except OSError as e:
         return _refusal(
             root,
@@ -442,14 +340,12 @@ def set_stage_doc(root: Path, to: str, by: str | None) -> dict:
             "check the folder's permissions",
         )
     exits = [_exit_doc(x, root) for x in _transitions_out(inst, to)]
-    text = f"Moved from {frm} to {to} ({t['id']}, {t['decides']} decides), set by {by} at {now}."
+    text = f"Moved from {frm} to {to} ({t['id']}, {t['decides']} decides), set by {by}."
     if advisory:
         text += " " + " ".join(advisory) + "."
     return _base(root, "set-stage") | {
         "stage": to,
         "set_by": by,
-        "set_at": now,
-        "pending": None,
         "moved": True,
         "from": frm,
         "to": to,
@@ -489,7 +385,7 @@ def apply(mcp: FastMCP, root: Path) -> None:
         name="which_stage",
         description=(
             _OWN
-            + "Say the project's stage (or unknown), who set it and when, the stage's work, tools and exits; for "
+            + "Say the project's stage (or unknown), who set it, the stage's work, tools and exits; for "
             "each exit its predicate, and for a detect predicate whether it holds now. Writes nothing. Works in "
             "every stage. Returns the stage document. Stages: all."
         ),
@@ -501,8 +397,8 @@ def apply(mcp: FastMCP, root: Path) -> None:
         name="set_stage",
         description=(
             _OWN
-            + "Move the project to stage `to`, only a move the stage's exits list. With `by`, the move is made "
-            "and written to `lifecycle.toml`; without `by` a request is recorded as pending and nothing moves. "
+            + "Move the project to stage `to`, only a move the stage's exits list. `by` is required: the move "
+            "is made and written to `lifecycle.toml`; without `by` the call is refused and nothing is written. "
             "A detect predicate that does not hold is reported and does not block. "
             + _SIGNATURE
             + " Returns the stage document. Stages: all."

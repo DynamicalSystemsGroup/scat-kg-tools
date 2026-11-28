@@ -173,7 +173,7 @@ def test_the_input_schemas_are_byte_identical_before_and_after_apply(tmp_path, m
     assert before and before == after and len(after) == 19
 
 
-# ---- R3: out of stage, and the tool limits
+# ---- R3: out of stage
 
 
 @pytest.mark.parametrize("name", STAGES)
@@ -194,27 +194,14 @@ def test_an_out_of_stage_call_writes_nothing_and_names_the_stages_and_exits(tmp_
             assert eid in fix, (tool, eid)
 
 
-def test_the_instance_names_no_tool_limit_without_a_checker():
-    limits = {
-        (t, text)
-        for s in INST["stages"].values()
-        for t, text in (s.get("tool_limits") or {}).items()
-    }
-    assert limits and limits <= set(stage.LIMITS)
-
-
-def test_in_plan_stub_makes_group_pages_only(tmp_path):
-    root = vault(tmp_path / "v", stage="plan")
-    before = snapshot(root)
-    doc = call_one(root, "stub", {"name": "fresh-concern", "type": "concern"})
-    assert is_stage_refusal(doc, "stub") and "group pages only" in doc["refused"][0]["why"]
-    assert valid(doc) and snapshot(root) == before
-    doc = call_one(root, "stub", {"name": "fresh-group", "type": "group"})
-    assert doc["ok"] is True and doc["created"] == ["group/fresh-group.md"]
-    assert (root / "group" / "fresh-group.md").is_file()
-    # in code the same stub of a concern is made: the limit is plan's
-    code = vault(tmp_path / "c", stage="code")
-    assert call_one(code, "stub", {"name": "fresh-concern", "type": "concern"})["ok"] is True
+def test_there_is_no_tool_limit_and_stub_in_plan_makes_any_type(tmp_path):
+    assert not hasattr(stage, "LIMITS")
+    assert all("tool_limits" not in s for s in INST["stages"].values())
+    for n, kind in enumerate(("concern", "group")):
+        root = vault(tmp_path / f"v{n}", stage="plan")
+        doc = call_one(root, "stub", {"name": f"fresh-{kind}", "type": kind})
+        assert doc["ok"] is True and doc["created"] == [f"{kind}/fresh-{kind}.md"]
+        assert (root / kind / f"fresh-{kind}.md").is_file()
 
 
 def test_the_refusals_are_results_not_errors_and_carry_the_mode(tmp_path):

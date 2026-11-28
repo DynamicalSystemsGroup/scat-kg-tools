@@ -26,7 +26,7 @@ NO_EDIT_STAGES = {"capture", "analyse", "report"}
 STAGES = {"plan", "capture", "code", "analyse", "report"}
 GLOSSARY = ROOT / "GLOSSARY.md"
 TERMS = ROOT / "docs" / "reference" / "terms.md"
-# The backward moves WP29-G2 requires: Analyse to Code, and Code to Plan when the cap is met.
+# The backward moves WP29-G2 requires: Analyse to Code, and Code to Plan (L7, on the organiser's word).
 REQUIRED_BACKWARD = {("analyse", "code"), ("code", "plan")}
 
 
@@ -110,9 +110,9 @@ def test_every_stage_lists_its_parts_and_a_review_loop_per_output():
             assert str(out.get("produced_by", "")).strip(), (name, out)
 
 
-def test_tool_limits_name_tools_of_their_stage():
+def test_no_stage_limits_a_tool():
     for name, stage in instance()["stages"].items():
-        assert set(stage.get("tool_limits", {})) <= set(stage["tools"]), name
+        assert "tool_limits" not in stage, name
 
 
 def test_stages_that_do_not_edit_offer_no_writing_tool():

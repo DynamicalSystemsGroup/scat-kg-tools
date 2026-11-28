@@ -441,7 +441,7 @@ lifecycle. It is not a page's status (`stub`, `draft`, `done`), which changes ma
 offers the tools its work needs, and the server's guide for the stage says what to do in it.
 
 - **Ask which stage it is.** Say "what stage are we in?" The assistant calls `which_stage`, which gives the stage, who
-  set it and when, the stage's work, its tools, and where it can go next.
+  set it, the stage's work, its tools, and where it can go next.
 - **Name a stage.** Say it plainly, for example "we are coding". The assistant calls `set_stage` with your name as `by`
   and says what it did. It never moves the stage on its own: you decide, and your name is only a signature.
 - **It is kept in the vault.** The stage is in the file `lifecycle.toml` at the vault's root. It is the same in every

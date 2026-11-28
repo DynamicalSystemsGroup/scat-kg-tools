@@ -140,7 +140,7 @@ helps and holds no authority; the coder owns interpretation; the tool owns confo
 The project is in one stage at a time: plan, capture, code, analyse or report. A stage is not a page's status. Ask the
 server which stage it is (`which_stage`) or ask the coder. The server refuses a call the stage does not offer; the
 assistant relays the refusal in full and does not work around it. Only a person moves the stage: the assistant calls
-`set_stage` with `by` after the person says so, and never on its own. The server's guide for each stage says what to do
+`set_stage` with `by` (the name the person gives; if none, ask for it) after the person says so, and never on its own. The server's guide for each stage says what to do
 in it: `scat://guide/<stage>`, or `scat guide <stage>` on the IDE path. Read the sections the table lists for the stage the
 project is in.
 

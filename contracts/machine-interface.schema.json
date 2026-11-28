@@ -147,7 +147,7 @@
       }
     },
     "StageResult": {
-      "description": "What the server's which_stage and set_stage return. which-stage: the stage (or unknown), who set it and when, any pending request, the stage's work, required inputs, tools, prompts and exits, plus text and the uri of its guide; when the stage is unknown, stages lists the five with their work. set-stage: moved says whether the stage changed; a request without `by` is recorded as pending and moves nothing; a move gives from, to, transition, decides and any advisory, with the new stage's exits. A refused stage call is an OperationResult with ok false.",
+      "description": "What the server's which_stage and set_stage return. which-stage: the stage (or unknown), who set it, the stage's work, required inputs, tools, prompts and exits, plus text and the uri of its guide; when the stage is unknown, stages lists the five with their work. set-stage: moved says whether the stage changed; a move gives from, to, transition, decides and any advisory, with the new stage's exits. A refused stage call is an OperationResult with ok false.",
       "type": "object",
       "required": ["schema_version", "kind", "operation", "ok", "mode"],
       "properties": {
@@ -158,18 +158,6 @@
         "ok": { "const": true },
         "stage": { "type": "string", "minLength": 1, "description": "The project's stage, or unknown. Optional in set-stage, where it is the stage after the call." },
         "set_by": { "type": ["string", "null"], "description": "Who made the move, as given." },
-        "set_at": { "type": ["string", "null"], "description": "UTC, ISO 8601 to the second, ending in Z." },
-        "pending": {
-          "description": "A recorded request that has not moved the stage, or null.",
-          "oneOf": [
-            { "type": "null" },
-            {
-              "type": "object",
-              "required": ["to", "requested_at"],
-              "properties": { "to": { "type": "string" }, "requested_at": { "type": "string" } }
-            }
-          ]
-        },
         "work": { "type": "string", "description": "which-stage: the stage's work in one line." },
         "required_inputs": { "$ref": "#/$defs/StringList" },
         "tools": { "$ref": "#/$defs/StringList" },
@@ -189,14 +177,14 @@
         "moved": { "type": "boolean", "description": "set-stage: true when the stage changed." },
         "from": { "type": "string", "description": "set-stage, when moved: the stage before." },
         "to": { "type": "string", "description": "set-stage: the stage asked for." },
-        "transition": { "type": "string", "pattern": "^L[0-9]+$", "description": "set-stage, when moved or requested: the transition's id." },
+        "transition": { "type": "string", "pattern": "^L[0-9]+$", "description": "set-stage, when moved: the transition's id." },
         "decides": { "type": "string", "description": "set-stage: the role who decides the move, as a reminder." },
         "advisory": { "$ref": "#/$defs/StringList", "description": "set-stage, when moved: a line for a detect predicate that does not hold now; it never blocks." }
       },
       "allOf": [
         {
           "if": { "properties": { "operation": { "const": "which-stage" } }, "required": ["operation"] },
-          "then": { "required": ["stage", "set_by", "set_at", "pending", "work", "exits", "text", "guide"] }
+          "then": { "required": ["stage", "set_by", "work", "exits", "text", "guide"] }
         },
         {
           "if": { "properties": { "operation": { "const": "set-stage" } }, "required": ["operation"] },

@@ -7,11 +7,8 @@ A detect is advice: nothing here moves a stage (contracts/lifecycle.md, section 
 from pathlib import Path
 
 import scat_kg
-from scat_kg.ops.stub import GROUP
-from scat_kg.vault import read_vault
 
 NARRATIVES_DONE = "every narrative is done and the whole-vault check has no errors"
-GROUPS_AT_CAP = "the stakeholder-group count is at the cap"
 
 
 def narratives_done(root: Path) -> tuple[bool, str]:
@@ -32,23 +29,7 @@ def narratives_done(root: Path) -> tuple[bool, str]:
     return done == len(narratives) and errors == 0, detail
 
 
-def groups_at_cap(root: Path) -> tuple[bool, str]:
-    """Holds when `scat.toml` has a usable `stakeholder_group_cap` and the group pages number at least that."""
-    vault = read_vault(root)
-    groups = len(vault.of_type(GROUP))
-    cfg = vault.config
-    if cfg.cap is None:
-        why = {
-            "missing": "scat.toml is missing",
-            "invalid-toml": "scat.toml is not valid TOML",
-            "key-missing": "scat.toml has no `stakeholder_group_cap`",
-            "bad-value": f"`stakeholder_group_cap` is {cfg.detail}, not a whole number of 1 or more",
-        }.get(cfg.problem, "the cap is not usable")
-        return False, f"{groups} groups, no usable cap: {why}"
-    return groups >= cfg.cap, f"{groups} groups, cap {cfg.cap}"
-
-
-READERS = {NARRATIVES_DONE: narratives_done, GROUPS_AT_CAP: groups_at_cap}
+READERS = {NARRATIVES_DONE: narratives_done}
 
 
 def evaluate(name: str, root: Path) -> tuple[bool, str]:

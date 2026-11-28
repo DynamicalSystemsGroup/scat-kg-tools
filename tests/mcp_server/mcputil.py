@@ -23,7 +23,7 @@ KEY = "test-key-0123456789"
 def put_stage(vault: Path, stage: str) -> None:
     """Record `stage` for the vault, as `set_stage` would (a test that walks tools sets the stage it needs)."""
     (vault / "lifecycle.toml").write_text(
-        f'stage = "{stage}"\nset_by = "the test"\nset_at = "2026-01-01T00:00:00Z"\n',
+        f'stage = "{stage}"\nset_by = "the test"\n',
         encoding="utf-8",
     )
 

@@ -116,8 +116,7 @@ def _stage_text(stage: str, inst: dict) -> tuple[str, str]:
         f"- {o['output']}: {o['produced_by']}. Review: {o['review']}."
         for o in spec["allowed_outputs"]
     ]
-    limits = spec.get("tool_limits") or {}
-    tools = ", ".join(f"`{t}`" + (f" ({limits[t]})" if t in limits else "") for t in spec["tools"])
+    tools = ", ".join(f"`{t}`" for t in spec["tools"])
     lines += [
         "",
         f"Tools: {tools}.",

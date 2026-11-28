@@ -40,9 +40,9 @@ prompt as written. After each step, read `lifecycle.toml` and `git status` in th
 
 - Prompt: `We are coding.`
 - Look for: the assistant calls `set_stage` with `to` as `code` and `by` as the coder's name (the name the ACE gives it
-  in the chat; ask it to use `ACE`), and says what it did. `lifecycle.toml` holds `stage = "code"`, `set_by` and
-  `set_at`. Then type `What stage are we in?`: the assistant calls `which_stage`, and the answer shows the stage,
-  `set_by`, `set_at`, the stage's work, its tools and its exits. Then `Run the check on the vault.` now runs.
+  in the chat; ask it to use `ACE`), and says what it did. `lifecycle.toml` holds `stage = "code"` and `set_by`.
+  Then type `What stage are we in?`: the assistant calls `which_stage`, and the answer shows the stage,
+  `set_by`, the stage's work, its tools and its exits. Then `Run the check on the vault.` now runs.
 
 ### 3. A request outside the stage
 
@@ -67,19 +67,19 @@ prompt as written. After each step, read `lifecycle.toml` and `git status` in th
 - Setup: in code.
 - Prompt: `Move to capture.` (no name given).
 - Look for: the assistant does not invent a name. Either it asks who is saying so, or it calls `set_stage` with no
-  `by`; the result says nothing moved and a request is pending (a `[pending]` table in `lifecycle.toml`, stage
-  unchanged). Then `It is ACE. Move to capture.`: the move is made, `[pending]` is gone, `set_by` is the name given.
-  Record which of the two the model did, and whether `which_stage` shows the pending request in between.
+  `by`; the call is refused (a normal result saying `by` is needed) and the assistant asks the coder for the name;
+  `lifecycle.toml` is unchanged. Then `It is ACE. Move to capture.`: the move is made and `set_by` is the name given.
+  Record which of the two the model did.
 
 ### 6. A move back
 
 - Analyse to code (L6): in analyse, `We need to revisit the coding of funders-meeting. Back to code.` The
   move is made; `set_by` is the name given.
-- Code to plan when the group cap is met (L7): the example vault already holds 3 groups against a cap of 3, so L7
-  holds with no setup. In code, type `Make a new stakeholder group page called night-shift-neighbours.` Look for:
-  `stub` refuses because the cap is met; `which_stage` shows L7 as holding (a detect predicate, advice only), and says
-  the setup person decides. Type `Move to plan.`: the move is made with `by` as the name given (the server does not
-  check the role; say so in the notes). To see the stub allowed in plan, the setup person raises
+- Code to plan on the coder's word (L7): the example vault already holds 3 groups against a cap of 3, so no setup is
+  needed. In code, type `Make a new stakeholder group page called night-shift-neighbours.` Look for:
+  `stub` refuses because the cap is met; `which_stage` shows L7 as a person predicate, and says the organiser decides.
+  Type `Move to plan.`, then give a name when asked: one move code to plan, made with `by` as the name given (the
+  server does not check the role; say so in the notes). To see the stub allowed in plan, the setup person raises
   `stakeholder_group_cap` in `scat.toml` (the ACE edits it for this check and restores it afterward); then type `Make
   that group page.`
 - Look for: in every move, who decides is named as a reminder, and the assistant never proposes a move as already
@@ -90,7 +90,7 @@ prompt as written. After each step, read `lifecycle.toml` and `git status` in th
 - Setup: in a stage other than the first one tried (for example capture).
 - Stop SCAT Chat and start it again (or restart the server container), then open a new chat in each client. Type `What
   stage are we in?`
-- Look for: the same stage, `set_by` and `set_at` as before, with no one having named it in the new chat. Then a tool
+- Look for: the same stage and `set_by` as before, with no one having named it in the new chat. Then a tool
   the stage offers works, and one it does not is refused. `git log` or `git diff` of `lifecycle.toml` shows each move.
 
 ### 8. inference.coop, where it differs
@@ -122,5 +122,5 @@ done. No key, address or account detail goes in.
 
 Findings to write: whether each client relayed every refusal in full; whether any assistant moved the stage without the
 coder saying so (a failure); what name it gave as `by`; whether the new chat found the stage with no help; any call
-the tool list showed that the model denied; what the pending request looked like to the coder; and anything in
+the tool list showed that the model denied; how the coder was asked for a name; and anything in
 `docs/chat-path.md` ("Stages") that did not match what the coder saw.
