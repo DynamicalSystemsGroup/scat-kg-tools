@@ -3692,3 +3692,9 @@ Outcome: a full rename. `scat:Stakeholder`, key, folder and `type: stakeholder`;
 contract, doc, glossary entry, example, the template and the tests; a one-time migration for existing vaults. Lesson
 for the ACE: D-172's request was applied to its narrowest reading (the plots) and the wider intent was lost; a
 request that names a term is checked across the whole vocabulary.
+
+## D-238 | 2026-11-28 | D-224 stands over D-172 on `kind`
+
+Told that D-224 (drawings stop dropping a layer by `kind`) reverses part of D-172, the chief engineer said (typed by the
+agent): "don't reverse my more recent decision. just rename group to stakeholder." Outcome: D-224 stands; the marks
+package does not reopen it. D-237's rename goes ahead.
