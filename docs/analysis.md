@@ -87,6 +87,20 @@ Every drawing labels its columns stakeholder, concern, affordance and technology
 
 In chat, the tools `fingerprint`, `layered` and `trace` each take `output`: `table` (the default), `plot` or `both`. A plot comes as `png` (the default) or, with `format`, as `svg`. One call asks the vault one question and returns the picture, the table or both, and they always agree. In `both`, the picture comes first, then the table. `fingerprint` and `layered` also take `candidates`. Ask for one by naming the view and what it shows, for example "plot the fingerprint of groups-under-a-cap-pitch". A plot of a fingerprint needs the name of one narrative. The picture comes back in the chat and is not saved in your vault. If your chat does not show the image, ask for `format` svg, which returns the plot as text, or for the table, or save the picture from Terminal with `uv run scat draw fingerprint --out fingerprint.png NARRATIVE`, or from the notebook. A name the vault does not have, or an error in the pages drawn, comes back as the same refusal the CLI gives, with what to do.
 
+### When the assistant cannot see the drawing
+
+Not every assistant's model receives the picture. In claude.ai the model received it in the recorded run; in inference.coop's chat you see the PNG and its default
+model received nothing from it (see [Pros and cons](path-pros-and-cons.md#what-the-model-sees-in-a-drawing)). If you are not sure,
+ask it whether it can view the images. Then choose by what you need:
+
+- **The table.** `output` `table` (the default) gives every node and edge the drawing shows, as text. Ask for it when the
+  model is to read or check the result, since a drawing is only the table's picture.
+- **Both.** `output` `both` gives the picture for you and the table for the model, from one query, so they agree.
+- **SVG.** `format` svg returns the plot as text, which a model reads as structure: which node, which line. Saved, it is a figure you can open.
+- **PNG.** The default `format`. Use it to show a drawing to a person; it is the one to look at.
+
+Show with PNG; use SVG to save a drawing or for a model to read as structure.
+
 ## Where next
 
 - [Python API](reference/api.md) and [CLI](reference/cli.md): every call and command.
