@@ -1,11 +1,11 @@
-# Mission — Scope of work: scat-kg v0.1
+# Mission — Scope of work: scat-tools v0.1
 
 | | |
 |---|---|
-| **Status** | Approved by the chief engineer's merges into `main` of `DynamicalSystemsGroup/scat-kg-tools`. This document is self-standing and always current; its history is the git history of `main`, and the reasoning behind each call is in `decisions/log.md` and the PR threads. |
+| **Status** | Approved by the chief engineer's merges into `main` of `DynamicalSystemsGroup/scat-tools`. This document is self-standing and always current; its history is the git history of `main`, and the reasoning behind each call is in `decisions/log.md` and the PR threads. |
 | **Chief engineer (accountable)** | `mzargham`: final design authority. Approves this mission and its changes, and accepts the v0.1 delivery. |
 | **Assistant to the chief engineer (ACE)** | The main Claude session. Manages the team, writes and approves work-package scopes inside this mission, accepts work packages, and escalates only intent gaps (see Governance). |
-| **Repositories** | `scat-kg-tools` (the tools, the ontology, the docs site; this document) and `scat-kg-template` (the vault to clone). |
+| **Repositories** | `scat-tools` (the tools, the ontology, the docs site; this document) and `scat-template` (the vault to clone). |
 | **Acceptance record** | The chief engineer's merge of the release PRs, as set out under Governance, "Release". |
 
 ## Purpose
@@ -16,6 +16,14 @@ into narratives, which are coded in pages of an Obsidian vault in git. Coding de
 **s**takeholders, **c**oncerns, **a**ffordances and **t**echnologies. The acronym is SCAT, named for scat singing in
 jazz. Coding relates the nodes through explicit, typed edges, read as three edge tables:
 stakeholders–concerns, concerns–affordances, and affordances–technologies.
+
+**What coding is for.** The people at the events provide the details, in their own accounts of their own
+experiences. Those details are captured as field notes and organized into narratives, which are then coded. Coding
+identifies and interrelates the elements the accounts have in common, organizing many detailed things into an
+expression of common patterns: the result is a synthesis. That is why it takes human judgement. Synthesis is
+interpretive: recognizing that two things that look different are structurally the same, or that two things that
+sound the same are structurally different, takes human intuition. The ontology provides the language for describing
+structure, so the person coding can draw out those patterns. The tools never push toward more detail.
 
 The result is a navigable, interpretable dataset, and that dataset is the data product. Its conformance to a fixed
 ontology is what makes it analysable. It is scaled to a human note-taker: just enough structure to make the data
@@ -71,16 +79,18 @@ and the docs use the glossary's words in its senses (see Governance, "The glossa
 
 A **narrative** is one account drawn from the field notes, kept on one page that moves through the three statuses (G3):
 a **stub** has a name and perhaps some metadata; a **draft** holds the account, possibly as plain text with no coding
-yet; and it is **done** when it is coded: every node the account refers to is identified and linked and every edge it tells is recorded, so it has a
-valid fingerprint (G1), the coding is conformant, and the coder has judged that it interprets the field notes appropriately. Setting
+yet; and it is **done** when it is coded: every edge it tells is recorded in its table, the table being the coding of record, so it has a
+valid fingerprint (G1), the coding is conformant, and the coder has judged that it interprets the field notes appropriately. Links in the
+account's prose are optional; those it has name only nodes its table holds. Setting
 `done` is the coder's attestation of that judgement; the tools check only the structure. Done is not
 frozen: the repository is git, and a narrative can keep evolving.
 
 **The coding loop.** The coder works each narrative round a loop: interpreting the field notes, authoring the
 narrative, coding it, and reviewing it, until in reviewing they confirm that the narrative is aligned with the field
-notes and that the coding is a correct use of SCAT, both in their interpretation. When the tool's check passes and the coder confirms both, they set the narrative to `done`. It is the coder interpreting and coding even when the work is machine-aided. Analysing comes after: it
-generates the views, and the coder's reading of the views can send them back to the field notes and round the loop
-again.
+notes and that the coding is a correct use of SCAT, both in their interpretation. When the tool's check passes and the coder confirms both, they set the narrative to `done`. It is the coder interpreting and coding even when the work is machine-aided. **Synthesising** comes after, across
+narratives: consolidating codes, so that what is structurally the same is one node and what is structurally different
+is two. **Analysing** comes last: it generates the views, and the reading of the views can send the work back to
+synthesis, or to a narrative and round the loop again.
 
 **A finished model.** The exercise is finished when four things hold: the knowledge graph is conformant, the vault is
 navigable in Obsidian, the views are generated, and the coder who interpreted the field notes states that the model
@@ -97,24 +107,19 @@ for facilitating, capturing and coding, though a narrative may be neither.
 - **Scenarios are behavioural.** They tell the story of people within an action situation doing things, through which
   outcomes and consequences are wrought. They are temporal. Technologies are part of the action situation but not
   the focus: they stay relatively fixed and out of view, and what is legible is their **affordances**. A coded
-  scenario relates stakeholder groups, concerns and affordances.
+  scenario relates stakeholders, concerns and affordances.
 - **Architectures are structural.** They formulate assemblages: parts and wholes, and how parts are assembled into
   tools that provide affordances which address concerns. Stakeholders are largely abstracted away. What is addressed
   is concerns, and the same concern can arise from different stakeholders; an architecture can't presume which
   stakeholders will adopt it. A coded architecture relates concerns, affordances and technologies.
 
-A second lens cuts across the first: **past or future**. A story may tell what happened or what could happen. An
-architecture may describe a system that exists or one that is proposed. The rule is simple, because the present is
-nebulous: anything real that can be narrated is past, and anything being done with intention but not yet realized is
-future. Behavioural or structural, past or future: the docs show this as a 2×2 for unbundling narratives. Every
-narrative records which it is. Only narratives are marked: stakeholder groups, concerns, affordances and technologies
-are not, and the three edge types don't change.
-
-People mix past and future freely when they talk. The facilitation guides lead participants to the past and the
-future at separate times in a workshop, and explain the mark with example phrases, including ones that mislead: a
-counterfactual "what would happen if" is future, and a habitual "when someone would do x, y happens" is past. A
-narrative may be marked **mixed**, the honest record of an account that blurs the two. The mark only tags the
-captured narratives, and the guidance on it lives in the facilitation guides alone.
+A second lens cuts across the first: the **claim type**. An account may tell what is actual, facts about the world
+that could be independently verified, or what is hypothetical, what people are only conjecturing. Accounts can't be
+forced into these buckets, so a narrative may stay **unclassified**, the default. Kind (scenario or architecture) and
+claim type are marks on narratives only, used as filters in the analysis views; neither gates any status, and no tool
+changes its output because of one unless a person filters by it. Stakeholders, concerns, affordances and technologies
+are not marked, and the three edge types don't change. The planning and facilitation guides steer the capture along
+both lenses, to get more interpretable data.
 
 Whether the narrator sees what is told as good, bad or a mix is not recorded in the ontology. For anything real a mix is
 expected, and it stays in the story's own words. SCAT is pragmatic and thin. It doesn't compete with richer ontologies
@@ -133,7 +138,7 @@ perspective": each contribution is taken up and built on, and SCAT is constructe
 perspectives to coexist within data while remaining syntactically correct.
 
 The model **holds disagreement rather than collapsing it.** As in `ant-rdf`, it exposes frictions, gaps and dissenting
-views, and it can represent margins of potential conflict. One example is groups that share a concern while their other
+views, and it can represent margins of potential conflict. One example is stakeholders that share a concern while their other
 concerns are directly opposed. So nobody has to argue anyone into agreement. We capture people's stories and their
 proposed architectures. We do not debate which architecture is correct, or which stories should be the focal point
 of a design.
@@ -148,29 +153,45 @@ separate user, and the docs make that first try easy.
 
 The organiser is also the **coder** of the data. They are technically savvy but not a software developer, and works on macOS for v0.1 (see
 Governance). They navigate GitHub's web interface, including creating a repository from a template; read, write and
-follow links in Obsidian; and follow documentation literally, step by step. They code by one of three paths (G14), and
-each has its own user experience:
-1. **By hand in Obsidian**, with the tools in an **interactive session**: the Python REPL (`import scat_kg`), with the
+follow links in Obsidian; and follow documentation literally, step by step. They code by one of four paths (G14), and
+each has its own user experience and a walkthrough with screenshots:
+1. **By hand in Obsidian**, with the tools in an **interactive session**: the Python REPL (`import scat_tools`), with the
    `scat` CLI as an equal path to the same operations and messages. The docs lead with the REPL, because CLI commands
    get long when run through uv. Its future state is an Obsidian community plugin, which is out of scope for v0.1
    (see Non-goals).
-2. **Through a chat with an MCP server**, editing in Obsidian. On this path, the organiser must not be required to open a terminal. The docs explain how to
-   configure inference.coop, as an example of an OpenAI-API-compatible interface, to use the MCP server.
-3. **Through an IDE with agents**, such as Cursor, or VS Code with an agent. The docs point to the skills that help the
-   AI coding assistant set itself up.
+2. **Through an AI chatbot with an MCP server**, editing in Obsidian. A technical helper sets the path up once; from
+   then on, the coder needs no terminal. The walkthrough's example is Claude. **Leave no trace** is an option of this path for a strict
+   data policy; its example is inference.coop, an OpenAI-API-compatible interface.
+3. **Through an AI IDE with agents**. The docs describe it briefly, by the standards the tools adopt (MCP, the skill,
+   the machine interface), and point to the skill that helps the AI coding assistant set itself up.
+4. **Through a local LLM**, running on the organiser's own machine. The docs describe it briefly, by the same
+   standards; it suits a project that keeps its material local.
 
-**Three actors, two authorities.** Whatever the path:
-- the **coder** (a person) is the interpretive authority: they look at the Markdown in Obsidian and confirm that it
-  represents their coding;
-- the **tool** (the Python package) is the conformance authority, with two jobs: (i) the knowledge graph matches the
-  Markdown, and (ii) the knowledge graph conforms to the ontology;
-- the **assistant** (an LLM, where the project allows one) assists and orchestrates: it helps the coder produce and
-  review the text in the Markdown, drafting narratives from the field notes included, and helps drive the tool's calls
-  for (i) and (ii). It is the one non-critical role of the three: the coder owns interpretation even where the
-  assistant helps, and the tool owns conformance even where the assistant helps. Without it, nothing is lost but speed.
+The chatbot path's walkthrough uses Claude, and its leave-no-trace option uses inference.coop, so no tool is favoured.
+Full walkthroughs for the IDE and local-LLM paths are future work, tracked as issues.
 
-**The people in the data** are stakeholder **groups**, never individuals. Each vault sets a cap on how many
-stakeholder groups it holds, and participants are clustered into groups that fit under it. What participants are told
+**Actant types.** Borrowed from actor-network theory and mostly in the background, three types of actant decide what
+can edit what, whatever the path:
+- the **human user**: every person, whatever their role. A human user owns interpretation: they look at the Markdown
+  in Obsidian and confirm that it represents their coding;
+- the **CLI tools** (the Python package and its front ends) own conformance, with two jobs: (i) the knowledge graph
+  matches the Markdown, and (ii) the knowledge graph conforms to the ontology;
+- the **AI assistant** (an LLM, where the project allows one) helps produce and review the text in the Markdown,
+  drafting narratives from the field notes included, and helps drive the tools' calls. It decides nothing.
+The human user and the CLI tools are required; the AI assistant is not. Without it, nothing is lost but speed.
+
+**Roles.** A second axis, for planning. People hold roles, roles are responsible for activities, and activities occur
+in the stages of the project lifecycle (G18). The **organiser** is one person, accountable for the whole project: that
+every activity is completed, that the report is produced, and that the promises made on data use, release, retention
+and attribution are kept. The other roles may each have several people: participant liaison, setup person, event
+coordinator, facilitator, note-taker, coder and analyst. A person may hold several roles, and the organiser often does.
+The roles are planning guidance that helps the organiser assemble the people the lifecycle needs.
+
+**The people in the four layers** are **stakeholders**: collectives, never individuals. Where the vault's attribution mode
+enables it, contributor pages name the people a narrative is attributed to, outside the four layers. **Caps** bound the
+scale: planning sets an expected upper bound on how many nodes each layer holds, and setup writes them into the vault.
+A cap is an upper bound that encourages synthesis, never a target; fewer nodes is better, and going over a cap is a
+warning, not an error. What participants are told
 about how their contributions are used is the event's own agreed policy, decided by the organisers up front and the
 same for everyone: for example, the Chatham House rule or personal attribution.
 
@@ -188,25 +209,23 @@ matters without claiming to be exhaustive. No particular project's choices appea
 
 - **G1. A fixed ontology.** Designed through G10's research, then fixed for v0.1. In Turtle files, it defines:
   - nodes and edges as its two base types, the lowest dimensions of the knowledge-complex pattern (see the glossary);
-  - the four node types (stakeholder group, concern, affordance, technology) and the three edge types between
-    neighbouring layers: holds (group → concern), is addressed by (concern → affordance) and is provided by
+  - the four node types (stakeholder, concern, affordance, technology) and the three edge types between
+    neighbouring layers: holds (stakeholder → concern), is addressed by (concern → affordance) and is provided by
     (affordance → technology). These are plain readings; the ontology's own names may follow an adopted ontology, and
     the docs map each reading to its name. Each edge between a given pair appears once, and
     names the narratives that tell it;
-  - that a link is not an edge: a link from a narrative to a node records only that the narrative refers to it, and
-    never creates an edge;
+  - that a link is not an edge: a narrative's table is the coding of record. A link in the account's prose is
+    optional, names only a node the table holds, and never creates an edge;
   - **narrative**, a type outside the layered graph and a page type of its own, one page per narrative whose status
     records how far its coding has got, with scenario and architecture as its subtypes. A narrative's **fingerprint**
     is the nodes it links plus the edges that name it. A fingerprint is **valid** when every edge that names the
     narrative has both its nodes linked by it. A fingerprint may be disconnected; a `done` narrative whose fingerprint
     has no edges gets a warning, not an error, so the coder confirms it was intended;
-  - each entry's required and optional fields, including the past, future or mixed mark on every narrative (see
+  - each entry's required and optional fields, including the kind and claim-type marks on narratives (see
     "Narratives");
   - index pages, which the tool generates;
-  - the linking rules, reflecting how scenarios and architectures differ; a narrative that is neither carries only the
-    narrative's own rules;
   - how the graph holds disagreement and margins of potential conflict. At minimum, the same concern can be held by
-    different stakeholder groups;
+    different stakeholders;
   - one generic **relationship annotation** between two entries of the same type: a free-text remark with a place in
     the vault, whose only rule is that both ends share a type. It is optional, the tool gives it no meaning, and the
     views leave it out. No typed edges between nodes of the same type are defined (see Non-goals).
@@ -223,20 +242,30 @@ matters without claiming to be exhaustive. No particular project's choices appea
   - read status at the same three scopes, and set a page's status;
   - regenerate the index pages;
   - create entailed missing pages as stubs;
-  - record an edge, and remove one, so neither the coder nor the assistant hand-writes its structure (R-11).
+  - record an edge, and remove one, so neither the coder nor the assistant hand-writes its structure (R-11);
+  - merge two node pages of the same type into one synthesized node, with a plan shown first (git keeps the history);
+    narratives already done stay done and are listed;
+  - rename a node page, rewriting every link and row that names it, and show every place a node is used.
+
+  Optional slots hold notes without adding required structure: a row's note, the relationship annotation, and an
+  optional page for one narrative's use of one node.
 
   The one-page and one-link-away checks act as a fast linter during working sessions.
-- **G5. Two repositories.** `scat-kg-tools` is a slim, separately maintained package with the ontology, the tools and the
-  docs site. `scat-kg-template` is the vault to clone, which installs a pinned version of the tools. Both builds are
+- **G5. Two repositories.** `scat-tools` is a slim, separately maintained package with the ontology, the tools and the
+  docs site. `scat-template` is the vault to clone, which installs a pinned version of the tools. Both builds are
   reproducible with uv.
 - **G6. The worked example is this project, as its own case study.** The template's example content is the
-  elicitation of scat-kg itself, drawn from the chief engineer's recorded statements and the decision log. It is small,
+  elicitation of scat-tools itself, drawn from the chief engineer's recorded statements and the decision log. It is small,
   because users overwrite it, but every node type and edge type has 2–3 entries, and there are two scenarios and two architectures,
-  each coded. Like any others, its stakeholder groups are groups: none stands for one identifiable person. It
+  each coded. Like any others, its stakeholders are collectives: none stands for one identifiable person. It
   avoids politically loaded illustrations. It doubles as the test fixture and the documentation example.
-- **G7. Documentation on GitHub Pages**, from `scat-kg-tools`, with a light musical reference (R-15). It has a page for
-  each stage of the journey (J1–J10): getting started, a planning guide, a scenario facilitation guide, an architecture
-  facilitation guide, a coding guide, an analysis guide, a guide for the chat path, and a short note on the IDE path. It summarises the end-to-end flow on one
+- **G7. Documentation on GitHub Pages**, from `scat-tools`, with a light musical reference (R-15). It has a page for
+  each stage of the journey (J1–J10): getting started, a planning guide with the roles, a scenario facilitation guide,
+  an architecture facilitation guide, a page on narratives and their marks, a coding guide, a synthesis guide on
+  patterns and abstraction, an analysis guide, and a page on the coding paths (a walkthrough for by hand and for the AI
+  chatbot with its leave-no-trace option; the AI IDE and local LLM described briefly by the standards adopted). Its
+  navigation follows the lifecycle's stages, and each activity names its stage and the role that does it. A person in
+  a role reads only what their activities need. It previews on localhost from a clone of the repository. It summarises the end-to-end flow on one
   page, makes data storage, rights and consent explicit, and gives a reference for the terms, the Python API and the
   CLI. Each operational choice (participation terms, AI use, where each kind of material is kept, who it is released
   to and under what licence, and how commitments to participants are kept) is named as a dependency, with "for
@@ -271,39 +300,43 @@ matters without claiming to be exhaustive. No particular project's choices appea
   eliciting scenarios and architectures, and holding disagreement without adjudicating it.
 - **G12. A template analysis notebook.** The template carries a notebook that loads a conformant vault and
   gives the network analysis the project needs, as named views:
-  - the **fingerprint view**: one coded narrative's fingerprint (G1), drawn as four columns in layer order (group,
+  - the **fingerprint view**: one coded narrative's fingerprint (G1), drawn as four columns in layer order (stakeholder,
     concern, affordance, technology) with the edges between neighbouring columns;
   - the **edge tables**: each of the three edge types as a table, exported as CSV and used to generate documents, which
     is how people navigating the data already think of it;
   - the **layered view**: the union of the fingerprints of a chosen set of narratives, up to the whole vault, drawn as
     the four layers,
     for reasoning about the big picture;
-  - **traces**: following edges from any node up or down the layers. Tracing a concern goes one layer up to the groups
+  - **traces**: following edges from any node up or down the layers. Tracing a concern goes one layer up to the stakeholders
     that hold it, one down to the affordances that address it, and two down to the technologies that provide those
-    affordances. A group traces three layers down to technologies, and a technology three layers up to groups.
+    affordances. A stakeholder traces three layers down to technologies, and a technology three layers up to stakeholders;
+  - the **recurrence view**: how many narratives, and how many stakeholders' accounts, reach each node and edge,
+    singletons marked. A pattern is what recurs.
 
   Relationship annotations (G1) stay out of the views.
 - **G13. Ripple-aware change.** A change to a term, a contract, a rule or this mission reaches every artifact that
   depends on it, in one package, and no two packages edit the same file in turn (see Governance).
-- **G14. Three coding paths.** The tools support the three paths in "Users and how they work". None is forced to look
+- **G14. Four coding paths.** The tools support the four paths in "Users and how they work". None is forced to look
   like another.
   - **By hand in Obsidian** is the base: LLM use is never assumed (R-19).
   - **The chat path** is the priority for design and testing in v0.1. The first field deployment may use one private
     LLM service, inference.coop, through its browser chat, which reaches outside tools only through MCP servers. The
     open-source service is built for it: an MCP server with its tools, prompts and skills, a front end to the tool that
-    depends on `scat-kg`. It also generates the views (G12), from the same code the notebook uses, so a chat-path
-    coder reaches a finished model without a terminal. A
+    depends on `scat-tools`. It also generates the views (G12), from the same code the notebook uses, so a chat-path
+    coder reaches a finished model without a terminal once a helper has set the path up. A
     workable chat workflow is a UX design problem in its own right: the input material is uploaded to the chat as a
     collection, files are created and downloaded, kept in a private git repository and edited in Obsidian, with
-    copying and pasting where it can't be avoided. It is kept simple, and its setup, git and checks work without a
-    terminal; which tools do that (for example GitHub's web interface, GitHub Desktop or an Obsidian git plugin) is the
+    copying and pasting where it can't be avoided. It is kept simple; a technical helper does the one-time setup, and
+    after that git and checks work without a terminal; which tools do that (for example GitHub's web interface, GitHub Desktop or an Obsidian git plugin) is the
     spike's call, recorded with evidence. A spike designs and tries it with lab material before it is built. Within this path the spike picks the
     technical route to build now (how the chat reaches the tools, and where that service runs), and may document
     another route as the preferred long-term one; R-20 holds either way. inference.coop is the interoperability test
     case: it follows the OpenAI-compatible API standard, so working through it is expected to carry over to other
-    providers that follow the same standard, though v0.1 tests no other. Testing with Claude would be cheating, since
-    Claude is the development team.
-  - **The IDE path** is supported, not the priority.
+    providers that follow the same standard. The chatbot walkthrough's example is Claude, and inference.coop is the
+    example of the leave-no-trace option.
+  - **The IDE path** is supported, not the priority. The docs describe it by the standards the tools adopt; a full
+    walkthrough is future work.
+  - **The local-LLM path** is supported, not the priority, described the same way; a full walkthrough is future work.
 - **G15. A usable Obsidian layout.** The vault as Obsidian shows it is where the human coder codes and checks that
   meaning is preserved. Each narrative is one page, nothing is duplicated, and the layout uses what Obsidian offers rather
   than folders of near-empty pages. The design may decide which other entries are pages and which are fields, and so
@@ -316,27 +349,40 @@ matters without claiming to be exhaustive. No particular project's choices appea
   this common picture, with the modules, their interface contracts and who is responsible for what. It is planned
   from a prior-art readout and reviewed before detailed design starts.
 
-- **G17. Links and edges stay in step (a known pitfall).** Much of the coding appears in two forms: "this page
-  references that page" in Obsidian, and "this node is connected to that node" in the knowledge graph. Making
-  the two feel like one thing has a large bearing on the coder's experience, and part of why there is code at all is
-  to detect when they diverge and to reconcile them. Coding is incremental: stub, fill in, stub further, fill in
-  again, breadth first for some people and depth first for others. The docs guide that incremental work for people
-  and for the LLMs helping them, and the tool makes each step's mismatches visible with a fix. This area gets extra
-  coverage from architecture review, testing and UX review in Obsidian.
+- **G17. The table is the coding of record (a known pitfall).** Much of the coding appears in two forms: "this page
+  references that page" in Obsidian, and "this node is connected to that node" in the knowledge graph. The table of
+  edges a narrative tells is the coding of record; it is structural, and it is what the knowledge graph is held in step
+  with. The account's prose is interpretive, connective tissue: linking it is desired but not required, and the nodes it
+  links are a subset, possibly empty, of the nodes its table holds. If something is linked, it belongs in the table or
+  it should not be linked. Coding is incremental: stub, fill in, stub further, fill in again, breadth first for some
+  people and depth first for others. The tool makes each step's mismatches visible with a fix: a warning while a
+  narrative is a draft, an error once it is `done`.
+- **G18. A project lifecycle.** A SCAT project moves through six stages: plan, capture, code, synthesise, analyse and
+  report. Each stage names its work, what it needs, what it may produce and who decides each move out of it; the stage
+  is recorded in the vault, and every path (the CLI, the MCP server, the IDE) respects it at the same strength. A
+  stage is a project's state; a page's status (stub, draft, done) is a different, smaller state machine. The lifecycle
+  is the scaffolding that breaks the work into simple pieces and keeps an assistant's behaviour stable, and every
+  activity in the docs is located in one stage, with the role that does it.
 
 ## Non-goals
 
-- Typed edges between nodes of the same type, such as incompatible concerns, adversarial groups, complementary
+- Typed edges between nodes of the same type, such as incompatible concerns, adversarial stakeholders, complementary
   affordances or compatible technologies. They are parked on the feature branch `feature/same-type-edges` as a design,
   not work to build, and nothing in the release refers to them.
 - The Obsidian plugin. It stays on its feature branch, `spike/obsidian-plugin`; v0.1 provides the stable interface it builds on (R-16).
-- Testing AI assistance against any provider other than inference.coop in v0.1. Broader testing comes later.
+- Testing AI assistance in v0.1 beyond the R-20 runs and one run of each path's walkthrough with its example provider
+  (D-148). Broader testing comes later.
 - Faces or triangles of any sort, including ones inferred from scenarios and architectures.
 - Letting a project's own repository extend the ontology, and evolving the ontology after v0.1.
 - Checking that pages named in a page's text are linked, beyond a basic warning.
 - The verification, validation and human-signature assurance framework of the INCOSE paper.
-- Attributing statements to individuals in the ontology. The data records groups; an event's participation terms are
-  its own policy, which the docs name without choosing one. How field notes are taken is the facilitator's call.
+- Mixing attribution modes in one vault. A vault runs in exactly one **attribution mode**, set by the organiser at
+  set-up and known to the tools: **attribution required** (every narrative names its contributors), **attribution
+  optional**, or **attribution disallowed** (no narrative names a contributor; the Chatham House rule is this mode).
+  The modes are disjoint: the tools refuse attribution in a disallowed vault and do not let modes bleed together in
+  use. The four layers (stakeholders, concerns, affordances, technologies) record collectives, never individuals. Where the mode
+  enables attribution, each contributor has a page outside the four layers, and a narrative's attributed-to links
+  resolve to those pages. How field notes are taken is the facilitator's call.
 - Recording the narrator's normative posture (good, bad or mixed) in the ontology. It stays in the story's text;
   problematization is for a richer ontology such as `ant-rdf`, applied afterwards.
 - Adjudicating between stories or architectures. Neither the tools nor the guides judge which architecture is correct
@@ -346,18 +392,21 @@ matters without claiming to be exhaustive. No particular project's choices appea
 - A mechanism of SCAT's own for signing off a finished model, or for authorship and review across coders; git and
   GitHub provide it.
 - Publishing to PyPI.
+- Knowledge-graph tooling for planning: the roles, data policies, event logistics, format and agenda. The docs are
+  written so that it can be added later without a refactor.
+- Full walkthroughs for the AI IDE and local-LLM paths; they are tracked as issues.
 
 ## Deliverables
 
 | ID | Deliverable | Serves |
 |---|---|---|
-| D-1 | The ontology in Turtle, in `scat-kg-tools` | G1, G10 |
-| D-2 | The tool (parser, checks, the operations, the Python API and CLI, their machine-readable output with its schema, a public vault loader, and the view generation the notebook and the MCP server share), and the MCP server with its prompts and skills, with their test suite, and the architecture document, in `scat-kg-tools` | G2, G3, G4, G12, G14, G16, G17 |
-| D-3 | The template repository: vault skeleton, index pages, the vault's configuration (the stakeholder-group cap), the pinned tools, the case study, the analysis notebook, and a setup skill for IDE agents | G5, G6, G9, G12, G14, G15 |
+| D-1 | The ontology in Turtle, in `scat-tools` | G1, G10 |
+| D-2 | The tool (parser, checks, the operations, the Python API and CLI, their machine-readable output with its schema, a public vault loader, and the view generation the notebook and the MCP server share), and the MCP server with its prompts and skills, with their test suite, and the architecture document, in `scat-tools` | G2, G3, G4, G12, G14, G16, G17 |
+| D-3 | The template repository: vault skeleton, index pages, the vault's configuration (the caps, the attribution mode), the starting stage, the pinned tools, the case study, the analysis notebook, and a setup skill for IDE agents | G5, G6, G9, G12, G14, G15 |
 | D-4 | The documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9, G11, G14, G17 |
 | D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, the facilitation research, the prior-art readout, the chat-path spike, and the impact maps | G8, G10, G11, G13, G14, G16 |
-| D-6 | The reviewer's guide for the chief engineer, in the `scat-kg-tools` release PR. It is sized for a person and split into sittings: (1) the end-to-end walkthroughs (UA-M); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
-| D-7 | The user-acceptance kit, in `scat-kg-tools/acceptance/`: the AI tester personas and briefs, the report template, every AI test report with its dispositions, and the walkthrough scripts | G9 |
+| D-6 | The reviewer's guide for the chief engineer, in the `scat-tools` release PR. It is sized for a person and split into sittings: (1) the end-to-end walkthroughs (UA-M); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
+| D-7 | The user-acceptance kit, in `scat-tools/acceptance/`: the AI tester personas and briefs, the report template, every AI test report with its dispositions, and the walkthrough scripts | G9 |
 
 ## Requirements
 
@@ -365,7 +414,7 @@ Requirements state outcomes. How each is met is decided in the work packages.
 
 | ID | Requirement | Checked by |
 |---|---|---|
-| R-1 | Conformance checks structure, never content: types, fields, links, names, status, the cap and whether index pages are up to date. What the content says (tensions, matches, gaps) is for analysis, after conformance passes and the coder signs off the content. Conformance problems are graded: errors block and warnings don't. Errors cover the ontology's constraints (required fields and types, the ends of edges, the linking rules), the stakeholder-group cap, valid status, and links to pages that don't exist. The rule catalogue gives every rule an id and a severity. | Seeded-defect tests, at least one per rule |
+| R-1 | Conformance checks structure, never content: types, fields, links, names, status, the cap and whether index pages are up to date. What the content says (tensions, matches, gaps) is for analysis, after conformance passes and the coder signs off the content. Conformance problems are graded: errors block and warnings don't. Errors cover the ontology's constraints (required fields and types, the ends of edges, the linking rules), valid status, and links to pages that don't exist; going over a layer's cap is a warning. Each rule has one id, and its severity follows the page's status where it depends on it. The rule catalogue gives every rule an id and a severity. | Seeded-defect tests, at least one per rule |
 | R-2 | Every message names the file, the field or link, and the rule broken (by id). It gives the fix as something a literal reader can apply: an exact command to run, or an exact field and value to write. | Golden-output tests on the seeded defects |
 | R-3 | An unfinished page is never an error just for being unfinished. The full contract applies when a page is `done`. Links and the ends of edges are checked at every status; R-23 sets when a mismatch between links and edges is an error. | Tests per status |
 | R-4 | Checks never write to the vault. Every write is an explicit operation (index, stub, set status). | Tests that snapshot the vault before and after each operation |
@@ -383,11 +432,11 @@ Requirements state outcomes. How each is met is decided in the work packages.
 | R-16 | **A stable machine interface.** Every result the operations return is also available as versioned, machine-readable data, from the Python API and the CLI alike. Its schema lives with the contracts, and changing it follows a stated versioning rule. A fix is data a tool can apply (what kind of fix it is, the exact command, or the field to write), not only a sentence. This is the interface the MCP server, the Obsidian plugin and any later tool build on. | Every operation's output validated against the schema in tests; a test that the text messages and the data agree |
 | R-17 | **The notebook runs.** The template's analysis notebook runs top to bottom on the template's vault. Its fingerprint view gives, for each coded narrative, exactly its fingerprint, with no relationship annotation; it exports the three edge tables; and a trace from a node of each type returns exactly the nodes reachable up and down the layers. | The notebook executed in the template's CI, with tests on the views and the traces |
 | R-18 | **Ripple-complete changes.** Before a package that changes a term, contract, rule or this mission is approved, its impact map lists every artifact that refers to what changes, each marked change, keep (with why) or historical. At acceptance, the same sweep finds no reference that is unmarked or still says the old thing. | The impact map in the scope; the sweep's output in the acceptance record |
-| R-19 | **Manual first.** Every step, from field notes to coded vault to analysis, can be done by a person by hand, in Obsidian and the REPL or CLI, with no LLM. The process stays consistent with ethnographic coding practice, so a project whose data rights rule out AI loses nothing but speed. Any AI assistance is optional and provider-agnostic, and holds no authority: the coder is the interpretive authority and the tool the conformance authority (see "Three actors, two authorities"). | The UA-M walkthrough and the docs test, run with no LLM; the ACE's review of each spike readout against it |
-| R-20 | **The chat path works, at two test levels.** The MCP server's tools pass automated tests, its views equal the notebook's on the same vault, and the chat path (G14) is run end to end in the inference.coop browser chat at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents, which stand in for field notes. The field test comes after v0.1 and is not part of this repository. Other providers are not tested in v0.1. | The automated tests in CI; each end-to-end run recorded step by step with screenshots in the acceptance record |
+| R-19 | **Manual first.** Every step, from field notes to coded vault to analysis, can be done by a person by hand, in Obsidian and the REPL or CLI, with no LLM. The process stays consistent with ethnographic coding practice, so a project whose data rights rule out AI loses nothing but speed. Any AI assistance is optional and provider-agnostic, and decides nothing: a human user owns interpretation and the CLI tools own conformance (see "Actant types"). | The UA-M walkthrough and the docs test, run with no LLM; the ACE's review of each spike readout against it |
+| R-20 | **The chat path works, at two test levels.** The MCP server's tools pass automated tests, its views equal the notebook's on the same vault, and the chat path (G14) is run end to end in the inference.coop browser chat at two levels. **Lab:** synthetic material. **Range:** real but predigested material: the public KOI case in `mzargham/ant-rdf`, coded there with the ANT ontology, rebuilt as a SCAT model from its public contents, which stand in for field notes. The field test comes after v0.1 and is not part of this repository. Beyond these runs, v0.1 runs the chatbot walkthrough with Claude and its leave-no-trace option with inference.coop. | The automated tests in CI; each end-to-end run recorded step by step with screenshots in the acceptance record |
 | R-21 | **Coding happens in Obsidian.** A coder can code a narrative and review its fingerprint in Obsidian alone, without the same content held on two pages, and without opening pages that carry no content of their own. | A review in Obsidian with screenshots in the record; UA-M |
 | R-22 | **Architecture before detailed design.** The architecture document names the model, the views and the control plane, each module's interface contract and responsibilities, and is reviewed by architecture reviewers before any further package starts detailed design. | The review record; the ACE's approval, logged |
-| R-23 | **Links and edges reconcile.** The forms that must agree are a closed list: a narrative's link to a node, an edge's entry, and an edge's references to its nodes and to its narratives. Links outside these forms carry no graph meaning and are checked only as links (R-1). The tool detects each mismatch between these forms and gives a fix that reconciles it. A mismatch that involves a narrative is a warning while the narrative is a draft and an error once it is `done`; an edge cannot be `done` unless every narrative it names links both its nodes. Incremental coding, breadth first or depth first, never leaves a mismatch the tool can't see. The docs show both ways of working. | Tests that generate vaults with mismatches and check each mismatch is reported with a working fix; a named architecture reviewer for this area; a UX review in Obsidian of an incremental coding session, with screenshots |
+| R-23 | **Links and edges reconcile.** A narrative's table is the coding of record, and the nodes its account links must be nodes its table holds; a row end need not be linked in the account. The tool detects each mismatch and gives a fix that reconciles it. A mismatch is a warning while the narrative is a draft and an error once it is `done`. Incremental coding, breadth first or depth first, never leaves a mismatch the tool can't see. The docs show both ways of working. | Tests that generate vaults with mismatches and check each mismatch is reported with a working fix; a named architecture reviewer for this area; a UX review in Obsidian of an incremental coding session, with screenshots |
 
 ## User acceptance
 
@@ -403,10 +452,11 @@ tested by the team only.
 | J2 Try | tries it alone, on their own work and data: sets up, codes one narrative from their own notes, sees its fingerprint in Obsidian, and sets it `done` | getting started; the solo trial |
 | J3 Decide | decides to use SCAT to organise a facilitated elicitation | the flow |
 | J4 Set terms | makes and documents the up-front decisions and assumptions: participation terms, AI use, how each kind of material is kept and released, and the commitments made to participants | data, rights and consent; the "Before you start" checklist |
-| J5 Set up | on GitHub's web interface, makes a new **private** repository from `scat-kg-template`, clones it, installs the prerequisites from exact commands, runs one setup command, gets a working `scat_kg`, and opens the folder as an Obsidian vault | getting started |
-| J6 Plan | plans one or more facilitation events: which sessions elicit scenarios and which architectures, who takes part in each, the participation terms, and stakeholder groups within the cap | planning guide |
+| J5 Set up | on GitHub's web interface, makes a new **private** repository from `scat-template`, clones it, installs the prerequisites from exact commands, runs one setup command, gets a working `scat_tools`, and opens the folder as an Obsidian vault | getting started |
+| J6 Plan | plans one or more facilitation events: which sessions elicit scenarios and which architectures, who takes part in each, the participation terms, the roles, and the caps on each layer | planning guide |
 | J7 Capture | at each event, records field notes | the two facilitation guides |
 | J8 Code | works each narrative round the coding loop (interpreting, authoring, coding, reviewing) in an interactive session (the Python REPL or the `scat` CLI) and in Obsidian, fixing each problem from its message, until it is `done` | coding guide; API and CLI reference |
+| J8b Synthesise | consolidates the codes across narratives: reviews possible duplicates, merges and renames nodes, and writes each node page's definition, so that what is structurally the same is one node | synthesis guide |
 | J9 Analyse | generates the views, interprets them, and goes back round the coding loop where they send it | analysis guide; the notebook |
 | J10 Hand over | reaches a clean whole-vault check with the views generated and the vault navigable in Obsidian, commits and pushes, decides the model is finished, locks a version and hands it over. A hand-over is a release: work can continue after it, toward the next | coding guide |
 
@@ -417,54 +467,31 @@ alone won't adopt them. J2 runs on the manual path *(default)*.
 from J5 on: the field notes uploaded to the chat as a collection, the coding loop in the chat and in Obsidian, views
 generated through the MCP server, and a clean check of a private repository, then the hand-over, all with no terminal.
 
-**UA-A, the AI user tests**, run by the team on the candidate before the chief engineer's walkthrough:
+**UA-A, the AI user tests**, run by the team on the candidate before the chief engineer's test:
 
-- **Personas.** Every tester is the organiser at the solo-trial stage (see "Users"), varying only in comfort with the
-  tools. At least three for the manual path, each running the whole journey from J1, each written in the user's own words and never the tool's
-  vocabulary. **Most run on Haiku**, so the test doesn't depend on much reasoning: if the right way needs reasoning to
-  find, it isn't yet the easy way.
-  - an organiser who is comfortable with a terminal, GitHub and Obsidian but is not a developer (Haiku);
-  - an organiser who is new to the command line, careful and literal (Haiku);
-  - the first organiser on Sonnet, as a control: a step that Sonnet passes and Haiku fails points to the
-    docs or the tools, not the user.
-
-  At least one Haiku tester works in the Python REPL, and at least one uses the CLI. The chat journey has its own
-  personas *(default: at least two, most on Haiku)*, who drive the inference.coop browser chat after the chief
-  engineer signs in, with lab material only.
-- **Setup.** Each manual tester starts in a clean user environment (a fresh home directory, uv not installed), from
-  the Pages preview URL, and follows only what the docs say.
-  - J5's repository is simulated with an isolated clone of the template that has its remote removed.
-  - The Obsidian steps (J2, J5, J8, J10) are checked through the files. Obsidian itself is covered by UA-M and R-21.
-  - Chat testers start from the Pages preview and a private repository made from the template, with no terminal.
-  - Each tester codes a small elicitation in a domain of its own, different from the worked example: at least one
-    scenario and one architecture, each coded.
+- **By role.** There is one tester per role (see "Users and how they work"). No tester tries to make sense of
+  everything in the docs. What each reads, what it tries to do, and whether it is satisfied with what it finds follow
+  from its role's activities in their stages. **Most run on Haiku**, so the test doesn't depend on much reasoning: if
+  the right way needs reasoning to find, it isn't yet the easy way.
+- **Setup.** Each tester starts in a clean user environment and follows only what the docs say, previewed on
+  localhost from a fresh clone. The roles that code do so on the manual path and on the chat path, at least once each.
+  Each codes material in a domain of its own, different from the worked example.
 - **Reporting.** Testers may not read `src/` or `tests/`, and every claim comes with pasted output or a screenshot. A
-  report first answers what style or reference the docs evoke. Then, stage by stage, it says where the tester got
-  stuck, what it had to guess, and where the docs left it with nowhere to go.
-- **Pass bar.** Every tester, the Haiku testers included, reaches the end of its journey with a clean check. Testers
-  on both paths end the journey as a hand-over: given a stated hand-over case (a contract delivery, a paper
-  submission or a class project hand-in), they decide the model is finished, lock a version and hand it over; the
-  report names the tag, the commit it pins and the recipient the case names. Manual testers, whose clone has no
-  remote, lock with `git tag`. Every
-  guess (any action the docs did not literally state) counts as a finding. A finding is **blocking** if it stopped the
-  tester short of the end, or if a docs command doesn't work as shown. Every finding is dispositioned: either fixed and
-  re-tested by a fresh tester, or accepted with a reason and listed in the reviewer's guide. The final round leaves no
+  report says, activity by activity, where the tester got stuck, what it had to guess, and whether it was satisfied.
+- **Pass bar.** Every tester completes its role's activities. A finding is **blocking** if it stopped the tester short,
+  or if a docs command doesn't work as shown. A finding is fixed by simplifying or trimming the docs, not by adding
+  clarification, and is re-tested by a fresh tester of that role, or accepted with a reason. The final round leaves no
   blocking finding.
-- **Void reports.** A report that reuses names from the worked example, or that makes claims without pasted output or a
-  screenshot, is void and is run again. A report with no findings is checked by the ACE for plausibility.
+- **Void reports.** A report that reuses names from the worked example, or that makes claims without pasted output or
+  a screenshot, is void and is run again.
 
-**UA-M, the chief engineer's walkthroughs** (the first sitting of the reviewer's guide, and the core of acceptance):
+**UA-M, the chief engineer's test** (the core of acceptance):
 
-- He runs the journey, J1 to J10, himself on the candidate, on the manual path. He starts from the Pages preview, makes a real
-  repository through the documented creation path, clones it, sets up, and works through an interactive session with
-  the REPL and the CLI, coding a small elicitation of his own choosing. He also runs the chat journey as he would use
-  it.
-- The walkthrough scripts give each stage's entry point and what "done" looks like, so a session can be split and
-  resumed.
-- **Pass:** he completes the journey on both paths from the documentation without help, and judges the documentation clear and
-  navigable and the journeys clear.
-- Anything he flags is fixed on `dev`, and the candidate is refreshed (see Governance, "Release"). The walkthrough
-  then resumes from the affected stage.
+- On a Mac of his own, he clones both repositories, switches to `dev`, and previews the documentation site on
+  localhost. Following only the docs, he installs SCATLAB, uses it from Claude and from inference.coop, and codes a
+  real project of his own in one of the two chats.
+- **Pass:** he is satisfied enough to give minor feedback, if any, to prepare the release.
+- Anything he flags is fixed on `dev`, and the candidate is refreshed (see Governance, "Release").
 
 ## Definition of good
 
@@ -478,7 +505,7 @@ generated through the MCP server, and a clean check of a private repository, the
 ## Definition of good enough
 
 - R-1 to R-23 met, with evidence.
-- UA-A passes on the candidate, for the whole journey on both paths.
+- UA-A passes on the candidate, for every role.
 - The candidate is staged for UA-M, with the reviewer's guide ready.
 - The ontology, toolchain, facilitation, prior-art and chat-path readouts exist, and the architecture document is
   reviewed (R-22). Every term of the ontology traces to an adopted ontology or is recorded as authored, with the trade study's
@@ -532,12 +559,14 @@ The chief engineer has accepted by merging the release PRs.
   - no AI attribution on commits, PRs or documents;
   - **Platforms:** macOS is the supported user platform for v0.1, and CI runs on Linux. Nothing may be built in a
     way known to put later Linux or Windows support at risk: no platform-specific paths, shells, line endings or
-    tools in the package, and anything unavoidably platform-specific is isolated and recorded.
-- **Until the release,** nothing in `scat-kg-tools` or `scat-kg-template` is merged to `main`, tagged or published, with two exceptions:
+    tools in the package, and anything unavoidably platform-specific is isolated and recorded. The chat path's
+    launcher is macOS-only by design; its macOS tools (among them `security`, for the session key in the keychain)
+    sit behind its own functions.
+- **Until the release,** nothing in `scat-tools` or `scat-template` is merged to `main`, tagged or published, with two exceptions:
   - changes to this mission;
   - the **candidate stage** that UA-M needs:
     - the docs site deploys from `dev` to Pages, marked pre-release;
-    - `scat-kg-template` is marked as a GitHub template, with `dev` as its default branch;
+    - `scat-template` is marked as a GitHub template, with `dev` as its default branch;
     - the template pins the tools to the candidate commit.
 
   Every fix during user acceptance moves the pin, reruns CI, R-6 and R-9, and the ACE decides, and logs, whether
@@ -546,8 +575,12 @@ The chief engineer has accepted by merging the release PRs.
   1. The ACE opens one release PR from `dev` to `main` in each repository, and no one else does.
   2. The chief engineer's walkthroughs run against them, and his merges, as merge commits, are the acceptance.
   3. The ACE then tags `v0.1.0` on the merge commit in each repository, redeploys the site from `main` without the
-     pre-release mark, and restores `main` as the template's default branch. The template's pin stays on the
+     pre-release mark, publishes the MCP server's container image from the tools tag, and restores `main` as the
+     template's default branch. The template's pin stays on the
      accepted candidate commit, whose content the tag marks.
+- **Public-facing content is written as finished.** The code, the docs and the template describe the product as it
+  is, with no development or test progress in them; progress stays in the work packages and the decision log.
+  Explicitly deferred work becomes issues.
 - **How the team runs** is set out in `ORG.md`.
 
 ## Timeline
@@ -568,7 +601,7 @@ noisy at first.
 Starting points for the work packages. A package may depart from any of these by recording why.
 - **Page creation.** Obsidian page templates suit the narratives, which people write in Obsidian. Node stubs are
   better created by the tools from a narrative's links, so users never write their structure.
-- **Linking severity.** A scenario that links a technology, or an architecture that links a stakeholder group, is
+- **Linking severity.** A scenario that links a technology, or an architecture that links a stakeholder, is
   probably a warning that points to the affordance or the concern, rather than an error.
 - **Status strictness.** On a `draft` page, missing required fields are probably warnings.
 - **CLI and API.** The CLI is best kept as a thin layer over the Python API, and the MCP server likewise.
@@ -584,7 +617,7 @@ Starting points for the work packages. A package may depart from any of these by
 
 Details the ACE settled and the chief engineer approved as a set. The ACE may revise one by a logged call where it
 serves this mission as written; a change that would alter the mission goes to the chief engineer.
-- Names: `scat-kg-tools`, `scat-kg-template`, the CLI `scat`, the Python package `scat_kg`.
+- Names: `scat-tools`, `scat-template`, the CLI `scat`, the Python package `scat_tools`.
 - Python 3.12 or later. The template installs the tools through uv, as a git dependency pinned to a commit.
 - Facilitation and coding guides are written once, on the Pages site, and the template links to them.
 - Documentation built with MkDocs Material.
@@ -592,25 +625,22 @@ serves this mission as written; a change that would alter the mission goes to th
   format) and pytest, and fails on attribution lines.
 - Branches: `main` holds approved missions and releases only, `dev` is the integration branch, and work happens on
   short-lived unit branches off `dev`.
-- The worked example sets the stakeholder-group cap to 3.
+- The template sets the caps to stakeholder 6, concern 12, affordance 12 and technology 12, each the planner's to choose.
 - **The machine interface:** JSON, from `--json` on every `scat` command and an equivalent method on every result in
   Python. Its schema is a JSON Schema file in `contracts/`, with an integer `schema_version`. Adding a field keeps the
   version, and removing or changing one bumps it. Schema validation runs in the test suite only, so it adds no runtime
-  dependency to `scat-kg`. Not included: checking an unsaved editor buffer.
-- **The past/future mark** is a field on the narrative page.
-  Working field name `timeframe`, with the values `past`, `future` and `mixed`. Like every required field (R-3), a missing
-  value is an error on a `done` page and a warning before.
+  dependency to `scat-tools`. Not included: checking an unsaved editor buffer.
+- **The claim-type mark** is a field on the narrative page, `claim_type`, with the values `actual`, `hypothetical` and
+  `unclassified` (the default). It gates no status; with `kind`, it is a filter in the analysis views.
 - **Links are not edges.** A link is a reference in a Markdown file; an edge is a typed fact in the knowledge graph.
   The Markdown is what the coder confirms; the tool reads it, builds the knowledge graph, and checks that the graph
   matches it (job (i)) and is conformant (job (ii)). An edge is asserted in the Markdown, written by the coder or by
   the assistant for the coder to confirm:
-  - a link from a narrative to a node says the narrative refers to it (coding in place: names are linked where they
-    appear, so the account keeps its words);
-  - an edge is its own entry, naming its two nodes and the narratives that tell it; a link from a narrative to a node
-    never creates an edge;
-  - the checks hold the two in step: every edge's ends have the right node types (R-1), and an edge that names a
-    narrative has both its nodes linked by that narrative, so every fingerprint is valid. A narrative that breaks
-    this cannot be `done`.
+  - an edge is a row of a narrative's table, the coding of record, naming its two nodes; the narratives that tell an
+    edge are the ones whose tables hold it;
+  - a link in the account's prose is optional, names a node the table holds, and never creates an edge;
+  - the checks hold the two in step: every edge's ends have the right node types (R-1), and a node the account links
+    is one its table holds. A narrative that breaks this cannot be `done`.
 
   The ontology-and-layout package settles how edges are written and shown, checked in Obsidian (G15).
 - **The IDE setup skill** in the template (D-3) is a short skill file that helps an AI coding assistant set itself up
@@ -622,7 +652,7 @@ serves this mission as written; a change that would alter the mission goes to th
 - **Test edits.** Tests that encode `conflicts`, the separate raw and coded page types, or the current layout may change, each change listed
   in the review record.
 - **The notebook** reads the vault through the tools' public data (R-16) where it can, through a public vault loader.
-- **New dependencies** (the MCP server's, the notebook's) go in optional extras or the template, so `scat-kg`'s core
+- **New dependencies** (the MCP server's, the notebook's) go in optional extras or the template, so `scat-tools`'s core
   runtime dependencies stay as they are.
 - **The change consultant** runs on Sonnet as a role in `.claude/agents/`. Its sweep is a written list of search terms
   per change, run with `git grep` over both repositories and the live branches, so the same sweep runs at scoping and
@@ -634,7 +664,7 @@ serves this mission as written; a change that would alter the mission goes to th
 - **Architecture reviewers** are fresh agents, on Sonnet with one on Opus for a named reason (the cross-cutting
   contracts, and the link-edge correspondence of G17), that review the architecture document before detailed design
   (R-22).
-- **The range vault** rebuilds the KOI case with groups, not named people.
+- **The range vault** rebuilds the KOI case with stakeholders, not named people.
 - **Views on the chat path** are written into the project's private repository, so a finished model's views can be
   checked there.
 - **Order of work.** WP12 (the terms page, now on `dev`) is accepted first; the ontology-and-layout package revises
