@@ -786,7 +786,7 @@ def _(v, st):
 def _(v, st):
     v.write(
         "narrative/other-day.md",
-        '---\ntype: narrative\nstatus: draft\ntitle: "Other day"\ndescription: "d"\ntimeframe: past\n---\n\n## Edges told\n\n'
+        '---\ntype: narrative\nstatus: draft\ntitle: "Other day"\ndescription: "d"\ntimeframe: past\n---\n\nSee [[quick-checkout]].\n\n## Edges told\n\n'
         + HEADER
         + "\n"
         + SEP
@@ -803,7 +803,7 @@ def _(v, st):
     v.write("scat.toml", "attribution = 'disallowed'\nstakeholder_group_cap = 2\n")
     v.write(
         "narrative/other-day.md",
-        '---\ntype: narrative\nstatus: draft\ntitle: "Other day"\ndescription: "d"\ntimeframe: past\n---\n\n## Edges told\n\n'
+        '---\ntype: narrative\nstatus: draft\ntitle: "Other day"\ndescription: "d"\ntimeframe: past\n---\n\nSee [[quick-checkout]].\n\n## Edges told\n\n'
         + HEADER
         + "\n"
         + SEP
@@ -1355,9 +1355,8 @@ def _(v, st):
 
 # ======================================================================================= uncoded (WP21-G2)
 UNCODED_ONE = (
-    "link a node page where the account names one, as `[[<node-name>]]` (or list it under a "
-    "heading such as `Linked beyond the text`); a node the account names with no edge needs "
-    "only this link"
+    "link a node page where the account names one, as `[[<node-name>]]`; a node the account "
+    "names with no edge needs only this link"
 )
 UNCODED_TWO = (
     "or tell an edge: a row of the table whose ends are links to node pages; if the node has "
@@ -2221,9 +2220,71 @@ def _(v, st):
     v.edit(
         NF,
         "The desk was busy: [[borrowers]] queued, wanting [[quick-checkout]] through [[self-checkout]].",
-        "Nothing is linked in the account.",
+        "The desk was busy: [[borrowers]], [[quick-checkout]] and [[self-checkout]] are only named here.",
     )
     return []
+
+
+def _untold(st, row, cell, col, target):
+    return _end(
+        "END-NOTINACCOUNT",
+        st,
+        cell,
+        row=row,
+        col=col,
+        what=f"[[{target}]] is not linked in the account; name it in the account and link it there, then keep the row",
+        fix=(
+            "Fix, choose one:",
+            [
+                f"link it in the account where the account names it, as `[[{target}]]`",
+                "or delete the row if the narrative does not tell the edge",
+            ],
+        ),
+    )
+
+
+@seed("END-NOTINACCOUNT-end-not-linked-in-the-account", ALL)
+def _(v, st):
+    v.edit(
+        NF,
+        "The desk was busy: [[borrowers]] queued, wanting [[quick-checkout]] through [[self-checkout]].",
+        "The desk was busy: [[borrowers]] queued, and the [[self-checkout|self checkout]] stand was free.",
+    )
+    return [
+        _untold(st, 1, "to", 27, "quick-checkout"),
+        _untold(st, 2, "from", 3, "quick-checkout"),
+    ]
+
+
+@seed("END-NOTINACCOUNT-linked-only-in-a-code-span", ALL)
+def _(v, st):
+    v.edit(
+        NF,
+        "The desk was busy: [[borrowers]] queued, wanting [[quick-checkout]] through [[self-checkout]].",
+        "The desk was busy: [[borrowers]] queued, wanting `[[quick-checkout]]` through [[self-checkout]].",
+    )
+    return [
+        _untold(st, 1, "to", 27, "quick-checkout"),
+        _untold(st, 2, "from", 3, "quick-checkout"),
+    ]
+
+
+@seed("END-NOTINACCOUNT-silent-on-another-end-rule", ("draft",))
+def _(v, st):
+    _row(v, "| borrowers | holds | [[quick-checkout]] | |")
+    return [
+        _end(
+            "END-NOLINK",
+            st,
+            "from",
+            col=3,
+            what="`borrowers` is not a link; each end of a row is one link, `[[page-name]]`",
+            fix=(
+                "Fix, choose one:",
+                ["replace `borrowers` with `[[borrowers]]`", "delete the row"],
+            ),
+        )
+    ]
 
 
 # ======================================================================================= the driver

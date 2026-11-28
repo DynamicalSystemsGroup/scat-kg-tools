@@ -408,7 +408,8 @@ def test__scat_draft_table_type__the_slug_and_the_verb_in_any_case_are_types(mak
         "| [[quick-checkout]] | IS ADDRESSED BY | [[self-checkout]] | |",
         "| [[self-checkout]] | provided-by | [[booking-app]] | |",
     )
-    seeded(make_vault, with_rows(status, *rows))
+    account = "[[staff]] [[safe-handling]] [[quick-checkout]] [[self-checkout]] [[booking-app]]\n"
+    seeded(make_vault, with_rows(status, *rows, account=account))
 
 
 # SCAT-DRAFT-TABLE-LAYERS

@@ -16,6 +16,7 @@ _PAIRS = (
     "END-NOLINK",
     "END-NOPAGE",
     "END-NOTNODE",
+    "END-NOTINACCOUNT",
 )
 SEVERITY = {
     "SCAT-FM-PARSE": "error",

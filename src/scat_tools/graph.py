@@ -262,6 +262,27 @@ def _headings(lines: list[str], fenced: list[bool]) -> list[tuple[int, int, str]
     return out
 
 
+def edges_told_section(lines: list[str]) -> tuple[int, int] | None:
+    """(start, end) indices of the `Edges told` section of a body, as the table is read: the first such heading
+    (outside a fence) to the next heading of the same or a higher level; `end` is exclusive. None: no such heading."""
+    heads = _headings(lines, fenced_lines(lines))
+    named = [h for h in heads if h[2].casefold() == TBOX.table.heading.casefold()]
+    if not named:
+        return None
+    start, level, _ = named[0]
+    return start, next((i for i, lv, _ in heads if i > start and lv <= level), len(lines))
+
+
+def account_links(page: Page) -> tuple[Link, ...]:
+    """The links of a narrative's account: its page links outside the `Edges told` section (the links as
+    `page.links` reads them: code is not read)."""
+    section = edges_told_section(page.body.split("\n"))
+    if section is None:
+        return page.links
+    lo, hi = page.body_line + section[0], page.body_line + section[1]
+    return tuple(l for l in page.links if not lo <= l.line < hi)
+
+
 def read_table(body_lines: list[str], first_line: int) -> TableReading:
     """Read the table of edges in a narrative's body, by page contracts 4 ("Reading the table").
 

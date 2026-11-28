@@ -61,7 +61,10 @@ def test__a_stub_is_judged_as_done_too(make_vault):
 
 
 def test__a_narrative_with_only_warnings_would_be_set(make_vault):
-    page = narrative(status="draft", account="A [[staff]]. A Briefing came.\n")
+    page = narrative(
+        status="draft",
+        account="A [[staff]]. A Briefing came. [[safe-handling]] [[quick-checkout]] [[self-checkout]] [[borrowers]] [[booking-app]].\n",
+    )
     _, report = at_done(make_vault, {DESK: page}, DESK)
     assert report.errors == ()
     assert [p.rule for p in report.warnings] == ["SCAT-MENTION"]
