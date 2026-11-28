@@ -9,13 +9,13 @@ import pytest
 from mcp.shared.memory import create_connected_server_and_client_session as connected
 from mcputil import copy_vault
 
-import scat_kg
-from scat_kg import draw, views
-from scat_kg.mcp_server.server import build
-from scat_kg.ops.result import stamp
+import scat_tools
+from scat_tools import draw, views
+from scat_tools.mcp_server.server import build
+from scat_tools.ops.result import stamp
 
 PNG = b"\x89PNG\r\n\x1a\n"
-EVIDENCE = sys.modules["scat_kg.evidence"]  # `scat_kg.evidence` the name is the function
+EVIDENCE = sys.modules["scat_tools.evidence"]  # `scat_tools.evidence` the name is the function
 
 # (tool, arguments, the view it runs, the local call on the same vault)
 CALLS = [
@@ -47,7 +47,7 @@ def run_tool(vault, name, args):
 
 @pytest.fixture
 def counted(monkeypatch):
-    """Every view query and evidence read that runs, by name (the server calls `scat_kg.<view>`, draw calls `views`)."""
+    """Every view query and evidence read that runs, by name (the server calls `scat_tools.<view>`, draw calls `views`)."""
     calls: list[str] = []
     for name in ("fingerprint", "layered", "trace", "edge_table", "attribution"):
         real = getattr(views, name)
@@ -57,7 +57,7 @@ def counted(monkeypatch):
             return _real(*a, **k)
 
         monkeypatch.setattr(views, name, spy)
-        monkeypatch.setattr(scat_kg, name, spy)
+        monkeypatch.setattr(scat_tools, name, spy)
     real_ev = EVIDENCE.evidence
 
     def ev_spy(*a, **k):
@@ -65,7 +65,7 @@ def counted(monkeypatch):
         return real_ev(*a, **k)
 
     monkeypatch.setattr(EVIDENCE, "evidence", ev_spy)
-    monkeypatch.setattr(scat_kg, "evidence", ev_spy)
+    monkeypatch.setattr(scat_tools, "evidence", ev_spy)
     return calls
 
 
@@ -127,7 +127,11 @@ def test_both_is_the_plot_then_a_table_that_agrees(vault, name, args, view):  # 
     assert (
         doc == run_tool(vault, name, args).structuredContent
     )  # the table is the table output's document
-    local = {"fingerprint": scat_kg.fingerprint, "layered": scat_kg.layered, "trace": scat_kg.trace}
+    local = {
+        "fingerprint": scat_tools.fingerprint,
+        "layered": scat_tools.layered,
+        "trace": scat_tools.trace,
+    }
     drawing = draw.render(local[view](**_local_args(name, args), root=vault))
     assert base64.b64decode(plot.data) == drawing.png()
     t_nodes, t_edges, d_nodes, d_edges = table_of(doc, drawing)
@@ -144,7 +148,7 @@ def _local_args(name, args):
 
 def test_the_agreement_check_fails_when_the_table_and_the_plot_differ(vault):
     doc = run_tool(vault, "layered", {}).structuredContent
-    drawing = draw.render(scat_kg.layered(root=vault))
+    drawing = draw.render(scat_tools.layered(root=vault))
     t_nodes, t_edges, d_nodes, d_edges = table_of(doc, drawing)
     assert (t_nodes, t_edges) == (d_nodes, d_edges)
     doc["edges"] = doc["edges"][1:]
@@ -154,7 +158,11 @@ def test_the_agreement_check_fails_when_the_table_and_the_plot_differ(vault):
 
 @pytest.mark.parametrize("name,args,view", CALLS)
 def test_table_is_the_document_and_only_it(vault, name, args, view):  # WP33-R3
-    local = {"fingerprint": scat_kg.fingerprint, "layered": scat_kg.layered, "trace": scat_kg.trace}
+    local = {
+        "fingerprint": scat_tools.fingerprint,
+        "layered": scat_tools.layered,
+        "trace": scat_tools.trace,
+    }
     doc = stamp(local[view](**_local_args(name, args), root=vault), vault).to_dict()
     for extra in ({}, {"output": "table"}, {"output": "table", "format": "svg"}):
         res = run_tool(vault, name, {**args, **extra})

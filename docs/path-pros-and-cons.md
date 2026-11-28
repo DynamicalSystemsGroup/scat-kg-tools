@@ -40,7 +40,7 @@ as SVG text: ask for `output` `table` or `both`, or for `format` svg. See [Analy
 - **Pros:** you code in a chat window, with no terminal (setting up, in [Install once](chat-path.md#install-once),
   uses one); the assistant drafts, proposes links and records edges for you; the server holds the rules, as above.
 - **Cons:** what you share in the chat, such as field notes and narrative text, goes to the chat's provider, so your
-  data policy has to allow it; the most setup of any path (SCAT Chat, a container runtime, Tailscale); the server's
+  data policy has to allow it; the most setup of any path (SCATLAB, a container runtime, Tailscale); the server's
   address is public during a chat run, and only the session key lets a request through; each chat run has a new
   key to paste into the chat.
 - **Drawings:** the chat shows you the picture the tool returns. In claude.ai, the model received the image and

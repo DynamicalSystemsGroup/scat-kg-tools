@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from scat_kg.checks.attribution import MODE_RULE
-from scat_kg.mcp_server import prompts
+from scat_tools.checks.attribution import MODE_RULE
+from scat_tools.mcp_server import prompts
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSISTANT = (ROOT / "contracts" / "assistant.md").read_text(encoding="utf-8")

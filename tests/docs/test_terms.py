@@ -4,7 +4,7 @@ Two checks, both read from their source (nothing is listed here that a source co
 - against GLOSSARY.md: the page defines exactly the glossary's terms, each in bold, uses no retired word, and is
   within its word cap, with no prescriptive sentence (WP13-R3). The page and GLOSSARY.md are generated from
   `glossary.yml` (tests/docs/test_glossary_generation.py checks that), and the terms are read here from GLOSSARY.md;
-- against the ontology (`ontology/scat.ttl` through `scat_kg.tbox`): every vault name the page backticks is a page
+- against the ontology (`ontology/scat.ttl` through `scat_tools.tbox`): every vault name the page backticks is a page
   type, field, status, value, edge type or table name of the TBox, and the page shows every one of them.
 """
 
@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from scat_kg.tbox import TBOX
+from scat_tools.tbox import TBOX
 
 ROOT = Path(__file__).resolve().parents[2]
 PAGE = ROOT / "docs" / "reference" / "terms.md"

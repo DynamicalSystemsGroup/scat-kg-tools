@@ -3,13 +3,13 @@
 import pytest
 from helpers import DESK, base, narrative, report_of, rules_of, seeded, set_status
 
-import scat_kg
-from scat_kg import cli
+import scat_tools
+from scat_tools import cli
 
 NAME = "desk-day"
 RECORD = (
     f"`scat record-edge <type> <from> <to> --told-by {NAME}` "
-    f'(REPL: `scat_kg.record_edge("<type>", "<from>", "<to>", ["{NAME}"])`)'
+    f'(REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["{NAME}"])`)'
 )
 ONE = (
     f"    1. record its edges: run {set_status(NAME)}, then {RECORD} for each edge the account tells, "
@@ -66,7 +66,7 @@ def test__scat_noedges__does_not_refuse_set_status_done(make_vault):
     files = base()
     files[DESK] = narrative(status="draft", rows=())
     root = make_vault(files)
-    result = scat_kg.set_status(NAME, "done", root=root)
+    result = scat_tools.set_status(NAME, "done", root=root)
     assert result.ok, str(result)
     assert (root / DESK).read_text(encoding="utf-8").count("status: done") == 1
 
@@ -75,7 +75,7 @@ def test__scat_noedges__the_repl_and_the_cli_print_the_same_message(make_vault, 
     files = base()
     files[DESK] = EMPTY_TABLE
     root = make_vault(files)
-    result = scat_kg.check(root=root)
+    result = scat_tools.check(root=root)
     code = cli.main(["check", "--root", str(root)])
     out = capsys.readouterr().out
     assert code == 0 and result.ok

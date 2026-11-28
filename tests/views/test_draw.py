@@ -7,9 +7,9 @@ import xml.etree.ElementTree as ET
 
 from viewutil import narrative, row, tree_hash
 
-import scat_kg
-from scat_kg import draw
-from scat_kg.tbox import TBOX
+import scat_tools
+from scat_tools import draw
+from scat_tools.tbox import TBOX
 
 NS = "{http://www.w3.org/2000/svg}"
 PNG = b"\x89PNG\r\n\x1a\n"
@@ -74,7 +74,7 @@ def label(node: dict) -> str:
 
 def test_layered_draws_each_node_in_its_layer_column(vault):
     d = draw.layered(root=vault)
-    view = scat_kg.layered(root=vault).to_dict()
+    view = scat_tools.layered(root=vault).to_dict()
     cols = columns(d.svg())
     for layer in TBOX.layers:
         # the order within a column is chosen to reduce crossings (WP35, D-175), no longer by name
@@ -86,7 +86,7 @@ def test_layered_draws_each_node_in_its_layer_column(vault):
 def test_each_edge_is_one_line_between_neighbouring_columns(vault):
     d = draw.layered(root=vault)
     svg = d.svg()
-    view = scat_kg.layered(root=vault).to_dict()
+    view = scat_tools.layered(root=vault).to_dict()
     col_x = xs(svg)
     drawn = lines(svg)
     assert len(drawn) == len(view["edges"]) == 8
@@ -109,7 +109,7 @@ def test_fingerprint_draws_no_candidates_and_no_legend_for_them_unless_asked(vau
 def test_fingerprint_shows_name_status_and_candidates_dashed(vault):
     d = draw.fingerprint("dry", candidates=True, root=vault)
     svg = d.svg()
-    view = scat_kg.fingerprint("dry", candidates=True, root=vault).to_dict()["narratives"][0]
+    view = scat_tools.fingerprint("dry", candidates=True, root=vault).to_dict()["narratives"][0]
     assert "dry (draft)" in [t for _, _, t in texts(svg)]
     assert "dashed line" in said(svg)
     drawn = lines(svg)
@@ -182,7 +182,7 @@ def test_the_figure_grows_with_the_largest_column(make):
         {"narrative/many.md": narrative("Many", "Many.", rows, "draft")}
     )  # no kind: all four columns
     for i in range(12):
-        scat_kg.stub(f"tech-{i:02d}", "technology", root=v)
+        scat_tools.stub(f"tech-{i:02d}", "technology", root=v)
     d = draw.fingerprint("many", root=v)
     w, h = struct.unpack(">II", d.png()[16:24])
     assert w == 1200 and h == round(100 * (1.7 + 0.3 * 12))
@@ -194,12 +194,12 @@ def test_the_figure_grows_with_the_largest_column(make):
 
 def test_a_refusal_is_the_views_refusal(vault):
     for got, want in (
-        (draw.fingerprint("nope", root=vault), scat_kg.fingerprint("nope", root=vault)),
-        (draw.layered(["nope"], root=vault), scat_kg.layered(["nope"], root=vault)),
-        (draw.layered("dry", root=vault), scat_kg.layered("dry", root=vault)),
+        (draw.fingerprint("nope", root=vault), scat_tools.fingerprint("nope", root=vault)),
+        (draw.layered(["nope"], root=vault), scat_tools.layered(["nope"], root=vault)),
+        (draw.layered("dry", root=vault), scat_tools.layered("dry", root=vault)),
         (
             draw.fingerprint("dry", root=vault / "gone"),
-            scat_kg.fingerprint("dry", root=vault / "gone"),
+            scat_tools.fingerprint("dry", root=vault / "gone"),
         ),
     ):
         assert not got.ok and got.to_dict() == want.to_dict()
@@ -211,7 +211,7 @@ def test_without_matplotlib_the_refusal_says_how_to_get_it(vault, monkeypatch):
     for r in (draw.fingerprint("dry", root=vault), draw.layered(root=vault)):
         assert not r.ok
         refused = r.to_dict()["refused"][0]
-        assert refused["fix"]["options"][0]["text"] == 'pip install "scat-kg[draw]"'
+        assert refused["fix"]["options"][0]["text"] == 'pip install "scat-tools[draw]"'
         assert "pip install" in str(r)
 
 

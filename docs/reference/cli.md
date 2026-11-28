@@ -7,7 +7,7 @@
 
 - A vault folder with a `scat.toml` file in it, for example a copy of the template. [Getting started](../getting-started.md) makes one.
 - You type every command in that folder, starting with `uv run`, as in `uv run scat check`. The `--help` blocks below show `scat` alone, which is what the program calls itself.
-- Every command has a twin you call from Python: `import scat_kg` in `uv run python`. The twins are in the [Python API reference](api.md), and they give the same messages.
+- Every command has a twin you call from Python: `import scat_tools` in `uv run python`. The twins are in the [Python API reference](api.md), and they give the same messages.
 
 The blocks below hold the exact output of `--help`. If your window is narrower or wider than 80 columns, your own `--help` wraps the lines differently.
 
@@ -15,7 +15,7 @@ The MCP server offers the same operations to a chat: see the [MCP server referen
 
 ## Machine-readable output
 
-Every command takes `--json`. It prints exactly one JSON document on stdout and nothing else, and the exit code is the same as without it. A program such as a plugin reads that document instead of the message. The Python twins return the same data from `to_dict()` (see the [Python API reference](api.md#machine-readable-output)). The fields, and the rule for when `schema_version` changes, are in the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md).
+Every command takes `--json`. It prints exactly one JSON document on stdout and nothing else, and the exit code is the same as without it. A program such as a plugin reads that document instead of the message. The Python twins return the same data from `to_dict()` (see the [Python API reference](api.md#machine-readable-output)). The fields, and the rule for when `schema_version` changes, are in the [machine interface contract](https://github.com/DynamicalSystemsGroup/scat-tools/blob/dev/contracts/machine-interface.md).
 
 The examples below show `--json` once for each command, with the output a fresh copy of the template gives at that point in the page. These JSON blocks are for reading: they are not run by the docs test.
 
@@ -25,7 +25,7 @@ The examples below show `--json` once for each command, with the output a fresh 
 usage: scat [-h] <command> ...
 
 Check and work on a SCAT knowledge-graph vault. Every command has a REPL twin
-(`import scat_kg`) that gives the same messages.
+(`import scat_tools`) that gives the same messages.
 
 positional arguments:
   <command>
@@ -126,35 +126,35 @@ Every command takes `--root ROOT`, the vault folder (default: the current folder
 === "Python"
 
     ```python
-    import scat_kg
+    import scat_tools
 
-    print(scat_kg.__doc__)
+    print(scat_tools.__doc__)
     ```
 
     ```text
-    scat_kg: check and work on a SCAT knowledge-graph vault from the Python REPL.
+    scat_tools: check and work on a SCAT knowledge-graph vault from the Python REPL.
 
-        import scat_kg
+        import scat_tools
 
-        scat_kg.check()                     # the whole vault in the current directory
-        scat_kg.check("concern/x.md")       # one page (a name or a path)
-        scat_kg.check("x", neighborhood=True)
-        scat_kg.status()                    # the same three scopes, for status
-        scat_kg.set_status("x", "draft")
-        scat_kg.index()
-        scat_kg.stub("x", type="concern")
-        scat_kg.stub_links()                # or stub_links("x")
-        scat_kg.record_edge("holds", "a", "b", ["narrative-name"], note="")
-        scat_kg.merge("a", "b", plan=True)  # fold node page a into b (plan=False applies it); split_plan("a")
-        scat_kg.remove_edge("a", "b")       # or remove_edge("a", "b", ["narrative-name"])
-        scat_kg.load()                      # the knowledge graph, derived from the pages
-        scat_kg.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
-        scat_kg.evidence("node")            # one node: its narratives, paragraphs, edges and adjacent nodes
-        scat_kg.copy_share()                # how much of each node page repeats a narrative, word for word
-        scat_kg.review()                    # pages that may be one node, and pages to re-read
-        scat_kg.attribution()               # narratives by contributor (where the vault's mode allows attribution)
-        scat_kg.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
-        scat_kg.guide("code")               # a lifecycle stage's guide (no stage: the index); no vault needed
+        scat_tools.check()                     # the whole vault in the current directory
+        scat_tools.check("concern/x.md")       # one page (a name or a path)
+        scat_tools.check("x", neighborhood=True)
+        scat_tools.status()                    # the same three scopes, for status
+        scat_tools.set_status("x", "draft")
+        scat_tools.index()
+        scat_tools.stub("x", type="concern")
+        scat_tools.stub_links()                # or stub_links("x")
+        scat_tools.record_edge("holds", "a", "b", ["narrative-name"], note="")
+        scat_tools.merge("a", "b", plan=True)  # fold node page a into b (plan=False applies it); split_plan("a")
+        scat_tools.remove_edge("a", "b")       # or remove_edge("a", "b", ["narrative-name"])
+        scat_tools.load()                      # the knowledge graph, derived from the pages
+        scat_tools.fingerprint("narrative-name")   # views: also edge_table("holds"), layered(), trace("node")
+        scat_tools.evidence("node")            # one node: its narratives, paragraphs, edges and adjacent nodes
+        scat_tools.copy_share()                # how much of each node page repeats a narrative, word for word
+        scat_tools.review()                    # pages that may be one node, and pages to re-read
+        scat_tools.attribution()               # narratives by contributor (where the vault's mode allows attribution)
+        scat_tools.export_edges("tables")      # the three edge tables, as CSV and Markdown, into this folder
+        scat_tools.guide("code")               # a lifecycle stage's guide (no stage: the index); no vault needed
 
     Each call takes `root=` (the vault folder; default: the current directory) and returns an object whose
     `str()` is the message the `scat` command prints, and which prints as that message. `.ok` is False when
@@ -186,7 +186,7 @@ options:
                   contract), nothing else
   --neighborhood  check PAGE and every page one link away, in either direction
 
-REPL: `scat_kg.check()`, `scat_kg.check("<page>")`, `scat_kg.check("<page>", neighborhood=True)`
+REPL: `scat_tools.check()`, `scat_tools.check("<page>")`, `scat_tools.check("<page>", neighborhood=True)`
 ```
 
 Checks the whole vault, one page, or one page and every page one link away. It writes nothing. It prints each problem with its rule id and a `Fix:` line, then a count line, or `no problems`.
@@ -196,8 +196,8 @@ Exit codes: 0 when there are no errors (warnings are fine), 1 when there is an e
 === "Python"
 
     ```python
-    scat_kg.check()
-    scat_kg.check("anonymity", neighborhood=True)
+    scat_tools.check()
+    scat_tools.check("anonymity", neighborhood=True)
     ```
 
     ```text
@@ -277,7 +277,7 @@ $ uv run scat check --json
           },
           {
             "kind": "exact",
-            "text": "run `scat stub cap-settin --type technology` (REPL: `scat_kg.stub(\"cap-settin\", type=\"technology\")`) to create a technology page",
+            "text": "run `scat stub cap-settin --type technology` (REPL: `scat_tools.stub(\"cap-settin\", type=\"technology\")`) to create a technology page",
             "command": {
               "argv": [
                 "stub",
@@ -285,7 +285,7 @@ $ uv run scat check --json
                 "--type",
                 "technology"
               ],
-              "repl": "scat_kg.stub(\"cap-settin\", type=\"technology\")"
+              "repl": "scat_tools.stub(\"cap-settin\", type=\"technology\")"
             }
           },
           {
@@ -303,7 +303,7 @@ $ uv run scat check --json
         ],
         "notes": []
       },
-      "text": "error [SCAT-DONE-END-NOPAGE] narrative/groups-under-a-cap-pitch.md:22:55 row 2 cell `to`: [[cap-settin]] does not reach a page (no page is named cap-settin)\n  Fix, choose one:\n    1. replace `[[cap-settin]]` with `[[cap-setting]]`\n    2. run `scat stub cap-settin --type technology` (REPL: `scat_kg.stub(\"cap-settin\", type=\"technology\")`) to create a technology page\n    3. delete the row"
+      "text": "error [SCAT-DONE-END-NOPAGE] narrative/groups-under-a-cap-pitch.md:22:55 row 2 cell `to`: [[cap-settin]] does not reach a page (no page is named cap-settin)\n  Fix, choose one:\n    1. replace `[[cap-settin]]` with `[[cap-setting]]`\n    2. run `scat stub cap-settin --type technology` (REPL: `scat_tools.stub(\"cap-settin\", type=\"technology\")`) to create a technology page\n    3. delete the row"
     }
   ]
 }
@@ -328,7 +328,7 @@ options:
                   contract), nothing else
   --neighborhood  show PAGE and every page one link away, in either direction
 
-REPL: `scat_kg.status()`, `scat_kg.status("<page>")`, `scat_kg.status("<page>", neighborhood=True)`
+REPL: `scat_tools.status()`, `scat_tools.status("<page>")`, `scat_tools.status("<page>", neighborhood=True)`
 ```
 
 Shows the status of each page, then the counts. It writes nothing. The status is `stub`, `draft` or `done`.
@@ -338,8 +338,8 @@ Exit codes: 0, or 1 for a refusal (a page that is not there, a vault folder that
 === "Python"
 
     ```python
-    scat_kg.status("anonymity")
-    scat_kg.status("anonymity", neighborhood=True)
+    scat_tools.status("anonymity")
+    scat_tools.status("anonymity", neighborhood=True)
     ```
 
     ```text
@@ -418,7 +418,7 @@ options:
   --json       print the result as one JSON document (machine-interface
                contract), nothing else
 
-REPL: `scat_kg.set_status("<page-name>", "<status>")`
+REPL: `scat_tools.set_status("<page-name>", "<status>")`
 ```
 
 Changes the `status:` line of one page and nothing else in the file. `PAGE` is a name or a path. Setting a narrative or a node to `done` is judged as the page would stand at `done`, and refused while it would fail: the refusal lists each error with its fix and writes nothing (see [Coding](../coding.md#6-set-it-to-done)).
@@ -428,7 +428,7 @@ Exit codes: 0 when the status was changed or already was that value, 1 for a ref
 === "Python"
 
     ```python
-    scat_kg.set_status("anonymity", "draft")
+    scat_tools.set_status("anonymity", "draft")
     ```
 
     ```text
@@ -523,7 +523,7 @@ options:
   --json       print the result as one JSON document (machine-interface
                contract), nothing else
 
-REPL: `scat_kg.index()`
+REPL: `scat_tools.index()`
 ```
 
 Writes `index/<type>.base`, the index page of each type, for each one that is missing, and never rewrites one. It prints one line per file: `created`, `changed` or `unchanged`. The template ships all five, so on it every line says `unchanged`.
@@ -533,7 +533,7 @@ Exit codes: 0, or 1 for a refusal (another file holds an index page's name).
 === "Python"
 
     ```python
-    scat_kg.index()
+    scat_tools.index()
     ```
 
     ```text
@@ -603,7 +603,7 @@ options:
   --type TYPE  the page's type, one of: group, concern, affordance,
                technology, narrative, contributor
 
-REPL: `scat_kg.stub("<page-name>", type="<type>")`
+REPL: `scat_tools.stub("<page-name>", type="<type>")`
 ```
 
 Creates one page with `status: stub`. The `--type` option is required. A node (`group`, `concern`, `affordance`, `technology`), a `narrative`, or a `contributor` page. A narrative stub also carries an empty `timeframe:` line for you to fill. A contributor page is made only where the vault's attribution mode (in `scat.toml`) is `required` or `optional`; in `disallowed` mode the command refuses and says that the vault holds no contributor page.
@@ -615,8 +615,8 @@ The CLI example uses different names from the Python one, so both can run in one
 === "Python"
 
     ```python
-    scat_kg.stub("reading-group", type="concern")
-    scat_kg.stub("desk-notes-one", type="narrative")
+    scat_tools.stub("reading-group", type="concern")
+    scat_tools.stub("desk-notes-one", type="narrative")
     ```
 
     ```text
@@ -675,7 +675,7 @@ options:
   --json       print the result as one JSON document (machine-interface
                contract), nothing else
 
-REPL: `scat_kg.stub_links()`, `scat_kg.stub_links("<page>")`
+REPL: `scat_tools.stub_links()`, `scat_tools.stub_links("<page>")`
 ```
 
 Creates the node pages that the ends of rows link and the vault lacks, each of the type its layer fixes, from one page or the whole vault. A link elsewhere in a narrative names no layer, so it is reported as a note and made with `scat stub`. When there is nothing to create it prints `stub-links: nothing to do`.
@@ -685,7 +685,7 @@ Exit codes: 0 when it created pages or had nothing to do, 1 for a refusal (the g
 === "Python"
 
     ```python
-    scat_kg.stub_links()
+    scat_tools.stub_links()
     ```
 
     ```text
@@ -749,7 +749,7 @@ options:
                        narrative
   --note TEXT          the row's note (default: none)
 
-REPL: `scat_kg.record_edge("<type>", "<from>", "<to>", ["<narrative>"], note="<text>")`
+REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["<narrative>"], note="<text>")`
 ```
 
 Records an edge: adds its row to each narrative named by `--told-by` that has none, makes a missing node or narrative as a stub, and leaves every link alone. `TYPE` is `holds`, `addressed-by` or `provided-by` (the verb, such as `"is addressed by"`, is accepted too). If a narrative already has the row it prints `unchanged` and writes nothing. `--note` is the row's note.
@@ -759,7 +759,7 @@ Exit codes: 0 when it changed or found the row there, 1 for a refusal (a narrati
 === "Python"
 
     ```python
-    scat_kg.record_edge("holds", "project-leads", "reading-group", ["desk-notes-one"], note="Said twice.")
+    scat_tools.record_edge("holds", "project-leads", "reading-group", ["desk-notes-one"], note="Said twice.")
     ```
 
     ```text
@@ -843,7 +843,7 @@ options:
   --told-by NARRATIVE  remove the rows of this narrative only; repeat it for
                        each narrative
 
-REPL: `scat_kg.remove_edge("<from>", "<to>")`, `scat_kg.remove_edge("<from>", "<to>", ["<narrative>"])`
+REPL: `scat_tools.remove_edge("<from>", "<to>")`, `scat_tools.remove_edge("<from>", "<to>", ["<narrative>"])`
 ```
 
 Removes an edge: deletes its rows, from the narratives named by `--told-by` or, without it, from every narrative that tells it. The links stay. It refuses a narrative that is `done`: set it to `draft` first. When no narrative tells the edge it prints `remove-edge: nothing to do`.
@@ -853,7 +853,7 @@ Exit codes: 0, or 1 for a refusal (a narrative that is `done`).
 === "Python"
 
     ```python
-    scat_kg.remove_edge("project-leads", "reading-group")
+    scat_tools.remove_edge("project-leads", "reading-group")
     ```
 
     ```text
@@ -933,7 +933,7 @@ options:
                contract), nothing else
   --plan       show what the merge would do and write nothing
 
-REPL: `scat_kg.merge("<a>", "<b>")`, `scat_kg.merge("<a>", "<b>", plan=True)`
+REPL: `scat_tools.merge("<a>", "<b>")`, `scat_tools.merge("<a>", "<b>", plan=True)`
 ```
 
 Folds node page A into node page B, two pages of one type, when you have found that they name one node. A is folded into B: B stays and A goes.
@@ -952,7 +952,7 @@ Exit codes: 0, or 1 for a refusal.
 === "Python"
 
     ```python
-    scat_kg.merge("project-leads", "workshop-participants", plan=True)
+    scat_tools.merge("project-leads", "workshop-participants", plan=True)
     ```
 
     ```text
@@ -1047,7 +1047,7 @@ options:
   --json       print the result as one JSON document (machine-interface
                contract), nothing else
 
-REPL: `scat_kg.split_plan("<a>")`
+REPL: `scat_tools.split_plan("<a>")`
 ```
 
 Shows what you must re-link to split node page A in two, when you have found that it holds two nodes. It splits nothing and writes nothing. For each narrative (or node page) that links A it gives every link, by line and column, and every `Edges told` row that names A, as written. You assign each narrative to A or to a new page (made with `scat stub`), then edit each link and row by hand. A narrative that is `done` is yours to reopen first. For a group the plan notes the cap on groups in `scat.toml` and whether a new group page would go over it; it does not refuse for that. A contributor page is never listed.
@@ -1059,7 +1059,7 @@ Exit codes: 0, or 1 for a refusal.
 === "Python"
 
     ```python
-    scat_kg.split_plan("project-leads")
+    scat_tools.split_plan("project-leads")
     ```
 
     ```text
@@ -1100,7 +1100,7 @@ options:
   --candidates  also show the candidates: links between two nodes that have no
                 row
 
-REPL: `scat_kg.fingerprint()`, `scat_kg.fingerprint("<narrative>", candidates=True)`
+REPL: `scat_tools.fingerprint()`, `scat_tools.fingerprint("<narrative>", candidates=True)`
 ```
 
 Shows what one narrative tells: its nodes by layer, the edges its rows tell (each with its status and every narrative that tells it), and, with `--candidates`, the candidates, which are links between two nodes that an edge type fits and that have no row. Without the option the fingerprint shows no candidates. Without `NARRATIVE` it shows every narrative, in path order. It writes nothing and never shows a relationship annotation.
@@ -1112,7 +1112,7 @@ Exit codes: 0, or 1 for a refusal.
 === "Python"
 
     ```python
-    scat_kg.fingerprint("groups-under-a-cap-pitch")
+    scat_tools.fingerprint("groups-under-a-cap-pitch")
     ```
 
     ```text
@@ -1228,7 +1228,7 @@ options:
   --json       print the result as one JSON document (machine-interface
                contract), nothing else
 
-REPL: `scat_kg.edge_table("<type>")`
+REPL: `scat_tools.edge_table("<type>")`
 ```
 
 Shows every edge of one type, in the order of the graph: the two ends, the narratives that tell it and its status. It writes nothing.
@@ -1238,7 +1238,7 @@ Exit codes: 0, or 1 for a refusal (a type that is not one of the three, a page i
 === "Python"
 
     ```python
-    scat_kg.edge_table("holds")
+    scat_tools.edge_table("holds")
     ```
 
     ```text
@@ -1318,7 +1318,7 @@ options:
   --candidates          also show the candidates: links between two nodes that
                         have no row
 
-REPL: `scat_kg.layered()`, `scat_kg.layered(["<narrative>"], candidates=True)`
+REPL: `scat_tools.layered()`, `scat_tools.layered(["<narrative>"], candidates=True)`
 ```
 
 Shows the layered view: the union of the fingerprints of the narratives you name, or of every narrative when you name none. The nodes are grouped by layer, in layer order, and the edges are the rows those narratives tell. With `--candidates` it also lists the candidates, the links between two nodes that have no row, each with its narrative; a narrative with no account text is flagged, since every pair of its adjacent nodes is then a candidate and says nothing about the text. The node pages that no row tells (orphans) are listed with their type and status. It writes nothing.
@@ -1328,7 +1328,7 @@ Exit codes: 0, or 1 for a refusal (a name that is not a narrative, a page it dra
 === "Python"
 
     ```python
-    scat_kg.layered(["groups-under-a-cap-pitch"])
+    scat_tools.layered(["groups-under-a-cap-pitch"])
     ```
 
     ```text
@@ -1447,7 +1447,7 @@ options:
   --direction DIRECTION
                         up, down or both (default: both)
 
-REPL: `scat_kg.trace("<node>")`, `scat_kg.trace("<node>", "<direction>")`
+REPL: `scat_tools.trace("<node>")`, `scat_tools.trace("<node>", "<direction>")`
 ```
 
 Follows edges from a node, and shows the nodes it reaches in layer order and the edges it walked. `up` goes toward the groups, `down` toward the technologies, `both` (the default) does both. It writes nothing.
@@ -1457,7 +1457,7 @@ Exit codes: 0, or 1 for a refusal (a name that is not a node, a direction that i
 === "Python"
 
     ```python
-    scat_kg.trace("anonymity", "up")
+    scat_tools.trace("anonymity", "up")
     ```
 
     ```text
@@ -1538,7 +1538,7 @@ options:
   --json       print the result as one JSON document (machine-interface
                contract), nothing else
 
-REPL: `scat_kg.evidence("<node>")`
+REPL: `scat_tools.evidence("<node>")`
 ```
 
 Shows, for one node page, what the vault says of it, so that you can write the page from the narratives and not from one of them. It prints the vault's attribution mode first, then:
@@ -1554,7 +1554,7 @@ Exit codes: 0, or 1 for a refusal (a name that is not a node page, such as a nar
 === "Python"
 
     ```python
-    scat_kg.evidence("anonymity")
+    scat_tools.evidence("anonymity")
     ```
 
     ```text
@@ -1758,7 +1758,7 @@ options:
   --json       print the result as one JSON document (machine-interface
                contract), nothing else
 
-REPL: `scat_kg.copy_share()`, `scat_kg.copy_share("<node>")`
+REPL: `scat_tools.copy_share()`, `scat_tools.copy_share("<node>")`
 ```
 
 Shows, for each node page, how much of its text repeats a narrative, so that you can see which pages were written from one account. It prints the vault's attribution mode first, then one line for each node page, the most repeated first:
@@ -1775,7 +1775,7 @@ Exit codes: 0, or 1 for a refusal (a name that is not a node page, such as a nar
 === "Python"
 
     ```python
-    scat_kg.copy_share()
+    scat_tools.copy_share()
     ```
 
     ```text
@@ -1869,7 +1869,7 @@ options:
   --json       print the result as one JSON document (machine-interface
                contract), nothing else
 
-REPL: `scat_kg.review()`
+REPL: `scat_tools.review()`
 ```
 
 Shows where to look next, in two lists. It prints the vault's attribution mode first.
@@ -1891,7 +1891,7 @@ Exit codes: 0, or 1 for a refusal (a page it draws that has an error, a row that
 === "Python"
 
     ```python
-    scat_kg.review()
+    scat_tools.review()
     ```
 
     ```text
@@ -2006,7 +2006,7 @@ options:
   --json       print the result as one JSON document (machine-interface
                contract), nothing else
 
-REPL: `scat_kg.attribution()`
+REPL: `scat_tools.attribution()`
 ```
 
 Lists each contributor page with the narratives whose `attributed_to` field names it, and then the narratives that name nobody. It is a view of the knowledge graph, not of the layered graph: a contributor page has no edge and appears in no other view. It writes nothing.
@@ -2020,7 +2020,7 @@ The examples below are for a vault whose mode is `optional`, with two contributo
 === "Python"
 
     ```python
-    scat_kg.attribution()
+    scat_tools.attribution()
     ```
 
     ```text
@@ -2112,7 +2112,7 @@ options:
                contract), nothing else
   --out DIR    the folder the tables go in (no default)
 
-REPL: `scat_kg.export_edges("<dir>")`
+REPL: `scat_tools.export_edges("<dir>")`
 ```
 
 Writes the three edge tables, one CSV and one Markdown file each, into `DIR`. The CSV file has the columns `from`, `to`, `narratives` (joined by `;`) and `status`. The Markdown file is a generated heading, one sentence and a table. Names are plain text, so the files add no page, link or row to a vault, even when `DIR` is inside it. Of the six commands here, it and `scat draw` are the only ones that write.
@@ -2124,7 +2124,7 @@ Exit codes: 0, or 1 for a refusal.
 === "Python"
 
     ```python
-    scat_kg.export_edges("tables")
+    scat_tools.export_edges("tables")
     ```
 
     ```text
@@ -2195,7 +2195,7 @@ options:
   --json       print the result as one JSON document (machine-interface
                contract), nothing else
 
-REPL: `scat_kg.guide()`, `scat_kg.guide("<stage>")`
+REPL: `scat_tools.guide()`, `scat_tools.guide("<stage>")`
 ```
 
 Shows the guide of one stage of the project's lifecycle, or, with no `STAGE`, the index: the five stages, one line each, and the moves between them. A stage is where the project is (plan, capture, code, analyse or report); it is not a page's status. The guide says what the stage is for, how to recognise it, what it needs and makes, which tools and prompts it offers, what the coder does, and where it can go next. It needs no vault, so it works in any folder. An unknown stage is a refusal that names the five.
@@ -2207,7 +2207,7 @@ Exit codes: 0, or 1 for a refusal.
 === "Python"
 
     ```python
-    scat_kg.guide("analyse")
+    scat_tools.guide("analyse")
     ```
 
 === "CLI"
@@ -2223,7 +2223,7 @@ Both print the guide as text: a heading with the stage's name, then what it is f
 ```text
 usage: scat draw [-h] <drawing> ...
 
-Draw a view as an image in columns by layer. Needs the extra `draw`: `pip install "scat-kg[draw]"`. The only write is the image file you name with --out.
+Draw a view as an image in columns by layer. Needs the extra `draw`: `pip install "scat-tools[draw]"`. The only write is the image file you name with --out.
 
 positional arguments:
   <drawing>
@@ -2243,12 +2243,12 @@ positional arguments:
 options:
   -h, --help     show this help message and exit
 
-REPL: `from scat_kg import draw`, then `draw.fingerprint(...)`, `draw.layered(...)` or `draw.trace(...)`
+REPL: `from scat_tools import draw`, then `draw.fingerprint(...)`, `draw.layered(...)` or `draw.trace(...)`
 ```
 
 Draws a view as an image in columns, one for each layer, in layer order, labelled stakeholder, concern, affordance and technology at the top. A fingerprint drawing follows its narrative's kind: an architecture has no stakeholder column, a scenario no technology column, and a narrative with no kind has all four; a note under the drawing says which column is not drawn, why, and how many linked nodes it leaves out. The layered and trace drawings keep all four columns. SVG and PNG are the same drawing in two formats. Each node is a box labelled with its name, and with its status in brackets when that is not `done`; each edge is a line between neighbouring columns. Within a column the nodes are in order of name. `scat draw fingerprint` draws one narrative's fingerprint and shows no candidates unless you add `--candidates`, which draws the links with no row as dashed lines. `scat draw layered` draws the layered view of the narratives you name with `--narrative`, or of every narrative, and with `--candidates` draws the links with no row as dashed lines too. `scat draw trace` draws what `scat trace` follows from a node, up, down or both (`--direction`, both unless you say), with the node itself in its own layer's column and the title naming it.
 
-Drawing needs the extra `draw`: `pip install "scat-kg[draw]"`. Without it, the command refuses and says so. The same command gives the same image, byte for byte.
+Drawing needs the extra `draw`: `pip install "scat-tools[draw]"`. Without it, the command refuses and says so. The same command gives the same image, byte for byte.
 
 `--out FILE` is required. A file ending in `.png` or `.svg` is written, and any other ending is refused. A file that is there is rewritten only when its content differs. It is the only thing `scat draw` writes. It refuses, writing nothing, where `scat fingerprint`, `scat layered` or `scat trace` would. Paths inside the vault folder are shown from it; a file outside it is shown as you gave it.
 
@@ -2304,7 +2304,7 @@ REPL: `draw.layered().save("<file>")`, `draw.layered(["<narrative>"], candidates
 === "Python"
 
     ```python
-    from scat_kg import draw
+    from scat_tools import draw
 
     draw.layered().save("layered.png")
     ```

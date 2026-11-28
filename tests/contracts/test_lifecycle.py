@@ -58,7 +58,7 @@ def server_names(tmp_path_factory):
     from mcp.shared.memory import create_connected_server_and_client_session as connected
     from mcputil import copy_vault
 
-    from scat_kg.mcp_server.server import build
+    from scat_tools.mcp_server.server import build
 
     vault = copy_vault(tmp_path_factory.mktemp("lifecycle") / "vault")
 

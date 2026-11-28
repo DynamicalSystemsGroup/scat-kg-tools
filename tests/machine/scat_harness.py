@@ -22,11 +22,11 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
-import scat_kg
-from scat_kg import cli
-from scat_kg.checks import run as checks_run
-from scat_kg.checks.problem import Problem, Report
-from scat_kg.vault import read_vault
+import scat_tools
+from scat_tools import cli
+from scat_tools.checks import run as checks_run
+from scat_tools.checks.problem import Problem, Report
+from scat_tools.vault import read_vault
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = json.loads((ROOT / "contracts" / "machine-interface.schema.json").read_text("utf-8"))
@@ -99,7 +99,7 @@ def validate_report(report: Report) -> None:
             severities_seen[p.rule] = f"{p.severity} (and {severities_seen[p.rule]})"
         problems_validated += 1
     errors = sorted(
-        _DOC.iter_errors(scat_kg.CheckResult(report).to_dict()), key=lambda e: list(e.path)
+        _DOC.iter_errors(scat_tools.CheckResult(report).to_dict()), key=lambda e: list(e.path)
     )
     if errors:
         e = errors[0]
@@ -252,7 +252,7 @@ def observe(vault_root: Path, report: Report) -> None:
 
 
 def wrap(original):
-    """The function that replaces `scat_kg.checks.run._run`: the same result, observed."""
+    """The function that replaces `scat_tools.checks.run._run`: the same result, observed."""
 
     def run(vault, *args, **kwargs):
         report = original(vault, *args, **kwargs)

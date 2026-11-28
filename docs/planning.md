@@ -105,8 +105,8 @@ Before each event:
     === "Python"
 
         ```python
-        import scat_kg
-        scat_kg.check()
+        import scat_tools
+        scat_tools.check()
         ```
 
     === "CLI"

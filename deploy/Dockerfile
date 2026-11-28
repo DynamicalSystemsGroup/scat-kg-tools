@@ -1,5 +1,5 @@
 # The SCAT MCP server (M8) as a read-only container. Build context: the repository root.
-#   docker build -f deploy/Dockerfile -t scat-chat-mcp .
+#   docker build -f deploy/Dockerfile -t scatlab-mcp .
 # Run (the launcher does this): --user <host uid>:<host gid>, --read-only --tmpfs /tmp, vault mounted read-write at /vault (the server writes
 # views/ through the tool's operations), key from --env-file (SCAT_MCP_KEY), port published on 127.0.0.1 only.
 FROM python:3.12-slim

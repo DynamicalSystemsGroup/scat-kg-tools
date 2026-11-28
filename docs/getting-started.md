@@ -25,13 +25,13 @@ Pick one path.
 and downloads it, in one command. `my-vault` is the name you are choosing for your repository and its folder.
 
 ```text
-gh repo create my-vault --template DynamicalSystemsGroup/scat-kg-template --private --clone
+gh repo create my-vault --template DynamicalSystemsGroup/scat-template --private --clone
 cd my-vault
 ```
 
 **On the GitHub website.** No `gh`? Use this path.
 
-1. Sign in to GitHub, then open <https://github.com/DynamicalSystemsGroup/scat-kg-template>. Signed out, GitHub does
+1. Sign in to GitHub, then open <https://github.com/DynamicalSystemsGroup/scat-template>. Signed out, GitHub does
    not show **Use this template**.
 2. Choose **Use this template**, then **Create a new repository**.
 3. Set the name (for example `my-vault`) and set the visibility to **Private**.
@@ -121,8 +121,8 @@ Prefer working interactively? The REPL (a Python session where you type one line
 Start it with `uv run python`. The prompt changes to `>>>`. Type the lines below one at a time, and the result prints beneath them. Type `exit()` to leave.
 
 ```python
-import scat_kg
-scat_kg.check()
+import scat_tools
+scat_tools.check()
 ```
 
 It prints the same text as `uv run scat check`:

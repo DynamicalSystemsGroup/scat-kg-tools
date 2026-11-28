@@ -5,14 +5,14 @@ import json
 import pytest
 from viewutil import page, tree_hash
 
-import scat_kg
-from scat_kg.ops.result import Result
+import scat_tools
+from scat_tools.ops.result import Result
 
 BAD_ROW = "| farmers | holds | [[water]] | |"  # the `from` end is plain text, not a link
 
 
 def refused(view, subject_has=None):
-    assert isinstance(view, Result) and not isinstance(view, scat_kg.View)
+    assert isinstance(view, Result) and not isinstance(view, scat_tools.View)
     assert view.ok is False
     d = view.to_dict()
     assert d["kind"] == "operation" and d["ok"] is False and d["schema_version"] == 3
@@ -33,20 +33,20 @@ def bad_narrative(status):
 
 
 def test_unknown_narrative(vault):
-    d = refused(scat_kg.fingerprint("nope", root=vault), "nope")
+    d = refused(scat_tools.fingerprint("nope", root=vault), "nope")
     assert d["refused"][0]["why"] == "no narrative has this name"
     assert d["problems"] == []
-    assert refused(scat_kg.layered(["dry", "nope"], root=vault), "nope")
+    assert refused(scat_tools.layered(["dry", "nope"], root=vault), "nope")
 
 
 def test_a_node_is_not_a_narrative_and_a_narrative_is_not_a_node(vault):
-    refused(scat_kg.fingerprint("water", root=vault), "water")
-    refused(scat_kg.layered(["water"], root=vault), "water")
-    refused(scat_kg.trace("dry", root=vault), "dry")
+    refused(scat_tools.fingerprint("water", root=vault), "water")
+    refused(scat_tools.layered(["water"], root=vault), "water")
+    refused(scat_tools.trace("dry", root=vault), "dry")
 
 
 def test_unknown_node(vault):
-    d = refused(scat_kg.trace("nope", root=vault), "nope")
+    d = refused(scat_tools.trace("nope", root=vault), "nope")
     assert "no node has this name" in d["refused"][0]["why"]
 
 
@@ -54,34 +54,34 @@ def test_ambiguous_name(make):
     root = make(
         {"concern/dup.md": page("concern", "Dup"), "technology/dup.md": page("technology", "Dup")}
     )
-    d = refused(scat_kg.trace("dup", root=root), "dup")
+    d = refused(scat_tools.trace("dup", root=root), "dup")
     assert d["refused"][0]["why"] == (
         "more than one page has this name: concern/dup.md, technology/dup.md"
     )
-    refused(scat_kg.fingerprint("dup", root=root), "dup")
+    refused(scat_tools.fingerprint("dup", root=root), "dup")
 
 
 def test_unknown_edge_type(vault):
-    d = refused(scat_kg.edge_table("loves", root=vault), "loves")
+    d = refused(scat_tools.edge_table("loves", root=vault), "loves")
     assert d["refused"][0]["fix"]["options"] or d["refused"][0]["fix"]
-    assert "holds, addressed-by, provided-by" in str(scat_kg.edge_table("loves", root=vault))
+    assert "holds, addressed-by, provided-by" in str(scat_tools.edge_table("loves", root=vault))
     # the verb is not the slug
-    refused(scat_kg.edge_table("is addressed by", root=vault))
+    refused(scat_tools.edge_table("is addressed by", root=vault))
 
 
 def test_bad_direction(vault):
-    refused(scat_kg.trace("farmers", "sideways", root=vault), "sideways")
-    assert "up, down, both" in str(scat_kg.trace("farmers", "sideways", root=vault))
+    refused(scat_tools.trace("farmers", "sideways", root=vault), "sideways")
+    assert "up, down, both" in str(scat_tools.trace("farmers", "sideways", root=vault))
 
 
 def test_missing_vault_folder(tmp_path):
     gone = tmp_path / "gone"
     for view in (
-        scat_kg.fingerprint(root=gone),
-        scat_kg.fingerprint("dry", root=gone),
-        scat_kg.edge_table("holds", root=gone),
-        scat_kg.layered(root=gone),
-        scat_kg.trace("farmers", root=gone),
+        scat_tools.fingerprint(root=gone),
+        scat_tools.fingerprint("dry", root=gone),
+        scat_tools.edge_table("holds", root=gone),
+        scat_tools.layered(root=gone),
+        scat_tools.trace("farmers", root=gone),
     ):
         d = refused(view, "gone")
         assert d["refused"][0]["why"] == "the vault folder does not exist"
@@ -93,7 +93,7 @@ def test_missing_vault_folder(tmp_path):
 
 def test_a_done_narrative_with_an_error_refuses_and_carries_the_problems(make):
     root = make({"narrative/bad.md": bad_narrative("done")})
-    view = scat_kg.fingerprint("bad", root=root)
+    view = scat_tools.fingerprint("bad", root=root)
     d = refused(view, "narrative/bad.md")
     assert d["problems"], "the problems travel with the refusal"
     assert {p["severity"] for p in d["problems"]} == {"error"}
@@ -109,54 +109,54 @@ def test_a_draft_narrative_with_the_same_row_only_warns(make):
     root = make({"narrative/bad.md": bad_narrative("draft")})
     # the row tells no edge; the view no longer leaves it out silently but refuses, naming the row
     # (the check stays a warning: no problems travel with this refusal)
-    d = refused(scat_kg.fingerprint("bad", root=root), "narrative/bad.md row 1")
+    d = refused(scat_tools.fingerprint("bad", root=root), "narrative/bad.md row 1")
     assert d["problems"] == []
-    refused(scat_kg.layered(root=root), "narrative/bad.md row 1")
-    assert scat_kg.fingerprint("dry", root=root).ok
+    refused(scat_tools.layered(root=root), "narrative/bad.md row 1")
+    assert scat_tools.fingerprint("dry", root=root).ok
 
 
 def test_the_whole_vault_refuses_on_any_narrative_error_but_a_named_view_does_not(make):
     root = make({"narrative/bad.md": bad_narrative("done")})
-    refused(scat_kg.fingerprint(root=root), "narrative/bad.md")
-    refused(scat_kg.layered(root=root), "narrative/bad.md")
+    refused(scat_tools.fingerprint(root=root), "narrative/bad.md")
+    refused(scat_tools.layered(root=root), "narrative/bad.md")
     # the error is in a page these views do not draw
-    assert scat_kg.fingerprint("dry", root=root).ok
-    assert scat_kg.layered(["dry", "wet"], root=root).ok
+    assert scat_tools.fingerprint("dry", root=root).ok
+    assert scat_tools.layered(["dry", "wet"], root=root).ok
     # the edge table and the trace draw every narrative, so they refuse too
-    refused(scat_kg.edge_table("holds", root=root), "narrative/bad.md")
-    refused(scat_kg.trace("farmers", root=root), "narrative/bad.md")
+    refused(scat_tools.edge_table("holds", root=root), "narrative/bad.md")
+    refused(scat_tools.trace("farmers", root=root), "narrative/bad.md")
 
 
 def test_an_error_on_a_node_page_in_the_result_refuses(make):
     root = make({"concern/water.md": page("concern", "Water", "bogus")})
-    d = refused(scat_kg.trace("farmers", root=root), "concern/water.md")
+    d = refused(scat_tools.trace("farmers", root=root), "concern/water.md")
     assert [p["rule"] for p in d["problems"]] == ["SCAT-FM-STATUS"]
-    refused(scat_kg.fingerprint("dry", root=root))
-    refused(scat_kg.edge_table("holds", root=root))
-    refused(scat_kg.layered(["dry"], root=root))
+    refused(scat_tools.fingerprint("dry", root=root))
+    refused(scat_tools.edge_table("holds", root=root))
+    refused(scat_tools.layered(["dry"], root=root))
     # views whose result does not hold `water` still work
-    assert scat_kg.trace("towns", root=root).ok
-    assert scat_kg.fingerprint("split", root=root).ok
-    assert scat_kg.edge_table("provided-by", root=root).ok
+    assert scat_tools.trace("towns", root=root).ok
+    assert scat_tools.fingerprint("split", root=root).ok
+    assert scat_tools.edge_table("provided-by", root=root).ok
 
 
 def test_a_warning_on_a_node_page_does_not_refuse(make):
     # a draft page missing its description only warns
     root = make({"concern/water.md": page("concern", "Water", "draft")})
-    assert scat_kg.trace("farmers", root=root).ok
+    assert scat_tools.trace("farmers", root=root).ok
 
 
 # ---------------------------------------------------------------- views write nothing
 
 CALLS = {
-    "fingerprint": lambda r: scat_kg.fingerprint(root=r),
-    "fingerprint-one": lambda r: scat_kg.fingerprint("dry", root=r),
-    "edge-table": lambda r: scat_kg.edge_table("holds", root=r),
-    "layered": lambda r: scat_kg.layered(root=r),
-    "layered-some": lambda r: scat_kg.layered(["split"], root=r),
-    "trace": lambda r: scat_kg.trace("farmers", root=r),
-    "refusal-name": lambda r: scat_kg.trace("nope", root=r),
-    "refusal-type": lambda r: scat_kg.edge_table("loves", root=r),
+    "fingerprint": lambda r: scat_tools.fingerprint(root=r),
+    "fingerprint-one": lambda r: scat_tools.fingerprint("dry", root=r),
+    "edge-table": lambda r: scat_tools.edge_table("holds", root=r),
+    "layered": lambda r: scat_tools.layered(root=r),
+    "layered-some": lambda r: scat_tools.layered(["split"], root=r),
+    "trace": lambda r: scat_tools.trace("farmers", root=r),
+    "refusal-name": lambda r: scat_tools.trace("nope", root=r),
+    "refusal-type": lambda r: scat_tools.edge_table("loves", root=r),
 }
 
 

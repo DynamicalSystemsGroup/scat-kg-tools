@@ -1,5 +1,5 @@
 """Stand-ins for the programs the launcher calls (docker, colima, tailscale, openssl, security, osascript, pbcopy, caffeinate),
-a fake server on a free port, and a runner for deploy/scat-chat.sh. No real docker, colima or tailscale runs."""
+a fake server on a free port, and a runner for deploy/scatlab.sh. No real docker, colima or tailscale runs."""
 
 import http.server
 import os
@@ -12,8 +12,8 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).parents[2]
-# The launcher under test; SCAT_CHAT_TEST_LAUNCHER names a scratch copy (a mutation check), never used otherwise.
-SCRIPT = Path(os.environ.get("SCAT_CHAT_TEST_LAUNCHER") or REPO / "deploy" / "scat-chat.sh")
+# The launcher under test; SCATLAB_TEST_LAUNCHER names a scratch copy (a mutation check), never used otherwise.
+SCRIPT = Path(os.environ.get("SCATLAB_TEST_LAUNCHER") or REPO / "deploy" / "scatlab.sh")
 
 STANDINS = {
     "docker": r"""#!/bin/sh
@@ -178,8 +178,8 @@ class Rig:
             p.write_text(body)
             p.chmod(0o755)
         (self.stub / "ts-status.json").write_text(STATUS_OK)
-        self.state = self.home / "Library" / "Application Support" / "SCAT Chat"
-        self.keyfile = self.stub / "keychain" / "scat-chat"  # the stand-in keychain's one item
+        self.state = self.home / "Library" / "Application Support" / "SCATLAB"
+        self.keyfile = self.stub / "keychain" / "scatlab"  # the stand-in keychain's one item
         self.state.mkdir(parents=True)
         self.server = FakeServer(self.keyfile)
         self.procs: list[subprocess.Popen] = []
@@ -191,12 +191,15 @@ class Rig:
             "HOME": str(self.home),
             "CALLS": str(self.calls),
             "STUB_STATE": str(self.stub),
-            "SCAT_CHAT_UI": "plain",
-            "SCAT_CHAT_CONTEXT": str(REPO),
-            "SCAT_CHAT_PORT": str(self.server.port),
-            "SCAT_CHAT_WAIT": "3",
-            "SCAT_CHAT_TUNNEL_WAIT": "3",
-            "SCAT_CHAT_VAULT": str(self.vault),
+            "SCATLAB_UI": "plain",
+            "SCATLAB_CONTEXT": str(REPO),
+            "SCATLAB_PORT": str(self.server.port),
+            "SCATLAB_WAIT": "3",
+            "SCATLAB_TUNNEL_WAIT": "3",
+            "SCATLAB_VAULT": str(self.vault),
+            # the earlier install's places, in scratch space: a test must never reach this Mac's real ones
+            "SCATLAB_OLD_HOME": str(tmp / "earlier-home"),
+            "SCATLAB_OLD_APP": str(tmp / "earlier-apps" / "app"),
         }
         for var, name in [
             ("DOCKER", "docker"), ("COLIMA", "colima"), ("TAILSCALE", "tailscale"),
@@ -204,7 +207,7 @@ class Rig:
             ("CAFFEINATE", "caffeinate"), ("OPEN", "open"), ("SECURITY", "security"),
             ("OSASCRIPT", "osascript"), ("CURL", "curl"),
         ]:  # fmt: skip
-            self.env[f"SCAT_CHAT_{var}"] = str(self.bin / name)
+            self.env[f"SCATLAB_{var}"] = str(self.bin / name)
 
     def _env(self, env):
         e = {**self.env, **{k: v for k, v in env.items() if v is not None}}
@@ -228,7 +231,7 @@ class Rig:
     def start_bg(self, remembered=True, **env):
         """`start` in dialog mode (the app's mode), which waits to be stopped: returns the process once the
         state file says running. Its output goes to a file, so no stray child can hold a pipe open.
-        Dialog mode ignores SCAT_CHAT_VAULT (WP22-G5), so the rig's vault is remembered in the state folder and the
+        Dialog mode ignores SCATLAB_VAULT (WP22-G5), so the rig's vault is remembered in the state folder and the
         osascript stand-in answers "Use it", unless the test passes remembered=False or its own answers."""
         if remembered:
             (self.state / "vault").write_text(f"{self.vault.resolve()}\n")
@@ -236,7 +239,7 @@ class Rig:
         out = self.tmp / f"bg{len(self.procs)}.out"
         proc = subprocess.Popen(
             ["/bin/sh", str(SCRIPT), "start"],
-            env=self._env({"SCAT_CHAT_UI": "dialog", **env}),
+            env=self._env({"SCATLAB_UI": "dialog", **env}),
             stdin=subprocess.DEVNULL,
             stdout=out.open("w"),
             stderr=subprocess.STDOUT,

@@ -4,10 +4,10 @@ and the graph and every view name the row, the name and both files."""
 import pytest
 from viewutil import base_files, narrative, page, row, tree_hash, write
 
-import scat_kg
-from scat_kg.checks import check_neighborhood, check_page, check_vault
-from scat_kg.graph import load
-from scat_kg.vault import read_vault
+import scat_tools
+from scat_tools.checks import check_neighborhood, check_page, check_vault
+from scat_tools.graph import load
+from scat_tools.vault import read_vault
 
 PATH = "narrative/bad.md"
 ROW_AT = 2  # the row with the ambiguous end
@@ -85,12 +85,12 @@ def test_the_graph_names_the_row_the_name_and_both_files(tmp_path, case, end):
 
 
 VIEWS = {
-    "edge_table": lambda r: scat_kg.edge_table("holds", root=r),
-    "layered": lambda r: scat_kg.layered(root=r),
-    "layered-named": lambda r: scat_kg.layered(["bad"], root=r),
-    "trace": lambda r: scat_kg.trace("farmers", root=r),
-    "fingerprint": lambda r: scat_kg.fingerprint(root=r),
-    "fingerprint-named": lambda r: scat_kg.fingerprint("bad", root=r),
+    "edge_table": lambda r: scat_tools.edge_table("holds", root=r),
+    "layered": lambda r: scat_tools.layered(root=r),
+    "layered-named": lambda r: scat_tools.layered(["bad"], root=r),
+    "trace": lambda r: scat_tools.trace("farmers", root=r),
+    "fingerprint": lambda r: scat_tools.fingerprint(root=r),
+    "fingerprint-named": lambda r: scat_tools.fingerprint("bad", root=r),
 }
 
 
@@ -120,15 +120,17 @@ def test_other_reasons_keep_their_fix(tmp_path):
         base_files()
         | {PATH: narrative("Bad", "x", [row("holds", "farmers", "ghost")], "draft", "scenario")},
     )
-    fix = scat_kg.fingerprint("bad", root=root).to_dict()["refused"][0]["fix"]["options"][0]["text"]
+    fix = scat_tools.fingerprint("bad", root=root).to_dict()["refused"][0]["fix"]["options"][0][
+        "text"
+    ]
     assert fix == f"fix the row (`scat check {PATH}` says how), then run this again"
 
 
 @pytest.mark.parametrize("case", DUPLICATES)
 def test_a_clean_narrative_still_draws(tmp_path, case):
     root = build(tmp_path, DUPLICATES[case][0])
-    assert scat_kg.fingerprint("diamond", root=root).ok
-    assert scat_kg.layered(["diamond"], root=root).ok
+    assert scat_tools.fingerprint("diamond", root=root).ok
+    assert scat_tools.layered(["diamond"], root=root).ok
 
 
 def test_the_edge_appears_once_one_duplicate_is_renamed(tmp_path):
@@ -140,4 +142,4 @@ def test_the_edge_appears_once_one_duplicate_is_renamed(tmp_path):
     assert [t.path for t in g.edge("holds", "farmers", "water").tellings if t.path == PATH] == [
         PATH
     ]
-    assert scat_kg.fingerprint("bad", root=root).ok
+    assert scat_tools.fingerprint("bad", root=root).ok

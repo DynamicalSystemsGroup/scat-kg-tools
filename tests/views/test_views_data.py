@@ -5,7 +5,7 @@ import json
 import pytest
 from viewutil import base_files
 
-import scat_kg
+import scat_tools
 
 
 def n(name, type_, status):
@@ -53,7 +53,7 @@ def doc(view, operation):
 
 
 def test_fingerprint_of_a_narrative_with_edges_and_a_candidate(vault):
-    d = doc(scat_kg.fingerprint("dry", candidates=True, root=vault), "fingerprint")
+    d = doc(scat_tools.fingerprint("dry", candidates=True, root=vault), "fingerprint")
     assert d["narratives"] == [
         {
             "name": "dry",
@@ -68,7 +68,7 @@ def test_fingerprint_of_a_narrative_with_edges_and_a_candidate(vault):
 
 
 def test_fingerprint_of_a_narrative_with_no_edges(vault):
-    d = doc(scat_kg.fingerprint("empty", candidates=True, root=vault), "fingerprint")
+    d = doc(scat_tools.fingerprint("empty", candidates=True, root=vault), "fingerprint")
     assert d["narratives"] == [
         {
             "name": "empty",
@@ -82,7 +82,7 @@ def test_fingerprint_of_a_narrative_with_no_edges(vault):
 
 
 def test_fingerprint_that_is_disconnected(vault):
-    d = doc(scat_kg.fingerprint("split", candidates=True, root=vault), "fingerprint")
+    d = doc(scat_tools.fingerprint("split", candidates=True, root=vault), "fingerprint")
     (f,) = d["narratives"]
     assert f["nodes"] == [TOWNS, COST, ALERT, RADIO]
     # two groups of nodes, {towns, cost} and {alert, radio}, with no edge between them
@@ -92,8 +92,8 @@ def test_fingerprint_that_is_disconnected(vault):
 
 
 def test_an_edge_told_by_two_narratives_is_in_both_fingerprints(vault):
-    dry = scat_kg.fingerprint("dry", candidates=True, root=vault).to_dict()["narratives"][0]
-    wet = scat_kg.fingerprint("wet", candidates=True, root=vault).to_dict()["narratives"][0]
+    dry = scat_tools.fingerprint("dry", candidates=True, root=vault).to_dict()["narratives"][0]
+    wet = scat_tools.fingerprint("wet", candidates=True, root=vault).to_dict()["narratives"][0]
     assert F_WATER in dry["edges"] and F_WATER in wet["edges"]
     assert wet["nodes"] == [FARMERS, WATER, ALERT]
     assert wet["edges"] == [F_WATER, W_ALERT]
@@ -102,7 +102,7 @@ def test_an_edge_told_by_two_narratives_is_in_both_fingerprints(vault):
 
 
 def test_fingerprint_of_every_narrative_in_path_order(vault):
-    d = doc(scat_kg.fingerprint(candidates=True, root=vault), "fingerprint")
+    d = doc(scat_tools.fingerprint(candidates=True, root=vault), "fingerprint")
     assert [f["name"] for f in d["narratives"]] == ["diamond", "dry", "empty", "split", "wet"]
     diamond = d["narratives"][0]
     assert diamond["nodes"] == [FARMERS, COST, SENSOR]
@@ -111,7 +111,7 @@ def test_fingerprint_of_every_narrative_in_path_order(vault):
 
 
 def test_fingerprint_text_groups_by_layer(vault):
-    text = str(scat_kg.fingerprint("dry", candidates=True, root=vault))
+    text = str(scat_tools.fingerprint("dry", candidates=True, root=vault))
     assert text == lines(
         "fingerprint dry (scenario, draft)",
         "  group",
@@ -133,13 +133,13 @@ def test_fingerprint_text_groups_by_layer(vault):
 
 
 def test_fingerprint_shows_no_candidates_unless_asked(vault):
-    d = doc(scat_kg.fingerprint("dry", root=vault), "fingerprint")
+    d = doc(scat_tools.fingerprint("dry", root=vault), "fingerprint")
     (f,) = d["narratives"]
     assert "candidates" not in f
     assert f["edges"] == [F_WATER, W_SENSOR, S_PROBE]  # the rest of the fingerprint is the same
-    everyone = doc(scat_kg.fingerprint(root=vault), "fingerprint")
+    everyone = doc(scat_tools.fingerprint(root=vault), "fingerprint")
     assert all("candidates" not in x for x in everyone["narratives"])
-    asked = doc(scat_kg.fingerprint("dry", candidates=True, root=vault), "fingerprint")
+    asked = doc(scat_tools.fingerprint("dry", candidates=True, root=vault), "fingerprint")
     assert asked["narratives"][0]["candidates"] == [
         {"type": "holds", "from": "towns", "to": "water"}
     ]
@@ -147,13 +147,13 @@ def test_fingerprint_shows_no_candidates_unless_asked(vault):
 
 
 def test_fingerprint_text_names_no_candidates_unless_asked(vault):
-    text = str(scat_kg.fingerprint("dry", root=vault))
+    text = str(scat_tools.fingerprint("dry", root=vault))
     assert "candidate" not in text and "towns -> water" not in text
     assert text.endswith("provided-by: sensor -> probe [draft; told by dry]")
 
 
 def test_fingerprint_refuses_a_candidates_value_that_is_not_a_bool(vault):
-    r = scat_kg.fingerprint("dry", candidates="yes", root=vault)
+    r = scat_tools.fingerprint("dry", candidates="yes", root=vault)
     assert r.ok is False
 
 
@@ -161,29 +161,29 @@ def test_fingerprint_refuses_a_candidates_value_that_is_not_a_bool(vault):
 
 
 def test_edge_table_holds(vault):
-    d = doc(scat_kg.edge_table("holds", root=vault), "edges")
+    d = doc(scat_tools.edge_table("holds", root=vault), "edges")
     assert d["edge_type"] == "holds"
     assert (d["from_layer"], d["to_layer"]) == ("group", "concern")
     assert d["rows"] == [F_COST, F_WATER, T_COST]
 
 
 def test_edge_table_addressed_by(vault):
-    d = doc(scat_kg.edge_table("addressed-by", root=vault), "edges")
+    d = doc(scat_tools.edge_table("addressed-by", root=vault), "edges")
     assert (d["from_layer"], d["to_layer"]) == ("concern", "affordance")
     assert d["rows"] == [C_SENSOR, W_ALERT, W_SENSOR]
 
 
 def test_edge_table_provided_by(vault):
-    d = doc(scat_kg.edge_table("provided-by", root=vault), "edges")
+    d = doc(scat_tools.edge_table("provided-by", root=vault), "edges")
     assert (d["from_layer"], d["to_layer"]) == ("affordance", "technology")
     assert d["rows"] == [A_RADIO, S_PROBE]
 
 
 def test_edge_table_with_no_rows(make):
     root = make({k: None for k in ("narrative/dry.md", "narrative/wet.md", "narrative/diamond.md")})
-    d = doc(scat_kg.edge_table("addressed-by", root=root), "edges")
+    d = doc(scat_tools.edge_table("addressed-by", root=root), "edges")
     assert d["rows"] == []
-    assert str(scat_kg.edge_table("addressed-by", root=root)) == (
+    assert str(scat_tools.edge_table("addressed-by", root=root)) == (
         "edges addressed-by (concern -> affordance): 0"
     )
 
@@ -192,7 +192,7 @@ def test_edge_table_with_no_rows(make):
 
 
 def test_layered_view_of_two_narratives(vault):
-    d = doc(scat_kg.layered(["wet", "dry"], root=vault), "layered")
+    d = doc(scat_tools.layered(["wet", "dry"], root=vault), "layered")
     assert d["narratives"] == ["dry", "wet"]
     assert d["nodes"] == {
         "group": [FARMERS, TOWNS],
@@ -207,7 +207,7 @@ def test_layered_view_of_two_narratives(vault):
 
 
 def test_layered_view_of_a_disconnected_narrative(vault):
-    d = doc(scat_kg.layered(["split"], root=vault), "layered")
+    d = doc(scat_tools.layered(["split"], root=vault), "layered")
     assert d["nodes"] == {
         "group": [TOWNS],
         "concern": [COST],
@@ -218,13 +218,13 @@ def test_layered_view_of_a_disconnected_narrative(vault):
 
 
 def test_layered_view_of_a_narrative_with_no_edges(vault):
-    d = doc(scat_kg.layered(["empty"], root=vault), "layered")
+    d = doc(scat_tools.layered(["empty"], root=vault), "layered")
     assert d["nodes"] == {"group": [FARMERS], "concern": [], "affordance": [], "technology": []}
     assert d["edges"] == []
 
 
 def test_layered_view_of_the_whole_vault(vault):
-    d = doc(scat_kg.layered(root=vault), "layered")
+    d = doc(scat_tools.layered(root=vault), "layered")
     assert d["narratives"] == ["diamond", "dry", "empty", "split", "wet"]
     # `idle` is linked by no narrative, so it is in no fingerprint
     assert d["nodes"] == {
@@ -238,11 +238,11 @@ def test_layered_view_of_the_whole_vault(vault):
 
 def test_layered_view_of_an_empty_vault(make):
     root = make({k: None for k in base_narratives()})
-    d = doc(scat_kg.layered(root=root), "layered")
+    d = doc(scat_tools.layered(root=root), "layered")
     assert d["narratives"] == []
     assert d["edges"] == []
     # no narrative tells an edge, so every node page is an orphan (WP34): the text form lists them after the header
-    assert str(scat_kg.layered(root=root)).split("\n")[:2] == [
+    assert str(scat_tools.layered(root=root)).split("\n")[:2] == [
         "layered view of no narratives",
         "  orphans (node pages no row tells)",
     ]
@@ -251,8 +251,8 @@ def test_layered_view_of_an_empty_vault(make):
 
 def test_layered_view_of_a_vault_with_no_pages_has_no_orphans(make):
     root = make({k: None for k in [*base_narratives(), *base_files()] if k.endswith(".md")})
-    assert "orphans" not in doc(scat_kg.layered(root=root), "layered")
-    assert str(scat_kg.layered(root=root)) == "layered view of no narratives"
+    assert "orphans" not in doc(scat_tools.layered(root=root), "layered")
+    assert str(scat_tools.layered(root=root)) == "layered view of no narratives"
 
 
 def base_narratives():
@@ -297,7 +297,7 @@ DOWN_FROM_FARMERS = (
 def test_trace_reaches_exactly_the_nodes_and_walks_the_edges(
     vault, node, direction, up, down, edges
 ):
-    d = doc(scat_kg.trace(node, direction, root=vault), "trace")
+    d = doc(scat_tools.trace(node, direction, root=vault), "trace")
     assert d["node"] == node and d["direction"] == direction
     assert d["up"] == up
     assert d["down"] == down
@@ -307,18 +307,18 @@ def test_trace_reaches_exactly_the_nodes_and_walks_the_edges(
 
 def test_trace_where_two_paths_reach_one_node(vault):
     # farmers -> cost -> sensor and farmers -> water -> sensor: `sensor` once, and both edges into it walked
-    d = scat_kg.trace("farmers", "down", root=vault).to_dict()
+    d = scat_tools.trace("farmers", "down", root=vault).to_dict()
     assert [x["name"] for x in d["down"]].count("sensor") == 1
     assert C_SENSOR in d["edges"] and W_SENSOR in d["edges"]
     # and upward from `sensor`, `farmers` is reached by two paths and listed once
-    u = scat_kg.trace("sensor", "up", root=vault).to_dict()
+    u = scat_tools.trace("sensor", "up", root=vault).to_dict()
     assert u["up"] == [FARMERS, TOWNS, COST, WATER]
     assert u["edges"] == [F_COST, F_WATER, T_COST, C_SENSOR, W_SENSOR]
     assert u["down"] == []
 
 
 def test_trace_both_directions_from_the_middle_of_two_paths(vault):
-    d = scat_kg.trace("sensor", "both", root=vault).to_dict()
+    d = scat_tools.trace("sensor", "both", root=vault).to_dict()
     assert d["up"] == [FARMERS, TOWNS, COST, WATER]
     assert d["down"] == [PROBE]
     assert d["edges"] == [F_COST, F_WATER, T_COST, C_SENSOR, W_SENSOR, S_PROBE]
@@ -326,24 +326,24 @@ def test_trace_both_directions_from_the_middle_of_two_paths(vault):
 
 def test_trace_default_direction_is_both(vault):
     assert (
-        scat_kg.trace("alert", root=vault).to_dict()
-        == scat_kg.trace("alert", "both", root=vault).to_dict()
+        scat_tools.trace("alert", root=vault).to_dict()
+        == scat_tools.trace("alert", "both", root=vault).to_dict()
     )
 
 
 def test_trace_of_an_isolated_node(vault):
-    d = doc(scat_kg.trace("idle", root=vault), "trace")
+    d = doc(scat_tools.trace("idle", root=vault), "trace")
     assert d["up"] == [] and d["down"] == [] and d["edges"] == []
-    assert str(scat_kg.trace("idle", root=vault)) == "trace idle (both)"
+    assert str(scat_tools.trace("idle", root=vault)) == "trace idle (both)"
 
 
 def test_a_direction_not_asked_is_an_empty_list(vault):
-    d = scat_kg.trace("water", "up", root=vault).to_dict()
+    d = scat_tools.trace("water", "up", root=vault).to_dict()
     assert d["down"] == []
 
 
 def test_trace_text_groups_by_layer(vault):
-    assert str(scat_kg.trace("alert", "both", root=vault)) == lines(
+    assert str(scat_tools.trace("alert", "both", root=vault)) == lines(
         "trace alert (both)",
         " up",
         "  group",
@@ -365,15 +365,15 @@ def test_trace_text_groups_by_layer(vault):
 
 def test_a_relationship_annotation_appears_in_no_view(vault):
     # water's page says "Pulls against [[cost]]": a link, not an edge
-    assert COST not in scat_kg.trace("water", "both", root=vault).to_dict()["down"]
-    assert COST not in scat_kg.trace("water", "both", root=vault).to_dict()["up"]
-    d = scat_kg.layered(["dry", "wet"], root=vault).to_dict()
+    assert COST not in scat_tools.trace("water", "both", root=vault).to_dict()["down"]
+    assert COST not in scat_tools.trace("water", "both", root=vault).to_dict()["up"]
+    d = scat_tools.layered(["dry", "wet"], root=vault).to_dict()
     assert COST not in d["nodes"]["concern"]
     assert not any({x["from"], x["to"]} == {"water", "cost"} for x in d["edges"])
     for view in (
-        scat_kg.fingerprint(root=vault),
-        scat_kg.layered(root=vault),
-        scat_kg.edge_table("holds", root=vault),
+        scat_tools.fingerprint(root=vault),
+        scat_tools.layered(root=vault),
+        scat_tools.edge_table("holds", root=vault),
     ):
         text = json.dumps(view.to_dict())
         assert "annotation" not in text and "Pulls against" not in text
@@ -385,16 +385,16 @@ def test_a_relationship_annotation_appears_in_no_view(vault):
 
 def test_the_text_never_holds_a_link(vault):
     for view in (
-        scat_kg.fingerprint(root=vault),
-        scat_kg.edge_table("holds", root=vault),
-        scat_kg.layered(root=vault),
-        scat_kg.trace("farmers", root=vault),
+        scat_tools.fingerprint(root=vault),
+        scat_tools.edge_table("holds", root=vault),
+        scat_tools.layered(root=vault),
+        scat_tools.trace("farmers", root=vault),
     ):
         assert "[[" not in str(view) and "[[" not in json.dumps(view.to_dict())
 
 
 def test_a_view_prints_as_its_text(vault):
-    v = scat_kg.edge_table("provided-by", root=vault)
+    v = scat_tools.edge_table("provided-by", root=vault)
     assert (
         repr(v)
         == str(v)
@@ -407,13 +407,13 @@ def test_a_view_prints_as_its_text(vault):
 
 
 CALLS = [
-    lambda r: scat_kg.fingerprint(root=r),
-    lambda r: scat_kg.fingerprint("dry", root=r),
-    lambda r: scat_kg.edge_table("holds", root=r),
-    lambda r: scat_kg.layered(root=r),
-    lambda r: scat_kg.layered(["dry", "split"], root=r),
-    lambda r: scat_kg.trace("farmers", root=r),
-    lambda r: scat_kg.trace("radio", "up", root=r),
+    lambda r: scat_tools.fingerprint(root=r),
+    lambda r: scat_tools.fingerprint("dry", root=r),
+    lambda r: scat_tools.edge_table("holds", root=r),
+    lambda r: scat_tools.layered(root=r),
+    lambda r: scat_tools.layered(["dry", "split"], root=r),
+    lambda r: scat_tools.trace("farmers", root=r),
+    lambda r: scat_tools.trace("radio", "up", root=r),
 ]
 
 
@@ -436,7 +436,7 @@ def test_the_order_does_not_depend_on_how_the_vault_was_written(tmp_path, vault)
 
 
 def test_the_public_names(vault):
-    assert scat_kg.load(vault).summary()["edges"] == 8
-    assert scat_kg.load(vault) == scat_kg.graph.load(vault)
+    assert scat_tools.load(vault).summary()["edges"] == 8
+    assert scat_tools.load(vault) == scat_tools.graph.load(vault)
     for name in ("load", "fingerprint", "edge_table", "layered", "trace", "View"):
-        assert name in scat_kg.__all__
+        assert name in scat_tools.__all__

@@ -5,8 +5,8 @@ import shutil
 import pytest
 from opsutil import fm
 
-from scat_kg import cli
-from scat_kg.ops import set_status
+from scat_tools import cli
+from scat_tools.ops import set_status
 
 CAP = {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n"}
 GOOD = {**CAP, "concern/a.md": fm("concern", "A", "draft", 'description: "Fine."\n')}

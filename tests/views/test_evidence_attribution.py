@@ -16,8 +16,8 @@ from pathlib import Path
 
 import pytest
 
-import scat_kg
-from scat_kg.graph import load
+import scat_tools
+from scat_tools.graph import load
 
 ROOT = Path(__file__).resolve().parents[2]
 EXAMPLES = ROOT / "contracts" / "examples"
@@ -98,7 +98,7 @@ def documents(root: Path) -> dict[str, dict]:
     """The evidence document of every node page of the vault."""
     nodes = [n.name for ns in load(root).nodes.values() for n in ns]
     assert nodes
-    return {n: scat_kg.evidence(n, root=root).to_dict() for n in nodes}
+    return {n: scat_tools.evidence(n, root=root).to_dict() for n in nodes}
 
 
 def without_lines(docs: dict) -> dict:
@@ -130,7 +130,7 @@ def made(request, tmp_path):
 
 def test_the_vault_is_conformant_and_carries_its_mode(made):
     root, mode = made
-    assert not scat_kg.check(root=root).errors
+    assert not scat_tools.check(root=root).errors
     assert all(d["mode"] == mode for d in documents(root).values())
 
 
@@ -187,5 +187,5 @@ def test_a_contributor_page_is_refused_as_the_node(made, tmp_path):
     other = tmp_path / "with-pages"
     shutil.copytree(root, other)
     add_contributors(other, ("di-fox",))
-    r = scat_kg.evidence("di-fox", root=other)
+    r = scat_tools.evidence("di-fox", root=other)
     assert not r.ok and "no node has this name" in str(r)

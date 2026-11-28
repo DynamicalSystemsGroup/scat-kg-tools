@@ -9,9 +9,9 @@ from pathlib import Path
 import pytest
 from jsonschema import Draft202012Validator
 
-import scat_kg
-from scat_kg.cli import main
-from scat_kg.mcp_server.server import build
+import scat_tools
+from scat_tools.cli import main
+from scat_tools.mcp_server.server import build
 
 ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES = ROOT / "contracts" / "examples"
@@ -37,14 +37,14 @@ def declared(mode: str) -> str:
 
 
 def test_the_example_vault_declares_disallowed():
-    assert scat_kg.check(root=EXAMPLES).mode == "disallowed"
+    assert scat_tools.check(root=EXAMPLES).mode == "disallowed"
     assert 'attribution = "disallowed"' in (EXAMPLES / "scat.toml").read_text("utf-8")
 
 
 @pytest.mark.parametrize("mode", MODES)
 def test_each_valid_mode_is_accepted_and_reported_by_check(tmp_path, mode):
     root = vault_with(tmp_path, declared(mode))
-    result = scat_kg.check(root=root)
+    result = scat_tools.check(root=root)
     rules = {p.rule for p in result.problems}
     assert "SCAT-MODE-CONFIG" not in rules
     if (
@@ -71,7 +71,7 @@ def test_each_valid_mode_is_accepted_and_reported_by_check(tmp_path, mode):
 def test_no_mode_or_an_unknown_one_is_refused_by_check_naming_the_three_choices(
     tmp_path, toml, why
 ):
-    result = scat_kg.check(root=vault_with(tmp_path, toml))
+    result = scat_tools.check(root=vault_with(tmp_path, toml))
     (problem,) = result.errors
     assert not result.ok and problem.rule == "SCAT-MODE-CONFIG" and problem.file == "scat.toml"
     assert why in problem.what
@@ -93,23 +93,23 @@ def test_the_cli_prints_the_mode_and_the_json_carries_it(tmp_path, capsys):
 def documents(root):
     """One result of every kind, from the same vault."""
     return {
-        "check": scat_kg.check(root=root),
-        "check page": scat_kg.check("quick-checkout", root=root),
-        "status": scat_kg.status(root=root),
-        "fingerprint": scat_kg.fingerprint(root=root),
-        "edges": scat_kg.edge_table("holds", root=root),
-        "layered": scat_kg.layered(root=root),
-        "trace": scat_kg.trace("borrowers", root=root),
-        "set-status": scat_kg.set_status("quick-checkout", "stub", root=root),
-        "set-status refused": scat_kg.set_status("no-such-page", "stub", root=root),
-        "index": scat_kg.index(root=root),
-        "stub": scat_kg.stub("fresh-idea", "concern", root=root),
-        "stub-links": scat_kg.stub_links(root=root),
-        "record-edge": scat_kg.record_edge(
+        "check": scat_tools.check(root=root),
+        "check page": scat_tools.check("quick-checkout", root=root),
+        "status": scat_tools.status(root=root),
+        "fingerprint": scat_tools.fingerprint(root=root),
+        "edges": scat_tools.edge_table("holds", root=root),
+        "layered": scat_tools.layered(root=root),
+        "trace": scat_tools.trace("borrowers", root=root),
+        "set-status": scat_tools.set_status("quick-checkout", "stub", root=root),
+        "set-status refused": scat_tools.set_status("no-such-page", "stub", root=root),
+        "index": scat_tools.index(root=root),
+        "stub": scat_tools.stub("fresh-idea", "concern", root=root),
+        "stub-links": scat_tools.stub_links(root=root),
+        "record-edge": scat_tools.record_edge(
             "holds", "borrowers", "careful-record-keeping", ["funders-meeting"], root=root
         ),
-        "remove-edge": scat_kg.remove_edge("funders", "quick-checkout", root=root),
-        "export-edges": scat_kg.export_edges(root / "out", root=root),
+        "remove-edge": scat_tools.remove_edge("funders", "quick-checkout", root=root),
+        "export-edges": scat_tools.export_edges(root / "out", root=root),
     }
 
 
@@ -131,16 +131,16 @@ def test_a_view_of_a_vault_with_no_mode_reports_null_and_validates(tmp_path):
 
 
 def test_a_refusal_with_no_vault_reports_a_null_mode(tmp_path):
-    doc = scat_kg.check(root=tmp_path / "nowhere").to_dict()
+    doc = scat_tools.check(root=tmp_path / "nowhere").to_dict()
     assert doc["kind"] == "operation" and doc["ok"] is False and doc["mode"] is None
     VALIDATOR.validate(doc)
 
 
 def test_the_mode_is_read_afresh_on_each_call(tmp_path):
     root = vault_with(tmp_path, declared("required"))
-    assert scat_kg.check(root=root).mode == "required"
+    assert scat_tools.check(root=root).mode == "required"
     (root / "scat.toml").write_text(declared("disallowed"), encoding="utf-8")
-    assert scat_kg.check(root=root).mode == "disallowed"
+    assert scat_tools.check(root=root).mode == "disallowed"
 
 
 def call(server, tool, **args):
@@ -188,7 +188,7 @@ def test_every_mcp_result_carries_the_mode(tmp_path, mode):
 
 
 def test_the_reader_holds_the_mode_with_the_config_before_any_page(tmp_path):
-    from scat_kg.vault import read_mode, read_vault
+    from scat_tools.vault import read_mode, read_vault
 
     root = vault_with(tmp_path, declared("optional"))
     cfg = read_vault(root).config

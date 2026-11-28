@@ -8,12 +8,12 @@ import pytest
 from test_draw import said
 from viewutil import page
 
-import scat_kg
-from scat_kg import draw, views
-from scat_kg.ops.result import Result
-from scat_kg.tbox import TBOX
+import scat_tools
+from scat_tools import draw, views
+from scat_tools.ops.result import Result
+from scat_tools.tbox import TBOX
 
-EVIDENCE = sys.modules["scat_kg.evidence"]  # `scat_kg.evidence` the name is the function
+EVIDENCE = sys.modules["scat_tools.evidence"]  # `scat_tools.evidence` the name is the function
 
 
 def table_of(view: views.View) -> tuple[set, set]:
@@ -73,16 +73,17 @@ def disagreements(view: views.View, drawing: draw.Drawing) -> list[str]:
 
 def queries(vault) -> list[views.View]:
     out = [
-        scat_kg.fingerprint(n, candidates=c, root=vault)
+        scat_tools.fingerprint(n, candidates=c, root=vault)
         for n in ("dry", "wet", "split", "diamond", "empty")
         for c in (False, True)
     ]
-    out += [scat_kg.layered(root=vault), scat_kg.layered(["dry", "wet"], root=vault)]
+    out += [scat_tools.layered(root=vault), scat_tools.layered(["dry", "wet"], root=vault)]
     out += [
-        scat_kg.layered(c, candidates=True, root=vault) for c in (None, ["dry"], ["wet", "split"])
+        scat_tools.layered(c, candidates=True, root=vault)
+        for c in (None, ["dry"], ["wet", "split"])
     ]
     out += [
-        scat_kg.trace(n, d, root=vault)
+        scat_tools.trace(n, d, root=vault)
         for n in ("water", "farmers", "probe", "idle")
         for d in ("up", "down", "both")
     ]
@@ -98,20 +99,20 @@ def test_every_drawing_is_its_tables_nodes_and_edges(vault):
 
 def test_the_dropped_layer_and_candidates_are_accounted_for(vault):
     # wet is an architecture (no stakeholder column), dry a scenario (no technology column), dry has a candidate
-    wet = draw.render(scat_kg.fingerprint("wet", root=vault))
+    wet = draw.render(scat_tools.fingerprint("wet", root=vault))
     assert {layer for _, layer in wet.nodes()} == {"concern", "affordance"}  # farmers is not drawn
     assert ("farmers", "water", False) not in wet.edges()
-    dry = draw.render(scat_kg.fingerprint("dry", candidates=True, root=vault))
+    dry = draw.render(scat_tools.fingerprint("dry", candidates=True, root=vault))
     assert {layer for _, layer in dry.nodes()} == set(TBOX.layers) - {
         "technology"
     }  # probe is not drawn
     assert any(dashed for *_, dashed in dry.edges())
-    plain = draw.render(scat_kg.fingerprint("dry", root=vault))
+    plain = draw.render(scat_tools.fingerprint("dry", root=vault))
     assert not any(dashed for *_, dashed in plain.edges())
 
 
 def test_a_table_that_disagrees_with_its_plot_fails(vault):
-    view = scat_kg.layered(root=vault)
+    view = scat_tools.layered(root=vault)
     drawing = draw.render(view)
     assert disagreements(view, drawing) == []
     lost = views.View("layered", {**view.data, "edges": view.data["edges"][1:]})
@@ -130,9 +131,9 @@ def test_a_table_that_disagrees_with_its_plot_fails(vault):
 
 def test_rendering_a_result_never_runs_a_query(vault, monkeypatch):
     results = [
-        scat_kg.fingerprint("dry", candidates=True, root=vault),
-        scat_kg.layered(root=vault),
-        scat_kg.trace("water", root=vault),
+        scat_tools.fingerprint("dry", candidates=True, root=vault),
+        scat_tools.layered(root=vault),
+        scat_tools.trace("water", root=vault),
     ]
 
     def boom(*a, **k):
@@ -140,9 +141,9 @@ def test_rendering_a_result_never_runs_a_query(vault, monkeypatch):
 
     for name in ("fingerprint", "edge_table", "layered", "trace", "attribution", "_open", "load"):
         monkeypatch.setattr(views, name, boom)
-    monkeypatch.setattr("scat_kg.graph.load", boom)
+    monkeypatch.setattr("scat_tools.graph.load", boom)
     monkeypatch.setattr(EVIDENCE, "evidence", boom)
-    monkeypatch.setattr(scat_kg, "evidence", boom)
+    monkeypatch.setattr(scat_tools, "evidence", boom)
     for result in results:
         d = draw.render(result)
         assert d.png().startswith(b"\x89PNG") and "<svg" in d.svg()
@@ -173,7 +174,7 @@ def test_each_convenience_runs_its_query_once(vault, monkeypatch, call):
         return real_ev(*a, **k)
 
     monkeypatch.setattr(EVIDENCE, "evidence", ev_spy)
-    monkeypatch.setattr(scat_kg, "evidence", ev_spy)
+    monkeypatch.setattr(scat_tools, "evidence", ev_spy)
     drawing = call(vault)
     assert isinstance(drawing, draw.Drawing)
     assert len(calls) == 1 and "evidence" not in calls
@@ -182,19 +183,19 @@ def test_each_convenience_runs_its_query_once(vault, monkeypatch, call):
 def test_a_result_it_cannot_draw_is_refused_not_raised(vault):
     bare = {"node": "x", "direction": "both", "up": [], "down": [], "edges": []}
     for result in (
-        scat_kg.edge_table("holds", root=vault),
-        scat_kg.fingerprint(None, root=vault),  # every narrative
+        scat_tools.edge_table("holds", root=vault),
+        scat_tools.fingerprint(None, root=vault),  # every narrative
         views.View("fingerprint", {"narratives": []}),  # none
         views.View("trace", bare),  # a trace that does not carry its starting node
     ):
         got = draw.render(result)
         assert isinstance(got, Result) and got.refused and got.operation == "draw"
-    refusal = scat_kg.fingerprint("nope", root=vault)
+    refusal = scat_tools.fingerprint("nope", root=vault)
     assert draw.render(refusal) is refusal  # a refusal passes through unchanged
 
 
 def test_the_table_of_a_result_is_its_document(vault):
-    view = scat_kg.trace("water", root=vault)
+    view = scat_tools.trace("water", root=vault)
     assert view.to_dict()["kind"] == "view" and "traced" not in view.to_dict()
     assert view.traced == {"name": "water", "type": "concern", "status": "draft"}
 
@@ -215,14 +216,14 @@ def test_the_twin_rule_every_drawing_has_a_view():
 
 
 def test_the_plot_names_the_tables_orphans_and_a_difference_fails(vault, make):
-    view = scat_kg.layered(root=vault)
+    view = scat_tools.layered(root=vault)
     drawing = draw.render(view)
     assert view.data["orphans"] and orphan_disagreements(view, drawing) == []
     bare = views.View("layered", {k: v for k, v in view.data.items() if k != "orphans"})
     assert orphan_disagreements(bare, drawing) == ["drawn, not in the table: orphans"]
     other = {**view.data, "orphans": [{"name": "elsewhere", "type": "technology", "status": "x"}]}
     assert orphan_disagreements(views.View("layered", other), drawing)
-    many = scat_kg.layered(
+    many = scat_tools.layered(
         root=make({f"technology/o{i:02d}.md": page("technology", "O") for i in range(12)})
     )
     assert orphan_disagreements(many, draw.render(many)) == []

@@ -12,9 +12,9 @@ import pytest
 from jsonschema import Draft202012Validator
 from viewutil import base_files, narrative, page, row, tree_hash, write
 
-import scat_kg
-from scat_kg.cli import main
-from scat_kg.ops.result import Result
+import scat_tools
+from scat_tools.cli import main
+from scat_tools.ops.result import Result
 
 ROOT = Path(__file__).resolve().parents[2]
 G6 = ROOT / "research" / "node-pages" / "vault" / "disallowed"
@@ -60,7 +60,7 @@ def built(tmp_path):
 
 
 def doc(root, node=None):
-    view = scat_kg.copy_share(node, root=root)
+    view = scat_tools.copy_share(node, root=root)
     assert view.ok, str(view)
     return view.to_dict()
 
@@ -79,7 +79,7 @@ def test_the_document(built):
         "disallowed",
     )
     assert sorted(entries(d)) == sorted(
-        n.name for ns in scat_kg.load(root=built).nodes.values() for n in ns
+        n.name for ns in scat_tools.load(root=built).nodes.values() for n in ns
     )
     assert VALIDATOR.is_valid(d), list(VALIDATOR.iter_errors(d))[:3]
 
@@ -212,22 +212,24 @@ def test_one_node(built):
 
 
 def test_text_form_begins_with_the_mode(built):
-    text = str(scat_kg.copy_share(root=built))
+    text = str(scat_tools.copy_share(root=built))
     assert text.startswith("attribution mode: disallowed\ncopy-share: ")
     assert "water (concern, draft)" in text and "no share" in text and "from pump" in text
 
 
 def test_the_cli_json_equals_python(built, capsys):
     assert main(["copy-share", "--root", str(built), "--json"]) == 0
-    assert json.loads(capsys.readouterr().out) == scat_kg.copy_share(root=built).to_dict()
+    assert json.loads(capsys.readouterr().out) == scat_tools.copy_share(root=built).to_dict()
     assert main(["copy-share", "water", "--root", str(built), "--json"]) == 0
-    assert json.loads(capsys.readouterr().out) == scat_kg.copy_share("water", root=built).to_dict()
+    assert (
+        json.loads(capsys.readouterr().out) == scat_tools.copy_share("water", root=built).to_dict()
+    )
 
 
 @pytest.mark.parametrize("name", ["no-such-node", "dry", "contributor-name"])
 def test_refusals(built, name):
     before = tree_hash(built)
-    r = scat_kg.copy_share(name, root=built)
+    r = scat_tools.copy_share(name, root=built)
     assert isinstance(r, Result) and not r.ok
     assert "no node has this name" in str(r)
     assert VALIDATOR.is_valid(r.to_dict())
@@ -235,11 +237,11 @@ def test_refusals(built, name):
 
 
 def test_a_name_that_is_not_text_is_refused(built):
-    assert not scat_kg.copy_share(3, root=built).ok  # type: ignore[arg-type]
+    assert not scat_tools.copy_share(3, root=built).ok  # type: ignore[arg-type]
 
 
 def test_a_missing_vault_is_refused(tmp_path):
-    r = scat_kg.copy_share(root=tmp_path / "nowhere")
+    r = scat_tools.copy_share(root=tmp_path / "nowhere")
     assert not r.ok
 
 
@@ -248,14 +250,14 @@ def test_an_error_in_a_page_drawn_refuses(tmp_path):
         tmp_path / "v",
         base_files() | {"concern/water.md": page("concern", "Water", "done", "", "Body.\n")},
     )
-    r = scat_kg.copy_share(root=root)
+    r = scat_tools.copy_share(root=root)
     assert not r.ok and "error" in str(r)
 
 
 def test_it_writes_nothing(built):
     before = tree_hash(built)
-    scat_kg.copy_share(root=built)
-    scat_kg.copy_share("water", root=built)
+    scat_tools.copy_share(root=built)
+    scat_tools.copy_share("water", root=built)
     assert tree_hash(built) == before
 
 

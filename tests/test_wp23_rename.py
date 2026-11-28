@@ -4,7 +4,7 @@ from pathlib import Path
 
 from rdflib import OWL, RDF, RDFS, Graph, URIRef
 
-from scat_kg.tbox import SCAT, TBOX
+from scat_tools.tbox import SCAT, TBOX
 
 TTL = Path(__file__).parents[1] / "ontology" / "scat.ttl"
 OLD = URIRef(str(SCAT) + "Attri" + "butes")

@@ -164,7 +164,7 @@ def test_a_stub_is_a_command_and_a_replace_then_stub_is_its_edit_and_then_the_co
     p = only(make_vault, "dangling-five-types")
     cmd = p.fix_data.options[0].command
     assert cmd.argv == ("stub", "ghost", "--type", "group")
-    assert cmd.repl == 'scat_kg.stub("ghost", type="group")'
+    assert cmd.repl == 'scat_tools.stub("ghost", type="group")'
     assert p.fix_data.options[0].kind == "exact" and not p.fix_data.options[0].edits
     p = only(make_vault, "DRAFT-nopage-illegal")
     first = p.fix_data.options[0]

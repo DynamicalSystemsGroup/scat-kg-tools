@@ -14,8 +14,8 @@ from pathlib import Path
 import pytest
 from jsonschema import Draft202012Validator
 
-import scat_kg
-from scat_kg import cli, guides
+import scat_tools
+from scat_tools import cli, guides
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = json.loads(
@@ -39,7 +39,7 @@ def scat(*argv: str) -> tuple[int, str]:
 
 def test_the_names_exist_and_the_stages_are_the_instances():
     assert guides.STAGES == FIVE == tuple(INST["stages"])
-    assert scat_kg.guide is guides.guide
+    assert scat_tools.guide is guides.guide
     assert guides.guide_text("index")
     assert guides.instance() is not guides.instance()  # a fresh copy each call
     guides.instance()["stages"].clear()
@@ -75,18 +75,18 @@ def wheel(tmp_path_factory) -> Path:
         capture_output=True,
         text=True,
     )
-    (whl,) = out.glob("scat_kg-*.whl")
+    (whl,) = out.glob("scat_tools-*.whl")
     return whl
 
 
 def test_the_wheel_holds_the_lifecycle_file_and_the_guides(wheel):
     with zipfile.ZipFile(wheel) as z:
         names = set(z.namelist())
-        assert "scat_kg/guides/lifecycle.md" in names
+        assert "scat_tools/guides/lifecycle.md" in names
         for stage in FIVE:
-            assert f"scat_kg/guides/{stage}.md" in names
+            assert f"scat_tools/guides/{stage}.md" in names
         assert (
-            z.read("scat_kg/guides/lifecycle.md")
+            z.read("scat_tools/guides/lifecycle.md")
             == (ROOT / "contracts" / "lifecycle.md").read_bytes()
         )
 
@@ -95,7 +95,7 @@ def test_the_installed_reader_finds_the_instance_through_the_package_data(wheel,
     with zipfile.ZipFile(wheel) as z:
         z.extractall(tmp_path)
     code = (
-        "import sys; sys.path.insert(0, sys.argv[1]); import scat_kg.guides as g; "
+        "import sys; sys.path.insert(0, sys.argv[1]); import scat_tools.guides as g; "
         "print(g.__file__); print(g._instance_path()); print(','.join(g.STAGES)); "
         "print(len(g.guide_text('code').split()))"
     )
@@ -108,7 +108,7 @@ def test_the_installed_reader_finds_the_instance_through_the_package_data(wheel,
     )
     here, found, stages, n = run.stdout.split("\n")[:4]
     assert here.startswith(str(tmp_path))  # the unpacked wheel, not the source tree
-    assert found == str(tmp_path / "scat_kg" / "guides" / "lifecycle.md")
+    assert found == str(tmp_path / "scat_tools" / "guides" / "lifecycle.md")
     assert stages == ",".join(FIVE)
     assert int(n) == words(guides.guide_text("code"))
 
@@ -228,7 +228,7 @@ def test_the_hand_written_files_name_no_tool_prompt_or_transition_except_by_plac
     prompts = {p for s in INST["stages"].values() for p in s["prompts"]}
     ids = {t["id"] for t in INST["transitions"]}
     for stage in FIVE:
-        raw = (ROOT / "src" / "scat_kg" / "guides" / f"{stage}.md").read_text(encoding="utf-8")
+        raw = (ROOT / "src" / "scat_tools" / "guides" / f"{stage}.md").read_text(encoding="utf-8")
         for ticked in re.findall(r"`([^`]+)`", raw):
             assert ticked not in tools | prompts, (stage, ticked)
         assert not set(re.findall(r"\bL\d+\b", raw)) & ids, stage
@@ -285,13 +285,13 @@ def test_cli_and_api_give_byte_identical_text(name):
     code, out = scat("guide", *([name] if name else []))
     assert code == 0
     assert out == expect + "\n"
-    assert str(scat_kg.guide(name)) == expect
-    assert scat_kg.guide(name).text == expect
+    assert str(scat_tools.guide(name)) == expect
+    assert scat_tools.guide(name).text == expect
 
 
 def test_the_installed_command_gives_the_same_text():
     run = subprocess.run(
-        [sys.executable, "-m", "scat_kg.cli", "guide", "code"],
+        [sys.executable, "-m", "scat_tools.cli", "guide", "code"],
         check=False,
         capture_output=True,
         text=True,
@@ -307,7 +307,7 @@ def test_an_unknown_stage_is_a_refusal_naming_the_five_stages(tmp_path):
     for stage in FIVE:
         assert stage in out
     assert "nope" in out
-    refusal = scat_kg.guide("nope")
+    refusal = scat_tools.guide("nope")
     assert refusal.ok is False
     code, out = scat("guide", "nope", "--json")
     assert code == 1
@@ -328,13 +328,13 @@ def test_the_json_document_validates_against_the_schema(name):
     assert doc["stage"] == (name or "index")
     assert doc["text"] == guides.guide_text(name or "index")
     assert (doc["docs"] is None) == (name in (None, "index"))
-    assert doc == scat_kg.guide(name).to_dict()
+    assert doc == scat_tools.guide(name).to_dict()
 
 
 def test_the_guide_needs_no_vault(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)  # an empty folder
     assert scat("guide", "plan")[0] == 0
-    assert scat_kg.guide("report").ok
+    assert scat_tools.guide("report").ok
 
 
 def test_the_schema_stays_at_version_3():

@@ -3,7 +3,7 @@ the vault question at every start, the key's safety, and the once-only first-sta
 
 import pytest
 
-STOP = {"SCAT_CHAT_A_STOP": "stop"}
+STOP = {"SCATLAB_A_STOP": "stop"}
 ADDRESS = "https://fake-mac.tail1234.ts.net/mcp"
 NOTE = "lives in the menu bar"
 
@@ -102,7 +102,7 @@ def test_change_vault_stops_then_starts_and_offers_the_vault_chooser(rig):
     second = other_vault(rig)
     rig.run("start")  # the first session, on the rig's vault
     first_key = rig.key()
-    r = rig.run("change-vault", SCAT_CHAT_VAULT=None, SCAT_CHAT_A_VAULT=str(second))
+    r = rig.run("change-vault", SCATLAB_VAULT=None, SCATLAB_A_VAULT=str(second))
     assert r.returncode == 0, r.stdout
     assert "Choose your vault" in r.stdout  # the chooser, not the remembered vault
     assert "Serve " not in r.stdout
@@ -121,7 +121,7 @@ def test_change_vault_stops_then_starts_and_offers_the_vault_chooser(rig):
 
 def test_change_vault_with_no_vault_chosen_leaves_it_stopped(rig):
     rig.run("start")
-    r = rig.run("change-vault", SCAT_CHAT_VAULT=None)
+    r = rig.run("change-vault", SCATLAB_VAULT=None)
     assert r.returncode == 1 and "No vault was chosen" in r.stdout
     assert len(rig.called("docker run")) == 1
     rig.nothing_left()
@@ -132,7 +132,7 @@ def test_change_vault_with_no_vault_chosen_leaves_it_stopped(rig):
 
 def test_a_remembered_vault_is_asked_about_and_use_it_serves_it(rig):
     remember(rig, rig.vault)
-    r = rig.run("start", SCAT_CHAT_VAULT=None, SCAT_CHAT_A_USE="Use it", **STOP)
+    r = rig.run("start", SCATLAB_VAULT=None, SCATLAB_A_USE="Use it", **STOP)
     assert r.returncode == 0, r.stdout
     assert (
         f"Serve {rig.vault.resolve()}?" in r.stdout
@@ -148,9 +148,9 @@ def test_choose_another_goes_to_the_chooser_and_serves_the_new_vault(rig):
     remember(rig, rig.vault)
     r = rig.run(
         "start",
-        SCAT_CHAT_VAULT=None,
-        SCAT_CHAT_A_USE="Choose another",
-        SCAT_CHAT_A_VAULT=str(second),
+        SCATLAB_VAULT=None,
+        SCATLAB_A_USE="Choose another",
+        SCATLAB_A_VAULT=str(second),
         **STOP,
     )
     assert r.returncode == 0, r.stdout
@@ -163,8 +163,8 @@ def test_choose_another_goes_to_the_chooser_and_serves_the_new_vault(rig):
 @pytest.mark.parametrize("answer", [None, "yes", "maybe"])
 def test_a_remembered_vault_is_never_served_without_the_coders_use_it(rig, answer):
     remember(rig, rig.vault)
-    env = {} if answer is None else {"SCAT_CHAT_A_USE": answer}
-    r = rig.run("start", SCAT_CHAT_VAULT=None, **env)
+    env = {} if answer is None else {"SCATLAB_A_USE": answer}
+    r = rig.run("start", SCATLAB_VAULT=None, **env)
     assert r.returncode == 1, r.stdout
     assert f"Serve {rig.vault.resolve()}?" in r.stdout and "No vault was confirmed" in r.stdout
     assert not rig.called("docker run") and not rig.called("docker build")
@@ -174,7 +174,7 @@ def test_a_remembered_vault_is_never_served_without_the_coders_use_it(rig, answe
 def test_the_vault_question_comes_at_every_start_not_only_the_first(rig):
     remember(rig, rig.vault)
     for _ in range(2):
-        r = rig.run("start", SCAT_CHAT_VAULT=None, SCAT_CHAT_A_USE="Use it", **STOP)
+        r = rig.run("start", SCATLAB_VAULT=None, SCATLAB_A_USE="Use it", **STOP)
         assert f"Serve {rig.vault.resolve()}?" in r.stdout, r.stdout
 
 
@@ -203,6 +203,6 @@ def test_the_first_start_note_appears_once_per_state_folder(rig):
     assert NOTE not in rig.run("start", **STOP).stdout
     elsewhere = rig.tmp / "other-state"
     assert (
-        NOTE in rig.run("start", SCAT_CHAT_HOME=str(elsewhere), **STOP).stdout
+        NOTE in rig.run("start", SCATLAB_HOME=str(elsewhere), **STOP).stdout
     )  # a new folder: once more
-    assert NOTE not in rig.run("start", SCAT_CHAT_HOME=str(elsewhere), **STOP).stdout
+    assert NOTE not in rig.run("start", SCATLAB_HOME=str(elsewhere), **STOP).stdout

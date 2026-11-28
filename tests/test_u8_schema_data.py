@@ -8,9 +8,9 @@ with `TBOX`, which is read from the ontology: the tools hold no copy of their ow
 import re
 from pathlib import Path
 
-from scat_kg import graph, vault
-from scat_kg.ops import names
-from scat_kg.tbox import TBOX
+from scat_tools import graph, vault
+from scat_tools.ops import names
+from scat_tools.tbox import TBOX
 
 CONTRACT = (Path(__file__).parents[1] / "contracts" / "page-contracts.md").read_text(
     encoding="utf-8"

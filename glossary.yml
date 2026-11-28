@@ -175,7 +175,7 @@ entries:
     section: core
     definition: >-
       The program that owns conformance: it checks the vault and records only what the coder accepts.
-      It is the Python package scat-kg with its command line, also called "the tools"; the MCP server is a front
+      It is the Python package scat-tools with its command line, also called "the tools"; the MCP server is a front
       end to it, not part of it.
     example: The tool checks that the graph matches the pages.
     formal: Authored in SCAT

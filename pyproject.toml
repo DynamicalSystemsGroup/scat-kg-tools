@@ -1,5 +1,5 @@
 [project]
-name = "scat-kg"
+name = "scat-tools"
 version = "0.1.0"
 description = "Tools for checking and working on a SCAT knowledge-graph vault"
 requires-python = ">=3.12"
@@ -10,8 +10,8 @@ draw = ["matplotlib>=3.8"]
 mcp = ["mcp>=1.2,<2", "uvicorn"]
 
 [project.scripts]
-scat = "scat_kg.cli:main"
-scat-mcp = "scat_kg.mcp_server.__main__:main"
+scat = "scat_tools.cli:main"
+scat-mcp = "scat_tools.mcp_server.__main__:main"
 
 [dependency-groups]
 dev = [
@@ -31,11 +31,11 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/scat_kg"]
+packages = ["src/scat_tools"]
 
 [tool.hatch.build.targets.wheel.force-include]
-"ontology/scat.ttl" = "scat_kg/scat.ttl"
-"contracts/lifecycle.md" = "scat_kg/guides/lifecycle.md"
+"ontology/scat.ttl" = "scat_tools/scat.ttl"
+"contracts/lifecycle.md" = "scat_tools/guides/lifecycle.md"
 
 [tool.ruff]
 line-length = 100

@@ -33,7 +33,7 @@ KEPT: dict[tuple[str, str], str] = {}
 
 def _places() -> dict[str, str]:
     out = {k: v for k, v in SOURCES.items() if k.startswith(("docs/", "help: "))}
-    for rel in ("deploy/scat-chat.sh", "deploy/README.md", "skills/scat-coding/SKILL.md"):
+    for rel in ("deploy/scatlab.sh", "deploy/README.md", "skills/scat-coding/SKILL.md"):
         out[rel] = (ROOT / rel).read_text(encoding="utf-8")
     return out
 

@@ -8,11 +8,11 @@ from pathlib import Path
 import pytest
 from jsonschema import Draft202012Validator
 
-import scat_kg
-from scat_kg.checks.problem import Problem
-from scat_kg.checks.text import choose, one, steps
-from scat_kg.contract import SCHEMA_VERSION
-from scat_kg.fix import Command, Edit, Fix, FixOption
+import scat_tools
+from scat_tools.checks.problem import Problem
+from scat_tools.checks.text import choose, one, steps
+from scat_tools.contract import SCHEMA_VERSION
+from scat_tools.fix import Command, Edit, Fix, FixOption
 
 ROOT = Path(__file__).resolve().parents[2]
 _spec = importlib.util.spec_from_file_location(
@@ -78,7 +78,7 @@ def check_doc(result):
 
 def test_clean_check_validates(make_vault):
     root = _helpers.vault(make_vault).root
-    d = check_doc(scat_kg.check(root=root))
+    d = check_doc(scat_tools.check(root=root))
     assert d["problems"] == [] and d["ok"] is True
 
 
@@ -100,7 +100,7 @@ def test_seeded_defect_validates(make_vault):
         'description: "D"\n', ""
     )
     root = _helpers.vault(make_vault, files).root
-    result = scat_kg.check(root=root)
+    result = scat_tools.check(root=root)
     d = check_doc(result)
     assert d["problems"], "the seeded defect must produce a problem"
     for p, q in zip(d["problems"], result.problems):
@@ -108,7 +108,7 @@ def test_seeded_defect_validates(make_vault):
 
 
 def test_typed_fix_validates_and_renders():
-    cmd = Command(("set-status", "x", "draft"), 'scat_kg.set_status("x", "draft")')
+    cmd = Command(("set-status", "x", "draft"), 'scat_tools.set_status("x", "draft")')
     edit = Edit("set-field", "concern/x.md", field="status", value="draft")
     fix = Fix.choose(
         "options",
@@ -143,13 +143,13 @@ def test_typed_fix_validates_and_renders():
     assert VALIDATOR.is_valid(doc), [e.message for e in VALIDATOR.iter_errors(doc)]
     assert fix.to_dict()["options"][0]["command"] == {
         "argv": ["set-status", "x", "draft"],
-        "repl": 'scat_kg.set_status("x", "draft")',
+        "repl": 'scat_tools.set_status("x", "draft")',
     }
 
 
 def test_problem_json_matches_for_a_typed_multi_option_fix():
     legacy = Problem("SCAT-DONE-FIELD", "error", "concern/x.md", "field `d`", "missing", "Fix: x")
-    cmd = Command(("set-status", "x", "draft"), 'scat_kg.set_status("x", "draft")')
+    cmd = Command(("set-status", "x", "draft"), 'scat_tools.set_status("x", "draft")')
     fix = Fix.choose(
         "options",
         [

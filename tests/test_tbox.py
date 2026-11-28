@@ -6,8 +6,8 @@ from pathlib import Path
 import pytest
 from rdflib import Graph
 
-from scat_kg import tbox
-from scat_kg.tbox import TBOX
+from scat_tools import tbox
+from scat_tools.tbox import TBOX
 
 REPO = Path(__file__).parents[1]
 TTL = REPO / "ontology" / "scat.ttl"
@@ -99,4 +99,4 @@ def test_wheel_ships_the_repo_file(tmp_path):
     subprocess.run([uv, "build", "--wheel", "--out-dir", str(tmp_path)], cwd=REPO, check=True)
     (wheel,) = tmp_path.glob("*.whl")
     with zipfile.ZipFile(wheel) as z:
-        assert z.read("scat_kg/scat.ttl") == TTL.read_bytes()
+        assert z.read("scat_tools/scat.ttl") == TTL.read_bytes()

@@ -9,8 +9,8 @@ from pathlib import Path
 import pytest
 from jsonschema import Draft202012Validator
 
-import scat_kg
-from scat_kg.cli import main
+import scat_tools
+from scat_tools.cli import main
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = json.loads((ROOT / "contracts" / "machine-interface.schema.json").read_text("utf-8"))
@@ -35,32 +35,32 @@ def run_cli(argv, capsys):
 
 # (id, CLI words after `scat`, the API call, expected ok, expected kind)
 CASES = [
-    ("check ok", ["check"], lambda r: scat_kg.check(root=r), True, "check"),
-    ("check page", ["check", "quick-checkout"], lambda r: scat_kg.check("quick-checkout", root=r), True, "check"),
-    ("check no page", ["check", "no-such-page"], lambda r: scat_kg.check("no-such-page", root=r), False, "operation"),
-    ("check neighborhood needs page", ["check", "--neighborhood"], lambda r: scat_kg.check(neighborhood=True, root=r), False, "operation"),
-    ("status ok", ["status"], lambda r: scat_kg.status(root=r), True, "status"),
-    ("status page", ["status", "quick-checkout"], lambda r: scat_kg.status("quick-checkout", root=r), True, "status"),
-    ("status neighborhood", ["status", "quick-checkout", "--neighborhood"], lambda r: scat_kg.status("quick-checkout", neighborhood=True, root=r), True, "status"),
-    ("status no page", ["status", "no-such-page"], lambda r: scat_kg.status("no-such-page", root=r), False, "operation"),
-    ("set-status ok", ["set-status", "quick-checkout", "stub"], lambda r: scat_kg.set_status("quick-checkout", "stub", root=r), True, "operation"),
-    ("set-status bad", ["set-status", "quick-checkout", "nearly"], lambda r: scat_kg.set_status("quick-checkout", "nearly", root=r), False, "operation"),
-    ("index ok", ["index"], lambda r: scat_kg.index(root=r), True, "operation"),
-    ("stub ok", ["stub", "fresh-idea", "--type", "concern"], lambda r: scat_kg.stub("fresh-idea", "concern", root=r), True, "operation"),
-    ("stub index", ["stub", "x", "--type", "index"], lambda r: scat_kg.stub("x", "index", root=r), False, "operation"),
-    ("stub edge type", ["stub", "x", "--type", "holds"], lambda r: scat_kg.stub("x", "holds", root=r), False, "operation"),
-    ("stub bad name", ["stub", "Not A Name!", "--type", "concern"], lambda r: scat_kg.stub("Not A Name!", "concern", root=r), False, "operation"),
-    ("stub-links ok", ["stub-links"], lambda r: scat_kg.stub_links(root=r), True, "operation"),
-    ("set-status done refused", ["set-status", "funders-meeting", "done"], lambda r: scat_kg.set_status("funders-meeting", "done", root=r), False, "operation"),
-    ("record-edge ok", ["record-edge", "holds", "borrowers", "careful-record-keeping", "--told-by", "funders-meeting", "--note", "n"], lambda r: scat_kg.record_edge("holds", "borrowers", "careful-record-keeping", ["funders-meeting"], "n", root=r), True, "operation"),
-    ("record-edge new narrative", ["record-edge", "holds", "borrowers", "fresh", "--told-by", "story"], lambda r: scat_kg.record_edge("holds", "borrowers", "fresh", "story", root=r), True, "operation"),
-    ("record-edge unchanged", ["record-edge", "holds", "borrowers", "quick-checkout", "--told-by", "saturday-at-the-lending-desk"], lambda r: scat_kg.record_edge("holds", "borrowers", "quick-checkout", "saturday-at-the-lending-desk", root=r), True, "operation"),
-    ("record-edge bad type", ["record-edge", "owns", "a", "b", "--told-by", "n"], lambda r: scat_kg.record_edge("owns", "a", "b", "n", root=r), False, "operation"),
-    ("record-edge into done", ["record-edge", "holds", "borrowers", "careful-record-keeping", "--told-by", "saturday-at-the-lending-desk"], lambda r: scat_kg.record_edge("holds", "borrowers", "careful-record-keeping", "saturday-at-the-lending-desk", root=r), False, "operation"),
-    ("remove-edge nothing to do", ["remove-edge", "funders", "quick-checkout"], lambda r: scat_kg.remove_edge("funders", "quick-checkout", root=r), True, "operation"),
-    ("remove-edge from done", ["remove-edge", "borrowers", "quick-checkout"], lambda r: scat_kg.remove_edge("borrowers", "quick-checkout", root=r), False, "operation"),
-    ("remove-edge no node", ["remove-edge", "ghost", "quick-checkout"], lambda r: scat_kg.remove_edge("ghost", "quick-checkout", root=r), False, "operation"),
-    ("stub-links no page", ["stub-links", "no-such-page"], lambda r: scat_kg.stub_links("no-such-page", root=r), False, "operation"),
+    ("check ok", ["check"], lambda r: scat_tools.check(root=r), True, "check"),
+    ("check page", ["check", "quick-checkout"], lambda r: scat_tools.check("quick-checkout", root=r), True, "check"),
+    ("check no page", ["check", "no-such-page"], lambda r: scat_tools.check("no-such-page", root=r), False, "operation"),
+    ("check neighborhood needs page", ["check", "--neighborhood"], lambda r: scat_tools.check(neighborhood=True, root=r), False, "operation"),
+    ("status ok", ["status"], lambda r: scat_tools.status(root=r), True, "status"),
+    ("status page", ["status", "quick-checkout"], lambda r: scat_tools.status("quick-checkout", root=r), True, "status"),
+    ("status neighborhood", ["status", "quick-checkout", "--neighborhood"], lambda r: scat_tools.status("quick-checkout", neighborhood=True, root=r), True, "status"),
+    ("status no page", ["status", "no-such-page"], lambda r: scat_tools.status("no-such-page", root=r), False, "operation"),
+    ("set-status ok", ["set-status", "quick-checkout", "stub"], lambda r: scat_tools.set_status("quick-checkout", "stub", root=r), True, "operation"),
+    ("set-status bad", ["set-status", "quick-checkout", "nearly"], lambda r: scat_tools.set_status("quick-checkout", "nearly", root=r), False, "operation"),
+    ("index ok", ["index"], lambda r: scat_tools.index(root=r), True, "operation"),
+    ("stub ok", ["stub", "fresh-idea", "--type", "concern"], lambda r: scat_tools.stub("fresh-idea", "concern", root=r), True, "operation"),
+    ("stub index", ["stub", "x", "--type", "index"], lambda r: scat_tools.stub("x", "index", root=r), False, "operation"),
+    ("stub edge type", ["stub", "x", "--type", "holds"], lambda r: scat_tools.stub("x", "holds", root=r), False, "operation"),
+    ("stub bad name", ["stub", "Not A Name!", "--type", "concern"], lambda r: scat_tools.stub("Not A Name!", "concern", root=r), False, "operation"),
+    ("stub-links ok", ["stub-links"], lambda r: scat_tools.stub_links(root=r), True, "operation"),
+    ("set-status done refused", ["set-status", "funders-meeting", "done"], lambda r: scat_tools.set_status("funders-meeting", "done", root=r), False, "operation"),
+    ("record-edge ok", ["record-edge", "holds", "borrowers", "careful-record-keeping", "--told-by", "funders-meeting", "--note", "n"], lambda r: scat_tools.record_edge("holds", "borrowers", "careful-record-keeping", ["funders-meeting"], "n", root=r), True, "operation"),
+    ("record-edge new narrative", ["record-edge", "holds", "borrowers", "fresh", "--told-by", "story"], lambda r: scat_tools.record_edge("holds", "borrowers", "fresh", "story", root=r), True, "operation"),
+    ("record-edge unchanged", ["record-edge", "holds", "borrowers", "quick-checkout", "--told-by", "saturday-at-the-lending-desk"], lambda r: scat_tools.record_edge("holds", "borrowers", "quick-checkout", "saturday-at-the-lending-desk", root=r), True, "operation"),
+    ("record-edge bad type", ["record-edge", "owns", "a", "b", "--told-by", "n"], lambda r: scat_tools.record_edge("owns", "a", "b", "n", root=r), False, "operation"),
+    ("record-edge into done", ["record-edge", "holds", "borrowers", "careful-record-keeping", "--told-by", "saturday-at-the-lending-desk"], lambda r: scat_tools.record_edge("holds", "borrowers", "careful-record-keeping", "saturday-at-the-lending-desk", root=r), False, "operation"),
+    ("remove-edge nothing to do", ["remove-edge", "funders", "quick-checkout"], lambda r: scat_tools.remove_edge("funders", "quick-checkout", root=r), True, "operation"),
+    ("remove-edge from done", ["remove-edge", "borrowers", "quick-checkout"], lambda r: scat_tools.remove_edge("borrowers", "quick-checkout", root=r), False, "operation"),
+    ("remove-edge no node", ["remove-edge", "ghost", "quick-checkout"], lambda r: scat_tools.remove_edge("ghost", "quick-checkout", root=r), False, "operation"),
+    ("stub-links no page", ["stub-links", "no-such-page"], lambda r: scat_tools.stub_links("no-such-page", root=r), False, "operation"),
 ]  # fmt: skip
 
 
@@ -148,7 +148,7 @@ def test_status_rows_null_what_is_not_a_string(tmp_path):
         "---\ntype: concern\nstatus: 7\ntitle: T\n---\n", encoding="utf-8"
     )
     (root / "concern" / "odder.md").write_text("---\ntype: [a]\ntitle: T\n---\n", encoding="utf-8")
-    doc = scat_kg.status(root=root).to_dict()
+    doc = scat_tools.status(root=root).to_dict()
     rows = {r["name"]: r for r in doc["rows"]}
     assert rows["odd"]["status"] is None and rows["odd"]["type"] == "concern"
     assert rows["odder"]["type"] is None
@@ -162,32 +162,32 @@ def option_kinds(result):
 
 def test_refusal_fixes_are_data(tmp_path):
     root = copies(tmp_path)[0]
-    r = scat_kg.stub("x", "index", root=root)
+    r = scat_tools.stub("x", "index", root=root)
     (refusal,) = r.to_dict()["refused"]
     (opt,) = refusal["fix"]["options"]
     assert refusal["fix"]["kind"] == opt["kind"] == "exact"
-    assert opt["command"] == {"argv": ["index"], "repl": "scat_kg.index()"}
-    assert r.refused[0].fix == "run `scat index` (REPL: `scat_kg.index()`)"
+    assert opt["command"] == {"argv": ["index"], "repl": "scat_tools.index()"}
+    assert r.refused[0].fix == "run `scat index` (REPL: `scat_tools.index()`)"
     # a refusal with no command in it is one manual option holding the text shown today
-    r = scat_kg.set_status("quick-checkout", "nearly", root=root)
+    r = scat_tools.set_status("quick-checkout", "nearly", root=root)
     (opt,) = r.to_dict()["refused"][0]["fix"]["options"]
     assert opt["kind"] == "manual" and opt["text"] == r.refused[0].fix and "command" not in opt
 
 
 def test_the_done_refusal_has_a_rule_and_problems_and_a_plain_refusal_has_neither(tmp_path):
     root = copies(tmp_path)[0]
-    (ref,) = scat_kg.set_status("funders-meeting", "done", root=root).to_dict()["refused"]
+    (ref,) = scat_tools.set_status("funders-meeting", "done", root=root).to_dict()["refused"]
     assert ref["rule"] == "SCAT-DONE-REFUSED" and {p["rule"] for p in ref["problems"]} == {
         "SCAT-DONE-FIELD"
     }
     assert [o["kind"] for o in ref["fix"]["options"]] == ["advisory", "exact"]
-    (plain,) = scat_kg.record_edge("owns", "a", "b", "n", root=root).to_dict()["refused"]
+    (plain,) = scat_tools.record_edge("owns", "a", "b", "n", root=root).to_dict()["refused"]
     assert "rule" not in plain and "problems" not in plain
 
 
 def test_record_and_remove_edge_name_the_edge_and_the_rows(tmp_path):
     root = copies(tmp_path)[0]
-    doc = scat_kg.record_edge("holds", "borrowers", "fresh", "story", root=root).to_dict()
+    doc = scat_tools.record_edge("holds", "borrowers", "fresh", "story", root=root).to_dict()
     assert doc["edge"] == {
         "type": "holds",
         "from": "borrowers",
@@ -196,7 +196,7 @@ def test_record_and_remove_edge_name_the_edge_and_the_rows(tmp_path):
     }
     assert doc["created"] == ["concern/fresh.md", "narrative/story.md"]
     assert [r["narrative"] for r in doc["rows_added"]] == ["story"] and doc["rows_removed"] == []
-    gone = scat_kg.remove_edge("borrowers", "fresh", root=root).to_dict()
+    gone = scat_tools.remove_edge("borrowers", "fresh", root=root).to_dict()
     assert gone["edge"]["narratives"] == [] and gone["rows_added"] == []
     assert [r["narrative"] for r in gone["rows_removed"]] == ["story"] and VALIDATOR.is_valid(gone)
 
@@ -205,7 +205,7 @@ def test_index_refusal_is_a_refusal_with_a_fix(tmp_path):
     root = copies(tmp_path)[0]
     shutil.rmtree(root / "index")
     (root / "index").write_text("a file", encoding="utf-8")
-    doc = scat_kg.index(root=root).to_dict()
+    doc = scat_tools.index(root=root).to_dict()
     assert VALIDATOR.is_valid(doc) and not doc["ok"]
     assert (
         doc["refused"][0]["subject"] == "index"
@@ -221,7 +221,7 @@ def test_stub_links_two_types_gives_a_slot(tmp_path):
         "| [[borrowers]] | holds | [[ghost]] | |\n| [[quick-checkout]] | is addressed by | [[ghost]] | |\n",
         encoding="utf-8",
     )
-    r = scat_kg.stub_links(root=root)
+    r = scat_tools.stub_links(root=root)
     doc = r.to_dict()
     assert VALIDATOR.is_valid(doc)
     (refusal,) = [x for x in doc["refused"] if "different types" in x["why"]]

@@ -9,8 +9,8 @@ import pytest
 from test_draw import NS, SHOWN, columns, said, texts
 from viewutil import narrative, page, row, write
 
-from scat_kg import draw
-from scat_kg.tbox import TBOX
+from scat_tools import draw
+from scat_tools.tbox import TBOX
 
 ROOT = Path(__file__).resolve().parents[2]
 EXAMPLES = ROOT / "contracts" / "examples"
@@ -308,7 +308,7 @@ def marked_by_edge(vault_root, **kw):
 
 
 def test_each_edge_has_the_mark_of_the_narrative_that_tells_it(vault):
-    from scat_kg import layered
+    from scat_tools import layered
 
     _, _, got = marked_by_edge(vault)
     view = layered(root=vault).to_dict()
@@ -401,7 +401,7 @@ def test_the_key_stays_inside_the_figure_and_the_footer_grows(tmp_path, vault):
 
 
 def test_marking_does_not_change_a_fingerprint_or_a_trace(vault):
-    from scat_kg import fingerprint, trace
+    from scat_tools import fingerprint, trace
 
     fp = fingerprint("dry", root=vault)
     assert draw.render(fp, mark_narratives=True).svg() == draw.render(fp).svg()

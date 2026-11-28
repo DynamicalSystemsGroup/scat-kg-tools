@@ -9,8 +9,8 @@ from pathlib import Path
 
 import pytest
 
-from scat_kg.fix import Edit
-from scat_kg.graph import (
+from scat_tools.fix import Edit
+from scat_tools.graph import (
     Candidate,
     EdgeKey,
     add_row,
@@ -20,7 +20,7 @@ from scat_kg.graph import (
     read_table,
     remove_rows,
 )
-from scat_kg.tbox import TBOX
+from scat_tools.tbox import TBOX
 
 EXAMPLES = Path(__file__).parents[1] / "contracts" / "examples"
 NBSP = " "

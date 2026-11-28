@@ -6,7 +6,7 @@ refusal id SCAT-DONE-REFUSED is an operation rule and no `scat check` prints it.
 
 from helpers import DESK, doc, narrative, row, vault
 
-from scat_kg.checks import check_page, check_page_at_done
+from scat_tools.checks import check_page, check_page_at_done
 
 GHOST = row("holds", "staff", "ghost")
 C = "concern/safe-handling.md"
@@ -89,7 +89,7 @@ def test__the_vault_wide_errors_are_not_listed_and_the_vault_check_reports_the_c
     }
     v, report = at_done(make_vault, files, "group/staff.md")
     assert report.problems == ()  # nothing else is wrong with the page
-    from scat_kg.checks import check_vault
+    from scat_tools.checks import check_vault
 
     assert [p.rule for p in check_vault(v).problems] == ["SCAT-CAP"]
 

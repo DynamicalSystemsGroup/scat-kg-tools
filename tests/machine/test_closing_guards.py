@@ -10,11 +10,11 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import scat_harness as h
 
-from scat_kg.checks.problem import Problem
-from scat_kg.fix import Command, Edit, Fix, FixOption
+from scat_tools.checks.problem import Problem
+from scat_tools.fix import Command, Edit, Fix, FixOption
 
 CMD = Command(
-    ("set-status", "safe-handling", "draft"), 'scat_kg.set_status("safe-handling", "draft")'
+    ("set-status", "safe-handling", "draft"), 'scat_tools.set_status("safe-handling", "draft")'
 )
 TEXT = f"run `scat set-status safe-handling draft` (REPL: `{CMD.repl}`)"
 EDIT = Edit("set-field", "concern/safe-handling.md", field="status", value="draft")

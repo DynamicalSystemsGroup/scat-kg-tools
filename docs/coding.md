@@ -53,7 +53,7 @@ The example codes one narrative in the template vault, `groups-under-a-cap-pitch
     warning [SCAT-DRAFT-END-NOPAGE] narrative/groups-under-a-cap-pitch.md:23:3 row 3 cell `from`: [[workshop-participnts]] does not reach a page (no page is named workshop-participnts)
       Fix, choose one:
         1. replace `[[workshop-participnts]]` with `[[workshop-participants]]`
-        2. run `scat stub workshop-participnts --type group` (REPL: `scat_kg.stub("workshop-participnts", type="group")`) to create a group page
+        2. run `scat stub workshop-participnts --type group` (REPL: `scat_tools.stub("workshop-participnts", type="group")`) to create a group page
         3. delete the row
     0 errors, 1 warning
     ```
@@ -63,8 +63,8 @@ The example codes one narrative in the template vault, `groups-under-a-cap-pitch
 7. **In a terminal:** start `uv run python`, then type the lines below, and see the same text the command printed:
 
     ```python
-    import scat_kg
-    print(scat_kg.check("groups-under-a-cap-pitch"))
+    import scat_tools
+    print(scat_tools.check("groups-under-a-cap-pitch"))
     ```
 
     ```text
@@ -85,7 +85,7 @@ The rest of this page is the reference for every step above: what the pages are,
 
 ## Before you start
 
-- A vault set up as in [Getting started](getting-started.md): the folder holds `scat.toml`, and `uv sync` has run. For a trial, a plain clone of the template works with no sign-in: `git clone https://github.com/DynamicalSystemsGroup/scat-kg-template`. In Terminal, go into the vault folder with `cd` and its name (for a clone, `cd scat-kg-template`) before any `uv` command.
+- A vault set up as in [Getting started](getting-started.md): the folder holds `scat.toml`, and `uv sync` has run. For a trial, a plain clone of the template works with no sign-in: `git clone https://github.com/DynamicalSystemsGroup/scat-template`. In Terminal, go into the vault folder with `cd` and its name (for a clone, `cd scat-template`) before any `uv` command.
 - Obsidian 1.9 or later, with the vault open. The index pages are Obsidian Bases, which older versions do not show.
 - Field notes from a session, as in [Facilitating scenarios](facilitate-scenarios.md) or [Facilitating architectures](facilitate-architectures.md). In hand, you need a few plain sentences of notes, written as they were told.
 - Your groups, planned in the [planning guide](planning.md) and named by role. A group is a role, never a person: the vault holds at most the cap of groups set in `scat.toml`.
@@ -362,10 +362,10 @@ refused [SCAT-DONE-REFUSED] narrative/saturday-at-the-tool-library.md: 1 error(s
   error [SCAT-DONE-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing on a page with status: done
     Fix, choose one:
       1. add the line `description: "<one sentence you write>"` (author)
-      2. run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library", "draft")`) if the page is not finished
+      2. run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_tools.set_status("saturday-at-the-tool-library", "draft")`) if the page is not finished
   Fix, choose one:
     1. fix the problems above, then run `scat set-status saturday-at-the-tool-library done` again
-    2. leave the page at `draft`: run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library", "draft")`)
+    2. leave the page at `draft`: run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_tools.set_status("saturday-at-the-tool-library", "draft")`)
 ```
 
 Fix what it lists (here, add the line `description: "Loans go unrecorded when the sheet runs out."` to the front matter), then set it again:
@@ -393,7 +393,7 @@ A `done` narrative is not frozen, but changing it is your step. `record-edge` an
 ```text
 $ uv run scat record-edge provided-by sign-out-sheet shared-spreadsheet --told-by saturday-at-the-tool-library
 refused narrative/saturday-at-the-tool-library.md: the narrative is `done` and this row would change it; changing a `done` narrative is your step
-  Fix: set the narrative to `draft` with `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library", "draft")`), run this again, then set it to `done` again; the page is checked then
+  Fix: set the narrative to `draft` with `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_tools.set_status("saturday-at-the-tool-library", "draft")`), run this again, then set it to `done` again; the page is checked then
 ```
 
 Set it to `draft`, make the change, then set it to `done` again. Here the edge is removed. The links stay, since they belong to the account:
@@ -553,7 +553,7 @@ warning [SCAT-DRAFT-TABLE-LAYERS] narrative/monday-at-the-desk.md:17:1 row 2: `h
 warning [SCAT-DRAFT-END-NOPAGE] narrative/monday-at-the-desk.md:18:39 row 3 cell `to`: [[late-return]] does not reach a page (no page is named late-return)
   Fix, choose one:
     1. replace `[[late-return]]` with `[[late-returns]]`
-    2. run `scat stub late-return --type concern` (REPL: `scat_kg.stub("late-return", type="concern")`) to create a concern page
+    2. run `scat stub late-return --type concern` (REPL: `scat_tools.stub("late-return", type="concern")`) to create a concern page
     3. delete the row
 0 errors, 3 warnings
 ```
@@ -574,11 +574,11 @@ refused [SCAT-DONE-REFUSED] narrative/monday-at-the-desk.md: 3 error(s) would st
   error [SCAT-DONE-END-NOPAGE] narrative/monday-at-the-desk.md:18:39 row 3 cell `to`: [[late-return]] does not reach a page (no page is named late-return)
     Fix, choose one:
       1. replace `[[late-return]]` with `[[late-returns]]`
-      2. run `scat stub late-return --type concern` (REPL: `scat_kg.stub("late-return", type="concern")`) to create a concern page
+      2. run `scat stub late-return --type concern` (REPL: `scat_tools.stub("late-return", type="concern")`) to create a concern page
       3. delete the row
   Fix, choose one:
     1. fix the problems above, then run `scat set-status monday-at-the-desk done` again
-    2. leave the page at `draft`: run `scat set-status monday-at-the-desk draft` (REPL: `scat_kg.set_status("monday-at-the-desk", "draft")`)
+    2. leave the page at `draft`: run `scat set-status monday-at-the-desk draft` (REPL: `scat_tools.set_status("monday-at-the-desk", "draft")`)
 ```
 
 Apply the first fix to each: link the name, swap the two ends, and link the existing concern in place of the misspelt one. Rows 2 and 3 now say what row 1 says, so the check reports each as a repeat:
@@ -672,10 +672,10 @@ refused [SCAT-DONE-REFUSED] narrative/saturday-at-the-tool-library.md: 1 error(s
   error [SCAT-DONE-ATTR] narrative/saturday-at-the-tool-library.md field `attributed_to`: missing on a page with status: done (the vault's attribution mode is `required`)
     Fix, choose one:
       1. add the line `attributed_to: ["[[<a contributor page you link>]]"]` (author)
-      2. run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library", "draft")`) if the page is not finished
+      2. run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_tools.set_status("saturday-at-the-tool-library", "draft")`) if the page is not finished
   Fix, choose one:
     1. fix the problems above, then run `scat set-status saturday-at-the-tool-library done` again
-    2. leave the page at `draft`: run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library", "draft")`)
+    2. leave the page at `draft`: run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_tools.set_status("saturday-at-the-tool-library", "draft")`)
 ```
 
 Make the contributor page with `scat stub`, then link it in the narrative's front matter:
@@ -713,11 +713,11 @@ error [SCAT-ATTR-DISALLOWED] narrative/saturday-at-the-tool-library.md field `at
 
 The mode belongs to the whole vault and the organiser sets it before the first session. The tool never changes it. If you change it, the next whole-vault check reads every page against the new mode.
 
-`scat attribution` lists each contributor page with the narratives that name it, and the narratives that name none. It refuses in a `disallowed` vault. Its reference is in the [CLI reference](reference/cli.md), and its Python form is in the [Python API reference](reference/api.md#scat_kgattribution).
+`scat attribution` lists each contributor page with the narratives that name it, and the narratives that name none. It refuses in a `disallowed` vault. Its reference is in the [CLI reference](reference/cli.md), and its Python form is in the [Python API reference](reference/api.md#scat_toolsattribution).
 
 ## The operations
 
-Every operation has two spellings that give the same messages: the Python REPL (`uv run python`, then `import scat_kg` once) and the command line. Each step shows both. The names differ between the two spellings, so you can type both in one vault. All of them write only new files or the lines they name, and none of them writes a narrative's account.
+Every operation has two spellings that give the same messages: the Python REPL (`uv run python`, then `import scat_tools` once) and the command line. Each step shows both. The names differ between the two spellings, so you can type both in one vault. All of them write only new files or the lines they name, and none of them writes a narrative's account.
 
 ### Check, at three scopes
 
@@ -726,10 +726,10 @@ Every operation has two spellings that give the same messages: the Python REPL (
 === "Python (REPL)"
 
     ```python
-    import scat_kg
-    scat_kg.check()
-    scat_kg.check("anonymity")
-    scat_kg.check("anonymity", neighborhood=True)
+    import scat_tools
+    scat_tools.check()
+    scat_tools.check("anonymity")
+    scat_tools.check("anonymity", neighborhood=True)
     ```
 
     ```text
@@ -771,8 +771,8 @@ Every check prints the vault's attribution mode first. The template's own exampl
 === "Python (REPL)"
 
     ```python
-    scat_kg.stub("lending-desk-opens-on-time", type="concern")
-    scat_kg.stub("desk-notes-one", type="narrative")
+    scat_tools.stub("lending-desk-opens-on-time", type="concern")
+    scat_tools.stub("desk-notes-one", type="narrative")
     ```
 
     ```text
@@ -801,8 +801,8 @@ Every check prints the vault's attribution mode first. The template's own exampl
 === "Python (REPL)"
 
     ```python
-    scat_kg.record_edge("holds", "workshop-participants", "lending-desk-opens-on-time", ["desk-notes-one"], note="Said twice.")
-    scat_kg.remove_edge("workshop-participants", "lending-desk-opens-on-time")
+    scat_tools.record_edge("holds", "workshop-participants", "lending-desk-opens-on-time", ["desk-notes-one"], note="Said twice.")
+    scat_tools.remove_edge("workshop-participants", "lending-desk-opens-on-time")
     ```
 
     ```text
@@ -843,7 +843,7 @@ Every check prints the vault's attribution mode first. The template's own exampl
 === "Python (REPL)"
 
     ```python
-    scat_kg.stub_links()
+    scat_tools.stub_links()
     ```
 
     ```text
@@ -867,8 +867,8 @@ Every check prints the vault's attribution mode first. The template's own exampl
 === "Python (REPL)"
 
     ```python
-    scat_kg.status("desk-notes-one")
-    scat_kg.set_status("desk-notes-one", "draft")
+    scat_tools.status("desk-notes-one")
+    scat_tools.set_status("desk-notes-one", "draft")
     ```
 
     ```text
@@ -905,7 +905,7 @@ An index page lists the pages of one type. It is an Obsidian Base, `index/<type>
 === "Python (REPL)"
 
     ```python
-    scat_kg.index()
+    scat_tools.index()
     ```
 
     ```text
@@ -948,7 +948,7 @@ Every message has the same parts, as in this one from step 6 above:
 error [SCAT-DONE-FIELD] narrative/saturday-at-the-tool-library.md field `description`: missing on a page with status: done
   Fix, choose one:
     1. add the line `description: "<one sentence you write>"` (author)
-    2. run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_kg.set_status("saturday-at-the-tool-library", "draft")`) if the page is not finished
+    2. run `scat set-status saturday-at-the-tool-library draft` (REPL: `scat_tools.set_status("saturday-at-the-tool-library", "draft")`) if the page is not finished
 ```
 
 1. **Severity.** `error` blocks. `warning` does not. `refused` means a command did not run, and nothing was written.

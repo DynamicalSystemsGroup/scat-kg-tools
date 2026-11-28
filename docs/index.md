@@ -86,7 +86,7 @@ Before the first stage you set up your own private vault: that is [Getting start
 need the exact form of a command, the reference has it: the [Python API](reference/api.md) and the
 [CLI](reference/cli.md).
 
-This documentation lives at <https://dynamicalsystemsgroup.github.io/scat-kg-tools/>.
+This documentation lives at <https://dynamicalsystemsgroup.github.io/scat-tools/>.
 
 ## Where next
 

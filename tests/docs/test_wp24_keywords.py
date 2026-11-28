@@ -13,9 +13,9 @@ from pathlib import Path
 
 import pytest
 
-from scat_kg.cli import _parser
-from scat_kg.mcp_server import prompts
-from scat_kg.mcp_server.server import build
+from scat_tools.cli import _parser
+from scat_tools.mcp_server import prompts
+from scat_tools.mcp_server.server import build
 
 ROOT = Path(__file__).resolve().parents[2]
 KEYWORDS = re.compile(r"\b(SHALL NOT|SHALL|SHOULD|MAY)\b")

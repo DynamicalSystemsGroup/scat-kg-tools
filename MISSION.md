@@ -1,11 +1,11 @@
-# Mission — Scope of work: scat-kg v0.1
+# Mission — Scope of work: scat-tools v0.1
 
 | | |
 |---|---|
-| **Status** | Approved by the chief engineer's merges into `main` of `DynamicalSystemsGroup/scat-kg-tools`. This document is self-standing and always current; its history is the git history of `main`, and the reasoning behind each call is in `decisions/log.md` and the PR threads. |
+| **Status** | Approved by the chief engineer's merges into `main` of `DynamicalSystemsGroup/scat-tools`. This document is self-standing and always current; its history is the git history of `main`, and the reasoning behind each call is in `decisions/log.md` and the PR threads. |
 | **Chief engineer (accountable)** | `mzargham`: final design authority. Approves this mission and its changes, and accepts the v0.1 delivery. |
 | **Assistant to the chief engineer (ACE)** | The main Claude session. Manages the team, writes and approves work-package scopes inside this mission, accepts work packages, and escalates only intent gaps (see Governance). |
-| **Repositories** | `scat-kg-tools` (the tools, the ontology, the docs site; this document) and `scat-kg-template` (the vault to clone). |
+| **Repositories** | `scat-tools` (the tools, the ontology, the docs site; this document) and `scat-template` (the vault to clone). |
 | **Acceptance record** | The chief engineer's merge of the release PRs, as set out under Governance, "Release". |
 
 ## Purpose
@@ -150,7 +150,7 @@ The organiser is also the **coder** of the data. They are technically savvy but 
 Governance). They navigate GitHub's web interface, including creating a repository from a template; read, write and
 follow links in Obsidian; and follow documentation literally, step by step. They code by one of four paths (G14), and
 each has its own user experience and a walkthrough with screenshots:
-1. **By hand in Obsidian**, with the tools in an **interactive session**: the Python REPL (`import scat_kg`), with the
+1. **By hand in Obsidian**, with the tools in an **interactive session**: the Python REPL (`import scat_tools`), with the
    `scat` CLI as an equal path to the same operations and messages. The docs lead with the REPL, because CLI commands
    get long when run through uv. Its future state is an Obsidian community plugin, which is out of scope for v0.1
    (see Non-goals).
@@ -234,15 +234,15 @@ matters without claiming to be exhaustive. No particular project's choices appea
     and are listed.
 
   The one-page and one-link-away checks act as a fast linter during working sessions.
-- **G5. Two repositories.** `scat-kg-tools` is a slim, separately maintained package with the ontology, the tools and the
-  docs site. `scat-kg-template` is the vault to clone, which installs a pinned version of the tools. Both builds are
+- **G5. Two repositories.** `scat-tools` is a slim, separately maintained package with the ontology, the tools and the
+  docs site. `scat-template` is the vault to clone, which installs a pinned version of the tools. Both builds are
   reproducible with uv.
 - **G6. The worked example is this project, as its own case study.** The template's example content is the
-  elicitation of scat-kg itself, drawn from the chief engineer's recorded statements and the decision log. It is small,
+  elicitation of scat-tools itself, drawn from the chief engineer's recorded statements and the decision log. It is small,
   because users overwrite it, but every node type and edge type has 2–3 entries, and there are two scenarios and two architectures,
   each coded. Like any others, its stakeholder groups are groups: none stands for one identifiable person. It
   avoids politically loaded illustrations. It doubles as the test fixture and the documentation example.
-- **G7. Documentation on GitHub Pages**, from `scat-kg-tools`, with a light musical reference (R-15). It has a page for
+- **G7. Documentation on GitHub Pages**, from `scat-tools`, with a light musical reference (R-15). It has a page for
   each stage of the journey (J1–J10): getting started, a planning guide, a scenario facilitation guide, an architecture
   facilitation guide, a page on narratives and one on timeframe, a coding guide, an analysis guide, and a page on the
   coding paths with a walkthrough for each (by hand, an AI chatbot with its leave-no-trace option, an AI IDE, a local LLM). It summarises the end-to-end flow on one
@@ -300,7 +300,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
   - **The chat path** is the priority for design and testing in v0.1. The first field deployment may use one private
     LLM service, inference.coop, through its browser chat, which reaches outside tools only through MCP servers. The
     open-source service is built for it: an MCP server with its tools, prompts and skills, a front end to the tool that
-    depends on `scat-kg`. It also generates the views (G12), from the same code the notebook uses, so a chat-path
+    depends on `scat-tools`. It also generates the views (G12), from the same code the notebook uses, so a chat-path
     coder reaches a finished model without a terminal. A
     workable chat workflow is a UX design problem in its own right: the input material is uploaded to the chat as a
     collection, files are created and downloaded, kept in a private git repository and edited in Obsidian, with
@@ -367,13 +367,13 @@ matters without claiming to be exhaustive. No particular project's choices appea
 
 | ID | Deliverable | Serves |
 |---|---|---|
-| D-1 | The ontology in Turtle, in `scat-kg-tools` | G1, G10 |
-| D-2 | The tool (parser, checks, the operations, the Python API and CLI, their machine-readable output with its schema, a public vault loader, and the view generation the notebook and the MCP server share), and the MCP server with its prompts and skills, with their test suite, and the architecture document, in `scat-kg-tools` | G2, G3, G4, G12, G14, G16, G17 |
+| D-1 | The ontology in Turtle, in `scat-tools` | G1, G10 |
+| D-2 | The tool (parser, checks, the operations, the Python API and CLI, their machine-readable output with its schema, a public vault loader, and the view generation the notebook and the MCP server share), and the MCP server with its prompts and skills, with their test suite, and the architecture document, in `scat-tools` | G2, G3, G4, G12, G14, G16, G17 |
 | D-3 | The template repository: vault skeleton, index pages, the vault's configuration (the stakeholder-group cap), the pinned tools, the case study, the analysis notebook, and a setup skill for IDE agents | G5, G6, G9, G12, G14, G15 |
 | D-4 | The documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9, G11, G14, G17 |
 | D-5 | Research readouts and decision records: the ontology survey and trade study, the toolchain spike, the facilitation research, the prior-art readout, the chat-path spike, and the impact maps | G8, G10, G11, G13, G14, G16 |
-| D-6 | The reviewer's guide for the chief engineer, in the `scat-kg-tools` release PR. It is sized for a person and split into sittings: (1) the end-to-end walkthroughs (UA-M); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
-| D-7 | The user-acceptance kit, in `scat-kg-tools/acceptance/`: the AI tester personas and briefs, the report template, every AI test report with its dispositions, and the walkthrough scripts | G9 |
+| D-6 | The reviewer's guide for the chief engineer, in the `scat-tools` release PR. It is sized for a person and split into sittings: (1) the end-to-end walkthroughs (UA-M); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
+| D-7 | The user-acceptance kit, in `scat-tools/acceptance/`: the AI tester personas and briefs, the report template, every AI test report with its dispositions, and the walkthrough scripts | G9 |
 
 ## Requirements
 
@@ -419,7 +419,7 @@ tested by the team only.
 | J2 Try | tries it alone, on their own work and data: sets up, codes one narrative from their own notes, sees its fingerprint in Obsidian, and sets it `done` | getting started; the solo trial |
 | J3 Decide | decides to use SCAT to organise a facilitated elicitation | the flow |
 | J4 Set terms | makes and documents the up-front decisions and assumptions: participation terms, AI use, how each kind of material is kept and released, and the commitments made to participants | data, rights and consent; the "Before you start" checklist |
-| J5 Set up | on GitHub's web interface, makes a new **private** repository from `scat-kg-template`, clones it, installs the prerequisites from exact commands, runs one setup command, gets a working `scat_kg`, and opens the folder as an Obsidian vault | getting started |
+| J5 Set up | on GitHub's web interface, makes a new **private** repository from `scat-template`, clones it, installs the prerequisites from exact commands, runs one setup command, gets a working `scat_tools`, and opens the folder as an Obsidian vault | getting started |
 | J6 Plan | plans one or more facilitation events: which sessions elicit scenarios and which architectures, who takes part in each, the participation terms, and stakeholder groups within the cap | planning guide |
 | J7 Capture | at each event, records field notes | the two facilitation guides |
 | J8 Code | works each narrative round the coding loop (interpreting, authoring, coding, reviewing) in an interactive session (the Python REPL or the `scat` CLI) and in Obsidian, fixing each problem from its message, until it is `done` | coding guide; API and CLI reference |
@@ -551,11 +551,11 @@ The chief engineer has accepted by merging the release PRs.
     tools in the package, and anything unavoidably platform-specific is isolated and recorded. The chat path's
     launcher is macOS-only by design; its macOS tools (among them `security`, for the session key in the keychain)
     sit behind its own functions.
-- **Until the release,** nothing in `scat-kg-tools` or `scat-kg-template` is merged to `main`, tagged or published, with two exceptions:
+- **Until the release,** nothing in `scat-tools` or `scat-template` is merged to `main`, tagged or published, with two exceptions:
   - changes to this mission;
   - the **candidate stage** that UA-M needs:
     - the docs site deploys from `dev` to Pages, marked pre-release;
-    - `scat-kg-template` is marked as a GitHub template, with `dev` as its default branch;
+    - `scat-template` is marked as a GitHub template, with `dev` as its default branch;
     - the template pins the tools to the candidate commit.
 
   Every fix during user acceptance moves the pin, reruns CI, R-6 and R-9, and the ACE decides, and logs, whether
@@ -603,7 +603,7 @@ Starting points for the work packages. A package may depart from any of these by
 
 Details the ACE settled and the chief engineer approved as a set. The ACE may revise one by a logged call where it
 serves this mission as written; a change that would alter the mission goes to the chief engineer.
-- Names: `scat-kg-tools`, `scat-kg-template`, the CLI `scat`, the Python package `scat_kg`.
+- Names: `scat-tools`, `scat-template`, the CLI `scat`, the Python package `scat_tools`.
 - Python 3.12 or later. The template installs the tools through uv, as a git dependency pinned to a commit.
 - Facilitation and coding guides are written once, on the Pages site, and the template links to them.
 - Documentation built with MkDocs Material.
@@ -615,7 +615,7 @@ serves this mission as written; a change that would alter the mission goes to th
 - **The machine interface:** JSON, from `--json` on every `scat` command and an equivalent method on every result in
   Python. Its schema is a JSON Schema file in `contracts/`, with an integer `schema_version`. Adding a field keeps the
   version, and removing or changing one bumps it. Schema validation runs in the test suite only, so it adds no runtime
-  dependency to `scat-kg`. Not included: checking an unsaved editor buffer.
+  dependency to `scat-tools`. Not included: checking an unsaved editor buffer.
 - **The past/future mark** is a field on the narrative page.
   Working field name `timeframe`, with the values `past`, `future` and `mixed`. Like every required field (R-3), a missing
   value is an error on a `done` page and a warning before.
@@ -641,7 +641,7 @@ serves this mission as written; a change that would alter the mission goes to th
 - **Test edits.** Tests that encode `conflicts`, the separate raw and coded page types, or the current layout may change, each change listed
   in the review record.
 - **The notebook** reads the vault through the tools' public data (R-16) where it can, through a public vault loader.
-- **New dependencies** (the MCP server's, the notebook's) go in optional extras or the template, so `scat-kg`'s core
+- **New dependencies** (the MCP server's, the notebook's) go in optional extras or the template, so `scat-tools`'s core
   runtime dependencies stay as they are.
 - **The change consultant** runs on Sonnet as a role in `.claude/agents/`. Its sweep is a written list of search terms
   per change, run with `git grep` over both repositories and the live branches, so the same sweep runs at scoping and

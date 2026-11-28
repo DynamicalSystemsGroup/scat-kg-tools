@@ -3,7 +3,7 @@
 import pytest
 from mergeutil import MODES, copy_of, tree
 
-import scat_kg
+import scat_tools
 
 
 @pytest.fixture(params=MODES)
@@ -13,9 +13,9 @@ def vault(request, tmp_path):
 
 def test_the_plan_names_every_narrative_link_and_row(vault):
     before = tree(vault)
-    g = scat_kg.load(vault)
+    g = scat_tools.load(vault)
     node = "community-members"
-    plan = scat_kg.split_plan(node, root=vault)
+    plan = scat_tools.split_plan(node, root=vault)
     assert plan.ok and plan.node == node and plan.node_type == "group" and plan.mode in MODES
     assert tree(vault) == before
     listed = {p.name: p for p in plan.pages}
@@ -47,7 +47,7 @@ def test_a_contributor_page_is_never_listed(tmp_path):
         page.read_text(encoding="utf-8").rstrip("\n") + "\n\nAlso [[community-members]].\n",
         encoding="utf-8",
     )
-    plan = scat_kg.split_plan("community-members", root=root)
+    plan = scat_tools.split_plan("community-members", root=root)
     assert plan.ok
     assert all(not p.file.startswith("contributor/") for p in plan.pages)
     assert "lab-member-a" not in str([p.to_dict() for p in plan.pages])  # never a place to re-link
@@ -66,11 +66,11 @@ def test_a_contributor_page_is_never_listed(tmp_path):
 def test_it_refuses_what_is_not_a_node_page(ref, why, tmp_path):
     root = copy_of("required", tmp_path)
     before = tree(root)
-    r = scat_kg.split_plan(ref, root=root)
+    r = scat_tools.split_plan(ref, root=root)
     assert not r.ok and why in str(r)
     assert tree(root) == before
 
 
 def test_a_page_with_no_group_cap_note_for_a_concern(vault):
-    plan = scat_kg.split_plan("data-retention", root=vault)
+    plan = scat_tools.split_plan("data-retention", root=vault)
     assert plan.ok and not any("stakeholder_group_cap" in n for n in plan.notes)

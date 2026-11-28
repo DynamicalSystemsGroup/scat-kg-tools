@@ -3,7 +3,7 @@
 import pytest
 from helpers import DESK, doc, narrative, report_of, rules_of, seeded, uncoded
 
-import scat_kg
+import scat_tools
 
 NO_LINK = "Nothing here names a node.\n"
 
@@ -61,7 +61,7 @@ def test__scat_uncoded__does_not_refuse_set_status_done(make_vault):
     root = make_vault(
         {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n", DESK: page}
     )
-    result = scat_kg.set_status("desk-day", "done", root=root)
+    result = scat_tools.set_status("desk-day", "done", root=root)
     assert result.ok, str(result)
 
 

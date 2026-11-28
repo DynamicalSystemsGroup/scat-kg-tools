@@ -9,7 +9,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "machine"))
 import scat_harness
 
-from scat_kg.checks import run as checks_run
+from scat_tools.checks import run as checks_run
 
 
 @pytest.fixture(autouse=True)

@@ -11,10 +11,10 @@ from viewutil import base_files, narrative, row, write
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "mcp_server"))
 from mcputil import call, put_stage, serve, with_session
 
-import scat_kg
-from scat_kg import draw
-from scat_kg.cli import main
-from scat_kg.ops.result import stamp
+import scat_tools
+from scat_tools import draw
+from scat_tools.cli import main
+from scat_tools.ops.result import stamp
 
 BARE = narrative(
     "Bare", "", [row("holds", "farmers", "water"), row("addressed-by", "water", "alert")]
@@ -44,27 +44,27 @@ def by_cli(capsys, root, argv):
 QUESTIONS = {
     "layered": (
         ["layered"],
-        lambda r: scat_kg.layered(root=r),
+        lambda r: scat_tools.layered(root=r),
         ("layered", {}),
     ),
     "layered-candidates": (
         ["layered", "--candidates"],
-        lambda r: scat_kg.layered(candidates=True, root=r),
+        lambda r: scat_tools.layered(candidates=True, root=r),
         ("layered", {"candidates": True}),
     ),
     "layered-some-candidates": (
         ["layered", "--narrative", "dry", "--narrative", "bare", "--candidates"],
-        lambda r: scat_kg.layered(["dry", "bare"], candidates=True, root=r),
+        lambda r: scat_tools.layered(["dry", "bare"], candidates=True, root=r),
         ("layered", {"narratives": ["dry", "bare"], "candidates": True}),
     ),
     "layered-some": (
         ["layered", "--narrative", "dry", "--narrative", "bare"],
-        lambda r: scat_kg.layered(["dry", "bare"], root=r),
+        lambda r: scat_tools.layered(["dry", "bare"], root=r),
         ("layered", {"narratives": ["dry", "bare"]}),
     ),
     "fingerprint-no-account": (
         ["fingerprint", "bare", "--candidates"],
-        lambda r: scat_kg.fingerprint("bare", candidates=True, root=r),
+        lambda r: scat_tools.fingerprint("bare", candidates=True, root=r),
         ("fingerprint", {"narrative": "bare", "candidates": True}),
     ),
 }
@@ -79,11 +79,11 @@ def test_cli_api_and_server_give_one_document(capsys, root, url, name):
 
 
 def test_the_options_change_the_answer(root):
-    plain = scat_kg.layered(root=root).to_dict()
-    asked = scat_kg.layered(candidates=True, root=root).to_dict()
+    plain = scat_tools.layered(root=root).to_dict()
+    asked = scat_tools.layered(candidates=True, root=root).to_dict()
     assert "candidates" not in plain and asked["candidates"] and asked["no_account"] == ["bare"]
     assert "orphans" in plain and plain["orphans"] == asked["orphans"]
-    flagged = scat_kg.fingerprint("bare", candidates=True, root=root).to_dict()["narratives"][0]
+    flagged = scat_tools.fingerprint("bare", candidates=True, root=root).to_dict()["narratives"][0]
     assert flagged["no_account"] is True
 
 

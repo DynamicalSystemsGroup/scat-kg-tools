@@ -3,7 +3,7 @@ import difflib
 import pytest
 from opsutil import fm, narrative
 
-from scat_kg.ops import StatusReport, read_status, set_status
+from scat_tools.ops import StatusReport, read_status, set_status
 
 
 def lines_changed(old: bytes, new: bytes) -> list[str]:

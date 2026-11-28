@@ -17,7 +17,7 @@ jobs:
       contents: read
       packages: write
     env:
-      IMAGE: ghcr.io/dynamicalsystemsgroup/scat-kg-tools
+      IMAGE: ghcr.io/dynamicalsystemsgroup/scat-tools
     steps:
       - uses: actions/checkout@v4
       - name: Tag must equal the package version

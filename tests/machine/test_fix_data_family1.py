@@ -163,7 +163,7 @@ def test_command_branches_are_runnable_argv(make_vault):
     p = only(make_vault, "required-status")
     cmd = p.fix_data.options[0].command
     assert cmd.argv == ("set-status", "safe-handling", "draft")
-    assert cmd.repl == 'scat_kg.set_status("safe-handling", "draft")'
+    assert cmd.repl == 'scat_tools.set_status("safe-handling", "draft")'
     p = only(make_vault, "done-field-description")
     assert p.fix_data.options[1].command.argv == ("set-status", "safe-handling", "draft")
 

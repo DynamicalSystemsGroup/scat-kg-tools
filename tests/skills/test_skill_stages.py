@@ -1,10 +1,10 @@
 """WP30-G5: the skill's last section, `## Stages`, lists for every other section the stages that offer it, as the
-lifecycle instance says (`scat_kg.guides.instance()`), so the skill cannot drift from the model."""
+lifecycle instance says (`scat_tools.guides.instance()`), so the skill cannot drift from the model."""
 
 import re
 from pathlib import Path
 
-from scat_kg.guides import instance
+from scat_tools.guides import instance
 
 SKILL = Path(__file__).parents[2] / "skills" / "scat-coding" / "SKILL.md"
 

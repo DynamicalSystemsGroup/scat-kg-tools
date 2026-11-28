@@ -9,7 +9,7 @@ import re
 
 from helpers import CATALOGUE, catalogue_severities
 
-from scat_kg.checks import DEFERRED, SEVERITY
+from scat_tools.checks import DEFERRED, SEVERITY
 
 
 def catalogue_ids() -> list[str]:

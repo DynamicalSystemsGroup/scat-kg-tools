@@ -6,10 +6,10 @@ import pytest
 from opsutil import CAP3, fm, narrative
 from tests_schema import VALIDATOR
 
-import scat_kg
-from scat_kg.cli import main
-from scat_kg.ops import set_status
-from scat_kg.vault import read_vault
+import scat_tools
+from scat_tools.cli import main
+from scat_tools.ops import set_status
+from scat_tools.vault import read_vault
 
 DESC = 'description: "d"\n'
 NARR_OK = 'description: "d"\ntimeframe: past\n'
@@ -47,7 +47,7 @@ def test_a_draft_with_an_end_that_is_no_link_and_no_description_is_refused_and_u
         "  Fix, choose one:\n"
         "    1. fix the problems above, then run `scat set-status n done` again\n"
         "    2. leave the page at `draft`: run `scat set-status n draft` "
-        '(REPL: `scat_kg.set_status("n", "draft")`)'
+        '(REPL: `scat_tools.set_status("n", "draft")`)'
     )
 
 
@@ -81,7 +81,7 @@ def test_a_narrative_with_only_warnings_at_done_is_set(make_vault):
         }
     )
     # the narrative links no node page: SCAT-UNCODED (WP21-G2) is a warning too
-    assert [p.rule for p in scat_kg.check("n", root=root).problems] == [
+    assert [p.rule for p in scat_tools.check("n", root=root).problems] == [
         "SCAT-UNCODED",
         "SCAT-MENTION",
     ]
@@ -112,7 +112,7 @@ def test_vault_wide_errors_are_not_listed_and_do_not_block(make_vault):
             "group/b.md": fm("group", "B", "draft", DESC),
         }
     )
-    assert any(p.rule == "SCAT-CAP" for p in scat_kg.check(root=root).problems)
+    assert any(p.rule == "SCAT-CAP" for p in scat_tools.check(root=root).problems)
     assert set_status("a", "done", root=root).ok
 
 
@@ -136,7 +136,7 @@ def test_the_refusal_data_and_the_cli_say_the_same(make_vault, capsys):
     assert adv["kind"] == "advisory" and cmd["kind"] == "exact"
     assert cmd["command"] == {
         "argv": ["set-status", "n", "draft"],
-        "repl": 'scat_kg.set_status("n", "draft")',
+        "repl": 'scat_tools.set_status("n", "draft")',
     }
     assert [p["text"] for p in ref["problems"]] == [p.render() for p in r.refused[0].problems]
     code = main(["set-status", "n", "done", "--json", "--root", str(a)])

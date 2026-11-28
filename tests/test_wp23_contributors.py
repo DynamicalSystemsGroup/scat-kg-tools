@@ -11,9 +11,9 @@ from pathlib import Path
 
 import pytest
 
-import scat_kg
-from scat_kg.checks.attribution import MODE_RULE
-from scat_kg.graph import load
+import scat_tools
+from scat_tools.checks.attribution import MODE_RULE
+from scat_tools.graph import load
 
 ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES = ROOT / "contracts" / "examples"
@@ -53,14 +53,14 @@ def vault(tmp_path, name, mode="optional", *, contributors=False, names=False) -
 
 def views(root):
     """Every view the tool makes, as data."""
-    out = {"layered": scat_kg.layered(root=root).to_dict()}
+    out = {"layered": scat_tools.layered(root=root).to_dict()}
     for t in ("holds", "addressed-by", "provided-by"):
-        out[t] = scat_kg.edge_table(t, root=root).to_dict()
-    out["fingerprints"] = scat_kg.fingerprint(root=root, candidates=True).to_dict()
+        out[t] = scat_tools.edge_table(t, root=root).to_dict()
+    out["fingerprints"] = scat_tools.fingerprint(root=root, candidates=True).to_dict()
     for n in NARRATIVES:
-        out[n.stem] = scat_kg.fingerprint(n.stem, candidates=True, root=root).to_dict()
+        out[n.stem] = scat_tools.fingerprint(n.stem, candidates=True, root=root).to_dict()
     for node in ("borrowers", "safe-handling-of-tools", "booking-app"):
-        out["trace-" + node] = scat_kg.trace(node, root=root).to_dict()
+        out["trace-" + node] = scat_tools.trace(node, root=root).to_dict()
     return out
 
 
@@ -74,7 +74,7 @@ def pair(tmp_path):
 
 def test_the_attributed_vault_checks_clean_and_so_does_the_plain_one(pair):
     for root in pair:
-        report = scat_kg.check(root=root)
+        report = scat_tools.check(root=root)
         assert [p.rule for p in report.errors] == [], root
 
 
@@ -94,7 +94,7 @@ def test_contributor_pages_are_not_in_the_layered_graph_or_the_cap(pair):
         PEOPLE_NAME in (e.from_node, e.to_node) for e in a.edges for PEOPLE_NAME in PEOPLE
     )
     # three contributor pages beside three groups at a cap of three: no SCAT-CAP
-    assert scat_kg.check(root=attributed).problems == scat_kg.check(root=plain).problems
+    assert scat_tools.check(root=attributed).problems == scat_tools.check(root=plain).problems
 
 
 def test_contributor_pages_are_in_the_knowledge_graph(pair):
@@ -134,7 +134,7 @@ def test_a_narrative_that_only_names_contributors_is_uncoded_and_excluded(tmp_pa
     g = load(root)
     assert "only-people" in [e.narrative for e in g.excluded]
     assert "only-people" not in [n.name for n in g.narratives]
-    report = scat_kg.check(root=root)
+    report = scat_tools.check(root=root)
     mine = {p.rule for p in report.problems if p.file.endswith("only-people.md")}
     assert "SCAT-UNCODED" in mine and mine <= {"SCAT-UNCODED", "SCAT-DRAFT-FIELD"}
     assert report.ok
@@ -176,7 +176,7 @@ def test_a_dangling_entry_is_in_no_link_and_names_no_contributor(tmp_path):
     assert sorted(
         {
             p.rule
-            for p in scat_kg.check(root=root).problems
+            for p in scat_tools.check(root=root).problems
             if p.file == page.relative_to(root).as_posix()
         }
         - {"SCAT-DRAFT-FIELD"}
@@ -193,14 +193,16 @@ def test_in_disallowed_mode_the_graph_holds_no_contributor_and_no_attribution(tm
     root = vault(tmp_path, "v", "disallowed", contributors=True, names=True)
     g = load(root)
     assert g.contributors == () and all(n.attributed_to == () for n in g.narratives)
-    rules = {p.rule for p in scat_kg.check(root=root).problems}
+    rules = {p.rule for p in scat_tools.check(root=root).problems}
     assert "SCAT-ATTR-DISALLOWED" in rules
     # the views are refused on errors, as for any error in the pages they draw: no attribution leaks through
     assert views_text_has_no_names(root)
 
 
 def views_text_has_no_names(root) -> bool:
-    text = str(scat_kg.layered(root=root).to_dict()) + str(scat_kg.fingerprint(root=root).to_dict())
+    text = str(scat_tools.layered(root=root).to_dict()) + str(
+        scat_tools.fingerprint(root=root).to_dict()
+    )
     return not any(w in text for w in PEOPLE)
 
 
@@ -230,10 +232,10 @@ def test_the_mode_rule_says_what_the_chief_engineer_said():
 
 def test_status_lists_a_contributor_page_on_its_own_row_and_count(tmp_path):
     root = vault(tmp_path, "v", contributors=True, names=True)
-    report = scat_kg.status(root=root)
+    report = scat_tools.status(root=root)
     rows = [r for r in report.rows if r.type == "contributor"]
     assert sorted(r.name for r in rows) == sorted(PEOPLE)
-    plain = scat_kg.status(root=vault(tmp_path, "p")).counts
+    plain = scat_tools.status(root=vault(tmp_path, "p")).counts
     counts = report.counts
     assert counts.pop("contributors") == 3 and counts == plain  # not folded into the status counts
     assert "3 contributors" in str(report).splitlines()[-1]

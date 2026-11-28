@@ -10,11 +10,11 @@ import re
 import shutil
 from pathlib import Path
 
-import scat_kg
-from scat_kg.vault import read_vault
+import scat_tools
+from scat_tools.vault import read_vault
 
 ROOT = Path(__file__).parents[1]
-SRC = ROOT / "src" / "scat_kg"
+SRC = ROOT / "src" / "scat_tools"
 EXAMPLES = ROOT / "contracts" / "examples"
 FILES = sorted(SRC.rglob("*.py"))
 
@@ -110,12 +110,12 @@ def test__r10__a_crlf_vault_reads_and_checks_the_same_as_an_lf_vault(tmp_path):
     }
     assert crlf_pages == lf_pages
     assert all(p.frontmatter_error is None for p in read_vault(crlf).pages)
-    assert str(scat_kg.check(root=crlf)) == str(scat_kg.check(root=EXAMPLES))
+    assert str(scat_tools.check(root=crlf)) == str(scat_tools.check(root=EXAMPLES))
 
 
 def test__r10__index_leaves_a_crlf_vault_unchanged(tmp_path):
     crlf = crlf_copy(tmp_path)
     before = {p: p.read_bytes() for p in crlf.rglob("*.md")}
-    result = scat_kg.index(root=crlf)
+    result = scat_tools.index(root=crlf)
     assert result.ok
     assert {p: p.read_bytes() for p in crlf.rglob("*.md")} == before

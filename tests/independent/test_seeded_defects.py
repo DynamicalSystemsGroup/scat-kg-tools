@@ -44,11 +44,11 @@ NOTE_FIX = "any text beside it belongs in the `note` cell by hand"
 
 def stub_opt(name, key):
     art = "an" if key == "affordance" else "a"
-    return f'run `scat stub {name} --type {key}` (REPL: `scat_kg.stub("{name}", type="{key}")`) to create {art} {key} page'
+    return f'run `scat stub {name} --type {key}` (REPL: `scat_tools.stub("{name}", type="{key}")`) to create {art} {key} page'
 
 
 def draft_cmd(name):
-    return f'run `scat set-status {name} draft` (REPL: `scat_kg.set_status("{name}", "draft")`)'
+    return f'run `scat set-status {name} draft` (REPL: `scat_tools.set_status("{name}", "draft")`)'
 
 
 def put(v, type_, name, title, status="done", description="A page.", **kw):
@@ -1307,11 +1307,11 @@ def _(v, st):
 # ======================================================================================= noedges (G1)
 NOEDGES_ONE = (
     "record its edges: run `scat set-status saturday draft` "
-    '(REPL: `scat_kg.set_status("saturday", "draft")`), then '
+    '(REPL: `scat_tools.set_status("saturday", "draft")`), then '
     "`scat record-edge <type> <from> <to> --told-by saturday` "
-    '(REPL: `scat_kg.record_edge("<type>", "<from>", "<to>", ["saturday"])`) '
+    '(REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["saturday"])`) '
     "for each edge the account tells, then `scat set-status saturday done` "
-    '(REPL: `scat_kg.set_status("saturday", "done")`)'
+    '(REPL: `scat_tools.set_status("saturday", "done")`)'
 )
 NOEDGES_TWO = (
     "or leave it as intended: a narrative may tell no edge, and this warning does not block; "
