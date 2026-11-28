@@ -937,7 +937,7 @@ The document has `kind` `view` and an `operation` of `fingerprint`, `edges`, `la
 fingerprint(narrative=None, *, candidates=False, root=".")
 ```
 
-Shows the fingerprint of a narrative: the nodes it links, the edges its rows tell, and, with `candidates=True`, its candidates (links between two nodes that an edge type fits and that have no row; without the option the view shows none). CLI twin: [`scat fingerprint`](cli.md#scat-fingerprint).
+Shows the fingerprint of a narrative: the nodes it links, the edges its rows tell, and, with `candidates=True`, its candidates (pairs of nodes that the account links, that an edge type fits, and that no row joins; without the option the view shows none). CLI twin: [`scat fingerprint`](cli.md#scat-fingerprint).
 
 | Parameter | Meaning |
 |---|---|
@@ -945,7 +945,7 @@ Shows the fingerprint of a narrative: the nodes it links, the edges its rows tel
 | `candidates` | `True` to add the candidates. Default `False`. CLI: `--candidates`. |
 | `root` | The vault folder. |
 
-It refuses when the name is not a narrative, when two pages share it, and on an error in a page it draws. With `candidates=True`, a narrative whose account text is empty (its body outside its `Edges told` section, headings aside) carries `no_account: true`: its only links are its rows, so every adjacent pair is a candidate and the candidates say nothing about any text. The text form says so on a line.
+It refuses when the name is not a narrative, when two pages share it, and on an error in a page it draws.
 
 === "Python"
 
@@ -1023,7 +1023,7 @@ Shows the layered view: the union of the fingerprints of the narratives you name
 | `candidates` | `True` to add the candidates. Default `False`. CLI: `--candidates`. |
 | `root` | The vault folder. |
 
-The result also carries `orphans` when there are any: each node page that is an end of no edge anywhere in the vault (the whole vault, whichever narratives you name), with its name, type and status. With `candidates=True` it carries `candidates`, each `{type, from, to, narrative}` for the chosen narratives, and `no_account`, the names of the chosen narratives whose account text is empty (their body outside the `Edges told` section, headings aside). A narrative with no account has only its rows as links, so every adjacent pair of its nodes is a candidate and its candidates say nothing about any text. The text form lists the candidates, the narratives with no account and the orphans.
+The result also carries `orphans` when there are any: each node page that is an end of no edge anywhere in the vault (the whole vault, whichever narratives you name), with its name, type and status. With `candidates=True` it carries `candidates`, each `{type, from, to, narrative}` for the chosen narratives. The text form lists the candidates and the orphans.
 
 It refuses on a name that is not a narrative, on a value that is not a list of names, on a `candidates` that is not `True` or `False`, and on an error in a page it draws.
 
@@ -1416,7 +1416,7 @@ Draws a narrative's fingerprint. The drawing follows the narrative's kind: an ar
 draw.layered(narratives=None, *, candidates=False, mark_narratives=False, root=".")
 ```
 
-Draws the layered view of the named narratives, or of every narrative. It keeps all four columns, because it mixes narratives. With `candidates=True` the candidates are added as dashed lines, and the footer names the narratives that have no account text. The footer also names the node pages no row tells, at most ten, then "and N more". Parts of the graph that share no node are drawn as separate bands, and nodes are ordered within each column to cut crossing lines. With `mark_narratives=True` each solid edge is drawn in the mark (colour and line style) of the narrative that tells it, black and thicker where more than one tells it, with a key under the figure; candidates stay grey and dashed. `mark_narratives` is `False` unless you pass `True`; the CLI and the server do not offer it. Returns a `Drawing`. `candidates` is `False` unless you pass `True` (CLI: `--candidates`). CLI twin: [`scat draw layered`](cli.md#scat-draw-layered).
+Draws the layered view of the named narratives, or of every narrative. It keeps all four columns, because it mixes narratives. With `candidates=True` the candidates are added as dashed lines. The footer also names the node pages no row tells, at most ten, then "and N more". Parts of the graph that share no node are drawn as separate bands, and nodes are ordered within each column to cut crossing lines. With `mark_narratives=True` each solid edge is drawn in the mark (colour and line style) of the narrative that tells it, black and thicker where more than one tells it, with a key under the figure; candidates stay grey and dashed. `mark_narratives` is `False` unless you pass `True`; the CLI and the server do not offer it. Returns a `Drawing`. `candidates` is `False` unless you pass `True` (CLI: `--candidates`). CLI twin: [`scat draw layered`](cli.md#scat-draw-layered).
 
 ### scat_tools.draw.trace
 

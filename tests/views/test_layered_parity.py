@@ -81,10 +81,10 @@ def test_cli_api_and_server_give_one_document(capsys, root, url, name):
 def test_the_options_change_the_answer(root):
     plain = scat_tools.layered(root=root).to_dict()
     asked = scat_tools.layered(candidates=True, root=root).to_dict()
-    assert "candidates" not in plain and asked["candidates"] and asked["no_account"] == ["bare"]
+    assert "candidates" not in plain and asked["candidates"] and "no_account" not in asked
     assert "orphans" in plain and plain["orphans"] == asked["orphans"]
-    flagged = scat_tools.fingerprint("bare", candidates=True, root=root).to_dict()["narratives"][0]
-    assert flagged["no_account"] is True
+    one = scat_tools.fingerprint("bare", candidates=True, root=root).to_dict()["narratives"][0]
+    assert "no_account" not in one
 
 
 def plot_of(url, args):

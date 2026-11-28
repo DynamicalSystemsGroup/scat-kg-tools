@@ -40,7 +40,7 @@ Twenty-one tools. Nineteen are the operations; `which_stage` and `set_stage` are
 | `index` | Write the index page of each type that has none. |
 | `fingerprint` | View: a narrative's fingerprint, or every narrative's. Takes `output` (`table`, `plot` or `both`) and `format` (`png` or `svg`). |
 | `edge_table` | View: every edge of one type, with the narratives that tell it. |
-| `layered` | View: the layered view of some narratives, or all. Takes `candidates` (also the links with no row; default false), `output` and `format`. The document lists the orphans (node pages no row tells) and, with `candidates`, each narrative with no account text, whose candidates say nothing about the text. |
+| `layered` | View: the layered view of some narratives, or all. Takes `candidates` (also the candidates; default false), `output` and `format`. The document lists the orphans (node pages no row tells) and, with `candidates`, the candidates. |
 | `trace` | View: follow edges up, down or both from a node. Takes `output` and `format`. |
 | `evidence` | View: one node page's narratives with the paragraph around each link, its edges with the narratives that tell them, and its adjacent nodes. Reads no `attributed_to` and lists no contributor page. |
 | `copy_share` | View: for each node page (or the one `node` named), the share of its text that repeats a narrative word for word, and the narratives it comes from, the most repeated first. The narratives named are those whose text the page repeats, whether or not they link the node. Reads no `attributed_to` and lists no contributor page. |
@@ -54,7 +54,7 @@ Every tool's description ends with the stages that offer it, for example `Stages
 
 ## Drawings
 
-`fingerprint`, `layered` and `trace` each take two arguments besides their own (`fingerprint` and `layered` also take `candidates`, which draws the links with no row dashed):
+`fingerprint`, `layered` and `trace` each take two arguments besides their own (`fingerprint` and `layered` also take `candidates`, which draws the candidates dashed):
 
 - `output`: `table` (the default), `plot` or `both`.
 - `format`: `png` (the default) or `svg`; it applies to the plot.

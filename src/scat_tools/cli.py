@@ -158,14 +158,14 @@ def _parser() -> argparse.ArgumentParser:
     p = command(
         "fingerprint",
         "Show a narrative's fingerprint: its nodes by layer and the edges its rows tell; with "
-        f"--candidates, also the links that have no row. NARRATIVE is a name; without it, every narrative. {scope}.",
+        f"--candidates, also the candidates (pairs the account links that no row joins). NARRATIVE is a name; without it, every narrative. {scope}.",
         '`scat_tools.fingerprint()`, `scat_tools.fingerprint("<narrative>", candidates=True)`',
     )
     p.add_argument("narrative", nargs="?", metavar="NARRATIVE", help="show this narrative only")
     p.add_argument(
         "--candidates",
         action="store_true",
-        help="also show the candidates: links between two nodes that have no row",
+        help="also show the candidates: pairs of nodes the account links that no row joins",
     )
     p = command(
         "edges",
@@ -181,7 +181,7 @@ def _parser() -> argparse.ArgumentParser:
     p = command(
         "layered",
         "Show the layered view: the union of the fingerprints of the narratives named by --narrative, "
-        "or, without it, of every narrative; with --candidates, also the links that have no row. "
+        "or, without it, of every narrative; with --candidates, also the candidates (pairs the account links that no row joins). "
         f"{scope}.",
         '`scat_tools.layered()`, `scat_tools.layered(["<narrative>"], candidates=True)`',
     )
@@ -194,7 +194,7 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--candidates",
         action="store_true",
-        help="also show the candidates: links between two nodes that have no row",
+        help="also show the candidates: pairs of nodes the account links that no row joins",
     )
     p = command(
         "trace",
@@ -280,7 +280,7 @@ def _parser() -> argparse.ArgumentParser:
     p = command(
         "fingerprint",
         "Draw a narrative's fingerprint: its nodes and edges in columns that follow the narrative's kind; with --candidates, the "
-        "links that have no row dashed. Refuses where `scat fingerprint` would, and then writes nothing.",
+        "candidates dashed. Refuses where `scat fingerprint` would, and then writes nothing.",
         '`draw.fingerprint("<narrative>", candidates=True).save("<file>")`',
         which,
     )
@@ -288,13 +288,13 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--candidates",
         action="store_true",
-        help="also draw the candidates: links with no row, dashed",
+        help="also draw the candidates: pairs the account links that no row joins, dashed",
     )
     p.add_argument("--out", required=True, metavar="FILE", help=out_help)
     p = command(
         "layered",
         "Draw the layered view of the narratives named by --narrative or, without it, of every "
-        "narrative; with --candidates, the links that have no row dashed. Refuses where `scat layered` "
+        "narrative; with --candidates, the candidates dashed. Refuses where `scat layered` "
         "would, and then writes nothing.",
         '`draw.layered().save("<file>")`, `draw.layered(["<narrative>"], candidates=True).save("<file>")`',
         which,
@@ -308,7 +308,7 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--candidates",
         action="store_true",
-        help="also draw the candidates: links with no row, dashed",
+        help="also draw the candidates: pairs the account links that no row joins, dashed",
     )
     p.add_argument("--out", required=True, metavar="FILE", help=out_help)
     p = command(

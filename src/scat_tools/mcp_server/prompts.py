@@ -51,7 +51,7 @@ REVIEW_BEFORE_DONE = f"""Review a narrative with the coder before they set it to
 Narrative: {{narrative}}
 
 1. Call check with the narrative and neighborhood true, and status for it. Quote every problem as reported.
-2. Call fingerprint with candidates true. Report its nodes, its edges, and its candidates (links with no row), as returned.
+2. Call fingerprint with candidates true. Report its nodes, its edges, and its candidates (pairs the account links, no row joins), as returned.
 3. List what only the coder can judge: does the account match the field notes; are the nodes and edges the right
    reading. The check passing means the structure conforms, not that the narrative is correct. State any doubt
    and hand it back to the coder.

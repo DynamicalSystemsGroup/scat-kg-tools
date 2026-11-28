@@ -65,15 +65,15 @@ positional arguments:
                   row that names A. You assign each narrative to A or to a new
                   page. Writes nothing.
     fingerprint   Show a narrative's fingerprint: its nodes by layer and the
-                  edges its rows tell; with --candidates, also the links that
-                  have no row. NARRATIVE is a name; without it, every
-                  narrative. Writes nothing.
+                  edges its rows tell; with --candidates, also the candidates
+                  (pairs the account links that no row joins). NARRATIVE is a
+                  name; without it, every narrative. Writes nothing.
     edges         Show every edge of one type, with the narratives that tell
                   it and its status. Writes nothing.
     layered       Show the layered view: the union of the fingerprints of the
                   narratives named by --narrative, or, without it, of every
-                  narrative; with --candidates, also the links that have no
-                  row. Writes nothing.
+                  narrative; with --candidates, also the candidates (pairs the
+                  account links that no row joins). Writes nothing.
     trace         Follow edges from a node: up toward the groups, down toward
                   the technologies, or both. The node itself is left out.
                   Writes nothing.
@@ -1087,7 +1087,7 @@ With `--json` the document adds `node`, `node_type` and `pages`. Each page has `
 ```text
 usage: scat fingerprint [-h] [--root ROOT] [--json] [--candidates] [NARRATIVE]
 
-Show a narrative's fingerprint: its nodes by layer and the edges its rows tell; with --candidates, also the links that have no row. NARRATIVE is a name; without it, every narrative. Writes nothing.
+Show a narrative's fingerprint: its nodes by layer and the edges its rows tell; with --candidates, also the candidates (pairs the account links that no row joins). NARRATIVE is a name; without it, every narrative. Writes nothing.
 
 positional arguments:
   NARRATIVE     show this narrative only
@@ -1097,13 +1097,13 @@ options:
   --root ROOT   the vault folder, the one with scat.toml (default: here)
   --json        print the result as one JSON document (machine-interface
                 contract), nothing else
-  --candidates  also show the candidates: links between two nodes that have no
-                row
+  --candidates  also show the candidates: pairs of nodes the account links
+                that no row joins
 
 REPL: `scat_tools.fingerprint()`, `scat_tools.fingerprint("<narrative>", candidates=True)`
 ```
 
-Shows what one narrative tells: its nodes by layer, the edges its rows tell (each with its status and every narrative that tells it), and, with `--candidates`, the candidates, which are links between two nodes that an edge type fits and that have no row. Without the option the fingerprint shows no candidates. Without `NARRATIVE` it shows every narrative, in path order. It writes nothing and never shows a relationship annotation.
+Shows what one narrative tells: its nodes by layer, the edges its rows tell (each with its status and every narrative that tells it), and, with `--candidates`, the candidates, which are pairs of nodes that the account links, that an edge type fits, and that no row joins. Without the option the fingerprint shows no candidates. Without `NARRATIVE` it shows every narrative, in path order. It writes nothing and never shows a relationship annotation.
 
 It refuses, writing nothing, when the name is not a narrative, when two pages share the name, and when a page it draws has an error: the refusal carries those problems with their fixes.
 
@@ -1305,7 +1305,7 @@ $ uv run scat edges holds --json
 usage: scat layered [-h] [--root ROOT] [--json] [--narrative NARRATIVE]
                     [--candidates]
 
-Show the layered view: the union of the fingerprints of the narratives named by --narrative, or, without it, of every narrative; with --candidates, also the links that have no row. Writes nothing.
+Show the layered view: the union of the fingerprints of the narratives named by --narrative, or, without it, of every narrative; with --candidates, also the candidates (pairs the account links that no row joins). Writes nothing.
 
 options:
   -h, --help            show this help message and exit
@@ -1315,13 +1315,13 @@ options:
                         interface contract), nothing else
   --narrative NARRATIVE
                         include this narrative; repeat it for each narrative
-  --candidates          also show the candidates: links between two nodes that
-                        have no row
+  --candidates          also show the candidates: pairs of nodes the account
+                        links that no row joins
 
 REPL: `scat_tools.layered()`, `scat_tools.layered(["<narrative>"], candidates=True)`
 ```
 
-Shows the layered view: the union of the fingerprints of the narratives you name, or of every narrative when you name none. The nodes are grouped by layer, in layer order, and the edges are the rows those narratives tell. With `--candidates` it also lists the candidates, the links between two nodes that have no row, each with its narrative; a narrative with no account text is flagged, since every pair of its adjacent nodes is then a candidate and says nothing about the text. The node pages that no row tells (orphans) are listed with their type and status. It writes nothing.
+Shows the layered view: the union of the fingerprints of the narratives you name, or of every narrative when you name none. The nodes are grouped by layer, in layer order, and the edges are the rows those narratives tell. With `--candidates` it also lists the candidates, the pairs of nodes that the account links and that no row joins, each with its narrative. The node pages that no row tells (orphans) are listed with their type and status. It writes nothing.
 
 Exit codes: 0, or 1 for a refusal (a name that is not a narrative, a page it draws that has an error).
 
@@ -2229,12 +2229,12 @@ positional arguments:
   <drawing>
     fingerprint  Draw a narrative's fingerprint: its nodes and edges in
                  columns that follow the narrative's kind; with --candidates,
-                 the links that have no row dashed. Refuses where `scat
-                 fingerprint` would, and then writes nothing.
+                 the candidates dashed. Refuses where `scat fingerprint`
+                 would, and then writes nothing.
     layered      Draw the layered view of the narratives named by --narrative
                  or, without it, of every narrative; with --candidates, the
-                 links that have no row dashed. Refuses where `scat layered`
-                 would, and then writes nothing.
+                 candidates dashed. Refuses where `scat layered` would, and
+                 then writes nothing.
     trace        Draw what a node reaches: up toward the groups, down toward
                  the technologies, or both, with the node itself in its
                  column. Refuses where `scat trace` would, and then writes
@@ -2246,7 +2246,7 @@ options:
 REPL: `from scat_tools import draw`, then `draw.fingerprint(...)`, `draw.layered(...)` or `draw.trace(...)`
 ```
 
-Draws a view as an image in columns, one for each layer, in layer order, labelled stakeholder, concern, affordance and technology at the top. A fingerprint drawing follows its narrative's kind: an architecture has no stakeholder column, a scenario no technology column, and a narrative with no kind has all four; a note under the drawing says which column is not drawn, why, and how many linked nodes it leaves out. The layered and trace drawings keep all four columns. SVG and PNG are the same drawing in two formats. Each node is a box labelled with its name, and with its status in brackets when that is not `done`; each edge is a line between neighbouring columns. Within a column the nodes are in order of name. `scat draw fingerprint` draws one narrative's fingerprint and shows no candidates unless you add `--candidates`, which draws the links with no row as dashed lines. `scat draw layered` draws the layered view of the narratives you name with `--narrative`, or of every narrative, and with `--candidates` draws the links with no row as dashed lines too. `scat draw trace` draws what `scat trace` follows from a node, up, down or both (`--direction`, both unless you say), with the node itself in its own layer's column and the title naming it.
+Draws a view as an image in columns, one for each layer, in layer order, labelled stakeholder, concern, affordance and technology at the top. A fingerprint drawing follows its narrative's kind: an architecture has no stakeholder column, a scenario no technology column, and a narrative with no kind has all four; a note under the drawing says which column is not drawn, why, and how many linked nodes it leaves out. The layered and trace drawings keep all four columns. SVG and PNG are the same drawing in two formats. Each node is a box labelled with its name, and with its status in brackets when that is not `done`; each edge is a line between neighbouring columns. Within a column the nodes are in order of name. `scat draw fingerprint` draws one narrative's fingerprint and shows no candidates unless you add `--candidates`, which draws the candidates as dashed lines. `scat draw layered` draws the layered view of the narratives you name with `--narrative`, or of every narrative, and with `--candidates` draws the candidates as dashed lines too. `scat draw trace` draws what `scat trace` follows from a node, up, down or both (`--direction`, both unless you say), with the node itself in its own layer's column and the title naming it.
 
 Drawing needs the extra `draw`: `pip install "scat-tools[draw]"`. Without it, the command refuses and says so. The same command gives the same image, byte for byte.
 
@@ -2261,7 +2261,7 @@ usage: scat draw fingerprint [-h] [--root ROOT] [--json] [--candidates] --out
                              FILE
                              NARRATIVE
 
-Draw a narrative's fingerprint: its nodes and edges in columns that follow the narrative's kind; with --candidates, the links that have no row dashed. Refuses where `scat fingerprint` would, and then writes nothing.
+Draw a narrative's fingerprint: its nodes and edges in columns that follow the narrative's kind; with --candidates, the candidates dashed. Refuses where `scat fingerprint` would, and then writes nothing.
 
 positional arguments:
   NARRATIVE     the narrative's name
@@ -2271,7 +2271,7 @@ options:
   --root ROOT   the vault folder, the one with scat.toml (default: here)
   --json        print the result as one JSON document (machine-interface
                 contract), nothing else
-  --candidates  also draw the candidates: links with no row, dashed
+  --candidates  also draw the candidates: pairs the account links that no row joins, dashed
   --out FILE    the image file to write, ending in `.png` or `.svg` (no
                 default)
 
@@ -2284,7 +2284,7 @@ REPL: `draw.fingerprint("<narrative>", candidates=True).save("<file>")`
 usage: scat draw layered [-h] [--root ROOT] [--json] [--narrative NARRATIVE]
                          [--candidates] --out FILE
 
-Draw the layered view of the narratives named by --narrative or, without it, of every narrative; with --candidates, the links that have no row dashed. Refuses where `scat layered` would, and then writes nothing.
+Draw the layered view of the narratives named by --narrative or, without it, of every narrative; with --candidates, the candidates dashed. Refuses where `scat layered` would, and then writes nothing.
 
 options:
   -h, --help            show this help message and exit
@@ -2294,7 +2294,7 @@ options:
                         interface contract), nothing else
   --narrative NARRATIVE
                         include this narrative; repeat it for each narrative
-  --candidates          also draw the candidates: links with no row, dashed
+  --candidates          also draw the candidates: pairs the account links that no row joins, dashed
   --out FILE            the image file to write, ending in `.png` or `.svg`
                         (no default)
 

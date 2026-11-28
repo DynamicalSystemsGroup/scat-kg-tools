@@ -18,7 +18,7 @@ A **view** is a purposeful picture or table made from a conformant vault. The to
 
 **Layered view.** What is the big picture across several narratives? It joins their fingerprints in the four layers. Read across a column to see what is shared. It does not weigh a node by how many lines meet it.
 
-The picture hides three things, and the view shows each. **Orphans:** a node page that no row tells has no line, so no column shows it; the view names it in the footer (at most ten, then "and N more") and lists it in the table, whichever narratives you chose. **Candidates:** a link in the text with no row has no line either; with `candidates`, the picture draws it dashed and the table lists it, so you see what is left to code. **No account:** a narrative with no text outside its `Edges told` section has only its rows as links, so every adjacent pair of its nodes is a candidate and the candidates say nothing about any text; the footer and the table name that narrative, and its dashed lines are not evidence.
+The picture hides three things, and the view shows each. **Orphans:** a node page that no row tells has no line, so no column shows it; the view names it in the footer (at most ten, then "and N more") and lists it in the table, whichever narratives you chose. **Candidates:** a pair of nodes that the account links, with no row joining them, has no line either; with `candidates`, the picture draws it dashed and the table lists it, so you see what is left to code.
 
 ![The layered view of four narratives, as four columns: groups, concerns, affordances and technologies, with a line for each edge between neighbouring columns.](assets/layered-case-study.png)
 

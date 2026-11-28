@@ -118,9 +118,6 @@ def _columns(nodes_by_layer: dict[str, list[dict]], drop: str | None = None) -> 
     )
 
 
-NO_ACCOUNT = "every candidate for it is just an adjacent pair, not evidence."
-
-
 def _fingerprint_mark(data: dict) -> _Mark:
     n = data["narratives"][0]
     by_layer = {layer: [x for x in n["nodes"] if x["type"] == layer] for layer in TBOX.layers}
@@ -140,8 +137,6 @@ def _fingerprint_mark(data: dict) -> _Mark:
             legend += (
                 f" {left} {noun} the narrative links {'is' if left == 1 else 'are'} not drawn."
             )
-    if n.get("no_account"):
-        legend += "\nno account text: " + NO_ACCOUNT
     return _Mark(f"{n['name']} ({n['status']})", _columns(by_layer, drop), tuple(lines), legend)
 
 
@@ -181,12 +176,6 @@ def _layered_mark(data: dict, mark_narratives: bool = False) -> _Mark:
             " excluded (no node page linked): "
             + ", ".join(x["name"] for x in data["excluded"])
             + "."
-        )
-    if data.get("no_account"):
-        legend += (
-            "\nno account text: "
-            + ", ".join(data["no_account"])
-            + "; every candidate for them is just an adjacent pair, not evidence."
         )
     if data.get("orphans"):
         names = [x["name"] for x in data["orphans"]]

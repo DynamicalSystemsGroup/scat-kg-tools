@@ -222,7 +222,7 @@ def build(vault: str | Path, **settings) -> FastMCP:
     @mcp.tool(
         description=_OWN
         + "View: a narrative's fingerprint (its nodes by layer and the edges its rows tell; with `candidates` "
-        "true, also the links with no row); without `narrative`, every narrative (a plot needs one). Writes "
+        "true, also the candidates); without `narrative`, every narrative (a plot needs one). Writes "
         "nothing. " + same
     )
     def fingerprint(
@@ -248,10 +248,8 @@ def build(vault: str | Path, **settings) -> FastMCP:
     @mcp.tool(
         description=_OWN
         + "View: the layered view, the union of the fingerprints of `narratives`, or of every narrative; with "
-        "`candidates` true, also the candidates (links with no row), each marked with its narrative. It lists "
-        "the orphans (node pages no row tells) and, for a narrative with no account text, flags it in "
-        "`no_account`, since its candidates then say nothing about the text. Writes nothing. "
-        + same
+        "`candidates` true, also the candidates (pairs the account links, no row joins), each marked with its narrative. It lists "
+        "the orphans (node pages no row tells). Writes nothing. " + same
     )
     def layered(
         narratives: list[str] | None = None,

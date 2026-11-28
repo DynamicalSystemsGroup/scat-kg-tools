@@ -700,12 +700,14 @@ def load(root: str | Path) -> Graph:
                 attributed_to=attributed(p),
             )
         )
-        # rule 4: both ends of a pair linked, no row for it (a row of the pair, either way round, is a row)
+        # rule 4: both ends of a pair linked by the account, no row for it (a row of the pair, either way
+        # round, is a row)
+        account = {n.name for l in account_links(p) if (n := node_of(l.target)) is not None}
         rowed = {(r.from_target, r.to_target) for r in (table.rows if table else ())}
         rowed |= {(b, a) for a, b in rowed}
         for et in TBOX.edge_types.values():
-            for a in (n for n in fingerprint if n.type == et.from_type):
-                for b in (n for n in fingerprint if n.type == et.to_type):
+            for a in (n for n in fingerprint if n.type == et.from_type and n.name in account):
+                for b in (n for n in fingerprint if n.type == et.to_type and n.name in account):
                     if (
                         EdgeKey(et.slug, a.name, b.name) not in own
                         and (a.name, b.name) not in rowed

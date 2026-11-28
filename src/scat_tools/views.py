@@ -33,15 +33,11 @@ from scat_tools.graph import (
     Candidate,
     Edge,
     Graph,
-    Narrative,
     Node,
-    _headings,
-    edges_told_section,
     load,
 )
 from scat_tools.ops.result import Refusal, Result, reports_mode
 from scat_tools.tbox import TBOX
-from scat_tools.vault import fenced_lines
 
 DIRECTIONS = ("up", "down", "both")
 
@@ -121,23 +117,6 @@ def _edge(e: Edge) -> dict:
 
 def _candidate(c: Candidate) -> dict:
     return {"type": c.type, "from": c.from_node, "to": c.to_node}
-
-
-def _no_account(g: Graph, nar: Narrative) -> bool:
-    """Whether a narrative has no account text: its body outside its `Edges told` section, ignoring whitespace
-    and Markdown headings, is empty. (The section is the first `Edges told` heading to the next heading of the same
-    or a higher level, as the table is read; a narrative with no account has only its rows as links, so every
-    adjacent pair of its nodes is a candidate and the candidates say nothing about any text.)"""
-    page = next((p for p in g.vault.pages if p.path == nar.path), None)
-    if page is None:
-        return False
-    lines = page.body.split("\n")
-    fenced = fenced_lines(lines)
-    drop = {i for i, _, _ in _headings(lines, fenced)}
-    section = edges_told_section(lines)
-    if section:
-        drop |= set(range(*section))
-    return not any(ln.strip() for i, ln in enumerate(lines) if i not in drop)
 
 
 INCLUDE = "link one node page in the narrative (a row end or its account), then run this again"
@@ -301,8 +280,6 @@ def fingerprint(
         }
         if candidates:
             item["candidates"] = [_candidate(c) for c in g.candidates if c.narrative == nar.name]
-            if _no_account(g, nar):
-                item["no_account"] = True
         items.append(item)
         nodes |= set(nar.nodes)
         edges += es
@@ -353,8 +330,7 @@ def layered(
 
     `orphans` (only when there are some) lists the node pages that are an end of no edge anywhere in the vault,
     whichever narratives are chosen. With `candidates=True` it adds `candidates`, the rule-4 candidates of the
-    chosen narratives (each with its `narrative`), and `no_account`, the names of the chosen narratives that have
-    no account text (see `_no_account`), whose candidates are only adjacent pairs.
+    chosen narratives (each with its `narrative`).
     """
     op = "layered"
     if not isinstance(candidates, bool):
@@ -404,9 +380,6 @@ def layered(
             for c in g.candidates
             if c.narrative in names
         ]
-        bare = [n.name for n in chosen if _no_account(g, n)]
-        if bare:
-            data["no_account"] = bare
     return View(op, data)
 
 
@@ -545,11 +518,6 @@ def _excluded_lines(d: dict) -> list[str]:
     return out + [f"    {x['name']} ({x['file']})" for x in d["excluded"]]
 
 
-NO_ACCOUNT_NOTE = (
-    "  no account text: every candidate for this narrative is just an adjacent pair, not evidence"
-)
-
-
 def _text_fingerprint(d: dict) -> list[str]:
     out = []
     for n in d["narratives"]:
@@ -558,8 +526,6 @@ def _text_fingerprint(d: dict) -> list[str]:
         out += _layer_lines(n["nodes"])
         if n["edges"]:
             out += ["  edges", *map(_edge_line, n["edges"])]
-        if n.get("no_account"):
-            out.append(NO_ACCOUNT_NOTE)
         if n.get("candidates"):
             out.append("  candidates (linked, no row)")
             out += [f"    {c['type']}: {c['from']} -> {c['to']}" for c in n["candidates"]]
@@ -584,12 +550,6 @@ def _text_layered(d: dict) -> list[str]:
             f"    {c['type']}: {c['from']} -> {c['to']} [told by {c['narrative']}]"
             for c in d["candidates"]
         ]
-    if d.get("no_account"):
-        out.append(
-            "  no account text: "
-            + ", ".join(d["no_account"])
-            + "; every candidate for them is just an adjacent pair, not evidence"
-        )
     if d.get("orphans"):
         out.append("  orphans (node pages no row tells)")
         out += [f"    {n['name']} ({n['type']}) [{n['status']}]" for n in d["orphans"]]

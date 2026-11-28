@@ -1,4 +1,4 @@
-"""What the figures hide, shown (WP34): orphan pages, candidates in the layered view, the no-account flag."""
+"""What the figures hide, shown (WP34): orphan pages, candidates in the layered view, candidates are the account's pairs."""
 
 from test_draw import lines, said
 from viewutil import narrative, page, row
@@ -100,7 +100,7 @@ def test_candidates_are_dashed_in_the_plot_and_listed_in_the_text(vault):
 def test_without_candidates_nothing_changes(vault):
     plain = scat_tools.layered(root=vault)
     assert plain.to_dict() == scat_tools.layered(candidates=False, root=vault).to_dict()
-    assert not {"candidates", "no_account"} & set(plain.to_dict())
+    assert not {"candidates"} & set(plain.to_dict())
     svg = draw.layered(root=vault).svg()
     assert dashed(svg) == 0 and "dashed" not in said(svg)
     assert svg == draw.layered(candidates=False, root=vault).svg()
@@ -123,49 +123,53 @@ def test_candidates_must_be_a_bool(vault):
     assert not isinstance(got, views.View)
 
 
-# --- R2b: the no-account flag ------------------------------------------------------------------------
+# --- R3: candidates are the account's pairs; no flag ------------------------------------------------------
+
+ACCOUNT = "The [[farmers]] hold [[water]], which [[alert]] addresses; [[radio]] provides it."
 
 
-def test_a_narrative_with_no_account_carries_the_flag_when_candidates_are_asked(make):
-    vault = make({"narrative/bare.md": BARE})
-    fp = scat_tools.fingerprint("bare", candidates=True, root=vault).to_dict()["narratives"][0]
-    assert fp["no_account"] is True
-    lay = scat_tools.layered(candidates=True, root=vault).to_dict()
-    assert lay["no_account"] == ["bare"]  # the others have account text
-    # both renderings
-    assert "no account text" in str(scat_tools.fingerprint("bare", candidates=True, root=vault))
-    assert "no account text: bare;" in str(scat_tools.layered(candidates=True, root=vault))
-    one = said(draw.fingerprint("bare", candidates=True, root=vault).svg())
-    assert "no account text: every candidate for it is just an adjacent pair, not evidence." in one
-    many = said(draw.layered(candidates=True, root=vault).svg())
-    assert "no account text: bare; every candidate for them is just an adjacent pair" in many
+def pairs(root, name):
+    return {
+        (c["type"], c["from"], c["to"])
+        for c in scat_tools.layered([name], candidates=True, root=root).to_dict()["candidates"]
+    }
 
 
-def test_headings_and_whitespace_are_no_account(make):
-    body = "# Bare\n\n   \n## Notes\n"
-    vault = make(
-        {"narrative/bare.md": BARE.replace("\n\n## Edges told", f"\n{body}\n## Edges told", 1)}
+def test_candidates_are_exactly_the_account_linked_adjacent_pairs_with_no_row(make):
+    text = narrative("Acct", ACCOUNT, [row("holds", "farmers", "water")])
+    root = make({"narrative/acct.md": text})
+    assert pairs(root, "acct") == {
+        ("addressed-by", "water", "alert"),
+        ("provided-by", "alert", "radio"),
+    }
+
+
+def test_a_node_linked_only_at_a_row_end_gives_no_candidate(make):
+    text = narrative(
+        "Acct",
+        "The [[farmers]] and [[alert]] are in the account.",
+        [row("holds", "farmers", "water"), row("addressed-by", "water", "alert")],
     )
-    assert "bare" in scat_tools.layered(candidates=True, root=vault).to_dict()["no_account"]
+    root = make({"narrative/acct.md": text})
+    # water is linked only in rows: no pair with it, and farmers-alert are not adjacent
+    assert pairs(root, "acct") == set()
+    assert graph.load(root).narratives[0].nodes == (
+        "farmers",
+        "water",
+        "alert",
+    )  # the fingerprint keeps it
 
 
-def test_a_narrative_with_account_text_has_no_flag(vault):
-    assert (
-        "no_account"
-        not in scat_tools.fingerprint("dry", candidates=True, root=vault).to_dict()["narratives"][0]
-    )
-    assert "no_account" not in scat_tools.layered(candidates=True, root=vault).to_dict()
-    assert "no account text" not in said(draw.layered(candidates=True, root=vault).svg())
-
-
-def test_text_after_the_table_section_is_account_text(make):
-    vault = make({"narrative/bare.md": BARE + "\n# After\nA word at the end.\n"})
-    assert "no_account" not in scat_tools.layered(["bare"], candidates=True, root=vault).to_dict()
-
-
-def test_not_asked_no_flag(make):
-    vault = make({"narrative/bare.md": BARE})
-    assert "no_account" not in scat_tools.fingerprint("bare", root=vault).to_dict()["narratives"][0]
-    assert "no_account" not in scat_tools.layered(root=vault).to_dict()
-    assert "no account text" not in said(draw.layered(root=vault).svg())
-    assert "no account text" not in said(draw.fingerprint("bare", root=vault).svg())
+def test_a_narrative_with_no_account_has_no_candidate_and_no_flag(make):
+    root = make({"narrative/bare.md": BARE})
+    assert pairs(root, "bare") == set()
+    for out in (
+        scat_tools.layered(candidates=True, root=root),
+        scat_tools.fingerprint("bare", candidates=True, root=root),
+    ):
+        assert "no_account" not in str(out.to_dict()) and "no account" not in str(out)
+    for d in (
+        draw.layered(candidates=True, root=root),
+        draw.fingerprint("bare", candidates=True, root=root),
+    ):
+        assert "no account" not in said(d.svg())

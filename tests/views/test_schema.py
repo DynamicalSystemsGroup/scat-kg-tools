@@ -128,14 +128,11 @@ BARE = narrative(
 def test_the_new_keys_validate_and_are_checked(make):
     root = make({"narrative/bare.md": BARE})
     lay = scat_tools.layered(candidates=True, root=root).to_dict()
-    assert {"orphans", "candidates", "no_account"} <= set(lay) and lay["no_account"] == ["bare"]
+    assert {"orphans", "candidates"} <= set(lay) and "no_account" not in lay
     assert errors(lay) == []
     fp = scat_tools.fingerprint("bare", candidates=True, root=root).to_dict()
-    assert fp["narratives"][0]["no_account"] is True and errors(fp) == []
+    assert "no_account" not in fp["narratives"][0] and errors(fp) == []
     # wrong shapes are rejected
     assert errors({**lay, "orphans": [{"name": "x"}]}) != []
     assert errors({**lay, "candidates": [{**lay["candidates"][0], "narrative": ""}]}) != []
     assert errors({**lay, "candidates": [{"type": "holds", "from": "a", "to": "b"}]}) != []
-    assert errors({**lay, "no_account": "bare"}) != []
-    bad = {**fp, "narratives": [{**fp["narratives"][0], "no_account": False}]}
-    assert errors(bad) != []
