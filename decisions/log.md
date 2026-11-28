@@ -3438,3 +3438,272 @@ for the v0.1 release, he said (typed by the agent): "Pull dev instead". `main` w
 the remote branches already in `dev` (tools: wp17/build, wp18/build, wp20/build and wp20/u2 to u8, wp29/design (its
 two commits are in `dev` under new ids), wp37/rename; template: wp21/template, wp37/rename). The `spike/*` branches
 stay: readouts cite their code.
+
+## D-216 | 2026-11-28 | A merge synthesizes one node; the narrative-to-node link becomes a page with notes
+
+Reviewing the research fixture page `two-names-for-the-same-silence` in Obsidian (for WP39's failing fixture), the
+chief engineer said (typed by the agent): "it seems like you are over complicating our design. there should only be
+one node, it seems like you are trying to hard to preserve provenance in the vault itself rather than letting the git
+history do that work. if we had originally had two seperate notes in an earlier commit then we merged them into a
+single node. then that node would be "abstracting away details" by synthesizing the observations. the information
+about how the abstracted node lives in each of the narratives that mentions it is edge level data. it shouldn't
+require more pages."
+
+The ACE pointed out that today's `scat merge` adds A's body to B under a heading that names A, and asked which part
+he meant. He answered (typed by the agent): "you can use the duplicate as a test but the expected behavior is to
+synthesize them into one node and move any detail specific to the narrative account its linked from into the edge
+between the node-in-question and the narrative".
+
+Asked whether that detail should go in the existing row notes or in a new narrative-to-node note, he answered
+(typed by the agent): "the table needs to stay focused on metadata, you can make a page for the row in the table
+since its also strictly speaking an object in the know knowledge graph. think of this as reifying that narrative to
+node edge with space for notes".
+
+Outcome: the planted duplicate pair stays as a test input. Merge's expected result is one synthesized node page (no
+carried body; git keeps the history), and detail that belongs to one narrative's account goes on a reified
+narrative-to-node link with notes, not in the node page and not in the table. This changes the data model and an
+accepted tool, so it is candidate C22 and needs its own scope; WP39 is unaffected.
+
+## D-217 | 2026-11-28 | WP39 lands as approved; WP40 (an audit against the point of SCAT coding) approved
+
+After D-216 the chief engineer said (typed by the agent): "i still think you are overthinking this. and over
+complicating it. the whole point of an exercise like this is synthesis. the coders job is to identify patterns, label
+those patterns and organize the data according to them. we provide a meta-model, tools, and guidance for that. you
+seem to be trying to make this data denser. we're not trying to add detail we're moving the other way, identifying
+abstract patterns in the concrete accounts." Then: "i need you to rethink more than just this rule. i am worried that
+you are missing the whole point of this kind of coding exercise and that you have introduced. unnecessary and
+undesirable rules and machinery. do an audit across the repo ... this is its own work package. i think you should do
+it yourself, but i also think you should have the PM deploy a few peer review agents with different personas so we can
+get a few different perspectives. i really need to get this into a releasable usable state".
+
+WP39's research fixture: the ACE decided, as a detail, to drop the two rows the accounts do not tell (less data, not
+more links); it is listed in WP39's defaults at acceptance. Asked whether WP39 waits for the audit, he said (typed by
+the agent): "Land WP39 now".
+
+WP40's defaults: he changed them (typed by the agent): "don't do your own audit until after the other audits come in.
+your job is to compare and contrast them, as we well as independently verify their claims before bringing me a
+synthesized report with pointers back the peer reviewer reports". Then (typed by the agent): "Approve WP40".
+
+## D-218 | 2026-11-28 | WP40 decision 1: the stage machine stays
+
+Asked whether to cut the lifecycle stage machine (all four WP40 reviewers proposed it), the chief engineer said (typed
+by the agent): "i want the state machine its what makes it possible to stabilize the behavior. all your reviewers are
+thinking like coders and user. none like systems engineers. that is the scaffolding that breaks the problem into simple
+peices. keeping it and having a tight ontology that is respected across the lifecycle is what allows all the other
+pieces to be simple."
+
+Outcome: the stages, `lifecycle.toml`, the stage tools and the refusals stay; WP30 goes on to acceptance. The WP40
+panel had no systems-engineering view; the readout's verdicts are read with that gap in mind.
+
+## D-219 | 2026-11-28 | WP40 decision 2: attribution stays as built
+
+Asked whether to cut attribution or reduce it to one switch, the chief engineer said (typed by the agent): "we need to
+keep that as built its. minimalist structure for distinguishing two modes. the attribution rules allow us to handle the
+needs of our two real use cases. one that involves activists that needs to explicitly reject named contributions and
+one for a community that explicitly wants to surface and track contributions. this dimension is there to protect that
+variety. still good that you surfaced it, but i am telling you why its needed".
+
+Outcome: the modes, contributor pages, `attributed_to`, the ATTR rules, the attribution view and tool stay. The
+reviewers judged it without the two real use cases it serves; the readout's attribution rows are read with that in mind.
+
+## D-220 | 2026-11-28 | WP40 decision 3: the table is the coding of record; prose links are a subset of it
+
+Asked whether an edge keeps two records (prose links and table rows), the chief engineer said (typed by the agent):
+"we can relax the demand that the prose be linked. the tables are the coding of record. linking the prose is desired
+but not required. to avoid confusion though the prose links should be a subset (potentially empty) of the table. the
+table is structural its what gets held in step with the underlying knowledge graph. the prose is interpretive and
+connective tissue. if we're linking something either, it belongs in the table (official coding) or it shouldn't be
+linked. which way it goes is up to the coder. warn in draft and error if done."
+
+Outcome: a node linked in the account must be an end of a row of the narrative's table (warning while stub or draft,
+error at `done`); a row end need not be linked in the account. This reverses the direction of WP39's approved rule
+(D-214), which was about to land; the ACE stopped WP39's PM before any push. WP39 needs an amended scope.
+
+## D-221 | 2026-11-28 | WP39 amendment 1 approved (the rule reversed)
+
+Shown amendment 1 to WP39 (the rule follows D-220: a node the account links must be a row end; row ends need not be
+linked; the dropped fixture rows restored), the chief engineer said (typed by the agent): "Approve amendment".
+
+## D-222 | 2026-11-28 | WP40 decision 4: the type column stays
+
+Asked whether a row should drop its type cell (the type follows from the ends' layers), the chief engineer said (typed
+by the agent): "keep it the type of node provides important semantic information and the names of the types are
+literally the description of what from-to means". Outcome: a row stays from | type | to | note. How many rules check it
+is item 5.
+
+## D-223 | 2026-11-28 | WP40 decision 5: one id per rule, severity by status; four rules cut
+
+Asked about the rule catalogue, the chief engineer chose (typed by the agent): "Merge twins and cut four". Outcome: each
+DRAFT/DONE twin becomes one id whose severity follows status (warning while stub or draft, error at `done`);
+TABLE-SECOND, TABLE-DUPLICATE, MENTION and SUGGEST-CONFIG (with `link_suggestions`) are cut. Attribution rules stay
+(D-219).
+
+## D-224 | 2026-11-28 | WP40 decision 6: the narrative marks are analysis filters, not gates
+
+Asked about `timeframe` (required at `done`, analysed by nothing) and `kind`'s unstated effects, the chief engineer said
+(typed by the agent): "i think it should be a filtering criteria we use in analysis. but i think the concern that it
+silently changes meaning is a bigger issue. we may need to reframe it as "actual" vs "hypothetical" and maybe
+"unclassified". the filter we need is to tease apart things people are actually only conjecturing versus facts about
+the world that could be independently verified."
+
+The ACE read this back as: replace past/future/mixed with actual / hypothetical / unclassified, a filter in the
+analysis views, unclassified the default so it never blocks `done`; and asked about `kind`. He answered (typed by the
+agent): "kind becomes a filter too, but the guidance for the planner and he facilitator still distinguish what we're
+trying to capture. same foes for the hypothetical vs actual. we cannot strictly force the narratives into these buckets
+but we're guiding them along these lines to try to get more interpretable data."
+
+Outcome: both marks are filters in the analysis views and gate nothing; no tool changes its output by a mark unless
+the person filters by it (drawings stop dropping a layer by `kind`). The planning and facilitation guidance keeps both
+distinctions as guidance toward more interpretable data. The field's name and values (actual / hypothetical /
+unclassified) are settled in the package's scope.
+
+## D-225 | 2026-11-28 | WP40 decision 7: copy-share cut; review keeps its plain signals
+
+The chief engineer chose (typed by the agent): "Cut copy-share; plain review". Outcome: `copy-share` (CLI, MCP tool,
+view) is removed; `review` keeps its plain signals (two pages told by the same row, shared neighbours) and drops the
+hidden scores and thresholds.
+
+## D-226 | 2026-11-28 | WP40 decision 8: structured fixes stay; an item-by-item review of them
+
+Asked whether check messages keep structured fixes (kinds, edits, commands, the JSON schema), the chief engineer said
+(typed by the agent): "i am inclined to keep this. i tend to agree this is what makes the right way the easy way.
+essentially this is like a mini ci/cd framework for the content. the idea that every check has a gaurd and a
+remediation, with clear instructions to returned to the AI assistant, including clarity about what is conformance and
+what is coder judgement is central to the architecture. i am okay with an itemwise review of this to make sure what is
+there is doing its job per this comment".
+
+Outcome: structured fixes stay. A later package reviews them item by item against that purpose: every check a guard
+with a remediation, clear instructions to the assistant, and clear about what is conformance and what is the coder's
+judgement.
+
+## D-227 | 2026-11-28 | WP40 decision 9: `split-plan` becomes `where-used`; the other commands stay
+
+Shown every command mapped to the coder's activity (`research/audit/commands.md` on `wp40/audit`) and asked what
+`split-plan` does, the chief engineer said (typed by the agent): "rename it where-used, keep the rest as built".
+Outcome: `split-plan` (CLI) and `split_plan` (MCP tool) are renamed `where-used` / `where_used`; every other command and
+tool stays as built (apart from `copy-share`, cut by D-225).
+
+## D-228 | 2026-11-28 | WP40 decision 10: names stay ASCII slugs
+
+The chief engineer chose (typed by the agent): "Keep ASCII slugs". The `title` field carries the label as said.
+
+## D-229 | 2026-11-28 | WP40 decision 11: a recurrence view
+
+The chief engineer chose (typed by the agent): "Separate view". Outcome: a new view lists nodes and edges by how many
+narratives and how many groups reach them, singletons marked. `layered` is unchanged.
+
+## D-230 | 2026-11-28 | WP40 decision 12: what SCAT coding is for; a guide page, `rename`, and a documentation pass
+
+Asked what abstraction help to add, the chief engineer said (typed by the agent): "guide page and rename. + other edits
+to the documentation. you can use the "broken drill" to "unsafe equipment" example. i think these concepts of patterns,
+synthesis and abstraction where what was missing. working with the LLM to build this caused a tendency to add detail and
+to ask for details. this whole exercise is one where humans telling their own accounts of their own experiences,
+provides the details. the coding work is to organize many detailed things into an expression of common patterns. our
+tool + facilitation and planning provides the metamodel; then the humans at the events provide the details and those
+details are captured as field notes and organized into narratives which are then coded. coding focuses on identifying
+and interrelating common elements. this is the purpose of what we're doing. the resulting output is a synthesis. that
+is why it requires human judgement: synthesis is interpretive; recognizing two things that look different are
+structurally the same, or that two things that sound the same are structurally different requires human intuition. our
+metamodel (ontology) provides the language for describing structure so the human coder can draw out those patterns. my
+gut is that we will need to go back through the documentation to make sure this is clear."
+
+Outcome: (1) a short guide page on patterns, synthesis and abstraction, using "broken drill" becoming "unsafe
+equipment"; (2) a `rename` operation that rewrites every link and row; (3) a pass over the documentation so the purpose
+above is clear throughout. This statement is the test for every later package: the people at the events supply the
+detail; coding organizes it into common, interrelated patterns; the tools must not push toward more detail.
+
+## D-231 | 2026-11-28 | WP40 decision 13: the TTL holds the model only
+
+The chief engineer chose (typed by the agent): "Strip to the model". Outcome: terms no code reads (`mapsTo`,
+`discouragedField`) are removed; `Index`, the table-column resources and `carriesStatus` move to the contracts (or code
+constants); the per-term source/authored/verification triples move to a docs table.
+
+## D-232 | 2026-11-28 | WP40 decision 14: the chat path says a helper sets it up
+
+The chief engineer chose (typed by the agent): "Say a helper is needed". Outcome: the chat-path setup stays as built;
+the docs say plainly that a technical helper sets it up once (Terminal, Colima, Tailscale, building SCATLAB), and the
+organiser works from there.
+
+During this decision he added (typed by the agent): ""synthesis", "abstract vs concrete" and "pattern" OR similiar may
+need to make it into the core glossary." Outcome: the D-230 package adds core glossary entries for synthesis, pattern
+and abstract versus concrete (or close words), within the terms page's word cap.
+
+## D-233 | 2026-11-28 | WP40 decision 15: C22 stands; the link page is an optional slot
+
+Asked whether C22's reified narrative-to-node page still stands, the chief engineer said (typed by the agent): "i want
+to keep this as decided but these are not required pages. they are optional. they should be treated like the
+relationships between nodes. its a slot to address notes not a required page. in practice i think they will get used
+some of the time. we should ensure the assistant get guidance for where, when and how to put notes in the addressed
+slots we've made available".
+
+Outcome: C22 stands. The narrative-to-node link page is optional, like the relationship annotation between nodes: an
+addressed slot for notes, never required, never checked for presence. The assistant's guidance says where, when and how
+to put notes in each addressed slot (row note, relationship annotation, link page).
+
+## D-234 | 2026-11-28 | WP40 decision 16: the lifecycle respected everywhere; roles instead of an authority table
+
+Item 16 (the systems engineer's findings S1 to S3, plus the actor model). The chief engineer chose (typed by the agent):
+"(a) Template starts in plan,(b) Same strength everywhere,(c) Consolidate in analyse", and asked about the authority
+tables. Shown them (coder, tool, assistant; the organiser and setup person appear only in the lifecycle), he said (typed
+by the agent): "i am not sure like the idea of an authority table. I would prefer to define roles. imagine you were in
+the planning stage and you gather together a group of people to do this work. what roles need to be filled: the
+organizer is the project lead the (Accountable) for the whole project if this were a RACI chart. the other roles map to
+the required activities: setting rules, inviting participants and managing their expectations; setting up / maintaining
+the scatlab; scheduling and event logistics; event agenda and facilitation; field note taking; field note organization;
+coding field notes into SCAT; analyzing data once conformed to SCAT; report writing based on analysis.
+
+my intuition is we need to reorganize this as roles. describe what each role is responsible for in each stage. the
+Organizer remains responsible for ensuring overall project success (and making good on any promises regarding data use,
+release, retention, attribution, etc)"
+
+Outcome: (a) the template ships `lifecycle.toml` with `stage = "plan"`; (b) the CLI and IDE paths respect the stage at
+the same strength as the MCP server; (c) `analyse` offers consolidation (merge, where-used; see D-235); (d) the
+authority tables give way to a roles model: the organiser is accountable for the whole project and its promises (data
+use, release, retention, attribution); the other roles follow the activities he listed; for each role, what it is
+responsible for in each stage. The tool and the assistant stay non-human actors (conformance; no authority).
+
+## D-235 | 2026-11-28 | A sixth stage, `synthesise`, between code and analyse
+
+Item 16(c) conflicted with D-178 (analyse edits nothing; a merge edits). Asked how consolidation in analyse should
+work, the chief engineer said (typed by the agent): "it almost seems like we're missing a stage between code and
+analyze that is focused on exactly this activity." Asked to name it, he chose (typed by the agent): "synthesise".
+
+Outcome: the lifecycle gains a stage `synthesise` between `code` and `analyse`. Its work is consolidating codes across
+narratives: `review`, `where-used`, `merge`, `rename`, drafting node-page definitions; recognising that things that
+look different are structurally the same, and the reverse. `code` stays per narrative; `analyse` stays read-only
+(D-178). This supersedes 16(c) in D-234 and amends the locked lifecycle model (D-186): its transitions, detects and
+stage lists are settled in the package's scope.
+
+## D-236 | 2026-11-28 | WP40 decision 17: the consistency fixes are one package
+
+The chief engineer chose (typed by the agent): "Yes, one package". Outcome: the ACE settles each verified contradiction
+(who may set status; the contributor stub; the duplicate `architecture.md`; one copy of the assistant rules; `kind`'s
+four meanings) by the ontology and the contracts, as one package, and lists its choices at acceptance.
+
+## D-237 | 2026-11-28 | The S layer is the stakeholder, everywhere
+
+Reading the WP40 readout ("group (a collective with a stake, never a person)"), the chief engineer said (typed by the
+agent): "why does this still say "group" its supposed to be stakeholder, calling it group breaks the acronym". The ACE
+traced it: the TBox commit for D-030 (23 November) shortened "stakeholder group" to `scat:Group`, key `group`, an agent's
+choice he never made; D-172 asked for "stakeholder" in the plots, and only the plots changed. Asked how far the rename
+goes, he said (typed by the agent): "full rename. i asked for this earlier but it seems you lost it".
+
+Outcome: a full rename. `scat:Stakeholder`, key, folder and `type: stakeholder`; the cap key renamed; every
+contract, doc, glossary entry, example, the template and the tests; a one-time migration for existing vaults. Lesson
+for the ACE: D-172's request was applied to its narrowest reading (the plots) and the wider intent was lost; a
+request that names a term is checked across the whole vocabulary.
+
+## D-238 | 2026-11-28 | D-224 stands over D-172 on `kind`
+
+Told that D-224 (drawings stop dropping a layer by `kind`) reverses part of D-172, the chief engineer said (typed by the
+agent): "don't reverse my more recent decision. just rename group to stakeholder." Outcome: D-224 stands; the marks
+package does not reopen it. D-237's rename goes ahead.
+
+## D-239 | 2026-11-28 | WP40 accepted
+
+Shown WP40's contents (five audits; the verified readout, its 95-row verdict table with outcomes and reasons, and the 17
+answered decisions; the command map; D-216 to D-238), the chief engineer asked for a final report "that focuses on what
+i decided and why. i am worried the report you wrote will inadvertently leak wrong direction behavior." The ACE wrote
+`research/audit/final-report.md` (the decisions and his reasons, quoted; guidance for agents) and marked the readout,
+the command map and the reviews "Background, not direction". He then said (typed by the agent): "Accept WP40".
+`check_metrics.py --accept WP40` passes (iteration 64). Every package from WP40 cites the final report as its direction.
