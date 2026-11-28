@@ -3344,3 +3344,8 @@ change is a small package of its own (candidate C20), to be scoped; WP38's gloss
 Asked whether to scope the list's retirement (C20) with RS8's recommendation as one package, the chief engineer said
 (typed by the agent): "Yes, one package". WP39 (`work-packages/WP39.md`) is drafted, with one open decision (adopt
 RS8's option (e) now or after RS8's held assistant readings) and three defaults.
+
+## D-207 | 2026-11-27 | WP39's O1: RS8's option (e) adopted now
+
+Asked whether WP39 adopts RS8's option (e) now or after RS8's held assistant readings, the chief engineer said (typed
+by the agent): "Adopt (e) now". The readings still run at the planned sitting and may amend it.
