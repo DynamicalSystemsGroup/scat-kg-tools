@@ -40,6 +40,11 @@ def old(rig):
     (home / "vault").write_text(f"{rig.vault.resolve()}\n")
     (home / "menubar-note").touch()
     (home / "ui").write_text("running\n")
+    (home / "tunnel").touch()
+    (home / "caffeinate.pid").write_text("999999\n")
+    (rig.state / "vault").unlink(
+        missing_ok=True
+    )  # so the move of the remembered vault is what puts it there
     (rig.stub / "keychain").mkdir(exist_ok=True)
     (rig.stub / "keychain" / "scat-chat").write_text("oldkey")
     (rig.stub / "old-container").touch()
@@ -64,6 +69,9 @@ def test_the_earlier_install_is_replaced(old):
         old.vault.resolve()
     )  # the remembered vault moved over
     assert (old.state / "menubar-note").exists()
+    assert old.called(
+        "tailscale funnel --https=443 off"
+    )  # a crashed session's public link is switched off
     old.nothing_left()
 
 

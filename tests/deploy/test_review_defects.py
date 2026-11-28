@@ -49,7 +49,7 @@ class Unrelated:
 @pytest.mark.parametrize("name", ["script", "applet", "readme"])
 def test_nothing_tells_the_coder_to_click_scatlab(name):
     text = {"script": LAUNCHER, "applet": APPLET, "readme": README}[name]
-    assert not re.search(r"click\s+SCAT\s+Chat", text, re.IGNORECASE)
+    assert not re.search(r"click\s+SCATLAB\b(?!\s+(menu|in))", text, re.IGNORECASE)
 
 
 def die_messages():
