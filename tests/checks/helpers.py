@@ -8,8 +8,8 @@ head line (severity, rule id, place, where, what) and the fix.
 import re
 from pathlib import Path
 
-from scat_kg.checks import check_neighborhood, check_page, check_vault
-from scat_kg.vault import read_vault
+from scat_tools.checks import check_neighborhood, check_page, check_vault
+from scat_tools.vault import read_vault
 
 ROOT = Path(__file__).parents[2]
 EXAMPLES = ROOT / "contracts" / "examples"
@@ -180,11 +180,13 @@ def msg(head: str, *fix: str) -> str:
 
 
 def set_status(name, status="draft"):
-    return f'`scat set-status {name} {status}` (REPL: `scat_kg.set_status("{name}", "{status}")`)'
+    return (
+        f'`scat set-status {name} {status}` (REPL: `scat_tools.set_status("{name}", "{status}")`)'
+    )
 
 
 def stub(name, key):
-    return f'`scat stub {name} --type {key}` (REPL: `scat_kg.stub("{name}", type="{key}")`)'
+    return f'`scat stub {name} --type {key}` (REPL: `scat_tools.stub("{name}", type="{key}")`)'
 
 
 def choose(*options, head="Fix, choose one:") -> list[str]:

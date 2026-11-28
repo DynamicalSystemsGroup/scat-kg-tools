@@ -12,8 +12,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "checks"))
 import scat_harness as h
 from helpers import doc, vault
 
-from scat_kg.checks import check_vault
-from scat_kg.fix import Command, Edit, Fix, FixOption
+from scat_tools.checks import check_vault
+from scat_tools.fix import Command, Edit, Fix, FixOption
 
 C = "concern/safe-handling.md"
 EDIT = Edit("set-field", C, field="status", value="draft")
@@ -28,7 +28,7 @@ def problem(make_vault):
 
 
 def option(problem, argv, edits=()):
-    cmd = Command(tuple(argv), "scat_kg.set_status(...)")
+    cmd = Command(tuple(argv), "scat_tools.set_status(...)")
     opt = FixOption("exact", "x", cmd, tuple(edits))
     return dataclasses.replace(problem, fix_data=Fix.one("exact", opt))
 

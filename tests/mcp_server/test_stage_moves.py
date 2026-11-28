@@ -15,9 +15,9 @@ from test_stage_common import (
     vault,
 )
 
-import scat_kg
-from scat_kg import guides
-from scat_kg.mcp_server import detects, stage
+import scat_tools
+from scat_tools import guides
+from scat_tools.mcp_server import detects, stage
 
 DONE = "every narrative is done and the whole-vault check has no errors"
 
@@ -40,7 +40,7 @@ def test_every_detect_has_a_reader_and_every_reader_a_detect():
 def test_narratives_done_holds_and_does_not(tmp_path):
     ok = vault(tmp_path / "ok")
     all_done(ok)
-    assert scat_kg.check(root=ok).ok
+    assert scat_tools.check(root=ok).ok
     assert detects.evaluate(DONE, ok) == (True, "3 of 3 narratives done; the check has 0 errors")
     # one narrative is not done (the example as it is: one draft)
     one = vault(tmp_path / "one")
@@ -350,9 +350,9 @@ def test_check_and_status_give_the_same_documents_with_and_without_lifecycle_tom
         if text is not None:
             _lifecycle(root, text)
         docs[name] = [
-            scat_kg.check(root=root).to_dict(),
-            scat_kg.status(root=root).to_dict(),
-            scat_kg.check("funders-meeting", neighborhood=True, root=root).to_dict(),
+            scat_tools.check(root=root).to_dict(),
+            scat_tools.status(root=root).to_dict(),
+            scat_tools.check("funders-meeting", neighborhood=True, root=root).to_dict(),
         ]
     assert all(d == docs["none"] for d in docs.values())
     root = vault(tmp_path / "served", stage=None)

@@ -11,8 +11,8 @@ from pathlib import Path
 
 import pytest
 
-import scat_kg
-from scat_kg import cli
+import scat_tools
+from scat_tools import cli
 
 EXAMPLES = Path(__file__).parents[1] / "contracts" / "examples"
 SEEDED_NARRATIVE = "narrative/saturday-at-the-lending-desk.md"  # the page the defect is seeded in
@@ -58,45 +58,45 @@ NONE: dict[str, str] = {}
 
 # name -> (API call, the same as CLI arguments, the paths it may write and how)
 CASES = {
-    "check-vault": (lambda r: scat_kg.check(root=r), ["check"], NONE),
+    "check-vault": (lambda r: scat_tools.check(root=r), ["check"], NONE),
     "check-page": (
-        lambda r: scat_kg.check(SEEDED_NARRATIVE, root=r),
+        lambda r: scat_tools.check(SEEDED_NARRATIVE, root=r),
         ["check", SEEDED_NARRATIVE],
         NONE,
     ),
     "check-neighborhood": (
-        lambda r: scat_kg.check(SEEDED_NARRATIVE, neighborhood=True, root=r),
+        lambda r: scat_tools.check(SEEDED_NARRATIVE, neighborhood=True, root=r),
         ["check", SEEDED_NARRATIVE, "--neighborhood"],
         NONE,
     ),
-    "status-vault": (lambda r: scat_kg.status(root=r), ["status"], NONE),
+    "status-vault": (lambda r: scat_tools.status(root=r), ["status"], NONE),
     "status-page": (
-        lambda r: scat_kg.status(SEEDED_NARRATIVE, root=r),
+        lambda r: scat_tools.status(SEEDED_NARRATIVE, root=r),
         ["status", SEEDED_NARRATIVE],
         NONE,
     ),
     "status-neighborhood": (
-        lambda r: scat_kg.status(SEEDED_NARRATIVE, neighborhood=True, root=r),
+        lambda r: scat_tools.status(SEEDED_NARRATIVE, neighborhood=True, root=r),
         ["status", SEEDED_NARRATIVE, "--neighborhood"],
         NONE,
     ),
     "set-status": (
-        lambda r: scat_kg.set_status("quick-checkout", "draft", root=r),
+        lambda r: scat_tools.set_status("quick-checkout", "draft", root=r),
         ["set-status", "quick-checkout", "draft"],
         {"concern/quick-checkout.md": "changed"},
     ),
     "index": (
-        lambda r: scat_kg.index(root=r),
+        lambda r: scat_tools.index(root=r),
         ["index"],
         {"index/concern.base": "created"},
     ),
     "stub": (
-        lambda r: scat_kg.stub("lending-rules", type="concern", root=r),
+        lambda r: scat_tools.stub("lending-rules", type="concern", root=r),
         ["stub", "lending-rules", "--type", "concern"],
         {"concern/lending-rules.md": "created"},
     ),
     "record-edge": (
-        lambda r: scat_kg.record_edge("holds", "borrowers", "lending-rules", "story", root=r),
+        lambda r: scat_tools.record_edge("holds", "borrowers", "lending-rules", "story", root=r),
         ["record-edge", "holds", "borrowers", "lending-rules", "--told-by", "story"],
         {
             "concern/lending-rules.md": "created",  # the missing end, stubbed
@@ -104,55 +104,55 @@ CASES = {
         },
     ),
     "record-edge-existing-narrative": (
-        lambda r: scat_kg.record_edge(
+        lambda r: scat_tools.record_edge(
             "holds", "funders", "lending-rules", "funders-meeting", root=r
         ),
         ["record-edge", "holds", "funders", "lending-rules", "--told-by", "funders-meeting"],
         {"concern/lending-rules.md": "created", "narrative/funders-meeting.md": "changed"},
     ),
     "remove-edge": (
-        lambda r: scat_kg.remove_edge("funders", "careful-record-keeping", root=r),
+        lambda r: scat_tools.remove_edge("funders", "careful-record-keeping", root=r),
         ["remove-edge", "funders", "careful-record-keeping"],
         {"narrative/funders-meeting.md": "changed"},
     ),
     "stub-links-vault": (
-        lambda r: scat_kg.stub_links(root=r),
+        lambda r: scat_tools.stub_links(root=r),
         ["stub-links"],
         {"concern/ghost.md": "created"},
     ),
     "stub-links-page": (
-        lambda r: scat_kg.stub_links(SEEDED_NARRATIVE, root=r),
+        lambda r: scat_tools.stub_links(SEEDED_NARRATIVE, root=r),
         ["stub-links", SEEDED_NARRATIVE],
         {"concern/ghost.md": "created"},
     ),
     # refusals write nothing
     "set-status-refused": (
-        lambda r: scat_kg.set_status("quick-checkout", "finished", root=r),
+        lambda r: scat_tools.set_status("quick-checkout", "finished", root=r),
         ["set-status", "quick-checkout", "finished"],
         NONE,
     ),
     "stub-refused": (
-        lambda r: scat_kg.stub("Lending Rules", type="concern", root=r),
+        lambda r: scat_tools.stub("Lending Rules", type="concern", root=r),
         ["stub", "Lending Rules", "--type", "concern"],
         NONE,
     ),
     "stub-existing-page-refused": (
-        lambda r: scat_kg.stub("quick-checkout", type="concern", root=r),
+        lambda r: scat_tools.stub("quick-checkout", type="concern", root=r),
         ["stub", "quick-checkout", "--type", "concern"],
         NONE,
     ),
     "set-status-done-refused": (
-        lambda r: scat_kg.set_status("funders-meeting", "done", root=r),
+        lambda r: scat_tools.set_status("funders-meeting", "done", root=r),
         ["set-status", "funders-meeting", "done"],
         NONE,
     ),
     "record-edge-refused": (
-        lambda r: scat_kg.record_edge("owns", "a", "b", "n", root=r),
+        lambda r: scat_tools.record_edge("owns", "a", "b", "n", root=r),
         ["record-edge", "owns", "a", "b", "--told-by", "n"],
         NONE,
     ),
     "record-edge-into-done-refused": (
-        lambda r: scat_kg.record_edge(
+        lambda r: scat_tools.record_edge(
             "holds", "funders", "lending-rules", "saturday-at-the-lending-desk", root=r
         ),
         [
@@ -166,11 +166,11 @@ CASES = {
         NONE,
     ),
     "remove-edge-refused": (
-        lambda r: scat_kg.remove_edge("borrowers", "quick-checkout", root=r),
+        lambda r: scat_tools.remove_edge("borrowers", "quick-checkout", root=r),
         ["remove-edge", "borrowers", "quick-checkout"],
         NONE,
     ),
-    "check-no-such-page": (lambda r: scat_kg.check("nope", root=r), ["check", "nope"], NONE),
+    "check-no-such-page": (lambda r: scat_tools.check("nope", root=r), ["check", "nope"], NONE),
 }
 
 

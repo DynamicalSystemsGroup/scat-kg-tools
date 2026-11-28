@@ -4,7 +4,7 @@ import hashlib
 import shutil
 from pathlib import Path
 
-import scat_kg
+import scat_tools
 
 REPO = Path(__file__).parents[2]
 VAULTS = REPO / "research" / "node-pages" / "vault"
@@ -57,5 +57,5 @@ def image(g, a: str, b: str, renamed: bool):
 
 
 def assert_graph_equal(before, root: Path, a: str, b: str):
-    after = scat_kg.load(root)
+    after = scat_tools.load(root)
     assert image(before, a, b, True) == image(after, a, b, False)

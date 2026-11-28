@@ -1,9 +1,9 @@
 import pytest
 from opsutil import fm, narrative
 
-from scat_kg.ops import stub, stub_links
-from scat_kg.ops.names import derive_name, name_problem, stem_of
-from scat_kg.vault import read_vault
+from scat_tools.ops import stub, stub_links
+from scat_tools.ops.names import derive_name, name_problem, stem_of
+from scat_tools.vault import read_vault
 
 CAP3 = {"scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n"}
 
@@ -162,7 +162,7 @@ def test_stub_refusals_name_the_command_that_does_it_and_carry_it_as_data(make_v
     root = make_vault(CAP3)
     r = stub("a", "index", root=root)
     assert r.refused[0].fix_data.options[0].command.argv == ("index",)
-    assert "scat_kg.index()" in r.refused[0].fix
+    assert "scat_tools.index()" in r.refused[0].fix
     assert "scat record-edge" in str(stub("a", "addressed-by", root=root))
 
 

@@ -62,7 +62,7 @@
 <https://w3id.org/scat> a owl:Ontology ;
     rdfs:label "SCAT ontology" ;
     owl:versionInfo "0.3.0" ;
-    rdfs:comment "TBox for scat-kg: four SKOS-based node types, three edge types, and seven page types (the four node types, the narrative, the contributor and the index), with the fields of each and how a narrative's table of edges is read. The IRI base is unregistered until release." .
+    rdfs:comment "TBox for scat-tools: four SKOS-based node types, three edge types, and seven page types (the four node types, the narrative, the contributor and the index), with the fields of each and how a narrative's table of edges is read. The IRI base is unregistered until release." .
 
 ##############################################################################
 # The four node types (MISSION G1). Instances are skos:Concepts.

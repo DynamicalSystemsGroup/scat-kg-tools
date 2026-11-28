@@ -1,4 +1,4 @@
-"""WP28-R1, R2, WP33-R3, R4: a view tool asked for its plot returns the picture `scat_kg.draw` makes, and the views' refusals as documents."""
+"""WP28-R1, R2, WP33-R3, R4: a view tool asked for its plot returns the picture `scat_tools.draw` makes, and the views' refusals as documents."""
 
 import base64
 import json
@@ -6,8 +6,8 @@ import json
 import pytest
 from mcputil import changed, copy_vault, serve, snapshot, with_session
 
-from scat_kg import draw
-from scat_kg.ops.result import stamp
+from scat_tools import draw
+from scat_tools.ops.result import stamp
 
 PNG = b"\x89PNG\r\n\x1a\n"
 NARRATIVE = "saturday-at-the-lending-desk"

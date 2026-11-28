@@ -3,17 +3,17 @@
 import pytest
 from viewutil import base_files, tree_hash, write
 
-import scat_kg
-from scat_kg.graph import load
+import scat_tools
+from scat_tools.graph import load
 
 PATH = "narrative/broken.md"
 BROKEN = "---\ntype: narrative\ntitle: [unclosed\n---\nThe [[water]] ran out.\n"
 
 VIEWS = {
-    "edge_table": lambda r: scat_kg.edge_table("holds", root=r),
-    "layered": lambda r: scat_kg.layered(root=r),
-    "trace": lambda r: scat_kg.trace("farmers", root=r),
-    "fingerprint": lambda r: scat_kg.fingerprint(root=r),
+    "edge_table": lambda r: scat_tools.edge_table("holds", root=r),
+    "layered": lambda r: scat_tools.layered(root=r),
+    "trace": lambda r: scat_tools.trace("farmers", root=r),
+    "fingerprint": lambda r: scat_tools.fingerprint(root=r),
 }
 
 
@@ -43,4 +43,4 @@ def test_whole_vault_views_refuse_naming_the_file(tmp_path, view):
 
 def test_a_view_of_named_narratives_is_not_a_whole_vault_view(tmp_path):
     root = write(tmp_path / "v", base_files() | {PATH: BROKEN})
-    assert scat_kg.layered(["dry"], root=root).ok
+    assert scat_tools.layered(["dry"], root=root).ok

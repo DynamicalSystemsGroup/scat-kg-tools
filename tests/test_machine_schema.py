@@ -60,7 +60,7 @@ def doc(kind, operation, ok, **more):
     } | more
 
 
-SET_DRAFT = cmd(["set-status", "a", "draft"], 'scat_kg.set_status("a", "draft")')
+SET_DRAFT = cmd(["set-status", "a", "draft"], 'scat_tools.set_status("a", "draft")')
 EXACT = fix(
     "exact",
     [
@@ -110,7 +110,7 @@ STEPS = fix(
             "exact",
             "delete the file",
             edits=[{"action": "delete-file", "file": "narrative/x.md"}],
-            command=cmd(["index"], "scat_kg.index()"),
+            command=cmd(["index"], "scat_tools.index()"),
         ),
         option(
             "exact",
@@ -158,7 +158,7 @@ TABLE_DUPLICATE = fix(
             "delete the page",
             edits=[{"action": "delete-file", "file": "narrative/dup.md"}],
         ),
-        option("exact", "run `scat index`", command=cmd(["index"], "scat_kg.index()")),
+        option("exact", "run `scat index`", command=cmd(["index"], "scat_tools.index()")),
         option(
             "exact",
             "change the link",
@@ -198,7 +198,7 @@ TABLE_TYPE_SLOT = fix(
             "run `scat stub <node-name> --type concern`",
             command=cmd(
                 ["stub", "<node-name>", "--type", "concern"],
-                'scat_kg.stub("<node-name>", type="concern")',
+                'scat_tools.stub("<node-name>", type="concern")',
                 author_slot="<node-name>",
             ),
         ),
@@ -277,7 +277,7 @@ REFUSED_STUB = doc(
                         "run `scat stub a-b --type concern`",
                         command=cmd(
                             ["stub", "a-b", "--type", "concern"],
-                            'scat_kg.stub("a-b", type="concern")',
+                            'scat_tools.stub("a-b", type="concern")',
                         ),
                     )
                 ],

@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 from viewutil import page, tree_hash
 
-import scat_kg
+import scat_tools
 
 HOLDS_CSV = "from,to,narratives,status\nfarmers,cost,diamond,draft\nfarmers,water,dry;wet,stub\ntowns,cost,split,draft\n"
 ADDRESSED_CSV = (
@@ -30,7 +30,7 @@ NAMES = [f"{s}.{x}" for s in ("holds", "addressed-by", "provided-by") for x in (
 
 def test_the_files_are_what_a_hand_computation_gives(vault, tmp_path):
     out = tmp_path / "out"
-    r = scat_kg.export_edges(out, root=vault)
+    r = scat_tools.export_edges(out, root=vault)
     assert r.ok
     assert (out / "holds.csv").read_text(encoding="utf-8") == HOLDS_CSV
     assert (out / "addressed-by.csv").read_text(encoding="utf-8") == ADDRESSED_CSV
@@ -44,21 +44,21 @@ def test_the_files_are_what_a_hand_computation_gives(vault, tmp_path):
 
 def test_outside_the_vault_the_paths_are_as_given_and_the_folder_is_made(vault, tmp_path):
     out = tmp_path / "a" / "b"
-    r = scat_kg.export_edges(out, root=vault)
+    r = scat_tools.export_edges(out, root=vault)
     assert list(r.created) == [(out / n).as_posix() for n in NAMES]
     assert r.changed == () and r.unchanged == ()
 
 
 def test_inside_the_vault_the_paths_are_vault_relative(vault):
-    r = scat_kg.export_edges(vault / "tables", root=vault)
+    r = scat_tools.export_edges(vault / "tables", root=vault)
     assert list(r.created) == [f"tables/{n}" for n in NAMES]
 
 
 def test_repeating_changes_nothing(vault, tmp_path):
     out = tmp_path / "out"
-    scat_kg.export_edges(out, root=vault)
+    scat_tools.export_edges(out, root=vault)
     before = tree_hash(out)
-    r = scat_kg.export_edges(out, root=vault)
+    r = scat_tools.export_edges(out, root=vault)
     assert r.created == () and r.changed == ()
     assert len(r.unchanged) == 6
     assert tree_hash(out) == before  # not rewritten: the modification times stand
@@ -66,9 +66,9 @@ def test_repeating_changes_nothing(vault, tmp_path):
 
 def test_a_file_is_rewritten_only_when_its_content_differs(vault, tmp_path):
     out = tmp_path / "out"
-    scat_kg.export_edges(out, root=vault)
+    scat_tools.export_edges(out, root=vault)
     (out / "holds.csv").write_text("stale\n", encoding="utf-8")
-    r = scat_kg.export_edges(out, root=vault)
+    r = scat_tools.export_edges(out, root=vault)
     assert [Path(p).name for p in r.changed] == ["holds.csv"]
     assert (out / "holds.csv").read_text(encoding="utf-8") == HOLDS_CSV
     assert len(r.unchanged) == 5
@@ -76,9 +76,9 @@ def test_a_file_is_rewritten_only_when_its_content_differs(vault, tmp_path):
 
 def test_a_new_edge_changes_only_its_tables(vault, tmp_path):
     out = tmp_path / "out"
-    scat_kg.export_edges(out, root=vault)
-    scat_kg.record_edge("holds", "towns", "water", ["split"], root=vault)
-    r = scat_kg.export_edges(out, root=vault)
+    scat_tools.export_edges(out, root=vault)
+    scat_tools.record_edge("holds", "towns", "water", ["split"], root=vault)
+    r = scat_tools.export_edges(out, root=vault)
     assert sorted(Path(p).name for p in r.changed) == ["holds.csv", "holds.md"]
     assert "towns,water,split,draft" in (out / "holds.csv").read_text(encoding="utf-8")
 
@@ -86,7 +86,7 @@ def test_a_new_edge_changes_only_its_tables(vault, tmp_path):
 def test_a_refusal_of_the_view_is_surfaced_and_nothing_is_written(make, tmp_path):
     root = make({"concern/water.md": page("concern", "W", "bogus")})
     out = tmp_path / "out"
-    r = scat_kg.export_edges(out, root=root)
+    r = scat_tools.export_edges(out, root=root)
     assert not r.ok
     d = r.to_dict()
     assert d["operation"] == "export-edges" and d["kind"] == "operation"
@@ -95,14 +95,14 @@ def test_a_refusal_of_the_view_is_surfaced_and_nothing_is_written(make, tmp_path
 
 
 def test_a_missing_vault_refuses(tmp_path):
-    r = scat_kg.export_edges(tmp_path / "out", root=tmp_path / "gone")
+    r = scat_tools.export_edges(tmp_path / "out", root=tmp_path / "gone")
     assert not r.ok and not (tmp_path / "out").exists()
 
 
 def test_out_that_is_a_file_refuses_with_a_fix(vault, tmp_path):
     out = tmp_path / "out"
     out.write_text("mine", encoding="utf-8")
-    r = scat_kg.export_edges(out, root=vault)
+    r = scat_tools.export_edges(out, root=vault)
     assert not r.ok
     assert "Fix:" in str(r)
     assert out.read_text(encoding="utf-8") == "mine"
@@ -111,37 +111,37 @@ def test_out_that_is_a_file_refuses_with_a_fix(vault, tmp_path):
 def test_a_folder_in_the_place_of_a_file_refuses(vault, tmp_path):
     out = tmp_path / "out"
     (out / "holds.csv").mkdir(parents=True)
-    r = scat_kg.export_edges(out, root=vault)
+    r = scat_tools.export_edges(out, root=vault)
     assert not r.ok
 
 
 def test_an_export_inside_the_vault_changes_neither_check_nor_the_graph(vault):
-    check = str(scat_kg.check(root=vault))
-    before = scat_kg.load(vault)
-    r = scat_kg.export_edges(vault / "tables", root=vault)
+    check = str(scat_tools.check(root=vault))
+    before = scat_tools.load(vault)
+    r = scat_tools.export_edges(vault / "tables", root=vault)
     assert r.ok and len(r.created) == 6
-    assert str(scat_kg.check(root=vault)) == check
-    after = scat_kg.load(vault)
+    assert str(scat_tools.check(root=vault)) == check
+    after = scat_tools.load(vault)
     assert {t: [n.name for n in ns] for t, ns in after.nodes.items()} == {
         t: [n.name for n in ns] for t, ns in before.nodes.items()
     }
     assert [e.key for e in after.edges] == [e.key for e in before.edges]
     assert [n.name for n in after.narratives] == [n.name for n in before.narratives]
     # and a second export from the vault with the tables in it gives the same tables
-    assert scat_kg.export_edges(vault / "tables", root=vault).created == ()
+    assert scat_tools.export_edges(vault / "tables", root=vault).created == ()
 
 
 def test_the_tools_other_operations_write_no_export(vault):
     before = tree_hash(vault)
-    scat_kg.fingerprint(root=vault)
-    scat_kg.layered(root=vault)
-    scat_kg.trace("farmers", root=vault)
-    scat_kg.edge_table("holds", root=vault)
+    scat_tools.fingerprint(root=vault)
+    scat_tools.layered(root=vault)
+    scat_tools.trace("farmers", root=vault)
+    scat_tools.edge_table("holds", root=vault)
     assert tree_hash(vault) == before
 
 
 @pytest.mark.parametrize("name", NAMES)
 def test_every_file_ends_with_one_newline(vault, tmp_path, name):
-    scat_kg.export_edges(tmp_path / "o", root=vault)
+    scat_tools.export_edges(tmp_path / "o", root=vault)
     text = (tmp_path / "o" / name).read_text(encoding="utf-8")
     assert text.endswith("\n") and not text.endswith("\n\n")

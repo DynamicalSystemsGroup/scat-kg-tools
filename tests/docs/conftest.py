@@ -2,8 +2,8 @@ import subprocess
 
 import pytest
 
-TEMPLATE_URL = "https://github.com/DynamicalSystemsGroup/scat-kg-template"
-TEMPLATE_COMMIT = "b9717a404ea42377fdad4d20e21cfebde0405910"  # pins tools 8952b31
+TEMPLATE_URL = "https://github.com/DynamicalSystemsGroup/scat-template"
+TEMPLATE_COMMIT = "9defb3f1fed10da1a16229f3bd84020341d92b9c"  # pins tools abc349f
 
 
 @pytest.fixture(scope="session")

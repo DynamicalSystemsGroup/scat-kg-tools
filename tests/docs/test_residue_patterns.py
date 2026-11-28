@@ -18,7 +18,7 @@ PATTERNS = {
         r"\bD-\d{3}\b|decision log|as decided|\bACE\b|chief engineer|\bWP\d+", re.IGNORECASE
     ),
     "P5": re.compile(
-        r"not been tried|untested|lab run|not recorded|nobody has yet|first run is the real test"
+        r"not been tried|untested|\blab run|not recorded|nobody has yet|first run is the real test"
         r"|stand-in|not yet (run|tried|tested)",
         re.IGNORECASE,
     ),
@@ -33,7 +33,7 @@ KEPT: dict[tuple[str, str], str] = {}
 
 def _places() -> dict[str, str]:
     out = {k: v for k, v in SOURCES.items() if k.startswith(("docs/", "help: "))}
-    for rel in ("deploy/scat-chat.sh", "deploy/README.md", "skills/scat-coding/SKILL.md"):
+    for rel in ("deploy/scatlab.sh", "deploy/README.md", "skills/scat-coding/SKILL.md"):
         out[rel] = (ROOT / rel).read_text(encoding="utf-8")
     return out
 

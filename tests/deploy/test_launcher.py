@@ -1,4 +1,4 @@
-"""deploy/scat-chat.sh driven in plain mode with stand-ins for every outside program (WP18-R2)."""
+"""deploy/scatlab.sh driven in plain mode with stand-ins for every outside program (WP18-R2)."""
 
 import os
 import shutil
@@ -7,8 +7,8 @@ import subprocess
 import pytest
 from conftest import REPO, STATUS_NO_HTTPS, STATUS_STOPPED
 
-STOP = {"SCAT_CHAT_A_STOP": "stop"}
-AGAIN = "choose Stop in the SCAT Chat menu, then open SCAT Chat again"  # D-130 follow-up: the menu, not the app icon
+STOP = {"SCATLAB_A_STOP": "stop"}
+AGAIN = "choose Stop in the SCATLAB menu, then open SCATLAB again"  # D-130 follow-up: the menu, not the app icon
 
 
 def test_start_order_flags_and_stop_button(rig):
@@ -22,7 +22,7 @@ def test_start_order_flags_and_stop_button(rig):
         rig.called("docker run")[0],
         rig.called("tailscale funnel --bg")[0],
         rig.called("tailscale funnel --https=443 off")[0],
-        rig.called("docker rm -f scat-chat")[-1],
+        rig.called("docker rm -f scatlab")[-1],
     ]
     assert order == sorted(order) and len(set(order)) == len(order), calls
     run = calls[rig.called("docker run")[0]]
@@ -55,12 +55,12 @@ def test_keychain_calls_go_through_security_with_the_item_on_stdin(rig):
     rig.run("start", **STOP)
     calls = rig.calls_list()
     assert "security -i" in calls  # the item is written by a command on stdin
-    assert "security(stdin) add-generic-password -s scat-chat" in calls
+    assert "security(stdin) add-generic-password -s scatlab" in calls
     assert any(
-        c.startswith("security find-generic-password -s scat-chat") and c.endswith(" -w")
+        c.startswith("security find-generic-password -s scatlab") and c.endswith(" -w")
         for c in calls
     )
-    assert any(c.startswith("security delete-generic-password -s scat-chat") for c in calls)
+    assert any(c.startswith("security delete-generic-password -s scatlab") for c in calls)
     for c in calls:
         if c.startswith("security") and "add-generic-password" in c:
             assert " -w " not in c + " " or c.startswith("security(stdin)"), c
@@ -103,7 +103,7 @@ def test_copy_key_puts_the_key_on_the_clipboard_only_when_the_coder_asks(rig):
     rig.run("start", **STOP)
     assert rig.clip() == ""  # started and stopped without asking: never copied
     r = rig.run(
-        "start", SCAT_CHAT_A_COPYKEY="copy"
+        "start", SCATLAB_A_COPYKEY="copy"
     )  # the coder clicks Copy key, then leaves the session up
     assert r.returncode == 0, r.stdout
     assert rig.clip() == rig.key()
@@ -117,9 +117,9 @@ def test_dialog_mode_start_waits_to_be_stopped_and_copy_key_is_the_verb(rig):
     key = rig.key()
     assert proc.poll() is None  # running: it waits for the Stop verb, it does not end by itself
     assert rig.clip() == ""  # started: the key is not copied until asked
-    r = rig.run("copy-key", SCAT_CHAT_UI="dialog")
+    r = rig.run("copy-key", SCATLAB_UI="dialog")
     assert r.returncode == 0 and rig.clip() == key
-    r = rig.run("copy-key", SCAT_CHAT_UI="dialog")  # asking again is fine
+    r = rig.run("copy-key", SCATLAB_UI="dialog")  # asking again is fine
     assert r.returncode == 0 and rig.clip() == key
     assert proc.poll() is None
     notes = [
@@ -135,7 +135,7 @@ def test_dialog_mode_start_waits_to_be_stopped_and_copy_key_is_the_verb(rig):
 
 
 def test_stop_deletes_the_key_clears_the_clipboard_and_is_idempotent(rig):
-    rig.run("start", SCAT_CHAT_A_COPYKEY="copy")
+    rig.run("start", SCATLAB_A_COPYKEY="copy")
     assert rig.item() and rig.clip() == rig.key()
     r = rig.run("stop")
     assert r.returncode == 0 and "Stopped." in r.stdout, r.stdout
@@ -171,7 +171,7 @@ def test_stop_when_nothing_ever_ran(rig):
 
 
 def test_clipboard_not_cleared_when_it_holds_something_else(rig):
-    rig.run("start", SCAT_CHAT_A_COPYKEY="copy")
+    rig.run("start", SCATLAB_A_COPYKEY="copy")
     (rig.stub / "clip").write_text("my own text")
     rig.run("stop")
     assert rig.clip() == "my own text"
@@ -189,15 +189,15 @@ def test_vault_in_documents_refused_then_copied_on_ok(rig):
     docs = rig.home / "Documents" / "myvault"
     docs.mkdir(parents=True)
     (docs / "n.md").write_text("hello")
-    env = {"SCAT_CHAT_VAULT": str(docs)}
-    r = rig.run("start", SCAT_CHAT_A_COPY="Cancel", **env)
+    env = {"SCATLAB_VAULT": str(docs)}
+    r = rig.run("start", SCATLAB_A_COPY="Cancel", **env)
     assert r.returncode == 1
     assert "~/SCAT/vault" in r.stdout and "git" in r.stdout and "never move" in r.stdout
     assert not (rig.home / "SCAT").exists()
     assert not rig.called("docker run")
     rig.nothing_left()
 
-    r = rig.run("start", SCAT_CHAT_A_COPY="Copy", **env, **STOP)
+    r = rig.run("start", SCATLAB_A_COPY="Copy", **env, **STOP)
     assert r.returncode == 0, r.stdout
     copy = rig.home / "SCAT" / "vault"
     assert (copy / "n.md").read_text() == "hello"
@@ -213,7 +213,7 @@ def test_vault_in_documents_refused_then_copied_on_ok(rig):
 def test_other_private_folders_refused(rig, folder):
     v = rig.home / folder / "v"
     v.mkdir(parents=True)
-    r = rig.run("start", SCAT_CHAT_VAULT=str(v), SCAT_CHAT_A_COPY="Cancel")
+    r = rig.run("start", SCATLAB_VAULT=str(v), SCATLAB_A_COPY="Cancel")
     assert r.returncode == 1 and not rig.called("docker run")
 
 
@@ -222,24 +222,24 @@ def test_copy_never_overwrites_existing_copy(rig):
     docs.mkdir(parents=True)
     (rig.home / "SCAT" / "vault").mkdir(parents=True)
     (rig.home / "SCAT" / "vault" / "keep.md").write_text("mine")
-    r = rig.run("start", SCAT_CHAT_VAULT=str(docs), SCAT_CHAT_A_COPY="Copy")
+    r = rig.run("start", SCATLAB_VAULT=str(docs), SCATLAB_A_COPY="Copy")
     assert r.returncode == 1 and "already exists" in r.stdout
     assert (rig.home / "SCAT" / "vault" / "keep.md").read_text() == "mine"
 
 
 def test_first_run_asks_for_the_vault_and_remembers_it(rig):
-    r = rig.run("start", SCAT_CHAT_VAULT=None, SCAT_CHAT_A_VAULT=str(rig.vault), **STOP)
+    r = rig.run("start", SCATLAB_VAULT=None, SCATLAB_A_VAULT=str(rig.vault), **STOP)
     assert r.returncode == 0, r.stdout
     assert (rig.state / "vault").read_text().strip() == str(rig.vault.resolve())
     # second run: the remembered vault is offered, and the coder says "Use it" (D-130: every start asks)
-    r = rig.run("start", SCAT_CHAT_VAULT=None, SCAT_CHAT_A_USE="Use it", **STOP)
+    r = rig.run("start", SCATLAB_VAULT=None, SCATLAB_A_USE="Use it", **STOP)
     assert r.returncode == 0, r.stdout
     assert f"Serve {rig.vault.resolve()}?" in r.stdout
     # change-vault forgets it and goes to the chooser; no answer: nothing starts
-    r = rig.run("change-vault", SCAT_CHAT_VAULT=None)
+    r = rig.run("change-vault", SCATLAB_VAULT=None)
     assert r.returncode == 1 and "No vault was chosen" in r.stdout
     assert not (rig.state / "vault").exists()
-    r = rig.run("start", SCAT_CHAT_VAULT=None)  # asks again; no answer: nothing starts
+    r = rig.run("start", SCATLAB_VAULT=None)  # asks again; no answer: nothing starts
     assert r.returncode == 1 and "No vault was chosen" in r.stdout
 
 
@@ -254,7 +254,7 @@ def test_colima_not_started_when_already_running_and_image_built_once(rig):
     assert len(rig.called("docker build")) == n  # the image is there: not built again
 
 
-PUBLISHED = "ghcr.io/dynamicalsystemsgroup/scat-kg-tools:"
+PUBLISHED = "ghcr.io/dynamicalsystemsgroup/scat-tools:"
 
 
 def package_version():
@@ -280,13 +280,13 @@ def test_no_published_image_builds_the_source_locally(rig):
     assert len(rig.called("docker build")) == 1
     assert rig.called("docker pull")[0] < rig.called("docker build")[0]
     assert rig.calls_list()[rig.called("docker run")[0]].endswith(
-        " scat-chat-mcp:"
-        + rig.calls_list()[rig.called("docker build")[0]].split("-t scat-chat-mcp:")[1].split()[0]
+        " scatlab-mcp:"
+        + rig.calls_list()[rig.called("docker build")[0]].split("-t scatlab-mcp:")[1].split()[0]
     )
 
 
 def test_missing_docker(rig):
-    r = rig.run("start", SCAT_CHAT_DOCKER=str(rig.bin / "nope"))
+    r = rig.run("start", SCATLAB_DOCKER=str(rig.bin / "nope"))
     assert r.returncode == 1
     assert "needs a container runtime" in r.stdout and AGAIN in r.stdout
     assert not rig.called("tailscale")
@@ -296,8 +296,8 @@ def test_docker_is_found_in_docker_desktops_own_folder(rig, tmp_path):
     folder = tmp_path / "Docker.app" / "Contents" / "Resources" / "bin"
     folder.mkdir(parents=True)
     shutil.copy(rig.bin / "docker", folder / "docker")
-    # no SCAT_CHAT_DOCKER: the launcher must find `docker` on its own, only in the folders it was told (not the real ones on this Mac)
-    r = rig.run("start", SCAT_CHAT_DOCKER=None, SCAT_CHAT_SEARCH_PATH=str(folder), **STOP)
+    # no SCATLAB_DOCKER: the launcher must find `docker` on its own, only in the folders it was told (not the real ones on this Mac)
+    r = rig.run("start", SCATLAB_DOCKER=None, SCATLAB_SEARCH_PATH=str(folder), **STOP)
     assert "needs a container runtime" not in r.stdout
     assert rig.called("docker build") and rig.called("docker run")
 
@@ -318,8 +318,8 @@ def test_docker_not_in_docker_desktops_folder_is_still_missing(rig, tmp_path):
     empty.mkdir()
     r = rig.run(
         "start",
-        SCAT_CHAT_DOCKER=None,
-        SCAT_CHAT_SEARCH_PATH=str(empty),
+        SCATLAB_DOCKER=None,
+        SCATLAB_SEARCH_PATH=str(empty),
         PATH=path_without_docker(tmp_path / "nodocker"),
     )
     assert r.returncode == 1 and "needs a container runtime" in r.stdout
@@ -327,7 +327,7 @@ def test_docker_not_in_docker_desktops_folder_is_still_missing(rig, tmp_path):
 
 
 def test_docker_desktops_real_folder_is_the_default():
-    text = (REPO / "deploy" / "scat-chat.sh").read_text()
+    text = (REPO / "deploy" / "scatlab.sh").read_text()
     assert "/Applications/Docker.app/Contents/Resources/bin" in text
     assert (
         "/usr/local/bin:/opt/homebrew/bin:/Applications/Docker.app/Contents/Resources/bin" in text
@@ -335,19 +335,19 @@ def test_docker_desktops_real_folder_is_the_default():
 
 
 def test_missing_colima_and_no_docker_running(rig):
-    r = rig.run("start", SCAT_CHAT_COLIMA=str(rig.bin / "nope"))
+    r = rig.run("start", SCATLAB_COLIMA=str(rig.bin / "nope"))
     assert r.returncode == 1 and "Docker Desktop is not running" in r.stdout
 
 
 def test_stop_that_cannot_confirm_says_what_to_click(rig):
     rig.run("start")
-    r = rig.run("stop", SCAT_CHAT_TAILSCALE=str(rig.bin / "nope"))
+    r = rig.run("stop", SCATLAB_TAILSCALE=str(rig.bin / "nope"))
     assert "could not confirm" in r.stdout
-    assert "choose Stop in the SCAT Chat menu to try again, or restart your Mac" in r.stdout
+    assert "choose Stop in the SCATLAB menu to try again, or restart your Mac" in r.stdout
 
 
 def test_missing_tailscale(rig):
-    r = rig.run("start", SCAT_CHAT_TAILSCALE=str(rig.bin / "nope"))
+    r = rig.run("start", SCATLAB_TAILSCALE=str(rig.bin / "nope"))
     assert r.returncode == 1 and "needs Tailscale" in r.stdout
     assert not rig.called("docker run")
     rig.nothing_left()
@@ -362,7 +362,7 @@ def test_tailscale_not_signed_in(rig):
 
 def test_https_not_enabled_shows_the_name_and_never_enables_it(rig):
     (rig.stub / "ts-status.json").write_text(STATUS_NO_HTTPS)
-    r = rig.run("start", SCAT_CHAT_A_OPEN="Open the page")
+    r = rig.run("start", SCATLAB_A_OPEN="Open the page")
     assert r.returncode == 1
     assert (
         '"fake-mac"' in r.stdout
@@ -375,13 +375,13 @@ def test_https_not_enabled_shows_the_name_and_never_enables_it(rig):
 
 
 def test_funnel_policy_missing_points_to_the_one_page_and_tears_down(rig):
-    r = rig.run("start", STUB_FUNNEL_BLOCKED="1", SCAT_CHAT_A_OPEN="Open the page")
+    r = rig.run("start", STUB_FUNNEL_BLOCKED="1", SCATLAB_A_OPEN="Open the page")
     assert r.returncode == 1
     assert "https://login.tailscale.com/f/funnel?node=nTEST123CNTRL" in r.stdout
     assert any(c.startswith("open https://login.tailscale.com/f/funnel") for c in rig.calls_list())
     assert "Stopped." in r.stdout
     rig.nothing_left()
-    assert rig.called("docker rm -f scat-chat")[-1] > rig.called("docker run")[0]
+    assert rig.called("docker rm -f scatlab")[-1] > rig.called("docker run")[0]
 
 
 def test_teardown_after_failed_container_start(rig):
@@ -393,7 +393,7 @@ def test_teardown_after_failed_container_start(rig):
 
 def test_teardown_when_server_never_answers(rig):
     rig.server.close()
-    r = rig.run("start", SCAT_CHAT_WAIT="2")
+    r = rig.run("start", SCATLAB_WAIT="2")
     assert r.returncode == 1 and "did not answer" in r.stdout
     rig.nothing_left()
     assert not rig.called("tailscale funnel --bg")
@@ -412,12 +412,12 @@ def test_every_stop_leaves_no_key_after_failed_start(rig):
 
 
 def test_script_syntax():
-    for f in ["scat-chat.sh", "build-app.sh"]:
+    for f in ["scatlab.sh", "build-app.sh"]:
         assert subprocess.run(["sh", "-n", str(REPO / "deploy" / f)], check=False).returncode == 0
     sc = shutil.which("shellcheck")
     if sc:
         assert (
-            subprocess.run([sc, str(REPO / "deploy" / "scat-chat.sh")], check=False).returncode == 0
+            subprocess.run([sc, str(REPO / "deploy" / "scatlab.sh")], check=False).returncode == 0
         )
 
 
@@ -438,10 +438,10 @@ def test_applescript_compiles_and_app_builds(tmp_path):
         text=True,
     )
     assert r.returncode == 0, r.stderr
-    app = tmp_path / "SCAT Chat.app"
+    app = tmp_path / "SCATLAB.app"
     assert (app / "Contents" / "MacOS" / "applet").exists()
     res = app / "Contents" / "Resources"
-    assert os.access(res / "scat-chat.sh", os.X_OK)
+    assert os.access(res / "scatlab.sh", os.X_OK)
     assert (res / "context" / "deploy" / "Dockerfile").exists()
-    assert (res / "context" / "src" / "scat_kg" / "mcp_server" / "server.py").exists()
+    assert (res / "context" / "src" / "scat_tools" / "mcp_server" / "server.py").exists()
     assert not list(res.rglob("__pycache__"))

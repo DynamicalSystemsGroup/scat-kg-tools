@@ -1,6 +1,6 @@
 """WP28-R4: the container image imports matplotlib and serves the drawing tools. Runs the real image, exactly as the
 launcher runs it (read-only, tmpfs /tmp, a non-root --user, the vault at /vault). Skipped unless docker answers AND
-SCAT_IMAGE_TEST=1 asks for it; SCAT_IMAGE names the image (default scat-kg-tools:ci);
+SCAT_IMAGE_TEST=1 asks for it; SCAT_IMAGE names the image (default scat-tools:ci);
 SCAT_IMAGE_TMP names where the vault copy goes when the docker VM does not share the system temp dir (Colima shares $HOME). Standard library only."""
 
 import os
@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-IMAGE = os.environ.get("SCAT_IMAGE", "scat-kg-tools:ci")
+IMAGE = os.environ.get("SCAT_IMAGE", "scat-tools:ci")
 EXAMPLES = Path(__file__).parents[2] / "contracts" / "examples"
 
 # Runs inside the image with the installed package: imports matplotlib, builds the server the entrypoint serves,
@@ -20,7 +20,7 @@ EXAMPLES = Path(__file__).parents[2] / "contracts" / "examples"
 PROBE = r"""
 import asyncio, base64
 import matplotlib
-from scat_kg.mcp_server.server import build
+from scat_tools.mcp_server.server import build
 
 async def main():
     import os

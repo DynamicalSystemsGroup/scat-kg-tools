@@ -19,7 +19,7 @@ Another model runner or another chat client that meets the same needs works the 
   instead of calling the tool.
 - **A client that speaks MCP.** The client connects to the SCAT MCP server over streamable HTTP and sends the key as
   `Authorization: Bearer <key>`. Open WebUI is one such client.
-- **The SCAT server, reachable from the client.** The server is the `scat-mcp` command, from the `scat-kg-tools`
+- **The SCAT server, reachable from the client.** The server is the `scat-mcp` command, from the `scat-tools`
   repository ([MCP server reference](reference/mcp.md)). It serves one vault folder, which you mount into its
   container. The client reaches it by address and port: here, by the server's name on a Docker network.
 - **The key.** The server answers 401 to a request without its key. Make a new key for each chat run and keep it in
@@ -45,8 +45,8 @@ narrative to `done`, so the model cannot either: you do that in Obsidian.
 
 Ollama runs the model, Open WebUI is the chat window, and the SCAT server serves your vault. All three run in Docker,
 on one Docker network, started by one file and a few terminal commands. The model is `qwen2.5:7b`; any model that can
-call tools takes its place. You need Docker running (Docker Desktop or Colima), a clone of `scat-kg-tools` in your home
-folder (the server is built from it: `git clone https://github.com/DynamicalSystemsGroup/scat-kg-tools ~/scat-kg-tools`),
+call tools takes its place. You need Docker running (Docker Desktop or Colima), a clone of `scat-tools` in your home
+folder (the server is built from it: `git clone https://github.com/DynamicalSystemsGroup/scat-tools ~/scat-tools`),
 and a vault in a folder in your home folder outside Documents, Desktop, Downloads and iCloud (macOS hides those from a
 container). The steps call the vault folder `~/my-vault` and keep the setup in `~/local-llm`. Use one terminal window
 for the steps that start with `export`: the variables and the key live only in it. Downloads at the first start: the
@@ -103,7 +103,7 @@ WebUI fetches for itself from huggingface.co. Your chat text goes only to the mo
    several GB of images and builds the server, which can take long on a slow connection. Later starts take seconds.
 
     ```text
-    export SCAT_SRC=~/scat-kg-tools
+    export SCAT_SRC=~/scat-tools
     export VAULT=~/my-vault
     export SCAT_MCP_KEY=$(openssl rand -hex 16)
     export UID_GID="$(id -u):$(id -g)"
@@ -183,7 +183,7 @@ WebUI fetches for itself from huggingface.co. Your chat text goes only to the mo
 
     ```text
     cd ~/my-vault
-    uv run --project ~/scat-kg-tools scat check
+    uv run --project ~/scat-tools scat check
     ```
 
     You should see the same two warnings and the last line `0 errors, 2 warnings`. Compare: do the warnings the model listed

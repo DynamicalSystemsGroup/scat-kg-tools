@@ -24,9 +24,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "checks"))
 import helpers as H
 import scat_harness as h
 
-from scat_kg.checks import check_vault
-from scat_kg.cli import _parser
-from scat_kg.vault import read_vault
+from scat_tools.checks import check_vault
+from scat_tools.cli import _parser
+from scat_tools.vault import read_vault
 
 ROOT = Path(__file__).resolve().parents[2]
 VALIDATOR = Draft202012Validator(h.SCHEMA)

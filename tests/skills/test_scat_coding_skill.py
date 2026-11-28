@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from scat_kg.tbox import load
+from scat_tools.tbox import load
 
 ROOT = Path(__file__).parents[2]
 SKILL = ROOT / "skills" / "scat-coding" / "SKILL.md"

@@ -52,7 +52,7 @@ def scat_argv(line: str) -> list[str]:
     """`uv run scat check` -> the tools under test."""
     for prefix in _SCAT:
         if line.startswith(prefix):
-            return [sys.executable, "-m", "scat_kg.cli", *shlex.split(line[len(prefix) :])]
+            return [sys.executable, "-m", "scat_tools.cli", *shlex.split(line[len(prefix) :])]
     raise AssertionError(
         f"not a `uv run scat ...` command: {line!r} (put non-runnable text in ```text)"
     )

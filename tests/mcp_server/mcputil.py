@@ -30,7 +30,7 @@ def put_stage(vault: Path, stage: str) -> None:
 
 def offer(vault: Path, tool: str) -> None:
     """Put the vault in the first stage that offers `tool`, unless its stage does already."""
-    from scat_kg import guides
+    from scat_tools import guides
 
     stages = guides.instance()["stages"]
     now = tomllib.loads((vault / "lifecycle.toml").read_text(encoding="utf-8"))["stage"]
@@ -78,14 +78,14 @@ def env_with(key: str | None) -> dict[str, str]:
 
 @contextlib.contextmanager
 def serve(vault: Path, key: str | None = KEY, log: Path | None = None):
-    """A real `python -m scat_kg.mcp_server` over HTTP on 127.0.0.1; yields its URL; always torn down."""
+    """A real `python -m scat_tools.mcp_server` over HTTP on 127.0.0.1; yields its URL; always torn down."""
     port = free_port()
     with open(log or os.devnull, "wb") as sink:
         proc = subprocess.Popen(
             [
                 sys.executable,
                 "-m",
-                "scat_kg.mcp_server",
+                "scat_tools.mcp_server",
                 "--vault",
                 str(vault),
                 "--port",

@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-from scat_kg.cli import _parser
+from scat_tools.cli import _parser
 
 ROOT = Path(__file__).resolve().parents[2]
 

@@ -11,7 +11,7 @@ LNT = DOCS / "leave-no-trace.md"
 # Where a step is done: the page defines these places, and each numbered step opens with one.
 PLACES = (
     "In the chat",
-    "In SCAT Chat",
+    "In SCATLAB",
     "In the menu bar",
     "In Finder",
     "In GitHub Desktop",
@@ -65,12 +65,12 @@ def test_chat_path_has_the_life_cycle_headings_in_order():
 
 
 def test_chat_path_uses_colima_and_names_docker_desktop_in_one_plain_line():
-    """The launcher uses Colima when it is installed and Docker Desktop otherwise (deploy/scat-chat.sh)."""
+    """The launcher uses Colima when it is installed and Docker Desktop otherwise (deploy/scatlab.sh)."""
     text = CHAT.read_text(encoding="utf-8")
     assert text.index("Colima") < text.index("Docker Desktop")
     flat = " ".join(text.split())
     assert (
-        "If Docker Desktop is already installed and Colima is not, SCAT Chat uses Docker Desktop instead"
+        "If Docker Desktop is already installed and Colima is not, SCATLAB uses Docker Desktop instead"
         in flat
     )
     assert "untested" not in text
@@ -137,7 +137,7 @@ def test_no_prompt_residue_in_the_guides():
 
 def test_stop_is_an_alert_with_its_titles():
     chat = CHAT.read_text(encoding="utf-8")
-    for title in ("SCAT Chat stopped", "SCAT Chat has a problem"):
+    for title in ("SCATLAB stopped", "SCATLAB has a problem"):
         assert f'"{title}"' in chat
 
 
@@ -195,11 +195,11 @@ def _all_steps(path):
     ]
 
 
-def test_no_guide_calls_scat_chat_a_window():
-    """WP22 (D-130): SCAT Chat is a menu-bar app with no window; no stale launcher-window wording."""
+def test_no_guide_calls_scatlab_a_window():
+    """WP22 (D-130): SCATLAB is a menu-bar app with no window; no stale launcher-window wording."""
     stale = re.compile(
         r"(?i)copy key and stop|leave the window|the window that says|the window says|launcher window"
-        r"|scat chat window|in its window|in the window"
+        r"|scatlab window|in its window|in the window"
     )
     for path in (CHAT, LNT, ROOT / "acceptance" / "walkthrough-chat.md"):
         text = path.read_text(encoding="utf-8")
@@ -208,7 +208,7 @@ def test_no_guide_calls_scat_chat_a_window():
         bad = [
             s
             for s in _all_steps(path)
-            if re.match(r"\*\*In (SCAT Chat|the menu bar):\*\*", s) and "window" in s
+            if re.match(r"\*\*In (SCATLAB|the menu bar):\*\*", s) and "window" in s
         ]
         assert not bad, bad
 

@@ -2,9 +2,9 @@
 
 import pytest
 
-from scat_kg.checks import fixes, text
-from scat_kg.cli import _parser
-from scat_kg.fix import Command, Edit
+from scat_tools.checks import fixes, text
+from scat_tools.cli import _parser
+from scat_tools.fix import Command, Edit
 
 NAMES = ["x", "safe-handling", "a-b-c"]
 
@@ -28,18 +28,18 @@ def test_stub_phrase_equals_the_old_helper(name, key):
 
 def test_the_commands_carry_argv_and_repl():
     assert fixes.set_status("x", "done") == Command(
-        ("set-status", "x", "done"), 'scat_kg.set_status("x", "done")'
+        ("set-status", "x", "done"), 'scat_tools.set_status("x", "done")'
     )
     assert fixes.stub("x", "concern").argv == ("stub", "x", "--type", "concern")
     assert fixes.index().argv == ("index",)
 
 
 def test_index_and_placeholder_phrases():
-    assert fixes.phrase(fixes.index()) == "`scat index` (REPL: `scat_kg.index()`)"
+    assert fixes.phrase(fixes.index()) == "`scat index` (REPL: `scat_tools.index()`)"
     assert (
         fixes.phrase(fixes.stub("<node you choose>", "group", slot="<node you choose>"))
         == "`scat stub <node you choose> --type group` "
-        '(REPL: `scat_kg.stub("<node you choose>", type="group")`)'
+        '(REPL: `scat_tools.stub("<node you choose>", type="group")`)'
     )
 
 

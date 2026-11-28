@@ -11,7 +11,7 @@ from docs_runner import (
     scat_argv,
 )
 
-from scat_kg.cli import _parser
+from scat_tools.cli import _parser
 
 PAGE = """# T
 
@@ -118,7 +118,7 @@ def test_synthetic_page_runs_against_the_template(template, tmp_path):
     scratch = tmp_path / "vault"
     copy_template(template, scratch)
     assert (scratch / "scat.toml").exists() and not (scratch / ".git").exists()
-    md = "```python\nimport scat_kg\nr = scat_kg.check()\n```\n\n```bash\nuv run scat check\nuv run scat status\n```\n"
+    md = "```python\nimport scat_tools\nr = scat_tools.check()\n```\n\n```bash\nuv run scat check\nuv run scat status\n```\n"
     run_page("synthetic.md", md, scratch)
 
 

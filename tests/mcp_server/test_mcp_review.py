@@ -7,8 +7,8 @@ from pathlib import Path
 import pytest
 from mcputil import call, put_stage, serve, snapshot
 
-import scat_kg
-from scat_kg.cli import main
+import scat_tools
+from scat_tools.cli import main
 
 G6 = Path(__file__).resolve().parents[2] / "research" / "node-pages" / "vault" / "disallowed"
 
@@ -25,7 +25,7 @@ def served(tmp_path_factory):
 def test_the_tool_returns_the_python_document(served):
     url, vault = served
     got = call(url, "review", {})
-    assert got == scat_kg.review(root=vault).to_dict()
+    assert got == scat_tools.review(root=vault).to_dict()
     assert got["operation"] == "review" and got["schema_version"] == 3
     assert got["mode"] == "disallowed" and len(got["proposals"]) == 9 and len(got["reread"]) == 4
 
@@ -34,7 +34,7 @@ def test_the_cli_the_python_call_and_the_tool_give_one_document(served, capsys):
     url, vault = served
     assert main(["review", "--root", str(vault), "--json"]) == 0
     from_cli = json.loads(capsys.readouterr().out)
-    assert from_cli == scat_kg.review(root=vault).to_dict() == call(url, "review", {})
+    assert from_cli == scat_tools.review(root=vault).to_dict() == call(url, "review", {})
 
 
 def test_the_tool_writes_nothing(served):

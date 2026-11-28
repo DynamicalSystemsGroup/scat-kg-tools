@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-import scat_kg
+import scat_tools
 
 VAULT = Path(__file__).resolve().parents[1] / "research" / "node-pages" / "vault"
 MODES = ("disallowed", "optional", "required")
@@ -16,7 +16,7 @@ MODES = ("disallowed", "optional", "required")
 
 @pytest.fixture(scope="module")
 def graphs():
-    return {m: scat_kg.load(root=VAULT / m) for m in MODES}
+    return {m: scat_tools.load(root=VAULT / m) for m in MODES}
 
 
 @pytest.fixture(scope="module")
@@ -44,7 +44,7 @@ def narratives_of_edge_ends(g, node):
 
 @pytest.mark.parametrize("mode", MODES)
 def test_check_has_no_errors(mode):
-    result = scat_kg.check(root=VAULT / mode)
+    result = scat_tools.check(root=VAULT / mode)
     assert result.mode == mode
     assert not result.errors, result.report.render()
 

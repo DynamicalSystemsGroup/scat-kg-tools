@@ -71,7 +71,7 @@ def test_getting_started_names_the_mode_key_beside_the_cap():
 
 def test_python_reference_shows_attribution():
     text = read("reference/api.md")
-    assert "## scat_kg.attribution" in text
+    assert "## scat_tools.attribution" in text
 
 
 def test_the_template_declares_the_disallowed_mode(template):

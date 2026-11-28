@@ -11,9 +11,9 @@ import pytest
 from jsonschema import Draft202012Validator
 from viewutil import narrative, row, tree_hash
 
-import scat_kg
-from scat_kg import cli, draw
-from scat_kg.graph import load
+import scat_tools
+from scat_tools import cli, draw
+from scat_tools.graph import load
 
 SCHEMA = json.loads(
     (Path(__file__).resolve().parents[2] / "contracts" / "machine-interface.schema.json").read_text(
@@ -35,10 +35,10 @@ def excluded_of(view):
 
 def every_view(root):
     return [
-        scat_kg.fingerprint(root=root),
-        scat_kg.edge_table("holds", root=root),
-        scat_kg.layered(root=root),
-        scat_kg.trace("farmers", root=root),
+        scat_tools.fingerprint(root=root),
+        scat_tools.edge_table("holds", root=root),
+        scat_tools.layered(root=root),
+        scat_tools.trace("farmers", root=root),
     ]
 
 
@@ -72,15 +72,18 @@ def test_an_uncoded_narrative_is_in_no_view_and_every_view_that_draws_all_report
 
 def test_an_uncoded_narrative_is_named_by_check_as_excluded(make):
     root = make(ghost())
-    found = [p for p in scat_kg.check(root=root).problems if p.rule == "SCAT-UNCODED"]
+    found = [p for p in scat_tools.check(root=root).problems if p.rule == "SCAT-UNCODED"]
     assert [(p.file, p.severity) for p in found] == [(GHOST, "warning")]
     assert "excluded" in found[0].what and "node page" in found[0].fix
-    assert scat_kg.check(root=root).ok  # a warning: it never blocks
+    assert scat_tools.check(root=root).ok  # a warning: it never blocks
 
 
 def test_naming_an_uncoded_narrative_in_a_view_is_refused_and_says_how_to_include_it(make):
     root = make(ghost())
-    for out in (scat_kg.fingerprint("ghost", root=root), scat_kg.layered(["ghost"], root=root)):
+    for out in (
+        scat_tools.fingerprint("ghost", root=root),
+        scat_tools.layered(["ghost"], root=root),
+    ):
         assert not out.ok
         r = out.to_dict()["refused"][0]
         assert r["subject"] == "ghost" and "excluded" in r["why"]
@@ -94,12 +97,12 @@ def test_a_row_of_an_uncoded_narrative_holds_no_edge_up(make):
     g = load(root)
     assert [x.narrative for x in g.excluded] == ["ghost"]
     assert g.skipped == () and {e.key for e in g.edges} == {e.key for e in load(make()).edges}
-    assert scat_kg.edge_table("holds", root=root).ok
+    assert scat_tools.edge_table("holds", root=root).ok
 
 
 def test_an_export_leaves_out_an_uncoded_narrative_and_notes_it(make, tmp_path):
     out = tmp_path / "tables"
-    with_ghost = scat_kg.export_edges(out, root=make(ghost()))
+    with_ghost = scat_tools.export_edges(out, root=make(ghost()))
     assert with_ghost.ok and any("excluded ghost" in n and HOW in n for n in with_ghost.notes)
     assert "ghost" not in "".join(p.read_text() for p in out.iterdir())
 
@@ -131,8 +134,8 @@ def test_a_narrative_coded_by_a_row_end_is_included(make):
     g = load(root)
     assert g.excluded == () and g.narrative("ghost").nodes == ("towns", "water")
     assert [e.key.from_node for e in g.edges if "ghost" in e.narratives] == ["towns"]
-    assert "SCAT-UNCODED" not in {p.rule for p in scat_kg.check(root=root).problems}
-    assert excluded_of(scat_kg.fingerprint(root=root)) == {}
+    assert "SCAT-UNCODED" not in {p.rule for p in scat_tools.check(root=root).problems}
+    assert excluded_of(scat_tools.fingerprint(root=root)) == {}
 
 
 def test_a_narrative_coded_by_an_account_link_alone_is_included_and_conformant(make):
@@ -142,11 +145,11 @@ def test_a_narrative_coded_by_an_account_link_alone_is_included_and_conformant(m
     g = load(root)
     assert g.excluded == () and g.narrative("ghost").nodes == ("towns",)
     assert g.narrative("ghost").edges == ()
-    report = scat_kg.check("ghost", root=root)
+    report = scat_tools.check("ghost", root=root)
     assert report.errors == () and {p.rule for p in report.problems} <= {"SCAT-NOEDGES"}
-    one = scat_kg.fingerprint("ghost", root=root).to_dict()["narratives"][0]
+    one = scat_tools.fingerprint("ghost", root=root).to_dict()["narratives"][0]
     assert [n["name"] for n in one["nodes"]] == ["towns"] and one["edges"] == []
-    assert scat_kg.set_status("ghost", "done", root=root).ok
+    assert scat_tools.set_status("ghost", "done", root=root).ok
 
 
 def test_a_link_in_a_list_beyond_the_text_codes_a_narrative(make):
@@ -170,8 +173,8 @@ def test_adding_one_link_includes_an_excluded_narrative(make, tmp_path):
     assert g.excluded == () and g.narrative("ghost").nodes == ("cost",)
     for view in every_view(root):
         assert view.to_dict()["excluded"] == []
-    assert "ghost" in [n["name"] for n in scat_kg.fingerprint(root=root).to_dict()["narratives"]]
-    assert "SCAT-UNCODED" not in {p.rule for p in scat_kg.check(root=root).problems}
+    assert "ghost" in [n["name"] for n in scat_tools.fingerprint(root=root).to_dict()["narratives"]]
+    assert "SCAT-UNCODED" not in {p.rule for p in scat_tools.check(root=root).problems}
 
 
 def test_an_edge_never_waits_on_an_excluded_narrative(make):
@@ -196,7 +199,7 @@ def test_the_view_documents_with_an_excluded_record_validate(make, which):
 
 
 def test_the_schema_requires_each_part_of_the_excluded_record(make):
-    doc = scat_kg.fingerprint(root=make(ghost())).to_dict()
+    doc = scat_tools.fingerprint(root=make(ghost())).to_dict()
     for field in ("name", "file", "fix"):
         broken = json.loads(json.dumps(doc))
         del broken["excluded"][0][field]
@@ -210,7 +213,7 @@ def test_the_schema_requires_each_part_of_the_excluded_record(make):
 
 
 def test_a_view_document_without_the_field_still_validates_and_the_version_is_unchanged(make):
-    doc = scat_kg.fingerprint(root=make()).to_dict()
+    doc = scat_tools.fingerprint(root=make()).to_dict()
     del doc["excluded"]
     assert VALIDATOR.is_valid(doc)  # adding a field keeps the version (R-16)
     assert doc["schema_version"] == 3
@@ -228,5 +231,5 @@ def test_the_checking_leaves_the_vault_as_it_was(make):
     root = make(ghost())
     before = tree_hash(root)
     every_view(root)
-    scat_kg.check(root=root)
+    scat_tools.check(root=root)
     assert tree_hash(root) == before

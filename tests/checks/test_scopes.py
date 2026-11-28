@@ -21,8 +21,8 @@ from helpers import (
     vault,
 )
 
-import scat_kg
-from scat_kg.checks import (
+import scat_tools
+from scat_tools.checks import (
     DEFERRED,
     PAGE_RULES,
     SEVERITY,
@@ -32,7 +32,7 @@ from scat_kg.checks import (
     check_vault,
     neighborhood,
 )
-from scat_kg.vault import read_vault
+from scat_tools.vault import read_vault
 
 STAFF = "group/staff.md"
 TECH = "technology/booking-app.md"
@@ -263,14 +263,14 @@ def test__checks_leave_the_directory_unchanged(make_vault):
     check_vault(v)
     check_page(v, STAFF)
     check_neighborhood(v, DESK)
-    scat_kg.check(root=root)
+    scat_tools.check(root=root)
     assert snapshot(root) == before
 
 
 def test__checks_leave_the_example_vault_unchanged():
     before = snapshot(EXAMPLES)
     check_vault(read_vault(EXAMPLES))
-    scat_kg.check(root=EXAMPLES)
+    scat_tools.check(root=EXAMPLES)
     assert snapshot(EXAMPLES) == before
 
 

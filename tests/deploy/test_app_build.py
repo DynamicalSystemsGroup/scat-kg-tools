@@ -11,8 +11,8 @@ import pytest
 from conftest import REPO
 
 DEPLOY = REPO / "deploy"
-APPLET = (DEPLOY / "SCAT Chat.applescript").read_text()
-LAUNCHER = (DEPLOY / "scat-chat.sh").read_text()
+APPLET = (DEPLOY / "scatlab.applescript").read_text()
+LAUNCHER = (DEPLOY / "scatlab.sh").read_text()
 MAC_TOOLS = ("osacompile", "plutil", "codesign")
 
 
@@ -118,15 +118,15 @@ def built(tmp_path_factory):
 def test_the_build_gives_a_bundle_in_the_folder_it_was_given(built):
     out, r, _ = built
     assert r.returncode == 0, r.stderr
-    assert [p.name for p in out.iterdir()] == ["SCAT Chat.app"]
-    assert (out / "SCAT Chat.app" / "Contents" / "MacOS" / "applet").exists()
+    assert [p.name for p in out.iterdir()] == ["SCATLAB.app"]
+    assert (out / "SCATLAB.app" / "Contents" / "MacOS" / "applet").exists()
 
 
 @needs_mac
 def test_the_app_is_menu_bar_only(built):
     out, r, _ = built
     assert r.returncode == 0, r.stderr
-    plist = out / "SCAT Chat.app" / "Contents" / "Info.plist"
+    plist = out / "SCATLAB.app" / "Contents" / "Info.plist"
     p = subprocess.run(
         ["plutil", "-extract", "LSUIElement", "raw", "-o", "-", str(plist)],
         check=False, capture_output=True, text=True,
@@ -139,7 +139,7 @@ def test_the_signature_verifies_after_the_plist_edit(built):
     out, r, _ = built
     assert r.returncode == 0, r.stderr
     c = subprocess.run(
-        ["codesign", "--verify", "--strict", str(out / "SCAT Chat.app")],
+        ["codesign", "--verify", "--strict", str(out / "SCATLAB.app")],
         check=False, capture_output=True, text=True,
     )  # fmt: skip
     assert c.returncode == 0, c.stderr
@@ -152,3 +152,25 @@ def test_the_build_writes_nothing_outside_its_folder(built):
     assert tree(DEPLOY) == before["deploy"]  # nothing in the checkout (no deploy/build)
     assert not (DEPLOY / "build").exists()
     assert sorted(p.name for p in Path("/Applications").glob("SCAT*")) == before["applications"]
+
+
+@needs_mac
+def test_the_app_is_named_scatlab_and_its_launcher_runs_from_inside_the_bundle(built, tmp_path):
+    """WP37-R2: the displayed name is SCATLAB; the bundle carries the launcher and the script it sources, and the
+    launcher answers from there (status changes nothing)."""
+    out, r, _ = built
+    assert r.returncode == 0, r.stderr
+    app = out / "SCATLAB.app"
+    plist = app / "Contents" / "Info.plist"
+    name = subprocess.run(
+        ["plutil", "-extract", "CFBundleName", "raw", "-o", "-", str(plist)],
+        check=False, capture_output=True, text=True,
+    )  # fmt: skip
+    assert name.stdout.strip() == "SCATLAB", name.stderr
+    res = app / "Contents" / "Resources"
+    assert (res / "scatlab.sh").exists() and (res / "retire-old.sh").exists()
+    s = subprocess.run(
+        ["sh", str(res / "scatlab.sh"), "status"],
+        check=False, capture_output=True, text=True, env={"PATH": "/usr/bin:/bin", "HOME": str(tmp_path)},
+    )  # fmt: skip
+    assert s.returncode == 1 and s.stdout.strip() == "SCATLAB is not running.", s.stderr

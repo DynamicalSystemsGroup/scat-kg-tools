@@ -5,8 +5,8 @@ import struct
 from test_draw import columns, lines, said, texts
 from viewutil import narrative, row
 
-import scat_kg
-from scat_kg import draw
+import scat_tools
+from scat_tools import draw
 
 ALL = [
     row("holds", "farmers", "water"),
@@ -42,8 +42,8 @@ def test_a_narrative_with_no_kind_has_all_four_columns_and_no_note(make):
 
 
 def test_a_dropped_columns_nodes_are_still_in_the_views_data(vault):
-    wet = scat_kg.fingerprint("wet", root=vault).to_dict()["narratives"][0]
-    dry = scat_kg.fingerprint("dry", root=vault).to_dict()["narratives"][0]
+    wet = scat_tools.fingerprint("wet", root=vault).to_dict()["narratives"][0]
+    dry = scat_tools.fingerprint("dry", root=vault).to_dict()["narratives"][0]
     assert [n["name"] for n in wet["nodes"] if n["type"] == "group"] == ["farmers"]
     assert [n["name"] for n in dry["nodes"] if n["type"] == "technology"] == ["probe"]
     assert len(dry["edges"]) == 3
@@ -67,7 +67,7 @@ def test_candidates_to_a_dropped_column_are_not_drawn(make):
             )
         }
     )
-    view = scat_kg.fingerprint("arch", candidates=True, root=v).to_dict()["narratives"][0]
+    view = scat_tools.fingerprint("arch", candidates=True, root=v).to_dict()["narratives"][0]
     assert any(c["from"] == "towns" for c in view["candidates"])
     svg = draw.fingerprint("arch", candidates=True, root=v).svg()
     assert not any(dashed for *_, dashed in lines(svg))

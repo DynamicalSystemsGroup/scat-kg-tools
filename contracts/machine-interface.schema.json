@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://scat-kg-tools.invalid/contracts/machine-interface.schema.json",
+  "$id": "https://scat-tools.invalid/contracts/machine-interface.schema.json",
   "title": "scat machine interface, schema_version 3",
   "description": "The one JSON document a scat command prints with --json, and the dict a Python result's to_dict() returns. Every object allows extra fields: adding a field does not change schema_version. The set of rule ids is not enumerated here, only its pattern. Version 3 adds the `evidence` view; the layout is that of version 2 (D-088): pages are group, concern, affordance, technology and narrative; an edge is a row of a narrative table, so record-edge and remove-edge results name the edge and the rows they touched. kind is check, status, operation, view, guide or stage (guide and stage were added without a version bump: they are new kinds, and no existing document changes). A refusal, even by check or status, gives kind operation with ok false. ok is false on an error or a refusal; warnings keep it true. The exit code is 0 when ok, 1 otherwise, and 2 for a command line that cannot be read. Stdout holds exactly one document; text for humans goes to stderr. Line numbers count the file's lines, front matter included; columns count characters, from 1.",
   "oneOf": [
@@ -97,7 +97,7 @@
     },
 
     "GuideResult": {
-      "description": "What `scat guide [STAGE]` and scat_kg.guide return for a stage or the index: the text of the guide, the same text everywhere. It needs no vault, so mode is null. An unknown stage is an OperationResult with operation guide and ok false.",
+      "description": "What `scat guide [STAGE]` and scat_tools.guide return for a stage or the index: the text of the guide, the same text everywhere. It needs no vault, so mode is null. An unknown stage is an OperationResult with operation guide and ok false.",
       "type": "object",
       "required": ["schema_version", "kind", "operation", "ok", "mode", "stage", "text", "docs", "tools", "exits"],
       "properties": {

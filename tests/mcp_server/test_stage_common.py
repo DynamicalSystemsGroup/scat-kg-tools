@@ -9,8 +9,8 @@ from jsonschema import Draft202012Validator
 from mcp.shared.memory import create_connected_server_and_client_session as connected
 from mcputil import copy_vault, put_stage
 
-from scat_kg import guides
-from scat_kg.mcp_server.server import build
+from scat_tools import guides
+from scat_tools.mcp_server.server import build
 
 SCHEMA = json.loads(
     (Path(__file__).parents[2] / "contracts" / "machine-interface.schema.json").read_text("utf-8")

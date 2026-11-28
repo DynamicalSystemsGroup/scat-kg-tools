@@ -5,7 +5,7 @@ import re
 import pytest
 from mcputil import ASSISTANT, call, copy_vault, serve, snapshot, with_session
 
-from scat_kg.mcp_server import prompts
+from scat_tools.mcp_server import prompts
 
 DONE_NARRATIVE = "saturday-at-the-lending-desk"  # done in the examples
 DRAFT_NARRATIVE = "funders-meeting"  # draft
@@ -257,7 +257,7 @@ def test_importing_the_core_does_not_import_the_server_or_mcp():
     import sys
 
     code = (
-        "import sys, scat_kg; "
+        "import sys, scat_tools; "
         "assert not [m for m in sys.modules if m == 'mcp' or m.startswith('mcp.') or 'mcp_server' in m]"
     )
     assert subprocess.run([sys.executable, "-c", code], check=False).returncode == 0

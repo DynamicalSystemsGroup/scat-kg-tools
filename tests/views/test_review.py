@@ -15,9 +15,9 @@ import pytest
 from jsonschema import Draft202012Validator
 from viewutil import base_files, narrative, page, tree_hash, write
 
-import scat_kg
-from scat_kg.cli import main
-from scat_kg.ops.result import Result
+import scat_tools
+from scat_tools.cli import main
+from scat_tools.ops.result import Result
 
 ROOT = Path(__file__).resolve().parents[2]
 NODE_PAGES = ROOT / "research" / "node-pages" / "vault"
@@ -65,7 +65,7 @@ def build(tmp, narratives, descriptions=None, aliases=None, pad=0):
 
 
 def doc(root):
-    view = scat_kg.review(root=root)
+    view = scat_tools.review(root=root)
     assert view.ok, str(view)
     d = view.to_dict()
     assert VALIDATOR.is_valid(d), list(VALIDATOR.iter_errors(d))[:3]
@@ -433,7 +433,7 @@ def test_the_document_carries_the_mode(seeded):
 
 def rename_everything(root, dest):
     shutil.copytree(root, dest)
-    graph = scat_kg.load(dest)
+    graph = scat_tools.load(dest)
     names = sorted(n.name for ns in graph.nodes.values() for n in ns)
     new = {
         n: f"p{len(names) - i:04d}" for i, n in enumerate(names)
@@ -479,7 +479,7 @@ def test_renaming_every_node_page_and_link_leaves_the_proposals_the_same(name, t
     before = doc(VAULTS[name])
     copy = tmp_path / "renamed"
     new = rename_everything(VAULTS[name], copy)
-    assert not scat_kg.check(root=copy).errors
+    assert not scat_tools.check(root=copy).errors
     after = doc(copy)
     assert len(after["proposals"]) == len(before["proposals"]) == COUNTS[name]
     expect, got = mapped(before, new), mapped(after, {v: v for v in new.values()})
@@ -492,7 +492,7 @@ def test_renaming_every_node_page_and_link_leaves_the_proposals_the_same(name, t
 
 def test_the_text_form_begins_with_the_mode_and_reads_as_a_prompt(capsys):
     root = VAULTS["disallowed"]
-    text = str(scat_kg.review(root=root))
+    text = str(scat_tools.review(root=root))
     assert text.startswith(
         "attribution mode: disallowed\nreview: 9 page pairs that may be one node\n"
     )
@@ -506,14 +506,14 @@ def test_the_text_form_begins_with_the_mode_and_reads_as_a_prompt(capsys):
 def test_the_cli_json_equals_python(capsys):
     root = VAULTS["disallowed"]
     assert main(["review", "--root", str(root), "--json"]) == 0
-    assert json.loads(capsys.readouterr().out) == scat_kg.review(root=root).to_dict()
+    assert json.loads(capsys.readouterr().out) == scat_tools.review(root=root).to_dict()
 
 
 def test_it_writes_nothing(tmp_path):
     copy = tmp_path / "v"
     shutil.copytree(VAULTS["disallowed"], copy)
     before = tree_hash(copy)
-    scat_kg.review(root=copy)
+    scat_tools.review(root=copy)
     assert tree_hash(copy) == before
 
 
@@ -527,7 +527,7 @@ def test_an_uncoded_narrative_is_not_used_and_is_listed(tmp_path):
 
 
 def test_a_missing_vault_is_refused(tmp_path):
-    r = scat_kg.review(root=tmp_path / "nowhere")
+    r = scat_tools.review(root=tmp_path / "nowhere")
     assert isinstance(r, Result) and not r.ok
 
 
@@ -536,7 +536,7 @@ def test_an_error_in_a_page_drawn_refuses(tmp_path):
         tmp_path / "v",
         base_files() | {"concern/water.md": page("concern", "Water", "done", "", "Body.\n")},
     )
-    r = scat_kg.review(root=root)
+    r = scat_tools.review(root=root)
     assert not r.ok and "error" in str(r)
     assert VALIDATOR.is_valid(r.to_dict())
 
@@ -555,16 +555,16 @@ def test_a_row_that_tells_no_edge_refuses(tmp_path):
             )
         },
     )
-    assert not scat_kg.review(root=root).ok
+    assert not scat_tools.review(root=root).ok
 
 
 def test_the_view_takes_no_argument():
     with pytest.raises(TypeError):
-        scat_kg.review("water")  # type: ignore[misc]
+        scat_tools.review("water")  # type: ignore[misc]
 
 
 def test_the_module_compares_no_names():
-    source = (ROOT / "src" / "scat_kg" / "review.py").read_text("utf-8").lower()
+    source = (ROOT / "src" / "scat_tools" / "review.py").read_text("utf-8").lower()
     for word in (
         "difflib",
         "levenshtein",

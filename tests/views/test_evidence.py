@@ -12,9 +12,9 @@ import pytest
 from jsonschema import Draft202012Validator
 from viewutil import base_files, narrative, page, row, tree_hash, write
 
-import scat_kg
-from scat_kg.cli import main
-from scat_kg.ops.result import Result
+import scat_tools
+from scat_tools.cli import main
+from scat_tools.ops.result import Result
 
 ROOT = Path(__file__).resolve().parents[2]
 RANGE = ROOT / "research" / "range" / "koi" / "vault"
@@ -47,7 +47,7 @@ def built(tmp_path):
 
 
 def doc(root, node):
-    view = scat_kg.evidence(node, root=root)
+    view = scat_tools.evidence(node, root=root)
     assert view.ok, str(view)
     return view.to_dict()
 
@@ -166,24 +166,30 @@ def test_a_narrative_that_links_the_node_and_tells_no_edge_for_it_is_flagged(bui
     d = doc(built, "farmers")
     flags = {n["name"]: n["tells_edge"] for n in d["narratives"]}
     assert flags == {"diamond": True, "dry": True, "empty": False, "long": True, "wet": True}
-    text = str(scat_kg.evidence("farmers", root=built))
+    text = str(scat_tools.evidence("farmers", root=built))
     assert "\n    empty [draft]; tells no edge for this node\n" in text
     assert text.count("tells no edge for this node") == 1
 
 
 def test_the_text_form_starts_with_the_mode_and_marks_the_sentence(built):
-    text = str(scat_kg.evidence("farmers", root=built))
+    text = str(scat_tools.evidence("farmers", root=built))
     lines = text.split("\n")
     assert lines[0] == "attribution mode: disallowed"
     assert lines[1] == "evidence farmers (group, draft): 5 narratives, 2 edges"
     assert (
-        str(scat_kg.evidence("cost", root=built)).split("\n")[1].endswith(": 2 narratives, 3 edges")
+        str(scat_tools.evidence("cost", root=built))
+        .split("\n")[1]
+        .endswith(": 2 narratives, 3 edges")
     )
     assert (
-        str(scat_kg.evidence("idle", root=built)).split("\n")[1].endswith(": 0 narratives, 0 edges")
+        str(scat_tools.evidence("idle", root=built))
+        .split("\n")[1]
+        .endswith(": 0 narratives, 0 edges")
     )
     assert (
-        str(scat_kg.evidence("radio", root=built)).split("\n")[1].endswith(": 1 narrative, 1 edge")
+        str(scat_tools.evidence("radio", root=built))
+        .split("\n")[1]
+        .endswith(": 1 narrative, 1 edge")
     )
     assert (
         "        >>The [[farmers]] spoke first.<< They blamed the delay on the pumps, and" in text
@@ -203,13 +209,13 @@ def test_a_node_no_narrative_links_has_nothing_and_says_so(built):
     assert d["narratives"] == [] and d["edges"] == []
     assert all(v == [] for v in d["adjacent"].values())
     assert "    none\n  edges\n    none\n  adjacent nodes\n    none" in str(
-        scat_kg.evidence("idle", root=built)
+        scat_tools.evidence("idle", root=built)
     )
 
 
 def test_it_writes_nothing(built):
     before = tree_hash(built)
-    scat_kg.evidence("water", root=built)
+    scat_tools.evidence("water", root=built)
     assert tree_hash(built) == before
 
 
@@ -235,8 +241,8 @@ def contributor_vault(tmp_path):
     ],
 )
 def test_a_name_that_is_not_a_node_page_is_refused_with_a_fix(tmp_path, name, why):
-    r = scat_kg.evidence(name, root=contributor_vault(tmp_path))
-    assert not r.ok and isinstance(r, Result) and not isinstance(r, scat_kg.View)
+    r = scat_tools.evidence(name, root=contributor_vault(tmp_path))
+    assert not r.ok and isinstance(r, Result) and not isinstance(r, scat_tools.View)
     d = r.to_dict()
     assert d["kind"] == "operation" and d["operation"] == "evidence" and d["ok"] is False
     assert why in d["refused"][0]["why"]
@@ -245,14 +251,14 @@ def test_a_name_that_is_not_a_node_page_is_refused_with_a_fix(tmp_path, name, wh
 
 def test_a_name_carried_by_two_pages_is_refused(tmp_path):
     root = write(tmp_path / "v", base_files() | {"concern/other/water.md": page("concern", "Twin")})
-    r = scat_kg.evidence("water", root=root)
+    r = scat_tools.evidence("water", root=root)
     assert not r.ok and "more than one page has this name" in str(r)
     assert "Fix: rename one of the pages" in str(r)
 
 
 @pytest.mark.parametrize("value", [5, None, ["water"], b"water", {"water"}])
 def test_a_value_that_is_not_text_is_refused_with_a_fix(built, value):
-    r = scat_kg.evidence(value, root=built)
+    r = scat_tools.evidence(value, root=built)
     assert not r.ok
     d = r.to_dict()
     assert d["kind"] == "operation" and len(d["refused"]) == 1
@@ -262,13 +268,13 @@ def test_a_value_that_is_not_text_is_refused_with_a_fix(built, value):
 def test_a_vault_with_an_error_in_a_page_it_draws_is_refused_with_the_problems(tmp_path):
     bad = narrative("Bad", "Only [[water]] here.", ["| farmers | holds | [[water]] | |"])
     root = write(tmp_path / "v", base_files() | {"narrative/bad.md": bad})
-    r = scat_kg.evidence("water", root=root)
+    r = scat_tools.evidence("water", root=root)
     assert not r.ok and "bad.md row 1" in str(r)
-    assert scat_kg.evidence("idle", root=root).ok  # a page it does not draw is not its business
+    assert scat_tools.evidence("idle", root=root).ok  # a page it does not draw is not its business
 
 
 def test_a_missing_vault_folder_is_refused(tmp_path):
-    r = scat_kg.evidence("water", root=tmp_path / "gone")
+    r = scat_tools.evidence("water", root=tmp_path / "gone")
     assert not r.ok and "the vault folder does not exist" in str(r)
 
 
@@ -289,7 +295,7 @@ def test_the_range_vault_documents_validate():
 
 
 def test_a_refusal_validates(built):
-    assert list(VALIDATOR.iter_errors(scat_kg.evidence("nope", root=built).to_dict())) == []
+    assert list(VALIDATOR.iter_errors(scat_tools.evidence("nope", root=built).to_dict())) == []
 
 
 @pytest.mark.parametrize(

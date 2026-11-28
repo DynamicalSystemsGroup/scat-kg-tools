@@ -2,9 +2,9 @@ import os
 from collections import Counter
 from pathlib import Path
 
-from scat_kg.models import MODELS
-from scat_kg.tbox import TBOX
-from scat_kg.vault import read_vault
+from scat_tools.models import MODELS
+from scat_tools.tbox import TBOX
+from scat_tools.vault import read_vault
 
 EXAMPLES = Path(__file__).parents[1] / "contracts" / "examples"
 

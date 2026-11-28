@@ -12,8 +12,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "checks"))
 import scat_harness as h
 from helpers import doc, vault
 
-from scat_kg.checks import check_vault
-from scat_kg.fix import Command, Fix, FixOption
+from scat_tools.checks import check_vault
+from scat_tools.fix import Command, Fix, FixOption
 
 C = "concern/safe-handling.md"
 
@@ -28,7 +28,7 @@ def problem(make_vault):
 
 
 def with_command(problem, kind, argv, slot=None):
-    cmd = Command(tuple(argv), "scat_kg.set_status(...)", slot)
+    cmd = Command(tuple(argv), "scat_tools.set_status(...)", slot)
     return dataclasses.replace(problem, fix_data=Fix.one(kind, FixOption(kind, "x", cmd)))
 
 
@@ -92,13 +92,13 @@ def test_r1_passes_a_real_report_and_fails_a_malformed_document(problem, monkeyp
     with pytest.raises(AssertionError, match="schema: SCAT-DONE-FIELD"):
         h.validate_report(dataclasses.replace(report, problems=(broken,)))
     # a document-level error: the problem list itself is fine, the document's `ok` is not a boolean
-    monkeypatch.setattr(h.scat_kg.CheckResult, "ok", property(lambda self: "yes"))
+    monkeypatch.setattr(h.scat_tools.CheckResult, "ok", property(lambda self: "yes"))
     with pytest.raises(AssertionError, match="schema: check document"):
         h.validate_report(report)
 
 
 def vault_of(root):
-    from scat_kg.vault import read_vault
+    from scat_tools.vault import read_vault
 
     return read_vault(root)
 

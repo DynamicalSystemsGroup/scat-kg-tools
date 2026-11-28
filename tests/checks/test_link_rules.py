@@ -526,7 +526,7 @@ def test__scat_cap__at_the_cap_gives_none(make_vault):
 
 
 def test__scat_cap__runs_at_page_scope_only_for_a_group_page(make_vault):
-    from scat_kg.checks import check_page
+    from scat_tools.checks import check_page
 
     v = vault_with(make_vault, GROUPS)
     assert rules_of(check_page(v, "group/staff.md")) == ["SCAT-CAP"]

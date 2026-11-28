@@ -423,7 +423,7 @@ def test__rule_4_the_fingerprint_view_lists_the_pair_as_a_candidate_and_the_chec
 ):
     from helpers import vault
 
-    from scat_kg.graph import load
+    from scat_tools.graph import load
 
     v = vault(make_vault)
     assert rules_of(report_of(make_vault)) == []

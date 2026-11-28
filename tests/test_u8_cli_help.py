@@ -2,8 +2,8 @@
 
 import pytest
 
-from scat_kg.cli import _parser
-from scat_kg.tbox import TBOX
+from scat_tools.cli import _parser
+from scat_tools.tbox import TBOX
 
 
 def help_of(command, capsys):
@@ -25,7 +25,7 @@ def test_stub_help_lists_every_type_key(capsys):
 def test_attribution_help_names_the_view_and_its_twin(capsys):
     out = help_of("attribution", capsys)
     assert "contributor" in out and "disallowed" in out and "--root" in out and "--json" in out
-    assert "REPL: `scat_kg.attribution()`" in out
+    assert "REPL: `scat_tools.attribution()`" in out
 
 
 def test_record_edge_help_lists_the_edge_types(capsys):

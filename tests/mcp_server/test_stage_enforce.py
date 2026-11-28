@@ -21,9 +21,9 @@ from test_stage_common import (
     vault,
 )
 
-from scat_kg import guides
-from scat_kg.mcp_server import server, stage
-from scat_kg.mcp_server.server import build
+from scat_tools import guides
+from scat_tools.mcp_server import server, stage
+from scat_tools.mcp_server.server import build
 
 
 def test_the_samples_cover_every_tool():

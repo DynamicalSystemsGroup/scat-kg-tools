@@ -1,6 +1,6 @@
 """WP23-G2, G3, R2: the one mode-dependent rule, per mode and status. Test names carry the rule id.
 
-The rule (`scat_kg.checks.attribution.MODE_RULE`): required mode names contributors, disallowed mode none,
+The rule (`scat_tools.checks.attribution.MODE_RULE`): required mode names contributors, disallowed mode none,
 optional mode leaves it free; to name one is to link a contributor page in `attributed_to`.
 """
 
@@ -21,7 +21,7 @@ from helpers import (
     set_status,
 )
 
-import scat_kg
+import scat_tools
 
 
 @pytest.fixture
@@ -216,11 +216,11 @@ def test__scat_done_attr__a_wrong_shape_is_not_a_missing_contributor(make_vault)
 
 def test__scat_done_attr__the_done_check_judges_the_page_as_done(make_vault):
     root = make_vault({**base(), **desk("required", "draft", None)})
-    result = scat_kg.set_status("desk-day", "done", root=root)
+    result = scat_tools.set_status("desk-day", "done", root=root)
     assert not result.ok
     assert any(p.rule == "SCAT-DONE-ATTR" for p in result.refused[0].problems)
     (root / DESK).write_text(named(narrative(status="draft"), "ada-quill"), encoding="utf-8")
-    assert scat_kg.set_status("desk-day", "done", root=root).ok
+    assert scat_tools.set_status("desk-day", "done", root=root).ok
 
 
 # ---- SCAT-ATTR-LINK
@@ -266,7 +266,7 @@ def test__scat_attr_link__a_link_that_reaches_no_page_is_an_error(make_vault, mo
         msg(
             link_head(status, "`[[ghost]]` does not reach a page (no page is named ghost)"),
             *choose(
-                'run `scat stub ghost --type contributor` (REPL: `scat_kg.stub("ghost", type="contributor")`) '
+                'run `scat stub ghost --type contributor` (REPL: `scat_tools.stub("ghost", type="contributor")`) '
                 "to create the contributor page the entry links",
                 'replace the line `attributed_to: ["[[ghost]]"]` with `attributed_to: []` (drop this entry)',
             ),
@@ -280,14 +280,14 @@ def test__scat_attr_link__a_missing_page_gets_the_stub_command_as_an_exact_fix(m
     stub_it, drop = p.fix_data.options
     assert stub_it.kind == "exact" and stub_it.edits == ()
     assert stub_it.command.argv == ("stub", "ghost", "--type", "contributor")
-    assert stub_it.command.repl == 'scat_kg.stub("ghost", type="contributor")'
+    assert stub_it.command.repl == 'scat_tools.stub("ghost", type="contributor")'
     assert drop.kind == "exact"
 
 
 def test__scat_attr_link__running_the_stub_fix_makes_the_link_resolve(make_vault):
     root = make_vault(desk("optional", "done", 'attributed_to: ["[[ghost]]"]'))
-    assert scat_kg.stub("ghost", "contributor", root=root).ok
-    assert "SCAT-ATTR-LINK" not in [p.rule for p in scat_kg.check(root=root).problems]
+    assert scat_tools.stub("ghost", "contributor", root=root).ok
+    assert "SCAT-ATTR-LINK" not in [p.rule for p in scat_tools.check(root=root).problems]
 
 
 @pytest.mark.parametrize("entry", ['"Ada Quill"', '"[[safe-handling]]"'])
@@ -451,18 +451,18 @@ def test_switching_the_mode_rechecks_the_whole_vault_against_the_new_mode(make_v
     files = {**base(), **vault_named("optional")}
     files[KIOSK] = named(base()[KIOSK], "bo-marsh")
     root = make_vault(files)
-    assert scat_kg.check(root=root).problems == ()
+    assert scat_tools.check(root=root).problems == ()
     (root / "scat.toml").write_text(toml("disallowed"), encoding="utf-8")
-    after = scat_kg.check(root=root)
+    after = scat_tools.check(root=root)
     assert sorted((p.file, p.rule) for p in after.problems) == sorted(
         [(DESK, "SCAT-ATTR-DISALLOWED"), (KIOSK, "SCAT-ATTR-DISALLOWED")]
         + [(ADA, "SCAT-ATTR-DISALLOWED"), (BO, "SCAT-ATTR-DISALLOWED")]
     )
     assert not after.ok and after.mode == "disallowed"
     (root / "scat.toml").write_text(toml("required"), encoding="utf-8")
-    assert scat_kg.check(root=root).problems == ()
+    assert scat_tools.check(root=root).problems == ()
     (root / DESK).write_text(narrative(), encoding="utf-8")  # the desk names nobody now
-    required = scat_kg.check(root=root)
+    required = scat_tools.check(root=root)
     assert [(p.file, p.rule) for p in required.problems] == [(DESK, "SCAT-DONE-ATTR")]
     (root / "scat.toml").write_text(toml("optional"), encoding="utf-8")
-    assert scat_kg.check(root=root).problems == ()
+    assert scat_tools.check(root=root).problems == ()

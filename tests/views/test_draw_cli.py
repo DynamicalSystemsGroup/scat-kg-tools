@@ -7,8 +7,8 @@ import pytest
 from jsonschema import Draft202012Validator
 from viewutil import tree_hash
 
-from scat_kg import draw
-from scat_kg.cli import main
+from scat_tools import draw
+from scat_tools.cli import main
 
 SCHEMA = json.loads(
     (Path(__file__).resolve().parents[2] / "contracts" / "machine-interface.schema.json").read_text(

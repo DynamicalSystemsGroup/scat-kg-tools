@@ -9,7 +9,7 @@ authority, so it never sets a narrative to `done`. The two stage tools are the e
 
 ## Starting it
 
-The server is the `scat-mcp` command, in an optional extra of the package (`scat-kg[mcp]`). The core install does
+The server is the `scat-mcp` command, in an optional extra of the package (`scat-tools[mcp]`). The core install does
 not include it. The chat path's launcher runs it inside a container for you; you start it yourself only to try it.
 
 | Setting | Meaning |
@@ -93,7 +93,7 @@ The server offers these resources, all as text:
 | `scat://guide/index` | The five stages, one line each, and every move between them. |
 | `scat://guide/<stage>` | One stage's guide, for `plan`, `capture`, `code`, `analyse` or `report`. |
 
-The guide resources carry the same text as `scat guide` and `scat_kg.guide()`. The server also sends the index as its instructions when a client connects.
+The guide resources carry the same text as `scat guide` and `scat_tools.guide()`. The server also sends the index as its instructions when a client connects.
 
 ## Stages
 
@@ -126,4 +126,4 @@ A refusal is a result, not an error, and says what to do instead.
 
 A result is the document the same call returns from the command line with `--json` or from Python. The server adds
 nothing to it and takes nothing away. The two stage tools return their own documents, of kind `stage`. The fields are in the
-[machine interface contract](https://github.com/DynamicalSystemsGroup/scat-kg-tools/blob/dev/contracts/machine-interface.md).
+[machine interface contract](https://github.com/DynamicalSystemsGroup/scat-tools/blob/dev/contracts/machine-interface.md).

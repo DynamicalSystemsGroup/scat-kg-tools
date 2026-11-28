@@ -48,12 +48,12 @@ The first command runs every cell and writes `executed/analysis.html`; the secon
 The same views are one call away in the REPL and one command away on the CLI:
 
 ```python
-import scat_kg
+import scat_tools
 
-scat_kg.fingerprint("groups-under-a-cap-pitch")
-scat_kg.edge_table("holds")
-scat_kg.layered()
-scat_kg.trace("anonymity", "up")
+scat_tools.fingerprint("groups-under-a-cap-pitch")
+scat_tools.edge_table("holds")
+scat_tools.layered()
+scat_tools.trace("anonymity", "up")
 ```
 
 ```bash
@@ -68,16 +68,16 @@ A view's data is the same in the notebook, the CLI and in chat.
 
 ## Drawings
 
-Drawings need the extra `draw`: `pip install "scat-kg[draw]"`. In the vault template it is already installed.
+Drawings need the extra `draw`: `pip install "scat-tools[draw]"`. In the vault template it is already installed.
 
 ```python
-from scat_kg import draw
+from scat_tools import draw
 
 draw.fingerprint("groups-under-a-cap-pitch").save("fingerprint.png")
 draw.layered().save("layered.png")
 ```
 
-Both `draw.fingerprint` and `draw.layered` take `candidates=True` (CLI: `--candidates`), which adds the candidates as dashed lines. A drawing is made from a view's result. To have the picture and the table from one query, run the view once and draw that result: `draw.render(scat_kg.layered())`.
+Both `draw.fingerprint` and `draw.layered` take `candidates=True` (CLI: `--candidates`), which adds the candidates as dashed lines. A drawing is made from a view's result. To have the picture and the table from one query, run the view once and draw that result: `draw.render(scat_tools.layered())`.
 
 Within each column, a drawing orders the nodes to reduce the number of crossing lines, not alphabetically; the order is the same every time for the same vault. Parts of the graph that share no node are drawn as separate bands, one above the other, largest first; the nodes that no line reaches are together in the last band. A drawing with one connected part and no node that no line reaches is one band. Read each band on its own: nothing in one band is joined to anything in another.
 

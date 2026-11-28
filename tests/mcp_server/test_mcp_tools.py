@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 from mcputil import call, changed, copy_vault, offer, serve, snapshot, with_session
 
-import scat_kg
+import scat_tools
 
 TOOLS = {
     "check",
@@ -105,89 +105,89 @@ def test_every_tool_description_says_who_owns_what(url):
 
 # (tool, arguments, the tool's own call on the twin vault). Run in order: the writes build on each other.
 SEQUENCE = [
-    ("check", {}, lambda r: scat_kg.check(root=r)),
-    ("check", {"page": "funders-meeting"}, lambda r: scat_kg.check("funders-meeting", root=r)),
+    ("check", {}, lambda r: scat_tools.check(root=r)),
+    ("check", {"page": "funders-meeting"}, lambda r: scat_tools.check("funders-meeting", root=r)),
     (
         "check",
         {"page": "funders-meeting", "neighborhood": True},
-        lambda r: scat_kg.check("funders-meeting", neighborhood=True, root=r),
+        lambda r: scat_tools.check("funders-meeting", neighborhood=True, root=r),
     ),
-    ("check", {"neighborhood": True}, lambda r: scat_kg.check(neighborhood=True, root=r)),
-    ("check", {"page": "no-such-page"}, lambda r: scat_kg.check("no-such-page", root=r)),
-    ("status", {}, lambda r: scat_kg.status(root=r)),
-    ("status", {"page": "funders"}, lambda r: scat_kg.status("funders", root=r)),
+    ("check", {"neighborhood": True}, lambda r: scat_tools.check(neighborhood=True, root=r)),
+    ("check", {"page": "no-such-page"}, lambda r: scat_tools.check("no-such-page", root=r)),
+    ("status", {}, lambda r: scat_tools.status(root=r)),
+    ("status", {"page": "funders"}, lambda r: scat_tools.status("funders", root=r)),
     (
         "status",
         {"page": "funders-meeting", "neighborhood": True},
-        lambda r: scat_kg.status("funders-meeting", neighborhood=True, root=r),
+        lambda r: scat_tools.status("funders-meeting", neighborhood=True, root=r),
     ),
-    ("fingerprint", {}, lambda r: scat_kg.fingerprint(root=r)),
+    ("fingerprint", {}, lambda r: scat_tools.fingerprint(root=r)),
     (
         "fingerprint",
         {"narrative": "funders-meeting"},
-        lambda r: scat_kg.fingerprint("funders-meeting", root=r),
+        lambda r: scat_tools.fingerprint("funders-meeting", root=r),
     ),
     (
         "fingerprint",
         {"narrative": "funders-meeting", "candidates": True},
-        lambda r: scat_kg.fingerprint("funders-meeting", candidates=True, root=r),
+        lambda r: scat_tools.fingerprint("funders-meeting", candidates=True, root=r),
     ),
-    ("fingerprint", {"narrative": "nope"}, lambda r: scat_kg.fingerprint("nope", root=r)),
-    ("edge_table", {"type": "holds"}, lambda r: scat_kg.edge_table("holds", root=r)),
-    ("edge_table", {"type": "bogus"}, lambda r: scat_kg.edge_table("bogus", root=r)),
-    ("layered", {}, lambda r: scat_kg.layered(root=r)),
+    ("fingerprint", {"narrative": "nope"}, lambda r: scat_tools.fingerprint("nope", root=r)),
+    ("edge_table", {"type": "holds"}, lambda r: scat_tools.edge_table("holds", root=r)),
+    ("edge_table", {"type": "bogus"}, lambda r: scat_tools.edge_table("bogus", root=r)),
+    ("layered", {}, lambda r: scat_tools.layered(root=r)),
     (
         "layered",
         {"narratives": ["funders-meeting"]},
-        lambda r: scat_kg.layered(["funders-meeting"], root=r),
+        lambda r: scat_tools.layered(["funders-meeting"], root=r),
     ),
-    ("trace", {"node": "borrowers"}, lambda r: scat_kg.trace("borrowers", root=r)),
+    ("trace", {"node": "borrowers"}, lambda r: scat_tools.trace("borrowers", root=r)),
     (
         "trace",
         {"node": "booking-app", "direction": "up"},
-        lambda r: scat_kg.trace("booking-app", "up", root=r),
+        lambda r: scat_tools.trace("booking-app", "up", root=r),
     ),
-    ("evidence", {"node": "borrowers"}, lambda r: scat_kg.evidence("borrowers", root=r)),
+    ("evidence", {"node": "borrowers"}, lambda r: scat_tools.evidence("borrowers", root=r)),
     (
         "evidence",
         {"node": "funders-meeting"},
-        lambda r: scat_kg.evidence("funders-meeting", root=r),
+        lambda r: scat_tools.evidence("funders-meeting", root=r),
     ),
     (
         "merge",
         {"a": "funders", "b": "borrowers"},
-        lambda r: scat_kg.merge("funders", "borrowers", plan=True, root=r),
+        lambda r: scat_tools.merge("funders", "borrowers", plan=True, root=r),
     ),
-    ("split_plan", {"a": "funders"}, lambda r: scat_kg.split_plan("funders", root=r)),
-    ("copy_share", {}, lambda r: scat_kg.copy_share(root=r)),
-    ("copy_share", {"node": "borrowers"}, lambda r: scat_kg.copy_share("borrowers", root=r)),
-    ("review", {}, lambda r: scat_kg.review(root=r)),
+    ("split_plan", {"a": "funders"}, lambda r: scat_tools.split_plan("funders", root=r)),
+    ("copy_share", {}, lambda r: scat_tools.copy_share(root=r)),
+    ("copy_share", {"node": "borrowers"}, lambda r: scat_tools.copy_share("borrowers", root=r)),
+    ("review", {}, lambda r: scat_tools.review(root=r)),
     (
         "stub",
         {"name": "new-concern", "type": "concern"},
-        lambda r: scat_kg.stub("new-concern", "concern", root=r),
+        lambda r: scat_tools.stub("new-concern", "concern", root=r),
     ),
     (
         "stub",
         {"name": "new-concern", "type": "concern"},
-        lambda r: scat_kg.stub("new-concern", "concern", root=r),
+        lambda r: scat_tools.stub("new-concern", "concern", root=r),
     ),
     (
         "stub",
         {"name": "Bad Name", "type": "concern"},
-        lambda r: scat_kg.stub("Bad Name", "concern", root=r),
+        lambda r: scat_tools.stub("Bad Name", "concern", root=r),
     ),
     (
         "stub",
         {"name": "ada-quill", "type": "contributor"},
-        lambda r: scat_kg.stub("ada-quill", "contributor", root=r),
+        lambda r: scat_tools.stub("ada-quill", "contributor", root=r),
     ),
-    ("attribution", {}, lambda r: scat_kg.attribution(root=r)),
-    ("stub_links", {}, lambda r: scat_kg.stub_links(root=r)),
+    ("attribution", {}, lambda r: scat_tools.attribution(root=r)),
+    ("stub_links", {}, lambda r: scat_tools.stub_links(root=r)),
     (
         "stub_links",
         {"page": "funders-meeting"},
-        lambda r: scat_kg.stub_links("funders-meeting", root=r),
+        lambda r: scat_tools.stub_links("funders-meeting", root=r),
     ),
     (
         "record_edge",
@@ -198,7 +198,7 @@ SEQUENCE = [
             "told_by": ["funders-meeting"],
             "note": "from the call",
         },
-        lambda r: scat_kg.record_edge(
+        lambda r: scat_tools.record_edge(
             "holds", "funders", "new-concern", ["funders-meeting"], "from the call", root=r
         ),
     ),
@@ -210,49 +210,49 @@ SEQUENCE = [
             "to_node": "new-concern",
             "told_by": ["funders-meeting"],
         },
-        lambda r: scat_kg.record_edge(
+        lambda r: scat_tools.record_edge(
             "holds", "funders", "new-concern", ["funders-meeting"], root=r
         ),
     ),
     (
         "remove_edge",
         {"from_node": "funders", "to_node": "new-concern"},
-        lambda r: scat_kg.remove_edge("funders", "new-concern", None, root=r),
+        lambda r: scat_tools.remove_edge("funders", "new-concern", None, root=r),
     ),
     (
         "remove_edge",
         {"from_node": "funders", "to_node": "new-concern", "told_by": ["funders-meeting"]},
-        lambda r: scat_kg.remove_edge("funders", "new-concern", ["funders-meeting"], root=r),
+        lambda r: scat_tools.remove_edge("funders", "new-concern", ["funders-meeting"], root=r),
     ),
     (
         "set_status",
         {"page": "new-concern", "status": "draft"},
-        lambda r: scat_kg.set_status("new-concern", "draft", root=r),
+        lambda r: scat_tools.set_status("new-concern", "draft", root=r),
     ),
     (
         "set_status",
         {"page": "new-concern", "status": "draft"},
-        lambda r: scat_kg.set_status("new-concern", "draft", root=r),
+        lambda r: scat_tools.set_status("new-concern", "draft", root=r),
     ),
     (
         "set_status",
         {"page": "new-concern", "status": "bogus"},
-        lambda r: scat_kg.set_status("new-concern", "bogus", root=r),
+        lambda r: scat_tools.set_status("new-concern", "bogus", root=r),
     ),
     (
         "set_status",
         {"page": "no-such", "status": "draft"},
-        lambda r: scat_kg.set_status("no-such", "draft", root=r),
+        lambda r: scat_tools.set_status("no-such", "draft", root=r),
     ),
-    ("index", {}, lambda r: scat_kg.index(root=r)),
-    ("export_edges", {}, lambda r: scat_kg.export_edges(r / "views", root=r)),
-    ("export_edges", {}, lambda r: scat_kg.export_edges(r / "views", root=r)),
+    ("index", {}, lambda r: scat_tools.index(root=r)),
+    ("export_edges", {}, lambda r: scat_tools.export_edges(r / "views", root=r)),
+    ("export_edges", {}, lambda r: scat_tools.export_edges(r / "views", root=r)),
     (
         "export_edges",
         {"folder": "views/v1"},
-        lambda r: scat_kg.export_edges(r / "views" / "v1", root=r),
+        lambda r: scat_tools.export_edges(r / "views" / "v1", root=r),
     ),
-    ("check", {}, lambda r: scat_kg.check(root=r)),
+    ("check", {}, lambda r: scat_tools.check(root=r)),
 ]
 
 

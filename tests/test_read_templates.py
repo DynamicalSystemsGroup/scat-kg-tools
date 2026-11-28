@@ -1,6 +1,6 @@
 import pytest
 
-from scat_kg.vault import read_vault
+from scat_tools.vault import read_vault
 
 TEMPLATE = '---\ntype: concern\nstatus: draft\ntitle: ""\n---\n'
 REAL = '---\ntype: concern\nstatus: draft\ntitle: "Real"\ndescription: "A real one."\n---\n'

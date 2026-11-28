@@ -8,7 +8,7 @@ import pytest
 from mcputil import KEY, call, copy_vault, env_with, free_port, headers, serve, with_session
 from test_mcp_tools import SEQUENCE, TOOLS
 
-from scat_kg.mcp_server.gate import key_given, key_ok, start_refusal
+from scat_tools.mcp_server.gate import key_given, key_ok, start_refusal
 
 
 @pytest.fixture(scope="module")
@@ -100,7 +100,7 @@ def test_it_refuses_to_start_on_a_non_loopback_host_without_a_key(tmp_path, host
         [
             sys.executable,
             "-m",
-            "scat_kg.mcp_server",
+            "scat_tools.mcp_server",
             "--vault",
             str(vault),
             "--host",
@@ -124,7 +124,7 @@ def test_an_empty_key_counts_as_no_key(tmp_path):
         [
             sys.executable,
             "-m",
-            "scat_kg.mcp_server",
+            "scat_tools.mcp_server",
             "--vault",
             str(vault),
             "--host",
@@ -143,7 +143,14 @@ def test_an_empty_key_counts_as_no_key(tmp_path):
 
 def test_it_refuses_a_missing_vault(tmp_path):
     p = subprocess.run(
-        [sys.executable, "-m", "scat_kg.mcp_server", "--vault", str(tmp_path / "nope"), "--stdio"],
+        [
+            sys.executable,
+            "-m",
+            "scat_tools.mcp_server",
+            "--vault",
+            str(tmp_path / "nope"),
+            "--stdio",
+        ],
         env=env_with(None),
         capture_output=True,
         check=False,
@@ -163,7 +170,7 @@ def test_stdio_needs_no_key(tmp_path):
     vault = copy_vault(tmp_path / "v")
     params = StdioServerParameters(
         command=sys.executable,
-        args=["-m", "scat_kg.mcp_server", "--vault", str(vault), "--stdio"],
+        args=["-m", "scat_tools.mcp_server", "--vault", str(vault), "--stdio"],
         env=env_with(None),
     )
 

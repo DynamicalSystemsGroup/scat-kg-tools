@@ -7,10 +7,10 @@ import pytest
 from test_draw import PNG, columns, lines, texts, xs
 from viewutil import tree_hash
 
-import scat_kg
-from scat_kg import draw
-from scat_kg.cli import main
-from scat_kg.tbox import TBOX
+import scat_tools
+from scat_tools import draw
+from scat_tools.cli import main
+from scat_tools.tbox import TBOX
 
 
 def names(svg: str) -> dict[str, list[str]]:
@@ -20,8 +20,8 @@ def names(svg: str) -> dict[str, list[str]]:
 
 def reached(vault, node: str, direction: str = "both") -> dict[str, list[str]]:
     """What the trace view says is reached, by layer, with the traced node added in its own layer."""
-    data = scat_kg.trace(node, direction, root=vault).to_dict()
-    me = scat_kg.evidence(node, root=vault).to_dict()
+    data = scat_tools.trace(node, direction, root=vault).to_dict()
+    me = scat_tools.evidence(node, root=vault).to_dict()
     out = {layer: [] for layer in TBOX.layers}
     for n in [*data["up"], *data["down"]]:
         out[n["type"]].append(n["name"])
@@ -33,7 +33,7 @@ def reached(vault, node: str, direction: str = "both") -> dict[str, list[str]]:
 @pytest.mark.parametrize("direction", ["up", "down", "both"])
 def test_the_drawing_is_the_views_nodes_and_edges(vault, node, direction):
     svg = draw.trace(node, direction, root=vault).svg()
-    view = scat_kg.trace(node, direction, root=vault).to_dict()
+    view = scat_tools.trace(node, direction, root=vault).to_dict()
     assert names(svg) == reached(vault, node, direction)
     col_x = xs(svg)
     drawn = lines(svg)
@@ -108,12 +108,12 @@ def test_direction_restricts_the_drawing(vault):
 def test_a_refusal_is_the_views_refusal(vault, args):
     got = draw.trace(*args, root=vault)
     assert not isinstance(got, draw.Drawing) and not got.ok
-    assert got.to_dict() == scat_kg.trace(*args, root=vault).to_dict()
+    assert got.to_dict() == scat_tools.trace(*args, root=vault).to_dict()
 
 
 def test_a_missing_vault_is_the_views_refusal(vault):
     got = draw.trace("water", root=vault / "gone")
-    assert not got.ok and got.to_dict() == scat_kg.trace("water", root=vault / "gone").to_dict()
+    assert not got.ok and got.to_dict() == scat_tools.trace("water", root=vault / "gone").to_dict()
 
 
 def test_same_call_twice_gives_equal_bytes(vault):
@@ -126,7 +126,9 @@ def test_without_matplotlib_the_refusal_says_how_to_get_it(vault, monkeypatch):
     monkeypatch.setitem(sys.modules, "matplotlib", None)
     r = draw.trace("water", root=vault)
     assert not r.ok
-    assert r.to_dict()["refused"][0]["fix"]["options"][0]["text"] == 'pip install "scat-kg[draw]"'
+    assert (
+        r.to_dict()["refused"][0]["fix"]["options"][0]["text"] == 'pip install "scat-tools[draw]"'
+    )
 
 
 def run(capsys, argv):

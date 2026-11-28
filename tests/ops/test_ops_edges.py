@@ -4,9 +4,9 @@ import pytest
 from opsutil import CAP3, fm, narrative
 from tests_schema import VALIDATOR
 
-import scat_kg
-from scat_kg.graph import load
-from scat_kg.ops import record_edge, remove_edge
+import scat_tools
+from scat_tools.graph import load
+from scat_tools.ops import record_edge, remove_edge
 
 D = 'description: "d"\n'
 
@@ -144,7 +144,7 @@ def test_record_into_a_done_narrative_refuses_and_names_the_coders_step(vault, s
     assert ref.rule is None and ref.subject == "narrative/done.md"
     assert (
         "`scat set-status done draft`" in ref.fix
-        and 'scat_kg.set_status("done", "draft")' in ref.fix
+        and 'scat_tools.set_status("done", "draft")' in ref.fix
     )
     assert ref.fix_data.options[0].command.argv == ("set-status", "done", "draft")
 
@@ -156,7 +156,7 @@ def test_record_into_a_done_narrative_that_already_has_the_row_is_unchanged(vaul
 
 def test_after_set_status_draft_the_record_goes_through(vault):
     assert not record_edge("holds", "g", "newc", "done", root=vault).ok
-    assert scat_kg.set_status("done", "draft", root=vault).ok
+    assert scat_tools.set_status("done", "draft", root=vault).ok
     assert record_edge("holds", "g", "newc", "done", root=vault).ok
 
 

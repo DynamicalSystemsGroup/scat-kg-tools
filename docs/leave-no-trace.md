@@ -19,7 +19,7 @@ say. See [Data, rights and consent](data-and-consent.md).
 ## What this path needs
 
 A leave-no-trace chat run needs everything [The chat path](chat-path.md#what-the-chat-path-is-and-what-it-needs)
-needs: a Mac, a vault, a container runtime, Tailscale, SCAT Chat, and a chat that accepts an MCP server and an API
+needs: a Mac, a vault, a container runtime, Tailscale, SCATLAB, and a chat that accepts an MCP server and an API
 key. The chat path's [Install once](chat-path.md#install-once) is done once per Mac. A strict data policy adds four
 things:
 
@@ -39,35 +39,35 @@ order is the same: set up, code, remove.
 
 ### The walkthrough
 
-Each numbered step names where it is done and one outcome. It begins with where you do it: **In SCAT Chat** (the small Mac app that runs the server), **In the menu bar** (its dot and menu), **In the
+Each numbered step names where it is done and one outcome. It begins with where you do it: **In SCATLAB** (the small Mac app that runs the server), **In the menu bar** (its dot and menu), **In the
 chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web browser**.
 
 #### Set up for the chat run
 
 1. **In Finder:** check that your field notes are in a folder on your Mac. This is your local copy.
-2. **In Finder:** open SCAT Chat from Applications. (Start a session, on the chat path.)
-3. **In SCAT Chat:** at the first start on this Mac, read the note that SCAT Chat lives in the menu bar, and click
+2. **In Finder:** open SCATLAB from Applications. (Start a session, on the chat path.)
+3. **In SCATLAB:** at the first start on this Mac, read the note that SCATLAB lives in the menu bar, and click
     **OK**. It is shown once per Mac. (At a later start there is no note.)
-4. **In SCAT Chat:** at the first start, choose the folder that holds `scat.toml` in the folder picker. At a later start,
+4. **In SCATLAB:** at the first start, choose the folder that holds `scat.toml` in the folder picker. At a later start,
     answer the question `Serve <vault>?` with **Use it**, or with **Choose another** and the folder that holds
     `scat.toml`.
-5. **In the menu bar:** wait until SCAT Chat's dot is green.
+5. **In the menu bar:** wait until SCATLAB's dot is green.
 6. **In the chat:** in the bar of icons on the left, click **MCP Settings**.
 7. **In the chat:** choose to add an MCP server, and type `SCAT` as its name.
-8. **In the menu bar:** open SCAT Chat's menu and click **Copy address**. A notification says "The address is on your clipboard."
+8. **In the menu bar:** open SCATLAB's menu and click **Copy address**. A notification says "The address is on your clipboard."
 9. **In the chat:** paste the address (it ends in `/mcp`) into the address field.
 10. **In the chat:** choose the Streamable HTTPS transport (the way the chat talks to a server over a secure web
     address).
 11. **In the chat:** choose API key as the authentication.
 12. **In the chat:** choose the header format the form offers for the key (`X-API-Key` or `Authorization: Bearer`; the server accepts either).
-13. **In the menu bar:** open SCAT Chat's menu and click **Copy key**. A notification says "The key is on your clipboard."
+13. **In the menu bar:** open SCATLAB's menu and click **Copy key**. A notification says "The key is on your clipboard."
 14. **In the chat:** paste the key into the API key field.
 15. **In the chat:** tick the consent **I trust this application**. The form requires it.
 16. **In the chat:** save.
 17. **In the chat:** click **Connect** on the new entry. A new entry stays unconnected until you do.
 18. **In the chat:** check that the entry "SCAT" shows connected.
 19. **In any app:** copy a word from anywhere, so your clipboard no longer holds the key.
-20. **In a web browser:** open the skill file, <https://raw.githubusercontent.com/DynamicalSystemsGroup/scat-kg-tools/dev/skills/scat-coding/SKILL.md>.
+20. **In a web browser:** open the skill file, <https://raw.githubusercontent.com/DynamicalSystemsGroup/scat-tools/dev/skills/scat-coding/SKILL.md>.
 21. **In a web browser:** select all (Cmd-A) and copy (Cmd-C) its text. Keep the tab open.
 22. **In the chat:** look for **Skills** (in the chat's menus or settings) and choose to create a new skill.
 23. **In the chat:** name the skill `scat-coding`.
@@ -108,10 +108,10 @@ chat**, **In Finder**, **In Obsidian**, **In GitHub Desktop** or **In a web brow
 
 #### Tear everything down
 
-47. **In the menu bar:** open SCAT Chat's menu and click **Stop**. Stop shows the result in one alert.
-48. **In SCAT Chat:** read the alert titled "SCAT Chat stopped". It says the public link is off, the server is removed,
-    the key was deleted and your clipboard holds no key. Click **OK**: SCAT Chat quits and its dot leaves the menu bar.
-    If the alert is titled "SCAT Chat has a problem" instead, the stop was not confirmed: see "Stop" on the chat path,
+47. **In the menu bar:** open SCATLAB's menu and click **Stop**. Stop shows the result in one alert.
+48. **In SCATLAB:** read the alert titled "SCATLAB stopped". It says the public link is off, the server is removed,
+    the key was deleted and your clipboard holds no key. Click **OK**: SCATLAB quits and its dot leaves the menu bar.
+    If the alert is titled "SCATLAB has a problem" instead, the stop was not confirmed: see "Stop" on the chat path,
     and do not go on until it is.
 49. **In a web browser:** open the address that ended in `/mcp`. It should not load.
 50. **In the chat:** end the temporary chat (close it or leave it). It is deleted automatically.

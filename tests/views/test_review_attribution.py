@@ -20,11 +20,11 @@ from test_evidence_attribution import (
     strip_attributed,
 )
 
-import scat_kg
+import scat_tools
 
 
 def document(root):
-    view = scat_kg.review(root=root)
+    view = scat_tools.review(root=root)
     assert view.ok, str(view)
     return view.to_dict()
 
@@ -48,7 +48,7 @@ def test_the_document_carries_the_mode(made):
     root, mode = made
     d = document(root)
     assert d["mode"] == mode and d["proposals"] is not None
-    assert str(scat_kg.review(root=root)).startswith(f"attribution mode: {mode}\n")
+    assert str(scat_tools.review(root=root)).startswith(f"attribution mode: {mode}\n")
 
 
 def test_adding_contributor_pages_changes_nothing(made, tmp_path):

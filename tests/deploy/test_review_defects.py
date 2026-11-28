@@ -10,12 +10,12 @@ import sys
 import pytest
 from conftest import REPO, STATUS_NO_HTTPS, STATUS_OK
 
-STOP = {"SCAT_CHAT_A_STOP": "stop"}
+STOP = {"SCATLAB_A_STOP": "stop"}
 ADDRESS = "https://fake-mac.tail1234.ts.net/mcp"
-LAUNCHER = (REPO / "deploy" / "scat-chat.sh").read_text()
-APPLET = (REPO / "deploy" / "SCAT Chat.applescript").read_text()
+LAUNCHER = (REPO / "deploy" / "scatlab.sh").read_text()
+APPLET = (REPO / "deploy" / "scatlab.applescript").read_text()
 README = (REPO / "deploy" / "README.md").read_text()
-MENU_STEP = "choose Stop in the SCAT Chat menu, then open SCAT Chat again"
+MENU_STEP = "choose Stop in the SCATLAB menu, then open SCATLAB again"
 
 
 def other_vault(rig, name="other"):
@@ -47,16 +47,16 @@ class Unrelated:
 
 
 @pytest.mark.parametrize("name", ["script", "applet", "readme"])
-def test_nothing_tells_the_coder_to_click_scat_chat(name):
+def test_nothing_tells_the_coder_to_click_scatlab(name):
     text = {"script": LAUNCHER, "applet": APPLET, "readme": README}[name]
-    assert not re.search(r"click\s+SCAT\s+Chat", text, re.IGNORECASE)
+    assert not re.search(r"click\s+SCATLAB\b(?!\s+(menu|in))", text, re.IGNORECASE)
 
 
 def die_messages():
     return re.findall(r'\bdie "(.*?)"(?=\s*(?:\n|\|\||$))', LAUNCHER, re.DOTALL)
 
 
-def test_every_die_message_says_to_open_scat_chat_again_through_the_menu():
+def test_every_die_message_says_to_open_scatlab_again_through_the_menu():
     messages = die_messages()
     assert len(messages) >= 12, len(messages)  # the pattern still finds them all
     # These two end a dialog that has just said it (checked in the next test); their alert line is short.
@@ -69,7 +69,7 @@ def test_every_die_message_says_to_open_scat_chat_again_through_the_menu():
     for m in messages:
         if m.startswith(dialog_first):
             continue
-        assert re.search(r"[Cc]hoose Stop in the SCAT Chat menu, then open SCAT Chat again", m), m
+        assert re.search(r"[Cc]hoose Stop in the SCATLAB menu, then open SCATLAB again", m), m
 
 
 def test_the_two_dialog_first_failures_say_it_in_the_dialog(rig):
@@ -82,21 +82,21 @@ def test_the_two_dialog_first_failures_say_it_in_the_dialog(rig):
 @pytest.mark.parametrize(
     "scenario",
     [
-        {"SCAT_CHAT_DOCKER": "nope"},
-        {"SCAT_CHAT_TAILSCALE": "nope"},
+        {"SCATLAB_DOCKER": "nope"},
+        {"SCATLAB_TAILSCALE": "nope"},
         {"STUB_FAIL_BUILD": "1"},
         {"STUB_FAIL_RUN": "1"},
         {"STUB_FAIL_KEYCHAIN": "1"},
-        {"SCAT_CHAT_VAULT": None},
+        {"SCATLAB_VAULT": None},
     ],
     ids=["no-docker", "no-tailscale", "build-fails", "run-fails", "no-key", "no-vault"],
 )
-def test_a_failed_start_says_to_open_scat_chat_again_through_the_menu(rig, scenario):
-    env = {k: (str(rig.bin / v) if k.startswith("SCAT_CHAT_D") or k == "SCAT_CHAT_TAILSCALE" else v)
+def test_a_failed_start_says_to_open_scatlab_again_through_the_menu(rig, scenario):
+    env = {k: (str(rig.bin / v) if k.startswith("SCATLAB_D") or k == "SCATLAB_TAILSCALE" else v)
            for k, v in scenario.items()}  # fmt: skip
     r = rig.run("start", **env)
     assert r.returncode == 1, r.stdout
-    assert re.search(r"[Cc]hoose Stop in the SCAT Chat menu, then open SCAT Chat again", r.stdout)
+    assert re.search(r"[Cc]hoose Stop in the SCATLAB menu, then open SCATLAB again", r.stdout)
 
 
 # ---------------------------------------------------------------- (b) a stale `changing`
@@ -106,7 +106,7 @@ def test_status_clears_a_stale_changing_marker_and_does_not_say_starting(rig):
     (rig.state / "changing").write_text(f"{dead_pid()}\n")
     for ui in ("dialog", "plain"):
         (rig.state / "changing").write_text(f"{dead_pid()}\n")
-        r = rig.run("status", SCAT_CHAT_UI=ui)
+        r = rig.run("status", SCATLAB_UI=ui)
         assert r.returncode == 1 and "not running" in r.stdout, (ui, r.stdout)
         assert "starting" not in r.stdout
         assert not (rig.state / "changing").exists()
@@ -133,7 +133,7 @@ def test_relaunching_while_running_shows_the_live_session_after_the_ui_file_is_d
     proc = rig.start_bg()
     assert rig.ui_lines() == ["running", str(rig.vault.resolve()), ADDRESS]
     (rig.state / "ui").unlink()  # what the app does when it starts
-    r = rig.run("start", SCAT_CHAT_UI="dialog")
+    r = rig.run("start", SCATLAB_UI="dialog")
     assert r.returncode == 0, r.stdout
     assert rig.ui_lines() == ["running", str(rig.vault.resolve()), ADDRESS]
     assert any("already running" in c for c in rig.calls_list() if c.startswith("osascript"))
@@ -142,13 +142,13 @@ def test_relaunching_while_running_shows_the_live_session_after_the_ui_file_is_d
     rig.nothing_left()
 
 
-# ---------------------------------------------------------------- (d) SCAT_CHAT_VAULT is a plain-mode override
+# ---------------------------------------------------------------- (d) SCATLAB_VAULT is a plain-mode override
 
 
-def test_scat_chat_vault_is_ignored_in_dialog_mode(rig):
+def test_scatlab_vault_is_ignored_in_dialog_mode(rig):
     wrong = other_vault(rig, "wrong")
     proc = rig.start_bg(
-        remembered=False, SCAT_CHAT_VAULT=str(wrong), STUB_OSA_FOLDER=str(rig.vault)
+        remembered=False, SCATLAB_VAULT=str(wrong), STUB_OSA_FOLDER=str(rig.vault)
     )  # the folder chooser answers with the rig's vault
     run = rig.calls_list()[rig.called("docker run")[0]]
     assert f"-v {rig.vault.resolve()}:/vault" in run and str(wrong.resolve()) not in run
@@ -156,10 +156,10 @@ def test_scat_chat_vault_is_ignored_in_dialog_mode(rig):
     assert rig.stop_bg(proc).returncode == 0
 
 
-def test_scat_chat_vault_does_not_replace_the_remembered_question_in_dialog_mode(rig):
+def test_scatlab_vault_does_not_replace_the_remembered_question_in_dialog_mode(rig):
     wrong = other_vault(rig, "wrong")
     proc = rig.start_bg(
-        SCAT_CHAT_VAULT=str(wrong)
+        SCATLAB_VAULT=str(wrong)
     )  # remembered: the rig's vault; the stand-in says "Use it"
     assert any(f"Serve {rig.vault.resolve()}?" in c for c in rig.calls_list())
     run = rig.calls_list()[rig.called("docker run")[0]]
@@ -167,10 +167,10 @@ def test_scat_chat_vault_does_not_replace_the_remembered_question_in_dialog_mode
     assert rig.stop_bg(proc).returncode == 0
 
 
-def test_scat_chat_vault_is_honoured_in_plain_mode_without_the_question(rig):
+def test_scatlab_vault_is_honoured_in_plain_mode_without_the_question(rig):
     chosen = other_vault(rig, "chosen")
     (rig.state / "vault").write_text(f"{rig.vault.resolve()}\n")  # a different remembered vault
-    r = rig.run("start", SCAT_CHAT_VAULT=str(chosen), **STOP)
+    r = rig.run("start", SCATLAB_VAULT=str(chosen), **STOP)
     assert r.returncode == 0, r.stdout
     assert "Serve " not in r.stdout
     assert f"-v {chosen.resolve()}:/vault" in rig.calls_list()[rig.called("docker run")[0]]
@@ -195,7 +195,7 @@ def test_an_unconfirmed_stop_writes_problem_and_a_retry_writes_stopped(rig):
 
 def test_an_unconfirmed_stop_in_change_vault_stays_a_problem_and_a_retry_stops(rig):
     rig.run("start")
-    r = rig.run("change-vault", STUB_FUNNEL_STUCK="1", SCAT_CHAT_VAULT=None)
+    r = rig.run("change-vault", STUB_FUNNEL_STUCK="1", SCATLAB_VAULT=None)
     assert r.returncode == 1 and "could not confirm" in r.stdout, r.stdout
     assert rig.ui_lines()[0] == "problem" and "could not confirm" in rig.ui_lines()[3]
     assert len(rig.called("docker run")) == 1  # no new session was started on top
@@ -211,7 +211,7 @@ def test_an_unconfirmed_stop_in_change_vault_stays_a_problem_and_a_retry_stops(r
 def test_a_live_unrelated_process_in_the_session_file_is_not_a_running_session(rig):
     with Unrelated() as p:
         (rig.state / "session").write_text(f"{p.pid}\n")
-        r = rig.run("status", SCAT_CHAT_UI="dialog")
+        r = rig.run("status", SCATLAB_UI="dialog")
         assert r.returncode == 1 and "not running" in r.stdout and "starting" not in r.stdout
 
 

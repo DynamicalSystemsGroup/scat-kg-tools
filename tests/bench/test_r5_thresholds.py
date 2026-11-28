@@ -1,7 +1,7 @@
 """WP5-R5 (R-5): the thresholds on a generated 500-page vault, on a laptop.
 
 One page under 1 s, a neighborhood under 2 s, the whole vault under 5 s. The vault is generated into a
-temp directory here, with no fixture committed. Each timing is the whole public call (`scat_kg.check`),
+temp directory here, with no fixture committed. Each timing is the whole public call (`scat_tools.check`),
 reading the vault included, as the `scat` command does it. It takes a few seconds, so it runs in the
 default `uv run pytest`; `uv run pytest tests/bench -s` shows the timings.
 """
@@ -9,8 +9,8 @@ default `uv run pytest`; `uv run pytest tests/bench -s` shows the timings.
 import time
 from collections import Counter
 
-import scat_kg
-from scat_kg.vault import read_vault
+import scat_tools
+from scat_tools.vault import read_vault
 
 LIMITS = {"page": 1.0, "neighborhood": 2.0, "vault": 5.0}  # seconds, R-5
 
@@ -56,7 +56,7 @@ def generate(root):
     for rel, text in pages.items():
         (root / rel).parent.mkdir(parents=True, exist_ok=True)
         (root / rel).write_text(text, encoding="utf-8")
-    assert scat_kg.index(root=root).ok  # writes the five Base files
+    assert scat_tools.index(root=root).ok  # writes the five Base files
 
 
 def timed(fn):
@@ -72,15 +72,15 @@ def test__r5__page_neighborhood_and_vault_meet_the_thresholds_on_500_pages(tmp_p
     hub = "concern-000"
     best = {}
     for scope, call in {
-        "page": lambda: scat_kg.check(hub, root=tmp_path),
-        "neighborhood": lambda: scat_kg.check(hub, neighborhood=True, root=tmp_path),
-        "vault": lambda: scat_kg.check(root=tmp_path),
+        "page": lambda: scat_tools.check(hub, root=tmp_path),
+        "neighborhood": lambda: scat_tools.check(hub, neighborhood=True, root=tmp_path),
+        "vault": lambda: scat_tools.check(root=tmp_path),
     }.items():
         runs = [timed(call) for _ in range(3)]
         best[scope] = min(r[0] for r in runs)
         result = runs[0][1]
         assert not result.errors, str(result)  # a generated vault that checks clean of errors
-    size = len(scat_kg.check(hub, neighborhood=True, root=tmp_path).report.problems)
+    size = len(scat_tools.check(hub, neighborhood=True, root=tmp_path).report.problems)
     with capsys.disabled():
         print("\nR-5 on a generated vault of", len(vault.pages), "pages (best of 3, whole call)")
         for scope, limit in LIMITS.items():

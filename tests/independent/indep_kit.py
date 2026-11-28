@@ -1,7 +1,7 @@
 """Kit for the independent suite (WP16-U8).
 
 Everything here is written from the contracts (`contracts/rule-catalogue.md`, `contracts/page-contracts.md`,
-`contracts/machine-interface.md`), not from the checker: it builds vaults, runs the CLI entry point (`scat_kg.cli.main`,
+`contracts/machine-interface.md`), not from the checker: it builds vaults, runs the CLI entry point (`scat_tools.cli.main`,
 the function the `scat` command runs), and applies the fixes the tool gives as data, with an applier of its own.
 """
 
@@ -15,7 +15,7 @@ import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
-from scat_kg import cli
+from scat_tools import cli
 
 STATUSES = ("stub", "draft", "done")
 

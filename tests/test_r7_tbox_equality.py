@@ -1,6 +1,6 @@
 """WP5-R7 (R-13): the TBox and the models built from it equal ontology/scat.ttl.
 
-The TTL is parsed here, separately, with rdflib and SPARQL, and not through `scat_kg.tbox`. It is compared
+The TTL is parsed here, separately, with rdflib and SPARQL, and not through `scat_tools.tbox`. It is compared
 with `TBOX` (slugs, descriptions, definitions, fields, requiredFrom, status values, edge types with their
 slugs, verbs and ends, the table heading and columns, value sets) and with the pydantic models built from it.
 """
@@ -11,8 +11,8 @@ from typing import Literal, get_args, get_origin
 import pytest
 from rdflib import RDF, Graph
 
-from scat_kg.models import MODELS
-from scat_kg.tbox import TBOX
+from scat_tools.models import MODELS
+from scat_tools.tbox import TBOX
 
 TTL = Path(__file__).parents[1] / "ontology" / "scat.ttl"
 PREFIX = """

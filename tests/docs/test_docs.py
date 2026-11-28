@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 from docs_runner import copy_template, has_runnable, live_help, reference_problems, run_page
 
-from scat_kg.cli import _parser
+from scat_tools.cli import _parser
 
 DOCS = Path(__file__).resolve().parents[2] / "docs"
 PAGES = sorted(DOCS.rglob("*.md"))

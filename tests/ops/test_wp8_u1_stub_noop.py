@@ -2,8 +2,8 @@
 
 from opsutil import fm
 
-from scat_kg import cli
-from scat_kg.ops import stub
+from scat_tools import cli
+from scat_tools.ops import stub
 
 GOOD = {
     "scat.toml": "attribution = 'disallowed'\nstakeholder_group_cap = 3\n",

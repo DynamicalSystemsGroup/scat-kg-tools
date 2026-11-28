@@ -101,7 +101,7 @@ or, when the fix is a choice between alternatives, or steps:
 `frontmatter`, `table header`, ``row <n>`` or ``row <n> cell `<type|from|to>` ``. Angle-bracket words are filled in by
 the tool, except a slot marked *(author)*, which stays in the message literally because only the author can fill it.
 A fix says exactly which line to write, replace or delete. A command fix names the command and its REPL twin on one
-line, as in ``run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`)``. The same
+line, as in ``run `scat set-status <page-name> draft` (REPL: `scat_tools.set_status("<page-name>", "draft")`)``. The same
 text is printed on both paths (R-8).
 
 **Fix data.** Under each rule, "Edits" is the fix as data, in the machine interface's vocabulary: `set-field{field,
@@ -117,8 +117,8 @@ choice is the author's); **slot** (exact except one *(author)* slot); **advisory
 
 | Operation | CLI form | REPL form | What the messages rely on |
 |---|---|---|---|
-| stub | `scat stub <page-name> --type <type-key>` | `scat_kg.stub("<page-name>", type="<type-key>")` | Creates the page as page contracts section 6 says (`status: stub`, title from the name). Accepts the four node types and `narrative`; refuses an illegal name, a name that is already an existing `.md` file, and a `group` page that would take the vault over its cap. Writes nothing else. |
-| set-status | `scat set-status <page-name> <status>` | `scat_kg.set_status("<page-name>", "<status>")` | Sets `status`, adding the key if absent. Setting `done` is judged first (section 5). |
+| stub | `scat stub <page-name> --type <type-key>` | `scat_tools.stub("<page-name>", type="<type-key>")` | Creates the page as page contracts section 6 says (`status: stub`, title from the name). Accepts the four node types and `narrative`; refuses an illegal name, a name that is already an existing `.md` file, and a `group` page that would take the vault over its cap. Writes nothing else. |
+| set-status | `scat set-status <page-name> <status>` | `scat_tools.set_status("<page-name>", "<status>")` | Sets `status`, adding the key if absent. Setting `done` is judged first (section 5). |
 
 `record-edge` and `remove-edge` are operations of the tool too (`scat record-edge TYPE FROM TO --told-by NARRATIVE
 [--told-by NARRATIVE ...] [--note TEXT]`, `scat remove-edge FROM TO [--told-by NARRATIVE ...]`; `--told-by` may be repeated,
@@ -279,7 +279,7 @@ error [SCAT-FM-PARSE] <file>[:<line>] frontmatter: <parser's reason, or "the clo
 - **Messages:**
 ```
 error [SCAT-FM-REQUIRED] <file> field `status`: missing
-  Fix: run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`); use `stub` or `done` instead of `draft` if that is the truth
+  Fix: run `scat set-status <page-name> draft` (REPL: `scat_tools.set_status("<page-name>", "draft")`); use `stub` or `done` instead of `draft` if that is the truth
 error [SCAT-FM-REQUIRED] <file> field `title`: missing
   Fix: add the line `title: "<Title>"` (the page name with each - replaced by a space and the first letter upper case; reword it if you like)
 ```
@@ -369,7 +369,7 @@ error [SCAT-NAME] <file> frontmatter: the page name `<page-name>` <is not legal 
 error [SCAT-DONE-FIELD] <file> field `description`: missing on a page with status: done
   Fix, choose one:
     1. <add the line | replace the line `description: <current>` with> `description: "<one sentence you write>"` (author)
-    2. run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`) if the page is not finished
+    2. run `scat set-status <page-name> draft` (REPL: `scat_tools.set_status("<page-name>", "draft")`) if the page is not finished
 ```
 For `timeframe` the options are one line per value, `<add the line | replace the line `timeframe: <current>` with> `timeframe: <value>``, then the `set-status` option.
 - **Fix kind:** slot. The sentence is the author's reading (the tools do not seed it from a title or a first sentence: that would put words in the coder's mouth). `timeframe`: a choice among exact values. Edits: `set-field{description, "<one sentence you write>", author_slot}`; `set-field{timeframe, <value>}`; `command{set-status <page-name> draft}`.
@@ -394,7 +394,7 @@ warning [SCAT-DRAFT-FIELD] <file> field `timeframe`: missing (required once the 
 ### The mode rule
 
 One rule differs by attribution mode, and none other does. Its wording is exact (the checks hold it as
-`scat_kg.checks.attribution.MODE_RULE`, and a test compares the catalogue's quotation with it):
+`scat_tools.checks.attribution.MODE_RULE`, and a test compares the catalogue's quotation with it):
 
 > In required mode a narrative SHALL name its contributors; in disallowed mode it SHALL NOT; in optional mode it MAY. To name a contributor is to link a contributor page in the narrative's `attributed_to` field.
 
@@ -433,7 +433,7 @@ error [SCAT-ATTR-DISALLOWED] <file> field `type`: `contributor` is a contributor
 error [SCAT-ATTR-LINK] <file> field `attributed_to`: <`<entry>` is not a link to a contributor page | `[[<target>]]` does not reach a page (<reason, as SCAT-LINK-DANGLING-BODY>) | `[[<target>]]` reaches a page that is not a contributor (it is <a|an> <type> page)>
   Fix, choose one:
     1. <add the line | replace the line `attributed_to: <current>` with> `attributed_to: ["<the list with this entry replaced by [[<near match>]]>"]` (the contributor page `<near match>`)        (only if a near match exists among the contributor pages)
-    2. <run `scat stub <target> --type contributor` (REPL: `scat_kg.stub("<target>", type="contributor")`) to create the contributor page the entry links        (only variant (b), a legal name and no such file)
+    2. <run `scat stub <target> --type contributor` (REPL: `scat_tools.stub("<target>", type="contributor")`) to create the contributor page the entry links        (only variant (b), a legal name and no such file)
        | link the entry to a contributor page: write `[[<name>]]` of an existing page of type `contributor`, or make one (`type: contributor`, `status: stub`, `title`) and link it        (the other variants)>
     3. <replace the line ...> with `attributed_to: [<the other entries>]` (drop this entry)
 ```
@@ -448,7 +448,7 @@ error [SCAT-ATTR-LINK] <file> field `attributed_to`: <`<entry>` is not a link to
 error [SCAT-DONE-ATTR] <file> field `attributed_to`: missing on a page with status: done (the vault's attribution mode is `required`)
   Fix, choose one:
     1. <add the line | replace the line `attributed_to: <current>` with> `attributed_to: ["[[<a contributor page you link>]]"]` (author)
-    2. run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`) if the page is not finished
+    2. run `scat set-status <page-name> draft` (REPL: `scat_tools.set_status("<page-name>", "draft")`) if the page is not finished
 ```
 - **Fix kind:** slot. The contributor is the coder's: the tools never seed it. Edits: `set-field{attributed_to, ["[[<a contributor page you link>]]"], author_slot}`; `command{set-status <page-name> draft}`.
 - **Seed:** `required` mode, a `done` narrative with the key absent, empty, `[]` and `[""]`; the same at `done` in `optional` and `disallowed` modes gives none from this rule; one entry present gives none.
@@ -472,7 +472,7 @@ warning [SCAT-DRAFT-ATTR] <file> field `attributed_to`: missing (required once t
 error [SCAT-LINK-DANGLING-BODY] <file>:<line> link [[<target>]]: does not reach a page (<no page is named <target> | <other-file> exists but has no `type`, so it is not a page | <target> is not a legal page name: <reason>>)
   Fix, choose one:
     1. on line <line> replace `[[<target>]]` with `[[<near match>]]`                    (only if a near match exists among all pages)
-    2. run `scat stub <target> --type <key>` (REPL: `scat_kg.stub("<target>", type="<key>")`) to create a <key> page      (one numbered option per inferred type)
+    2. run `scat stub <target> --type <key>` (REPL: `scat_tools.stub("<target>", type="<key>")`) to create a <key> page      (one numbered option per inferred type)
     n. on line <line> replace `[[<target>]]` with `<target>` to keep the words and drop the link
 ```
 **Inferred types.** A body link does not say what its page is, and the stub operation creates one only for a given type, so the options are alternatives and not a guess: (a) if some row end in the vault names the same target, the layer type that row fixes (all of them, if several, sorted by type key); (b) otherwise the five types `group`, `concern`, `affordance`, `technology`, `narrative` (the types the stub operation makes: never `contributor`), each a separate numbered exact command. The cap rule: any option that would create a `group` page is withheld when the vault is at its cap, and the message says "the vault is at its cap of <cap> groups, so a new group page would break SCAT-CAP; choose an existing group".
@@ -551,7 +551,7 @@ In a table cell the bar of an alias link is written `\|`: the replacement is `[[
 ```
 warning [SCAT-NOEDGES] <file> table: the narrative is `done` and tells no edge: its fingerprint has no edges
   Fix, choose one:
-    1. record its edges: run `scat set-status <page-name> draft` (REPL: ...), then `scat record-edge <type> <from> <to> --told-by <page-name>` (REPL: `scat_kg.record_edge("<type>", "<from>", "<to>", ["<page-name>"])`) for each edge the account tells, then `scat set-status <page-name> done` (REPL: ...)
+    1. record its edges: run `scat set-status <page-name> draft` (REPL: ...), then `scat record-edge <type> <from> <to> --told-by <page-name>` (REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["<page-name>"])`) for each edge the account tells, then `scat set-status <page-name> done` (REPL: ...)
     2. or leave it as intended: a narrative may tell no edge, and this warning does not block; nothing to change
 ```
 - **Fix kind:** options; both options advisory and without edits: which edges the account tells is the coder's reading, and `record-edge` refuses a `done` narrative, so the first option goes through `draft`.
@@ -674,7 +674,7 @@ A duplicated row, a row in the wrong direction and a row between the wrong layer
 <severity> [SCAT-*-END-NOLINK] <file>:<line>:<column> row <n> cell `<from|to>`: the cell is empty; each end of a row is one link, `[[page-name]]`       (a: the empty cell)
   Fix, choose one:
     1. replace `<text>` with `[[<name>]]`                       (b: when a page of the layer's type has that name, or the derived name of the text; one option per candidate, near match first)
-    2. replace `<text>` with `[[<d>]]`, then run `scat stub <d> --type <layer key>` (REPL: `scat_kg.stub("<d>", type="<layer key>")`)       (b: when no page has the derived name <d> and the layer is known; two steps)
+    2. replace `<text>` with `[[<d>]]`, then run `scat stub <d> --type <layer key>` (REPL: `scat_tools.stub("<d>", type="<layer key>")`)       (b: when no page has the derived name <d> and the layer is known; two steps)
     3. replace the empty cell with `[[<node you choose>]]` (author)       (a)
     4. replace the cell with `<one link of it>`; any text beside it belongs in the `note` cell by hand      (c: one option per link)
     n. delete the row
@@ -690,7 +690,7 @@ Variant (c) uses the first message, "is not a link", though a link is there: the
 <severity> [SCAT-*-END-NOPAGE] <file>:<line>:<column> row <n> cell `<from|to>`: [[<target>]] does not reach a page (<reason as in SCAT-LINK-DANGLING-BODY>)
   Fix, choose one:
     1. replace `[[<target>]]` with `[[<near match>]]`        (only if a near match exists among the pages of the layer's type)
-    2. run `scat stub <target> --type <layer key>` (REPL: `scat_kg.stub("<target>", type="<layer key>")`) to create a <layer key> page      (variant a; the layer key is the type the row fixes, as page contracts 6 says)
+    2. run `scat stub <target> --type <layer key>` (REPL: `scat_tools.stub("<target>", type="<layer key>")`) to create a <layer key> page      (variant a; the layer key is the type the row fixes, as page contracts 6 says)
     n. delete the row
 ```
 Variant (b) replaces option 2 by the lines that make the typeless file a page of the layer's type; variant (c) takes the replacement and replace-then-stub options of SCAT-LINK-DANGLING-BODY, with the layer's type as the one inferred type. The cap rule applies to a `group` layer.
@@ -743,7 +743,7 @@ refused [SCAT-DONE-REFUSED] <file>: <n> error(s) would stand at status done; sta
   <the n problems, each as `scat check` would print it at done, indented>
   Fix, choose one:
     1. fix the problems above, then run `scat set-status <page-name> done` again
-    2. leave the page at `draft`: run `scat set-status <page-name> draft` (REPL: `scat_kg.set_status("<page-name>", "draft")`)
+    2. leave the page at `draft`: run `scat set-status <page-name> draft` (REPL: `scat_tools.set_status("<page-name>", "draft")`)
 ```
 - **Fix kind:** options: option 1 advisory (the fixes that matter are each listed problem's own), option 2 exact (`command{set-status <page-name> draft}`, with its REPL twin). Data: a `Refusal` with `subject` the file, `why`, `rule` `SCAT-DONE-REFUSED`, `problems` the list, and `fix` of those two options.
 - **Vault-wide errors are not listed:** an error of SCAT-CAP, SCAT-CAP-CONFIG or SCAT-MODE-CONFIG, though it runs at page scope when the page is a `group`, does not depend on this page's status and is not in the refusal's `problems`; a `group` page with no other error is set to `done` in a vault over its cap, and `scat check` reports the cap.

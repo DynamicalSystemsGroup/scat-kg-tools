@@ -7,9 +7,9 @@ from pathlib import Path
 import pytest
 from jsonschema import Draft202012Validator
 
-from scat_kg.checks import check_vault, fixes
-from scat_kg.contract import SCHEMA_VERSION
-from scat_kg.fix import Fix
+from scat_tools.checks import check_vault, fixes
+from scat_tools.contract import SCHEMA_VERSION
+from scat_tools.fix import Fix
 
 ROOT = Path(__file__).resolve().parents[2]
 _spec = importlib.util.spec_from_file_location(

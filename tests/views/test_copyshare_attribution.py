@@ -19,11 +19,11 @@ from test_evidence_attribution import (
     strip_attributed,
 )
 
-import scat_kg
+import scat_tools
 
 
 def document(root, node=None):
-    view = scat_kg.copy_share(node, root=root)
+    view = scat_tools.copy_share(node, root=root)
     assert view.ok, str(view)
     return view.to_dict()
 
@@ -38,7 +38,7 @@ def test_the_document_carries_the_mode(made):
     root, mode = made
     d = document(root)
     assert d["mode"] == mode and d["pages"]
-    assert str(scat_kg.copy_share(root=root)).startswith(f"attribution mode: {mode}\n")
+    assert str(scat_tools.copy_share(root=root)).startswith(f"attribution mode: {mode}\n")
 
 
 def test_adding_contributor_pages_changes_nothing(made, tmp_path):
@@ -88,5 +88,5 @@ def test_a_contributor_page_is_refused_as_the_node(made, tmp_path):
     other = tmp_path / "with-pages"
     shutil.copytree(root, other)
     add_contributors(other, ("di-fox",))
-    r = scat_kg.copy_share("di-fox", root=other)
+    r = scat_tools.copy_share("di-fox", root=other)
     assert not r.ok and "no node has this name" in str(r)

@@ -13,9 +13,9 @@ from pathlib import Path
 
 import pytest
 
-from scat_kg.cli import _parser
-from scat_kg.mcp_server import prompts
-from scat_kg.mcp_server.server import build
+from scat_tools.cli import _parser
+from scat_tools.mcp_server import prompts
+from scat_tools.mcp_server.server import build
 
 ROOT = Path(__file__).resolve().parents[2]
 KEYWORDS = re.compile(r"\b(SHALL NOT|SHALL|SHOULD|MAY)\b")
@@ -71,7 +71,7 @@ def test_the_exceptions_are_real_places():
 
 # WP25-R6 (D-146): no test or work status in a user page.
 STATUS = re.compile(
-    r"not been tried|untested|lab run|not recorded|nobody has yet|your first run is the real test",
+    r"not been tried|untested|\blab run|not recorded|nobody has yet|your first run is the real test",
     re.IGNORECASE,
 )
 

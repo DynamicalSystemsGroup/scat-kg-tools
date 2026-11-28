@@ -3,10 +3,10 @@
 import pytest
 from viewutil import base_files, narrative, row, tree_hash, write
 
-import scat_kg
-from scat_kg.checks import check_vault
-from scat_kg.graph import load
-from scat_kg.vault import read_vault
+import scat_tools
+from scat_tools.checks import check_vault
+from scat_tools.graph import load
+from scat_tools.vault import read_vault
 
 GOOD = row("holds", "farmers", "water")
 PATH = "narrative/bad.md"
@@ -55,12 +55,12 @@ def test_the_graph_records_the_skipped_row(tmp_path, case):
 
 
 VIEWS = {
-    "edge_table": lambda r: scat_kg.edge_table("holds", root=r),
-    "layered": lambda r: scat_kg.layered(root=r),
-    "trace": lambda r: scat_kg.trace("farmers", root=r),
-    "fingerprint": lambda r: scat_kg.fingerprint(root=r),
-    "fingerprint-named": lambda r: scat_kg.fingerprint("bad", root=r),
-    "layered-named": lambda r: scat_kg.layered(["bad"], root=r),
+    "edge_table": lambda r: scat_tools.edge_table("holds", root=r),
+    "layered": lambda r: scat_tools.layered(root=r),
+    "trace": lambda r: scat_tools.trace("farmers", root=r),
+    "fingerprint": lambda r: scat_tools.fingerprint(root=r),
+    "fingerprint-named": lambda r: scat_tools.fingerprint("bad", root=r),
+    "layered-named": lambda r: scat_tools.layered(["bad"], root=r),
 }
 
 
@@ -84,7 +84,7 @@ def test_views_refuse_naming_path_and_row(tmp_path, case, view):
 @pytest.mark.parametrize("case", CASES)
 def test_an_error_page_refuses_once_with_its_problems(tmp_path, case):
     root = build(tmp_path, CASES[case][0], "done")
-    out = scat_kg.fingerprint("bad", root=root)
+    out = scat_tools.fingerprint("bad", root=root)
     assert not out.ok
     assert len(out.to_dict()["refused"]) == 1
     assert out.to_dict()["problems"]
@@ -93,15 +93,15 @@ def test_an_error_page_refuses_once_with_its_problems(tmp_path, case):
 @pytest.mark.parametrize("case", CASES)
 def test_a_clean_narrative_still_draws(tmp_path, case):
     root = build(tmp_path, CASES[case][0])
-    assert scat_kg.fingerprint("dry", root=root).ok
-    assert scat_kg.layered(["dry"], root=root).ok
+    assert scat_tools.fingerprint("dry", root=root).ok
+    assert scat_tools.layered(["dry"], root=root).ok
 
 
 def test_one_refusal_for_each_skipped_row(tmp_path):
     root = build(tmp_path, CASES["end-reaches-no-page"][0])
     extra = narrative("Bad2", "x", [CASES["unknown-type"][0]], "draft", "scenario")
     write(root, {"narrative/bad2.md": extra})
-    out = scat_kg.layered(root=root)
+    out = scat_tools.layered(root=root)
     assert [r["subject"] for r in out.to_dict()["refused"]] == [
         f"{PATH} row 2",
         "narrative/bad2.md row 1",
@@ -115,8 +115,8 @@ def test_a_repeated_row_is_not_skipped(tmp_path):
         | {PATH: narrative("Bad", "The [[water]] ran out.", [GOOD, GOOD], "draft", "scenario")},
     )
     assert load(root).skipped == ()
-    assert scat_kg.fingerprint("bad", root=root).ok
-    assert scat_kg.edge_table("holds", root=root).ok
+    assert scat_tools.fingerprint("bad", root=root).ok
+    assert scat_tools.edge_table("holds", root=root).ok
 
 
 def test_the_base_vault_skips_nothing(tmp_path):
