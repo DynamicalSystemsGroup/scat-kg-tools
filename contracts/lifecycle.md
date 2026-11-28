@@ -191,9 +191,9 @@ stage, with its skill sections) and offers only the stage's work; a call outside
 assistant relays. A reviewer reads `lifecycle.toml`'s history in git to see every move and who it names.
 
 **Worked example (L7).** In code, `stub` refuses a new group because the vault holds its cap of groups. The refusal
-says the cap is met. The coder tells the assistant to move to plan; the assistant calls
-`set_stage(to="plan", by="<the name the coder gave>")`. In plan the setup person raises the cap in `scat.toml`, or the organiser decides to link an existing group instead, and the
-organiser moves the project back to code.
+says the cap is met. The coder tells the assistant to move to plan; the assistant calls `set_stage(to="plan", by="<the
+name the coder gave>")`. In plan the setup person raises the cap in `scat.toml`, or the organiser decides to link an
+existing group instead, and the organiser moves the project back to code.
 
 **Risks for WP30.** `lifecycle.toml` is one file for the whole project, so every chat and every clone sees the same
 stage; that is intended (D-177), but two people moving the stage in two clones can conflict in git, and `check` must

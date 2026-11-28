@@ -22,12 +22,6 @@ DETECT_FALSE = {
     "holds": False,
     "detail": "3 of 4 narratives done; the check has 0 errors",
 }
-DETECT_TRUE = {
-    "kind": "detect",
-    "check": "the stakeholder-group count is at the cap",
-    "holds": True,
-    "detail": "6 groups, cap 6",
-}
 
 
 def exit_(id_, to, dir_, trigger, decides, predicate):
