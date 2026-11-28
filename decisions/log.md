@@ -3362,3 +3362,16 @@ candidates taken from the account alone and the flag removed with nothing in its
 so". WP39 is rewritten to four goals (retire the list; the rule; candidates from the account; one sentence in the
 coding guide) and two naming and review defaults. This supersedes D-207's adoption of RS8's option (e): its count line
 is dropped; its drawing only evidenced candidates follows from the rule.
+
+## D-209 | 2026-11-27 | The cruft sweep: seven cuts approved
+
+Asked to sweep the lifecycle model and WP36 to WP38 the way WP39 was swept, the chief engineer said (typed by the
+agent): "Yes, sweep them". The ACE checked each of its additions against what he asked for and what code depends on
+it, and proposed seven cuts; the chief engineer: "Approve all 7 cuts". Amendments to the locked model, and WP30's code
+trimmed before acceptance: (1) no pending-request state: `set_stage` without `by` is refused; (2) no `set_at`
+timestamp: git keeps when; (3) no limit on `stub` in plan; (4) L7 and L13 merged into one code-to-plan move on a
+person's word, and the cap-detect reader dropped (`stub`'s own refusal says the cap is met). WP36: (5) no new
+walkthrough file that only cites existing records; (6) no docs test for the visual rows, the ACE's read instead. WP37:
+(7) no `scat_kg` import alias, since nothing has been released. Kept, as justified: `produced_by` and the review loop
+per output (D-178), the other transitions (data only), the unknown-stage refusal, `which_stage`'s exits, and WP38 as
+decided.
