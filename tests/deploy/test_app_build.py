@@ -174,3 +174,18 @@ def test_the_app_is_named_scatlab_and_its_launcher_runs_from_inside_the_bundle(b
         check=False, capture_output=True, text=True, env={"PATH": "/usr/bin:/bin", "HOME": str(tmp_path)},
     )  # fmt: skip
     assert s.returncode == 1 and s.stdout.strip() == "SCATLAB is not running.", s.stderr
+
+
+@needs_mac
+def test_the_bundled_context_has_every_file_the_dockerfile_copies(built):
+    """The app builds its image from its own copy of the source: every `COPY` source must be in that copy."""
+    import re
+
+    out, r, _ = built
+    assert r.returncode == 0, r.stderr
+    ctx = out / "SCATLAB.app" / "Contents" / "Resources" / "context"
+    dockerfile = (ctx / "deploy" / "Dockerfile").read_text(encoding="utf-8")
+    sources = re.findall(r"^COPY\s+(\S+)\s+\S+", dockerfile, re.MULTILINE)
+    assert sources, "no COPY line read"
+    missing = [s for s in sources if not (ctx / s).exists()]
+    assert not missing, missing
