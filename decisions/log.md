@@ -3178,3 +3178,41 @@ R5 on the reviewer's 13 mutations. The view and server tests pass (663); CI gree
 passes (R6). The PM ruled two stopping points itself (U2): the three view tools declare no output schema, since a plot
 is not JSON, and one helper edit in `test_wp23_mode`. The ACE accepts both and added one line to `docs/reference/mcp.md`
 saying the three tools declare no output schema. Accepted by the ACE.
+
+## D-190 | 2026-11-27 | WP34 and WP35 accepted by the ACE; follow-ups recorded
+
+WP34 (what the figures hide). The ACE added a node page no row tells and a narrative with only its `Edges told`
+table to a copy of the example vault: the layered result lists the orphan and the plot names it (R1); `candidates`
+appears only when asked (16 here) and is dashed and listed (R2, the byte-identity of the default rests on the
+reviewer's comparison with the old tree); the rows-only narrative is flagged in the fingerprint and the layered result
+and the plot says why, and a narrative with text is not (R2b); `scat layered --candidates --json` equals the API's
+document (R3). CI green; `check_metrics.py --accept WP34` passes (R4). The PM's question on the flag's definition goes
+to the chief engineer.
+
+WP35 (legible layouts). The view tests pass (677), including crossings counted on the lab and contract-example vaults
+against name order (R1; lab 58 to 1, examples 5 to 0, per the reviewer's own counter), bands (R2), marks and key (R3)
+and same bytes for the same vault (R4); the ACE confirmed the bytes and the key's names on the examples. CI green;
+`check_metrics.py --accept WP35` passes (R5). `docs/reference/api.md` lacked `mark_narratives` and the new node order;
+the ACE brought it in line before acceptance (it says, as checked, that the CLI and server do not offer the option).
+
+Follow-ups: the template re-pin is folded into WP30's (the WP30 PM is told; the template names no `draw_*` tool);
+the rest is candidate C19. Accepted by the ACE.
+
+## D-191 | 2026-11-27 | The no-account flag: a UX spike first
+
+WP34's PM noted that the no-account flag fires only when a narrative has no text outside its `Edges told` table, while
+a narrative whose prose links no node gets equally uninformative candidates and no flag. Asked whether the flag should
+mean "no text at all" or "no links in the text", the chief engineer said (typed by the agent): "ux spike and consider
+alternatives. please respect our "mak the right way the easy way and as simple as possible but now simpler
+heurisics"". Outcome: no change to WP34's flag now; a UX spike (RS8, to be scoped) considers the alternatives for
+telling a coder when candidate links carry no evidence, held to "make the right way the easy way" and "as simple as
+possible but no simpler".
+
+## D-192 | 2026-11-27 | Amendment to the locked lifecycle model: two strings quoted
+
+WP30's fresh reviewer found that two unquoted strings in the model's `yaml lifecycle` block contain commas, so YAML
+split them: code's required input "field notes (from capture, or the organiser's own)" read as two items, and L3's
+trigger was cut at "(solo trial" with a stray key. The ACE's error; its consistency test and its fresh reviewer missed
+it. Asked to approve the fix (quote the two strings, no change in meaning, and a test that catches such splits), the
+chief engineer said (typed by the agent): "Approve the fix". Applied on `dev`; the new test fails on the unfixed
+document and passes on the fixed one.

@@ -74,7 +74,7 @@ stages:
     skill_sections: [The words, Where it holds, One step per reply, Norms]
   code:
     work: Go round the coding loop for each narrative (interpreting, authoring, coding, reviewing), using the views to see what was coded and to find what is missing.
-    required_inputs: [field notes (from capture, or the organiser's own), a set-up vault]
+    required_inputs: ["field notes (from capture, or the organiser's own)", a set-up vault]
     allowed_outputs:
       - output: narrative pages (the account and its links)
         produced_by: the coder in Obsidian, or the assistant proposing text the coder accepts
@@ -131,7 +131,7 @@ detects:   # each detect predicate, the reader that evaluates it, and whether th
 transitions:
   - {id: L1, from: unknown, to: any, dir: start, trigger: the first call on a vault with no stage recorded, predicate: {kind: person, says: the person names the stage}, decides: coder}
   - {id: L2, from: plan, to: capture, dir: forward, trigger: the sessions are planned, predicate: {kind: person, says: the organiser says the sessions are planned}, decides: organiser}
-  - {id: L3, from: plan, to: code, dir: forward, trigger: field notes already exist (solo trial, or notes from elsewhere), predicate: {kind: person, says: field notes are ready}, decides: organiser}
+  - {id: L3, from: plan, to: code, dir: forward, trigger: "field notes already exist (solo trial, or notes from elsewhere)", predicate: {kind: person, says: field notes are ready}, decides: organiser}
   - {id: L4, from: capture, to: code, dir: forward, trigger: field notes are gathered, predicate: {kind: person, says: field notes are ready}, decides: organiser}
   - {id: L5, from: code, to: analyse, dir: forward, trigger: the narratives are coded, predicate: {kind: detect, check: every narrative is done and the whole-vault check has no errors}, decides: coder}
   - {id: L6, from: analyse, to: code, dir: backward, trigger: reading the views shows something to revisit, predicate: {kind: person, says: the coder names what to revisit}, decides: coder}

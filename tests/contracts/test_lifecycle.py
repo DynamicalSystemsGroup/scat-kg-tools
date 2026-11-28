@@ -182,3 +182,16 @@ def test_the_glossary_and_terms_page_define_stage_and_transition():
 
 def test_the_diagram_is_generated_from_the_data():
     assert diagram_in_doc() == diagram_from_data(instance())
+
+
+def test_no_value_is_split_by_a_comma():
+    """A comma in an unquoted flow value splits it (D-192): every transition has exactly its keys, and no listed
+    item opens a parenthesis it does not close."""
+    data = instance()
+    keys = {"id", "from", "to", "dir", "trigger", "predicate", "decides"}
+    for t in data["transitions"]:
+        assert set(t) == keys, (t["id"], set(t) ^ keys)
+    for name, stage in data["stages"].items():
+        for key in ("required_inputs", "tools", "prompts", "skill_sections"):
+            for item in stage[key]:
+                assert item.count("(") == item.count(")"), (name, key, item)

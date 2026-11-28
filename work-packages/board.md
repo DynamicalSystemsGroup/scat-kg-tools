@@ -40,15 +40,16 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | RS6 | Research spike: the glossary, for the organiser (branch `spike/glossary`, never merged into `dev`) | readout `research/glossary/readout.md` on `dev` (995d2c2); inventory data on `spike/glossary`; waits for the ACE (iteration 51: 22 est, 25 realized, 0.8 h) | `RS6-glossary.md` |
 | WP32 | Fingerprints follow the narrative's kind; columns read S, C, A, T (D-172) | accepted (D-189) | `WP32.md` |
 | WP33 | One query, rendered as a plot, a table or both; one tool per view (D-174) | accepted (D-189) | `WP33.md` |
-| WP34 | What the figures hide, shown (orphans, candidates, the no-account flag) | approved (D-175); after WP33 | `WP34.md` |
-| WP35 | Legible layouts | approved (D-175); after WP34 | `WP35.md` |
+| WP34 | What the figures hide, shown (orphans, candidates, the no-account flag) | accepted (D-190) | `WP34.md` |
+| WP35 | Legible layouts | accepted (D-190) | `WP35.md` |
 | RS7 | Research spike: how a tool asks the person (standards, practice, why the elicitation trial hung; D-182) | desk and local parts done and reviewed; readout `research/asking/readout.md` on `dev`; variants and notes on `spike/asking`; client trials and acceptance held for the ACE (iteration 54: 19 est, 28 realized, 1.1 h) | `RS7-asking-the-person.md` |
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | accepted (D-186, D-187); model locked; `contracts/lifecycle.md` | `WP29.md` |
 | WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | approved (D-163) | `WP30.md` |
 | WP31 | The assistant's habits, stage by stage, tested by the probes (depends on WP30) | approved (D-163) | `WP31.md` |
 | WP32 | Fingerprints follow the narrative's kind; columns read stakeholder, concern, affordance, technology (D-172, D-175) | accepted by the ACE (D-189) | `WP32.md` |
 | WP33 | One query, rendered as a plot, a table or both; one tool per view (D-174, D-175) | accepted by the ACE (D-189) | `WP33.md` |
-| WP34 | What the figures hide, shown: orphans, layered candidates, the no-account flag (D-175) | all units done and merged on `dev`; ready for ACE acceptance | `WP34.md` |
+| WP34 | What the figures hide, shown: orphans, layered candidates, the no-account flag (D-175) | accepted (D-190) | `WP34.md` |
+| WP35 | Legible layouts: barycentre ordering, island bands, edge marking (D-175) | accepted (D-190) | `WP35.md` |
 
 ## Units
 
@@ -431,6 +432,9 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP34-U2 | Python developer and test engineer (CLI, server, schema, parity test), sonnet | 5 | 5 | `wp34/u2` | done |  | 2026-11-27 | flag on two commands, server option, additive schema, parity test with mutations; two false help strings fixed; no push-back |
 | WP34-U3 | technical writer (api.md, analysis.md), sonnet | 2 | 2 | `wp34/u3` | done |  | 2026-11-27 | layered and fingerprint entries and the reading paragraph; no push-back |
 | WP34-U1r | reviewer (fresh, WP34), sonnet | 3 | 3 | `-` | done |  | 2026-11-27 | 18 mutants killed, real vault by CLI and server, PNGs viewed, byte-identity against the old tree; PASS with four nits |
+| WP35-U1 | Python developer and test engineer (ordering, bands, marking in draw.py), sonnet | 5 | 5 | `wp35/u1` | done |  | 2026-11-27 | best-of-passes guard added so ordering never worse than name order; 4 existing-test edits listed; PASS first review |
+| WP35-U2 | technical writer (analysis page drawing section), sonnet | 2 | 3 | `wp35/u2` | done |  | 2026-11-27 | review found three inexact sentences (mark count, key, one band); one follow-up commit |
+| WP35-U1r | reviewer (fresh, WP35), sonnet | 3 | 3 | `-` | done |  | 2026-11-27 | 15 mutants, own crossing counter on SVG over 1900 random vaults, PNGs viewed, hash-seed determinism |
 
 ## Iterations and velocity
 
@@ -484,6 +488,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 53 | WP33-U1 to WP33-U1r | 15 | 19 | 1.27 | 1.4 h | 13.6 |
 | 54 | RS7-U1 to RS7-U5 | 19 | 28 | 1.47 | 1.1 h | 25.5 |
 | 56 | WP34-U1 to WP34-U1r | 15 | 15 | 1.00 | 1.3 h | 11.5 |
+| 57 | WP35-U1 to WP35-U1r | 10 | 11 | 1.10 | 1.2 h | 9.2 |
 
 ## Velocity and forecast
 

@@ -14,8 +14,8 @@ from scat_kg.tbox import TBOX
 
 
 def names(svg: str) -> dict[str, list[str]]:
-    """{layer: [name, ...]} of the boxes drawn, labels cut back to the name."""
-    return {layer: [t.split(" (")[0] for _, t in col] for layer, col in columns(svg).items()}
+    """{layer: [name, ...]} of the boxes drawn, labels cut back to the name, sorted: the drawn order is not by name."""
+    return {layer: sorted(t.split(" (")[0] for _, t in col) for layer, col in columns(svg).items()}
 
 
 def reached(vault, node: str, direction: str = "both") -> dict[str, list[str]]:
