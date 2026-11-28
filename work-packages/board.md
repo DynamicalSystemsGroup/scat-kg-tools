@@ -44,7 +44,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP35 | Legible layouts | accepted (D-190) | `WP35.md` |
 | RS7 | Research spike: how a tool asks the person (standards, practice, why the elicitation trial hung; D-182) | desk and local parts done and reviewed; readout `research/asking/readout.md` on `dev`; variants and notes on `spike/asking`; client trials and acceptance held for the ACE (iteration 54: 19 est, 28 realized, 1.1 h) | `RS7-asking-the-person.md` |
 | RS8 | Research spike: telling a coder when candidate links carry no evidence (D-191) | desk parts done and reviewed; readout `research/candidates/readout.md` on `dev`; prototypes and fixtures on `spike/candidates`; the ACE's and the assistants' readings (RS8-R3 recorded reading) held for a sitting (iteration 59: 11 est, 11 realized, 0.9 h) | `RS8-candidate-evidence.md` |
-| WP36 | What each path's model can see in a drawing (D-197, D-198) | all units done on `dev` (iteration 60: 5 est, 5 realized, 0.9 h); the rendered pages were not looked at in a browser; ready for ACE acceptance | `WP36.md` |
+| WP36 | What each path's model can see in a drawing (D-197, D-198) | accepted (D-212) | `WP36.md` |
 | WP37 | The rename: SCATLAB app, scat-tools, scat-template, before v0.1 (D-199 to D-201) | approved (D-204); repository renames are the chief engineer's to do | `WP37.md` |
 | WP38 | The organiser's glossary: core plus stage sections, held as YAML (D-202, D-203) | accepted (D-210) | `WP38.md` |
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | accepted (D-186, D-187); model locked; `contracts/lifecycle.md` | `WP29.md` |

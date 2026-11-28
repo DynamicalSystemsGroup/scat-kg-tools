@@ -95,6 +95,7 @@ ask it whether it can view the images. Then choose by what you need:
 
 - **The table.** `output` `table` (the default) gives every node and edge the drawing shows, as text. Ask for it when the
   model is to read or check the result, since a drawing is only the table's picture.
+- **The plot.** `output` `plot` gives only the picture.
 - **Both.** `output` `both` gives the picture for you and the table for the model, from one query, so they agree.
 - **SVG.** `format` svg returns the plot as text, which a model reads as structure: which node, which line. Saved, it is a figure you can open.
 - **PNG.** The default `format`. Use it to show a drawing to a person; it is the one to look at.

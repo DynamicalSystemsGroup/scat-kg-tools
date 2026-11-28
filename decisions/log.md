@@ -3391,3 +3391,20 @@ as C21. WP39's blast radius gains `glossary.yml` (its `candidate` entry changes 
 WP36 landed before D-209 reached its PM, with the record file and docs test D-209 cut, and the page pointed readers to
 internal records; the PM is removing those three things. The page's claims match the records (the ACE's read, R3).
 WP36 is accepted once that cleanup is on `dev`.
+
+## D-211 | 2026-11-28 | "organiser" joins the glossary
+
+WP38 left "organiser" out (it is not in RS6's evidence-based set) though six definitions use it. Asked whether it
+should be an entry, the chief engineer said (typed by the agent): "Add it". It is a core entry, defined from his own
+description of the organiser's work (D-168): the person who runs the elicitation, from scope and policies to reporting
+findings. Both glossary pages are regenerated; the terms page is 890 words, under its cap of 940.
+
+## D-212 | 2026-11-28 | WP36 accepted by the ACE
+
+The PM removed what D-209 cut (the record file and the docs test) and the internal record paths from
+`docs/path-pros-and-cons.md` (05f3277). The ACE read every Drawings line against `mvc-loop-claude.md` and
+`analysis-session-inference-coop.md`: each claim stays within its run (claude.ai's model received the image;
+inference.coop's default model received nothing from a PNG and read SVG as text); the IDE and local LLM lines state
+what our side returns, never "not tried" (R1, R3). The analysis page's section named `table` and `both` but not `plot`;
+the ACE added the one line (R2, now by the ACE's read, since D-209 cut its test). CI green; `check_metrics.py --accept
+WP36` passes (R4). Accepted by the ACE.

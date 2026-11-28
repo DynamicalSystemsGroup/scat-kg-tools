@@ -20,6 +20,7 @@ Each word in one sense, as the glossary fixes it. See [Coding](../coding.md).
 - **status**: How far a page has got: `stub` (a name), `draft` (content, incomplete) or `done` (complete and signed off by the coder).
 - **stage**: Where a project is in its lifecycle: plan, capture, code, analyse or report.
 - **transition**: A move from one stage to another, forward or backward, made on a person's word.
+- **organiser**: The person who runs the elicitation: decides its scope and policies, plans it and invites contributors, facilitates the events, gathers the field notes, codes them or asks a coder to, analyses, and reports the findings.
 - **coder**: The person who owns interpretation: reads the field notes, writes and links the narratives, and signs off `done`.
 - **assistant**: An LLM, where allowed, that helps the coder and holds no authority.
 - **tool**: The program that owns conformance: it checks the vault and records only what the coder accepts.

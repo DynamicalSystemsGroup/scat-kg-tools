@@ -150,6 +150,13 @@ entries:
       The tool may say a move is open.
     example: "Reading the views sent the project back to code: a backward transition."
     formal: Transition of the lifecycle machine (authored)
+  - term: organiser
+    section: core
+    definition: >-
+      The person who runs the elicitation: decides its scope and policies, plans it and invites contributors,
+      facilitates the events, gathers the field notes, codes them or asks a coder to, analyses, and reports the findings.
+    example: The organiser sets the cap before the first session.
+    formal: Authored in SCAT
   - term: coder
     section: core
     definition: >-
