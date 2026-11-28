@@ -176,7 +176,11 @@ def test__scat_draft_end_nolink__more_than_five_candidates_are_counted(make_vaul
     names = [f"c-{i}" for i in range(7)]
     pages = {f"concern/{n}.md": doc("concern", f"C {n}") for n in names}
     account = "A [[staff]]. " + " ".join(f"[[{n}]]" for n in names) + "\n"
-    files = {**pages, **with_rows(status, "| [[staff]] | holds | zzz | |", account=account)}
+    rows = ["| [[staff]] | holds | zzz | |"] + [f"| [[staff]] | holds | [[{n}]] | |" for n in names]
+    files = {
+        **pages,
+        **with_rows(status, *rows, account=account),
+    }  # the table holds every node linked
     (p,) = report_of(make_vault, files).problems
     assert (
         len(p.fix_data.options) == 5 + 1 + 1
@@ -412,10 +416,12 @@ def test__rule_4_a_narrative_with_no_row_at_all_tells_no_edge_and_gets_no_messag
     make_vault, status
 ):
     # MISSION G1 (WP18-U6): at `done` the one message is the SCAT-NOEDGES warning; before `done`, none
+    # the account links five nodes and no row ends at them: each is SCAT-*-LINK-NOTINTABLE, a warning until `done`
+    notin = f"SCAT-{'DONE' if status == 'done' else 'DRAFT'}-LINK-NOTINTABLE"
     for page in (narrative(status=status, rows=()), narrative(status=status, section="")):
         r = report_of(make_vault, {DESK: page})
-        assert rules_of(r) == (["SCAT-NOEDGES"] if status == "done" else [])
-        assert r.ok
+        assert rules_of(r) == (["SCAT-NOEDGES"] if status == "done" else []) + [notin] * 5
+        assert r.ok == (status != "done")
 
 
 def test__rule_4_the_fingerprint_view_lists_the_pair_as_a_candidate_and_the_check_does_not(
@@ -441,110 +447,135 @@ def test__rule_4_a_row_alone_with_both_ends_linked_is_conformant(make_vault):
     only_the_row = narrative(
         account="No links in the account.\n", rows=(row("holds", "staff", "safe-handling"),)
     )
-    # nothing says the pair has a row to tell (rule 4); only the account's silence about the ends is reported
-    got = rules_of(report_of(make_vault, {DESK: only_the_row}))
-    assert got == ["SCAT-DONE-END-NOTINACCOUNT"] * 2
+    seeded(make_vault, {DESK: only_the_row})
 
 
-# SCAT-DRAFT-END-NOTINACCOUNT
+# SCAT-DRAFT-LINK-NOTINTABLE
 
-NOTINACCOUNT_FIX = (
-    "link it in the account where the account names it, as `[[safe-handling]]`",
-    "or delete the row if the narrative does not tell the edge",
-)
-UNTOLD_ROW = "| [[staff]] | holds | [[safe-handling]] | |"
+ROW = "| [[staff]] | holds | [[safe-handling]] | |"
 
 
-def untold(status, target="safe-handling", col=23, holds="to", n=1, line=None):
+def untable(status, target="quick-checkout", line=10, col=1):
     head = pair(
-        "END-NOTINACCOUNT",
+        "LINK-NOTINTABLE",
         status,
-        f"{DESK}:{line or 15 + n}:{col} row {n} cell `{holds}`: [[{target}]] is not linked in the account; "
-        "name it in the account and link it there, then keep the row",
+        f"{DESK}:{line}:{col} link [[{target}]]: the account links it but no row of the table has it as an end; "
+        "the table is the coding of record",
     )
     return msg(
         head,
         *choose(
-            f"link it in the account where the account names it, as `[[{target}]]`",
-            NOTINACCOUNT_FIX[1],
+            "record the row for it: run `scat record-edge <type> <from> <to> --told-by desk-day` "
+            '(REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["desk-day"])`), '
+            f"with `{target}` as `<from>` or `<to>`",
+            f"or take the link out of the account: write `{target}` without its brackets and keep the words",
         ),
     )
 
 
-def account_without(*names, extra=""):
+def account_of(*names, extra=""):
     return "The [[staff]] on the desk. " + " ".join(f"[[{n}]]" for n in names) + "\n" + extra
 
 
-@STATUSES
-def test__scat_draft_end_notinaccount__an_end_the_account_does_not_link(make_vault, status):
-    seeded(
-        make_vault,
-        with_rows(status, UNTOLD_ROW, account=account_without()),
-        untold(status),
-    )
+def where_first(account, name):
+    """(line, column) of the first link to `name` in a narrative whose account starts on line 10."""
+    for i, text in enumerate(account.split("\n")):
+        if f"[[{name}" in text:
+            return 10 + i, text.index(f"[[{name}") + 1
+    raise AssertionError(name)
 
 
 @STATUSES
-def test__scat_draft_end_notinaccount__an_end_the_account_links_is_silent(make_vault, status):
-    seeded(
-        make_vault,
-        with_rows(status, UNTOLD_ROW, account=account_without("safe-handling")),
-    )
-
-
-@STATUSES
-def test__scat_draft_end_notinaccount__an_alias_link_counts_as_a_link(make_vault, status):
-    seeded(
-        make_vault,
-        with_rows(status, UNTOLD_ROW, account="[[staff]] and [[safe-handling|safe handling]].\n"),
-    )
-
-
-@STATUSES
-def test__scat_draft_end_notinaccount__a_link_in_a_code_span_or_fence_does_not_count(
+def test__scat_draft_link_notintable__a_node_linked_in_the_account_and_in_no_row(
     make_vault, status
 ):
-    account = "[[staff]] and `[[safe-handling]]`.\n\n```\n[[safe-handling]]\n```\n"
-    seeded(make_vault, with_rows(status, UNTOLD_ROW, account=account), untold(status, line=20))
-
-
-@STATUSES
-def test__scat_draft_end_notinaccount__the_table_and_its_section_are_not_the_account(
-    make_vault, status
-):
-    # the note cell, another row and text under the `Edges told` heading are all outside the account
-    rows = (UNTOLD_ROW, "| [[staff]] | holds | [[quick-checkout]] | [[safe-handling]] |")
-    account = account_without("quick-checkout")
+    account = account_of("safe-handling", "quick-checkout")
+    line, col = where_first(account, "quick-checkout")
     seeded(
         make_vault,
-        with_rows(status, *rows, account=account),
-        untold(status),
+        with_rows(status, ROW, account=account),
+        untable(status, line=line, col=col),
     )
 
 
 @STATUSES
-def test__scat_draft_end_notinaccount__a_link_after_the_section_is_in_the_account(
+def test__scat_draft_link_notintable__a_node_that_is_a_row_end_is_silent(make_vault, status):
+    seeded(make_vault, with_rows(status, ROW, account=account_of("safe-handling")))
+
+
+@STATUSES
+def test__scat_draft_link_notintable__a_row_end_the_account_does_not_link_is_silent(
+    make_vault, status
+):
+    seeded(make_vault, with_rows(status, ROW, account="No links in the account.\n"))
+
+
+@STATUSES
+def test__scat_draft_link_notintable__an_alias_link_counts_as_its_target(make_vault, status):
+    account = "The [[staff]] and [[quick-checkout|the checkout]].\n"
+    line, col = where_first(account, "quick-checkout")
+    seeded(
+        make_vault,
+        with_rows(status, ROW, account=account),
+        untable(status, line=line, col=col),
+    )
+    alias_of_an_end = "The [[staff]] and [[safe-handling|safe handling]].\n"
+    seeded(make_vault, with_rows(status, ROW, account=alias_of_an_end))
+
+
+@STATUSES
+def test__scat_draft_link_notintable__a_link_in_a_code_span_or_fence_is_not_a_link(
+    make_vault, status
+):
+    account = "[[staff]] and `[[quick-checkout]]`.\n\n```\n[[quick-checkout]]\n```\n"
+    seeded(make_vault, with_rows(status, ROW, account=account))
+
+
+@STATUSES
+def test__scat_draft_link_notintable__one_message_for_a_node_linked_twice(make_vault, status):
+    account = "[[staff]] [[quick-checkout]].\nAgain [[quick-checkout|it]].\n"
+    seeded(
+        make_vault,
+        with_rows(status, ROW, account=account),
+        untable(status, line=10, col=11),
+    )
+
+
+@STATUSES
+def test__scat_draft_link_notintable__a_node_linked_only_in_the_table_is_silent(make_vault, status):
+    # a row end, the note cell of a row, and text under the `Edges told` heading are outside the account
+    rows = (ROW, "| [[staff]] | holds | [[quick-checkout]] | [[borrowers]] |")
+    seeded(make_vault, with_rows(status, *rows, account=account_of("safe-handling")))
+
+
+@STATUSES
+def test__scat_draft_link_notintable__a_link_after_the_section_is_in_the_account(
     make_vault, status
 ):
     page = narrative(
         status=status,
-        rows=(UNTOLD_ROW,),
-        account=account_without(),
-        extra="\n## See also\n\n- [[safe-handling]]\n",
+        rows=(ROW,),
+        account=account_of("safe-handling"),
+        extra="\n## See also\n\n- [[quick-checkout]]\n",
     )
-    seeded(make_vault, {DESK: page})
+    got = rules_of(report_of(make_vault, {DESK: page}))
+    assert got == [f"SCAT-{'DONE' if status == 'done' else 'DRAFT'}-LINK-NOTINTABLE"]
 
 
 @STATUSES
-def test__scat_draft_end_notinaccount__a_row_end_with_another_end_rule_gets_only_that_rule(
-    make_vault, status
-):
-    account = account_without("safe-handling")
-    for rows, stem in (
-        (("| borrowers | holds | [[safe-handling]] | |",), "NOLINK"),
-        (("| [[staff]] | holds | [[ghost]] | |",), "NOPAGE"),
-        (("| [[kiosk-pitch]] | holds | [[safe-handling]] | |",), "NOTNODE"),
-    ):
-        report = report_of(make_vault, with_rows(status, *rows, account=account))
-        got = [r for r in rules_of(report) if "END-" in r]
-        assert got and all(r.endswith(stem) for r in got), (stem, got)
+def test__scat_draft_link_notintable__a_malformed_row_counts_for_nothing(make_vault, status):
+    # the row has no closing `|`: it is a row error, and its ends are not row ends for this rule
+    page = with_rows(status, "| [[staff]] | holds | [[safe-handling]]", account=account_of())
+    got = rules_of(report_of(make_vault, page))
+    assert all("LINK-NOTINTABLE" not in r or r.endswith("LINK-NOTINTABLE") for r in got)
+    assert (
+        sum(r.endswith("LINK-NOTINTABLE") for r in got) == 1
+    )  # staff alone is linked, in no valid row
+
+
+@STATUSES
+def test__scat_draft_link_notintable__only_a_node_page_counts(make_vault, status):
+    # a link to a narrative page, to a contributor and to no page is for other rules, not this one
+    account = account_of("safe-handling", "ghost")
+    got = rules_of(report_of(make_vault, with_rows(status, ROW, account=account)))
+    assert all("LINK-NOTINTABLE" not in r for r in got)

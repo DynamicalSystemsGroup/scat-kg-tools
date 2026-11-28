@@ -52,18 +52,6 @@ def account(v, narrative, body, status="draft"):
     v.write(path, new)
 
 
-def name_ends(v, narrative, *names):
-    """Name in the account the nodes the rows join, as `done` wants (SCAT-DONE-END-NOTINACCOUNT)."""
-    path = f"narrative/{narrative}.md"
-    text = v.read(path)
-    said = " ".join(f"[[{n}]]" for n in names)
-    v.write(path, text.replace("\n## Edges told", f"\nThe rows join {said}.\n\n## Edges told", 1))
-
-
-N1_ENDS = ("borrowers", "quick-checkout", "self-checkout", "booking-app", "elders", "safe-handling")
-N2_ENDS = ("borrowers", "quick-checkout", "volunteers", "safe-handling")
-
-
 def set_done(v, name):
     code, doc = sh(v, "set-status", name, "done")
     assert code == 0 and doc["ok"], doc
@@ -158,7 +146,6 @@ def breadth_steps():
         )
     )
     steps.append(("fill elders", fill_all_nodes))
-    steps.append(("n1's account names the ends", lambda v: name_ends(v, "n1", *N1_ENDS)))
     steps.append(("n1 done", lambda v: set_done(v, "n1")))
     steps.append(("stub narrative n2", lambda v: stub(v, "narrative", "n2")))
     steps.append(
@@ -180,7 +167,6 @@ def breadth_steps():
             ),
         )
     )
-    steps.append(("n2's account names the ends", lambda v: name_ends(v, "n2", *N2_ENDS)))
     steps.append(("n2 done", lambda v: set_done(v, "n2")))
     return steps
 
@@ -256,7 +242,6 @@ def depth_steps():
         )
     )
     steps.append(("then the nodes", fill_all_nodes))
-    steps.append(("n1's account names the ends", lambda v: name_ends(v, "n1", *N1_ENDS)))
     steps.append(("n1 done", lambda v: set_done(v, "n1")))
     steps.append(("stub narrative n2", lambda v: stub(v, "narrative", "n2")))
     steps.append(
@@ -279,7 +264,6 @@ def depth_steps():
         ("n2 account", lambda v: account(v, "n2", "Linked: [[borrowers]], [[volunteers]]."))
     )
     steps.append(("fill the nodes", fill_all_nodes))
-    steps.append(("n2's account names the ends", lambda v: name_ends(v, "n2", *N2_ENDS)))
     steps.append(("n2 done", lambda v: set_done(v, "n2")))
     return steps
 

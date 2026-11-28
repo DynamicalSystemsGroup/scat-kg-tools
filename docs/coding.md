@@ -119,7 +119,7 @@ You work each narrative round the same four steps, as often as it takes:
 
 1. **Interpreting.** Read the field notes, and later the views, and decide what they say. This is yours alone.
 2. **Authoring.** Write or revise the account on the narrative page. An assistant may draft it; the wording you keep is yours.
-3. **Coding.** Link each node where the account names it, and record each edge it tells. Name a node in the account, then record its row.
+3. **Coding.** Link each node where the account names it, and record each edge it tells. Record the row; link in the account only what the table holds.
 4. **Reviewing.** Run the check, then fix what it reports. You confirm two things yourself: the account matches the field notes, and the coding is a correct use of SCAT. The tool cannot judge either.
 
 The [norms](norms.md) say what the tool requires and what is only guidance, and what `done` needs.

@@ -168,7 +168,7 @@ def test__every_rule_has_one_severity_and_none_is_deferred():
             "warning",
             "error",
         )
-    for stem in ("END-NOLINK", "END-NOPAGE", "END-NOTNODE", "END-NOTINACCOUNT"):
+    for stem in ("END-NOLINK", "END-NOPAGE", "END-NOTNODE", "LINK-NOTINTABLE"):
         assert (SEVERITY[f"SCAT-DRAFT-{stem}"], SEVERITY[f"SCAT-DONE-{stem}"]) == (
             "warning",
             "error",

@@ -306,10 +306,7 @@ def test_each_fix_clears_its_mismatch_and_creates_no_other(
     failures = []
     for p in targets:
         assert p.fix, p.brief()
-        # a fix that puts a node into a row end makes SCAT-*-END-NOTINACCOUNT true when the account lacks it:
-        # that is the rule's own message (the account is the coder's), not a defect of the fix
-        allowed = (*allow, "SCAT-DRAFT-END-NOTINACCOUNT", "SCAT-DONE-END-NOTINACCOUNT")
-        failures += check_fix_clears(v, tmp_factory, p, before, {**SLOTS, **slots}, allowed=allowed)
+        failures += check_fix_clears(v, tmp_factory, p, before, {**SLOTS, **slots}, allowed=allow)
     assert not failures, "\n".join(failures)
 
 
@@ -341,7 +338,7 @@ def test_L_E_a_row_with_linked_ends_alone_is_conformant(make_base, st):
     v.edit(
         NF,
         "The desk was busy: [[borrowers]] queued, wanting [[quick-checkout]] through [[self-checkout]].",
-        "Quiet: [[borrowers]], [[quick-checkout]] and [[self-checkout]] are only named.",
+        "Quiet.",
     )
     assert v.check() == []
 

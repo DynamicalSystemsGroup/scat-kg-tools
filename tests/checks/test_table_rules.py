@@ -32,8 +32,12 @@ def with_rows(status, *rows, **kw):
     return {DESK: narrative(status=status, rows=rows, **kw)}
 
 
+# the account links only the two nodes of GOOD: the table is the coding of record (SCAT-*-LINK-NOTINTABLE)
+GOOD_ACCOUNT = "The [[staff]] on the desk said [[safe-handling|safe handling]] matters.\n"
+
+
 def with_section(status, section):
-    return {DESK: narrative(status=status, section=section)}
+    return {DESK: narrative(status=status, section=section, account=GOOD_ACCOUNT)}
 
 
 # SCAT-DRAFT-TABLE-HEADER
@@ -408,8 +412,7 @@ def test__scat_draft_table_type__the_slug_and_the_verb_in_any_case_are_types(mak
         "| [[quick-checkout]] | IS ADDRESSED BY | [[self-checkout]] | |",
         "| [[self-checkout]] | provided-by | [[booking-app]] | |",
     )
-    account = "[[staff]] [[safe-handling]] [[quick-checkout]] [[self-checkout]] [[booking-app]]\n"
-    seeded(make_vault, with_rows(status, *rows, account=account))
+    seeded(make_vault, with_rows(status, *rows))
 
 
 # SCAT-DRAFT-TABLE-LAYERS

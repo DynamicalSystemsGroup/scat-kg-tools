@@ -94,8 +94,8 @@ would stand (SCAT-DONE-REFUSED); it writes nothing then. Warnings do not block. 
 - A narrative's `Edges told` table, if it has one: each problem the table has at `draft` as a warning is an error at
   `done` (SCAT-DONE-TABLE-HEADER, SCAT-DONE-TABLE-ROW, SCAT-DONE-TABLE-TYPE, SCAT-DONE-TABLE-LAYERS,
   SCAT-DONE-TABLE-SECOND, SCAT-DONE-TABLE-DUPLICATE). Each end of a row must be exactly one link to a node page that
-  exists (SCAT-DONE-END-NOLINK, SCAT-DONE-END-NOPAGE, SCAT-DONE-END-NOTNODE), and the account must link it
-  (SCAT-DONE-END-NOTINACCOUNT).
+  exists (SCAT-DONE-END-NOLINK, SCAT-DONE-END-NOPAGE, SCAT-DONE-END-NOTNODE). Each node the account links must be an
+  end of a row (SCAT-DONE-LINK-NOTINTABLE); a row end need not be linked in the account.
 
 Not needed at `done`: a link, an edge, a row, or a clean mention check. These give warnings only (SCAT-UNCODED,
 SCAT-NOEDGES, SCAT-MENTION).

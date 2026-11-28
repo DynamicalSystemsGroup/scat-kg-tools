@@ -84,7 +84,7 @@ def base_files() -> dict[str, str]:
         "narrative/empty.md": narrative("Empty", "Only the [[farmers]] spoke."),
         "narrative/split.md": narrative(
             "Split",
-            "Two separate matters, the [[cost]] and the [[alert]].",
+            "Two separate matters.",
             [row("holds", "towns", "cost"), row("provided-by", "alert", "radio")],
             "draft",
             "scenario",

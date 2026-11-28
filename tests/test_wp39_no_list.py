@@ -3,7 +3,7 @@
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SCANNED = ["contracts", "docs"]
+SCANNED = ["contracts", "docs", "ontology", "src"]
 PHRASES = ("linked beyond the text", "beyond the text")
 
 

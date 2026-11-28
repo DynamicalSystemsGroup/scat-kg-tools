@@ -148,9 +148,10 @@ tools read that and the unescaped form alike (4).
 A narrative is one page, `type: narrative`, in this order (the order is the convention; only the heading of the table
 is fixed):
 
-1. **The account**: free text in the body, with a link wherever a name appears (a group, concern, affordance or
-   technology; another page it should point to). Write the link where the name appears, and use `[[name|text]]` to
-   keep the sentence natural.
+1. **The account**: free text in the body. The table is the coding of record; the account's links are a subset of
+   its nodes (possibly none). Where a name appears of a node that is an end of a row (a group, concern, affordance or
+   technology), write the link where the name appears, and use `[[name|text]]` to keep the sentence natural; a name
+   whose node no row ends at is written without a link.
 2. **`## Edges told`**: the table.
 
 ```
@@ -171,9 +172,8 @@ given (the fingerprint view lists the candidate pair).
 its table, or a link in its account); it is *uncoded* when it links none. An uncoded narrative is
 *excluded*: the knowledge graph and every view (fingerprints, edge tables, the layered view, traces, exports, drawings)
 leave it out, and `scat check` (SCAT-UNCODED) and each view that draws every narrative report it by name, with how to
-include it: link one node page. It is included as soon as it is coded. A link in the account to a node page is the
-place for a node the narrative names with no edge (a lone node): it codes the narrative and the node is in its
-fingerprint. A link to a contributor page is not a node link: a narrative that links only contributor pages, in its
+include it: link one node page. It is included as soon as it is coded. A link in the account to a node page codes the
+narrative, and the node must also be an end of a row of its table (4, Mismatches). A link to a contributor page is not a node link: a narrative that links only contributor pages, in its
 body or in `attributed_to`, is still uncoded. A row can tell an edge only through links to node pages, so an uncoded narrative tells no edge and no edge
 waits on one.
 
@@ -204,8 +204,8 @@ waits on one.
 
   The tools write the verb. Both spellings in one table are fine.
 - *The `from` and `to` cells* each hold exactly one link and nothing else, as in 3 (an alias link `[[name\|text]]`
-  is one link; the name is read; an embed `![[name]]` is accepted as an end). Each end is also a node the account (the
-  narrative's body outside `Edges told`) links.
+  is one link; the name is read; an embed `![[name]]` is accepted as an end). A row end need not be linked in the account (the
+  narrative's body outside `Edges told`); every node the account links is an end of a row.
 - *The `note` cell* is free text on one line, and it may be empty. A `|` in it is written `\|`. It has no meaning to
   the tool; a link in it is a link of the narrative like any other.
 
@@ -215,10 +215,10 @@ waits on one.
 tells the same pair it has its own row with its own note; nothing is copied between them.
 
 **Mismatches.** A mismatch is a link and an edge that should agree and do not (glossary). In a narrative that happens
-at a row's end, and the contract names three cases; the catalogue grades them and gives a fix for each:
+at a row's end or in the account, and the contract names three cases; the catalogue grades them and gives a fix for each:
 - an end that is not a link;
 - an end that is a link that reaches no page, or reaches a page that is not a node;
-- an end that is a node the account does not link.
+- a node the account links that no row of the table ends at (prose links are a subset of the table's nodes; a row end needs no link in the account).
 
 The other disagreement, an account that links both ends of a pair with no row for it, is the *candidate* above and gets no message.
 
@@ -247,7 +247,7 @@ written outside those rows, so there is no edge to open and nothing to keep in s
 
 **An edge's status is derived**: it is `done` when every narrative that tells it is `done`; otherwise it has the least
 advanced status of the narratives that tell it. The coder signs off edges by signing off narratives. To record an edge
-is to add a row to a narrative, and to remove it is to delete the row; the links stay, since they are the account's.
+is to add a row to a narrative, and to remove it is to delete the row; the links stay, since they are the account's; a link that no row then ends at is reported by SCAT-*-LINK-NOTINTABLE.
 
 ## 6. What a link entails: the stub operation
 

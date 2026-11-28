@@ -786,7 +786,7 @@ def _(v, st):
 def _(v, st):
     v.write(
         "narrative/other-day.md",
-        '---\ntype: narrative\nstatus: draft\ntitle: "Other day"\ndescription: "d"\ntimeframe: past\n---\n\nSee [[quick-checkout]].\n\n## Edges told\n\n'
+        '---\ntype: narrative\nstatus: draft\ntitle: "Other day"\ndescription: "d"\ntimeframe: past\n---\n\n## Edges told\n\n'
         + HEADER
         + "\n"
         + SEP
@@ -803,7 +803,7 @@ def _(v, st):
     v.write("scat.toml", "attribution = 'disallowed'\nstakeholder_group_cap = 2\n")
     v.write(
         "narrative/other-day.md",
-        '---\ntype: narrative\nstatus: draft\ntitle: "Other day"\ndescription: "d"\ntimeframe: past\n---\n\nSee [[quick-checkout]].\n\n## Edges told\n\n'
+        '---\ntype: narrative\nstatus: draft\ntitle: "Other day"\ndescription: "d"\ntimeframe: past\n---\n\n## Edges told\n\n'
         + HEADER
         + "\n"
         + SEP
@@ -2220,71 +2220,78 @@ def _(v, st):
     v.edit(
         NF,
         "The desk was busy: [[borrowers]] queued, wanting [[quick-checkout]] through [[self-checkout]].",
-        "The desk was busy: [[borrowers]], [[quick-checkout]] and [[self-checkout]] are only named here.",
+        "Nothing is linked in the account.",
     )
     return []
 
 
-def _untold(st, row, cell, col, target):
-    return _end(
-        "END-NOTINACCOUNT",
+# ======================================================================================= account links no row ends at
+BODY = (
+    "The desk was busy: [[borrowers]] queued, wanting [[quick-checkout]] through [[self-checkout]]."
+)
+
+
+def _notintable(st, target, line=9, col=1):
+    return narr_exp(
+        "LINK-NOTINTABLE",
         st,
-        cell,
-        row=row,
+        where=f"link [[{target}]]",
+        line=line,
         col=col,
-        what=f"[[{target}]] is not linked in the account; name it in the account and link it there, then keep the row",
+        what="the account links it but no row of the table has it as an end; the table is the coding of record",
         fix=(
             "Fix, choose one:",
             [
-                f"link it in the account where the account names it, as `[[{target}]]`",
-                "or delete the row if the narrative does not tell the edge",
+                "record the row for it: run `scat record-edge <type> <from> <to> --told-by saturday` "
+                '(REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["saturday"])`), '
+                f"with `{target}` as `<from>` or `<to>`",
+                f"or take the link out of the account: write `{target}` without its brackets and keep the words",
             ],
         ),
     )
 
 
-@seed("END-NOTINACCOUNT-end-not-linked-in-the-account", ALL)
+@seed("LINK-NOTINTABLE-a-node-linked-in-the-account-and-in-no-row", ALL)
+def _(v, st):
+    v.edit(NF, BODY, BODY + " The [[volunteers]] helped.")
+    return [_notintable(st, "volunteers", col=len(BODY) + 6)]
+
+
+@seed("LINK-NOTINTABLE-silent-when-the-node-is-a-row-end-from-or-to", ALL)
+def _(v, st):
+    return []  # the base narrative links borrowers (from) and self-checkout (to) and no other node
+
+
+@seed("LINK-NOTINTABLE-silent-when-a-row-end-is-not-linked-in-the-account", ALL)
+def _(v, st):
+    v.edit(NF, BODY, "Nothing is linked in the account.")
+    return []
+
+
+@seed("LINK-NOTINTABLE-an-alias-link-counts-as-its-target", ALL)
+def _(v, st):
+    v.edit(NF, BODY, BODY + " The [[volunteers|helpers]] came.")
+    return [_notintable(st, "volunteers", col=len(BODY) + 6)]
+
+
+@seed("LINK-NOTINTABLE-a-link-in-a-code-span-or-fence-is-not-a-link", ALL)
+def _(v, st):
+    v.edit(NF, BODY, BODY + " `[[volunteers]]`\n\n```\n[[booking-app]]\n```")
+    return []
+
+
+@seed("LINK-NOTINTABLE-one-message-for-a-node-linked-twice", ALL)
+def _(v, st):
+    v.edit(NF, BODY, BODY + " The [[volunteers]] came, and the [[volunteers]] left.")
+    return [_notintable(st, "volunteers", col=len(BODY) + 6)]
+
+
+@seed("LINK-NOTINTABLE-silent-when-the-node-is-linked-only-in-the-table", ALL)
 def _(v, st):
     v.edit(
-        NF,
-        "The desk was busy: [[borrowers]] queued, wanting [[quick-checkout]] through [[self-checkout]].",
-        "The desk was busy: [[borrowers]] queued, and the [[self-checkout|self checkout]] stand was free.",
+        NF, ROW2, "| [[quick-checkout]] | is addressed by | [[self-checkout]] | [[volunteers]] |"
     )
-    return [
-        _untold(st, 1, "to", 27, "quick-checkout"),
-        _untold(st, 2, "from", 3, "quick-checkout"),
-    ]
-
-
-@seed("END-NOTINACCOUNT-linked-only-in-a-code-span", ALL)
-def _(v, st):
-    v.edit(
-        NF,
-        "The desk was busy: [[borrowers]] queued, wanting [[quick-checkout]] through [[self-checkout]].",
-        "The desk was busy: [[borrowers]] queued, wanting `[[quick-checkout]]` through [[self-checkout]].",
-    )
-    return [
-        _untold(st, 1, "to", 27, "quick-checkout"),
-        _untold(st, 2, "from", 3, "quick-checkout"),
-    ]
-
-
-@seed("END-NOTINACCOUNT-silent-on-another-end-rule", ("draft",))
-def _(v, st):
-    _row(v, "| borrowers | holds | [[quick-checkout]] | |")
-    return [
-        _end(
-            "END-NOLINK",
-            st,
-            "from",
-            col=3,
-            what="`borrowers` is not a link; each end of a row is one link, `[[page-name]]`",
-            fix=(
-                "Fix, choose one:",
-                ["replace `borrowers` with `[[borrowers]]`", "delete the row"],
-            ),
-        )
-    ]
+    return []
 
 
 # ======================================================================================= the driver

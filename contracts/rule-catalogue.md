@@ -173,7 +173,7 @@ because the model it checked is gone (D-088).
 | SCAT-DRAFT-END-NOLINK, SCAT-DONE-END-NOLINK | new | pair; a mismatch (R-23) |
 | SCAT-DRAFT-END-NOPAGE, SCAT-DONE-END-NOPAGE | new | pair; a mismatch |
 | SCAT-DRAFT-END-NOTNODE, SCAT-DONE-END-NOTNODE | new | pair; a mismatch |
-| SCAT-DRAFT-END-NOTINACCOUNT, SCAT-DONE-END-NOTINACCOUNT | new | pair; a mismatch: a row end the account does not link (WP39-G2) |
+| SCAT-DRAFT-LINK-NOTINTABLE, SCAT-DONE-LINK-NOTINTABLE | new | pair; a mismatch: a node the account links that no row of the table ends at (WP39-G2, D-220) |
 | SCAT-DONE-REFUSED | new | the refusal to set `done` (an operation, not a check) |
 | SCAT-FM-REQUIRED-LINK | retired | no link fields; no relation pages |
 | SCAT-FM-INDEXES | retired | no class pages |
@@ -232,8 +232,8 @@ because the model it checked is gone (D-088).
 | SCAT-DONE-END-NOPAGE | error | done | all | a row end links a name that is no page | options |
 | SCAT-DRAFT-END-NOTNODE | warning | stub, draft | all | a row end links a page that is not a node | options |
 | SCAT-DONE-END-NOTNODE | error | done | all | a row end links a page that is not a node | options |
-| SCAT-DRAFT-END-NOTINACCOUNT | warning | stub, draft | all | a row end links a node page that the account does not link | options |
-| SCAT-DONE-END-NOTINACCOUNT | error | done | all | a row end links a node page that the account does not link | options |
+| SCAT-DRAFT-LINK-NOTINTABLE | warning | stub, draft | all | the account links a node page that is no end of a row of the table | options |
+| SCAT-DONE-LINK-NOTINTABLE | error | done | all | the account links a node page that is no end of a row of the table | options |
 
 The Fix kind column is the least exact kind any variant of the rule has, in the order exact, slot, options, advisory,
 manual. The variants, where they differ:
@@ -249,7 +249,7 @@ manual. The variants, where they differ:
 | SCAT-LINK-DANGLING-BODY | options in every variant |
 | SCAT-*-TABLE-HEADER | name wrong or separator missing: exact; the four names in another order: advisory |
 | SCAT-*-TABLE-ROW | (a), (b), (c): exact; (d), (e): options |
-| SCAT-*-TABLE-TYPE, -LAYERS, -NOLINK, -NOPAGE, -NOTNODE, -NOTINACCOUNT, -SECOND | options in every variant |
+| SCAT-*-TABLE-TYPE, -LAYERS, -NOLINK, -NOPAGE, -NOTNODE, -SECOND, SCAT-*-LINK-NOTINTABLE | options in every variant |
 | SCAT-CAP | options; SCAT-CAP-CONFIG: slot; SCAT-MODE-CONFIG: options (three exact edits); SCAT-SUGGEST-CONFIG: options (two exact edits) |
 
 SCAT-FM-STATUS is options in every variant: which status is true is a claim about the page, so even a near match is the
@@ -663,11 +663,11 @@ Options 1 and 2 cannot both apply. The swap's `find` is the text from the first 
 
 A mismatch (R-23) is a link and an edge that should agree and do not. In the row model it happens at a row end, and
 page contracts 4 names the cases: an end that is not a link, an end that is a link reaching no page or a page that
-is not a node, and a row end that the account does not link. These are graded as pairs: a warning while the narrative
+is not a node, and a node the account links that no row of the table ends at (SCAT-*-LINK-NOTINTABLE). These are graded as pairs: a warning while the narrative
 is `stub` or `draft` (R-3), an error once it is `done`. A mismatch is always anchored on the narrative, at the cell. The knowledge graph has no row for an end that
 is not a node, so the narrative's fingerprint does not include it. **Runs at:** all. **Needs status**, narratives only.
 A table with a malformed header, and a row with the wrong number of cells, are not checked here (cascade guard).
-A duplicated row, a row in the wrong direction and a row between the wrong layers are *other problems* of the table (page contracts 4), covered under the pair E-N rules (section 6); they are not mismatches, and R-23's closed list is the four end rules.
+A duplicated row, a row in the wrong direction and a row between the wrong layers are *other problems* of the table (page contracts 4), covered under the pair E-N rules (section 6); they are not mismatches, and R-23's closed list is the three end rules and SCAT-*-LINK-NOTINTABLE.
 
 #### SCAT-*-END-NOLINK
 - **Reads:** its page, and the vault when it looks for pages of the layer. **Trigger:** a `from` or `to` cell is not exactly one link: (a) it is empty; (b) it holds text and no link; (c) it holds more than one link, or a link beside other text. An embed `![[name]]` is one link, and an alias link is one link.
@@ -713,27 +713,28 @@ Variant (b) replaces option 2 by the lines that make the typeless file a page of
 - **Fix kind:** options. Edits: `replace-text{line, column, find "[[<target>]]", replace}`; `delete-line{line, find}`.
 - **Seed:** `| [[a-narrative]] | holds | [[c]] | |` with and without candidate groups the narrative links elsewhere; a link to a page with `type: gadget` (this message, and the page's own SCAT-FM-TYPE).
 
-#### SCAT-*-END-NOTINACCOUNT
-- **Reads:** its page and the vault. **Trigger:** a row end is exactly one link, reaching exactly one node page, and no link in the account has that name. The *account* is the narrative's body outside its `Edges told` section (the first `Edges told` heading to the next heading of the same or a higher level, as the table is read); its links are read as every page link is (a link in a code span or fence is not a link). A link is judged by its target name, so `[[a|b]]` is a link to `a`. The rule is silent on a row end that is SCAT-*-END-NOLINK, -NOPAGE or -NOTNODE (that rule alone judges it). It judges the name and not the layer: a node of the wrong layer is SCAT-*-TABLE-LAYERS, and this rule may report it as well.
+#### SCAT-*-LINK-NOTINTABLE
+- **Reads:** its page and the vault. **Trigger:** a link in the account whose target is exactly one node page (a page with a readable front matter and a node `type`) that is not an end, `from` or `to`, of any row of the narrative's table. The *account* is the narrative's body outside its `Edges told` section (the first `Edges told` heading to the next heading of the same or a higher level, as the table is read); its links are read as every page link is (a link in a code span or fence is not a link). A link is judged by its target name, so `[[a|b]]` is a link to `a`, and an end by its name too. A row that is malformed, or whose end is not exactly one link, counts for nothing. A row end the account does not link raises nothing: the table is the coding of record, and linking the account is desired but not required. One message for each distinct node, anchored at its first link in the account. A narrative with no table has no row ends, so it gets the message for every node it links. When the table is malformed (SCAT-*-TABLE-HEADER, or a second table) the rule is silent: that table's own rules speak, once.
 - **Message:**
 ```
-<severity> [SCAT-*-END-NOTINACCOUNT] <file>:<line>:<column> row <n> cell `<from|to>`: [[<target>]] is not linked in the account; name it in the account and link it there, then keep the row
+<severity> [SCAT-*-LINK-NOTINTABLE] <file>:<line>:<column> link [[<target>]]: the account links it but no row of the table has it as an end; the table is the coding of record
   Fix, choose one:
-    1. link it in the account where the account names it, as `[[<target>]]`
-    2. or delete the row if the narrative does not tell the edge
+    1. record the row for it: run `scat record-edge <type> <from> <to> --told-by <page-name>` (REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["<page-name>"])`), with `<target>` as `<from>` or `<to>`
+    2. or take the link out of the account: write `<target>` without its brackets and keep the words
 ```
-- **Fix kind:** options; both options advisory and without edits: naming a node in the account is the coder's reading.
-- **Seed:** `| [[a]] | holds | [[c]] | |` with an account that links `a` and not `c` (one message, at `c`; warning at `stub` and `draft`, error at `done`); an account that links both (none); an alias link `[[c|the cooperative]]` in the account (none); a link to `c` only in a code span or a fence (one message); a link to `c` only in the table's note cell or another row (one message); a row end that is NOLINK, NOPAGE or NOTNODE (that rule only).
+- **Fix kind:** options; both options advisory and without edits: whether the account tells an edge at this node is the coder's reading.
+- **Seed:** `| [[a]] | holds | [[c]] | |` with an account that links `a`, `c` and `d` (one message, at `d`; warning at `stub` and `draft`, error at `done`); an account that links only `a` and `c` (none); an account that links `a` and not `c` (none: a row end need not be linked); an alias link `[[d|the cooperative]]` (one message, for `d`); a link to `d` only in a code span or a fence (none: not a link); a link to `d` twice in the account (one message, at the first); a node linked only in the table, in a note cell or in another row (none); a link to a page that is not a node, or to no page (none: other rules); a malformed table (none).
 
 ## 4. Rule 4 has no rule
 
-Architecture section 4, rule 4 (the *candidate*): a narrative that links both ends of a pair and has no row for it.
+Architecture section 4, rule 4 (the *candidate*): a narrative whose account links both ends of a pair and has no row for it.
 **There is no rule, no id and no message for it, at any status, scope or severity** (D-085 (a), D-088). A link says
 "see also"; an edge is about the relationship being in the narrative and not only its two ends, so a narrative that
 has not said it tells the edge has not told it, and conformance does not judge content (R-1). Only the fingerprint
-view lists such a pair as a candidate. Seed (a test for the absence): a narrative linking a group and a concern that
-are not joined by any row, at every status and at every scope, gives zero messages, and a table with a row for the
-pair gives zero as well. Rule 4 gives a row no message; a row end the account does not link is SCAT-*-END-NOTINACCOUNT.
+view lists such a pair as a candidate. Seed (a test for the absence): a narrative whose account links a group and a concern that
+are not joined by any row, each of them an end of some other row, at every status and at every scope, gives zero
+messages, and a table with a row for the pair gives zero as well. Rule 4 gives a row no message; an account link that
+no row ends at is SCAT-*-LINK-NOTINTABLE.
 
 ## 5. The done check
 
@@ -786,7 +787,7 @@ in the wrong layers), carried as operation refusals with no rule id; they list n
 | R-3 full contract at `done`; the `done` check | SCAT-DONE-FIELD, every SCAT-DONE- pair id, SCAT-DONE-REFUSED |
 | R-4 checks never write | none: no rule writes (section 1, Scopes); the operations are `stub`, `set-status`, `record-edge`, `remove-edge` and `index` |
 | R-8 fixes as data | every rule: a fix kind and its edits (the machine interface) |
-| R-23 mismatches | SCAT-*-END-NOLINK, -NOPAGE, -NOTNODE, -NOTINACCOUNT (and the table above); rule 4: none, section 4 |
+| R-23 mismatches | SCAT-*-END-NOLINK, -NOPAGE, -NOTNODE, SCAT-*-LINK-NOTINTABLE (and the table above); rule 4: none, section 4 |
 | Unlinked-mention warning (basic) | SCAT-MENTION |
 
 **R-23: the six pairs of form (architecture section 4), as they fall in the row model.** The four forms: L is a
@@ -799,7 +800,7 @@ disagree with the rows, so the graph holds one edge per (type, from, to) by cons
 |---|---|---|
 | **L-N** | An edge's end and the narrative's link to it: a row end that is not a link, or whose link reaches no page or a page that is not a valid node (a narrative, or a page with an invalid `type`) | SCAT-DRAFT-END-NOLINK / SCAT-DONE-END-NOLINK, SCAT-DRAFT-END-NOPAGE / SCAT-DONE-END-NOPAGE, SCAT-DRAFT-END-NOTNODE / SCAT-DONE-END-NOTNODE: warning until the narrative is `done`, then an error, anchored on the cell. A narrative that has a row cannot fail to link an end that is a link: the end cell is the link |
 | **L-T** | An edge names a narrative that links neither end | Cannot occur in this layout, because T is the page the row sits on and the row's ends are links on that same page. Its nearest case, a row whose two ends are not links, is two messages of SCAT-*-END-NOLINK, one per cell |
-| **L-E** | A narrative links both ends of an edge and has no row for it | No rule and no message (D-085, section 4). The fingerprint view lists the pair as a candidate |
+| **L-E** | A narrative links both ends of an edge and has no row for it | No rule and no message (D-085, section 4). The fingerprint view lists the pair as a candidate. A link of the account that no row ends at, whether or not its pair is linked, is SCAT-DRAFT-LINK-NOTINTABLE / SCAT-DONE-LINK-NOTINTABLE |
 | **E-N** | An end is missing, or in the wrong layer, or two entries join one pair | Missing end: SCAT-*-END-NOPAGE (no page), SCAT-*-END-NOLINK (no link), SCAT-*-END-NOTNODE (not a valid node: a narrative, or a page with an invalid `type`). Wrong layer or direction, or layers not neighbouring: SCAT-*-TABLE-LAYERS. Unknown type: SCAT-*-TABLE-TYPE. Two rows joining one pair in one narrative: SCAT-*-TABLE-DUPLICATE. Two entries joining one pair across narratives cannot occur, because the graph keeps one edge per (type, from, to) and names the narratives |
 | **E-T** | An edge names no narrative, or one that is absent or not a narrative | Cannot occur in this layout, because an edge exists only as a row on a narrative's page; no row, no edge, so no edge is left naming nothing, and the narrative it names is the page it is read from. A table on a page that is not a narrative is not read |
 | **N-T** | The edge is `done` but a narrative it names lacks a link | Cannot occur as a separate problem, because an edge has no file to anchor it. The problem is the narrative's mismatch (the L-N rules), an error on the narrative once it is `done`; an edge is `done` only when every narrative telling it is `done`, so each such mismatch is already an error there; and the refusal to set `done` (section 5) holds it back first |
@@ -837,8 +838,8 @@ required contributor.status -> SCAT-FM-REQUIRED, SCAT-FM-STATUS
 required contributor.title -> SCAT-FM-REQUIRED
 table-heading narrative.Edges-told -> SCAT-*-TABLE-HEADER, SCAT-*-TABLE-SECOND
 table-column narrative.type -> SCAT-*-TABLE-TYPE, SCAT-*-TABLE-LAYERS, SCAT-*-TABLE-DUPLICATE
-table-column narrative.from -> SCAT-*-END-NOLINK, SCAT-*-END-NOPAGE, SCAT-*-END-NOTNODE, SCAT-*-END-NOTINACCOUNT, SCAT-*-TABLE-LAYERS, SCAT-*-TABLE-DUPLICATE
-table-column narrative.to -> SCAT-*-END-NOLINK, SCAT-*-END-NOPAGE, SCAT-*-END-NOTNODE, SCAT-*-END-NOTINACCOUNT, SCAT-*-TABLE-LAYERS, SCAT-*-TABLE-DUPLICATE
+table-column narrative.from -> SCAT-*-END-NOLINK, SCAT-*-END-NOPAGE, SCAT-*-END-NOTNODE, SCAT-*-LINK-NOTINTABLE, SCAT-*-TABLE-LAYERS, SCAT-*-TABLE-DUPLICATE
+table-column narrative.to -> SCAT-*-END-NOLINK, SCAT-*-END-NOPAGE, SCAT-*-END-NOTNODE, SCAT-*-LINK-NOTINTABLE, SCAT-*-TABLE-LAYERS, SCAT-*-TABLE-DUPLICATE
 table-column narrative.note -> SCAT-LINK-DANGLING-BODY, SCAT-MENTION, SCAT-*-TABLE-ROW
 edge-type holds -> SCAT-*-TABLE-TYPE, SCAT-*-TABLE-LAYERS
 edge-type addressed-by -> SCAT-*-TABLE-TYPE, SCAT-*-TABLE-LAYERS

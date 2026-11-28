@@ -60,6 +60,20 @@ DESK_ROWS = (
 )
 
 
+def covered(rows) -> tuple[str, ...]:
+    """`rows` and, after them, the rows of the usual desk that join the nodes the default account links: the table
+    is the coding of record, so every node the account links ends a row (SCAT-*-LINK-NOTINTABLE). A pair the
+    given rows already join is not repeated."""
+    rows = tuple(rows)
+    if not rows:
+        return rows
+    whole = [r for r in rows if len(re.split(r"(?<!\\)\|", r)) == 6]  # a malformed row ends nowhere
+    pairs = {tuple(re.findall(r"\[\[([^\]|\\]+)", r)[:2]) for r in whole}
+    return rows + tuple(
+        r for r in DESK_ROWS if tuple(re.findall(r"\[\[([^\]|\\]+)", r)[:2]) not in pairs
+    )
+
+
 def narrative(
     title="Desk day",
     *,
@@ -68,12 +82,16 @@ def narrative(
     timeframe="past",
     description="D",
     rows=DESK_ROWS,
-    account=ACCOUNT,
+    account=None,
     section=None,
     extra="",
 ) -> str:
     """A narrative whose `## Edges told` heading is on line 12, its header on line 14, its separator on 15 and
     row n on line 15 + n (when every optional line is present). `section` replaces the whole table section."""
+    if account is None:
+        account = ACCOUNT
+        if section is None:
+            rows = covered(rows)
     lines = ["---", "type: narrative"]
     if kind:
         lines.append(f"kind: {kind}")

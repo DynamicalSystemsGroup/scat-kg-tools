@@ -65,9 +65,10 @@ def test__scat_uncoded__does_not_refuse_set_status_done(make_vault):
     assert result.ok, str(result)
 
 
-def test__scat_noedges__a_coded_narrative_with_only_an_account_link_is_conformant(make_vault):
+def test__scat_noedges__a_coded_narrative_with_only_an_account_link_has_the_link_problem(
+    make_vault,
+):
     page = narrative(account="Only the [[staff]] spoke.\n", section="")
     r = report_of(make_vault, {DESK: page})
-    assert r.ok and rules_of(r) == [
-        "SCAT-NOEDGES"
-    ]  # a warning: it tells no edge, and its fingerprint has a node
+    # it tells no edge (a warning), and the account's link is no row end (an error at `done`)
+    assert not r.ok and rules_of(r) == ["SCAT-NOEDGES", "SCAT-DONE-LINK-NOTINTABLE"]

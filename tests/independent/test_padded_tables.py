@@ -62,11 +62,7 @@ def build(tmp_path, rows, style, status):
     for type_, items in NODES.items():
         for name, title in items:
             v.write(f"{type_}/{name}.md", page_text(type_, title))
-    # the account links every node, so that no row end is missing from it (SCAT-*-END-NOTINACCOUNT)
-    account = (
-        "The desk named " + " ".join(f"[[{n}]]" for items in NODES.values() for n, _ in items) + "."
-    )
-    text = narrative_text(status, (), body=account)
+    text = narrative_text(status, ())
     head, _ = text.split("| from | type | to | note |")
     crlf = style.startswith("crlf")
     v.write(NF, head + "\n".join(render(rows, style)) + "\n", crlf=crlf)
@@ -111,14 +107,7 @@ def test_fixes_of_a_padded_table_apply_and_clear(tmp_path, tmp_factory, name, st
     assert before
     failures = []
     for p in before:
-        failures += check_fix_clears(
-            v,
-            tmp_factory,
-            p,
-            before,
-            {"<node you choose>": "volunteers"},
-            allowed=("SCAT-DONE-END-NOTINACCOUNT",),  # a fix that names a node the account lacks
-        )
+        failures += check_fix_clears(v, tmp_factory, p, before, {"<node you choose>": "volunteers"})
     assert not failures, "\n".join(failures)
 
 

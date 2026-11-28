@@ -165,7 +165,7 @@ scat:ProvidedBy a owl:ObjectProperty, scat:EdgeType ;
 
 scat:Narrative a owl:Class ;
     rdfs:label "Narrative" ;
-    skos:definition "One account drawn from the field notes, on one page: the account in the page body with links where names appear, an optional list of what it refers to beyond the text, and a table of the edges it tells. Usually a scenario (people doing things over time) or an architecture (how parts are put together into tools that offer affordances), sometimes neither." ;
+    skos:definition "One account drawn from the field notes, on one page: the account in the page body with links where names appear and a table of the edges it tells. Usually a scenario (people doing things over time) or an architecture (how parts are put together into tools that offer affordances), sometimes neither." ;
     scat:authored "Authored in SCAT; the one page of D-088 that replaces the raw and coded pairs, the relation pages and their class pages. Scenario and architecture are the optional kind field, not types of page." ;
     scat:verification "authored" ;
     scat:key "narrative" ;

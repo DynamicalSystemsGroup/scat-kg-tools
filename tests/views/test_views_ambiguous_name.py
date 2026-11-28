@@ -38,13 +38,7 @@ def build(tmp_path, dup, status="draft", end="to"):
     )
     files = base_files() | {
         dup: dup_page(dup),
-        PATH: narrative(
-            "Bad",
-            "The [[water]] ran out, said the [[farmers]], at a [[cost]], with a [[sensor]].",
-            [ok, ambiguous],
-            status,
-            "scenario",
-        ),
+        PATH: narrative("Bad", "The [[water]] ran out.", [ok, ambiguous], status, "scenario"),
     }
     return write(tmp_path / "v", files)
 
