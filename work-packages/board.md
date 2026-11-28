@@ -44,7 +44,7 @@ Kept current by the PM. Units: one tight scope and one set of files each. Points
 | WP35 | Legible layouts | accepted (D-190) | `WP35.md` |
 | RS7 | Research spike: how a tool asks the person (standards, practice, why the elicitation trial hung; D-182) | desk and local parts done and reviewed; readout `research/asking/readout.md` on `dev`; variants and notes on `spike/asking`; client trials and acceptance held for the ACE (iteration 54: 19 est, 28 realized, 1.1 h) | `RS7-asking-the-person.md` |
 | WP29 | Design: the lifecycle model and its instance (depends on RS5; his gate) | accepted (D-186, D-187); model locked; `contracts/lifecycle.md` | `WP29.md` |
-| WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | approved (D-163) | `WP30.md` |
+| WP30 | Implementation: tools and skills organised and constrained by stage (depends on WP29, WP28) | all units done and on `dev` (tools 20c03c2; template pinned, TEMPLATE_COMMIT f1d7cce); model amendment D-192; WP30-R6 (on-screen check) queued for a sitting. Followed the locked model over WP30.md in five places: no stage on requests and stable lists (not stage-scoped listings); a normal refusal document (not a clarification result) for an out-of-stage call; the server never asks at a transition (set_stage by a person only); required inputs shown, not enforced; prompts and resources unscoped | `WP30.md` |
 | WP31 | The assistant's habits, stage by stage, tested by the probes (depends on WP30) | approved (D-163) | `WP31.md` |
 | WP32 | Fingerprints follow the narrative's kind; columns read stakeholder, concern, affordance, technology (D-172, D-175) | accepted by the ACE (D-189) | `WP32.md` |
 | WP33 | One query, rendered as a plot, a table or both; one tool per view (D-174, D-175) | accepted by the ACE (D-189) | `WP33.md` |
@@ -435,6 +435,12 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | WP35-U1 | Python developer and test engineer (ordering, bands, marking in draw.py), sonnet | 5 | 5 | `wp35/u1` | done |  | 2026-11-27 | best-of-passes guard added so ordering never worse than name order; 4 existing-test edits listed; PASS first review |
 | WP35-U2 | technical writer (analysis page drawing section), sonnet | 2 | 3 | `wp35/u2` | done |  | 2026-11-27 | review found three inexact sentences (mark count, key, one band); one follow-up commit |
 | WP35-U1r | reviewer (fresh, WP35), sonnet | 3 | 3 | `-` | done |  | 2026-11-27 | 15 mutants, own crossing counter on SVG over 1900 random vaults, PNGs viewed, hash-seed determinism |
+| WP30-U1 | Python developer and test engineer (guides package, scat guide, scat_kg.guide, schema kinds), sonnet | 5 | 5 | `wp30/u1` | done |  | 2026-11-27 | one worker; two docs tests left red by design for U3; wheel-build test; no existing test edited; planned and recorded at close |
+| WP30-U2 | Python developer and test engineer (stage layer on the server, detect readers, tests), sonnet | 8 | 8 | `wp30/u2` | done |  | 2026-11-27 | one worker; 10 mutations checked; nine existing tests edited for the new default stage (listed); count test later put back; planned and recorded at close |
+| WP30-U3 | technical writer (skill Stages section, pages, template IDE skill, R6 plan), sonnet | 5 | 8 | `wp30/u3` | done |  | 2026-11-27 | skill task blocked by the byte-equality test and ruled to a final Stages table; review fixes in a second round (plan vault, residue, tab text); planned and recorded at close |
+| WP30-U1r | reviewer (fresh, WP30), sonnet | 3 | 3 | `wp30/u1r` | done |  | 2026-11-27 | 25 mutations in a copy, real stdio server with odd input, docs built and viewed in a browser; found the YAML comma split (amended, D-192) and 4 should-fix; planned and recorded at close |
+| WP30-U4 | PM (merge, template re-pin, CI fixes), sonnet | 2 | 3 | `wp30/u4` | done |  | 2026-11-27 | image CI red twice (Dockerfile lacked lifecycle.md; image test vault had no stage), fixed forward; word cap and two doc lines; template pinned to 20c03c2 with TEMPLATE_COMMIT; planned and recorded at close |
+| WP30-U6 | the ACE as coder with the chief engineer's accounts (R6 on-screen check) | 3 |  | `-` | queued | a sitting with the chief engineer and the ACE | | plan: `acceptance/walkthroughs/stages-run.md` |
 
 ## Iterations and velocity
 
@@ -489,6 +495,7 @@ the unit lands, from what it actually took. The two are expected to differ, and 
 | 54 | RS7-U1 to RS7-U5 | 19 | 28 | 1.47 | 1.1 h | 25.5 |
 | 56 | WP34-U1 to WP34-U1r | 15 | 15 | 1.00 | 1.3 h | 11.5 |
 | 57 | WP35-U1 to WP35-U1r | 10 | 11 | 1.10 | 1.2 h | 9.2 |
+| 58 | WP30-U1 to WP30-U1r, WP30-U4 | 23 | 27 | 1.17 | 2.7 h | 10.0 |
 
 ## Velocity and forecast
 
