@@ -123,20 +123,6 @@ SHOW = [
     ("lab", "self-infrastructuring"),
 ]
 
-if __name__ == "__main__":
-    OUT.mkdir(exist_ok=True)
-    allv = evidence.load_all()
-    by = {
-        (v, c.narrative): (c, root) for v, (g, root) in allv.items() for c in evidence.cases(g, v)
-    }
-    for v, name in SHOW:
-        case, root = by[(v, name)]
-        im = sheet(name, root, case, list(ALTS))
-        im = im.quantize(colors=48, method=Image.MEDIANCUT)
-        p = OUT / f"{name}.png"
-        im.save(p, optimize=True)
-        print(p.name, im.size, p.stat().st_size)
-
 
 def table() -> str:
     """The alternatives on the same narratives: dashed lines drawn, grey dotted lines, the flag, the count line."""
@@ -180,6 +166,33 @@ def table() -> str:
     return "\n".join(rows)
 
 
+def singles(folder: str) -> None:
+    """One unlabelled PNG per (narrative, alternative), for the held assistant readings: `<narrative>--<alt>.png`."""
+    out = Path(folder)
+    out.mkdir(parents=True, exist_ok=True)
+    allv = evidence.load_all()
+    for v, name in SHOW[:3]:
+        g, root = allv[v]
+        case = next(c for c in evidence.cases(g, v) if c.narrative == name)
+        for a in ("a", "b", "c", "d", "e"):
+            (out / f"{name}--{a}.png").write_bytes(png(a, name, root, case))
+    print(len(list(out.glob("*.png"))), "files in", out)
+
+
 if __name__ == "__main__":
+    OUT.mkdir(exist_ok=True)
+    allv = evidence.load_all()
+    by = {
+        (v, c.narrative): (c, root) for v, (g, root) in allv.items() for c in evidence.cases(g, v)
+    }
+    for v, name in SHOW:
+        case, root = by[(v, name)]
+        im = sheet(name, root, case, list(ALTS))
+        im = im.quantize(colors=48, method=Image.MEDIANCUT)
+        p = OUT / f"{name}.png"
+        im.save(p, optimize=True)
+        print(p.name, im.size, p.stat().st_size)
     print()
     print(table())
+    if len(sys.argv) > 1:
+        singles(sys.argv[1])
