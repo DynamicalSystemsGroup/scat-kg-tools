@@ -156,125 +156,134 @@ against this.
 
 ## 6. Verdict table
 
-**Columns.** S/Se/P is syntax, semantics or pragmatics. Q/O/M/K are each reviewer's verdict: k = keep, s = simplify,
-c = cut, ? = unsure, – = not judged. Proposed is the ACE's synthesis after verification. It is a proposal for the
-decision list, not a decision. Each verdict's reason, in terms of drawing patterns from accounts, is in that reviewer's own table under
-the same item; this table carries no reason column of its own.
+**Columns:**
+- **S/Se/P:** syntax, semantics or pragmatics.
+- **Q/O/M/K:** each of the first four reviewers' verdicts: k = keep, s = simplify, c = cut, ? = unsure, – = not judged.
+  The systems engineer's verdicts are in [its own table](reviews/systems-engineer.md).
+- **Outcome:** what the chief engineer decided (D-218 to D-236). Where no decision touched an item, it stays as built.
+- **Reason:** why the item earns its place, or why it changes. It is stated in terms of the purpose (D-230): the people
+  at the events supply the detail, and coding organizes it into common, interrelated patterns. Most rows also test one
+  of the two heuristics, the right way being the easy way and as simple as possible but no simpler.
 
 ### 6a. Rules (contracts/rule-catalogue.md)
 
-| Item | S/Se/P | Q | O | M | K | Proposed |
-|---|---|---|---|---|---|---|
-| SCAT-FM-PARSE | S | k | s | k | k | keep |
-| SCAT-FM-REQUIRED | S | k | k | s | s | fold into one field rule |
-| SCAT-FM-TYPE | S | k | s | s | s | fold into one field rule |
-| SCAT-FM-STATUS | S | k | s | s | s | fold into one field rule |
-| SCAT-FM-TIMEFRAME | S | s | s | s | s | fold; out of the `done` gate |
-| SCAT-FM-KIND | S | k | s | s | s | fold into one field rule |
-| SCAT-FM-SHAPE | S | k | s | c | s | fold into one field rule |
-| SCAT-NAME | S | s | k | k | s | keep (decision list 10) |
-| SCAT-DONE-FIELD / SCAT-DRAFT-FIELD | S | s | s | k/c | s | one rule; node `description` only |
-| SCAT-ATTR-DISALLOWED | S | c | k | s | c | per attribution decision |
-| SCAT-ATTR-LINK | S | c | c | s | c | cut |
-| SCAT-DONE-ATTR / SCAT-DRAFT-ATTR | S | c | c | c | c | cut |
-| SCAT-LINK-DANGLING-BODY | S | k | k | k | k | keep; absorbs END-NOPAGE |
-| SCAT-CAP | Se | s | k | k | k | keep |
-| SCAT-MODE-CONFIG | S | c | s | s | c | per attribution decision |
-| SCAT-CAP-CONFIG | S | s | s | s | s | one config rule |
-| SCAT-SUGGEST-CONFIG | S | c | c | c | c | cut |
-| SCAT-MENTION | P | k | c | c | c | cut |
-| SCAT-NOEDGES | P | k | s | s | k | keep |
-| SCAT-UNCODED | P | k | k | k | s | keep |
-| SCAT-DRAFT-TABLE-HEADER / SCAT-DONE-TABLE-HEADER | S | s | s | s | s | one lenient table-read rule |
-| SCAT-DRAFT-TABLE-ROW / SCAT-DONE-TABLE-ROW | S | s | s | k | s | one lenient table-read rule |
-| SCAT-DRAFT-TABLE-TYPE / SCAT-DONE-TABLE-TYPE | S | s | c | k | c | cut if the type column goes (decision 4) |
-| SCAT-DRAFT-TABLE-LAYERS / SCAT-DONE-TABLE-LAYERS | Se | k | s | k | s | keep, one id |
-| SCAT-DRAFT-TABLE-SECOND / SCAT-DONE-TABLE-SECOND | S | c | c | c | c | cut |
-| SCAT-DRAFT-TABLE-DUPLICATE / SCAT-DONE-TABLE-DUPLICATE | S | s | c | c | c | cut (the graph keeps one edge) |
-| SCAT-DRAFT-END-NOLINK / SCAT-DONE-END-NOLINK | S | s | s | s | s | one rule: a row end must reach a node page |
-| SCAT-DRAFT-END-NOPAGE / SCAT-DONE-END-NOPAGE | S | s | s | s | s | into the rule above |
-| SCAT-DRAFT-END-NOTNODE / SCAT-DONE-END-NOTNODE | Se | k | s | s | s | into the rule above |
-| SCAT-DONE-REFUSED | P | s | k | k | k | keep |
-| Retired-ids list (rule-catalogue.md:177-188) | – | c | c | c | – | move to the log |
-| Structured fixes (fix kinds, edit actions) | P | k | s | c | k | decision 8 |
+| Item | S/Se/P | Q | O | M | K | Outcome | Reason |
+|---|---|---|---|---|---|---|---|
+| SCAT-FM-PARSE | S | k | s | k | k | keep | A page that cannot be read drops out of the graph silently, and a pattern can't rest on a page the graph never saw. |
+| SCAT-FM-REQUIRED | S | k | k | s | s | keep | `type`, `status` and `title` are what place a page in the model. Without them a page has no layer and no state. |
+| SCAT-FM-TYPE | S | k | s | s | s | keep | The type puts a code in its layer. A wrong type puts a concern where a group belongs and breaks every pattern drawn across layers. |
+| SCAT-FM-STATUS | S | k | s | s | s | keep | Three values keep the coder's state of work legible; it costs nothing. |
+| SCAT-FM-TIMEFRAME | S | s | s | s | s | becomes the value check of the actual / hypothetical / unclassified filter (D-224) | A filter must hold known values to separate conjecture from what could be verified. It no longer gates `done`. |
+| SCAT-FM-KIND | S | k | s | s | s | keep, as a filter's value check (D-224) | Scenario and architecture are a filter on the accounts. They no longer change any output silently. |
+| SCAT-FM-SHAPE | S | k | s | c | s | keep | A field of the wrong shape (a list for a string) is misread by every view. The check is cheap. |
+| SCAT-NAME | S | s | k | k | s | keep (D-228) | Slugs keep names portable and unique. The `title` keeps the label as people said it. |
+| SCAT-DONE-FIELD / SCAT-DRAFT-FIELD | S | s | s | k/c | s | one id, severity by status (D-223); `timeframe` out of the gate (D-224) | A node's `description` is its definition, the abstraction the coder commits to. Asking for it at `done` is asking for the synthesis. |
+| SCAT-ATTR-DISALLOWED | S | c | k | s | c | keep (D-219) | Keeps the promise to activists that no account is tied to a named person. |
+| SCAT-ATTR-LINK | S | c | c | s | c | keep (D-219) | Keeps attribution pointing at real contributor pages where the community wants contributions tracked. |
+| SCAT-DONE-ATTR / SCAT-DRAFT-ATTR | S | c | c | c | c | keep (D-219), one id, severity by status (D-223) | In the required mode a done narrative must say whose account it is. That is the promise the organiser made. |
+| SCAT-LINK-DANGLING-BODY | S | k | k | k | k | keep | A link to nowhere breaks the path from a code back to its accounts. |
+| SCAT-CAP | Se | s | k | k | k | keep | The cap forces groups to be clusters, not individuals: an abstraction step, and a privacy guarantee. |
+| SCAT-MODE-CONFIG | S | c | s | s | c | keep (D-219) | Without a declared mode the vault can't tell which attribution promise it keeps. |
+| SCAT-CAP-CONFIG | S | s | s | s | s | keep | The cap must be readable to be enforced. |
+| SCAT-SUGGEST-CONFIG | S | c | c | c | c | cut (D-223) | It validated a switch for a rule nobody turned on. |
+| SCAT-MENTION | P | k | c | c | c | cut (D-223) | It suggested more links. Under D-220 prose links are optional, and coding is the table, not more linking. |
+| SCAT-NOEDGES | P | k | s | s | k | keep | A done narrative with no rows has contributed nothing to any pattern, and is likely a skipped step. |
+| SCAT-UNCODED | P | k | k | k | s | keep | An account that links nothing is excluded from every view. Silent exclusion would bias the synthesis. |
+| SCAT-DRAFT-TABLE-HEADER / SCAT-DONE-TABLE-HEADER | S | s | s | s | s | one id, severity by status (D-223) | The table is the coding of record (D-220), so it must be readable. One rule is enough. |
+| SCAT-DRAFT-TABLE-ROW / SCAT-DONE-TABLE-ROW | S | s | s | k | s | one id, severity by status (D-223) | A row that can't be read is a claim lost. |
+| SCAT-DRAFT-TABLE-TYPE / SCAT-DONE-TABLE-TYPE | S | s | c | k | c | keep the column (D-222), one id (D-223) | The type names what the pair means ("holds", "is addressed by"). It is the structure the coder reads. |
+| SCAT-DRAFT-TABLE-LAYERS / SCAT-DONE-TABLE-LAYERS | Se | k | s | k | s | one id, severity by status (D-223) | A group holding a technology is a category error. The ontology's layers are what make patterns comparable. |
+| SCAT-DRAFT-TABLE-SECOND / SCAT-DONE-TABLE-SECOND | S | c | c | c | c | cut (D-223) | It guarded a mistake the tool's own `record-edge` never makes. |
+| SCAT-DRAFT-TABLE-DUPLICATE / SCAT-DONE-TABLE-DUPLICATE | S | s | c | c | c | cut (D-223) | The graph already keeps one edge per pair. A duplicate row changes no pattern. |
+| SCAT-DRAFT-END-NOLINK / SCAT-DONE-END-NOLINK | S | s | s | s | s | one id, severity by status (D-223) | Each end of a claim must name a code, or the claim joins nothing. |
+| SCAT-DRAFT-END-NOPAGE / SCAT-DONE-END-NOPAGE | S | s | s | s | s | one id, severity by status (D-223) | A claim about a code with no page has no definition behind it. The fix (`stub`) is the easy way. |
+| SCAT-DRAFT-END-NOTNODE / SCAT-DONE-END-NOTNODE | Se | k | s | s | s | one id, severity by status (D-223) | Only the four node types are codes. A row ending at a narrative is a category error. |
+| Prose link not in the table (WP39 amendment 1) | Se | – | – | – | – | new, one id, warning in draft, error at done (D-220, D-221) | The table is the coding of record. A linked word the table doesn't hold would read as coding when it is not. |
+| SCAT-DONE-REFUSED | P | s | k | k | k | keep | `done` is the coder's attestation. Refusing it while errors stand keeps conformance and judgement apart. |
+| Retired-ids list (rule-catalogue.md:177-188) | – | c | c | c | – | move to the log (D-236) | History, not a rule. It lengthens the catalogue the coder reads. |
+| Structured fixes (fix kinds, edit actions) | P | k | s | c | k | keep; item-by-item review (D-226) | Every guard comes with a remediation, which makes the right way the easy way for the coder and the assistant. |
 
 ### 6b. CLI commands (and the MCP tool of the same name)
 
-| Item | S/Se/P | Q | O | M | K | Proposed |
-|---|---|---|---|---|---|---|
-| `check` / check | S, P | k | k | k | k | keep; two scopes, not three |
-| `status` / status | P | k | k | k | s | keep; add recurrence (decision 11) |
-| `set-status` / set_status | P | k | s | k | k | keep |
-| `index` / index | P | s | c | s | s | move to vault creation |
-| `stub` / stub | P | k | k | k | k | keep |
-| `stub-links` / stub_links | P | k | s | s | c | decision 9 |
-| `record-edge` / record_edge | P | s | k | k | k | keep |
-| `remove-edge` / remove_edge | P | s | k | c | k | keep |
-| `merge` / merge | P | k | k | k | k | keep; no carried body (C22) |
-| `split-plan` / split_plan | P | s | s | s | c | fold into `evidence` |
-| `fingerprint` / fingerprint | P | k | k | s | s | decision 9 |
-| `edges` / edge_table | P | k | s | k | k | keep; show row notes |
-| `layered` / layered | P | k | k | k | k | keep |
-| `trace` / trace | P | k | k | s | s | decision 9 |
-| `evidence` / evidence | P | k | k | k | k | keep |
-| `copy-share` / copy_share | P | c | c | c | k? | cut |
-| `review` / review | P | s | s | s | s | simplify |
-| `attribution` / attribution | P | c | c | c | c | cut |
-| `export-edges` / export_edges | P | k | k | s | k | keep (fold into `edges --csv`) |
-| `guide` | P | s | c | c | k | goes with the stages (decision 1) |
-| `draw` | P | k | s | s | s | one drawing per view |
-| MCP which_stage, set_stage | P | c | c | c | c | cut |
-| MCP prompts (code-a-narrative, explain-a-problem, review-before-done, draft-a-node-page, fill-in-node-pages, look-for-duplicates) | P | k | s | s | s | keep fewer, after the cuts |
-| MCP resource assistant-rules; SKILL A1-A20 | P | s | s | c | s | shrink to a few sentences |
-| HTTP key gate | S | – | – | s | – | keep (security) |
+| Item | S/Se/P | Q | O | M | K | Outcome | Reason |
+|---|---|---|---|---|---|---|---|
+| `check` / check | S, P | k | k | k | k | keep | Conformance only, so the coder's attention goes to interpretation. |
+| `status` / status | P | k | k | k | s | keep | Shows what is still stub or draft: where the synthesis isn't finished. |
+| `set-status` / set_status | P | k | s | k | k | keep | The coder's attestation, recorded. Who may call it is settled in the consistency package (D-236). |
+| `index` / index | P | s | c | s | s | keep (D-227) | Gives Obsidian one table per code type, a quick look across all codes of a layer. |
+| `stub` / stub | P | k | k | k | k | keep | One easy way to name a new code. |
+| `stub-links` / stub_links | P | k | s | s | c | keep (D-227) | Lets the coder name codes in rows first and fill pages after: incremental coding. |
+| `record-edge` / record_edge | P | s | k | k | k | keep | Records the coder's claim in the table of record without hand-writing structure. |
+| `remove-edge` / remove_edge | P | s | k | c | k | keep | Withdrawing a claim is part of revising a synthesis. |
+| `merge` / merge | P | k | k | k | k | keep; no carried body, optional link pages (C22, D-233); in `synthesise` (D-235) | Folding two concrete codes into one is the core abstraction move. |
+| `split-plan` / split_plan | P | s | s | s | c | renamed `where-used` (D-227); in `synthesise` (D-235) | Shows every place a code is used, so the coder can see when one name covers two structures. |
+| `rename` (new) | P | – | – | k | – | add (D-230) | Renaming a code ("broken drill" to "unsafe equipment") is the simplest abstraction move. |
+| `fingerprint` / fingerprint | P | k | k | s | s | keep (D-227) | One account's codes: did I code this account the way I read it? |
+| `edges` / edge_table | P | k | s | k | k | keep | Which claims recur across accounts and which rest on one. |
+| `layered` / layered | P | k | k | k | k | keep | The cross-account picture: the synthesis seen whole. |
+| `trace` / trace | P | k | k | s | s | keep (D-227) | For one concern: who holds it, and what addresses it. |
+| `evidence` / evidence | P | k | k | k | k | keep | Code and retrieve: what a code rests on, the basis for its definition. |
+| recurrence view (new) | P | – | k | k | k | add (D-229) | A pattern is what recurs. It counts the narratives and groups that reach each code and marks the singletons. |
+| `copy-share` / copy_share | P | c | c | c | k? | cut (D-225) | It scored writing style. `evidence` already shows the passages. |
+| `review` / review | P | s | s | s | s | plain signals only (D-225) | Prompts the coder to compare codes that may be one, without scores the coder can't see. |
+| `attribution` / attribution | P | c | c | c | c | keep (D-219) | Shows whose accounts a pattern rests on, where the community wants that. |
+| `export-edges` / export_edges | P | k | k | s | k | keep | Hands the coded structure to other analysis. |
+| `guide` | P | s | c | c | k | keep (D-218) | States each stage's work, part of the scaffolding. |
+| `draw` | P | k | s | s | s | keep; no layer dropped by `kind` (D-224) | Pictures of the views for a report. |
+| MCP which_stage, set_stage | P | c | c | c | c | keep (D-218); same strength on every path (D-234) | The stage machine stabilises what the assistant offers at each point of the work. |
+| MCP prompts (code-a-narrative, explain-a-problem, review-before-done, draft-a-node-page, fill-in-node-pages, look-for-duplicates) | P | k | s | s | s | keep; guidance on the note slots added (D-233) | Each starts one step of the loop the stage offers. |
+| MCP resource assistant-rules; SKILL A1-A20 | P | s | s | c | s | one copy (D-236) | One statement of the assistant's limits, so the copies can't disagree. |
+| HTTP key gate | S | – | – | s | – | keep | Security of the chat path. Not a coding question. |
 
 ### 6c. Views
 
-| Item | S/Se/P | Q | O | M | K | Proposed |
-|---|---|---|---|---|---|---|
-| Fingerprint | P | k | k | s | s | decision 9 |
-| Edge tables | P | k | s | k | k | keep |
-| Layered (with candidates) | P | k | k | k | k | keep |
-| Trace | P | k | k | s | s | decision 9 |
-| Evidence | P | k | k | k | k | keep |
-| Copy-share | P | c | c | c | k? | cut |
-| Review | P | s | s | s | s | simplify |
-| Attribution | P | c | c | c | c | cut |
-| Index Bases | P | k | k | – | k | keep |
-| Notebook | P | ? | s | s | k | keep; no terminal needed (decision 12) |
+| Item | S/Se/P | Q | O | M | K | Outcome | Reason |
+|---|---|---|---|---|---|---|---|
+| Fingerprint | P | k | k | s | s | keep | One account, coded. |
+| Edge tables | P | k | s | k | k | keep | Recurring claims. |
+| Layered (with candidates) | P | k | k | k | k | keep; filters by the marks (D-224) | The whole synthesis. Candidates show linked pairs not yet claimed. |
+| Trace | P | k | k | s | s | keep | One code's chain across layers. |
+| Evidence | P | k | k | k | k | keep | What a code rests on. |
+| Recurrence (new) | P | – | k | k | k | add (D-229) | How widely a pattern recurs. |
+| Copy-share | P | c | c | c | k? | cut (D-225) | A style score, not a pattern. |
+| Review | P | s | s | s | s | plain signals (D-225) | Where two codes may be one. |
+| Attribution | P | c | c | c | c | keep (D-219) | Whose accounts, where promised. |
+| Index Bases | P | k | k | – | k | keep | All codes of a layer at a glance in Obsidian. |
+| Notebook | P | ? | s | s | k | keep; a helper sets up the terminal (D-232) | The views at a desk. |
 
 ### 6d. Ontology (ontology/scat.ttl)
 
-| Item | S/Se/P | Q | O | M | K | Proposed |
-|---|---|---|---|---|---|---|
-| scat:Group, scat:Concern, scat:Affordance, scat:Technology | Se | k | k | k | k | keep |
-| scat:EdgeType | Se | k | s | s | s | simplify |
-| scat:Heldby, scat:Addresses, scat:ProvidedBy | Se | k | k | k | k | keep (`Heldby` reads inversely to "holds", `scat.ttl:128-134`) |
-| rdfs:domain / rdfs:range on edges, scat:endpointOrder | Se | – | – | s | s | state once |
-| scat:Narrative | Se | k | k | k | k | keep |
-| scat:Contributor, scat:field-attributed_to | Se | c | c | s | c | per attribution decision |
-| scat:Index | S | s | s | c | c | out of the TTL |
-| scat:TableColumn, column-type/from/to/note, scat:tableHeading, scat:tableColumns, scat:cellHolds | S | k | c | c | c | out of the TTL |
-| scat:Field, field-type, field-status, field-title, field-description, field-kind | S | k | k | k | k | keep |
-| scat:field-timeframe | S | s | c | s | s | optional |
-| scat:status, scat:StatusValues, scat:stub, scat:draft, scat:done | Se | k | s | k | k/s | keep |
-| scat:carriesStatus, scat:discouragedField, scat:mapsTo | S | k | s | c | c | cut |
-| scat:key, scat:pageDescription, scat:requiredField, scat:optionalField, scat:requiredFrom, scat:valueSet, scat:targetType, scat:verb, scat:slug | S | k | s | s | s | keep, fewer |
-| scat:source, scat:authored, scat:verification | Se | k | s | c | s | move to a docs table |
-| skos:closeMatch (SEBoK, 42010), rdfs:seeAlso (WoT) | Se | – | – | – | k | keep |
+| Item | S/Se/P | Q | O | M | K | Outcome | Reason |
+|---|---|---|---|---|---|---|---|
+| scat:Group, scat:Concern, scat:Affordance, scat:Technology | Se | k | k | k | k | keep | The four layers are the language for structure. They make different-looking accounts comparable. |
+| scat:EdgeType | Se | k | s | s | s | keep | Holds the three relation types as data, so no tool copies them. |
+| scat:Heldby, scat:Addresses, scat:ProvidedBy | Se | k | k | k | k | keep | The three relations are how codes interrelate. Their names say what a row means (D-222). |
+| rdfs:domain / rdfs:range on edges, scat:endpointOrder | Se | – | – | s | s | keep | Fix which layers each relation joins. That is the rule that makes a pattern well-formed. |
+| scat:Narrative | Se | k | k | k | k | keep | The coded account, the concrete source of every pattern. |
+| scat:Contributor, scat:field-attributed_to | Se | c | c | s | c | keep (D-219) | The attribution promise, where the community wants it. |
+| scat:Index | S | s | s | c | c | out of the TTL (D-231) | A generated file, not part of the model. |
+| scat:TableColumn, column-type/from/to/note, scat:tableHeading, scat:tableColumns, scat:cellHolds | S | k | c | c | c | out of the TTL (D-231) | Layout of the table, not meaning. It belongs in the contracts. |
+| scat:Field, field-type, field-status, field-title, field-description, field-kind | S | k | k | k | k | keep | The fields a code or account carries. `description` is the code's definition. |
+| scat:field-timeframe | S | s | c | s | s | reframed as actual / hypothetical / unclassified, a filter (D-224) | Separates conjecture from what could be verified, without gating the work. |
+| scat:status, scat:StatusValues, scat:stub, scat:draft, scat:done | Se | k | s | k | k/s | keep | The state of each piece of work. Distinct from the project's stage (D-177). |
+| scat:carriesStatus, scat:discouragedField, scat:mapsTo | S | k | s | c | c | out of the TTL (D-231) | Unread or implementation detail. |
+| scat:key, scat:pageDescription, scat:requiredField, scat:optionalField, scat:requiredFrom, scat:valueSet, scat:targetType, scat:verb, scat:slug | S | k | s | s | s | keep | They let the tools be generated from the model, so the rules follow the ontology and are not written twice. |
+| scat:source, scat:authored, scat:verification | Se | k | s | c | s | to a docs table (D-231) | Research provenance, not model. |
+| skos:closeMatch (SEBoK, 42010), rdfs:seeAlso (WoT) | Se | – | – | – | k | keep | Ties the layers to established terms, so a reader recognises them. |
 
 ### 6e. Other features
 
-| Item | S/Se/P | Q | O | M | K | Proposed |
-|---|---|---|---|---|---|---|
-| Lifecycle stages and `lifecycle.toml` | P | c | c | c | c | cut (decision 1) |
-| Attribution modes | S/Se/P | c | s | s | c | decision 2 |
-| Prose links plus table rows (two records) | S/Se/P | s | – | k | s | decision 3 |
-| The relationship annotation (a free line) | Se | k | – | k | k | keep |
-| Machine-interface JSON schema | S | – | s | c | k | decision 8 |
-| SCATLAB, container, Funnel, keys | P | – | s | s? | – | decision 12 |
-| Four coding paths and walkthroughs | P | – | s | – | – | after the cuts |
-| `decisions/log.md` in the shipped repo | – | – | – | c | – | keep; no D-nnn in user pages |
+| Item | S/Se/P | Q | O | M | K | Outcome | Reason |
+|---|---|---|---|---|---|---|---|
+| Lifecycle stages and `lifecycle.toml` | P | c | c | c | c | keep (D-218); template starts in plan; same strength everywhere; roles (D-234); `synthesise` stage (D-235) | The scaffolding that breaks the work into simple pieces and stabilises the assistant's behaviour. |
+| Attribution modes | S/Se/P | c | s | s | c | keep (D-219) | Two real use cases: activists who reject named contributions, and a community that tracks them. |
+| Prose links plus table rows (two records) | S/Se/P | s | – | k | s | the table is the record; prose links are a subset (D-220) | One record of the coding. The prose stays interpretive, connective tissue. |
+| Narrative-to-node link page | Se | – | – | – | – | optional slot (D-216, D-233) | Room for notes on how one account uses a code, without requiring a page. |
+| The relationship annotation (a free line) | Se | k | – | k | k | keep | An optional slot for a tension between two codes. |
+| Machine-interface JSON schema | S | – | s | c | k | keep; item-by-item review (D-226) | Carries the guard and remediation to the assistant. |
+| SCATLAB, container, Funnel, keys | P | – | s | s? | – | keep; docs say a helper sets it up (D-232) | Gets the tools to a chat without the organiser installing anything. |
+| Four coding paths and walkthroughs | P | – | s | – | – | keep | Different people code in different places. |
+| `decisions/log.md` in the shipped repo | – | – | – | c | – | keep; no D-nnn in user pages | The record of the chief engineer's calls. |
 
 ## 7. Decision list
 
