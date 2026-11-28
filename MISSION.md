@@ -150,10 +150,10 @@ the tools alone, on their own work and data, to decide whether to use them, and 
 will never commit to it for a facilitated project. So trying it solo is a stage of the organiser's journey, not a
 separate user, and the docs make that first try easy.
 
-The organiser is also the **coder** of the data. They are technically savvy but not a software developer, and works on macOS for v0.1 (see
+In a solo trial, and often in a small project, the organiser also holds the **coder**'s role (see "Roles" below). The coder is technically savvy but not a software developer, and works on macOS for v0.1 (see
 Governance). They navigate GitHub's web interface, including creating a repository from a template; read, write and
-follow links in Obsidian; and follow documentation literally, step by step. They code by one of four paths (G14), and
-each has its own user experience and a walkthrough with screenshots:
+follow links in Obsidian; and follow documentation literally, step by step. They code by one of four paths (G14), each with its own user experience; the first two have walkthroughs with
+screenshots:
 1. **By hand in Obsidian**, with the tools in an **interactive session**: the Python REPL (`import scat_tools`), with the
    `scat` CLI as an equal path to the same operations and messages. The docs lead with the REPL, because CLI commands
    get long when run through uv. Its future state is an Obsidian community plugin, which is out of scope for v0.1
@@ -385,7 +385,7 @@ matters without claiming to be exhaustive. No particular project's choices appea
 | D-4 | The documentation site on GitHub Pages: a candidate preview during user acceptance, then the release | G7, G9, G11, G14, G17 |
 | D-5 | The decision records, and the research readouts behind the choices this mission states as settled | G8, G10, G11, G13, G14, G16 |
 | D-6 | The reviewer's guide for the chief engineer, in the `scat-tools` release PR. It is sized for a person and split into sittings: (1) the end-to-end walkthroughs (UA-M); (2) the docs site; (3) the tools and checks; (4) the ACE's calls. Each sitting has a short checklist and its own entry point. It lists every call the ACE made, with its evidence, and what is known to be weak. | all |
-| D-7 | The user-acceptance kit, in `scat-tools/acceptance/`: the AI tester personas and briefs, the report template, every AI test report with its dispositions, and the walkthrough scripts | G9 |
+| D-7 | The user-acceptance kit, in `scat-tools/acceptance/`: one tester brief per role, the report template, every test report with its screenshots and dispositions | G9 |
 
 ## Requirements
 
