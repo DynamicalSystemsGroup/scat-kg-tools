@@ -3272,3 +3272,16 @@ deferred by the chief engineer to a later package. WP36's goals, R1 and delivera
 Asked to approve WP36's three defaults (one fingerprint as PNG, SVG and table per trial; any trial with his accounts
 and the ACE as coder; one line per path in the existing Pros and Cons lists), the chief engineer said (typed by the
 agent): "Defaults approved". WP36 has no open items; it awaits approval of the scope.
+
+## D-199 | 2026-11-27 | WP37's O1: what carries which name
+
+Asked what carries the scatlab name (the app only; the app and the tool; everything), the chief engineer said (typed
+by the agent): "the app becomes scatlab instead of scat chat; the package can just be scat-tools (not scat-kg-tools),
+and the template repo can be scat-template (not scat-kg-template). the command line stays `scat`". Asked whether
+"package" meant the repository or the Python package, he said: "the repository. what is the package currently? i think
+the package should either be scat if its available on pypi or scat-tools if not. we'll reserve scatlab for the app.".
+The ACE checked PyPI: `scat` is taken (an unrelated project, "Schrödinger's cat", 0.1.4); `scat-tools` is free; the
+package today is `scat-kg`, installed from GitHub. Outcome: app SCAT Chat to scatlab; repository `scat-kg-tools` to
+`scat-tools` (the docs site's address moves with it); repository `scat-kg-template` to `scat-template`; Python
+package `scat-kg` to `scat-tools`; the command stays `scat`. WP37's O1, R1 and defaults are edited to match (import
+name `scat_tools` with a one-release alias, and `scat-mcp` unchanged, as defaults).
