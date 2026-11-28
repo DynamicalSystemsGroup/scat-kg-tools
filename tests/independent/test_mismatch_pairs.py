@@ -306,7 +306,10 @@ def test_each_fix_clears_its_mismatch_and_creates_no_other(
     failures = []
     for p in targets:
         assert p.fix, p.brief()
-        failures += check_fix_clears(v, tmp_factory, p, before, {**SLOTS, **slots}, allowed=allow)
+        # deleting a row can leave the account linking a node no row ends at: SCAT-*-LINK-NOTINTABLE is the rule's
+        # own message (the coder takes the link out or records the row), not a defect of the fix
+        allowed = (*allow, "SCAT-DRAFT-LINK-NOTINTABLE", "SCAT-DONE-LINK-NOTINTABLE")
+        failures += check_fix_clears(v, tmp_factory, p, before, {**SLOTS, **slots}, allowed=allowed)
     assert not failures, "\n".join(failures)
 
 
@@ -325,9 +328,11 @@ def test_every_fix_is_data_with_a_kind_and_options_are_alternatives_or_steps(mak
 @pytest.mark.parametrize("st", STATUSES)
 def test_L_E_a_narrative_that_links_both_ends_without_a_row_gets_no_message(make_base, st):
     v = make_base(st)
-    v.edit(NF, ROW1 + "\n", "")
+    # borrowers ends another row (the table is the coding of record), and no row joins it to quick-checkout
+    v.edit(NF, ROW1, "| [[borrowers]] | holds | [[safe-handling]] | |")
     body = v.read(NF)
-    assert "[[borrowers]]" in body and "[[quick-checkout]]" in body and "| holds |" not in body
+    assert "[[borrowers]]" in body and "[[quick-checkout]]" in body
+    assert "| [[borrowers]] | holds | [[quick-checkout]]" not in body
     assert v.check() == []
     assert v.check(NF) == [] and v.check("saturday", neighborhood=True) == []
 
@@ -364,13 +369,18 @@ def test_E_T_a_table_on_a_concern_page_is_not_read(make_base):
 def test_N_T_mismatch_is_a_warning_before_done_an_error_at_done_and_blocks_done(make_base):
     v = make_base("draft")
     row(v, "| borrowers | holds | [[quick-checkout]] | |")
-    (p,) = v.check()
+    # (the row's `borrowers` is no link, so the account's link to borrowers has no row end: its own rule's message)
+    (q, p) = v.check()  # the account's link is on line 9, the row on line 16
     assert (p.rule, p.severity) == ("SCAT-DRAFT-END-NOLINK", "warning")
+    assert q.rule == "SCAT-DRAFT-LINK-NOTINTABLE"
     code, doc = v.scat("set-status", "saturday", "done")
-    assert code == 1 and doc["refused"][0]["problems"][0]["rule"] == "SCAT-DONE-END-NOLINK"
+    assert code == 1 and "SCAT-DONE-END-NOLINK" in [
+        x["rule"] for x in doc["refused"][0]["problems"]
+    ]
     v.edit(NF, "status: draft", "status: done")
-    (p,) = v.check()
+    (q, p) = v.check()
     assert (p.rule, p.severity) == ("SCAT-DONE-END-NOLINK", "error")
+    assert q.rule == "SCAT-DONE-LINK-NOTINTABLE"
 
 
 def test_the_mismatch_in_one_narrative_does_not_change_another_pages_messages(make_base):

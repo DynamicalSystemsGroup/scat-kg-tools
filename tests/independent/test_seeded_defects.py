@@ -25,7 +25,15 @@ from indep_kit import (
 SEEDS = []
 
 
+# The base narrative's account links three nodes; a seed that changes a row leaves a link no row ends at, which is
+# SCAT-*-LINK-NOTINTABLE's business (its own seeds) and not the seed's: the other seeds let it pass unasserted.
+NOTINTABLE = ("SCAT-DRAFT-LINK-NOTINTABLE", "SCAT-DONE-LINK-NOTINTABLE")
+
+
 def seed(name, statuses=("draft",), allow=()):
+    if not name.startswith("LINK-NOTINTABLE"):
+        allow = (*allow, *NOTINTABLE)
+
     def deco(fn):
         for st in statuses:
             SEEDS.append(pytest.param(fn, st, allow, id=f"{name}@{st}"))
@@ -2242,9 +2250,11 @@ def _notintable(st, target, line=9, col=1):
         fix=(
             "Fix, choose one:",
             [
-                "record the row for it: run `scat record-edge <type> <from> <to> --told-by saturday` "
-                '(REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["saturday"])`), '
-                f"with `{target}` as `<from>` or `<to>`",
+                (
+                    "record the row for it: run `scat record-edge <type> <from> <to> --told-by saturday` "
+                    '(REPL: `scat_tools.record_edge("<type>", "<from>", "<to>", ["saturday"])`), '
+                    f"with `{target}` as `<from>` or `<to>`"
+                ),
                 f"or take the link out of the account: write `{target}` without its brackets and keep the words",
             ],
         ),

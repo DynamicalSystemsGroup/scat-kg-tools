@@ -114,4 +114,5 @@ def test_fixes_of_a_padded_table_apply_and_clear(tmp_path, tmp_factory, name, st
 def test_padding_changes_nothing_about_which_ends_are_nodes(tmp_path):
     rows = [("[[ borrowers ]]", "holds", "[[  quick-checkout  ]]", "spaces inside the link")]
     v = build(tmp_path, rows, "obsidian", "done")
+    v.edit(NF, "through [[self-checkout]]", "through the stand")  # no row ends at self-checkout
     assert v.check() == []

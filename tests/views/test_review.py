@@ -31,7 +31,7 @@ DECOY = ("data-retention", "data-retention-schedule")
 HOMONYM = "community-members"
 
 # the number of proposals on each vault: a threshold change shows here
-COUNTS = {"disallowed": 9, "optional": 9, "required": 9, "range": 6}
+COUNTS = {"disallowed": 9, "optional": 9, "required": 9, "range": 7}
 
 VAULTS = {
     **{mode: NODE_PAGES / mode for mode in ("disallowed", "optional", "required")},

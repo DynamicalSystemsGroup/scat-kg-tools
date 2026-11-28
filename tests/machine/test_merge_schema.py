@@ -49,7 +49,7 @@ def test_a_refusal_validates(vault):
 def test_a_split_plan_validates(vault):
     d = scat_tools.split_plan("community-members", root=vault).to_dict()
     V.validate(d)
-    assert d["operation"] == "split-plan" and len(d["pages"]) == 8
+    assert d["operation"] == "split-plan" and len(d["pages"]) == 6
     refused = scat_tools.split_plan("nobody", root=vault).to_dict()
     V.validate(refused)
 

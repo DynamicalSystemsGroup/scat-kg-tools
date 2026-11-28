@@ -20,7 +20,7 @@ def test_the_plan_names_every_narrative_link_and_row(vault):
     assert tree(vault) == before
     listed = {p.name: p for p in plan.pages}
     linking = {n.name for n in g.narratives if node in n.nodes}
-    assert set(listed) == linking and len(linking) == 8
+    assert set(listed) == linking and len(linking) == 6
     for n in g.narratives:
         if n.name not in linking:
             continue

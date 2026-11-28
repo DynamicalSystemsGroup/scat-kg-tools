@@ -77,7 +77,8 @@ def test_example_row_ends_that_are_not_ids_are_mismatches_with_a_fix_to_the_id(m
     v = make_base("done")
     v.write("group/tool-borrowers.md", page_text("group", "Tool borrowers"))
     v.edit(NF, "| [[borrowers]] | holds", "| [[Tool Borrowers]] | holds")
-    (p,) = v.check()
+    # (the account's link to borrowers has no row end now: SCAT-*-LINK-NOTINTABLE, not this test's subject)
+    (p,) = [q for q in v.check() if "LINK-NOTINTABLE" not in q.rule]
     assert (p.rule, p.severity, p.where) == ("SCAT-DONE-END-NOPAGE", "error", "row 1 cell `from`")
     assert "[[tool-borrowers]]" in p.fix_text
 
@@ -91,7 +92,7 @@ def test_example_that_does_neither_gets_both_kinds_of_message(make_base):
         "| [[borrowers]] | holds | [[quick-checkout]]",
         "| [[borrowers]] | holds | [[Safe tool use]]",
     )
-    rules = sorted(p.rule for p in v.check())
+    rules = sorted(p.rule for p in v.check() if "LINK-NOTINTABLE" not in p.rule)
     assert rules == ["SCAT-DONE-END-NOPAGE", "SCAT-NAME"]
 
 

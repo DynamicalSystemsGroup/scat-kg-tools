@@ -52,7 +52,10 @@ def test_check_has_no_errors(mode):
 @pytest.mark.parametrize("mode", MODES)
 def test_loads_with_the_cap(mode, graphs):
     gr = graphs[mode]
-    assert gr.ok and not gr.excluded and not gr.unreadable
+    # one narrative links nodes and tells no edge: under SCAT-*-LINK-NOTINTABLE its links are plain words,
+    # so it links no node and is excluded (SCAT-UNCODED)
+    assert gr.ok and not gr.unreadable
+    assert [e.narrative for e in gr.excluded] == ["the-data-set-and-the-two-layers"]
     assert len(gr.nodes["group"]) == 4
     assert (VAULT / mode / "scat.toml").read_text().splitlines() == [
         f'attribution = "{mode}"',
@@ -158,7 +161,9 @@ def test_duplicate_row_seed(g):
 def test_done_narrative_on_a_merge_a(g):
     nar = g.narrative("weekly-digest-trial")
     assert nar.status == "done" and "weekly-digest" in nar.nodes
-    assert len(linked_by(g, "weekly-digest")) >= 3
+    assert (
+        len(linked_by(g, "weekly-digest")) >= 2
+    )  # the third account names it without a row: no link
     assert any(n.status == "draft" for n in g.narratives)
 
 

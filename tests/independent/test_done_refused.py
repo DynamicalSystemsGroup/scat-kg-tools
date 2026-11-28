@@ -15,6 +15,9 @@ def test_refused_lists_every_error_and_writes_nothing(make_base):
     v = make_base("draft")
     v.edit(NF, 'description: "A Saturday at the lending desk."\n', "")
     v.edit(NF, "| [[borrowers]] | holds", "| borrowers | holds")
+    v.edit(
+        NF, "[[borrowers]] queued", "people queued"
+    )  # no link in the account that no row ends at
     before = v.snapshot()
     code, doc = v.scat("set-status", "saturday", "done")
     assert code == 1

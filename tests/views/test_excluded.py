@@ -138,18 +138,21 @@ def test_a_narrative_coded_by_a_row_end_is_included(make):
     assert excluded_of(scat_tools.fingerprint(root=root)) == {}
 
 
-def test_a_narrative_coded_by_an_account_link_alone_is_included_and_conformant(make):
-    page = narrative("Ghost", "Only the [[towns]] spoke.", None, "done", "scenario")
+def test_a_narrative_coded_by_an_account_link_alone_is_included_and_has_the_link_problem(make):
+    page = narrative("Ghost", "Only the [[towns]] spoke.", None, "draft", "scenario")
     page = page.replace('title: "Ghost"\n', 'title: "Ghost"\ndescription: "D"\ntimeframe: past\n')
     root = make({GHOST: page})
     g = load(root)
     assert g.excluded == () and g.narrative("ghost").nodes == ("towns",)
     assert g.narrative("ghost").edges == ()
     report = scat_tools.check("ghost", root=root)
-    assert report.errors == () and {p.rule for p in report.problems} <= {"SCAT-NOEDGES"}
+    # no row ends at the node the account links: the table is the coding of record (SCAT-*-LINK-NOTINTABLE)
+    assert report.errors == () and {p.rule for p in report.problems} >= {
+        "SCAT-DRAFT-LINK-NOTINTABLE"
+    }
     one = scat_tools.fingerprint("ghost", root=root).to_dict()["narratives"][0]
     assert [n["name"] for n in one["nodes"]] == ["towns"] and one["edges"] == []
-    assert scat_tools.set_status("ghost", "done", root=root).ok
+    assert not scat_tools.set_status("ghost", "done", root=root).ok
 
 
 def test_a_link_in_a_see_also_list_codes_a_narrative(make):

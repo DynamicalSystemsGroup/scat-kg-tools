@@ -33,8 +33,10 @@ GOLDEN = "\n".join(
 ACCOUNT = "Only the [[staff]] spoke.\n"
 NOTIN = "\n".join(
     [
-        f"error [SCAT-DONE-LINK-NOTINTABLE] {DESK}:10:10 link [[staff]]: the account links it but no row of the "
-        "table has it as an end; the table is the coding of record",
+        (
+            f"error [SCAT-DONE-LINK-NOTINTABLE] {DESK}:10:10 link [[staff]]: the account links it but no row of "
+            "the table has it as an end; the table is the coding of record"
+        ),
         "  Fix, choose one:",
         f"    1. record the row for it: run {RECORD}, with `staff` as `<from>` or `<to>`",
         "    2. or take the link out of the account: write `staff` without its brackets and keep the words",

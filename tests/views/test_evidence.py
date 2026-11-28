@@ -335,7 +335,7 @@ def test_on_the_range_vault_the_cli_json_is_the_python_document(capsys):
     code, got = cli_json(capsys, "community-members", "--root", str(RANGE))
     d = doc(RANGE, "community-members")
     assert code == 0 and got == d
-    assert len(d["narratives"]) >= 4 and d["edges"] and d["adjacent"]["concern"]
+    assert len(d["narratives"]) >= 3 and d["edges"] and d["adjacent"]["concern"]
 
 
 def test_the_cli_prints_the_text_and_exits_1_on_a_refusal(built, capsys):

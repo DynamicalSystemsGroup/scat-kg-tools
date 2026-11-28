@@ -46,7 +46,7 @@ def test_example_vault_pages_and_types():
 def test_example_vault_every_link_resolves():
     v = read_vault(EXAMPLES)
     assert v.dangling() == ()
-    assert sum(len(p.links) for p in v.pages) == 37
+    assert sum(len(p.links) for p in v.pages) == 35
     for p in v.pages:
         for link in p.links:
             assert len(v.by_name[link.target]) == 1

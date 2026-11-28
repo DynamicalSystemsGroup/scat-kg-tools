@@ -134,7 +134,7 @@ def test_example_vault_narratives_and_their_fingerprints():
     assert sat.nodes == (
         "borrowers", "volunteer-staff",
         "careful-record-keeping", "quick-checkout", "safe-handling-of-tools",
-        "safety-briefing", "self-checkout",
+        "self-checkout",
     )  # fmt: skip
     assert len(sat.edges) == 5 and sat.problems == ()
     pitch = g.narrative("self-service-kiosk-pitch")
@@ -146,13 +146,12 @@ def test_example_vault_narratives_and_their_fingerprints():
 
 def test_example_vault_candidates_include_the_pair_the_readme_names():
     g = load(EXAMPLES)
-    pair = Candidate(
-        "saturday-at-the-lending-desk", "addressed-by", "safe-handling-of-tools", "safety-briefing"
-    )
+    pair = Candidate("saturday-at-the-lending-desk", "holds", "volunteer-staff", "quick-checkout")
     assert pair in g.candidates
-    # told by the pitch, linked in both ends by the scenario with no row there: a candidate, no message
-    assert g.edge("addressed-by", "safe-handling-of-tools", "safety-briefing") is not None
-    assert len(g.candidates) == 12
+    # linked in both ends by the account, each an end of a row of its table, and no row joins them: a candidate,
+    # no message, and no narrative tells the edge
+    assert g.edge("holds", "volunteer-staff", "quick-checkout") is None
+    assert len(g.candidates) == 8
     assert (
         Candidate("funders-meeting", "holds", "funders", "careful-record-keeping")
         not in g.candidates
@@ -169,7 +168,7 @@ def test_example_vault_candidates_include_the_pair_the_readme_names():
 
 def test_example_vault_links_are_kept_apart_from_edges():
     g = load(EXAMPLES)
-    assert len(g.links) == 37 == sum(len(p.links) for p in g.vault.pages)
+    assert len(g.links) == 35 == sum(len(p.links) for p in g.vault.pages)
     careful = [l for l in g.links if l.source == "concern/careful-record-keeping.md"]
     assert [(l.target, l.line, l.column) for l in careful] == [("quick-checkout", 8, 15)]
     assert (
@@ -181,8 +180,8 @@ def test_example_vault_links_are_kept_apart_from_edges():
         "excluded": 0,
         "edges": 9,
         "edge_status": {"stub": 0, "draft": 1, "done": 8},
-        "candidates": 12,
-        "links": 37,
+        "candidates": 8,
+        "links": 35,
     }
 
 
