@@ -46,14 +46,14 @@ The example codes one narrative in the template vault, `groups-under-a-cap-pitch
     | [[workshop-participants]] | holds | [[anonymity]] | They appear only as groups, so no individual is identifiable. |
     ```
 
-6. **In a terminal:** in the vault folder, run `uv run scat check groups-under-a-cap-pitch` and read what it says. A misspelt link is named with the line to change. A link written `[[workshop-participnts]]` produces this output:
+6. **In a terminal:** in the vault folder, run `uv run scat check groups-under-a-cap-pitch` and read what it says. A misspelt link is named with the line to change. A link written `[[anonymit]]` produces this output:
 
     ```text
     attribution mode: disallowed
-    warning [SCAT-DRAFT-END-NOPAGE] narrative/groups-under-a-cap-pitch.md:23:3 row 3 cell `from`: [[workshop-participnts]] does not reach a page (no page is named workshop-participnts)
+    warning [SCAT-DRAFT-END-NOPAGE] narrative/groups-under-a-cap-pitch.md:23:39 row 3 cell `to`: [[anonymit]] does not reach a page (no page is named anonymit)
       Fix, choose one:
-        1. replace `[[workshop-participnts]]` with `[[workshop-participants]]`
-        2. run `scat stub workshop-participnts --type group` (REPL: `scat_tools.stub("workshop-participnts", type="group")`) to create a group page
+        1. replace `[[anonymit]]` with `[[anonymity]]`
+        2. run `scat stub anonymit --type concern` (REPL: `scat_tools.stub("anonymit", type="concern")`) to create a concern page
         3. delete the row
     0 errors, 1 warning
     ```

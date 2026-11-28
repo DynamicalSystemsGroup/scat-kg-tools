@@ -299,7 +299,7 @@ uv run scat draw fingerprint --out fingerprint.png NARRATIVE
 ```
 
 It prints `created fingerprint.png`. In Obsidian, open `fingerprint.png` from the file list. The narrative page's
-Outgoing links panel shows the same nodes as a list. A dashed line in the picture would be a link with no row; this
+Outgoing links panel shows the same nodes as a list. A dashed line in the picture would be a pair of nodes the account links with no row joining them; this
 narrative has none.
 
 **6. Set it done.** `done` means you have read the account against your notes and it is complete, and it is your call,
