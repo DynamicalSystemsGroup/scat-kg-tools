@@ -3429,3 +3429,12 @@ stays an error at `done`, like the other row-end rules, given that a `done` narr
 start failing `check`; he said (typed by the agent): "Error at done". Asked to approve the two defaults (the rule
 pair's names; a fresh reviewer) and with them the scope, he said: "Approve WP39". WP39's paths were brought in line with
 the WP37 rename (`src/scat_tools`) before the review.
+
+## D-215 | 2026-11-28 | Pull `dev` on the other Mac; `main` waits for v0.1; finished branches deleted
+
+The chief engineer asked to merge everything possible into a clean state so he can pull it on his other Mac. The
+tools' `main` (the default branch) is 1,208 commits behind `dev`. Asked whether to bring `main` up to `dev` or keep it
+for the v0.1 release, he said (typed by the agent): "Pull dev instead". `main` waits for the release. The ACE deleted
+the remote branches already in `dev` (tools: wp17/build, wp18/build, wp20/build and wp20/u2 to u8, wp29/design (its
+two commits are in `dev` under new ids), wp37/rename; template: wp21/template, wp37/rename). The `spike/*` branches
+stay: readouts cite their code.
