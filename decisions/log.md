@@ -3222,3 +3222,22 @@ document and passes on the fixed one.
 Asked to approve RS8's two defaults (a readout of at most about 1,500 words; assistant readings reusing RS5's trial
 setup, at most 10 messages per client, the ACE as coder, desk parts first), the chief engineer said (typed by the
 agent): "Defaults approved". RS8 has no open items; it awaits approval of the scope.
+
+## D-194 | 2026-11-27 | WP30 built except its on-screen check; the PM's out-of-list edits accepted
+
+WP30 is on `dev` (254b1f1), CI and the image build green, the template re-pinned to tools 20c03c2 (template `dev`
+f1d7cce, its CI green; the pin carries WP32 to WP35 and WP30). The ACE ran the server on a copy of the examples: 21
+tools listed; with no stage, `status` returns a normal clarification and changes nothing; `set_stage` without `by`
+records a pending request; with `by` it writes `lifecycle.toml` (stage, set_by, set_at); `record_edge` in plan is
+refused as a normal result; an unlisted move (plan to analyse) is refused naming the exits. `check` ignores
+`lifecycle.toml` (the PM's test pins it), so no amendment was needed there.
+
+Where WP30.md predates the locked model, the model was followed (five readings, on the board). The ACE approved the
+PM's six defaults and its narrow docs lines (`docs/local-llm.md`'s count; one sentence in
+`contracts/machine-interface.md` naming the kinds `guide` and `stage`). Out of the list, and accepted by the ACE as
+direct consequences: `deploy/Dockerfile` and its dockerignore carry `contracts/lifecycle.md` (now package data);
+`tests/deploy/test_image.py` writes a stage into its vault copy; the machine-interface page's word cap rose from 774 to
+786 for that one sentence (`tests/test_machine_schema.py`), listed for the chief engineer's review like D-186.
+`schema_version` stays 3 with the kinds added (v3 already added a kind, the evidence view). Known cost: `which_stage`
+runs a whole-vault check in the code stage. Still open: WP30-R6, the on-screen check (WP30-U6 queued), and the model's
+stale `detects` "exists" values, for the chief engineer. WP30 is accepted once R6 is recorded.
