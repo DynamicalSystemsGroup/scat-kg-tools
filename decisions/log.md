@@ -3285,3 +3285,8 @@ package today is `scat-kg`, installed from GitHub. Outcome: app SCAT Chat to sca
 `scat-tools` (the docs site's address moves with it); repository `scat-kg-template` to `scat-template`; Python
 package `scat-kg` to `scat-tools`; the command stays `scat`. WP37's O1, R1 and defaults are edited to match (import
 name `scat_tools` with a one-release alias, and `scat-mcp` unchanged, as defaults).
+
+## D-200 | 2026-11-27 | WP37's O2: the rename lands before v0.1
+
+Asked whether the rename happens before or after the v0.1 release, the chief engineer said (typed by the agent):
+"Before v0.1". v0.1 ships under the new names.
