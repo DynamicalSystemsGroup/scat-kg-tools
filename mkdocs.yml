@@ -53,13 +53,13 @@ nav:
       - Timeframe: facilitate-timeframe.md
   - Coding paths:
       - Overview: coding-paths.md
-      - Pros and cons: path-pros-and-cons.md
       - By hand: coding.md
       - An AI chatbot:
           - The chat path: chat-path.md
           - Leave no trace: leave-no-trace.md
       - An AI IDE: ide.md
       - A local LLM: local-llm.md
+      - Pros and cons: path-pros-and-cons.md
   - Norms: norms.md
   - Analysis: analysis.md
   - Reference:

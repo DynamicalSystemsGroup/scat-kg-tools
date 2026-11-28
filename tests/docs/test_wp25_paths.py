@@ -43,12 +43,12 @@ def _front(name: str) -> dict:
 def test_r1_nav_shape():
     section = _entry(_nav(), "Coding paths")
     assert section[0] == {"Overview": "coding-paths.md"}
-    assert section[1] == {"Pros and cons": "path-pros-and-cons.md"}
-    assert section[2] == {"By hand": "coding.md"}
+    assert section[1] == {"By hand": "coding.md"}
     chatbot = _entry(section, "An AI chatbot")
     assert chatbot == [{"The chat path": "chat-path.md"}, {"Leave no trace": "leave-no-trace.md"}]
-    assert section[4] == {"An AI IDE": "ide.md"}
-    assert section[5] == {"A local LLM": "local-llm.md"}
+    assert section[3] == {"An AI IDE": "ide.md"}
+    assert section[4] == {"A local LLM": "local-llm.md"}
+    assert section[5] == {"Pros and cons": "path-pros-and-cons.md"}  # last, after the paths it compares
     assert len(section) == 6
 
 
