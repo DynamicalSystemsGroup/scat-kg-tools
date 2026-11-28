@@ -3241,3 +3241,9 @@ direct consequences: `deploy/Dockerfile` and its dockerignore carry `contracts/l
 `schema_version` stays 3 with the kinds added (v3 already added a kind, the evidence view). Known cost: `which_stage`
 runs a whole-vault check in the code stage. Still open: WP30-R6, the on-screen check (WP30-U6 queued), and the model's
 stale `detects` "exists" values, for the chief engineer. WP30 is accepted once R6 is recorded.
+
+## D-195 | 2026-11-27 | RS8 approved
+
+The chief engineer (typed by the agent): "Approve RS8". RS8 (`work-packages/RS8-candidate-evidence.md`) is approved.
+A PM runs the desk parts (G1, G2, and G3's coder reading); the assistant readings in Claude and inference.coop run at a
+sitting the chief engineer chooses, with the ACE as coder.

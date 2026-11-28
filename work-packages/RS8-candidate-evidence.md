@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | DRAFT. Approval is recorded in `decisions/log.md`, quoting the chief engineer. Rests on D-191. |
+| **Status** | Approved by the chief engineer (log D-195). Rests on D-191. |
 | **Branch** | `spike/candidates` off `dev`; never merged into `dev`. The readout is merged into `dev` on its own. |
 | **Revert point** | `divergence/D-174` (shared with WP32 to WP35) |
 
