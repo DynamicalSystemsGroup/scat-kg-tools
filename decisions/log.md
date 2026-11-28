@@ -3290,3 +3290,13 @@ name `scat_tools` with a one-release alias, and `scat-mcp` unchanged, as default
 
 Asked whether the rename happens before or after the v0.1 release, the chief engineer said (typed by the agent):
 "Before v0.1". v0.1 ships under the new names.
+
+## D-201 | 2026-11-27 | WP37's defaults: the app is SCATLAB in capitals; the rest approved
+
+Asked to approve WP37's four defaults (lower-case "scatlab" everywhere; the import name `scat_tools` with a one-release
+`scat_kg` alias and `scat-mcp` unchanged; GitHub's redirects relied on with new names in the pin and clone
+instructions; the on-screen run with his accounts and the ACE as coder), the chief engineer said (typed by the agent):
+"capitalize SCATLAB the app name should be all caps but otherwise all the code tools and cli and such stay lowercase".
+Outcome: the app's name is SCATLAB wherever a person reads it; code, tools, the CLI, file names and identifiers stay
+lower case. The ACE reads "otherwise" as approving the other three defaults. WP37 has no open items; it awaits
+approval of the scope.
